@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>AC guide editor — NTF Anaesthesia</title>
+<style>
+  :root {
+    --primary: #3B5BFD; --primary-hover: #2D47D6; --text: #0F172A; --muted: #475569;
+    --bg: #F8FAFC; --surface: #FFFFFF; --border: #CBD5E1; --success: #16A34A; --error: #E11D48;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 20px; margin: 0 0 4px; }
+  .lede { color: var(--muted); margin: 0 0 24px; max-width: 70ch; }
+  .step { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin-bottom: 16px; }
+  .step.done { border-color: var(--success); }
+  .step p { margin: 4px 0 12px; color: var(--muted); }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  label { font-weight: 600; }
+  input[type=password], input[type=text] { font: inherit; padding: 9px 12px; border: 1px solid var(--border); border-radius: 6px; min-width: 240px; }
+  button { font: inherit; font-weight: 600; min-height: 44px; padding: 9px 18px; border-radius: 6px; border: 2px solid var(--primary); background: var(--surface); color: var(--primary); cursor: pointer; }
+  button:hover { background: #EEF2FF; }
+  button.primary { background: var(--primary); color: #fff; }
+  button.primary:hover { background: var(--primary-hover); border-color: var(--primary-hover); }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  :focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+  textarea { width: 100%; height: 60vh; font: 13px/1.5 ui-monospace, "JetBrains Mono", Consolas, monospace; padding: 12px; border: 1px solid var(--border); border-radius: 6px; resize: vertical; white-space: pre; }
+  .msg { margin: 10px 0 0; font-weight: 600; }
+  .msg.ok { color: var(--success); }
+  .msg.err { color: var(--error); }
+  .note { font-size: 14px; color: var(--muted); }
+  ol.how { margin: 0 0 24px; padding-left: 20px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>AC guide editor</h1>
+  <p class="lede">Edit the password-locked Guide to AC Life. Everything happens in this browser tab. The unlocked guide is never uploaded or saved unless you download it.</p>
+  <ol class="how">
+    <li>Load the current guide and unlock it with the password.</li>
+    <li>Edit the text. Use Preview to check how it looks.</li>
+    <li>Lock and download the new <code>index.html</code>.</li>
+    <li>On GitHub, open the <code>ac</code> folder, choose <b>Add file → Upload files</b>, and upload it. It goes live in about a minute.</li>
+  </ol>
+
+  <section class="step" id="s1">
+    <h2>1. Load and unlock</h2>
+    <p>Load the guide that is live on the site, or choose an <code>index.html</code> from the <code>ac</code> folder on your computer.</p>
+    <div class="row">
+      <button type="button" id="loadLive">Load from site</button>
+      <span class="note">or</span>
+      <input type="file" id="file" accept=".html,text/html" aria-label="Choose the guide's index.html">
+    </div>
+    <p class="note" id="loaded" aria-live="polite"></p>
+    <div class="row" style="margin-top:12px">
+      <label for="pw">Password</label>
+      <input type="password" id="pw" autocomplete="current-password">
+      <button type="button" class="primary" id="unlock" disabled>Unlock</button>
+    </div>
+    <p class="msg" id="msg1" aria-live="polite"></p>
+  </section>
+
+  <section class="step" id="s2" hidden>
+    <h2>2. Edit</h2>
+    <p>This is the guide's page code. Change the wording between the tags; leave the tags (the parts in &lt;angle brackets&gt;) alone unless you know HTML. Use Ctrl+F to find text.</p>
+    <textarea id="src" spellcheck="false" aria-label="Guide page code"></textarea>
+    <div class="row" style="margin-top:12px">
+      <button type="button" id="preview">Preview in a new tab</button>
+      <button type="button" id="revert">Undo all changes</button>
+      <span class="note" id="dirty"></span>
+    </div>
+  </section>
+
+  <section class="step" id="s3" hidden>
+    <h2>3. Lock and download</h2>
+    <p>The guide is locked again with the same password, unless you enter a new one below.</p>
+    <div class="row">
+      <label for="newpw">New password (optional)</label>
+      <input type="password" id="newpw" autocomplete="new-password">
+      <input type="password" id="newpw2" autocomplete="new-password" aria-label="Repeat new password" placeholder="Repeat new password">
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button type="button" class="primary" id="lock">Lock and download index.html</button>
+    </div>
+    <p class="msg" id="msg3" aria-live="polite"></p>
+  </section>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  const toB64 = u => { let s = ''; const a = new Uint8Array(u); for (let i = 0; i < a.length; i += 0x8000) s += String.fromCharCode.apply(null, a.subarray(i, i + 0x8000)); return btoa(s); };
+  const DATA_RE = /const DATA=(\{[\s\S]*?\});/;
+  const ITERATIONS = 600000;
+
+  let wrapper = null, data = null, password = null, original = '';
+
+  if (!window.crypto?.subtle) {
+    $('msg1').className = 'msg err';
+    $('msg1').textContent = 'This browser cannot unlock the guide here. Open this page over https:// (not http://).';
+  }
+
+  async function deriveKey(pw, salt, iterations, usage) {
+    const km = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, [usage]);
+  }
+
+  function setWrapper(text, from) {
+    const m = text.match(DATA_RE);
+    if (!m) { $('loaded').textContent = 'That file is not the locked AC guide.'; wrapper = null; $('unlock').disabled = true; return; }
+    wrapper = text; data = JSON.parse(m[1]);
+    $('loaded').textContent = `Loaded the locked guide from ${from}.`;
+    $('unlock').disabled = false;
+    $('pw').focus();
+  }
+
+  $('loadLive').addEventListener('click', async () => {
+    $('loaded').textContent = 'Loading…';
+    try {
+      const res = await fetch('../ac/index.html', { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      setWrapper(await res.text(), 'the site');
+    } catch {
+      $('loaded').textContent = 'Could not load it from the site. Choose the file from your computer instead.';
+    }
+  });
+
+  $('file').addEventListener('change', async e => {
+    const f = e.target.files[0];
+    if (f) setWrapper(await f.text(), f.name);
+  });
+
+  async function unlock() {
+    if (!wrapper) return;
+    $('unlock').disabled = true; $('msg1').className = 'msg'; $('msg1').textContent = 'Unlocking…';
+    try {
+      const key = await deriveKey($('pw').value, b64(data.salt), data.iters, 'decrypt');
+      const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(data.iv) }, key, b64(data.ct));
+      password = $('pw').value;
+      original = new TextDecoder().decode(pt);
+      $('src').value = original;
+      $('msg1').className = 'msg ok'; $('msg1').textContent = 'Unlocked.';
+      $('s1').classList.add('done'); $('s2').hidden = false; $('s3').hidden = false;
+      $('src').focus(); $('src').setSelectionRange(0, 0); $('src').scrollTop = 0;
+    } catch {
+      $('msg1').className = 'msg err'; $('msg1').textContent = 'Wrong password, or the file is damaged.';
+    } finally {
+      $('unlock').disabled = false;
+    }
+  }
+  $('unlock').addEventListener('click', unlock);
+  $('pw').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
+
+  const isDirty = () => password !== null && $('src').value !== original;
+  $('src').addEventListener('input', () => { $('dirty').textContent = isDirty() ? 'Unsaved changes' : ''; });
+  $('revert').addEventListener('click', () => {
+    if (confirm('Undo all your changes?')) { $('src').value = original; $('dirty').textContent = ''; }
+  });
+  $('preview').addEventListener('click', () => {
+    const url = URL.createObjectURL(new Blob([$('src').value], { type: 'text/html' }));
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  });
+  addEventListener('beforeunload', e => { if (isDirty()) { e.preventDefault(); e.returnValue = ''; } });
+
+  $('lock').addEventListener('click', async () => {
+    const msg = $('msg3');
+    const np = $('newpw').value, np2 = $('newpw2').value;
+    if (np || np2) {
+      if (np !== np2) { msg.className = 'msg err'; msg.textContent = 'The new passwords do not match.'; return; }
+      if (np.length < 8) { msg.className = 'msg err'; msg.textContent = 'Use a new password of at least 8 characters.'; return; }
+    }
+    const usePw = np || password;
+    $('lock').disabled = true; msg.className = 'msg'; msg.textContent = 'Locking… this takes a few seconds.';
+    try {
+      const plain = new TextEncoder().encode($('src').value);
+      const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+      const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await deriveKey(usePw, salt, ITERATIONS, 'encrypt'), plain);
+      const out = { salt: toB64(salt), iv: toB64(iv), iters: ITERATIONS, ct: toB64(ct) };
+      // Check the locked copy opens with the password before handing it over.
+      const check = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, await deriveKey(usePw, salt, ITERATIONS, 'decrypt'), ct);
+      if (new TextDecoder().decode(check) !== $('src').value) throw new Error('verify');
+      const html = wrapper.replace(DATA_RE, () => 'const DATA=' + JSON.stringify(out) + ';');
+      const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([html], { type: 'text/html' })), download: 'index.html' });
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+      original = $('src').value; $('dirty').textContent = '';
+      msg.className = 'msg ok';
+      msg.textContent = 'Locked and downloaded. Now upload index.html to the ac folder on GitHub' + (np ? '. Tell everyone the new password.' : '.');
+    } catch {
+      msg.className = 'msg err'; msg.textContent = 'Locking failed. Nothing was downloaded; try again.';
+    } finally {
+      $('lock').disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
