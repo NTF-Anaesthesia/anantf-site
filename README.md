@@ -8,6 +8,7 @@ Static site served by GitHub Pages at https://anantf.com.
 | `exams/` | MMed exam resources by Dr Chew Shi Hao (his design, imported) |
 | `exams/reference/` | Part B model-answer PDFs |
 | `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
+| `ac/` | Guide to AC Life (password-locked, unlisted). The content is encrypted in the page; the password is shared separately and is not stored in this repo |
 
 The NAPS 2026 models live in their own repo: NTF-Anaesthesia/naps2026-site (https://naps2026.anantf.com).
 
