@@ -15,7 +15,7 @@ function replace(pattern, value, label) {
   if (h === before) throw new Error(`import-exams: "${label}" not found; the source page has changed`);
 }
 
-const NAV = `<a href="../">Home</a><a href="./" aria-current="page">Exams</a><a href="../popliteal/">Popliteal block</a><a href="https://naps2026.anantf.com/">NAPS 2026</a>`;
+const NAV = `<a href="../">Home</a><a href="./" aria-current="page">Exams</a><a href="https://naps2026.anantf.com/">NAPS 2026</a>`;
 const CREDIT = `Exam resources written and curated by <a href="https://chewshihao.com/" rel="noopener">Dr Chew Shi Hao</a>, anaesthetist, MBBS 2013, MMed (Anaes) 2019.`;
 
 // ---- head ----

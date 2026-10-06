@@ -4,10 +4,10 @@ Static site served by GitHub Pages at https://anantf.com.
 
 | Path | What it is |
 |---|---|
-| `index.html` | Homepage listing all resources |
+| `index.html` | Homepage (lists NAPS only; exams and popliteal are unlisted for now) |
 | `exams/` | MMed exam resources by Dr Chew Shi Hao (his design, imported) |
 | `exams/reference/` | Part B model-answer PDFs |
-| `popliteal/` | Popliteal sciatic block animation |
+| `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
 
 The NAPS 2026 models live in their own repo: NTF-Anaesthesia/naps2026-site (https://naps2026.anantf.com).
 
