@@ -1,0 +1,3 @@
+# Readable copy of the AC guide made by tools/ac-guide.mjs. Never commit it.
+ac-guide.unlocked.html
+*.unlocked.html
