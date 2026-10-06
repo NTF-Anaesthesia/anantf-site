@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Popliteal sciatic block — anatomy and needle technique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ebe2d5; --panel:#f6efe5; --ink:#2b1e18; --muted:#7a6456; --line:#d8c8b5; --accent:#a8552a; --sel:#2b1e18; --selink:#f6efe5;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#1d1714;--panel:#2a211c;--ink:#f1e6da;--muted:#b49e8d;--line:#43362e;--accent:#e0915f;--sel:#f1e6da;--selink:#1d1714}
+}
+:root[data-theme="dark"]{--bg:#1d1714;--panel:#2a211c;--ink:#f1e6da;--muted:#b49e8d;--line:#43362e;--accent:#e0915f;--sel:#f1e6da;--selink:#1d1714}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;font-size:15px}
+.wrap{max-width:1180px;margin:0 auto;padding:14px 14px 28px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:10px;background:var(--panel)}
+.tabs button{border:0;border-radius:0;background:transparent;padding:12px 8px;font:500 15px/1.25 Inter,system-ui,sans-serif;color:var(--ink);cursor:pointer}
+.tabs button+button{border-left:1px solid var(--line)}
+.tabs button[aria-selected="true"]{background:var(--sel);color:var(--selink)}
+.tabs small{display:block;font-weight:400;font-size:12.5px;opacity:.75;margin-top:3px}
+.scen{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.scen[hidden]{display:none}
+.scen button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.scen button.neg[aria-pressed="true"]{background:#9b2b1a;border-color:#9b2b1a}
+.stage{position:relative;border-radius:8px;overflow:hidden;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(60,30,15,.12)}
+canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#f4ece1;touch-action:manipulation}
+.stage.full{position:fixed;inset:0;z-index:20;border-radius:0;background:#f4ece1;display:flex;align-items:center;justify-content:center}
+.stage.full canvas{width:min(100vw,177.78vh);max-height:100vh}
+.bar{display:flex;align-items:center;gap:10px;margin-top:12px}
+button{font:500 14px/1 Inter,system-ui,sans-serif;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:9px 14px;cursor:pointer}
+button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#play{height:44px;padding:0 18px;display:flex;align-items:center;gap:8px;font-size:15px;background:var(--accent);border-color:var(--accent);color:#fff}
+#reset{height:44px}
+input[type=range]{flex:1;accent-color:var(--accent);min-width:0}
+#tc{font-variant-numeric:tabular-nums;color:var(--muted);min-width:4.5ch;text-align:right}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;justify-content:flex-end}
+.note{color:var(--muted);font-size:13px;margin:12px 2px 0;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="tabs" role="tablist" aria-label="Anatomical variant">
+    <button role="tab" data-anat="stacked" aria-selected="true">CPN over TN<small>Stacked</small></button>
+    <button role="tab" data-anat="deep" aria-selected="false">Side by side<small>Deep</small></button>
+    <button role="tab" data-anat="sup" aria-selected="false">Side by side<small>Superficial</small></button>
+  </div>
+  <div class="scen" id="scen" hidden>
+    <button data-scen="supErr" class="neg" aria-pressed="false">In-plane: errors</button>
+    <button data-scen="supIP" aria-pressed="true">In-plane: correct</button>
+    <button data-scen="supOOP" aria-pressed="false">Out-of-plane: correct</button>
+  </div>
+  <div class="stage" id="stage"><canvas id="c" aria-label="Animated ultrasound-guided popliteal sciatic block"></canvas></div>
+  <div class="bar">
+    <button id="play">▶ Play</button>
+    <button id="reset">Reset</button>
+    <input id="scrub" type="range" min="0" max="16" step="0.01" value="0" aria-label="Demonstration timeline">
+    <span id="tc">0.0 s</span>
+  </div>
+  <div class="row">
+    <button id="lbl" aria-pressed="true">Labels</button>
+    <button id="fs">Full screen</button>
+  </div>
+  <p class="note">To record: turn the phone landscape, tap Full screen, then screen-record. Tap the picture to leave full screen.</p>
+</div>
+
+<script>
+(() => {
+const W=1600,H=900,TS0=7;
+const cvs=document.getElementById('c'),ctx=cvs.getContext('2d');
+const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- helpers ---------- */
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const seg=(t,a,b)=>clamp((t-a)/(b-a));
+const ease=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
+const easeOut=x=>1-Math.pow(1-x,3);
+const lerp=(a,b,k)=>a+(b-a)*k;
+const along=(S,E,u)=>[lerp(S[0],E[0],u),lerp(S[1],E[1],u)];
+function spline(P,closed,n=14){
+  const out=[],L=P.length,cnt=closed?L:L-1;
+  for(let i=0;i<cnt;i++){
+    const p0=P[closed?(i-1+L)%L:Math.max(i-1,0)],p1=P[i],p2=P[(i+1)%L],p3=P[closed?(i+2)%L:Math.min(i+2,L-1)];
+    for(let j=0;j<n;j++){const t=j/n,t2=t*t,t3=t2*t,f=k=>.5*((2*p1[k])+(-p0[k]+p2[k])*t+(2*p0[k]-5*p1[k]+4*p2[k]-p3[k])*t2+(-p0[k]+3*p1[k]-3*p2[k]+p3[k])*t3);out.push([f(0),f(1)])}
+  }
+  out.push(closed?out[0].slice():P[L-1].slice());return out;
+}
+function ellipsePts(cx,cy,rx,ry,n=72,a0=-Math.PI/2){const o=[];for(let i=0;i<=n;i++){const a=a0+i/n*Math.PI*2;o.push([cx+rx*Math.cos(a),cy+ry*Math.sin(a)])}return o}
+function mkPath(pts){const cum=[0];for(let i=1;i<pts.length;i++)cum.push(cum[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));return{pts,cum,len:cum[cum.length-1]}}
+function strokePartial(c,path,p){
+  if(p<=0)return;const{pts,cum,len}=path,target=len*Math.min(p,1);
+  c.beginPath();c.moveTo(pts[0][0],pts[0][1]);
+  for(let i=1;i<pts.length;i++){if(cum[i]>=target){const k=(target-cum[i-1])/((cum[i]-cum[i-1])||1);c.lineTo(lerp(pts[i-1][0],pts[i][0],k),lerp(pts[i-1][1],pts[i][1],k));break}c.lineTo(pts[i][0],pts[i][1])}
+  c.stroke();
+}
+function polyPath(c,pts){c.beginPath();c.moveTo(pts[0][0],pts[0][1]);for(let i=1;i<pts.length;i++)c.lineTo(pts[i][0],pts[i][1]);c.closePath()}
+function inPoly(x,y,P){let ins=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const[xi,yi]=P[i],[xj,yj]=P[j];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))ins=!ins}return ins}
+function shrink(pts,f){let cx=0,cy=0;pts.forEach(p=>{cx+=p[0];cy+=p[1]});cx/=pts.length;cy/=pts.length;return pts.map(p=>[cx+(p[0]-cx)*f,cy+(p[1]-cy)*f])}
+function bbox(P){let a=1e9,b=1e9,c=-1e9,d=-1e9;P.forEach(([x,y])=>{a=Math.min(a,x);b=Math.min(b,y);c=Math.max(c,x);d=Math.max(d,y)});return[a,b,c,d]}
+function hull(P){P=P.slice().sort((a,b)=>a[0]-b[0]||a[1]-b[1]);const cr=(o,a,b)=>(a[0]-o[0])*(b[1]-o[1])-(a[1]-o[1])*(b[0]-o[0]);
+  const lo=[],up=[];for(const p of P){while(lo.length>=2&&cr(lo[lo.length-2],lo[lo.length-1],p)<=0)lo.pop();lo.push(p)}
+  for(const p of P.slice().reverse()){while(up.length>=2&&cr(up[up.length-2],up[up.length-1],p)<=0)up.pop();up.push(p)}
+  const h=lo.slice(0,-1).concat(up.slice(0,-1));h.push(h[0].slice());return h}
+function resample(P,step){const out=[P[0].slice()];let acc=0;for(let i=1;i<P.length;i++){const a=P[i-1],b=P[i],l=Math.hypot(b[0]-a[0],b[1]-a[1]);let d=step-acc;while(d<=l){out.push([lerp(a[0],b[0],d/l),lerp(a[1],b[1],d/l)]);d+=step}acc=(acc+l)%step}out.push(P[P.length-1].slice());return out}
+function angDiff(a,b){let d=a-b;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;return d}
+function pop(t,t0,u0,u1,amp){const q=seg(t,t0,t0+.45);return{u:q<.3?u0:lerp(u0,u1,easeOut(seg(q,.3,.5))),sh:q>.3&&q<1?Math.sin(q*60)*(1-q)*amp:0}}
+
+const C={paper:'#f4ece1',ink:'#2b1e18',fat:'#f2dcc8',sub:'#f3dfcc',guide:'110,120,148',fascicle:'#3a1b11',la:'122,50,22'};
+const RED='#9b2b1a';
+
+/* ---------- tissue geometry (two layer sets) ---------- */
+const PROBE=[[602,-12],[604,26],[582,56],[540,70],[521,92],[520,128],[533,145],[770,147],[1007,145],[1020,128],[1019,92],[1000,70],[958,56],[936,26],[938,-12]];
+const BEAM=[517,148,499];
+function makeGeo(v){
+  const G={};
+  G.skinTop=spline([[20,180],[300,160],[517,147],[770,146],[1016,147],[1300,160],[1580,180]],false);
+  G.SM=spline([[100,380],[380,364],[540,380],[660,452],[695,590],[665,722],[560,692],[400,622],[230,562],[120,472]],true);
+  G.LL=[[110,480],[230,570],[400,630],[560,700],[640,790],[380,800],[200,700],[100,580]];
+  G.RB=[[1150,785],[1262,765],[1400,605],[1500,420],[1575,380],[1575,790],[1300,812]];
+  G.floor=spline([[640,722],[720,684],[820,668],[950,675],[1032,704]],false);
+  G.floor2=spline([[648,732],[724,694],[820,679],[948,686],[1026,714]],false);
+  if(v==='thick'){
+    G.skinDeep=spline([[30,188],[300,169],[560,161],[770,159],[1000,161],[1300,169],[1570,188]],false);
+    G.fascia=spline([[60,202],[300,238],[520,254],[770,261],[1000,261],[1200,254],[1400,230],[1560,197]],false);
+    G.L1=spline([[110,250],[260,248],[355,268],[392,305],[372,342],[240,352],[110,338]],true);
+    G.ST=spline([[362,282],[500,282],[602,300],[618,340],[610,386],[560,364],[450,340],[398,314]],true);
+    G.BF=spline([[1022,292],[1150,266],[1400,232],[1522,218],[1500,400],[1400,600],[1262,762],[1150,782],[1086,650],[1050,500],[1032,382]],true);
+    G.fatPad=[[600,250],[1070,250],[1070,725],[615,725]];
+  }else{
+    G.skinDeep=spline([[30,188],[300,166],[560,158],[800,156],[1040,158],[1300,166],[1570,188]],false);
+    G.fascia=spline([[60,200],[300,228],[480,232],[640,214],[720,182],[820,174],[930,178],[1030,212],[1200,226],[1400,214],[1560,195]],false);
+    G.L1=spline([[110,248],[260,244],[360,264],[395,305],[372,345],[240,355],[110,340]],true);
+    G.ST=spline([[372,262],[500,250],[598,240],[640,262],[636,330],[622,384],[570,366],[460,332],[402,302]],true);
+    G.BF=spline([[1030,250],[1150,240],[1400,224],[1522,210],[1500,400],[1400,600],[1262,762],[1150,782],[1086,650],[1050,500],[1030,370]],true);
+    G.fatPad=[[600,180],[1070,180],[1070,725],[615,725]];
+  }
+  G.band=G.skinDeep.concat(G.fascia.slice().reverse());
+  G.OUT=[
+    {p:mkPath(PROBE),t:[0.4,2.2],w:2.2},
+    {p:mkPath(G.skinTop),t:[1.1,2.9],w:2.2},
+    {p:mkPath(G.skinDeep),t:[1.3,3.1],w:1.1,a:.55},
+    {p:mkPath(G.fascia),t:[1.5,3.3],w:1.9},
+    {p:mkPath(G.L1),t:[1.9,3.9],w:2.1,dbl:mkPath(shrink(G.L1,.96))},
+    {p:mkPath(G.ST),t:[2.0,4.0],w:2.1,dbl:mkPath(shrink(G.ST,.95))},
+    {p:mkPath(G.SM),t:[2.2,4.4],w:2.1,dbl:mkPath(shrink(G.SM,.975))},
+    {p:mkPath(G.BF),t:[2.4,4.4],w:2.1,dbl:mkPath(shrink(G.BF,.965))},
+    {p:mkPath(G.floor),t:[2.8,4.2],w:1.8},
+    {p:mkPath(G.floor2),t:[2.9,4.3],w:1,a:.5},
+  ];
+  return G;
+}
+const GEO={thick:makeGeo('thick'),thin:makeGeo('thin')};
+
+/* ---------- static layers ---------- */
+const LS=1.5;
+function layer(){const c=document.createElement('canvas');c.width=W*LS;c.height=H*LS;const g=c.getContext('2d');g.scale(LS,LS);return[c,g]}
+const [paperC,pg]=layer();
+(function(){const r=rng(3);pg.fillStyle=C.paper;pg.fillRect(0,0,W,H);
+  for(let i=0;i<40;i++){const x=r()*W,y=r()*H,rad=60+r()*220;const gr=pg.createRadialGradient(x,y,0,x,y,rad);gr.addColorStop(0,'rgba(214,190,160,.10)');gr.addColorStop(1,'rgba(214,190,160,0)');pg.fillStyle=gr;pg.fillRect(x-rad,y-rad,rad*2,rad*2)}
+  for(let i=0;i<5000;i++){pg.fillStyle=`rgba(90,60,40,${.03+r()*.07})`;pg.fillRect(r()*W,r()*H,r()*1.6+.3,r()*1.6+.3)}})();
+function lobules(g,P,r,rxa,rxb,rya,ryb,col){
+  const bb=bbox(P),pts=[];let tries=0;
+  while(tries<9000){tries++;const x=bb[0]+r()*(bb[2]-bb[0]),y=bb[1]+r()*(bb[3]-bb[1]);const rx=rxa+r()*(rxb-rxa),ry=rya+r()*(ryb-rya);
+    if(pts.some(p=>Math.hypot((p.x-x)/(p.rx+rx),(p.y-y)/(p.ry+ry))<.92))continue;pts.push({x,y,rx,ry,a:(r()-.5)*.6})}
+  pts.forEach(p=>{g.beginPath();g.ellipse(p.x,p.y,p.rx,p.ry,p.a,0,Math.PI*2);g.fillStyle='rgba(255,246,236,.35)';g.fill();g.strokeStyle=col;g.lineWidth=.9;g.stroke()});
+}
+function fibres(g,P,ang,n,r,al){
+  const bb=bbox(P);
+  for(let i=0;i<n;i++){
+    let x,y,k=0;do{x=bb[0]+r()*(bb[2]-bb[0]);y=bb[1]+r()*(bb[3]-bb[1]);k++}while(!inPoly(x,y,P)&&k<30);
+    const len=40+r()*140,a=ang+(r()-.5)*.28,cu=(r()-.5)*.35,dx=Math.cos(a),dy=Math.sin(a);
+    g.beginPath();g.moveTo(x,y);g.quadraticCurveTo(x+dx*len/2-dy*cu*len,y+dy*len/2+dx*cu*len,x+dx*len,y+dy*len);
+    const dark=r()<.62;g.strokeStyle=dark?`rgba(92,50,30,${(.12+r()*.28)*al})`:`rgba(255,244,232,${(.25+r()*.35)*al})`;
+    g.lineWidth=.45+r()*.7;g.stroke();
+  }
+}
+const tissueCache={};
+function tissue(v,subLob){
+  if(tissueCache[v])return tissueCache[v];
+  const G=GEO[v];const [cv,tg]=layer();const r=rng(7);
+  tg.save();polyPath(tg,G.fatPad);tg.fillStyle=C.fat;tg.fill();tg.clip();lobules(tg,G.fatPad,r,12,22,9,16,'rgba(150,88,58,.32)');tg.restore();
+  tg.save();polyPath(tg,G.band);tg.fillStyle=C.sub;tg.fill();tg.clip();
+  if(v==='thick')lobules(tg,G.band,r,14,24,9,15,'rgba(150,88,58,.30)');else lobules(tg,G.band,r,10,20,6,11,'rgba(150,88,58,.30)');tg.restore();
+  [[G.LL,.45,.55],[G.RB,2.1,.5]].forEach(([P,a,al])=>{tg.save();tg.globalAlpha=al;polyPath(tg,P);tg.fillStyle='#f0d4bd';tg.fill();tg.clip();fibres(tg,P,a,380,r,.8);tg.restore()});
+  [[G.L1,-.12,520],[G.ST,.2,320],[G.SM,.55,1200],[G.BF,1.95,1400]].forEach(([P,a,n])=>{
+    tg.save();polyPath(tg,P);const bb=bbox(P);const gr=tg.createLinearGradient(bb[0],bb[1],bb[2],bb[3]);gr.addColorStop(0,'#efcdb1');gr.addColorStop(1,'#e6b797');
+    tg.fillStyle=gr;tg.fill();tg.clip();tg.lineWidth=26;tg.strokeStyle='rgba(176,96,56,.16)';polyPath(tg,P);tg.stroke();fibres(tg,P,a,n,r,1);tg.restore()});
+  const gr=tg.createLinearGradient(0,660,0,830);gr.addColorStop(0,'rgba(244,236,225,0)');gr.addColorStop(1,'rgba(244,236,225,1)');tg.fillStyle=gr;tg.fillRect(0,660,W,H-660);
+  return tissueCache[v]=cv;
+}
+
+/* ---------- anatomy variants ---------- */
+function makeFascicles(n,rx,ry,seed){
+  const r=rng(seed),out=[];let tries=0;
+  while(out.length<n&&tries<4000){tries++;
+    const x=(r()*2-1)*(rx-12),y=(r()*2-1)*(ry-11);
+    if((x*x)/((rx-12)**2)+(y*y)/((ry-11)**2)>1)continue;
+    const s=3+r()*5.5;if(out.some(f=>Math.hypot(f.x-x,f.y-y)<f.s+s+2))continue;
+    const wob=[];for(let i=0;i<9;i++)wob.push(.72+r()*.5);out.push({x,y,s,wob,ring:r()<.55});
+  }
+  return out;
+}
+const guideSet=(tib,cpn,vein,art,sh,hy1,hy2)=>[
+  {p:mkPath([[36,140],[36,790]]),t:[0,1.2]},
+  {p:mkPath([[40,hy1],[1560,hy1]]),t:[0.3,1.7]},
+  {p:mkPath([[60,hy2],[1540,hy2]]),t:[0.5,1.9]},
+  {p:mkPath(ellipsePts(tib[0],tib[1],tib[2],tib[3])),t:[0.6,2.4],dash:[6,6]},
+  {p:mkPath(ellipsePts(cpn[0],cpn[1],cpn[2],cpn[3])),t:[0.8,2.5],dash:[6,6]},
+  {p:mkPath(ellipsePts(sh[0],sh[1],sh[2],sh[3])),t:[1.0,2.8],dash:[3,7]},
+  {p:mkPath(ellipsePts(vein[0],vein[1],vein[2],vein[3])),t:[1.1,2.8],dash:[6,6]},
+  {p:mkPath(ellipsePts(art[0],art[1],art[2],art[3])),t:[1.2,2.9],dash:[6,6]},
+  {p:mkPath(spline([[300,40],[272,150],[266,262],[290,380]],false)),t:[0.4,2.0],dash:[8,8]},
+];
+const leftmost=s=>s.sh.pts.reduce((m,p)=>p[0]<m[0]?p:m)[0];
+const ANAT={
+  stacked:{geo:'thick',
+    tib:{x:780,y:412,rx:62,ry:52},cpn:{x:838,y:318,rx:40,ry:38},vein:{x:780,y:502,rx:64,ry:22},art:{x:780,y:590,r:48},
+    fas:{tib:makeFascicles(52,62,52,11),cpn:makeFascicles(22,40,38,23)},
+    mm:(a,m)=>{const s=Math.sin(a);return 11+(m-11)*(s>0?.15:1-.7*Math.abs(s))},
+    guides:guideSet([780,412,84,74],[838,318,60,58],[780,502,88,40],[780,590,70,70],[808,370,120,120],365,545),
+    muscles:[['Semitendinosus',245,308],['Semimembranosus',400,470],['Biceps femoris',1300,470]],
+    pills:[['Common peroneal nerve',960,292,'left',s=>[s.cpn.x+32,s.cpn.y-18]],['Tibial nerve',660,410,'right',s=>[s.tib.x-58,s.tib.y+14]],
+      ['Popliteal vein',668,506,'right',()=>[716,504]],['Popliteal artery',660,590,'right',()=>[730,590]]],
+    sheathPill:[640,300,s=>[leftmost(s)+6,s.tib.y-44]],
+  },
+  deep:{geo:'thick',
+    tib:{x:750,y:412,rx:66,ry:48},cpn:{x:895,y:403,rx:44,ry:44},vein:{x:782,y:500,rx:68,ry:20},art:{x:792,y:586,r:48},
+    fas:{tib:makeFascicles(50,66,48,11),cpn:makeFascicles(26,44,44,23)},
+    mm:(a,m)=>11+(m-11)*(Math.sin(a)>0?.35:.8),
+    guides:guideSet([750,412,88,70],[895,403,64,64],[782,500,90,40],[792,586,70,70],[822,408,176,92],408,544),
+    muscles:[['Semitendinosus',245,308],['Semimembranosus',400,470],['Biceps femoris',1310,560]],
+    pills:[['Common peroneal nerve',1010,452,'left',s=>[s.cpn.x+36,s.cpn.y+22]],['Tibial nerve',640,428,'right',s=>[s.tib.x-60,s.tib.y+16]],
+      ['Popliteal vein',650,504,'right',()=>[716,502]],['Popliteal artery',660,586,'right',()=>[742,586]]],
+    sheathPill:[640,350,s=>[leftmost(s)+6,s.tib.y-14]],
+  },
+  sup:{geo:'thin',
+    tib:{x:729,y:256,rx:72,ry:56},cpn:{x:880,y:251,rx:46,ry:46},vein:{x:780,y:392,rx:72,ry:36},art:{x:790,y:506,r:49},
+    fas:{tib:makeFascicles(58,72,56,11),cpn:makeFascicles(28,46,46,23)},
+    mm:(a,m)=>11+(m-11)*(1-.6*Math.abs(Math.sin(a))),
+    guides:guideSet([729,256,94,78],[880,251,66,66],[780,392,96,56],[790,506,70,70],[800,254,196,96],254,450),
+    muscles:[['Semitendinosus',245,310],['Semimembranosus',400,470],['Biceps femoris',1300,470]],
+    pills:[['Common peroneal nerve',1000,318,'left',s=>[s.cpn.x+34,s.cpn.y+30]],['Tibial nerve',600,338,'right',s=>[s.tib.x-50,s.tib.y+40]],
+      ['Popliteal vein',650,400,'right',()=>[708,396]],['Popliteal artery',660,506,'right',()=>[741,506]]],
+    sheathPill:[600,214,s=>[leftmost(s)+5,s.tib.y-16]],
+  },
+};
+function sheathShape(A,tib,cpn,m){const P=[];[tib,cpn].forEach(n=>{for(let i=0;i<64;i++){const a=i/64*Math.PI*2,mm=A.mm(a,m);P.push([n.x+(n.rx+mm)*Math.cos(a),n.y+(n.ry+mm)*Math.sin(a)])}});
+  const h=hull(P);let cx=0,cy=0;h.forEach(p=>{cx+=p[0];cy+=p[1]});return{pts:h,cx:cx/h.length,cy:cy/h.length}}
+
+/* ---------- scenarios ---------- */
+function tentPhase(v,uc,ut,P){return t=>{
+  if(t<9)return{u:lerp(v[0],v[1],easeOut(seg(t,8.3,9)))};
+  if(t<10.6)return{u:lerp(v[1],v[2],ease(seg(t,9,10.6)))};
+  if(t<11.05){const p=pop(t,10.6,v[2],v[3],3);return{u:p.u,sh:p.sh}}
+  if(t<11.6)return{u:lerp(v[3],uc,ease(seg(t,11.05,11.6)))};
+  if(t<12.2){const q=seg(t,11.6,12.2);return{u:lerp(uc,ut,1-Math.pow(1-q,1.6)),sh:reduceMotion?0:Math.sin(t*41)*.7*q}}
+  if(t<12.65){const p=pop(t,12.2,ut,P,2.5);return{u:p.u,sh:p.sh}}
+  if(t<13.2)return{u:lerp(P,1,ease(seg(t,12.65,13.2)))};
+  return{u:1};
+}}
+const TENT=16,TPOP=12.335;
+const ALQ=[[0,1.4],[2.0,3.4],[4.0,5.4]];
+function aliquots(t,t0,size){let v=0;ALQ.forEach(([a,b])=>{v+=size*ease(seg(t,t0+a,t0+b))});
+  const paused=ALQ.some(([a,b],i)=>i<ALQ.length-1&&t>t0+b&&t<t0+ALQ[i+1][0]);return{v,paused}}
+function positive(o){
+  const A=ANAT[o.anat],NS=o.NS,NT=o.NT;
+  const L=Math.hypot(NT[0]-NS[0],NT[1]-NS[1]),D=[(NT[0]-NS[0])/L,(NT[1]-NS[1])/L];
+  const base0=sheathShape(A,A.tib,A.cpn,11);
+  let uc=.99;for(let u=.3;u<=1;u+=.0005){const q=along(NS,NT,u);if(inPoly(q[0],q[1],base0.pts)){uc=u;break}}
+  const ut=Math.min(uc+TENT/L,.999),P=Math.min(1,ut+16/L),Pc=along(NS,NT,uc),ph=tentPhase(o.phase,uc,ut,P);
+  return Object.assign({
+    Tend:25,vol:15,volT:12.4,magT:19,laT:15.2,
+    guides:[[along(NS,NT,o.phase[1]),NT,7.6,12.6]],
+    state(t){
+      let na=0,tip=[-99,-99],tent=0;
+      if(t>=8.3){na=seg(t,8.3,8.9);const r=ph(t);tip=along(NS,NT,r.u);if(r.sh&&!reduceMotion){tip[0]+=D[0]*r.sh;tip[1]+=D[1]*r.sh}
+        tent=t<TPOP?clamp((r.u-uc)*L,0,TENT):TENT*Math.exp(-(t-TPOP)*9)*(reduceMotion?1:Math.cos((t-TPOP)*26))}
+      const I=aliquots(t,o.k[0],5),k=I.v/15;
+      const nudge=n=>tent*.55*Math.exp(-((Math.hypot(n.x-Pc[0],n.y-Pc[1])/90)**2));
+      const nt=nudge(A.tib),nc=nudge(A.cpn);
+      const tib=Object.assign({},A.tib,{x:A.tib.x+o.disp[0]*k+D[0]*nt,y:A.tib.y+o.disp[1]*k+D[1]*nt});
+      const cpn=Object.assign({},A.cpn,{x:A.cpn.x+o.disp[2]*k+D[0]*nc,y:A.cpn.y+o.disp[3]*k+D[1]*nc});
+      let sh=sheathShape(A,tib,cpn,11+o.m*k);
+      if(Math.abs(tent)>.05){const pts=resample(sh.pts,4).map(p=>{const w=Math.exp(-((Math.hypot(p[0]-Pc[0],p[1]-Pc[1])/26)**2));return[p[0]+D[0]*tent*w,p[1]+D[1]*tent*w]});sh={pts,cx:sh.cx,cy:sh.cy}}
+      return{S:NS,tip,na,k,v:I.v,paused:I.paused,tib,cpn,sh,inj:NT,mode:'in'};
+    }},o);
+}
+const SC={
+  stacked:positive({anat:'stacked',NS:[1660,337],NT:[848,378],phase:[-.12,.1,.76,.79,.975,1],k:[13.1],disp:[-6,0,5,0],m:24,
+    subtitle:'Ultrasound-guided, lateral in-plane approach',mag:{CY:650,R:140,Z:2.0},
+    la:[960,452,'left',s=>[s.tib.x+56,s.tib.y+44]],
+    caps:[[0,8.2,'1','Common peroneal nerve sits over the tibial nerve, both in one paraneural sheath above the vessels.'],
+      [8.2,13,'2','In-plane from lateral, through biceps femoris. The sheath tents, then gives; the tip rests beside the tibial nerve.'],
+      [13,19,'3','Ropivacaine 0.4% in 5 mL aliquots, aspirating between. LA tracks inside the sheath and parts the nerves.'],
+      [19,99,'4','15 mL in: circumferential spread, outside the epineurium, inside the sheath.']]}),
+  deep:positive({anat:'deep',NS:[1152,-60],NT:[833,395],phase:[0,.38,.70,.73,0,0],k:[13.4],disp:[-12,-2,12,-3],m:22,
+    subtitle:'Ultrasound-guided, steep in-plane approach',mag:{CY:660,R:130,Z:1.6},
+    la:[1010,370,'left',s=>[s.cpn.x+26,s.cpn.y-50]],
+    caps:[[0,8.2,'1','Deeper level: tibial and common peroneal nerves side by side in one sheath, under thick subcutaneous fat.'],
+      [8.2,13.3,'2','Steep in-plane from lateral. Through the fascia; the sheath tents between the nerves, then gives.'],
+      [13.3,19,'3','Ropivacaine 0.4% in 5 mL aliquots, aspirating between. LA tracks inside the sheath and parts the nerves.'],
+      [19,99,'4','15 mL in: circumferential spread, outside the epineurium, inside the sheath.']]}),
+  supIP:positive({anat:'sup',NS:[1700,608],NT:[818,290],phase:[0,.35,.748,.775,.96,1],k:[13.1],disp:[-10,-2,10,-2],m:24,
+    subtitle:'Ultrasound-guided, in-plane from deep',mag:{CY:650,R:140,Z:1.55},
+    la:[1010,196,'left',s=>[s.cpn.x+22,s.cpn.y-56]],
+    caps:[[0,8.2,'1','Superficial level: tibial and common peroneal nerves side by side in one paraneural sheath.'],
+      [8.2,13,'2','In-plane from deep, through biceps femoris. The sheath tents from below, then gives between the nerves.'],
+      [13,19,'3','Ropivacaine 0.4% in 5 mL aliquots, aspirating between. LA tracks inside the sheath and parts the nerves.'],
+      [19,99,'4','15 mL in: circumferential spread, outside the epineurium, inside the sheath.']]}),
+  supOOP:positive({anat:'sup',NS:[818,-60],NT:[818,262],phase:[0,.45,.72,.76,.975,1],k:[13.1],disp:[-10,-2,10,-2],m:24,tipDot:true,
+    subtitle:'Ultrasound-guided, out-of-plane approach',mag:{CY:650,R:140,Z:1.55},
+    la:[1000,372,'left',s=>[s.cpn.x-10,s.cpn.y+58]],
+    caps:[[0,8.2,'1','Superficial level: tibial and common peroneal nerves side by side in one paraneural sheath.'],
+      [8.2,13,'2','Out-of-plane: the tip shows as a bright dot. Walk it down; the sheath tents, then gives between the nerves.'],
+      [13,19,'3','Ropivacaine 0.4% in 5 mL aliquots, aspirating between. LA tracks inside the sheath and parts the nerves.'],
+      [19,99,'4','15 mL in: circumferential spread, outside the epineurium, inside the sheath.']]}),
+};
+
+// negative in-plane: dent at 3 o'clock, then shallow redirect that indents, skids, deposits outside
+(function(){
+  const A=ANAT.sup;
+  const S1=[1500,-30],C1=[938,251],S2=[1580,87],T2=[817,190],TSk=[742,187],P2=[813,199];
+  const L1=Math.hypot(C1[0]-S1[0],C1[1]-S1[1]),D1=[(C1[0]-S1[0])/L1,(C1[1]-S1[1])/L1],PUSH=22/L1;
+  SC.supErr={anat:'sup',Tend:37.2,vol:5,volT:26.2,magT:31,laT:28,sheathFadeT:26.6,neg:true,
+    subtitle:'Negative example: two needle errors to avoid',
+    mag:{CY:650,R:140,Z:1.9,focus:s=>[s.tib.x-30,s.tib.y-36],text:['Sheath intact:','LA sits on the outside']},
+    la:[600,214,'right',s=>[s.tib.x-62,s.tib.y-58]],
+    guides:[[along(S1,C1,.5),C1,7,11],[along(S2,T2,.5),T2,16.7,19.6]],
+    caps:[[0,7.8,'1','Superficial level: tibial and common peroneal nerves side by side in one paraneural sheath.'],
+      [7.8,15,'2','Error 1: approach at 3 o\u2019clock. The tip dents the sheath onto the common peroneal nerve. Stop.'],
+      [15,26.6,'3','Error 2: redirect to 12 o\u2019clock, between the nerves. Too shallow: pushing harder only indents the sheath, then the tip skids.'],
+      [26.6,31,'4','LA pools outside the sheath and the nerves stay together. Error recognised: stop at 5 mL.'],
+      [31,99,'5','Expect a slow, patchy block. Fix: steepen, confirm spread inside the sheath, then inject.']],
+    state(t){
+      let S=S1,tip=[-99,-99],na=seg(t,8,8.5),shake=0,dent=0,skim=0,dp=T2;
+      if(t>=8){
+        let u;
+        if(t<8.6)u=lerp(.1,.45,easeOut(seg(t,8,8.6)));
+        else if(t<10.2)u=lerp(.45,.84,ease(seg(t,8.6,10.2)));
+        else if(t<10.65){const p=pop(t,10.2,.84,.87,3);u=p.u;shake=p.sh}
+        else if(t<11.6)u=lerp(.87,1,ease(seg(t,10.65,11.6)));
+        else if(t<12.8)u=lerp(1,1+PUSH,ease(seg(t,11.6,12.8)));
+        else if(t<15)u=1+PUSH+(reduceMotion?0:Math.sin(t*3)*.0015);
+        else if(t<16.6)u=lerp(1+PUSH,.45,ease(seg(t,15,16.6)));
+        if(t<16.6){tip=along(S1,C1,u);dent=clamp((u-1)/PUSH);if(shake&&!reduceMotion){tip[0]+=D1[0]*shake;tip[1]+=D1[1]*shake}}
+        else if(t<17.6){const q=ease(seg(t,16.6,17.6));S=[lerp(S1[0],S2[0],q),lerp(S1[1],S2[1],q)];const a=along(S1,C1,.45),b=along(S2,T2,.45);tip=[lerp(a[0],b[0],q),lerp(a[1],b[1],q)]}
+        else{S=S2;
+          if(t<19.6)tip=along(S2,T2,lerp(.45,1,ease(seg(t,17.6,19.6))));
+          else if(t<25.8){
+            let q,tr=0;
+            if(t<21)q=.75*ease(seg(t,19.6,21));
+            else if(t<21.6)q=lerp(.75,.3,ease(seg(t,21,21.6)));
+            else if(t<23.2){q=lerp(.3,1.2,ease(seg(t,21.6,23.2)));tr=seg(t,22.4,23.2)}
+            else{q=1.2;tr=1}
+            if(t<23.6){tip=[lerp(T2[0],P2[0],q),lerp(T2[1],P2[1],q)];if(!reduceMotion){tip[0]+=Math.sin(t*37)*1.3*tr;tip[1]+=Math.sin(t*29)*.9*tr}skim=q;dp=T2}
+            else{const uu=seg(t,23.6,25.8),e=ease(uu),P=[lerp(T2[0],P2[0],1.2),lerp(T2[1],P2[1],1.2)];
+              tip=[lerp(P[0],TSk[0],e),lerp(P[1],TSk[1],e)];
+              if(!reduceMotion){tip[0]+=Math.max(0,Math.sin(uu*Math.PI*9))*2.2;tip[1]+=Math.sin(uu*55)*(1-uu)*1.8}
+              skim=1.2-.95*e;dp=[lerp(T2[0],TSk[0],e),lerp(T2[1],TSk[1]+2,e)]}
+          }
+          else{tip=TSk.slice();skim=.25*(1-seg(t,25.8,26.4));dp=[TSk[0],TSk[1]+2]}
+        }
+      }
+      const v=5*ease(seg(t,26.6,29.8)),k=v/5;
+      const tib=Object.assign({},A.tib,{x:A.tib.x+3*k,y:A.tib.y+4*k});
+      const cpn=Object.assign({},A.cpn,{x:A.cpn.x-9*dent,rx:A.cpn.rx-9*dent,ry:A.cpn.ry+3*dent});
+      const base=sheathShape(A,tib,A.cpn,11);
+      let pts=resample(base.pts,4);
+      if(dent>0)pts=pts.map(p=>{const d=Math.hypot(p[0]-C1[0],p[1]-C1[1]),w=Math.exp(-((d/24)**2));return[p[0]+D1[0]*24*dent*w,p[1]+D1[1]*24*dent*w]});
+      if(skim>0)pts=pts.map(p=>{const d=Math.hypot(p[0]-dp[0],p[1]-dp[1]),w=Math.exp(-((d/24)**2));return[p[0]-3*skim*w,p[1]+11*skim*w]});
+      return{S,tip,na,k,v,tib,cpn,sh:{pts,cx:base.cx,cy:base.cy},inj:TSk,mode:'out'};
+    },
+    warnings(c,t,s){
+      const a1=seg(t,12.6,13.1)*(1-seg(t,14.9,15.3));
+      if(a1>0){ring(c,s.tip,a1,t,0);warnPill(c,'Stop: sheath dented onto the nerve',1000,392,[s.tip[0]+14,s.tip[1]+20],a1)}
+      const a2=seg(t,22.6,23.1)*(1-seg(t,26.4,26.8));
+      if(a2>0){ring(c,s.tip,a2,t,6);warnPill(c,'Sheath won\u2019t give: tip skids off',1000,392,[s.tip[0]+14,s.tip[1]+14],a2)}
+      const a3=seg(t,28.4,29.1);
+      if(a3>0)warnPill(c,'LA outside the sheath',372,262,[s.tib.x-84,s.tib.y-26],a3);
+    }};
+})();
+
+/* ---------- drawing ---------- */
+function drawNerve(c,n,F,base,fillA,lineP){
+  c.save();c.globalAlpha=fillA;
+  c.beginPath();c.ellipse(n.x,n.y,n.rx,n.ry,0,0,Math.PI*2);
+  const gr=c.createRadialGradient(n.x-n.rx*.3,n.y-n.ry*.3,4,n.x,n.y,n.rx);gr.addColorStop(0,'#f6e3d2');gr.addColorStop(1,'#e8c4a6');
+  c.fillStyle=gr;c.fill();c.clip();
+  c.beginPath();c.ellipse(n.x,n.y,n.rx-6,n.ry-6,0,0,Math.PI*2);c.strokeStyle='rgba(168,95,55,.7)';c.lineWidth=1.2;c.stroke();
+  const sx=n.rx/base;
+  F.forEach(f=>{c.beginPath();
+    for(let i=0;i<=9;i++){const a=i/9*Math.PI*2,rr=f.s*f.wob[i%9],px=n.x+f.x*sx+Math.cos(a)*rr,py=n.y+f.y+Math.sin(a)*rr;i?c.lineTo(px,py):c.moveTo(px,py)}
+    c.closePath();c.fillStyle=C.fascicle;c.fill();if(f.ring){c.strokeStyle='rgba(250,226,206,.75)';c.lineWidth=.9;c.stroke()}});
+  c.restore();
+  c.strokeStyle=C.ink;c.lineWidth=2.1;strokePartial(c,mkPath(ellipsePts(n.x,n.y,n.rx,n.ry,60)),lineP);
+}
+function drawVessels(c,A,fillA,lineP,t){
+  const pulse=reduceMotion?0:Math.pow(Math.max(0,Math.sin(t*Math.PI*2*1.15)),6);
+  const V=A.vein,R=A.art,vp=ellipsePts(V.x,V.y,V.rx,V.ry,72);
+  c.save();c.globalAlpha=fillA;
+  polyPath(c,vp);let g=c.createRadialGradient(V.x,V.y,4,V.x,V.y,76);g.addColorStop(0,'#5a2a18');g.addColorStop(1,'#3a1a10');c.fillStyle=g;c.fill();
+  c.lineWidth=6;c.strokeStyle='rgba(242,200,170,.9)';c.stroke();
+  const ar=R.r*(1+.035*pulse);
+  c.beginPath();c.arc(R.x,R.y,ar,0,Math.PI*2);g=c.createRadialGradient(R.x-8,R.y-8,3,R.x,R.y,ar);g.addColorStop(0,'#5e2c19');g.addColorStop(1,'#3a1a10');c.fillStyle=g;c.fill();
+  c.lineWidth=8;c.strokeStyle='rgba(242,200,170,.95)';c.stroke();c.restore();
+  c.strokeStyle=C.ink;c.lineWidth=2;strokePartial(c,mkPath(vp),lineP);strokePartial(c,mkPath(ellipsePts(R.x,R.y,ar+4,ar+4,60)),lineP);
+}
+function drawPool(c,s){
+  const P=s.sh.pts,n=P.length,cum=[0];
+  for(let i=1;i<n;i++)cum.push(cum[i-1]+Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]));
+  const Lt=cum[n-1];let i0=0,bd=1e9;P.forEach((p,i)=>{const d=Math.hypot(p[0]-s.inj[0],p[1]-s.inj[1]);if(d<bd){bd=d;i0=i}});
+  const f=Math.sqrt(s.k),reach=18+150*f,th0=3+19*f,circ=[];
+  P.forEach((p,i)=>{let ds=cum[i]-cum[i0];if(ds>Lt/2)ds-=Lt;if(ds<-Lt/2)ds+=Lt;
+    const w=p[0]<s.inj[0]?1:.55,d=Math.abs(ds)/(reach*w);if(d>=1)return;
+    circ.push([p[0],p[1],th0*Math.pow(1-d*d,.7)+1.2])});
+  if(!circ.length)return;
+  c.save();c.beginPath();c.rect(-W,-H,3*W,3*H);c.moveTo(P[0][0],P[0][1]);for(let i=1;i<n;i++)c.lineTo(P[i][0],P[i][1]);c.closePath();c.clip('evenodd');
+  c.fillStyle='#4e1f0e';c.beginPath();circ.forEach(([x,y,r])=>{c.moveTo(x+r+1.4,y);c.arc(x,y,r+1.4,0,Math.PI*2)});c.fill();
+  c.fillStyle='#8a3b1b';c.beginPath();circ.forEach(([x,y,r])=>{c.moveTo(x+r,y);c.arc(x,y,r,0,Math.PI*2)});c.fill();
+  c.restore();
+}
+function drawSheathLA(c,s,fillA,lineP){
+  const sh=s.sh;
+  c.save();c.globalAlpha=fillA;polyPath(c,sh.pts);c.fillStyle='rgba(240,206,180,.6)';c.fill();
+  if(s.k>0&&s.mode==='in'){
+    c.clip();
+    let far=0;sh.pts.forEach(p=>{far=Math.max(far,Math.hypot(p[0]-s.inj[0],p[1]-s.inj[1]))});
+    const f=clamp(s.v/11),R=6+far*1.08*Math.pow(f,.65);
+    c.beginPath();
+    for(let i=0;i<=72;i++){const a=i/72*Math.PI*2,r=R*(1+.07*Math.sin(3*a+1.3)+.04*Math.sin(7*a+.4));const x=s.inj[0]+Math.cos(a)*r,y=s.inj[1]+Math.sin(a)*r;i?c.lineTo(x,y):c.moveTo(x,y)}
+    c.closePath();
+    const g=c.createRadialGradient(s.inj[0],s.inj[1],0,s.inj[0],s.inj[1],Math.max(R,1));
+    g.addColorStop(0,`rgba(${C.la},.88)`);g.addColorStop(.8,`rgba(${C.la},.78)`);g.addColorStop(1,`rgba(${C.la},.55)`);
+    c.fillStyle=g;c.fill();
+  }
+  c.restore();
+  if(s.k>0&&s.mode==='out')drawPool(c,s);
+  c.save();c.strokeStyle='rgba(43,30,24,.9)';c.lineWidth=1.8;strokePartial(c,mkPath(sh.pts),lineP);c.restore();
+}
+function drawNeedle(c,s){
+  if(s.na<=0)return;
+  const S=s.S,[tx,ty]=s.tip,d=[tx-S[0],ty-S[1]],l=Math.hypot(...d),ux=d[0]/l,uy=d[1]/l,nx=-uy,ny=ux,bx=tx-ux*16,by=ty-uy*16;
+  c.save();c.globalAlpha=s.na;c.lineCap='round';
+  c.beginPath();c.moveTo(S[0],S[1]);c.lineTo(bx,by);c.strokeStyle='#2f3035';c.lineWidth=7;c.stroke();c.strokeStyle='#a9adb6';c.lineWidth=4.2;c.stroke();
+  c.beginPath();c.moveTo(S[0]-nx*1.2,S[1]-ny*1.2);c.lineTo(bx-nx*1.2,by-ny*1.2);c.strokeStyle='rgba(250,251,253,.9)';c.lineWidth=1.1;c.stroke();
+  c.beginPath();c.moveTo(bx+nx*3.4,by+ny*3.4);c.lineTo(tx,ty);c.lineTo(bx-nx*3.4,by-ny*3.4);c.closePath();c.fillStyle='#8e929b';c.fill();c.strokeStyle='#2f3035';c.lineWidth=1.2;c.stroke();
+  c.restore();
+}
+function drawGuides(c,A,dT){
+  const fade=dT<4?1:lerp(1,.32,seg(dT,4,6.5));
+  c.save();c.strokeStyle=`rgba(${C.guide},${.6*fade})`;c.lineWidth=1;
+  A.guides.forEach(g=>{c.setLineDash(g.dash||[]);strokePartial(c,g.p,ease(seg(dT,g.t[0],g.t[1])))});c.setLineDash([]);
+  const tp=seg(dT,.4,1.9);
+  for(let i=0;i<=16;i++){if(i/16>tp)break;const y=150+i*40,big=i%5===0;c.beginPath();c.moveTo(36,y);c.lineTo(36+(big?16:8),y);c.stroke();if(big){c.beginPath();c.arc(36,y,4,0,Math.PI*2);c.stroke()}}
+  const cp=seg(dT,1.4,2.6);
+  if(cp>0){c.globalAlpha=cp;[[A.tib.x,A.tib.y],[A.cpn.x,A.cpn.y],[A.vein.x,A.vein.y],[A.art.x,A.art.y]].forEach(([x,y])=>{c.beginPath();c.moveTo(x-7,y);c.lineTo(x+7,y);c.moveTo(x,y-7);c.lineTo(x,y+7);c.stroke()})}
+  c.restore();
+}
+function guideLine(c,t,A,B,t0,f0){
+  const a=seg(t,t0,t0+.6)*(1-seg(t,f0,f0+1));if(a<=0)return;
+  const p=ease(seg(t,t0,t0+1));
+  c.save();c.strokeStyle=`rgba(${C.guide},${.85*a})`;c.lineWidth=1.2;c.setLineDash([7,6]);
+  c.beginPath();c.moveTo(A[0],A[1]);c.lineTo(lerp(A[0],B[0],p),lerp(A[1],B[1],p));c.stroke();c.setLineDash([]);
+  const d=[B[0]-A[0],B[1]-A[1]],l=Math.hypot(...d),ux=d[0]/l,uy=d[1]/l;
+  for(let q=0;q<=l*p;q+=34){const x=A[0]+ux*q,y=A[1]+uy*q;c.beginPath();c.moveTo(x-uy*6,y+ux*6);c.lineTo(x+uy*6,y-ux*6);c.stroke()}
+  c.globalAlpha=a*p;c.beginPath();c.arc(B[0],B[1],9,0,Math.PI*2);c.stroke();c.restore();
+}
+function core(c,s,sub){
+  const A=ANAT[cur.anat],G=GEO[A.geo],dT=s.dT,t=s.t;
+  c.drawImage(paperC,0,0,W,H);
+  const texA=ease(seg(dT,3.6,6));
+  c.save();c.globalAlpha=texA;c.drawImage(tissue(A.geo),0,0,W,H);c.restore();
+  const ba=ease(seg(dT,6.3,7.8));
+  if(ba>0){c.save();c.globalCompositeOperation='multiply';const g=c.createLinearGradient(0,148,0,800);g.addColorStop(0,`rgba(226,140,92,${.55*ba})`);g.addColorStop(.75,`rgba(226,140,92,${.4*ba})`);g.addColorStop(1,'rgba(226,140,92,0)');c.fillStyle=g;c.fillRect(BEAM[0],BEAM[1],BEAM[2],652);c.restore()}
+  if(!sub)drawGuides(c,A,dT);
+  c.save();c.lineJoin='round';c.lineCap='round';
+  G.OUT.forEach((o,i)=>{if(i===0)return;c.strokeStyle=o.a?`rgba(43,30,24,${o.a})`:C.ink;c.lineWidth=o.w;strokePartial(c,o.p,ease(seg(dT,o.t[0],o.t[1])));
+    if(o.dbl){c.strokeStyle='rgba(43,30,24,.4)';c.lineWidth=1;strokePartial(c,o.dbl,ease(seg(dT,o.t[0]+.3,o.t[1]+.3)))}});
+  c.restore();
+  drawVessels(c,A,texA,ease(seg(dT,3.0,4.4)),s.clock);
+  drawSheathLA(c,s,texA,ease(seg(dT,3.4,4.8)));
+  drawNerve(c,s.tib,A.fas.tib,A.tib.rx,texA,ease(seg(dT,3.2,4.4)));
+  drawNerve(c,s.cpn,A.fas.cpn,A.cpn.rx,texA,ease(seg(dT,3.3,4.5)));
+  c.save();polyPath(c,PROBE);c.globalAlpha=ease(seg(dT,1.2,2.4));c.fillStyle='#fbf8f3';c.fill();c.restore();
+  c.save();c.strokeStyle=C.ink;c.lineWidth=2.3;c.lineJoin='round';strokePartial(c,G.OUT[0].p,ease(seg(dT,.4,2.2)));
+  const sl=seg(dT,1.6,2.4);if(sl>0){c.globalAlpha=sl;c.lineWidth=1.4;c.beginPath();c.roundRect?c.roundRect(612,102,316,9,4.5):c.rect(612,102,316,9);c.stroke()}
+  c.restore();
+  if(!sub)cur.guides.forEach(g=>guideLine(c,t,g[0],g[1],g[2],g[3]));
+  drawNeedle(c,s);
+  if(cur.tipDot&&s.na>0&&s.tip[1]>150){const pl=reduceMotion?1:.75+.25*Math.sin(s.clock*9);const g=c.createRadialGradient(s.tip[0],s.tip[1],0,s.tip[0],s.tip[1],16);
+    g.addColorStop(0,`rgba(255,252,240,${.95*pl})`);g.addColorStop(.35,`rgba(255,236,200,${.55*pl})`);g.addColorStop(1,'rgba(255,236,200,0)');
+    c.save();c.globalAlpha=s.na*(1-seg(t,13,14.5)*.6);c.fillStyle=g;c.beginPath();c.arc(s.tip[0],s.tip[1],16,0,Math.PI*2);c.fill();c.restore()}
+}
+
+/* ---------- labels, warnings, overlay ---------- */
+function pill(c,text,x,y,align,anchor,a){
+  c.save();c.globalAlpha=a;c.font='500 17px Inter, system-ui, sans-serif';
+  const w=c.measureText(text).width+20,h=28,x0=align==='right'?x-w:x;
+  if(anchor){c.strokeStyle='rgba(43,30,24,.75)';c.lineWidth=1.1;c.beginPath();c.moveTo(align==='right'?x:x0,y);c.lineTo(anchor[0],anchor[1]);c.stroke();c.beginPath();c.arc(anchor[0],anchor[1],2.6,0,Math.PI*2);c.fillStyle=C.ink;c.fill()}
+  c.fillStyle='rgba(251,247,241,.93)';c.beginPath();c.roundRect?c.roundRect(x0,y-h/2,w,h,14):c.rect(x0,y-h/2,w,h);c.fill();c.strokeStyle='rgba(43,30,24,.25)';c.lineWidth=1;c.stroke();
+  c.fillStyle=C.ink;c.textBaseline='middle';c.fillText(text,x0+10,y+1);c.restore();
+}
+function muscleLabel(c,text,x,y,a){c.save();c.globalAlpha=a*.85;c.font='italic 400 21px Fraunces, Georgia, serif';c.fillStyle='#5b3a28';c.textAlign='center';c.fillText(text,x,y);c.restore()}
+function warnPill(c,text,x,y,anchor,a){
+  c.save();c.globalAlpha=a;c.font='600 17px Inter, system-ui, sans-serif';const w=c.measureText(text).width+46,h=30;
+  if(anchor){c.strokeStyle=RED;c.lineWidth=1.3;c.beginPath();c.moveTo(x,y);c.lineTo(anchor[0],anchor[1]);c.stroke()}
+  c.fillStyle='#fbf1ea';c.beginPath();c.roundRect?c.roundRect(x,y-h/2,w,h,15):c.rect(x,y-h/2,w,h);c.fill();c.strokeStyle=RED;c.lineWidth=1.5;c.stroke();
+  c.beginPath();c.arc(x+17,y,9,0,Math.PI*2);c.fillStyle=RED;c.fill();
+  c.strokeStyle='#fbf1ea';c.lineWidth=2;c.beginPath();c.moveTo(x+13.5,y-3.5);c.lineTo(x+20.5,y+3.5);c.moveTo(x+20.5,y-3.5);c.lineTo(x+13.5,y+3.5);c.stroke();
+  c.fillStyle=RED;c.textBaseline='middle';c.fillText(text,x+34,y+1);c.restore();
+}
+function ring(c,p,a,t,dy){const pl=reduceMotion?1:.55+.45*Math.abs(Math.sin(t*4));c.save();c.globalAlpha=a*pl;c.strokeStyle=RED;c.lineWidth=2.4;c.beginPath();c.arc(p[0],p[1]+dy,24,0,Math.PI*2);c.stroke();c.restore()}
+function drawLabels(c,s){
+  const A=ANAT[cur.anat],a=ease(seg(s.dT,5.8,7));if(a<=0)return;
+  A.muscles.forEach(m=>muscleLabel(c,m[0],m[1],m[2],a));
+  A.pills.forEach(p=>pill(c,p[0],p[1],p[2],p[3],p[4](s),a));
+  const sa=a*(cur.sheathFadeT?1-seg(s.t,cur.sheathFadeT,cur.sheathFadeT+.7):1);
+  if(sa>0){const sp=A.sheathPill;pill(c,'Paraneural sheath',sp[0],sp[1],'right',sp[2](s),sa)}
+  const la=ease(seg(s.t,cur.laT,cur.laT+1))*a;
+  if(la>0){const L=cur.la;pill(c,'Local anaesthetic',L[0],L[1],L[2],L[3](s),la)}
+}
+function drawOverlay(c,s){
+  const fa=ease(seg(s.dT,.2,1.2)),t=s.t;
+  c.save();c.globalAlpha=fa;
+  c.fillStyle=C.ink;c.font='500 38px Fraunces, Georgia, serif';c.fillText('Popliteal sciatic block',60,74);
+  c.fillStyle=cur.neg?RED:'#7a6456';c.font='400 18px Inter, system-ui, sans-serif';c.fillText(cur.subtitle,62,104);
+  c.restore();
+  const va=seg(t,cur.volT,cur.volT+.6);
+  if(va>0){c.save();c.globalAlpha=va;c.fillStyle='#7a6456';c.font='400 16px Inter, system-ui, sans-serif';c.fillText('Ropivacaine 0.4%',62,140);
+    c.fillStyle='#8f431d';c.font='500 26px Fraunces, Georgia, serif';const vt=(s.v||0).toFixed(1)+' / '+cur.vol+' mL';c.fillText(vt,212,142);
+    if(s.paused){const w=c.measureText(vt).width;c.fillStyle='#7a6456';c.font='italic 400 18px Fraunces, Georgia, serif';c.fillText('aspirate',212+w+12,141)}
+    c.restore()}
+  const cap=cur.caps.find(x=>t>=x[0]&&t<x[1])||cur.caps[cur.caps.length-1];
+  const ca=Math.min(seg(t,cap[0],cap[0]+.6),1-seg(t,cap[1]-.5,cap[1]))*ease(seg(s.dT,.6,1.6));
+  c.save();c.globalAlpha=Math.max(0,ca);
+  c.fillStyle='#a8552a';c.font='500 26px Fraunces, Georgia, serif';c.fillText(cap[2],60,862);
+  c.fillStyle=C.ink;c.font='italic 400 26px Fraunces, Georgia, serif';c.fillText(cap[3],92,862);c.restore();
+  const ha=seg(s.dT,7.4,8.2)*(started?0:1);
+  if(ha>0){c.save();c.globalAlpha=ha*(reduceMotion?1:.7+.3*Math.sin(s.clock*3));c.fillStyle='#a8552a';c.font='italic 400 22px Fraunces, Georgia, serif';c.textAlign='right';c.fillText('Press play to see the needle',1540,74);c.restore()}
+}
+function drawMagnifier(c,s){
+  const t=s.t,t0=cur.magT,a=seg(t,t0,t0+.6);if(a<=0)return;
+  const M=cur.mag,CX=300,CY=M.CY,R=M.R,Z=M.Z,F=M.focus?M.focus(s):[s.tib.x+4,s.tib.y-2],FR=R/Z;
+  c.save();c.globalAlpha=a;
+  c.strokeStyle=`rgba(${C.guide},.8)`;c.lineWidth=1.1;const lp=ease(seg(t,t0,t0+.8));
+  [-1,1].forEach(sg=>strokePartial(c,mkPath([[F[0],F[1]+sg*FR],[CX,CY+sg*R]]),lp));
+  c.setLineDash([4,5]);c.beginPath();c.arc(F[0],F[1],FR,0,Math.PI*2);c.stroke();c.setLineDash([]);
+  const ca=ease(seg(t,t0+.6,t0+1.6));
+  c.save();c.beginPath();c.arc(CX,CY,R,0,Math.PI*2);c.clip();c.fillStyle=C.paper;c.fillRect(CX-R,CY-R,R*2,R*2);
+  c.globalAlpha=a*ca;c.translate(CX,CY);c.scale(Z,Z);c.translate(-F[0],-F[1]);core(c,s,true);c.restore();
+  c.strokeStyle=C.ink;c.lineWidth=2.6;strokePartial(c,mkPath(ellipsePts(CX,CY,R,R,90)),ease(seg(t,t0+.1,t0+1.1)));
+  c.strokeStyle='rgba(43,30,24,.35)';c.lineWidth=1;strokePartial(c,mkPath(ellipsePts(CX,CY,R+7,R+7,90)),ease(seg(t,t0+.3,t0+1.3)));
+  const ta=ease(seg(t,t0+1.8,t0+2.6));
+  if(ta>0){c.globalAlpha=a*ta;c.font='italic 400 19px Fraunces, Georgia, serif';c.fillStyle=C.ink;c.textAlign='left';
+    const lines=M.text||['Epineurium intact'];lines.forEach((l,i)=>c.fillText(l,CX+R+22,CY+R-10-(lines.length-1-i)*24))}
+  c.restore();
+}
+
+/* ---------- state and render ---------- */
+let curAnat='stacked',supScen='supIP',cur=SC.stacked;
+let dT=0,playT=0,playing=false,started=false,ended=false,clock=0,showLabels=true,scrubbing=false;
+function render(){
+  const t=TS0+playT;
+  const s=cur.state(t);s.dT=dT;s.t=t;s.clock=clock;
+  core(ctx,s,false);
+  if(showLabels)drawLabels(ctx,s);
+  if(cur.warnings)cur.warnings(ctx,t,s);
+  drawMagnifier(ctx,s);
+  drawOverlay(ctx,s);
+}
+function resize(){const dpr=Math.min(window.devicePixelRatio||1,2),w=cvs.clientWidth||800;cvs.width=Math.round(w*dpr);cvs.height=Math.round(w*dpr*9/16);ctx.setTransform(cvs.width/W,0,0,cvs.width/W,0,0)}
+new ResizeObserver(resize).observe(cvs);resize();
+
+/* ---------- UI ---------- */
+const playBtn=document.getElementById('play'),resetBtn=document.getElementById('reset'),scrub=document.getElementById('scrub'),tc=document.getElementById('tc'),scenBox=document.getElementById('scen');
+function syncBtn(){playBtn.textContent=playing?'❚❚ Pause':ended?'↻ Replay':started?'▶ Resume':'▶ Play';scrub.max=(cur.Tend-TS0).toFixed(2)}
+function setPlaying(p){
+  if(p){if(ended){playT=0;ended=false}if(dT<7.8)dT=7.8;started=true;playing=true}
+  else{playing=false}
+  syncBtn();
+}
+function resetScenario(){playing=false;started=false;ended=false;playT=0;syncBtn()}
+function selectScenario(){cur=SC[curAnat==='sup'?supScen:curAnat];resetScenario()}
+function selectAnat(a){
+  curAnat=a;document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.anat===a));
+  scenBox.hidden=a!=='sup';tissue(ANAT[a].geo);selectScenario();dT=reduceMotion?8:0;
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>selectAnat(b.dataset.anat));
+document.querySelectorAll('.scen button').forEach(b=>b.onclick=()=>{supScen=b.dataset.scen;document.querySelectorAll('.scen button').forEach(x=>x.setAttribute('aria-pressed',x===b));selectScenario()});
+playBtn.onclick=()=>setPlaying(!playing);
+resetBtn.onclick=resetScenario;
+scrub.addEventListener('input',()=>{scrubbing=true;playT=+scrub.value;started=true;ended=playT>=cur.Tend-TS0-.01;if(dT<7.8)dT=7.8;syncBtn()});
+scrub.addEventListener('change',()=>{scrubbing=false});
+document.getElementById('lbl').onclick=e=>{showLabels=!showLabels;e.currentTarget.setAttribute('aria-pressed',showLabels)};
+const stage=document.getElementById('stage');
+document.getElementById('fs').onclick=()=>{stage.classList.add('full');const r=stage.requestFullscreen||stage.webkitRequestFullscreen;if(r)try{const p=r.call(stage);p&&p.catch&&p.catch(()=>{})}catch(e){}};
+cvs.addEventListener('click',()=>{if(stage.classList.contains('full')){stage.classList.remove('full');if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})}else setPlaying(!playing)});
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)stage.classList.remove('full')});
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target===document.body){e.preventDefault();setPlaying(!playing)}});
+
+let last=performance.now();
+function frame(now){
+  const dt=Math.min(.1,(now-last)/1000);last=now;clock+=dt;
+  if(dT<9)dT+=dt;
+  if(playing&&!scrubbing){playT+=dt;if(TS0+playT>=cur.Tend){playT=cur.Tend-TS0;playing=false;ended=true;syncBtn()}}
+  render();
+  if(!scrubbing)scrub.value=playT.toFixed(2);
+  tc.textContent=playT.toFixed(1)+' s';
+  requestAnimationFrame(frame);
+}
+syncBtn();selectAnat('stacked');
+(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>requestAnimationFrame(frame));
+})();
+</script>
+</body>
+</html>
