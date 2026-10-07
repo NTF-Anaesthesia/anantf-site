@@ -1,0 +1,1863 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gastric Ultrasound Masterclass</title>
+<meta name="description" content="Masterclass: point-of-care gastric ultrasound — I-AIM, aorta vs IVC, CSA to volume, and five peri-operative cases. Interactive 35-minute tutorial by Chew Shi Hao.">
+<style>
+:root{
+  --bg:#F7F2EA; --panel:#FDFAF3; --line:#E0D6C2; --line2:#CFC2A8; --ink:#2A241D; --ink2:#5A4F42; --mute:#8A7E6D; --faint:#B3A795;
+  --accent:#A8541F; --accent-soft:rgba(168,84,31,.10); --red:#B85042; --blue:#2A5B8C; --green:#4C7A45; --amber:#B9852A;
+  --serif:Georgia,'Iowan Old Style','Times New Roman',serif; --mono:ui-monospace,Menlo,'SF Mono',Consolas,monospace;
+  --shadow:0 1px 0 rgba(42,36,29,.04),0 8px 24px -12px rgba(42,36,29,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
+    --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
+    --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
+  --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
+  --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased}
+body{overflow:hidden}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+.deck{position:fixed;inset:0 0 52px 0}
+.slide{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;visibility:hidden;transform:translateX(24px);transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
+.slide.active{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
+.slide.prev{transform:translateX(-24px)}
+.inner{max-width:1360px;margin:0 auto;padding:34px 40px 30px;min-height:100%;display:flex;flex-direction:column}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px;align-items:start}
+.two.even{grid-template-columns:1fr 1fr}
+.kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+h1,h2,h3{font-weight:400;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(40px,5.6vw,76px);line-height:1.02}
+h2{font-size:clamp(28px,3vw,42px);line-height:1.1;margin-bottom:12px}
+h3{font-size:19px;margin-bottom:4px}
+.lede{font-size:18px;line-height:1.5;color:var(--ink2);margin:0 0 20px;max-width:60ch}
+p{line-height:1.55}
+.cap{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 8px}
+.rule{height:1px;background:var(--line);margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow)}
+.card + .card{margin-top:12px}
+.card p{margin:4px 0 0;color:var(--ink2);font-size:15.5px}
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:4px;border:1px solid currentColor}
+.tag.avoid{color:var(--red)} .tag.def{color:var(--green)} .tag.deep{color:var(--blue)}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:16px;line-height:1.5;margin-top:16px}
+.demo{position:sticky;top:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+.panel + .panel{margin-top:12px}
+canvas{display:block;width:100%;height:auto}
+.us{background:#000;border-radius:8px;box-shadow:inset 0 0 0 1px #222}
+.scanner{background:#0d1013;border-radius:10px;padding:6px;border:1px solid #23292f}
+.side{border-radius:8px;border:1px solid var(--line)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.ctrls label{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.ctrls output{min-width:52px;color:var(--ink);font-weight:600}
+input[type=range]{accent-color:var(--accent);width:150px}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{background:transparent;border:0;padding:7px 12px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--ink2);border-right:1px solid var(--line2)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;letter-spacing:.04em}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2)}
+.btn:hover{filter:brightness(1.1)}
+.status{font-family:var(--mono);font-size:12.5px;padding:8px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--line);margin-top:10px;min-height:36px;line-height:1.45}
+.status b{color:var(--accent)}
+.ok{color:var(--green)!important} .bad{color:var(--red)!important} .warn{color:var(--amber)!important}
+table.t{width:100%;border-collapse:collapse;font-size:15.5px}
+table.t th{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);text-align:left;font-weight:400;padding:8px 10px;border-bottom:1px solid var(--line2)}
+table.t td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;color:var(--ink2)}
+table.t td:first-child{color:var(--ink);font-size:16.5px;white-space:nowrap}
+#r2Table td:first-child{white-space:normal;font-size:15px}
+#r2Table td:last-child{white-space:nowrap;font-family:var(--mono);font-size:13px}
+table.t tr.pick{cursor:pointer;transition:background .15s}
+table.t tr.pick:hover{background:var(--accent-soft)}
+table.t tr.pick.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.chip{display:inline-block;padding:3px 9px;margin:2px 4px 2px 0;border:1px solid var(--line2);border-radius:999px;font-size:14px;cursor:pointer;background:var(--panel);color:var(--ink2)}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.num{font-family:var(--mono);color:var(--accent);font-size:13px;letter-spacing:.06em}
+.plist{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.plist li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);cursor:pointer;transition:border-color .15s,transform .15s}
+.plist li:hover{border-color:var(--line2)}
+.plist li.on{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.plist li b{font-weight:400;font-size:16.5px;display:block}
+.plist li span{color:var(--ink2);font-size:14.5px;line-height:1.45}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button{background:transparent;border:1px solid var(--line2);border-radius:999px;padding:6px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--ink2)}
+.tabs button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabpanel[hidden]{display:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid-us{display:grid;grid-template-columns:1.15fr 1fr;gap:10px;align-items:start}
+.mini{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px;line-height:1.4}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.quote{font-style:italic;color:var(--mute)}
+.crit{display:grid;grid-template-columns:auto 1fr auto;gap:6px 12px;font-size:15px;align-items:center}
+.crit .ic{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;border:1px solid var(--line2);color:var(--mute)}
+.crit .ic.ok{border-color:var(--green);background:var(--green);color:#fff!important}
+.crit .ic.bad{border-color:var(--red);color:var(--red)}
+.crit .val{font-family:var(--mono);font-size:12.5px;color:var(--ink2);text-align:right}
+/* divider slides */
+.divider .inner{justify-content:center}
+.divider h1{font-size:clamp(56px,8vw,112px)}
+.big-quote{font-size:clamp(20px,2vw,26px);line-height:1.45;color:var(--ink2);max-width:46ch;font-style:italic;margin-top:30px}
+/* bottom bar */
+.bar{position:fixed;left:0;right:0;bottom:0;height:52px;border-top:1px solid var(--line);background:var(--panel);display:flex;align-items:center;gap:16px;padding:0 18px;font-family:var(--mono);font-size:12px;color:var(--ink2);z-index:20}
+.bar .q{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--serif);font-style:italic;color:var(--mute);font-size:13px}
+.bar .prog{position:absolute;left:0;top:-1px;height:2px;background:var(--accent);transition:width .3s}
+.bar .pace{position:absolute;left:0;top:-1px;height:2px;width:2px;background:var(--ink);opacity:.5}
+.bar button{background:transparent;border:1px solid var(--line2);border-radius:6px;padding:5px 9px;cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.timer{display:flex;gap:10px;align-items:center}
+.timer .el{font-weight:600;color:var(--ink);min-width:44px}
+.timer .sl{color:var(--mute)}
+.timer .over{color:var(--red)}
+#notes{position:fixed;right:16px;bottom:64px;max-width:440px;background:var(--ink);color:var(--bg);border-radius:12px;padding:12px 16px;z-index:18;box-shadow:var(--shadow);font-size:15px;line-height:1.45}
+#notes .cap{color:var(--faint)}#notes p{margin:4px 0 0}#notes kbd{background:transparent;color:var(--bg)}
+.pov{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:8px 0 4px}
+#overview{position:fixed;inset:0 0 52px 0;background:var(--bg);z-index:15;overflow:auto;padding:30px;display:none}
+#overview.show{display:block}
+#overview .og{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;max-width:1300px;margin:0 auto}
+#overview button{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;min-height:96px}
+#overview button.cur{border-color:var(--accent)}
+#overview .on{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.12em}
+#overview .ot{font-size:16px;margin-top:6px;display:block}
+#overview .om{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px;display:block}
+.agenda{list-style:none;padding:0;margin:20px 0 0;font-family:var(--mono);font-size:12.5px;color:var(--ink2)}
+.agenda li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line2);padding:6px 0}
+.hint{font-family:var(--mono);font-size:11.5px;color:var(--mute);margin-top:18px}
+kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:var(--panel)}
+.qz{display:grid;gap:12px}
+.qz .card h3{font-size:17px;line-height:1.35}
+.qz .opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.qz .opts button{border:1px solid var(--line2);background:var(--bg);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:14.5px;text-align:left}
+.qz .opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.qz .opts button.wrong{background:transparent;border-color:var(--red);color:var(--red);text-decoration:line-through}
+.qz .why{font-size:14.5px;color:var(--ink2);margin-top:8px;display:none}
+.qz .card.done .why{display:block}
+details.src{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--mute)}
+details.src img{max-width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--line);background:#fff}
+svg text{font-family:var(--mono)}
+.arm-vein{cursor:pointer;transition:stroke-width .15s}
+.arm-vein:hover{stroke-width:7}
+@media (max-width:1050px){
+  .two,.two.even{grid-template-columns:1fr;gap:22px}
+  .demo{position:static}
+  .inner{padding:22px 16px 28px}
+  .grid-us{grid-template-columns:1fr}
+  .bar .q{display:none}
+}
+@media (max-width:560px){ .grid2{grid-template-columns:1fr} table.t td:first-child{white-space:normal} input[type=range]{width:120px} }
+@media (prefers-reduced-motion: reduce){ .slide{transition:none} }
+
+/* ===== gastric deck additions ===== */
+b.ink{font-weight:400;color:var(--ink)}
+.num.big{font-family:var(--serif);font-size:26px;letter-spacing:0;color:var(--accent);line-height:1}
+.plist li .tag{margin-left:6px;vertical-align:2px;font-size:9.5px;padding:2px 6px}
+.t2 td:first-child{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.t2 td{font-size:14.5px}
+.t2 tr.hl{background:var(--accent-soft)}
+.formula{font-family:var(--mono);font-size:14px;background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;margin:10px 0 4px;color:var(--ink)}
+.calc input[type=number]{width:74px;font-family:var(--mono);font-size:13px;padding:5px 7px;border:1px solid var(--line2);border-radius:6px;background:var(--bg);color:var(--ink)}
+.status.big{font-size:14px;line-height:1.6}
+.status.big .vv{font-size:22px;font-family:var(--serif);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips span{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;color:var(--ink2)}
+.chips span.okc{border-color:var(--green);color:var(--green)}
+.chips span.badc{border-color:var(--red);color:var(--red)}
+.clock{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.clock .trk{height:8px;border-radius:4px;background:var(--line);position:relative;overflow:hidden;margin-top:6px}
+.clock .trk i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:4px}
+/* media */
+.stage{background:#000;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px #222}
+.stage img,.stage video{max-width:100%;max-height:100%;display:block;object-fit:contain}
+.stage .zoom{position:absolute;right:8px;top:8px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;font-family:var(--mono);font-size:11px;padding:4px 8px;cursor:pointer}
+.stage .badge{position:absolute;left:8px;top:8px;background:rgba(0,0,0,.6);color:#ffd678;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:4px}
+.mcap{font-size:14.5px;line-height:1.45;color:var(--ink2);margin-top:8px;min-height:42px}
+.mcap .id{font-family:var(--mono);font-size:11px;color:var(--mute);margin-right:6px}
+.thumbs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:7px;overflow:hidden;width:92px;height:69px;background:#000;cursor:pointer;position:relative;flex:none}
+.thumbs button.on{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs .k{position:absolute;left:0;right:0;bottom:0;font-family:var(--mono);font-size:9.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75));padding:8px 4px 2px;text-align:left;letter-spacing:.04em}
+.thumbs .pl{position:absolute;right:4px;top:3px;color:#fff;font-size:11px;text-shadow:0 0 4px #000}
+/* cases */
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:15px;margin:10px 0 4px}
+.facts dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding-top:3px}
+.facts dd{margin:0;color:var(--ink2)}
+.steps{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.steps li{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 14px}
+.steps .sh{display:flex;align-items:center;gap:10px;cursor:pointer}
+.steps .sl{font-family:var(--serif);font-size:22px;color:var(--accent);width:22px;text-align:center}
+.steps .sq{flex:1;font-size:15.5px}
+.steps .sq small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.steps .sb{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:999px;padding:3px 10px;color:var(--ink2);background:transparent}
+.steps .sa{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line2);font-size:15px;line-height:1.5;color:var(--ink2)}
+.steps li.shown{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.steps li.shown .sa{display:block}
+.steps li.shown .sb{display:none}
+.pearl{margin-top:12px;font-style:italic;font-size:17px;color:var(--ink);border-left:3px solid var(--accent);padding:6px 0 6px 14px;display:none}
+.pearl.shown{display:block}
+.caseGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.caseGrid button{display:grid;grid-template-columns:84px 1fr;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:8px;cursor:pointer;box-shadow:var(--shadow)}
+.caseGrid button:hover{border-color:var(--accent)}
+.caseGrid img{width:84px;height:63px;object-fit:cover;border-radius:6px;background:#000;display:block}
+.caseGrid b{font-weight:400;font-size:15px;display:block;line-height:1.25}
+.caseGrid span{font-family:var(--mono);font-size:10.5px;color:var(--accent);letter-spacing:.1em}
+/* library */
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:12px;margin-top:12px}
+.lib button{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:0;overflow:hidden;cursor:pointer;text-align:left;box-shadow:var(--shadow)}
+.lib button:hover{border-color:var(--accent)}
+.lib .ph{aspect-ratio:4/3;background:#000;position:relative}
+.lib .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.lib .ph .pl{position:absolute;right:6px;top:4px;color:#fff;font-size:12px;text-shadow:0 0 4px #000}
+.lib .tx{padding:7px 9px 9px;font-size:13px;line-height:1.35;color:var(--ink2)}
+.lib .tx b{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--accent);letter-spacing:.08em;margin-bottom:2px}
+#lb{position:fixed;inset:0;background:rgba(10,8,6,.88);z-index:40;display:flex;align-items:center;justify-content:center;padding:20px}
+#lb[hidden]{display:none}
+.lbIn{width:min(1100px,100%);max-height:100%;display:flex;flex-direction:column;gap:10px;position:relative}
+.lbStage{background:#000;border-radius:10px;display:flex;align-items:center;justify-content:center;min-height:200px;max-height:calc(100vh - 150px);overflow:hidden}
+.lbStage img,.lbStage video{max-width:100%;max-height:calc(100vh - 150px);display:block;object-fit:contain}
+.lbBar{display:flex;gap:12px;align-items:center}
+.lbBar button,.lbX{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 14px;font-family:var(--mono);cursor:pointer}
+.lbX{position:absolute;right:0;top:-46px}
+.lbCap{flex:1;color:#eee;font-size:15px;line-height:1.45}
+.lbCap .id{font-family:var(--mono);font-size:11px;color:#bbb;margin-right:8px}
+/* flowchart */
+.flow svg{width:100%;height:auto;display:block}
+.flow .bx{fill:var(--panel);stroke:var(--line2)}
+.flow .bx.lo{stroke:var(--green);fill:color-mix(in srgb,var(--green) 10%,var(--panel))}
+.flow .bx.hi{stroke:var(--red);fill:color-mix(in srgb,var(--red) 9%,var(--panel))}
+.flow .bx.md{stroke:var(--blue);fill:color-mix(in srgb,var(--blue) 9%,var(--panel))}
+.flow .bx.q{stroke:var(--accent);fill:var(--accent-soft)}
+.flow text{font-family:var(--mono);font-size:12px;fill:var(--ink)}
+.flow text.s{font-size:10.5px;fill:var(--ink2)}
+.flow text.h{font-family:var(--serif);font-size:15px}
+.flow path{stroke:var(--line2);fill:none;stroke-width:1.4}
+.flow .ah{fill:var(--line2);stroke:none}
+.refs{font-family:var(--serif);font-size:13.5px;color:var(--ink2);padding-left:18px;line-height:1.45}
+.refs li{margin-bottom:4px}
+.stage.sm{aspect-ratio:4/3}
+@media (max-width:1050px){ .caseGrid{grid-template-columns:1fr} .thumbs button{width:76px;height:57px} }
+.card p.mini{font-size:11.5px;color:var(--mute);line-height:1.45}
+[hidden]{display:none!important}
+table.qt{font-size:12px}
+table.qt th,table.qt td{padding:4px 5px;font-family:var(--mono);font-size:11.5px;text-align:right}
+table.qt td:first-child{font-size:11.5px;color:var(--mute)}
+@media (max-width:1050px){ .two,.two.even{grid-template-columns:minmax(0,1fr)} .grid-us{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:560px){
+  .grid2{grid-template-columns:minmax(0,1fr)}
+  .bar{gap:8px;padding:0 8px} .timer .sl,#tmR,#ntB,#ovB{display:none}
+  .ctrls label{white-space:normal;flex-wrap:wrap} input[type=range]{width:110px}
+  table.t td:first-child,.t2 td:first-child{white-space:normal}
+  .facts{grid-template-columns:1fr} .facts dt{padding-top:6px}
+  .lib{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tabs{gap:4px} .tabs button{padding:5px 10px}
+}
+.jump{margin-top:16px;max-width:540px}
+#jumpChips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.jump .chip{font-family:var(--mono);font-size:11px;padding:3px 8px;margin:0}
+</style>
+<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008"></script></head>
+<body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../../department.html">About us</a><a href="../../why-join-us.html">Why join us?</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../../mopex/">Junior Residents / MOPEX</a><a href="../../senior-resident.html">Senior Residents</a><a href="../../exams/">MMed Exam Prep Materials</a></div></details></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<main class="deck" id="deck" tabindex="-1">
+
+<!-- ============ 1 TITLE ============ -->
+<section class="slide" data-min="0.5" data-title="Title" data-prompt="Ask: who has delayed or cancelled a case for an uncertain fasting history this month? Who has scanned a stomach before?">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Masterclass series</div>
+      <h1>Point-of-care<br>gastric<br>ultrasound.</h1>
+      <p class="lede" style="margin-top:22px">Look before you induce. Find the antrum, read what is in it, decide.</p>
+      <div class="rule" style="max-width:420px"></div>
+      <div style="font-size:18px">Chew Shi Hao</div>
+      <div class="cap" style="margin-top:4px">Anaesthetist · Singapore</div>
+      <ul class="agenda" style="max-width:440px">
+        <li><span>01–02 · Why scan · I-AIM</span><span>4 min</span></li>
+        <li><span>Part I · Acquisition · aorta vs IVC</span><span>9.5 min</span></li>
+        <li><span>Part II · Interpretation · CSA → volume</span><span>8.5 min</span></li>
+        <li><span>Part III · Five peri-operative cases</span><span>11 min</span></li>
+        <li><span>Quick check · Questions</span><span>2 min</span></li>
+      </ul>
+      <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
+      <p class="mini" style="margin-top:10px">One rule throughout: <b>never call a stomach empty from the supine view alone.</b></p>
+      <div class="hint"><kbd>←</kbd> <kbd>→</kbd> navigate · <kbd>O</kbd> overview · <kbd>F</kbd> fullscreen · <kbd>T</kbd> theme · <kbd>P</kbd> pause timer · <kbd>N</kbd> presenter prompts · <kbd>C</kbd> jump to cases · <kbd>R</kbd> reveal next step</div>
+    </div>
+    <div>
+      <div class="grid2"><div><div class="pov">Ultrasound · sagittal epigastrium</div><div class="scanner"><canvas id="hero" class="us"></canvas></div></div><div><div class="pov">Anatomy · same slice</div><canvas id="heroA" class="side"></canvas></div></div>
+      <div class="mini">Live simulation · curvilinear probe in the sagittal plane over the aorta, right lateral decubitus. Liver in front, antrum in the middle, pancreas, SMA and aorta behind. Watch the antrum contract.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 WHY ============ -->
+<section class="slide" data-min="2" data-title="Why scan the stomach" data-prompt="Run through the five patients. Same fasting clock, five different stomachs. Ask: which of these would you have induced without a second thought?">
+  <div class="inner two">
+    <div>
+      <div class="kicker">01 · Why scan the stomach</div>
+      <h2>Fasting time is a proxy. The antrum is the target.</h2>
+      <p class="lede">A fasting history tells you when food went in. It cannot tell you whether it has left.</p>
+      <div class="card">
+        <div class="cap">The stakes</div>
+        <p>Pulmonary aspiration is uncommon, but it was the single most common cause of death among the anaesthetic airway events in NAP4.</p>
+      </div>
+      <div class="card">
+        <div class="cap">Where the proxy fails</div>
+        <p><b class="ink">Slow emptying</b> — GLP-1 receptor agonists, diabetes with autonomic neuropathy, opioids, pain and trauma, Parkinson's disease, renal failure.</p>
+        <p><b class="ink">Unreliable history</b> — dementia, language barriers, emergencies, "just a sip of water".</p>
+        <p><b class="ink">Something else in the stomach</b> — blood from an upper GI bleed.</p>
+      </div>
+      <div class="callout">Gastric ultrasound replaces an assumption with an observation — at the bedside, in a few minutes.</div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="tabs" id="whyTabs"></div>
+        <div class="grid-us">
+          <div><div class="pov" id="whyPov">Ultrasound · RLD · aorta plane</div><div class="scanner"><canvas id="whyUS" class="us"></canvas></div></div>
+          <div><div class="status" id="whyStat" style="margin-top:22px"></div>
+            <div class="clock" id="whyClock"></div></div>
+        </div>
+        <div class="mini">Illustrative simulation. Every patient here gives the same answer to "when did you last eat?"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 I-AIM ============ -->
+<section class="slide" data-min="1.5" data-title="I-AIM framework" data-prompt="Name the four steps. Stress that the Indication step includes 'would the answer change what I do?' — if not, do not scan, act.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">02 · The I-AIM framework</div>
+      <h2>Four questions, always in this order.</h2>
+      <p class="lede">A structure for doing — and teaching — gastric point-of-care ultrasound (Perlas et al., BJA 2016).</p>
+      <ul class="plist" id="iaimList">
+        <li data-k="i" class="on"><span class="num big">I</span><div><b>Indication</b><span>Is the aspiration risk uncertain, and would the answer change your plan?</span></div></li>
+        <li data-k="a"><span class="num big">A</span><div><b>Acquisition</b><span>Curvilinear probe, sagittal epigastrium, supine then right lateral decubitus.</span></div></li>
+        <li data-k="n"><span class="num big">I</span><div><b>Interpretation</b><span>Qualitative first — what is it? Then quantitative — if clear fluid, how much?</span></div></li>
+        <li data-k="m"><span class="num big">M</span><div><b>Medical decision-making</b><span>Low risk: proceed. High risk: postpone, protect the airway, or change the technique.</span></div></li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="panel iaimP" data-k="i">
+        <div class="cap">Indication · scan when the answer matters</div>
+        <table class="t"><tbody>
+          <tr><td>Scan</td><td>Fasting status unknown, unclear or unreliable. Fasted, but a condition that slows emptying (GLP-1 RA, diabetic autonomic neuropathy, opioids, trauma, Parkinson's, renal failure). Clear fluid taken late and the volume is uncertain.</td></tr>
+          <tr><td>Don't scan</td><td>The answer will not change management: bowel obstruction, a crash induction, an RSI that is already indicated for other reasons.</td></tr>
+        </tbody></table>
+        <div class="callout">A scan that cannot change the plan only delays it.</div>
+      </div>
+      <div class="panel iaimP" data-k="a" hidden>
+        <div class="cap">Acquisition · the minimum dataset</div>
+        <div class="crit">
+          <span class="ic ok">1</span><span>Curvilinear 2–5 MHz, abdominal preset</span><span class="val">deep first</span>
+          <span class="ic ok">2</span><span>Sagittal epigastrium, marker to the head</span><span class="val">sweep L → R</span>
+          <span class="ic ok">3</span><span>Antrum between liver and pancreas</span><span class="val">≈ 3–4 cm deep</span>
+          <span class="ic ok">4</span><span>Great vessel behind it</span><span class="val">aorta (or IVC)</span>
+          <span class="ic ok">5</span><span>Supine, then right lateral decubitus</span><span class="val">both, always</span>
+          <span class="ic ok">6</span><span>Clear fluid? Freeze between contractions</span><span class="val">trace the serosa</span>
+        </div>
+        <canvas id="iaTop" class="side" style="margin-top:12px"></canvas>
+      </div>
+      <div class="panel iaimP" data-k="n" hidden>
+        <div class="cap">Interpretation · content first, then quantity</div>
+        <table class="t"><thead><tr><th>Content</th><th>Looks like</th><th>Then</th></tr></thead><tbody>
+          <tr><td>Empty</td><td>Flat or target-shaped antrum, thick dark muscle layer, both positions</td><td><span class="tag def">Low risk</span></td></tr>
+          <tr><td>Clear fluid</td><td>Anechoic, distended, thin walls; bubbles look like a "starry night"</td><td><span class="tag deep">Measure</span></td></tr>
+          <tr><td>Thick fluid</td><td>Homogeneous, echogenic content</td><td><span class="tag avoid">High risk</span></td></tr>
+          <tr><td>Solid</td><td>"Frosted glass" early; heterogeneous, mixed echogenicity later</td><td><span class="tag avoid">High risk</span></td></tr>
+        </tbody></table>
+      </div>
+      <div class="panel iaimP" data-k="m" hidden>
+        <div class="cap">Medical decision-making</div>
+        <div class="flow" data-flow="1"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 PART I ============ -->
+<section class="slide divider" data-min="0.5" data-title="Part I · Acquisition" data-prompt="Probe, position, plane. The aim of Part I is that everyone can find the antrum and say which great vessel is behind it.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part I · Acquisition</div>
+      <h1>Find the antrum.</h1>
+      <p class="big-quote" style="font-style:normal">Liver in front, pancreas behind, a great vessel underneath. And if you cannot find the vessel, find the spine.</p>
+      <p class="cap" style="margin-top:22px;line-height:2">Curvilinear · Supine then RLD · Sagittal sweep · Antrum at the aorta</p>
+    </div>
+    <div><div class="panel"><canvas id="p1Top" class="side"></canvas><div class="mini">Bird's-eye view of the epigastrium. The probe sweeps sagittally from the left to the right subcostal margin.</div></div></div>
+  </div>
+</section>
+
+<!-- ============ 5 SET-UP & SWEEP ============ -->
+<section class="slide" data-min="2.5" data-title="Set-up and the sweep" data-prompt="Slide the probe from far left to far right. Name the plane each time. Then switch Supine ↔ RLD at the aorta plane with 80 mL in the stomach and ask what changed.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">03 · Set-up and the sweep</div>
+      <h2>Start supine. Finish in right lateral decubitus.</h2>
+      <div class="card"><div class="cap">Probe &amp; preset</div><p>Curvilinear 2–5 MHz, abdominal preset. Start deep (≈ 15–16 cm) to see the spine and the great vessels, then shallow up once you have the antrum.</p></div>
+      <div class="card"><div class="cap">Position</div><p>Supine (or 45° head-up if they cannot lie flat), then <b class="ink">right lateral decubitus</b>. Gravity moves fluid into the antrum and air out of it.</p></div>
+      <div class="card"><div class="cap">The sweep</div><p>Sagittal, marker to the head. Sweep from the left to the right subcostal margin. The antrum is superficial — about 3–4 cm deep.</p></div>
+      <div class="callout">Never call an empty stomach on the supine view alone.</div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="grid2"><div><div class="pov">Ultrasound</div><div class="scanner"><canvas id="swUS" class="us"></canvas></div></div><div><div class="pov">Anatomy · same slice</div><canvas id="swA" class="side"></canvas></div></div>
+        <div class="grid-us" style="margin-top:10px">
+          <div><div class="pov">Probe on the abdomen · bird's-eye</div><canvas id="swTop" class="side"></canvas></div>
+          <div>
+            <div class="ctrls" style="margin-top:0;flex-direction:column;align-items:flex-start">
+              <label>Slide probe <input type="range" id="swX" min="-7" max="8.5" value="0.9" step="0.1"><output id="swXo"></output></label>
+              <div class="seg" id="swPos"><button data-v="sup" aria-pressed="false">Supine</button><button data-v="rld" aria-pressed="true">Right lateral</button></div>
+              <label>Clear fluid in stomach <input type="range" id="swV" min="0" max="250" value="80" step="5"><output id="swVo"></output></label>
+              <button class="btn ghost" id="swLbl">Labels on/off</button>
+            </div>
+            <div class="status" id="swStat"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 STANDARD PLANE ============ -->
+<section class="slide" data-min="1.5" data-title="Standard plane & the antral wall" data-prompt="Point to each landmark on the simulation, then on the real image. Ask: which layer makes the empty antrum look like a target? (Muscularis propria — the thick dark ring.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">04 · The standard plane</div>
+      <h2>Liver in front. Pancreas behind. Aorta underneath.</h2>
+      <p class="lede">The antrum is the most reliably imaged part of the stomach, and its cross-sectional area tracks total gastric volume.</p>
+      <div class="card">
+        <div class="cap">Landmark checklist · sagittal, aorta level</div>
+        <div class="crit">
+          <span class="ic ok">✓</span><span>Left lobe of the liver</span><span class="val">anterior</span>
+          <span class="ic ok">✓</span><span>Antrum · round or oval, layered wall</span><span class="val">middle</span>
+          <span class="ic ok">✓</span><span>Pancreas</span><span class="val">posterior</span>
+          <span class="ic ok">✓</span><span>SMA (and coeliac) arising from the aorta</span><span class="val">behind</span>
+          <span class="ic ok">✓</span><span>Aorta on the vertebral body</span><span class="val">deepest</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cap">Five layers · inside → out</div>
+        <p>Mucosa–lumen interface <b class="ink">bright</b> · deep mucosa <b class="ink">dark</b> · submucosa <b class="ink">bright</b> · muscularis propria <b class="ink">dark, thickest</b> · serosa <b class="ink">bright</b>.</p>
+        <p class="mini">Measure from serosa to serosa — the full thickness of the wall.</p>
+      </div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="grid2">
+          <div><div class="pov">Ultrasound · RLD · empty antrum</div><div class="scanner"><canvas id="spUS" class="us"></canvas></div></div>
+          <div><div class="pov">The antral wall</div><canvas id="spWall" class="side"></canvas>
+            <div class="ctrls" style="margin-top:8px"><div class="seg" id="spSeg"><button data-v="0" aria-pressed="true">Empty</button><button data-v="1" aria-pressed="false">Distended</button></div></div></div>
+        </div>
+        <div class="pov" style="margin-top:12px">From the library · tap to enlarge</div>
+        <div class="thumbs" id="spThumbs"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 AORTA VS IVC ============ -->
+<section class="slide" data-min="2.5" data-title="Aorta or IVC?" data-prompt="Switch planes. In the IVC plane hold 'Sniff', then hold 'Probe pressure'. Repeat in the aorta plane. Turn on colour. Ask: what if the patient is ventilated? (No sniff — rely on wall, side, branches, Doppler.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">05 · Aorta or IVC?</div>
+      <h2>Two tubes behind the antrum. Know which one you are on.</h2>
+      <table class="t t2" id="avTable">
+        <thead><tr><th>Feature</th><th>Aorta</th><th>IVC</th></tr></thead>
+        <tbody>
+          <tr data-f="side"><td>Side</td><td>Left of midline, on the vertebral body</td><td>Right of midline, behind and through the liver</td></tr>
+          <tr data-f="wall"><td>Wall</td><td>Thick, bright, parallel walls</td><td>Thin, sometimes barely visible</td></tr>
+          <tr data-f="pulse"><td>Pulsation</td><td>Expansile, systolic</td><td>Flickering, venous</td></tr>
+          <tr data-f="sniff"><td>Sniff</td><td>No change</td><td>Calibre falls — collapses in spontaneous breathing</td></tr>
+          <tr data-f="press"><td>Probe pressure</td><td>Holds its shape</td><td>Flattens</td></tr>
+          <tr data-f="branch"><td>Branches</td><td>Coeliac trunk and SMA arise anteriorly</td><td>Hepatic veins join it; it runs into the right atrium</td></tr>
+          <tr data-f="dop"><td>Colour</td><td>Pulsatile, high-velocity flow</td><td>Phasic, low-velocity flow</td></tr>
+        </tbody>
+      </table>
+      <p class="mini" style="margin-top:10px">Use several features together. A ventilated patient cannot sniff; tricuspid regurgitation makes the IVC pulsatile.</p>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="grid2"><div><div class="pov">Ultrasound · sagittal</div><div class="scanner"><canvas id="avUS" class="us"></canvas></div></div><div><div class="pov">Anatomy · same slice</div><canvas id="avA" class="side"></canvas></div></div>
+        <div class="ctrls">
+          <div class="seg" id="avSeg"><button data-v="ao" aria-pressed="true">Aorta plane</button><button data-v="ivc" aria-pressed="false">IVC plane</button></div>
+          <button class="btn" id="avSniff">Hold: sniff</button>
+          <button class="btn" id="avPress">Hold: probe pressure</button>
+          <button class="btn ghost" id="avDop">Colour on/off</button>
+          <button class="btn ghost" id="avLbl">Labels on/off</button>
+        </div>
+        <div class="status" id="avStat"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8 TRANSVERSE → SAGITTAL ============ -->
+<section class="slide" data-min="2.5" data-title="Lost the aorta? Transverse → sagittal" data-prompt="Press 'Walk me through', then let a learner drive the sliders from step 1. Emphasise: centre first, then rotate — if you rotate off-centre the aorta slides out of the beam.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">06 · Lost the aorta?</div>
+      <h2>Find it in cross-section, then rotate into its long axis.</h2>
+      <ul class="plist" id="rtList">
+        <li data-s="0" class="on"><span class="num">01</span><div><b>Go transverse and go deep</b><span>Marker to the patient's right, just below the xiphoid, depth 18 cm. Find the vertebral body — a bright arc with a black shadow behind it.</span></div></li>
+        <li data-s="1"><span class="num">02</span><div><b>The aorta sits on the spine, left of midline</b><span>Round, thick-walled, pulsatile — on the screen's right. The IVC is to the patient's right (screen left): oval, thin-walled, breathing. The SMA, in its bright collar of fat, sits in front of the aorta.</span></div></li>
+        <li data-s="2"><span class="num">03</span><div><b>Centre the aorta</b><span>Slide the probe until the aorta sits under the midline marker.</span></div></li>
+        <li data-s="3"><span class="num">04</span><div><b>Rotate 90°, marker to the head</b><span>Keep it centred while you turn. The circle opens into a tube.</span></div></li>
+        <li data-s="4"><span class="num">05</span><div><b>Fine-tune until the walls run parallel</b><span>Short, tapering segment = still oblique. Rotate or fan a few degrees until the tube crosses the whole screen.</span></div></li>
+        <li data-s="5"><span class="num">06</span><div><b>Shallow up and find the antrum</b><span>Depth ≈ 12 cm. The antrum lies in front, between liver and pancreas. Need the IVC plane? Slide ≈ 3 cm to the patient's right.</span></div></li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="grid2"><div><div class="pov" id="rtPov">Ultrasound</div><div class="scanner"><canvas id="rtUS" class="us"></canvas></div></div><div><div class="pov">Anatomy · same slice</div><canvas id="rtA" class="side"></canvas></div></div>
+        <div class="grid-us" style="margin-top:10px">
+          <div><div class="pov">Probe on the abdomen · bird's-eye</div><canvas id="rtTop" class="side"></canvas></div>
+          <div>
+            <div class="ctrls" style="margin-top:0;flex-direction:column;align-items:flex-start">
+              <label>Slide&nbsp;&nbsp; <input type="range" id="rtX" min="-5" max="6" value="2.6" step="0.1"><output id="rtXo"></output></label>
+              <label>Rotate&nbsp; <input type="range" id="rtT" min="0" max="90" value="0" step="1"><output id="rtTo"></output></label>
+              <label>Fan&nbsp;&nbsp;&nbsp;&nbsp; <input type="range" id="rtF" min="-15" max="15" value="0" step="1"><output id="rtFo"></output></label>
+              <label>Depth&nbsp;&nbsp; <input type="range" id="rtD" min="10" max="20" value="18" step="1"><output id="rtDo"></output></label>
+              <div><button class="btn" id="rtPlay">▶ Walk me through</button> <button class="btn ghost" id="rtReset">Reset</button></div>
+            </div>
+            <div class="status" id="rtStat"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9 PART II ============ -->
+<section class="slide divider" data-min="0.5" data-title="Part II · Interpretation" data-prompt="Qualitative first. Only clear fluid earns a measurement.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part II · Interpretation</div>
+      <h1>Read the antrum.</h1>
+      <p class="big-quote" style="font-style:normal">What is in it — and, only if it is clear fluid, how much.</p>
+      <p class="cap" style="margin-top:22px;line-height:2">Qualitative · Grade 0 · 1 · 2 · CSA → volume · Decide</p>
+    </div>
+    <div><div class="grid2" id="p2Pair"></div><div class="mini">From the library: an empty antrum, and an antrum distended with clear fluid.</div></div>
+  </div>
+</section>
+
+<!-- ============ 10 QUALITATIVE ============ -->
+<section class="slide" data-min="2.5" data-title="What's in the antrum?" data-prompt="Click through each content type. For 'Solid — early' ask: why can't you see the posterior wall? (Air mixed into the food reflects and shadows.) Point out that gas can mimic it — rescan in RLD.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">07 · Qualitative assessment</div>
+      <h2>Read the content before you measure anything.</h2>
+      <ul class="plist" id="ctList">
+        <li data-c="empty" class="on"><span class="num">00</span><div><b>Empty <span class="tag def">Low risk</span></b><span>Flat or round "target": bright centre, thick dark muscle ring. Both positions.</span></div></li>
+        <li data-c="clear"><span class="num">01</span><div><b>Clear fluid <span class="tag deep">Measure</span></b><span>Anechoic, distended, thin walls, bright through-transmission behind.</span></div></li>
+        <li data-c="bubbles"><span class="num">02</span><div><b>Clear fluid with bubbles <span class="tag deep">Measure</span></b><span>Recent drink — a "starry night" of bright dots rising in black fluid.</span></div></li>
+        <li data-c="thick"><span class="num">03</span><div><b>Thick fluid <span class="tag avoid">High risk</span></b><span>Homogeneous, echogenic content: milk, feeds, blood.</span></div></li>
+        <li data-c="solidEarly"><span class="num">04</span><div><b>Solid — early <span class="tag avoid">High risk</span></b><span>"Frosted glass": bright front edge, shadow behind, posterior wall hidden.</span></div></li>
+        <li data-c="solidLate"><span class="num">05</span><div><b>Solid — later <span class="tag avoid">High risk</span></b><span>Heterogeneous, mixed echogenicity; the antrum is distended and lumpy.</span></div></li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="grid2">
+          <div><div class="pov">Simulation · RLD</div><div class="scanner"><canvas id="ctUS" class="us"></canvas></div></div>
+          <div><div class="pov">From the library</div><div class="stage sm" id="ctReal"></div></div>
+        </div>
+        <div class="status" id="ctStat"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 GRADING ============ -->
+<section class="slide" data-min="1.5" data-title="Grade 0 · 1 · 2" data-prompt="Start at 0 mL, then 40 mL (Grade 1 — RLD only), then 160 mL (Grade 2). Ask why the supine view misses small volumes (fluid pools in the dependent fundus and body).">
+  <div class="inner two">
+    <div>
+      <div class="kicker">08 · Semi-quantitative grading</div>
+      <h2>Same stomach, two positions.</h2>
+      <p class="lede">For clear fluid: where you see it predicts how much there is (Perlas et al., Anesth Analg 2011).</p>
+      <table class="t" id="grTable">
+        <thead><tr><th>Grade</th><th>Supine</th><th>RLD</th><th>Usually means</th></tr></thead>
+        <tbody>
+          <tr data-g="0"><td>0</td><td>Empty</td><td>Empty</td><td>Empty stomach · low risk</td></tr>
+          <tr data-g="1"><td>1</td><td>Empty</td><td>Fluid</td><td>Small volume, consistent with baseline secretions</td></tr>
+          <tr data-g="2"><td>2</td><td>Fluid</td><td>Fluid</td><td>Larger volume, often &gt; 1.5 mL/kg — measure it</td></tr>
+        </tbody>
+      </table>
+      <div class="callout">The grade is a fast screen. When clear fluid is seen, measure the CSA and calculate.</div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="grid2"><div><div class="pov">Supine</div><div class="scanner"><canvas id="grS" class="us"></canvas></div></div><div><div class="pov">Right lateral decubitus</div><div class="scanner"><canvas id="grR" class="us"></canvas></div></div></div>
+        <div class="ctrls">
+          <label>Clear fluid in stomach <input type="range" id="grV" min="0" max="350" value="40" step="5"><output id="grVo"></output></label>
+          <label>Weight <input type="range" id="grW" min="40" max="120" value="70" step="1"><output id="grWo"></output></label>
+        </div>
+        <div class="status" id="grStat"></div>
+        <div class="mini">Simulation thresholds are illustrative. In practice, grade and volume are related but overlap.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 CSA → VOLUME ============ -->
+<section class="slide" data-min="2.5" data-title="CSA → gastric volume" data-prompt="Freeze during a contraction, then between contractions — compare the CSA. Send the good one to the calculator. Then worked example: 45 y, 70 kg, CSA 11.3 cm² → 134 mL → 1.9 mL/kg.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">09 · Quantitative assessment</div>
+      <h2>Clear fluid? Measure the antrum, then calculate.</h2>
+      <div class="card">
+        <div class="cap">How to measure</div>
+        <p>RLD · antrum at the level of the aorta · freeze between peristaltic contractions · free-trace the serosa (full wall thickness).</p>
+        <div class="formula">GV (mL) = 27.0 + 14.6 × RLD-CSA (cm²) − 1.28 × age (y)</div>
+        <p class="mini">Perlas et al., Anesth Analg 2013. Adult, non-pregnant model, validated for 0–500 mL. Clear fluid only — it does not apply to solid or thick content.</p>
+      </div>
+      <div class="card calc">
+        <div class="cap">Calculator</div>
+        <div class="ctrls" style="margin-top:6px">
+          <label>Age <input type="number" id="cAge" value="45" min="16" max="100" step="1"> y</label>
+          <label>Weight <input type="number" id="cWt" value="70" min="30" max="250" step="1"> kg</label>
+          <div class="seg" id="cMeth"><button data-v="trace" aria-pressed="true">Free trace</button><button data-v="dia" aria-pressed="false">Two diameters</button></div>
+        </div>
+        <div class="ctrls" id="cTraceRow"><label>RLD-CSA <input type="number" id="cCSA" value="11.3" min="0" max="40" step="0.1"> cm²</label></div>
+        <div class="ctrls" id="cDiaRow" hidden><label>AP <input type="number" id="cAP" value="3.4" min="0" max="10" step="0.1"> cm</label><label>CC <input type="number" id="cCC" value="4.2" min="0" max="10" step="0.1"> cm</label><span class="mini" style="margin:0">CSA = π × AP × CC / 4</span></div>
+        <div class="status big" id="cOut"></div>
+        <details class="src"><summary>Quick table · volume (mL) by age and CSA</summary><div id="cTable"></div></details>
+      </div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="pov">Ultrasound · RLD · aorta plane · clear fluid</div>
+        <div class="scanner"><canvas id="csUS" class="us"></canvas></div>
+        <div class="ctrls">
+          <label>True volume <input type="range" id="csV" min="20" max="400" value="140" step="5"><output id="csVo"></output></label>
+          <button class="btn" id="csFrz">❄ Freeze &amp; trace</button>
+          <button class="btn ghost" id="csSend" disabled>Use this CSA →</button>
+        </div>
+        <div class="status" id="csStat"></div>
+        <div class="pov" style="margin-top:12px">Sanity-check the trace · a round outline has C ≈ 3.5 × √A</div>
+        <div class="thumbs" id="csThumbs"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13 DECISION ============ -->
+<section class="slide" data-min="1.5" data-title="Medical decision-making" data-prompt="Walk the flowchart. Ask: what do you do with an inconclusive scan? (Decide on clinical grounds — it is not a negative scan.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">10 · Medical decision-making</div>
+      <h2>Low risk: proceed. High risk: change the plan.</h2>
+      <div class="card"><span class="tag def">Low risk</span><h3 style="margin-top:10px">Empty · or clear fluid ≤ 1.5 mL/kg</h3><p>Consistent with baseline secretions. Proceed with the planned technique.</p></div>
+      <div class="card"><span class="tag avoid">High risk</span><h3 style="margin-top:10px">Clear fluid &gt; 1.5 mL/kg · thick fluid · solid</h3>
+        <p><b class="ink">Elective</b> — postpone; for clear fluid, wait and rescan.</p>
+        <p><b class="ink">Urgent</b> — RSI with a cuffed tube; or regional/neuraxial with minimal sedation; NG decompression for fluid (it will not clear solids); a prokinetic and a rescan if time allows.</p></div>
+      <div class="card"><span class="tag deep">Inconclusive</span><h3 style="margin-top:10px">Cannot find or cannot read the antrum</h3><p>Not a negative scan. Decide on clinical grounds; treat as full if risk factors are present.</p></div>
+      <p class="mini" style="margin-top:12px">Document: position(s), plane, content, grade, CSA and volume if measured, and the decision.</p>
+    </div>
+    <div class="demo">
+      <div class="panel"><div class="flow" data-flow="2"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 PART III ============ -->
+<section class="slide divider" id="partIII" data-min="0.5" data-title="Part III · Cases" data-prompt="Five cases. For each: read the vignette, then reveal one I-AIM step at a time (R). Make the room commit before each reveal.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part III · Peri-operative cases</div>
+      <h1>Five patients.</h1>
+      <p class="big-quote" style="font-style:normal">Images and clips from my scan library. Commit to an answer before each reveal.</p>
+      <p class="cap" style="margin-top:22px;line-height:2">Indication · Acquisition · Interpretation · Medical decision</p>
+      <p class="mini" style="max-width:56ch">Clinical details are teaching vignettes built around real library images; images within a case are not necessarily from one patient.</p>
+    </div>
+    <div><div class="caseGrid" id="caseGrid"></div></div>
+  </div>
+</section>
+
+<!-- ============ 15–20 CASES ============ -->
+<section class="slide case" data-case="0" data-min="2" data-title="Case 1 · Melaena, emergency OGD" data-prompt="Ask first: MAC or RSI? Before revealing Interpretation, ask: if this were clear fluid, would you calculate a volume? (Yes.) Is it? (No — echogenic content: blood/clot behaves as thick fluid or solid.)"></section>
+<section class="slide case" data-case="1" data-min="2" data-title="Case 2 · Semaglutide not held" data-prompt="Ask the room: proceed, postpone, or RSI? Then reveal. Stress the machine's 7.90 cm² is irrelevant for solids."></section>
+<section class="slide case" data-case="2" data-min="2" data-title="Case 3 · Diabetes with autonomic neuropathy" data-prompt="Ask: which features in the history predict gastroparesis? Then: what anaesthetic keeps airway reflexes for a foot debridement?"></section>
+<section class="slide case" data-case="3" data-min="2" data-title="Case 4 · Plain water 30 minutes ago, FESS" data-prompt="Have someone do the arithmetic aloud: 27 + 14.6 × 11.3 − 1.28 × 45. Then ask: cancel, or wait and rescan?"></section>
+<section class="slide case" data-case="4" data-min="2" data-title="Case 5 · Uncertain history, empty stomach" data-prompt="The counter-example: the scan lets you proceed confidently. Ask what the plan would have been without it (cancel, or an unnecessary RSI in a frail patient)."></section>
+
+<!-- ============ 21 LIBRARY ============ -->
+<section class="slide" data-min="0.5" data-title="Image library" data-prompt="Leave this up during questions. Filter by category; tap to enlarge. Use the arrow buttons in the viewer to step through.">
+  <div class="inner">
+    <div class="kicker">Image library</div>
+    <h2>Every image and clip in the deck.</h2>
+    <div class="tabs" id="libTabs" style="margin-top:6px"></div>
+    <div class="lib" id="libGrid"></div>
+  </div>
+</section>
+
+<!-- ============ 22 QUIZ ============ -->
+<section class="slide" data-min="1.5" data-title="Quick check" data-prompt="Use the questions, then ask each learner for one scan they will do in the next week — and to log it.">
+  <div class="inner">
+    <div class="kicker">Quick check</div>
+    <h2>Eight questions before we finish.</h2>
+    <p class="lede">Tap an answer. <span id="qzScore" class="num"></span></p>
+    <div class="qz two even" id="quiz"></div>
+  </div>
+</section>
+
+<!-- ============ 23 THANKS ============ -->
+<section class="slide divider" data-min="0.5" data-title="Thank you" data-prompt="Questions. Point to gastricultrasound.org and the supervised-scan target (around 40 scans).">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Scan deliberately</div>
+      <p class="big-quote" style="font-style:normal;margin:0 0 30px">Scan the easy stomachs, so you can read the hard ones.</p>
+      <h1>Thank you.</h1>
+      <p class="lede" style="margin-top:16px;font-size:24px">Any questions?</p>
+      <p class="quote" style="margin-top:40px;max-width:52ch">“If you love what you do, you will teach yourself. If you do not love what you do, others will teach you.” — Yukitaka Yamaguchi</p>
+    </div>
+    <div>
+      <div class="grid2"><div><div class="pov">Ultrasound · RLD · clear fluid</div><div class="scanner"><canvas id="endUS" class="us"></canvas></div></div><div><div class="pov">Anatomy · same slice</div><canvas id="endA" class="side"></canvas></div></div>
+      <details class="src" style="margin-top:18px" open><summary>Key references</summary>
+        <ol class="refs">
+          <li>Perlas A, Van de Putte P, Van Houwe P, Chan VW. I-AIM framework for point-of-care gastric ultrasound. <i>Br J Anaesth</i> 2016;116:7–11.</li>
+          <li>Perlas A, Chan VW, Lupu CM, et al. Ultrasound assessment of gastric content and volume. <i>Anesthesiology</i> 2009;111:82–9.</li>
+          <li>Perlas A, Davis L, Khan M, et al. Gastric sonography in the fasted surgical patient. <i>Anesth Analg</i> 2011;113:93–7.</li>
+          <li>Perlas A, Mitsakakis N, Liu L, et al. Validation of a mathematical model for ultrasound assessment of gastric volume. <i>Anesth Analg</i> 2013;116:357–63.</li>
+          <li>Van de Putte P, Perlas A. Ultrasound assessment of gastric content and volume. <i>Br J Anaesth</i> 2014;113:12–22.</li>
+          <li>Perlas A, Arzola C, Van de Putte P. Point-of-care gastric ultrasound and aspiration risk assessment. <i>Can J Anaesth</i> 2018;65:437–48.</li>
+          <li>Xiao MZX, Englesakis M, Perlas A. Gastric content and perioperative pulmonary aspiration in patients with diabetes mellitus. <i>Br J Anaesth</i> 2021;127:224–35.</li>
+          <li>Sen S, Potnuru PP, Hernandez N, et al. GLP-1 receptor agonist use and residual gastric content before anesthesia. <i>JAMA Surg</i> 2024;159:660–7.</li>
+          <li>Kindel TL, Wang AY, Wadhwa A, et al. Multisociety clinical practice guidance for the safe use of GLP-1 receptor agonists in the perioperative period. 2024.</li>
+          <li><a target="_blank" rel="noopener" href="https://www.gastricultrasound.org/en/extra-material/references/">gastricultrasound.org — full reference list</a></li>
+        </ol>
+        <p class="mini">Simulations are purpose-built teaching models, not diagnostic images. Anatomy, echogenicity and grading thresholds are simplified.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<aside id="notes" hidden><div class="cap">Presenter prompt · <kbd>N</kbd> to hide</div><p id="notesTxt"></p></aside>
+<div id="overview"><div class="og" id="ovGrid"></div></div>
+<div id="lb" hidden><div class="lbIn"><button class="lbX" id="lbX" aria-label="Close">✕</button><div class="lbStage" id="lbStage"></div><div class="lbBar"><button id="lbP" aria-label="Previous">←</button><div class="lbCap" id="lbCap"></div><button id="lbN" aria-label="Next">→</button></div></div></div>
+<nav class="bar" aria-label="Slide controls">
+  <div class="prog" id="prog"></div><div class="pace" id="pace" title="Where you should be at this point"></div>
+  <button id="prevB" aria-label="Previous slide">←</button>
+  <span id="cnt">1 / 22</span>
+  <button id="nextB" aria-label="Next slide">→</button>
+  <span class="q">“If you love what you do, you will teach yourself. If you do not love what you do, others will teach you.” — Yukitaka Yamaguchi</span>
+  <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 35:30</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
+  <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
+  <button id="ovB" aria-label="Slide overview" title="Overview (O)">▦</button>
+  <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
+  <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
+</nav>
+
+<script>
+const SRC = {"i0728": "media/i0728.jpg", "i0729": "media/i0729.jpg", "i1392": "media/i1392.jpg", "i1547": "media/i1547.jpg", "i1946": "media/i1946.jpg", "i2987": "media/i2987.jpg", "i2988": "media/i2988.jpg", "i3004": "media/i3004.jpg", "i3103": "media/i3103.jpg", "i7132": "media/i7132.jpg", "i7133": "media/i7133.jpg", "i7135": "media/i7135.jpg", "i7136": "media/i7136.jpg", "i7429": "media/i7429.jpg", "i7430": "media/i7430.jpg", "i7431": "media/i7431.jpg", "i7432": "media/i7432.jpg", "i9179": "media/i9179.jpg", "i9208": "media/i9208.jpg", "i9294": "media/i9294.jpg", "i9525": "media/i9525.jpg", "i9545": "media/i9545.jpg", "i9546": "media/i9546.jpg", "i9717": "media/i9717.jpg", "v0774": "media/v0774.mp4", "v0777": "media/v0777.mp4", "v1546": "media/v1546.mp4", "v2749": "media/v2749.mp4", "v3005": "media/v3005.mp4", "v3010": "media/v3010.mp4", "v7134": "media/v7134.mp4", "v8774": "media/v8774.mp4", "v8912": "media/v8912.mp4", "v9295": "media/v9295.mp4", "v9454": "media/v9454.mp4", "v9504": "media/v9504.mp4", "v9543": "media/v9543.mp4"};
+const POSTER = {"v0774": "media/v0774-poster.jpg", "v0777": "media/v0777-poster.jpg", "v1546": "media/v1546-poster.jpg", "v2749": "media/v2749-poster.jpg", "v3005": "media/v3005-poster.jpg", "v3010": "media/v3010-poster.jpg", "v7134": "media/v7134-poster.jpg", "v8774": "media/v8774-poster.jpg", "v8912": "media/v8912-poster.jpg", "v9295": "media/v9295-poster.jpg", "v9454": "media/v9454-poster.jpg", "v9504": "media/v9504-poster.jpg", "v9543": "media/v9543-poster.jpg"};
+const VIDURL = {};
+</script>
+<script>
+'use strict';
+/* =====================================================================
+   ENGINE — curvilinear gastric ultrasound simulator.
+   A 3D analytic model of the epigastrium (cm): x = patient's left (+),
+   y = depth from the skin (posterior +), z = cranial (+). Each frame the
+   image plane is swept beam by beam (polar grid), tissue is sampled along
+   each beam with attenuation, shadowing and enhancement, then
+   scan-converted into the sector.
+   ===================================================================== */
+const TAU = Math.PI * 2, D2R = Math.PI / 180;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = t => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/* ---------- physiology ---------- */
+const HR = 72, BEAT = 60 / HR;
+function artWave(p) {
+  p = ((p % 1) + 1) % 1;
+  if (p < 0.10) return 0.5 - 0.5 * Math.cos(p / 0.10 * Math.PI);
+  if (p < 0.34) { const q = (p - 0.10) / 0.24; return 1 - 0.40 * (0.5 - 0.5 * Math.cos(Math.PI * q)); }
+  if (p < 0.38) { const q = (p - 0.34) / 0.04; return 0.60 - 0.08 * Math.sin(q * Math.PI / 2); }
+  if (p < 0.46) { const q = (p - 0.38) / 0.08; return 0.52 + 0.06 * Math.sin(q * Math.PI / 2); }
+  const q = (p - 0.46) / 0.54; return 0.58 * Math.pow(1 - q, 1.25);
+}
+const pulse = (t, ph = 0) => artWave(t / BEAT + ph);
+const breath = t => .5 - .5 * Math.cos(TAU * t / 4.4);
+
+/* ---------- tissue-locked value noise ---------- */
+function h3(x, y, z) {
+  let h = Math.imul(x, 0x27d4eb2d) ^ Math.imul(y, 0x165667b1) ^ Math.imul(z, 0x9e3779b1);
+  h = Math.imul(h ^ (h >>> 15), 0x85ebca6b); h = Math.imul(h ^ (h >>> 13), 0xc2b2ae35); h ^= h >>> 16;
+  return (h >>> 0) / 4294967296;
+}
+function vn(x, y, z) {
+  const xi = Math.floor(x), yi = Math.floor(y), zi = Math.floor(z);
+  let fx = x - xi, fy = y - yi, fz = z - zi;
+  fx = fx * fx * (3 - 2 * fx); fy = fy * fy * (3 - 2 * fy); fz = fz * fz * (3 - 2 * fz);
+  const a = h3(xi, yi, zi), b = h3(xi + 1, yi, zi), c = h3(xi, yi + 1, zi), d = h3(xi + 1, yi + 1, zi);
+  const e = h3(xi, yi, zi + 1), f = h3(xi + 1, yi, zi + 1), g = h3(xi, yi + 1, zi + 1), k = h3(xi + 1, yi + 1, zi + 1);
+  const x1 = a + (b - a) * fx, x2 = c + (d - c) * fx, x3 = e + (f - e) * fx, x4 = g + (k - g) * fx;
+  const y1 = x1 + (x2 - x1) * fy, y2 = x3 + (x4 - x3) * fy;
+  return y1 + (y2 - y1) * fz;
+}
+
+/* ---------- structure ids ---------- */
+const ID = { BG: 0, FAT: 1, RECT: 2, FASC: 3, LIVER: 4, AWALL: 5, ALUM: 6, PANC: 7, VEIN: 8, SMA: 9, AOL: 10, AOW: 11, IVCL: 12, IVCW: 13, BONE: 14, GAS: 15, GB: 16, MANT: 17, HV: 18, BODY: 19, CT: 20, LRV: 21, RA: 22, PV: 23 };
+const LABELS = {
+  4: ['Liver', -70, -30], 5: ['Antrum', 64, -40], 7: ['Pancreas', 70, -6], 8: ['SMV / splenic v.', 70, 22], 9: ['SMA', 74, 10],
+  10: ['Aorta', 70, 26], 12: ['IVC', 70, 26], 14: ['Vertebral body', 64, 16], 15: ['Bowel gas', 52, -26], 16: ['Gallbladder', -64, -24],
+  18: ['Hepatic v.', -62, -22], 19: ['Gastric body', 56, -30], 20: ['Coeliac trunk', -84, -22], 24: ['Common hepatic a.', -70, 20], 25: ['Splenic a.', 66, -18], 21: ['L renal v.', 70, 14], 22: ['R atrium', -60, -20], 23: ['Portal v.', -66, 18]
+};
+const LBL_MIN = { 9: 18, 20: 14, 24: 14, 25: 14, 21: 10, 8: 14, 18: 14, 23: 18 };
+
+/* ---------- antrum geometry ---------- */
+const ANT = (() => {
+  const A = [5.0, 4.85, 1.5], B = [-3.6, 4.55, -1.6];
+  const d = [B[0] - A[0], B[1] - A[1], B[2] - A[2]], L = Math.hypot(...d), a = d.map(v => v / L);
+  let e1 = [-a[1] * a[0], 1 - a[1] * a[1], -a[1] * a[2]]; const l1 = Math.hypot(...e1); e1 = e1.map(v => v / l1);
+  const e2 = [a[1] * e1[2] - a[2] * e1[1], a[2] * e1[0] - a[0] * e1[2], a[0] * e1[1] - a[1] * e1[0]];
+  return { A, B, a, e1, e2, L };
+})();
+
+function antrumState(S, t) {
+  const csaR = Math.max(3.9, (S.vol - 27 + 1.28 * S.age) / 14.6), sup = S.pos !== 'rld';
+  let csa, show = S.content;
+  if (S.content === 'empty') csa = sup ? 3.3 : 3.9;
+  else if (S.content === 'clear' || S.content === 'bubbles') {
+    if (!sup) { if (S.vol < 12) { show = 'empty'; csa = 3.9; } else csa = csaR; }
+    else if (S.vol < 100) { show = 'empty'; csa = 3.3 + S.vol * .004; }
+    else csa = 3.3 + (csaR - 3.3) * .72;
+  } else csa = sup ? 3.3 + (csaR - 3.3) * .85 : csaR;
+  let c = 0;
+  if (S.peri) { const P = S.periT || 20, ph = (((t + (S.periPh || 0)) % P) + P) % P / P; const on = 5 / P; c = ph < on ? Math.sin(Math.PI * ph / on) ** 2 : 0; }
+  const empty = show === 'empty', k = empty ? .62 : .9, ct = csa / 1.06;
+  let rx = Math.sqrt(ct / (Math.PI * k)), ry = k * rx;
+  const amp = empty ? .13 : .3; rx *= 1 - amp * c; ry *= 1 - amp * c;
+  let w = empty ? .5 : clamp(.44 - .011 * csa, .24, .4); w *= 1 + .6 * c;
+  w = Math.min(w, Math.min(rx, ry) * .82);
+  return { rx, ry, w, show, c, dy: Math.max(0, ry + 2.78 - 4.72), csa };
+}
+
+/* ---------- vessel segments (A → B = direction of flow) ---------- */
+function vseg(id, A, B, r, o = {}) {
+  const d = [B[0] - A[0], B[1] - A[1], B[2] - A[2]], l2 = d[0] * d[0] + d[1] * d[1] + d[2] * d[2], L = Math.sqrt(l2);
+  const R = Math.max(r, o.mantle || 0) + .05;
+  return { id, A, d, l2, f: d.map(v => v / L), r, wall: o.wall || (o.art ? .08 : .05), art: !!o.art, sp: o.sp || .3, mantle: o.mantle || 0,
+    bb: [Math.min(A[0], B[0]) - R, Math.max(A[0], B[0]) + R, Math.min(A[1], B[1]) - R, Math.max(A[1], B[1]) + R, Math.min(A[2], B[2]) - R, Math.max(A[2], B[2]) + R] };
+}
+const VSEG = [
+  vseg(ID.SMA, [0.9, 9.85, 0.35], [0.65, 9.0, -1.0], .34, { art: true, sp: 1, mantle: .7 }),
+  vseg(ID.SMA, [0.65, 9.0, -1.0], [0.6, 9.15, -9], .33, { art: true, sp: 1, mantle: .75 }),
+  vseg(ID.CT, [0.9, 9.85, 1.9], [0.9, 8.75, 2.55], .33, { art: true, sp: 1 }),
+  vseg(24, [0.9, 8.75, 2.55], [-3.5, 8.55, 2.4], .24, { art: true, sp: .8 }),
+  vseg(25, [0.9, 8.75, 2.55], [5.5, 8.7, 2.9], .26, { art: true, sp: .8 }),
+  vseg(ID.VEIN, [-0.9, 8.6, -9], [-0.9, 8.45, 0.9], .48, { sp: .35 }),
+  vseg(ID.VEIN, [6, 8.5, 1.6], [-0.9, 8.45, 0.9], .38, { sp: .3 }),
+  vseg(ID.PV, [-0.9, 8.45, 0.9], [-3.4, 7.9, 3.4], .56, { sp: .35 }),
+  vseg(ID.LRV, [6, 9.9, -1.7], [-2.3, 9.45, -1.7], .23, { sp: .3 }),
+  vseg(ID.HV, [0.8, 5.0, 2.2], [-2.3, 8.7, 5.0], .32, { sp: .3 }),
+  vseg(ID.HV, [2.6, 5.4, 4.2], [-2.2, 8.6, 5.6], .28, { sp: .3 }),
+  vseg(ID.HV, [-6.5, 6.0, 3.4], [-2.6, 8.8, 5.2], .32, { sp: .3 })
+];
+const GASL = [[1.2, 4.3, -6.4, 2.2, 1.3, 1.5], [-3.0, 4.6, -6.0, 1.9, 1.2, 1.4], [4.8, 4.2, -5.2, 1.7, 1.1, 1.3]];
+
+/* ---------- tissue evaluation (outputs in module scope for speed) ---------- */
+let oE = 0, oA = 0, oI = 0, oV = 0, oG = 0;
+function contentEcho(show, x, y, z, va, ua, wa, ryi, rxi, tt) {
+  switch (show) {
+    case 'clear': oE = .012; oA = .004; return;
+    case 'bubbles': { oE = .012; oA = .01; const n = vn(x * 6, (y + tt * .3) * 6, z * 6); if (n > .8) oE = .55 + (n - .8) * 2.2; return; }
+    case 'thick': oE = .34 + .2 * vn(x * 3 + tt * .04, y * 3, z * 3); oA = .12; return;
+    case 'solidEarly': {
+      const front = -ryi * Math.sqrt(Math.max(0, 1 - (ua / rxi) ** 2 - (wa / rxi) ** 2)), da = va - front;
+      oE = da < .32 ? .95 - da * 1.4 : .3 + .3 * vn(x * 5, y * 5, z * 5); oA = 4.2; return;
+    }
+    case 'solidLate': { const c = vn(x * 1.6 + 3, y * 1.6, z * 1.6); oE = .14 + .62 * smooth((c - .28) / .5) + .1 * vn(x * 6, y * 6, z * 6); oA = .2; return; }
+    case 'clot': { const c = vn(x * 1.9, y * 1.9 + 5, z * 1.9); oE = .1 + .55 * smooth((c - .35) / .4); oA = .16; return; }
+    default: oE = .48 + .32 * vn(x * 4.5, y * 4.5, z * 4.5); oA = .14;
+  }
+}
+function evalTissue(x, y, z, bx, by, bz, M) {
+  oV = 0; oG = 0;
+  // abdominal wall
+  if (y < 1.35) { oI = ID.FAT; const n = vn(x * 1.1, y * 5.5, z * 1.1); oE = .16 + .7 * Math.max(0, n - .58) * 2.4; oA = .09; return; }
+  if (y < 1.47) { oI = ID.FASC; oE = .8; oA = .12; return; }
+  if (y < 2.38) { if (Math.abs(x) < .45) { oI = ID.FASC; oE = .5; } else { oI = ID.RECT; oE = .26 + .2 * vn(x * .8, y * 9, z * .8); } oA = .12; return; }
+  if (y < 2.55) { oI = ID.FASC; oE = .86; oA = .13; return; }
+  // vertebral column
+  if (y > 11.6 && x > -2.9 && x < 2.9) {
+    const dy = y - 14.6, r = Math.sqrt(x * x + dy * dy);
+    if (r < 2.7) {
+      oI = ID.BONE; const m = ((z % 3.4) + 3.4) % 3.4;
+      if (m < .75) { oE = .3; oA = .7; return; }
+      const din = 2.7 - r; oE = din < .3 ? .55 + .45 * Math.abs((x * bx + dy * by) / r) : .06; oA = 9; return;
+    }
+  }
+  // aorta
+  { const dx = x - .9, dy = y - 10.9;
+    if (dx > -1.3 && dx < 1.3 && dy > -1.3 && dy < 1.3) {
+      const r = Math.sqrt(dx * dx + dy * dy), R = M.aoR;
+      if (r < R) {
+        if (r > R - .17) { oI = ID.AOW; oE = .28 + .67 * Math.abs((dx * bx + dy * by) / r); oA = .15; return; }
+        oI = ID.AOL; oE = .012; oA = .02; oV = bz * M.aoV; return;
+      }
+    } }
+  // IVC and right atrium
+  if (x > -3.8 && x < -.8 && z < 8.6) {
+    const cy = 9.35 - .32 * Math.max(0, z - 3.5), rx = 1.25, ry = Math.max(.09, .85 * M.ivcK), dx = (x + 2.3) / rx, dy = (y - cy) / ry, p2 = dx * dx + dy * dy;
+    if (p2 < 1) {
+      const p = Math.sqrt(p2);
+      if (p > 1 - .075 / ry) { oI = ID.IVCW; const nx = dx / rx, ny = dy / ry, nl = Math.hypot(nx, ny) || 1; oE = .2 + .45 * Math.abs((nx * bx + ny * by) / nl); oA = .14; return; }
+      oI = ID.IVCL; oE = .012; oA = .02; oV = -bz * M.ivcV; return;
+    }
+  }
+  { const dx = x + 1.4, dy = y - 7.2, dz = z - 10.8, r2 = dx * dx + dy * dy + dz * dz;
+    if (r2 < 7.8) { oI = ID.RA; oE = r2 > 7.0 ? .45 : .012; oA = .02; oV = -bz * M.ivcV * .6; return; } }
+  // antrum
+  { const A = M.ant, ax = x - ANT.A[0], ay = y - (ANT.A[1] + A.dy), az = z - ANT.A[2];
+    let t = ax * ANT.a[0] + ay * ANT.a[1] + az * ANT.a[2]; const tc = clamp(t, 0, ANT.L);
+    const vx = ax - ANT.a[0] * tc, vy = ay - ANT.a[1] * tc, vz = az - ANT.a[2] * tc;
+    const rmax = Math.max(A.rx, A.ry) + .05;
+    if (vx * vx + vy * vy + vz * vz < rmax * rmax) {
+      const va = vx * ANT.e1[0] + vy * ANT.e1[1] + vz * ANT.e1[2], ua = vx * ANT.e2[0] + vy * ANT.e2[1] + vz * ANT.e2[2], wa = t - tc;
+      const p2 = (ua / A.rx) ** 2 + (va / A.ry) ** 2 + (wa / A.rx) ** 2;
+      if (p2 < 1) {
+        const rxi = A.rx - A.w, ryi = A.ry - A.w, pi2 = (ua / rxi) ** 2 + (va / ryi) ** 2 + (wa / rxi) ** 2;
+        if (pi2 < 1) { oI = ID.ALUM; contentEcho(A.show, x, y, z, va, ua, wa, ryi, rxi, M.tt); if (A.show === 'empty' && M.gas && va < -ryi * .1) { oE = .95; oA = 7; oG = 1; } return; }
+        const p = Math.sqrt(p2), L = Math.sqrt(ua * ua + va * va + wa * wa) || 1e-6, q = clamp(L * (1 / p - 1) / A.w, 0, 1);
+        const nx = ANT.e2[0] * ua / (A.rx * A.rx) + ANT.e1[0] * va / (A.ry * A.ry), ny = ANT.e2[1] * ua / (A.rx * A.rx) + ANT.e1[1] * va / (A.ry * A.ry), nz = ANT.e2[2] * ua / (A.rx * A.rx) + ANT.e1[2] * va / (A.ry * A.ry);
+        const spec = Math.abs((nx * bx + ny * by + nz * bz) / (Math.hypot(nx, ny, nz) || 1));
+        oI = ID.AWALL; oA = .13;
+        if (q < .1) oE = .3 + .6 * spec;
+        else if (q < .52) oE = .06 + .05 * vn(x * 7, y * 7, z * 7);
+        else if (q < .68) oE = .58 + .2 * spec;
+        else if (q < .8) oE = .14;
+        else oE = (A.show === 'clear' || A.show === 'bubbles') && q > .9 ? .3 + .6 * spec : .42;
+        return;
+      }
+    } }
+  // gastric body / fundus
+  { const dx = (x - 7.6) / 3.1, dy = (y - 5.4) / 2.6, dz = (z - 2.9) / 3.8, p2 = dx * dx + dy * dy + dz * dz;
+    if (p2 < 1) {
+      oI = ID.BODY;
+      if (p2 > .8) { oE = p2 > .95 ? .7 : .1; oA = .13; return; }
+      if (dy < -.15) { oE = .95; oA = 8; oG = 1; return; }
+      const sh = M.ant.show; if (sh === 'empty' || sh === 'clear') { oE = sh === 'clear' ? .012 : .45; oA = sh === 'clear' ? .004 : .14; } else contentEcho(sh, x, y, z, dy, 0, 0, 1, 1, M.tt);
+      return;
+    } }
+  // gallbladder
+  { const dx = (x + 5.6) / 1.5, dy = (y - 5.5) / 1.25, dz = (z + 1.4) / 3.2, p2 = dx * dx + dy * dy + dz * dz;
+    if (p2 < 1) { oI = ID.GB; if (p2 > .88) { oE = .7; oA = .12; } else { oE = .01; oA = .004; } return; } }
+  // bowel gas (transverse colon)
+  for (let k = 0; k < GASL.length; k++) {
+    const g = GASL[k], dx = (x - g[0]) / g[3], dy = (y - g[1]) / g[4], dz = (z - g[2]) / g[5];
+    if (dx * dx + dy * dy + dz * dz < 1) { oI = ID.GAS; oE = .95; oA = 8; oG = 1; return; }
+  }
+  // mesenteric vessels
+  let mant = false;
+  for (let k = 0; k < VSEG.length; k++) {
+    const s = VSEG[k], b = s.bb;
+    if (x < b[0] || x > b[1] || y < b[2] || y > b[3] || z < b[4] || z > b[5]) continue;
+    const px = x - s.A[0], py = y - s.A[1], pz = z - s.A[2];
+    const t = clamp((px * s.d[0] + py * s.d[1] + pz * s.d[2]) / s.l2, 0, 1);
+    const vx = px - s.d[0] * t, vy = py - s.d[1] * t, vz = pz - s.d[2] * t, dd = Math.sqrt(vx * vx + vy * vy + vz * vz);
+    if (dd < s.r) {
+      oI = s.id;
+      if (dd > s.r - s.wall) { const sp = Math.abs((vx * bx + vy * by + vz * bz) / (dd || 1)); oE = s.art ? .3 + .6 * sp : .2 + .4 * sp; oA = .14; return; }
+      oE = .012; oA = .02; const spd = s.art ? s.sp * M.aoV : s.sp;
+      oV = -(s.f[0] * bx + s.f[1] * by + s.f[2] * bz) * spd; return;
+    }
+    if (s.mantle && dd < s.mantle) mant = true;
+  }
+  if (mant) { oI = ID.MANT; oE = .62 + .2 * vn(x * 4, y * 4, z * 4); oA = .12; return; }
+  // pancreas
+  if (x > -4.8 && x < 6.6) {
+    let inP = false;
+    if (x > -3.4) { const zc = .62 + .1 * x, tp = x > 5 ? 1 - (x - 5) / 1.6 * .6 : 1, ey = (y - 7.25) / (.95 * tp), ez = (z - zc) / (1.35 * tp); inP = ey * ey + ez * ez < 1; }
+    if (!inP && x < -1) { const ex = (x + 2.9) / 1.9, ey = (y - 7.55) / 1.25, ez = (z + .5) / 2.0; inP = ex * ex + ey * ey + ez * ez < 1; }
+    if (inP) { oI = ID.PANC; oE = .46 + .26 * vn(x * 3.2, y * 3.2, z * 3.2); oA = .13; return; }
+  }
+  // liver
+  if (x > -12 && x < 8.5) {
+    const zt = z + clamp((-x - 1) * .7, 0, 3.5); let Tl = Math.max(0, 1 + 1.35 * zt);
+    if (x > 4) Tl *= clamp(1 - (x - 4) / 4.5, 0, 1);
+    const ylp = Math.min(2.55 + Tl, 10.6);
+    if (y < ylp) {
+      oI = ID.LIVER; oA = .11;
+      if (ylp - y < .09) { oE = .72; return; }
+      oE = .27 + .07 * vn(x * .9, y * .9, z * .9);
+      if (vn(x * 2.3 + 7, y * 2.3, z * 2.3) > .87) oE = .62;
+      return;
+    }
+  }
+  oI = ID.BG; { const n = vn(x * 1.15, y * 1.15, z * 1.15); oE = .16 + .62 * n * n + .14 * vn(x * 3.1, y * 3.1, z * 3.1); } oA = .11;
+}
+
+/* ---------- anatomy palette ---------- */
+const PAL_A = {
+  0: [214, 186, 160], 1: [243, 222, 170], 2: [196, 106, 92], 3: [236, 228, 214], 4: [158, 86, 70], 5: [214, 140, 150], 7: [232, 196, 110],
+  8: [92, 122, 192], 9: [214, 72, 80], 10: [200, 50, 60], 11: [150, 32, 42], 12: [72, 102, 178], 13: [48, 72, 140], 14: [238, 234, 222],
+  15: [206, 213, 219], 16: [126, 172, 104], 17: [247, 234, 182], 18: [104, 142, 212], 19: [214, 150, 156], 20: [222, 92, 92], 21: [112, 132, 202],
+  22: [72, 102, 178], 23: [92, 122, 192], 24: [222, 92, 92], 25: [222, 92, 92]
+};
+const PAL_C = { empty: [190, 118, 128], clear: [172, 216, 236], bubbles: [172, 216, 236], thick: [222, 202, 150], solidEarly: [194, 152, 102], solidLate: [186, 140, 96], clot: [122, 42, 42] };
+
+function fitCanvas(c, w, h) {
+  const r = Math.min(2, window.devicePixelRatio || 1);
+  c.width = Math.round(w * r); c.height = Math.round(h * r);
+  const x = c.getContext('2d'); x.setTransform(r, 0, 0, r, 0, 0); return x;
+}
+function defaultS() {
+  return { x0: .9, z0: 0, th: 90, fan: 0, depth: 14, pos: 'rld', content: 'empty', vol: 20, age: 50, labels: true, sniff: 0, sniffT: 0, press: 0, pressT: 0,
+    doppler: false, peri: true, periT: 20, periPh: 0, frozen: false, trace: false, gas: false, hl: null };
+}
+
+/* =====================================================================
+   GSim — renders one probe position to an ultrasound canvas and,
+   optionally, the same slice as a coloured anatomy illustration.
+   ===================================================================== */
+class GSim {
+  constructor(canvas, o = {}) {
+    this.c = canvas; this.W = o.w || 520; this.H = o.h || 400;
+    canvas.width = this.W; canvas.height = this.H; this.ctx = canvas.getContext('2d');
+    this.off = document.createElement('canvas'); this.off.width = this.W; this.off.height = this.H; this.octx = this.off.getContext('2d');
+    this.NB = o.nb || 168; this.NS = o.ns || 250; this.FOV = (o.fov || 66) * D2R; this.Rc = 4.2;
+    this.S = o.S || defaultS(); this.probe = o.probe || 'C5-2';
+    const N = this.NB * this.NS;
+    this.buf = new Float32Array(N); this.ids = new Uint8Array(N); this.vel = new Float32Array(N);
+    this.img = this.octx.createImageData(this.W, this.H);
+    if (o.anat) { this.anat = o.anat; o.anat.width = this.W; o.anat.height = this.H; this.actx = o.anat.getContext('2d'); this.aoff = document.createElement('canvas'); this.aoff.width = this.W; this.aoff.height = this.H; this.aimg = this.aoff.getContext('2d').createImageData(this.W, this.H); }
+    this.lutKey = ''; this.lastR = -1; this.dirty = true; this.tm = 0; this.gain = o.gain || 1.45; this.measure = null; this.labels = [];
+  }
+  layout() {
+    const { W, H, Rc, FOV, NB, NS } = this, D = this.S.depth, key = D + ':' + W + ':' + H;
+    if (key === this.lutKey) return; this.lutKey = key;
+    const half = FOV / 2, top = 16;
+    const ppc = Math.min((H - top - 8) / (Rc + D - Rc * Math.cos(half)), (W - 56) / (2 * (Rc + D) * Math.sin(half)));
+    const ax = W / 2 - 10, ay = top - Rc * Math.cos(half) * ppc;
+    Object.assign(this, { ppc, ax, ay, half, D });
+    const lut = this.lut = new Float32Array(W * H * 2);
+    for (let py = 0, p = 0; py < H; py++) for (let px = 0; px < W; px++, p++) {
+      const dx = (px - ax) / ppc, dy = (py - ay) / ppc, r = Math.hypot(dx, dy), phi = Math.atan2(dx, dy), d = r - Rc;
+      if (d < 0 || d > D || Math.abs(phi) > half) { lut[2 * p] = -1; continue; }
+      lut[2 * p] = (phi / FOV + .5) * (NB - 1); lut[2 * p + 1] = d / D * (NS - 1);
+    }
+  }
+  toScreen(b, i) { const phi = (b / (this.NB - 1) - .5) * this.FOV, r = this.Rc + i / (this.NS - 1) * this.D; return [this.ax + r * Math.sin(phi) * this.ppc, this.ay + r * Math.cos(phi) * this.ppc]; }
+  params(tt) {
+    const S = this.S, br = breath(tt), p = pulse(tt);
+    return { tt, aoR: 1.08 * (1 + .045 * (p - .35)), aoV: .12 + .95 * p, ivcK: (1 - .13 * br) * (1 - .72 * S.sniff) * (1 - .62 * S.press), ivcV: .25 + .12 * br, ant: antrumState(S, tt), gas: S.gas };
+  }
+  polar(M) {
+    const S = this.S, { NB, NS, FOV, Rc, buf, ids, vel } = this, D = S.depth, dd = D / (NS - 1);
+    const th = S.th * D2R, ux = Math.cos(th), uz = -Math.sin(th), fa = S.fan * D2R;
+    const dnx = Math.sin(th) * Math.sin(fa), dny = Math.cos(fa), dnz = Math.cos(th) * Math.sin(fa);
+    const x0 = S.x0, z0 = S.z0, frozen = S.frozen, dphi = FOV / (NB - 1);
+    const cnt = new Float64Array(32), sb = new Float64Array(32), si = new Float64Array(32);
+    let mA = 0, mx = 0, my = 0, mxx = 0, myy = 0, mxy = 0, mw = 0;
+    let k = 0;
+    for (let b = 0; b < NB; b++) {
+      const phi = (b / (NB - 1) - .5) * FOV, sp = Math.sin(phi), cp = Math.cos(phi);
+      const bx = sp * ux + cp * dnx, by = cp * dny, bz = sp * uz + cp * dnz;
+      let T = 1, gasAt = -1;
+      for (let i = 0; i < NS; i++, k++) {
+        const d = i * dd, s = (Rc + d) * sp, yy = d * cp;
+        const x = x0 + s * ux + yy * dnx, y = yy * dny, z = z0 + s * uz + yy * dnz;
+        evalTissue(x, y, z, bx, by, bz, M);
+        const q = vn(x * 12.5, y * 15, z * 12.5);
+        let e = oE * (.2 + 1.6 * q * q) * T;
+        if (!frozen) e *= .93 + .14 * Math.random();
+        if (gasAt >= 0) { const g = d - gasAt, f = (g / .62) % 1; e += .32 * Math.exp(-g / 2.2) * (f < .2 ? 1 : .12); }
+        else if (oG) gasAt = d;
+        buf[k] = e; ids[k] = oI; vel[k] = oV;
+        cnt[oI]++; sb[oI] += b; si[oI] += i;
+        if (oI === ID.AWALL || oI === ID.ALUM) {
+          const w = (d + Rc * cp * cp) * dphi * dd; mA += w;
+          const r = Rc + d, px = r * sp, py = r * cp; mw += 1; mx += px; my += py; mxx += px * px; myy += py * py; mxy += px * py;
+        }
+        T *= Math.exp(-(oA - .11) * dd); if (T > 2.4) T = 2.4;
+      }
+    }
+    // labels: merge groups
+    const merge = (a, b2) => { cnt[a] += cnt[b2]; sb[a] += sb[b2]; si[a] += si[b2]; };
+    merge(ID.AOL, ID.AOW); merge(ID.IVCL, ID.IVCW); merge(ID.AWALL, ID.ALUM);
+    this.labels = [];
+    for (const key in LABELS) {
+      const id = +key, n = cnt[id]; if (n < (LBL_MIN[id] || 40)) continue;
+      const [sx, sy] = this.toScreen(sb[id] / n, si[id] / n);
+      this.labels.push({ id, x: sx, y: sy, t: LABELS[id][0], dx: LABELS[id][1], dy: LABELS[id][2] });
+    }
+    // equivalent ellipse of the antrum (screen px)
+    if (mw > 20) {
+      const cx = mx / mw, cy = my / mw, sxx = mxx / mw - cx * cx, syy = myy / mw - cy * cy, sxy = mxy / mw - cx * cy;
+      const tr = sxx + syy, det = sxx * syy - sxy * sxy, l1 = tr / 2 + Math.sqrt(Math.max(0, tr * tr / 4 - det)), l2 = tr / 2 - Math.sqrt(Math.max(0, tr * tr / 4 - det));
+      const ang = Math.atan2(l1 - sxx, sxy || 1e-9), ra = 2 * Math.sqrt(l1), rb = 2 * Math.sqrt(Math.max(l2, 0));
+      const C = Math.PI * (3 * (ra + rb) - Math.sqrt((3 * ra + rb) * (ra + 3 * rb)));
+      this.measure = { A: mA, cx: this.ax + cx * this.ppc, cy: this.ay + cy * this.ppc, a: ra * this.ppc, b: rb * this.ppc, ang, C, c: M.ant.c };
+    } else this.measure = null;
+  }
+  render(t, force) {
+    const S = this.S;
+    if (!S.frozen) this.tm = t;
+    if (!force && !this.dirty && (S.frozen || t - this.lastR < 1 / 16)) return;
+    this.lastR = t; this.dirty = false;
+    this.layout();
+    const M = this.params(this.tm);
+    this.polar(M); this.draw(M);
+  }
+  draw(M) {
+    const { W, H, NB, NS, buf, ids, vel, lut } = this, S = this.S, d = this.img.data, g = this.gain;
+    const dop = S.doppler, half = this.half, ad = this.anat ? this.aimg.data : null;
+    const cc = PAL_C[M.ant.show] || PAL_C.empty;
+    for (let p = 0, q = 0; p < W * H; p++, q += 4) {
+      const bf = lut[2 * p];
+      if (bf < 0) { d[q] = d[q + 1] = d[q + 2] = 0; d[q + 3] = 255; if (ad) { ad[q] = 0; ad[q + 3] = 0; } continue; }
+      const fi = lut[2 * p + 1], b0 = bf | 0, i0 = fi | 0, tb = bf - b0, ti = fi - i0, k = b0 * NS + i0;
+      const b1 = b0 < NB - 1 ? NS : 0, i1 = i0 < NS - 1 ? 1 : 0;
+      const v = (buf[k] * (1 - ti) + buf[k + i1] * ti) * (1 - tb) + (buf[k + b1] * (1 - ti) + buf[k + b1 + i1] * ti) * tb;
+      let gr = 255 * Math.pow(clamp(v * g, 0, 1), .82);
+      d[q] = gr * .97; d[q + 1] = gr * .985; d[q + 2] = gr; d[q + 3] = 255;
+      if (dop) {
+        const kk = b0 * NS + (ti > .5 ? i0 + i1 : i0) + (tb > .5 ? b1 : 0), vv = vel[kk];
+        if (vv > .05 || vv < -.05) {
+          const phi = (bf / (NB - 1) - .5) * this.FOV;
+          if (Math.abs(phi) < half * .62) {
+            const m = clamp(Math.abs(vv) * 1.3, .25, 1);
+            if (vv > 0) { d[q] = 120 + 135 * m; d[q + 1] = 30 + 150 * m * m; d[q + 2] = 20; }
+            else { d[q] = 10; d[q + 1] = 60 + 120 * m * m; d[q + 2] = 150 + 105 * m; }
+          }
+        }
+      }
+      if (ad) {
+        const id = ids[b0 * NS + (ti > .5 ? i0 + i1 : i0) + (tb > .5 ? b1 : 0)];
+        const col = id === ID.ALUM ? cc : (PAL_A[id] || PAL_A[0]);
+        const sh = 1 - .18 * (fi / NS);
+        ad[q] = col[0] * sh; ad[q + 1] = col[1] * sh; ad[q + 2] = col[2] * sh; ad[q + 3] = 255;
+      }
+    }
+    this.octx.putImageData(this.img, 0, 0);
+    const c = this.ctx; c.fillStyle = '#000'; c.fillRect(0, 0, W, H);
+    c.filter = 'blur(0.55px)'; c.drawImage(this.off, 0, 0); c.filter = 'none';
+    this.ui(c, M);
+    if (S.labels) this.drawLabels(c, true);
+    if (this.anat) {
+      const a = this.actx; this.aoff.getContext('2d').putImageData(this.aimg, 0, 0);
+      a.clearRect(0, 0, W, H); a.fillStyle = '#f4ecdf'; a.fillRect(0, 0, W, H); a.drawImage(this.aoff, 0, 0);
+      a.strokeStyle = 'rgba(60,40,30,.35)'; a.lineWidth = 1; this.sectorPath(a); a.stroke();
+      if (S.labels) this.drawLabels(a, false);
+      a.save(); a.font = '600 11px ui-monospace,Menlo,monospace'; a.fillStyle = '#5a4f42'; a.textBaseline = 'top';
+      a.fillText(this.orientText(), 8, 6); a.restore();
+    }
+  }
+  sectorPath(c) {
+    const { ax, ay, ppc, Rc, D, half } = this;
+    c.beginPath(); c.arc(ax, ay, Rc * ppc, Math.PI / 2 + half, Math.PI / 2 - half, true); c.arc(ax, ay, (Rc + D) * ppc, Math.PI / 2 - half, Math.PI / 2 + half); c.closePath();
+  }
+  orientText() { const th = this.S.th; return th >= 70 ? 'screen left = head' : th <= 20 ? "screen left = patient's right" : 'oblique'; }
+  ui(c, M) {
+    const S = this.S, { W, H, ax, ay, ppc, Rc, D, half } = this;
+    c.save(); c.font = '11px ui-monospace,Menlo,monospace'; c.fillStyle = 'rgba(205,220,225,.85)'; c.textBaseline = 'top';
+    c.fillText(`${this.probe} · Abd · ${S.pos === 'rld' ? 'RLD' : 'SUPINE'}${S.doppler ? ' · CFM' : ''}`, 8, 6);
+    c.textAlign = 'left'; c.fillText(this.orientText(), 8, H - 16);
+    // depth scale (centre beam)
+    c.strokeStyle = 'rgba(205,220,225,.7)'; c.lineWidth = 1; c.textAlign = 'right';
+    for (let cm = 0; cm <= D; cm++) {
+      const y = Math.round(ay + (Rc + cm) * ppc) + .5, L = cm % 2 === 0 ? 7 : 4;
+      c.beginPath(); c.moveTo(W - 3, y); c.lineTo(W - 3 - L, y); c.stroke();
+      if (cm % 2 === 0 && cm > 0) c.fillText(String(cm), W - 13, y - 6);
+    }
+    c.fillText(`${D} cm`, W - 6, 6);
+    // orientation marker beside the left end of the footprint
+    const mx = ax + Rc * ppc * Math.sin(-half) - 9, my = ay + Rc * ppc * Math.cos(-half) - 2;
+    c.fillStyle = '#5ab0ff'; c.beginPath(); c.arc(mx, my, 3.4, 0, TAU); c.fill();
+    if (S.frozen) { c.fillStyle = '#9fd3ff'; c.textAlign = 'right'; c.fillText('❄ FROZEN', W - 50, 6); }
+    if (S.doppler) { const gx = 10, gy = 30; const gr = c.createLinearGradient(0, gy, 0, gy + 60); gr.addColorStop(0, '#ff9a3c'); gr.addColorStop(.45, '#7a1010'); gr.addColorStop(.55, '#0c2a6a'); gr.addColorStop(1, '#3ca0ff'); c.fillStyle = gr; c.fillRect(gx, gy, 6, 60); c.textAlign = 'left'; c.fillStyle = 'rgba(205,220,225,.85)'; c.fillText('towards', gx + 10, gy - 2); c.fillText('away', gx + 10, gy + 52);
+      c.strokeStyle = 'rgba(160,230,160,.45)'; c.beginPath(); c.arc(ax, ay, (Rc + .8) * ppc, Math.PI / 2 + half * .62, Math.PI / 2 - half * .62, true); c.arc(ax, ay, (Rc + D - .3) * ppc, Math.PI / 2 - half * .62, Math.PI / 2 + half * .62); c.closePath(); c.stroke(); }
+    if (S.trace && this.measure) {
+      const m = this.measure; c.save(); c.translate(m.cx, m.cy); c.rotate(m.ang);
+      c.fillStyle = '#ffe14d';
+      for (let k = 0; k < 64; k++) { const a = k / 64 * TAU; c.beginPath(); c.arc(m.a * Math.cos(a), m.b * Math.sin(a), 1.4, 0, TAU); c.fill(); }
+      c.restore(); c.fillStyle = '#ffe14d'; c.font = '12px ui-monospace,Menlo,monospace'; c.textAlign = 'left';
+      c.fillText(`+ A ${m.A.toFixed(2)} cm²`, 12, 26); c.fillText(`  C ${m.C.toFixed(1)} cm`, 12, 41);
+    }
+    c.restore();
+  }
+  drawLabels(c, onUS) {
+    const hl = this.S.hl || this.S.lset, placed = [];
+    c.save(); c.font = '600 11.5px ui-monospace,Menlo,monospace'; c.textBaseline = 'middle';
+    const L = this.labels.filter(l => !hl || hl.includes(l.id)).map(l => ({ ...l, ty0: l.y + l.dy })).sort((a, b) => a.ty0 - b.ty0);
+    for (const l of L) {
+      const w0 = c.measureText(l.t).width + 10, tx = l.dx < 0 ? clamp(l.x + l.dx, w0 + 4, this.W - 8) : clamp(l.x + l.dx, 8, this.W - w0 - 4), x0 = l.dx < 0 ? tx - w0 : tx;
+      let ty = clamp(l.ty0, 12, this.H - 12);
+      for (let k = 0; k < 12; k++) { const hit = placed.find(p => Math.abs(p.y - ty) < 17 && x0 < p.x1 && x0 + w0 > p.x0); if (!hit) break; ty = hit.y + 17; }
+      ty = clamp(ty, 12, this.H - 12); placed.push({ x0, x1: x0 + w0, y: ty });
+      c.strokeStyle = onUS ? 'rgba(255,214,120,.75)' : 'rgba(42,36,29,.55)'; c.lineWidth = 1;
+      c.beginPath(); c.moveTo(l.x, l.y); c.lineTo(tx, ty); c.stroke();
+      c.fillStyle = onUS ? '#ffd678' : '#2a241d'; c.beginPath(); c.arc(l.x, l.y, 2, 0, TAU); c.fill();
+      const right = l.dx < 0, w = c.measureText(l.t).width, bx = right ? tx - w - 6 : tx;
+      c.fillStyle = onUS ? 'rgba(0,0,0,.6)' : 'rgba(253,250,243,.85)'; c.fillRect(bx - 2, ty - 8, w + 8, 16);
+      c.fillStyle = onUS ? '#ffd678' : '#2a241d'; c.textAlign = 'left'; c.fillText(l.t, bx + 2, ty);
+    }
+    c.restore();
+  }
+}
+
+/* =====================================================================
+   TopView — bird's-eye view of the epigastrium with the probe footprint.
+   Patient supine, head at the top: patient's right is on the viewer's left.
+   ===================================================================== */
+class TopView {
+  constructor(canvas, o = {}) {
+    this.c = canvas; this.w = o.w || 320; this.h = o.h || 300; this.ctx = fitCanvas(canvas, this.w, this.h);
+    this.sc = o.sc || this.h / 25; this.cx = this.w / 2; this.cy = this.h * (o.cyF || .45);
+  }
+  X(x) { return this.cx + x * this.sc; } Y(z) { return this.cy - z * this.sc; }
+  base(c) {
+    const { w, h, sc } = this, X = x => this.X(x), Y = z => this.Y(z);
+    c.fillStyle = '#ecd3b9'; c.fillRect(0, 0, w, h);
+    const gr = c.createLinearGradient(0, 0, w, 0); gr.addColorStop(0, 'rgba(120,80,50,.25)'); gr.addColorStop(.18, 'rgba(120,80,50,0)'); gr.addColorStop(.82, 'rgba(120,80,50,0)'); gr.addColorStop(1, 'rgba(120,80,50,.25)'); c.fillStyle = gr; c.fillRect(0, 0, w, h);
+    // organs (translucent, as if seen through the skin)
+    c.fillStyle = 'rgba(158,86,70,.22)'; c.beginPath(); c.moveTo(X(-14), Y(9)); c.lineTo(X(5.5), Y(9)); c.lineTo(X(6.5), Y(4)); c.quadraticCurveTo(X(2), Y(.6), X(-1), Y(-.4)); c.quadraticCurveTo(X(-6), Y(-3.8), X(-14), Y(-4.5)); c.closePath(); c.fill();
+    c.fillStyle = 'rgba(120,170,100,.45)'; c.beginPath(); c.ellipse(X(-5.6), Y(-1.4), 1.5 * sc, 3.2 * sc, 0, 0, TAU); c.fill();
+    c.fillStyle = 'rgba(232,196,110,.4)'; c.save(); c.translate(X(.8), Y(.4)); c.rotate(-Math.atan2(1.8, 11)); c.fillRect(-6 * sc, -.95 * sc, 12 * sc, 1.9 * sc); c.restore();
+    c.fillStyle = 'rgba(214,140,150,.55)'; c.beginPath(); c.ellipse(X(7.6), Y(2.9), 3.1 * sc, 3.8 * sc, 0, 0, TAU); c.fill();
+    c.strokeStyle = 'rgba(214,140,150,.6)'; c.lineCap = 'round'; c.lineWidth = 2.3 * sc; c.beginPath(); c.moveTo(X(5), Y(1.5)); c.lineTo(X(-3.6), Y(-1.6)); c.stroke();
+    c.lineWidth = 2.1 * sc; c.strokeStyle = 'rgba(200,50,60,.5)'; c.beginPath(); c.moveTo(X(.9), Y(9)); c.lineTo(X(.9), Y(-15)); c.stroke();
+    c.lineWidth = 2.4 * sc; c.strokeStyle = 'rgba(72,102,178,.45)'; c.beginPath(); c.moveTo(X(-2.3), Y(9)); c.lineTo(X(-2.3), Y(-15)); c.stroke();
+    c.lineCap = 'butt';
+    // costal margins, xiphoid, umbilicus, midline
+    c.strokeStyle = 'rgba(110,70,50,.65)'; c.lineWidth = 2;
+    for (const s of [-1, 1]) { c.beginPath(); c.moveTo(X(0), Y(3.4)); c.quadraticCurveTo(X(s * 5), Y(-.2), X(s * 12), Y(-5.5)); c.stroke(); }
+    c.fillStyle = 'rgba(110,70,50,.55)'; c.beginPath(); c.moveTo(X(-.5), Y(5.5)); c.lineTo(X(.5), Y(5.5)); c.lineTo(X(0), Y(3.4)); c.closePath(); c.fill();
+    c.beginPath(); c.arc(X(0), Y(-11.5), 4, 0, TAU); c.stroke();
+    c.setLineDash([3, 4]); c.strokeStyle = 'rgba(110,70,50,.35)'; c.lineWidth = 1; c.beginPath(); c.moveTo(X(0), 0); c.lineTo(X(0), h); c.stroke(); c.setLineDash([]);
+    c.font = '600 11px ui-monospace,Menlo,monospace'; c.fillStyle = '#5a4030'; c.textBaseline = 'top';
+    c.textAlign = 'left'; c.fillText('R', 6, h / 2 - 6); c.textAlign = 'right'; c.fillText('L', w - 6, h / 2 - 6); c.textAlign = 'center'; c.fillText('head ↑', w / 2, 4);
+    c.font = '10px ui-monospace,Menlo,monospace'; c.fillStyle = 'rgba(60,40,30,.75)';
+    c.fillText('liver', X(-7), Y(5)); c.fillText('stomach', X(7.6), Y(6.9)); c.fillText('aorta', X(.9), Y(-9)); c.fillText('IVC', X(-2.3), Y(-12)); c.fillText('GB', X(-5.6), Y(-4.9));
+  }
+  draw(S, opts = {}) {
+    const c = this.ctx, sc = this.sc; this.base(c);
+    const th = S.th * D2R, X = this.X(S.x0), Y = this.Y(S.z0);
+    c.save(); c.translate(X, Y); c.rotate(th);
+    c.setLineDash([5, 4]); c.strokeStyle = 'rgba(40,120,150,.85)'; c.lineWidth = 1.4; c.beginPath(); c.moveTo(-13 * sc, 0); c.lineTo(13 * sc, 0); c.stroke(); c.setLineDash([]);
+    c.fillStyle = '#353b42'; c.beginPath(); c.roundRect(-2.7 * sc, -.8 * sc, 5.4 * sc, 1.6 * sc, 5); c.fill();
+    c.fillStyle = '#5ab0ff'; c.beginPath(); c.arc(-2.25 * sc, 0, 3.5, 0, TAU); c.fill();
+    c.restore();
+    if (opts.note) { c.font = '600 11px ui-monospace,Menlo,monospace'; c.fillStyle = '#2a241d'; c.textAlign = 'left'; c.textBaseline = 'bottom'; c.fillText(opts.note, 6, this.h - 6); }
+  }
+}
+
+/* ---------- loop + scene registry ---------- */
+const REG = [];
+let CUR_SLIDE = null;
+function scene(el, def) { if (!el) return; REG.push({ slide: el.closest('.slide'), el, inited: false, ...def }); }
+let _last = performance.now();
+function tick(now) {
+  const t = now / 1000, dt = clamp((now - _last) / 1000, 0, .1); _last = now;
+  for (const s of REG) {
+    if (s.slide !== CUR_SLIDE) continue;
+    if (!s.el.getClientRects().length) continue;
+    try { if (!s.inited) { s.inited = true; s.init && s.init(t); } s.frame && s.frame(t, dt); }
+    catch (e) { console.error(e); s.frame = null; }
+  }
+  requestAnimationFrame(tick);
+}
+
+/* rig: an ultrasound canvas (+ optional anatomy and bird's-eye canvases) sharing one state object */
+function rig(o) {
+  const R = { S: Object.assign(defaultS(), o.S || {}), tw: [] };
+  R.to = (vals, dur = 1.2) => { for (const k in vals) { R.tw = R.tw.filter(w => w.k !== k); R.tw.push({ k, a: R.S[k], b: vals[k], t0: null, dur }); } };
+  scene(o.us, {
+    init() { R.sim = new GSim(o.us, Object.assign({ anat: o.anat, S: R.S }, o.sim || {})); if (o.top) R.top = new TopView(o.top, o.topOpts || {}); o.init && o.init(R); },
+    frame(t, dt) {
+      for (const w of R.tw) { if (w.t0 === null) w.t0 = t; const f = smooth((t - w.t0) / w.dur); R.S[w.k] = lerp(w.a, w.b, f); if (f >= 1) w.done = true; R.sim.dirty = true; }
+      R.tw = R.tw.filter(w => !w.done);
+      R.S.sniff += (R.S.sniffT - R.S.sniff) * Math.min(1, dt * 7); R.S.press += (R.S.pressT - R.S.press) * Math.min(1, dt * 7);
+      o.frame && o.frame(R, t, dt);
+      R.sim.render(t);
+      if (R.top) R.top.draw(R.S, o.topNote ? { note: o.topNote(R) } : {});
+    }
+  });
+  return R;
+}
+
+/* =====================================================================
+   DECK: navigation, timer, overview, theme
+   ===================================================================== */
+const slides = $$('.slide');
+let cur = 0, running = false, elapsed = 0, slideStart = 0, lastNow = performance.now();
+const plan = slides.map(s => +s.dataset.min || 1);
+const TOTAL = plan.reduce((a, b) => a + b, 0) * 60;
+const cumStart = []; plan.reduce((acc, m, i) => { cumStart[i] = acc; return acc + m; }, 0);
+const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+$('#totT').textContent = '/ ' + fmt(TOTAL);
+$('#elT').title = 'Elapsed / ' + fmt(TOTAL);
+function go(i) {
+  i = clamp(i, 0, slides.length - 1);
+  if (i > 0 && !running && elapsed === 0) running = true;
+  slides.forEach((s, k) => { s.classList.toggle('active', k === i); s.classList.toggle('prev', k < i); });
+  cur = i; CUR_SLIDE = slides[i]; slides[i].scrollTop = 0;
+  $$('video').forEach(v => { if (!slides[i].contains(v)) v.pause(); });
+  $$('.stage video', slides[i]).forEach(v => v.play().catch(() => {}));
+  $('#cnt').textContent = `${i + 1} / ${slides.length}`;
+  $('#notesTxt').textContent = slides[i].dataset.prompt || '';
+  $('#prog').style.width = ((i + 1) / slides.length * 100) + '%';
+  try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+  slideStart = elapsed; updTimer();
+  $$('#ovGrid button').forEach((b, k) => b.classList.toggle('cur', k === i));
+}
+function jumpToCases() { go(slides.indexOf($('#partIII'))); }
+function updTimer() {
+  const now = performance.now(); if (running) elapsed += (now - lastNow) / 1000; lastNow = now;
+  const se = elapsed - slideStart, sug = plan[cur] * 60;
+  $('#elT').textContent = fmt(elapsed); $('#elT').classList.toggle('over', elapsed > TOTAL);
+  const sl = $('#slT'); sl.textContent = `${fmt(se)} / ${fmt(sug)}`; sl.classList.toggle('over', se > sug * 1.25);
+  $('#tmB').textContent = running ? '❚❚' : '▶';
+  let k = 0, m = elapsed / 60; while (k < plan.length - 1 && cumStart[k + 1] <= m) k++;
+  const frac = clamp((m - cumStart[k]) / plan[k], 0, 1);
+  $('#pace').style.left = ((k + frac) / slides.length * 100) + '%';
+}
+setInterval(updTimer, 250);
+$('#prevB').onclick = () => go(cur - 1); $('#nextB').onclick = () => go(cur + 1);
+$('#tmB').onclick = () => { running = !running; updTimer(); };
+$('#tmR').onclick = () => { elapsed = 0; slideStart = 0; running = false; updTimer(); };
+$('#fsB').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+function toggleTheme() {
+  const r = document.documentElement, dark = getComputedStyle(r).getPropertyValue('--bg').trim().toLowerCase() === '#1b1814';
+  r.dataset.theme = dark ? 'light' : 'dark';
+}
+$('#thB').onclick = toggleTheme;
+$('#ntB').onclick = () => $('#notes').hidden = !$('#notes').hidden;
+const ov = $('#overview');
+$('#ovGrid').innerHTML = slides.map((s, i) => `<button data-i="${i}"><span class="on">${String(i + 1).padStart(2, '0')}</span><span class="ot">${s.dataset.title}</span><span class="om">${plan[i]} min</span></button>`).join('');
+$('#ovGrid').onclick = e => { const b = e.target.closest('button'); if (b) { go(+b.dataset.i); ov.classList.remove('show'); } };
+$('#ovB').onclick = () => ov.classList.toggle('show');
+document.addEventListener('keydown', e => {
+  const tg = e.target, typing = tg.matches && tg.matches('input,textarea,select');
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (LB.open) {
+    if (e.key === 'Escape') lbClose(); else if (e.key === 'ArrowRight') $('#lbN').click(); else if (e.key === 'ArrowLeft') $('#lbP').click();
+    e.preventDefault(); return;
+  }
+  if (['ArrowRight', 'PageDown'].includes(e.key) && !typing) { e.preventDefault(); go(cur + 1); }
+  else if (['ArrowLeft', 'PageUp'].includes(e.key) && !typing) { e.preventDefault(); go(cur - 1); }
+  else if (e.key === ' ' && !typing && !tg.matches('button')) { e.preventDefault(); go(cur + (e.shiftKey ? -1 : 1)); }
+  else if (e.key === 'Home' && !typing) go(0); else if (e.key === 'End' && !typing) go(slides.length - 1);
+  else if (typing) return;
+  else if (e.key === 'o' || e.key === 'O') ov.classList.toggle('show');
+  else if (e.key === 'f' || e.key === 'F') $('#fsB').click();
+  else if (e.key === 't' || e.key === 'T') toggleTheme();
+  else if (e.key === 'p' || e.key === 'P') $('#tmB').click();
+  else if (e.key === 'n' || e.key === 'N') $('#notes').hidden = !$('#notes').hidden;
+  else if (e.key === 'c' || e.key === 'C') jumpToCases();
+  else if (e.key === 'r' || e.key === 'R') { const c = slides[cur].dataset.case; if (c !== undefined) CASE_ST[+c].revealNext(); }
+  else if (e.key === 'Escape') ov.classList.remove('show');
+});
+
+/* ---------- UI helpers ---------- */
+function rng(id, oid, f, cb) {
+  const el = $('#' + id), o = oid && $('#' + oid);
+  const up = () => { const v = +el.value; if (o) o.textContent = f ? f(v) : v; cb && cb(v); };
+  el.addEventListener('input', up); up(); return el;
+}
+function seg(id, cb, init = true) {
+  const el = $('#' + id);
+  el.addEventListener('click', e => { const b = e.target.closest('button'); if (!b || !el.contains(b)) return; $$('button', el).forEach(x => x.setAttribute('aria-pressed', x === b)); cb(b.dataset, b); });
+  const on = $('button[aria-pressed=true]', el); if (on && init) cb(on.dataset, on);
+}
+function setStat(id, html) { const el = $('#' + id); if (el && el._h !== html) { el.innerHTML = html; el._h = html; } }
+
+/* =====================================================================
+   MEDIA — library images and clips (data embedded at build time)
+   ===================================================================== */
+const MEDIA = {
+  i9546: { t: 'img', k: 'Empty', cat: ['empty'], cap: 'Round antrum with a thick dark muscular rim and a bright centre — the "target" of an empty antrum.' },
+  i1392: { t: 'img', k: 'Empty', cat: ['empty'], cap: 'Target-shaped antrum beneath the liver — the appearance of an empty antrum.' },
+  i9179: { t: 'img', k: 'Layers', cat: ['empty'], cap: 'Collapsed antrum — note the alternating bright and dark layers of the wall.' },
+  i0729: { t: 'img', k: 'Sagittal', cat: ['empty'], cap: 'Sagittal epigastric view, C1-5 abdominal preset. Liver anteriorly; a small antrum with a layered wall (traced at 4.72 cm²).' },
+  v9454: { t: 'vid', k: 'Empty', cat: ['empty', 'sweep'], cap: 'Small, target-shaped antrum under the liver — Grade 0 if the RLD view agrees.' },
+  v8774: { t: 'vid', k: 'Empty', cat: ['empty'], cap: "Bull's-eye antrum beneath the liver — empty." },
+  v1546: { t: 'vid', k: 'Empty', cat: ['empty'], cap: 'Small, target-shaped antrum — empty.' },
+  i9717: { t: 'img', k: 'Clear fluid', cat: ['clear', 'measure'], cap: 'Antrum distended with anechoic clear fluid. A 11.3 cm², C 12.7 cm (3.5 × √11.3 ≈ 11.9 — a clean trace).' },
+  v9504: { t: 'vid', k: 'Clear fluid', cat: ['clear'], cap: 'Antrum distended with anechoic clear fluid; a few bright specks.' },
+  i3103: { t: 'img', k: '5.70 cm²', cat: ['clear', 'measure'], cap: 'Small antrum with a little anechoic fluid. A 5.70 cm², C 11.0 cm — long for that area (expected ≈ 8.5): an elongated outline or a loose trace.' },
+  i7132: { t: 'img', k: 'Echogenic', cat: ['solid'], cap: 'Round, distended antrum filled with echogenic content beneath the liver.' },
+  i7133: { t: 'img', k: 'Echogenic', cat: ['solid'], cap: 'Same antrum a moment later: echogenic content, layered wall still visible.' },
+  v7134: { t: 'vid', k: 'Cine', cat: ['solid'], cap: 'Cine of the same echogenic antrum.' },
+  i7429: { t: 'img', k: 'Solid', cat: ['solid'], cap: 'Distended antrum with heterogeneous, mixed-echogenicity content — solid food.' },
+  i7430: { t: 'img', k: 'Solid', cat: ['solid'], cap: 'Same antrum: lumpy, heterogeneous content. High risk at any volume.' },
+  i7431: { t: 'img', k: 'Solid', cat: ['solid'], cap: 'Same antrum from a slightly different angle — the content does not change with the plane.' },
+  i7432: { t: 'img', k: '7.90 cm²', cat: ['solid', 'measure'], cap: 'The same solid antrum measured: D 2.86 cm, A 7.90 cm², C 10.1 cm. A number on a solid antrum does not make it a volume.' },
+  v8912: { t: 'vid', k: 'Distended', cat: ['solid'], cap: 'Markedly distended stomach with particulate, mixed content.' },
+  i9294: { t: 'img', k: 'Echogenic', cat: ['solid'], cap: 'Round antrum with echogenic content; a dark tubular vessel runs deep to it.' },
+  v9295: { t: 'vid', k: 'Cine', cat: ['solid'], cap: 'Cine: round antrum with echogenic content.' },
+  i3004: { t: 'img', k: '11.7 cm²', cat: ['solid', 'measure'], cap: 'Distended antrum with hypoechoic fluid and echogenic particulate content. A 11.7 cm², C 13.0 cm — but particulate content is not clear fluid.' },
+  v3005: { t: 'vid', k: 'Particulate', cat: ['solid'], cap: 'Hypoechoic fluid with echogenic particles — not clear fluid.' },
+  v3010: { t: 'vid', k: 'Sweep', cat: ['clear', 'sweep'], cap: 'Sweep through an antrum distended with fluid; scattered bright specks.' },
+  v2749: { t: 'vid', k: 'Frosted glass?', cat: ['solid'], cap: 'Bright anterior interface with shadowing that hides the posterior wall: the frosted-glass pattern of a recent solid meal. Gas mimics it — rescan in RLD.' },
+  v0774: { t: 'vid', k: 'Sweep', cat: ['solid'], cap: 'Sweep through an antrum with heterogeneous content.' },
+  i0728: { t: 'img', k: 'Read-out', cat: ['measure'], cap: 'GE Venue Go read-out after free-tracing: A 4.72 cm², C 9.52 cm — a small, slightly oval antrum.' },
+  i1946: { t: 'img', k: 'Tracing', cat: ['measure'], cap: 'GE free-trace in progress ("Place the first point of the closed trace"). Follow the outer bright line — the serosa.' },
+  i2987: { t: 'img', k: 'Before trace', cat: ['measure'], cap: 'Before measuring: find the antrum and wait for it to relax between contractions.' },
+  i2988: { t: 'img', k: '4.25 cm²', cat: ['measure'], cap: 'Traced: A 4.25 cm², C 7.60 cm, depth 5.65 cm. 3.5 × √4.25 ≈ 7.3 — a clean trace of a small antrum.' },
+  i9208: { t: 'img', k: 'Area (trace)', cat: ['measure'], cap: 'GE: Generic → Area (trace). A 7.14 cm², C 10.83 cm, depth 6.45 cm.' },
+  i9525: { t: 'img', k: '4.56 cm²', cat: ['measure'], cap: 'GE trace: A 4.56 cm², C 8.97 cm, depth 6.76 cm.' },
+  i9545: { t: 'img', k: 'Bad trace', cat: ['measure'], cap: 'A 7.19 cm² with C 23.8 cm — the trace has wandered off the antrum (a round 7.2 cm² outline has C ≈ 9.5 cm). Re-trace.' },
+  v9543: { t: 'vid', k: 'Sweep', cat: ['sweep'], cap: 'Slow sweep: liver window, antrum and the structures behind it — pause and name each one.' },
+  i1547: { t: 'img', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy, same session as the IMG_1546 scan: clean gastric mucosa, no residue.' },
+  i7135: { t: 'img', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy (image-enhanced mode), same day as IMG_7132: dark fluid with suspended particles in the lumen.' },
+  i7136: { t: 'img', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy, same day as IMG_7132: dark altered material in the lumen, friable erythematous mucosa.' },
+  v0777: { t: 'vid', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy the same morning as IMG_0774 (image-enhanced mode): material in the gastric lumen.' }
+};
+const fileId = id => 'IMG_' + id.slice(1);
+const _blob = {};
+function msrc(id) { return SRC[id] || ''; }
+const thumbSrc = id => MEDIA[id].t === 'img' ? msrc(id) : POSTER[id];
+function mediaEl(id, o = {}) {
+  const m = MEDIA[id];
+  if (m.t === 'img') { const im = new Image(); im.src = msrc(id); im.alt = m.cap; return im; }
+  const v = document.createElement('video'); v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = o.autoplay !== false; v.controls = o.controls !== false;
+  v.poster = thumbSrc(id); v.src = msrc(id); v.setAttribute('aria-label', m.cap); return v;
+}
+function capHTML(id, badge) { return `<span class="id">${fileId(id)}${badge ? ' · ' + badge : ''}</span>${MEDIA[id].cap}`; }
+function thumbsHTML(ids, badges = {}) {
+  return ids.map(id => `<button data-id="${id}" title="${fileId(id)}"><img src="${thumbSrc(id)}" alt=""><span class="k">${badges[id] || MEDIA[id].k}</span>${MEDIA[id].t === 'vid' ? '<span class="pl">▶</span>' : ''}</button>`).join('');
+}
+
+/* ---------- lightbox ---------- */
+const LB = { list: [], i: 0, open: false };
+function lbShow() {
+  const id = LB.list[LB.i], st = $('#lbStage'); st.innerHTML = ''; st.appendChild(mediaEl(id));
+  $('#lbCap').innerHTML = capHTML(id) + `<span class="id" style="margin-left:8px">${LB.i + 1} / ${LB.list.length}</span>`;
+}
+function lbOpen(list, i) { LB.list = list; LB.i = i; LB.open = true; $('#lb').hidden = false; $$('.slide.active video').forEach(v => v.pause()); lbShow(); }
+function lbClose() { LB.open = false; $('#lb').hidden = true; $('#lbStage').innerHTML = ''; $$('.slide.active .stage video').forEach(v => v.play().catch(() => {})); }
+$('#lbX').onclick = lbClose; $('#lbP').onclick = () => { LB.i = (LB.i - 1 + LB.list.length) % LB.list.length; lbShow(); }; $('#lbN').onclick = () => { LB.i = (LB.i + 1) % LB.list.length; lbShow(); };
+$('#lb').addEventListener('click', e => { if (e.target.id === 'lb') lbClose(); });
+function bindThumbs(el, ids, onPick) { el.addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if (!b) return; const id = b.dataset.id; onPick ? onPick(id, b) : lbOpen(ids, ids.indexOf(id)); }); }
+
+/* stage viewer (cases, contents slide) */
+function stage(el, capEl) {
+  const S = { id: null, list: [], badges: {} };
+  S.show = id => {
+    S.id = id; el.innerHTML = ''; el.appendChild(mediaEl(id));
+    if (S.badges[id]) { const b = document.createElement('span'); b.className = 'badge'; b.textContent = S.badges[id]; el.appendChild(b); }
+    const z = document.createElement('button'); z.className = 'zoom'; z.textContent = '⤢ enlarge'; z.onclick = () => lbOpen(S.list.length ? S.list : [id], Math.max(0, S.list.indexOf(id))); el.appendChild(z);
+    if (capEl) capEl.innerHTML = capHTML(id, S.badges[id]);
+  };
+  S.empty = html => { S.id = null; el.innerHTML = `<div class="mini" style="color:#bbb;padding:20px;text-align:center">${html}</div>`; };
+  return S;
+}
+
+/* =====================================================================
+   FLOWCHART (I-AIM decision)
+   ===================================================================== */
+function flowSVG() {
+  const bx = (x, y, w, h, cls, lines) => `<rect class="bx ${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>` + lines.map((l, i) => `<text x="${x + w / 2}" y="${lines.length === 1 ? y + h / 2 + 5 : y + 22 + i * 16}" text-anchor="middle" class="${l[1] || ''}">${l[0]}</text>`).join('');
+  const ar = (x, y) => `<polygon class="ah" points="${x - 4.5},${y - 7} ${x + 4.5},${y - 7} ${x},${y}"/>`;
+  return `<svg viewBox="0 0 560 480" role="img" aria-label="Decision flowchart">
+  ${bx(170, 8, 220, 42, 'q', [['Antrum · supine + RLD', 'h']])}
+  <path d="M280 50 V68 M70 68 H488 M70 68 V86 M208 68 V86 M348 68 V86 M488 68 V86"/>${ar(70, 86)}${ar(208, 86)}${ar(348, 86)}${ar(488, 86)}
+  ${bx(8, 86, 124, 52, '', [['Empty'], ['Grade 0', 's']])}
+  ${bx(144, 86, 128, 52, '', [['Clear fluid'], ['Grade 1 or 2', 's']])}
+  ${bx(284, 86, 128, 52, '', [['Thick / solid'], ['any volume', 's']])}
+  ${bx(424, 86, 128, 52, '', [['Inconclusive'], ["can't find / read", 's']])}
+  <path d="M208 138 V168"/>${ar(208, 168)}
+  ${bx(144, 168, 128, 48, 'md', [['RLD-CSA → volume'], ['Perlas model', 's']])}
+  <path d="M208 216 V232 M152 232 H266 M152 232 V248 M266 232 V248"/>${ar(152, 248)}${ar(266, 248)}
+  ${bx(100, 248, 104, 44, 'lo', [['≤ 1.5 mL/kg']])}
+  ${bx(214, 248, 104, 44, 'hi', [['&gt; 1.5 mL/kg']])}
+  <path d="M488 138 V168"/>${ar(488, 168)}
+  ${bx(424, 168, 128, 124, 'md', [['Clinical'], ['judgement'], ['treat as full', 's'], ['if risk factors', 's'], ['are present', 's']])}
+  <path d="M70 138 V330 M152 292 V330 M266 292 V330 M348 138 V330"/>${ar(70, 330)}${ar(152, 330)}${ar(266, 330)}${ar(348, 330)}
+  ${bx(8, 330, 200, 112, 'lo', [['LOW RISK', 'h'], ['Proceed as planned', 's'], ['usual induction', 's'], ['or sedation', 's']])}
+  ${bx(228, 330, 324, 142, 'hi', [['HIGH RISK', 'h'], ['Elective → postpone · wait and rescan', 's'], ['Urgent → RSI with a cuffed tube', 's'], ['or regional / neuraxial, minimal sedation', 's'], ['NG tube for fluid (not solids)', 's'], ['prokinetic + rescan if time allows', 's']])}
+</svg>`;
+}
+$$('.flow').forEach(f => f.innerHTML = flowSVG());
+
+/* =====================================================================
+   SLIDE 1 — hero
+   ===================================================================== */
+rig({ us: $('#hero'), anat: $('#heroA'), sim: { w: 480, h: 400 }, S: { x0: .9, th: 90, depth: 13, pos: 'rld', content: 'clear', vol: 75, age: 50, periT: 12, lset: [4, 5, 7, 9, 10, 14, 20] } });
+
+/* =====================================================================
+   SLIDE 2 — why
+   ===================================================================== */
+const WHY = [
+  { label: 'Healthy · 8 h', S: { content: 'empty', vol: 10 }, fast: 8, txt: 'No risk factors, fasted 8 h. Flat, target-shaped antrum in both positions — <b class="ok">Grade 0</b>. History and stomach agree.' },
+  { label: 'Diabetes · autonomic', S: { content: 'thick', vol: 190 }, fast: 8, txt: 'Also fasted 8 h. Diabetic gastroparesis: the antrum is still distended with echogenic content — <b class="bad">high risk</b> after a "perfect" fast.' },
+  { label: 'Weekly GLP-1 RA', S: { content: 'solidLate', vol: 230 }, fast: 12, txt: 'Fasted 12 h; semaglutide 3 days ago. Heterogeneous solid content — <b class="bad">high risk</b>. GLP-1 RAs slow gastric emptying.' },
+  { label: 'Pain + opioids', S: { content: 'solidEarly', vol: 260 }, fast: 7, txt: 'Ate 1 h before a fracture, IV morphine in ED. Emptying stopped at the injury — "frosted glass" solid. <b class="bad">High risk</b>.' },
+  { label: 'Water 30 min ago', S: { content: 'bubbles', vol: 170 }, fast: 12, water: true, txt: 'Solids fasted overnight, a large glass of water 30 min ago. Clear fluid with bubbles — <b>measure it</b>: the volume decides.' }
+];
+const WHYR = rig({ us: $('#whyUS'), sim: { w: 460, h: 360, nb: 150, ns: 220 }, S: { x0: .9, th: 90, depth: 12, pos: 'rld', content: 'empty', vol: 10, age: 50, labels: true, periT: 14, lset: [4, 5, 7, 10] } });
+$('#whyTabs').innerHTML = WHY.map((w, i) => `<button aria-selected="${i === 0}" data-i="${i}">${w.label}</button>`).join('');
+function setWhy(i) {
+  const w = WHY[i]; Object.assign(WHYR.S, w.S); if (WHYR.sim) WHYR.sim.dirty = true;
+  $$('#whyTabs button').forEach((b, k) => b.setAttribute('aria-selected', k === i));
+  setStat('whyStat', w.txt);
+  $('#whyClock').innerHTML = `Solids fasted: <b>${w.fast} h</b>${w.water ? ' · water: <b>30 min</b>' : ''}<div class="trk"><i style="width:${Math.min(100, w.fast / 12 * 100)}%"></i></div><span class="mini">Fasting clock — the same reassuring number in four of five patients.</span>`;
+}
+$('#whyTabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setWhy(+b.dataset.i); });
+setWhy(0);
+
+/* =====================================================================
+   SLIDE 3 — I-AIM
+   ===================================================================== */
+$('#iaimList').addEventListener('click', e => {
+  const li = e.target.closest('li'); if (!li) return;
+  $$('#iaimList li').forEach(x => x.classList.toggle('on', x === li));
+  $$('.iaimP').forEach(p => p.hidden = p.dataset.k !== li.dataset.k);
+});
+scene($('#iaTop'), { init() { this.tv = new TopView($('#iaTop'), { w: 420, h: 220, sc: 7.5, cyF: .45 }); }, frame() { this.tv.draw({ x0: .9, z0: 0, th: 90 }); } });
+
+/* =====================================================================
+   SLIDE 4 — Part I divider: sweeping probe
+   ===================================================================== */
+scene($('#p1Top'), { init() { this.tv = new TopView($('#p1Top'), { w: 520, h: 360 }); }, frame(t) { const x = 6.5 * Math.sin(t * .55); this.tv.draw({ x0: x, z0: 0, th: 90 }, { note: x > 4 ? 'gastric body' : x > 2 ? 'left of the aorta' : x > -.3 ? 'aorta plane — the CSA plane' : x > -1.4 ? 'between the vessels' : x > -3.6 ? 'IVC plane' : 'gallbladder / duodenum' }); } });
+
+/* =====================================================================
+   SLIDE 5 — set-up and sweep
+   ===================================================================== */
+const SW = rig({ us: $('#swUS'), anat: $('#swA'), top: $('#swTop'), topOpts: { w: 300, h: 260 }, sim: { w: 440, h: 360, nb: 150, ns: 230 },
+  S: { x0: .9, th: 90, depth: 15, pos: 'rld', content: 'clear', vol: 80, age: 50, periT: 14 },
+  frame(R) {
+    const S = R.S, x = S.x0;
+    let m = x > 4.2 ? '<b>Too far left</b> — gastric body and fundus. Air rises here: a bright line with a dirty shadow. Slide right.'
+      : x > 2.0 ? '<b>Left of the aorta</b> — antrum and pancreatic body, but no great vessel behind. Keep sliding right.'
+        : x > -.3 ? '<b class="ok">Aorta plane ✓</b> — antrum between liver and pancreas; coeliac trunk and SMA arising from the aorta. <b>The plane for CSA.</b>'
+          : x > -1.4 ? '<b>Between the vessels</b> — SMV behind the pancreatic neck. A little further for the IVC.'
+            : x > -3.6 ? '<b class="ok">IVC plane</b> — antrum near the pylorus, IVC running through the liver into the right atrium. An acceptable alternative.'
+              : '<b>Too far right</b> — gallbladder and right lobe of the liver. Slide back left.';
+    if (x > -3.6 && x < 4.2 && S.content === 'clear' && S.vol >= 12 && S.vol < 100) m += S.pos === 'sup' ? '<br><span class="warn">Supine: the fluid has pooled in the fundus — the antrum looks empty. Turn the patient.</span>' : '<br><span class="ok">RLD: the fluid has run into the antrum.</span>';
+    setStat('swStat', m);
+  } });
+rng('swX', 'swXo', v => v >= 0 ? `${v.toFixed(1)} cm L` : `${(-v).toFixed(1)} cm R`, v => { SW.S.x0 = v; });
+seg('swPos', d => { SW.S.pos = d.v; });
+rng('swV', 'swVo', v => `${v} mL`, v => { SW.S.vol = v; });
+$('#swLbl').onclick = () => SW.S.labels = !SW.S.labels;
+
+/* =====================================================================
+   SLIDE 6 — standard plane + wall layers
+   ===================================================================== */
+rig({ us: $('#spUS'), sim: { w: 440, h: 360, nb: 150, ns: 230 }, S: { x0: .9, th: 90, depth: 11, pos: 'rld', content: 'empty', age: 50, periT: 14, lset: [4, 5, 7, 9, 10, 8, 20] } });
+const SPW = { d: 0 };
+seg('spSeg', d => SPW.d = +d.v);
+scene($('#spWall'), {
+  init() { this.w = 440; this.h = 360; this.ctx = fitCanvas($('#spWall'), this.w, this.h); this.k = 0; },
+  frame(t, dt) {
+    this.k += (SPW.d - this.k) * Math.min(1, dt * 4);
+    const c = this.ctx, w = this.w, h = this.h, k = this.k, cx = w * .3, cy = h * .5;
+    c.fillStyle = '#0b0b0b'; c.fillRect(0, 0, w, h);
+    const R = lerp(78, 108, k), Wt = lerp(36, 14, k), ry = lerp(.7, .92, k);
+    const layers = [[0, .1, '#cfcfcf'], [.1, .52, '#262626'], [.52, .68, '#bdbdbd'], [.68, .8, '#3a3a3a'], [.8, 1, k > .5 ? '#d0d0d0' : '#8a8a8a']];
+    for (const [a, , col] of layers) { const r = R - a * Wt; c.fillStyle = col; c.beginPath(); c.ellipse(cx, cy, r, r * ry, 0, 0, TAU); c.fill(); }
+    const ri = R - Wt; c.fillStyle = k > .5 ? '#030303' : '#9a9a9a'; c.beginPath(); c.ellipse(cx, cy, ri, ri * ry, 0, 0, TAU); c.fill();
+    if (k < .5) { c.strokeStyle = '#d8d8d8'; c.lineWidth = 2; for (let i = 0; i < 7; i++) { const a = i / 7 * TAU + .3; c.beginPath(); c.moveTo(cx, cy); c.lineTo(cx + Math.cos(a) * ri * .9, cy + Math.sin(a) * ri * ry * .9); c.stroke(); } }
+    c.font = '600 11px ui-monospace,Menlo,monospace'; c.textBaseline = 'middle';
+    const names = ['serosa', 'muscularis propria', 'submucosa', 'deep mucosa', 'mucosa–lumen interface'];
+    layers.forEach(([a, b], i) => {
+      const r = R - (a + b) / 2 * Wt, ang = -.5 + i * .25, px = cx + Math.cos(ang) * r, py = cy + Math.sin(ang) * r * ry, tx = w - 205, ty = 70 + i * 30;
+      c.strokeStyle = 'rgba(255,214,120,.75)'; c.lineWidth = 1; c.beginPath(); c.moveTo(px, py); c.lineTo(tx - 6, ty); c.stroke();
+      c.fillStyle = '#ffd678'; c.beginPath(); c.arc(px, py, 2, 0, TAU); c.fill(); c.fillText(`${5 - i}. ${names[i]}`, tx, ty);
+    });
+    c.fillStyle = 'rgba(205,220,225,.85)'; c.font = '11px ui-monospace,Menlo,monospace'; c.textBaseline = 'top';
+    c.fillText(k > .5 ? 'Distended: thin wall, anechoic lumen' : 'Empty: thick wall, folded mucosa = "target"', 10, h - 20);
+  }
+});
+const SP_IDS = ['i9546', 'i9179', 'i0729', 'v9454', 'i1392'];
+$('#spThumbs').innerHTML = thumbsHTML(SP_IDS); bindThumbs($('#spThumbs'), SP_IDS);
+
+/* =====================================================================
+   SLIDE 7 — aorta vs IVC
+   ===================================================================== */
+const AV = rig({ us: $('#avUS'), anat: $('#avA'), sim: { w: 440, h: 360, nb: 150, ns: 230 }, S: { x0: .9, th: 90, depth: 14, pos: 'sup', content: 'empty', age: 50, periT: 14 },
+  frame(R) {
+    const S = R.S, ivc = S.x0 < -1, sn = S.sniffT > 0, pr = S.pressT > 0, dop = S.doppler;
+    const hl = new Set(['side', 'wall', 'pulse', 'branch']); if (sn) hl.add('sniff'); if (pr) hl.add('press'); if (dop) hl.add('dop');
+    $$('#avTable tbody tr').forEach(tr => tr.classList.toggle('hl', hl.has(tr.dataset.f)));
+    let m = ivc ? '<b>IVC</b> — thin walls, running through the liver into the right atrium; hepatic veins join it. '
+      : '<b>Aorta</b> — thick bright walls, expansile pulsation, coeliac trunk and SMA leaving its front wall. ';
+    if (sn) m += ivc ? '<b class="ok">Sniff: it collapses.</b> ' : 'Sniff: <b>no change</b>. ';
+    if (pr) m += ivc ? '<b class="ok">Pressure: it flattens.</b> ' : 'Pressure: <b>holds its shape</b>. ';
+    if (dop) m += ivc ? 'Colour: low-velocity, phasic. ' : 'Colour: bright, pulsatile. ';
+    if (dop) m += '<br><span class="mini" style="display:inline">Red = towards the probe, blue = away — direction, not artery vs vein. In one straight vessel the colour flips across the image.</span>';
+    setStat('avStat', m);
+  } });
+seg('avSeg', d => AV.to({ x0: d.v === 'ivc' ? -2.3 : .9 }, .9), false);
+function hold(id, key) {
+  const b = $('#' + id), on = () => { AV.S[key] = 1; b.classList.add('on'); }, off = () => { AV.S[key] = 0; b.classList.remove('on'); };
+  b.addEventListener('pointerdown', on); ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => b.addEventListener(ev, off));
+  b.addEventListener('keydown', e => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); on(); } }); b.addEventListener('keyup', off);
+}
+hold('avSniff', 'sniffT'); hold('avPress', 'pressT');
+$('#avDop').onclick = () => { AV.S.doppler = !AV.S.doppler; };
+$('#avLbl').onclick = () => { AV.S.labels = !AV.S.labels; };
+
+/* =====================================================================
+   SLIDE 8 — transverse → sagittal
+   ===================================================================== */
+const RT_STEPS = [
+  { x0: 2.6, th: 0, fan: 0, depth: 18, hl: [14, 10, 12] },
+  { x0: 2.6, th: 0, fan: 0, depth: 18, hl: [10, 12, 9, 14, 4] },
+  { x0: .9, th: 0, fan: 0, depth: 18, hl: null },
+  { x0: .9, th: 70, fan: 0, depth: 18, hl: null },
+  { x0: .9, th: 90, fan: 0, depth: 18, hl: null },
+  { x0: .9, th: 90, fan: 0, depth: 12, hl: null }
+];
+const RT = rig({ us: $('#rtUS'), anat: $('#rtA'), top: $('#rtTop'), topOpts: { w: 300, h: 260 }, sim: { w: 440, h: 360, nb: 150, ns: 230 },
+  S: Object.assign({ z0: -.3, pos: 'sup', content: 'empty', age: 50, periT: 14 }, RT_STEPS[0]),
+  frame(R, t) {
+    const S = R.S;
+    if (RT.play) { const k = Math.floor((t - RT.play) / 3.4); if (k !== RT.k) { if (k >= RT_STEPS.length) { RT.play = 0; $('#rtPlay').textContent = '▶ Walk me through'; } else rtStep(k, true); } }
+    syncR('rtX', S.x0, v => v >= 0 ? `${v.toFixed(1)} cm L` : `${(-v).toFixed(1)} cm R`); syncR('rtT', S.th, v => `${Math.round(v)}°`); syncR('rtF', S.fan, v => `${Math.round(v)}°`); syncR('rtD', S.depth, v => `${Math.round(v)} cm`);
+    $('#rtPov').textContent = S.th < 20 ? 'Ultrasound · transverse' : S.th > 80 ? 'Ultrasound · sagittal' : 'Ultrasound · oblique';
+    const off = S.x0 - .9, th = S.th;
+    let m;
+    if (th < 20) m = Math.abs(off) > .6 ? `Transverse. The aorta sits <b>${off > 0 ? 'left' : 'right'} of centre</b> on the screen — slide the probe towards the patient's <b>${off > 0 ? 'right' : 'left'}</b> to centre it.` : '<b class="ok">Aorta centred ✓</b> — now rotate 90°, marker to the head, keeping it centred.';
+    else if (th < 80) m = 'Oblique: the aorta is an ellipse or a short segment. Keep rotating.' + (Math.abs(off) > .6 ? ' <span class="warn">It is drifting out of the beam — re-centre.</span>' : '');
+    else if (Math.abs(off) > .6) m = '<span class="warn">Sagittal, but off the aorta</span> — slide back towards it, or rotate back to transverse and re-centre.';
+    else if (Math.abs(S.fan) > 6 || th < 87) m = 'Nearly there — fine-tune rotation and fan until the walls run parallel across the screen.';
+    else m = '<b class="ok">Long axis ✓</b> — aorta along the spine, coeliac trunk and SMA from its front wall. ' + (S.depth > 14 ? 'Now reduce depth to ≈ 12 cm.' : '<b class="ok">Antrum in front, between liver and pancreas ✓</b>');
+    setStat('rtStat', m);
+  } });
+RT.k = 0; RT.play = 0;
+function syncR(id, v, f) { const el = $('#' + id); if (document.activeElement !== el && Math.abs(+el.value - v) > .05) el.value = v; const o = $('#' + id + 'o'); if (o) o.textContent = f(v); }
+function rtStep(k, auto) {
+  RT.k = k; const st = RT_STEPS[k]; RT.S.hl = st.hl; const { hl, ...v } = st; RT.to(v, 1.4);
+  $$('#rtList li').forEach(li => li.classList.toggle('on', +li.dataset.s === k));
+  if (!auto) { RT.play = 0; $('#rtPlay').textContent = '▶ Walk me through'; }
+}
+$('#rtList').addEventListener('click', e => { const li = e.target.closest('li'); if (li) rtStep(+li.dataset.s); });
+for (const [id, key] of [['rtX', 'x0'], ['rtT', 'th'], ['rtF', 'fan'], ['rtD', 'depth']]) $('#' + id).addEventListener('input', e => { RT.tw = RT.tw.filter(w => w.k !== key); RT.S[key] = +e.target.value; RT.S.hl = null; RT.play = 0; $('#rtPlay').textContent = '▶ Walk me through'; });
+$('#rtPlay').onclick = () => { if (RT.play) { RT.play = 0; $('#rtPlay').textContent = '▶ Walk me through'; return; } RT.k = -1; RT.play = performance.now() / 1000; rtStep(0, true); $('#rtPlay').textContent = '❚❚ Stop'; };
+$('#rtReset').onclick = () => rtStep(0);
+
+/* =====================================================================
+   SLIDE 9 — Part II divider
+   ===================================================================== */
+$('#p2Pair').innerHTML = '';
+for (const [id, lab] of [['i9546', 'Empty'], ['i9717', 'Clear fluid']]) {
+  const d = document.createElement('div'); d.innerHTML = `<div class="pov">${lab}</div>`; const s = document.createElement('div'); s.className = 'stage'; d.appendChild(s); $('#p2Pair').appendChild(d);
+  stage(s).show(id);
+}
+
+/* =====================================================================
+   SLIDE 10 — qualitative content
+   ===================================================================== */
+const CT = {
+  empty: { vol: 0, real: 'v9454', txt: 'Grade 0 if the RLD view agrees. Collapsed walls and folded mucosa make the bright centre; the thick dark ring is muscularis propria.' },
+  clear: { vol: 170, real: 'i9717', txt: 'Anechoic and round, thin stretched walls, bright through-transmission behind. Now measure: freeze between contractions and trace the serosa.' },
+  bubbles: { vol: 150, real: null, txt: 'A recent drink: bright dots rising through black fluid. Still clear fluid — measure it.' },
+  thick: { vol: 180, real: 'i7132', txt: 'Uniformly echogenic: milk, enteral feed, blood. Not clear fluid — do not calculate a volume. <b class="bad">High risk.</b>' },
+  solidEarly: { vol: 150, real: 'v2749', txt: 'Air swallowed with a meal: a bright front edge and a shadow that hides the posterior wall. Gas in an empty antrum can mimic this — rescan in RLD. <b class="bad">High risk.</b>' },
+  solidLate: { vol: 240, real: 'i7430', txt: 'Heterogeneous, mixed echogenicity — food being mixed with secretions. <b class="bad">High risk at any volume.</b>' }
+};
+const CTR = rig({ us: $('#ctUS'), sim: { w: 440, h: 360, nb: 150, ns: 230 }, S: { x0: .9, th: 90, depth: 12, pos: 'rld', content: 'empty', vol: 0, age: 50, periT: 14, lset: [4, 5, 7, 10] } });
+const ctStage = stage($('#ctReal'));
+function setCT(k) {
+  const c = CT[k]; CTR.S.content = k; CTR.S.vol = c.vol;
+  $$('#ctList li').forEach(li => li.classList.toggle('on', li.dataset.c === k));
+  if (c.real) { ctStage.list = [c.real]; ctStage.show(c.real); } else ctStage.empty('No library example — simulation only');
+  setStat('ctStat', c.txt + (c.real ? `<br><span class="mini" style="display:inline">Library: ${fileId(c.real)} — ${MEDIA[c.real].cap}</span>` : ''));
+}
+$('#ctList').addEventListener('click', e => { const li = e.target.closest('li'); if (li) setCT(li.dataset.c); });
+setCT('empty');
+
+/* =====================================================================
+   SLIDE 11 — grading
+   ===================================================================== */
+const GR = { v: 40, w: 70 };
+const GRS = rig({ us: $('#grS'), sim: { w: 400, h: 320, nb: 130, ns: 200 }, S: { x0: .9, th: 90, depth: 12, pos: 'sup', content: 'clear', vol: 40, age: 50, labels: false, periT: 16 } });
+const GRR = rig({ us: $('#grR'), sim: { w: 400, h: 320, nb: 130, ns: 200 }, S: { x0: .9, th: 90, depth: 12, pos: 'rld', content: 'clear', vol: 40, age: 50, labels: false, periT: 16, periPh: 6 } });
+function grUpd() {
+  GRS.S.vol = GRR.S.vol = GR.v;
+  const g = GR.v >= 100 ? 2 : GR.v >= 12 ? 1 : 0, mlkg = GR.v / GR.w;
+  $$('#grTable tbody tr').forEach(tr => tr.classList.toggle('on', +tr.dataset.g === g));
+  $$('#grTable tbody tr').forEach(tr => tr.style.background = +tr.dataset.g === g ? 'var(--accent-soft)' : '');
+  let m = `<b>Grade ${g}</b> · ${g === 0 ? 'empty in both positions' : g === 1 ? 'fluid in RLD only' : 'fluid supine and RLD'} · volume ≈ ${GR.v} mL = <b class="${mlkg > 1.5 ? 'bad' : 'ok'}">${mlkg.toFixed(2)} mL/kg</b> ${mlkg > 1.5 ? '— above baseline: high risk' : '— consistent with baseline secretions'}`;
+  if (g === 1 && mlkg > 1.5) m += '<br><span class="warn">Grade 1 is usually a small volume — but not in a small patient. Measure.</span>';
+  if (g === 2 && mlkg <= 1.5) m += '<br><span class="warn">Grade 2 but ≤ 1.5 mL/kg in a large patient — the grade screens, the volume decides.</span>';
+  setStat('grStat', m);
+}
+rng('grV', 'grVo', v => `${v} mL`, v => { GR.v = v; grUpd(); });
+rng('grW', 'grWo', v => `${v} kg`, v => { GR.w = v; grUpd(); });
+
+/* =====================================================================
+   SLIDE 12 — CSA → volume
+   ===================================================================== */
+const CS = rig({ us: $('#csUS'), sim: { w: 520, h: 360, nb: 170, ns: 240 }, S: { x0: .9, th: 90, depth: 12, pos: 'rld', content: 'clear', vol: 140, age: 45, labels: false, periT: 9 },
+  frame(R) {
+    const S = R.S, m = R.sim && R.sim.measure;
+    if (!S.frozen) { setStat('csStat', 'Live. The antrum contracts every ~20 s (shortened here to 9 s). Freeze when it is round and relaxed.'); return; }
+    if (!m) return;
+    const rel = m.c > .12;
+    setStat('csStat', `Frozen · <b>A ${m.A.toFixed(2)} cm²</b> · C ${m.C.toFixed(1)} cm ` + (rel ? `<br><span class="warn">Frozen during a contraction — the CSA is underestimated. Unfreeze and catch it at rest.</span>` : '<br><span class="ok">At rest between contractions ✓</span> — send it to the calculator.'));
+  } });
+rng('csV', 'csVo', v => `${v} mL`, v => { CS.S.vol = v; if (CS.S.frozen) frz(false); });
+function frz(on) {
+  CS.S.frozen = on; CS.S.trace = on; if (CS.sim) CS.sim.dirty = true;
+  $('#csFrz').textContent = on ? '▶ Unfreeze' : '❄ Freeze & trace'; $('#csSend').disabled = !on;
+}
+$('#csFrz').onclick = () => frz(!CS.S.frozen);
+$('#csSend').onclick = () => { const m = CS.sim && CS.sim.measure; if (!m) return; $('#cAge').value = 45; seg_set('cMeth', 'trace'); $('#cCSA').value = m.A.toFixed(1); calc(); };
+const CS_IDS = ['i9717', 'i2988', 'i9545', 'i3103', 'i7432'];
+$('#csThumbs').innerHTML = thumbsHTML(CS_IDS); bindThumbs($('#csThumbs'), CS_IDS);
+function seg_set(id, v) { $$('#' + id + ' button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === v)); CALC.m = v; $('#cTraceRow').hidden = v !== 'trace'; $('#cDiaRow').hidden = v === 'trace'; }
+const CALC = { m: 'trace' };
+seg('cMeth', d => { seg_set('cMeth', d.v); calc(); });
+function calc() {
+  const age = +$('#cAge').value || 0, wt = +$('#cWt').value || 0;
+  const csa = CALC.m === 'trace' ? +$('#cCSA').value || 0 : Math.PI * (+$('#cAP').value || 0) * (+$('#cCC').value || 0) / 4;
+  const gv = 27 + 14.6 * csa - 1.28 * age, k = wt > 0 ? gv / wt : 0;
+  const chips = [['Clear fluid only', 1], ['RLD', 1], ['Aorta level', 1], ['Between contractions', 1], ['Serosa to serosa', 1]];
+  if (age < 18) chips.push(['Adult model — not for children', 0]);
+  if (gv > 500) chips.push(['Above validated range (0–500 mL)', 0]);
+  if (csa > 10) chips.push(['RLD-CSA > 10 cm²: likely > 1.5 mL/kg in an average adult', 2]);
+  let verdict = gv <= 0 ? '<span class="ok">At or below the model floor — consistent with an empty antrum.</span>' : k <= 1.5 ? '<b class="ok">≤ 1.5 mL/kg — consistent with baseline secretions. Low risk.</b>' : '<b class="bad">&gt; 1.5 mL/kg — above baseline. High risk.</b>';
+  $('#cOut').innerHTML = `<span class="vv">${Math.max(0, gv).toFixed(0)} mL</span> &nbsp;·&nbsp; <span class="vv">${Math.max(0, k).toFixed(2)} mL/kg</span><br>27.0 + 14.6 × ${csa.toFixed(2)} − 1.28 × ${age} = ${gv.toFixed(1)} mL${CALC.m === 'dia' ? ` <span class="mini" style="display:inline">(CSA = π × ${$('#cAP').value} × ${$('#cCC').value} / 4)</span>` : ''}<br>${verdict}<div class="chips">${chips.map(([t, ok]) => `<span class="${ok === 1 ? 'okc' : ok === 0 ? 'badc' : ''}">${ok === 1 ? '✓ ' : ok === 0 ? '✕ ' : ''}${t}</span>`).join('')}</div>`;
+  // quick table
+  const ages = [20, 30, 40, 50, 60, 70, 80], csas = [4, 6, 8, 10, 12, 14, 16, 18, 20, 25];
+  $('#cTable').innerHTML = `<table class="t qt"><thead><tr><th>Age</th>${csas.map(c => `<th>${c}</th>`).join('')}</tr></thead><tbody>${ages.map(a => `<tr><td>${a}</td>${csas.map(c => { const v = Math.max(0, 27 + 14.6 * c - 1.28 * a); return `<td style="color:${v / wt > 1.5 ? 'var(--red)' : 'var(--green)'}">${v.toFixed(0)}</td>`; }).join('')}</tr>`).join('')}</tbody></table><p class="mini">Colour at ${wt} kg: green ≤ 1.5 mL/kg, red &gt; 1.5 mL/kg.</p>`;
+}
+['cAge', 'cWt', 'cCSA', 'cAP', 'cCC'].forEach(id => $('#' + id).addEventListener('input', calc));
+calc();
+
+/* =====================================================================
+   CASES
+   ===================================================================== */
+const CASES = [
+  { tag: 'Upper GI bleed', short: 'Melaena', title: 'Melaena · emergency OGD',
+    vignette: 'An elderly man on dual antiplatelet therapy after a recent PCI, with two days of melaena. Transfused and listed for OGD ± haemostasis; the endoscopist would prefer MAC (monitored anaesthesia care) without intubation.',
+    facts: [['Patient', '72 M · 68 kg · ASA 3E'], ['Bleed', 'Melaena × 2 days · Hb 10 → 6.8 g/dL · HR 108 · BP 104/62'], ['Drugs', 'Aspirin + clopidogrel'], ['Fasting', 'Last meal 10 h ago'], ['Plan', 'OGD ± haemostasis under MAC']],
+    media: ['i7132', 'v7134', 'i7133', 'i7135', 'i7136'], badges: { i7135: 'Endoscopy', i7136: 'Endoscopy' },
+    steps: [
+      ['Is a scan indicated?', 'Yes. Ten hours is reassuring for food, but irrelevant if the stomach is filling with blood — and the answer decides between MAC and RSI with a cuffed tube. Scan, but never let it delay resuscitation.'],
+      ['How will you scan?', 'Curvilinear probe, sagittal epigastrium, supine then RLD, antrum at the aorta. A fragile patient may tolerate only a brief RLD — a positive supine scan is already enough to act on.'],
+      ['What is in the antrum?', 'A round, distended antrum filled with <b>echogenic, heterogeneous content</b> — not anechoic. Blood and clot behave like thick fluid or solid. Do not convert it to a volume: the Perlas model is for clear fluid only.', 'i7132'],
+      ['What will you do?', '<b>High risk — not for MAC.</b> RSI with a cuffed tracheal tube, head-up, suction ready; extubate awake. If there is time, IV erythromycin 250 mg 30–120 min before endoscopy improves the view (ESGE) — a rescan shows whether the stomach has emptied. Same-day endoscopy: dark fluid and altered material in the lumen.', 'i7136']
+    ], pearl: 'Blood is a meal — and it does not keep a fasting clock.' },
+  { tag: 'GLP-1 receptor agonist', short: 'Semaglutide', title: 'Semaglutide · not held',
+    vignette: 'A woman with type 2 diabetes and obesity on weekly semaglutide. She was asked to hold it but took her dose three days ago. No nausea or bloating. Textbook fast.',
+    facts: [['Patient', '52 F · 88 kg · BMI 33'], ['Drug', 'Semaglutide 1 mg weekly — last dose 3 days ago'], ['Symptoms', 'None'], ['Fasting', 'Solids 12 h · clear fluids 4 h'], ['Plan', 'Elective laparoscopic cholecystectomy']],
+    media: ['i7429', 'i7430', 'i7431', 'i7432'], badges: {},
+    steps: [
+      ['Is a scan indicated?', 'Yes. A weekly GLP-1 RA within the last week. In fasted patients, increased residual gastric content was found in 56% of GLP-1 RA users versus 19% of non-users (Sen 2024). The 2024 multisociety guidance names gastric POCUS as a tool for exactly this decision.'],
+      ['How will you scan?', 'Supine then RLD. With a BMI of 33, start deeper (16–18 cm), use the liver as a window, and expect the antrum a little deeper than usual.'],
+      ['What is in the antrum?', 'Distended antrum with <b>heterogeneous, mixed-echogenicity content: solid</b>. The machine offers A 7.90 cm² — ignore it. Solid content is high risk at any volume.', 'i7432'],
+      ['What will you do?', '<b>Elective → postpone.</b> Reschedule with a plan: hold the weekly dose, or for higher-risk patients a 24-hour clear-liquid diet before surgery (2024 multisociety guidance) — and rescan on the day. If surgery could not wait: RSI.']
+    ], pearl: 'A normal fasting history does not cancel a weekly GLP-1 receptor agonist.' },
+  { tag: 'Delayed emptying', short: 'Diabetes', title: 'Diabetes with autonomic neuropathy',
+    vignette: 'Twenty years of poorly controlled type 2 diabetes. Postural dizziness, early satiety and bloating. Listed today for debridement of an infected diabetic foot.',
+    facts: [['Patient', '64 M · 74 kg'], ['Diabetes', 'HbA1c 10.6% · neuropathy · CKD 3'], ['Autonomic', 'Postural drop 30 mmHg · early satiety · bloating'], ['Fasting', 'Solids 9 h · glucose 14 mmol/L'], ['Plan', 'Foot debridement, today']],
+    media: ['i9294', 'v9295'], badges: { v9295: 'Cine' },
+    steps: [
+      ['Is a scan indicated?', 'Yes. Autonomic features (postural hypotension, early satiety, bloating) point to gastroparesis, and hyperglycaemia itself slows gastric emptying. Diabetes is associated with more residual gastric content (Xiao, Perlas, BJA 2021).'],
+      ['How will you scan?', 'A distended stomach can push the antrum deeper and more caudal — increase the depth and sweep wider. RLD.'],
+      ['What is in the antrum?', 'Round, distended antrum filled with <b>echogenic, heterogeneous content</b> — on the still and on the cine. Thick fluid / solid → high risk.', 'i9294'],
+      ['What will you do?', 'Urgent, not emergent: choose a technique that keeps airway reflexes — popliteal-sciatic and saphenous blocks, or a spinal (watch for autonomic haemodynamic instability). If GA is needed: RSI. Treat the glucose; consider a prokinetic and rescan if timing allows.']
+    ], pearl: 'Autonomic neuropathy in the history means gastroparesis until the scan says otherwise.' },
+  { tag: 'Clear fluid', short: 'Water', title: 'Plain water, 30 minutes ago',
+    vignette: 'A fit woman, first on the list. Fasted from midnight, but drank a large cup of plain water on the ward just before transfer.',
+    facts: [['Patient', '45 F · 70 kg · ASA 1'], ['Fasting', 'Solids from midnight'], ['Drink', '≈ 400 mL plain water, 30 min ago'], ['Plan', 'Elective FESS (functional endoscopic sinus surgery)']],
+    media: ['i9717', 'v9504', 'v3010', 'i3103'], badges: { i9717: 'First scan', v3010: 'Sweep', i3103: 'Rescan (illustrative)' },
+    steps: [
+      ['Is a scan indicated?', 'Yes — not to cancel, but to quantify. Clear fluid is low risk at baseline volumes; the question is how much is still there.'],
+      ['How will you scan?', 'RLD, antrum at the aorta, freeze between contractions, free-trace the serosa.'],
+      ['What is in the antrum?', 'Anechoic, distended antrum: <b>clear fluid</b>, visible supine and RLD (Grade 2). RLD-CSA 11.3 cm².<br><span class="formula" style="display:block">27.0 + 14.6 × 11.3 − 1.28 × 45 = 134 mL → 1.9 mL/kg</span>Above 1.5 mL/kg.', 'i9717'],
+      ['What will you do?', 'Water empties fast and exponentially (half-life in the order of 10–20 min). Wait 45–60 min and rescan rather than cancel. Rescan: CSA 5.70 cm² → 27.0 + 83.2 − 57.6 = 53 mL → <b class="ok">0.75 mL/kg</b>. Proceed with a standard induction.', 'i3103']
+    ], pearl: 'Clear fluid? Measure it. Too much? Wait, then rescan.' },
+  { tag: 'Unreliable history', short: "Parkinson's", title: 'Uncertain history, empty stomach',
+    vignette: 'A frail woman with Parkinson\'s disease and mild dementia, for diagnostic OGD under propofol sedation. Her helper is not sure whether she had breakfast.',
+    facts: [['Patient', '79 F · 52 kg'], ['Background', "Parkinson's disease on levodopa · mild dementia"], ['History', 'Breakfast? — uncertain'], ['Plan', 'Diagnostic OGD under sedation, iron-deficiency anaemia']],
+    media: ['v8774', 'i9546', 'i1547'], badges: { i1547: 'Endoscopy' },
+    steps: [
+      ['Is a scan indicated?', "Yes. An unreliable history plus a condition associated with delayed gastric emptying. A clear answer avoids both an unnecessary cancellation and an unnecessary RSI in a frail patient."],
+      ['How will you scan?', 'Supine then RLD — she may need pillows and help to roll.'],
+      ['What is in the antrum?', 'Small, flat, <b>target-shaped antrum</b> in supine and RLD — <b class="ok">Grade 0, empty.</b>', 'v8774'],
+      ['What will you do?', '<b class="ok">Low risk:</b> proceed with propofol sedation as planned; keep the levodopa schedule. At endoscopy: clean gastric mucosa, no residue — the scan was right.', 'i1547']
+    ], pearl: 'Gastric ultrasound also lets you say yes — confidently.' }
+];
+const CASE_ST = [];
+$$('.slide.case').forEach(sec => {
+  const n = +sec.dataset.case, C = CASES[n], L = ['I', 'A', 'I', 'M'], N = ['Indication', 'Acquisition', 'Interpretation', 'Medical decision'];
+  sec.innerHTML = `<div class="inner two"><div>
+    <div class="kicker">Case ${n + 1} · ${C.tag}</div><h2>${C.title}</h2>
+    <p class="lede" style="margin-bottom:6px">${C.vignette}</p>
+    <dl class="facts">${C.facts.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>
+    <ol class="steps">${C.steps.map((s, i) => `<li data-i="${i}"><div class="sh"><span class="sl">${L[i]}</span><span class="sq"><small>${N[i]}</small>${s[0]}</span><button class="sb">Reveal</button></div><div class="sa">${s[1]}</div></li>`).join('')}</ol>
+    <div class="pearl">${C.pearl}</div>
+  </div><div class="demo"><div class="panel"><div class="stage"></div><div class="mcap"></div><div class="thumbs"></div></div></div></div>`;
+  const st = stage($('.stage', sec), $('.mcap', sec)); st.list = C.media; st.badges = C.badges;
+  const th = $('.thumbs', sec); th.innerHTML = thumbsHTML(C.media, C.badges);
+  const pick = id => { st.show(id); $$('button', th).forEach(b => b.classList.toggle('on', b.dataset.id === id)); };
+  bindThumbs(th, C.media, pick); pick(C.media[0]);
+  const reveal = li => { li.classList.add('shown'); const s = C.steps[+li.dataset.i]; if (s[2]) pick(s[2]); const all = $$('.steps li', sec).every(x => x.classList.contains('shown')); if (all) $('.pearl', sec).classList.add('shown'); (all ? $('.pearl', sec) : li).scrollIntoView({ block: 'nearest', behavior: 'smooth' }); };
+  $('.steps', sec).addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; if (li.classList.contains('shown') && !e.target.closest('.sb')) { li.classList.remove('shown'); $('.pearl', sec).classList.remove('shown'); } else reveal(li); });
+  CASE_ST[n] = { revealNext: () => { const li = $$('.steps li', sec).find(x => !x.classList.contains('shown')); if (li) reveal(li); } };
+});
+$('#caseGrid').innerHTML = CASES.map((C, i) => `<button data-i="${i}"><img src="${thumbSrc(C.media[0])}" alt=""><div><span>CASE ${i + 1}</span><b>${C.title}</b></div></button>`).join('');
+$('#caseGrid').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(slides.indexOf($(`.slide.case[data-case="${b.dataset.i}"]`))); });
+$('#jumpChips').innerHTML = CASES.map((C, i) => `<button class="chip" data-i="${i}" title="Case ${i + 1} · ${C.title}">${i + 1} · ${C.short}</button>`).join('');
+$('#jumpChips').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(slides.indexOf($(`.slide.case[data-case="${b.dataset.i}"]`))); });
+$('#jumpCases').onclick = jumpToCases;
+
+/* =====================================================================
+   LIBRARY
+   ===================================================================== */
+const LIBCAT = [['all', 'All'], ['empty', 'Empty'], ['clear', 'Clear fluid'], ['solid', 'Thick / solid'], ['measure', 'Measurement'], ['sweep', 'Sweeps'], ['endo', 'Endoscopy']];
+let libList = [];
+$('#libTabs').innerHTML = LIBCAT.map(([k, l], i) => `<button aria-selected="${i === 0}" data-k="${k}">${l}</button>`).join('');
+function libShow(k) {
+  libList = Object.keys(MEDIA).filter(id => k === 'all' || MEDIA[id].cat.includes(k));
+  $$('#libTabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.k === k));
+  $('#libGrid').innerHTML = libList.map(id => `<button data-id="${id}"><div class="ph"><img src="${thumbSrc(id)}" alt="" loading="lazy">${MEDIA[id].t === 'vid' ? '<span class="pl">▶ clip</span>' : ''}</div><div class="tx"><b>${fileId(id)} · ${MEDIA[id].k}</b>${MEDIA[id].cap}</div></button>`).join('');
+}
+$('#libTabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) libShow(b.dataset.k); });
+$('#libGrid').addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if (b) lbOpen(libList, libList.indexOf(b.dataset.id)); });
+libShow('all');
+
+/* =====================================================================
+   QUIZ
+   ===================================================================== */
+const QZ = [
+  ['Before calling an antrum empty, you must have scanned it…', ['Supine only', 'Supine and right lateral decubitus', 'Semi-sitting only'], 1, 'Small volumes pool in the fundus when supine. Never call an empty stomach from the supine view alone.'],
+  ['60 y, 80 kg, clear fluid, RLD-CSA 8 cm². Gastric volume?', ['≈ 67 mL · 0.84 mL/kg — low risk', '≈ 144 mL · 1.8 mL/kg — high risk', 'Cannot be calculated'], 0, '27.0 + 14.6 × 8 − 1.28 × 60 = 67 mL → 0.84 mL/kg ≤ 1.5.'],
+  ['Bright anterior edge, posterior shadowing, posterior wall invisible. Most likely?', ['Clear fluid', 'Recent solid meal — "frosted glass"', 'Empty antrum'], 1, 'Air mixed into a recent meal. Gas can mimic it — rescan in RLD and look again.'],
+  ['The machine reads A 7.90 cm² on an antrum full of solid food. What do you do with it?', ['Calculate the volume', 'Nothing — solid is high risk at any volume'], 1, 'The Perlas model is for clear fluid only.'],
+  ['Which feature favours the IVC over the aorta?', ['Thick, bright, parallel walls', 'Calibre falls with a sniff', 'A branch arising from its front wall'], 1, 'Respiratory variation and compressibility are venous features; the coeliac trunk and SMA arise from the aorta.'],
+  ["Transverse epigastric view, marker to the patient's right. Where is the aorta?", ['Just right of centre on the screen, on the vertebral body', 'Just left of centre on the screen, oval and thin-walled'], 0, "The aorta lies left of the patient's midline — screen right. The IVC is screen left."],
+  ['You have the aorta in cross-section. Before rotating, you…', ['Increase the gain', 'Centre it under the probe midline', 'Switch to the linear probe'], 1, 'Rotate around a centred target — otherwise it slides out of the beam as you turn.'],
+  ['Clear fluid seen in RLD but not supine is…', ['Grade 1 — usually a small volume', 'Grade 2 — usually > 1.5 mL/kg', 'Grade 0'], 0, 'Grade 1 is usually consistent with baseline secretions — measure if in doubt, e.g. a small patient.']
+];
+(function buildQuiz() {
+  const q = $('#quiz'); let score = 0, done = 0;
+  q.innerHTML = QZ.map(([qq, o], i) => `<div class="card" data-i="${i}"><div class="num">Q${i + 1}</div><h3>${qq}</h3><div class="opts">${o.map((x, j) => `<button data-j="${j}">${x}</button>`).join('')}</div><div class="why">${QZ[i][3]}</div></div>`).join('');
+  q.addEventListener('click', e => {
+    const b = e.target.closest('button[data-j]'); if (!b) return; const card = b.closest('.card'); if (card.classList.contains('done')) return;
+    const i = +card.dataset.i, j = +b.dataset.j, ok = j === QZ[i][2];
+    card.classList.add('done'); $$('button', card).forEach((x, k) => { if (k === QZ[i][2]) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    done++; if (ok) score++; $('#qzScore').textContent = `${score} / ${done}`;
+  });
+})();
+
+/* ---------- end slide ---------- */
+rig({ us: $('#endUS'), anat: $('#endA'), sim: { w: 440, h: 360, nb: 150, ns: 230 }, S: { x0: .9, th: 90, depth: 13, pos: 'rld', content: 'clear', vol: 150, age: 50, labels: true, periT: 14, lset: [4, 5, 7, 9, 10, 14] } });
+
+/* ---------- boot ---------- */
+go(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
+requestAnimationFrame(tick);
+</script>
+<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer></body>
+</html>
