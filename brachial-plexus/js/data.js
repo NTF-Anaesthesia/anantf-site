@@ -18,7 +18,7 @@
 //     (e.g. suprascapular for infraclavicular, intercostobrachial for all).
 
 export const ATTRIBUTION =
-  'Content: Dr Koh Wenjun, NTF Anaesthesia (R1 regional anaesthesia teaching). ' +
+  'Content: Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia (R1 regional anaesthesia teaching). ' +
   'Supplemented with standard textbook anatomy (NYSORA / ASRA consensus level). ' +
   'Diagrams, ultrasound simulations and the schematic 3D model are original illustrations; the Blender 3D model is adapted from Z-Anatomy (credited below).';
 
