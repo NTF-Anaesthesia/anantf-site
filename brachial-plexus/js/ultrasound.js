@@ -1,4 +1,5 @@
-// Ultrasound anatomy of the four brachial plexus blocks.
+// Ultrasound anatomy of the brachial plexus blocks: the four core blocks (BLOCK_ORDER)
+// plus the advanced set (BLOCK_ORDER_ADVANCED: superior trunk, costoclavicular, RAPTIR).
 // For each block: (1) a simulated B-mode ultrasound image computed procedurally on a
 // canvas, (2) an idealised labelled vector diagram of the same cross-section and
 // (3) optionally real, openly licensed scans with our own label overlay
@@ -32,7 +33,7 @@
 //   'block'  {id}  from the block chooser / tabs
 // No other events.
 
-import { BLOCKS, BLOCK_ORDER, ELEMENTS, getPathway, blockStatus } from './data.js';
+import { BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED, ELEMENTS, getPathway, blockStatus } from './data.js';
 import { REAL_SCANS } from './real-scans.js';
 
 export { REAL_SCANS };
@@ -249,6 +250,142 @@ const SCENES_MM = {
         blobs: [{ c: [29.2, 5.6], r: [1.2, 1.1] }, { c: [26.4, 4.3], r: [2.6, 0.45], d: 0.25 }, { c: [27.1, 7.2], r: [2.2, 0.6], a: 12, d: 0.4 }] },
       { from: [50, 2.6], to: [19, 4.5], note: '4. Superficial to the artery: ulnar nerve and medial cutaneous nerve of the forearm (5 ml; total about 25 ml)', bathes: ['uln', 'macn'],
         blobs: [{ c: [18.8, 4.75], r: [1.9, 0.5] }, { c: [14.4, 5.4], r: [2.4, 0.55], a: -10, d: 0.25 }, { c: [11.6, 7.2], r: [1.0, 1.0], d: 0.5 }, { c: [16.6, 7.4], r: [1.0, 0.8], d: 0.6 }] },
+    ],
+  },
+
+  // ---- Advanced blocks (BLOCK_ORDER_ADVANCED) ----
+
+  // Right lower neck, between the interscalene (C6–C7) and supraclavicular levels, where
+  // C5 and C6 have just joined as the superior trunk, before the suprascapular nerve leaves it.
+  'superior-trunk': {
+    id: 'superior-trunk', wMm: 52, hMm: 30, skinMm: 0.6, fatMm: 1.6, focusMm: 8, psf: 1,
+    sides: ['Ant / Med', 'Post / Lat'],
+    view: 'Transverse (axial-oblique) view of the right lower neck, between the interscalene (C6–C7) and supraclavicular levels, where C5 and C6 have just joined as the superior trunk',
+    structures: [
+      S('fat-deep', 'fat', '', 'Fibrofatty tissue between the scalenes and the pleura', P([18.8, 15], [26.6, 15.6], [29.5, 16.8], [34, 15.6], [40, 14.9], [45.5, 14.4], [52, 14.2], [52, 15], [46.5, 15.6], [40.3, 16.8], [35.5, 18.5], [31, 20.2], [27, 21.8], [23, 24.2], [17, 26], [14, 25.2], [12.6, 22], [12.4, 15.4]), { style: 'mixed', nolabel: true }),
+      S('scm', 'muscle', 'SCM', 'Sternocleidomastoid (lateral edge tapering over the plexus)', P([0, 1.8], [12, 1.7], [24, 2], [30, 2.4], [32, 2.8], [28, 3.4], [22, 3.8], [14, 4.2], [8, 4.6], [0, 4.8]), { stri: -10, len: [0.8, 3], lab: [16, 3.3], echo: 0.13, dens: 0.4, sG: [0.3, 0.6], sAmp: 0.2, inside: true }),
+      S('as', 'muscle', 'AS', 'Anterior scalene (medial; the superior trunk lies superficial to its lateral edge)', P([5.6, 5.8], [9, 5.25], [14, 5], [18, 5.3], [19.6, 7.4], [22, 8.8], [25.4, 9.3], [23.6, 10], [20.8, 12.4], [18.8, 15], [16, 15.4], [10, 15], [6.6, 14], [5.4, 12], [5.2, 8.5]), { stri: 22, lab: [12.5, 10.5], echo: 0.12, dens: 0.4, sG: [0.3, 0.6], sAmp: 0.2, inside: true }),
+      S('ms', 'muscle', 'MS', 'Middle scalene (lateral, larger)', P([31.2, 5], [34, 4.7], [40, 4.35], [46, 4.5], [48.6, 5.6], [49.2, 9], [48.4, 12.5], [45.5, 14.4], [40, 14.9], [34, 15.6], [29.5, 16.8], [26.6, 15.6], [26.4, 13.4], [28.4, 10.8], [30, 8.6], [30.4, 6.6]), { stri: -8, lab: [34, 11], echo: 0.14, dens: 0.4, sG: [0.3, 0.6], sAmp: 0.2, inside: true }),
+      S('st-sheath', 'sheath', '', 'Superior trunk sheath under the prevertebral fascia (target), with its lateral tail along the suprascapular nerve', P([18.9, 6.3], [20.2, 4.6], [24, 4.15], [27.8, 4.6], [30.5, 4.7], [33.4, 4.1], [33.6, 4.6], [30.6, 5.7], [29.2, 7.6], [26.6, 9], [21.5, 8.7], [19.4, 7.7]), { nolabel: true }),
+      S('pvf', 'fascia', 'PVF', 'Prevertebral (deep cervical) fascia: LA goes deep to it, around the trunk', L(0.4, [14, 4.45], [19.5, 4.45], [24, 4], [28.5, 4.3], [33, 3.1], [37, 2.9], [41, 3], [46, 3.6], [50, 4.6]), { amp: 0.95, vary: 0.3, lab: [46, 6.8] }),
+      S('pleura', 'pleura', 'Pleura', 'Pleura (sliding): deep, under the subclavian artery and lateral to the trunks', [L(0.5, [1.5, 27.5], [6, 25.3], [10, 24.7], [14, 25.2], [17, 26]), L(0.5, [27, 21.8], [31, 20.2], [35.5, 18.5], [40.3, 16.8], [46.5, 15.6], [52, 15])], { lung: true, lab: [40, 21.5] }),
+      S('sca', 'artery', 'SCA', 'Subclavian artery (deep, medial: the plexus is followed down towards it)', E(6, 19.4, 6.6, 4.8), { lab: [6.5, 19.6], inside: true }),
+      S('tct', 'artery', 'TCT', 'Thyrocervical trunk (branch rising from the subclavian artery; colour Doppler)', E(3.5, 11.6, 1.2, 3.2), { lab: [2.2, 7] }),
+      S('tca', 'artery', 'TCA', 'Suprascapular / transverse cervical artery (colour Doppler; travels with the suprascapular nerve)', E(39.2, 3.7, 0.5, 0.5), { lab: [37.5, 6.5] }),
+      S('phr', 'nerve', 'Phr', 'Phrenic nerve (on the anterior surface of the anterior scalene, deep to SCM; further from the trunk than at C6)', E(9.6, 5, 1.1, 0.55, -10), { ids: ['n-phrenic'], tex: 'root', lab: [9.5, 7.6] }),
+      S('st', 'nerve', 'ST', 'Superior trunk (C5 + C6 just joined): the target', E(23.6, 6.4, 3.8, 1.5, -6), { ids: ['trunk-sup', 'root-c5', 'root-c6'], tex: 'fewfasc', lab: [23.6, 2.9] }),
+      S('ssn', 'nerve', 'SSN', 'Suprascapular nerve (just leaving the superior trunk laterally)', E(34.6, 3.9, 1.2, 0.6, -10), { ids: ['n-suprascapular'], tex: 'root', lab: [34.4, 1.6] }),
+      S('mt', 'nerve', 'MT', 'Middle trunk (C7), running obliquely between the scalenes', E(23.5, 13.2, 4.6, 1.9, -48), { ids: ['trunk-mid', 'root-c7'], tex: 'nodule', lab: [29.5, 13.4] }),
+      S('it', 'nerve', 'IT', 'Inferior trunk (C8–T1), deep, next to the subclavian artery', E(23.1, 20, 3.7, 3, -15), { ids: ['trunk-inf', 'root-c8', 'root-t1'], tex: 'nodule', lab: [29.5, 18.8] }),
+      S('ltn', 'nerve', 'DSN/LTN', 'Dorsal scapular / long thoracic nerve (posterolateral edge of the middle scalene)', E(49.8, 8.2, 1, 1.4, 20), { ids: ['n-dorsal-scapular', 'n-long-thoracic'], tex: 'root', lab: [40.5, 13.6] }),
+    ],
+    injections: [
+      { from: [52, 4.2], to: [28.3, 6.8], note: '1. Lateral border of the superior trunk, deep to the prevertebral fascia: inject in 3–5 ml aliquots and watch it wrap around the trunk and run laterally to the suprascapular nerve (commonly 10–15 ml in studies)', bathes: ['st', 'ssn'],
+        blobs: [
+          { c: [28.4, 6.8], r: [1.2, 1] },
+          { c: [26, 8.3], r: [2.4, 0.7], a: -10, d: 0.2 },
+          { c: [24.6, 4.6], r: [3.2, 0.5], a: -4, d: 0.3 },
+          { c: [31.4, 5], r: [1.8, 0.55], a: -12, d: 0.45 },
+          { c: [21, 8.1], r: [1.8, 0.6], a: 20, d: 0.5 },
+          { c: [19.4, 5.4], r: [0.7, 0.9], d: 0.6 },
+          { c: [33.6, 4.4], r: [1.2, 0.45], a: -10, d: 0.7 },
+        ] },
+      { from: [52, 4.2], to: [26.4, 8.7], note: '2. Optional redirect: deep to the trunk (between it and the middle trunk) if spread stays superficial', bathes: ['st'],
+        blobs: [
+          { c: [26, 8.6], r: [1.3, 0.7] },
+          { c: [23.4, 8.4], r: [2.2, 0.5], a: -6, d: 0.25 },
+          { c: [20.4, 7.6], r: [1, 0.6], a: 30, d: 0.5 },
+        ] },
+    ],
+  },
+
+  // Medial infraclavicular fossa: probe below the middle of the clavicle, parallel to it and
+  // tilted cephalad into the costoclavicular space (arm abducted 90°). Cords clustered lateral
+  // to the axillary artery, between subclavius (roof) and serratus anterior (floor).
+  costoclavicular: {
+    id: 'costoclavicular', wMm: 52, hMm: 40, skinMm: 0.6, fatMm: 3, focusMm: 20, psf: 1.05, enh: 0.12,
+    sides: ['Med', 'Lat'],
+    view: 'Medial infraclavicular fossa, probe just below the middle of the clavicle, parallel to it (transverse), tilted cephalad into the costoclavicular space; arm abducted 90° (right side)',
+    structures: [
+      S('pmaj', 'muscle', 'PMaj', 'Pectoralis major', PS([0, 3], [52, 3], [52, 7.4], [38, 6.8], [25, 7], [16, 8.4], [8, 10.6], [0, 13]), { stri: -4, len: [3, 8], dens: 0.25, sAmp: 0.6, fibre: -4, echo: 0.16, lab: [44, 5], inside: true }),
+      S('scl', 'muscle', 'Scl', 'Subclavius (under the clavicle: roof of the costoclavicular space)', P([0, 13], [8, 10.6], [16, 8.4], [25, 7], [38, 6.8], [52, 7.4], [52, 14], [46, 13], [40, 12.2], [32, 12.3], [28, 12.6], [24, 13], [18, 14.2], [10, 16.2], [0, 17.5]), { stri: -3, len: [1.5, 4], echo: 0.1, dens: 0.4, sG: [0.3, 0.6], sAmp: 0.2, lab: [10, 13.2], inside: true }),
+      S('sa', 'muscle', 'SA', 'Serratus anterior (floor of the costoclavicular space)', PS([0, 23.2], [15, 23], [28, 23.4], [40, 23.6], [52, 23], [52, 27], [42, 27.5], [30, 26.5], [15, 25.8], [0, 26.5]), { stri: 2, len: [1.5, 4], echo: 0.12, dens: 0.4, sG: [0.3, 0.6], sAmp: 0.2, lab: [46, 25.4], inside: true }),
+      S('icm', 'muscle', 'IC', 'Intercostal muscles (external / internal) over the 2nd intercostal space', PS([0, 26.5], [15, 25.8], [30, 26.5], [42, 27.5], [52, 27], [52, 27], [52, 28.6], [47, 28.6], [43.5, 29], [42.5, 33.4], [42.5, 33.4], [38, 31.8], [32, 30.2], [24, 28.6], [16, 28], [8, 28.6], [0, 29.8]), { stri: 6, len: [1, 3], echo: 0.14, dens: 0.5, lab: [10, 27.4], inside: true }),
+      S('ccs', 'sheath', '', 'Costoclavicular space: cord cluster lateral to the axillary artery (target)', P([28.8, 13.1], [33, 12.8], [38.4, 12.6], [44.7, 15], [47.9, 18.8], [45.7, 22.3], [38.4, 23.2], [32, 22.8], [31, 21.8], [32.3, 18.3], [31, 14.8]), { style: 'bright', base: 0.5, sp: [0.5, 0.95], nolabel: true }),
+      S('f1', 'fascia', '', 'Deep fascia of pectoralis major / clavipectoral fascia', L(0.7, [0, 13], [8, 10.6], [16, 8.4], [25, 7], [38, 6.8], [52, 7.4]), { amp: 0.95, vary: 0.3, wav: 0.2, nolabel: true }),
+      S('f2', 'fascia', '', 'Deep fascia of subclavius (roof of the plexus compartment)', L(0.5, [0, 17.5], [10, 16.2], [18, 14.2], [24, 13], [28, 12.6], [32, 12.3], [40, 12.2], [46, 13], [52, 14]), { amp: 0.85, vary: 0.3, nolabel: true }),
+      S('f3', 'fascia', '', 'Fascia of serratus anterior (floor of the plexus compartment)', L(0.5, [0, 23.2], [15, 23], [28, 23.4], [40, 23.6], [52, 23]), { amp: 0.85, vary: 0.3, nolabel: true }),
+      S('f4', 'fascia', '', 'Deep border of serratus anterior', L(0.3, [0, 26.5], [15, 25.8], [30, 26.5], [42, 27.5], [52, 27]), { amp: 0.55, nolabel: true }),
+      S('rib', 'bone', '2nd rib', 'Second rib (acoustic shadow beneath)', L(1.5, [42.3, 30.6], [43.5, 29.3], [47, 28.9], [52, 28.8]), { lab: [43, 34.5] }),
+      S('pleura', 'pleura', 'Pleura', 'Pleura (sliding, medial to the 2nd rib: keep the needle tip away)', L(0.5, [0, 29.8], [8, 28.6], [16, 28], [24, 28.6], [32, 30.2], [38, 31.8], [42.5, 33.4]), { lung: true, lab: [22, 31.2] }),
+      S('av', 'vein', 'AV', 'Axillary vein (medial, compressible)', E(17.2, 18.2, 5.8, 3, -15), { lab: [17.2, 18.2], inside: true }),
+      S('aa', 'artery', 'AA', 'Axillary artery (pulsatile, medial to the cords)', E(27.9, 18.3, 4.2, 4), { lab: [27.9, 18.3], inside: true }),
+      S('lpn', 'nerve', 'LPN', 'Lateral pectoral nerve (on the artery)', E(27.6, 13.6, 1.3, 0.6), { ids: ['n-lat-pectoral'], tex: 'root', lab: [24, 10.6] }),
+      S('lc', 'nerve', 'LC', 'Lateral cord (most superficial)', E(35.5, 15.4, 2.4, 2), { ids: ['cord-lat'], tex: 'cord', lab: [35.5, 10.4] }),
+      S('mc', 'nerve', 'MC', 'Medial cord (deep, next to the artery)', E(35.5, 20.5, 2.5, 2), { ids: ['cord-med'], tex: 'cord', lab: [33, 25.1] }),
+      S('pc', 'nerve', 'PC', 'Posterior cord (deep, lateral)', E(41.1, 19.8, 2.5, 2), { ids: ['cord-post'], tex: 'cord', lab: [45, 21.3] }),
+    ],
+    injections: [
+      { from: [52, 4.5], to: [38, 18], note: 'Single injection into the centre of the cord cluster, lateral to the artery: 20 ml 0.5% ropivacaine. In-plane, lateral to medial; the needle passes between the lateral and posterior cords', bathes: ['lc', 'mc', 'pc'],
+        blobs: [
+          { c: [37.9, 18], r: [1.6, 1.3] },
+          { c: [39.6, 16.4], r: [1.3, 1], d: 0.15 },
+          { c: [34, 18], r: [1.4, 0.9], d: 0.2 },
+          { c: [37.5, 13], r: [2.4, 0.7], a: -4, d: 0.4 },
+          { c: [32, 16], r: [0.8, 1.4], a: 20, d: 0.45 },
+          { c: [44.3, 19.6], r: [0.9, 1.8], d: 0.5 },
+          { c: [32.2, 20.8], r: [0.8, 1.3], a: -20, d: 0.55 },
+          { c: [38.4, 22.9], r: [3, 0.5], d: 0.6 },
+          { c: [42.6, 14.4], r: [1.6, 0.6], a: 25, d: 0.7 },
+        ] },
+    ],
+  },
+
+  // Same parasagittal view as the coracoid infraclavicular block (right side, arm adducted),
+  // with the clavicle and its acoustic shadow at the cephalad (left) edge. The needle enters
+  // in the supraclavicular fossa ~1 cm behind the clavicle, passes beneath it and appears
+  // from under the shadow running ~20° to the probe face (coracoid approach: ~36° here, 45–60° in practice).
+  raptir: {
+    id: 'raptir', wMm: 53, hMm: 49, skinMm: 1.2, fatMm: 3.0, focusMm: 32, psf: 1.15, enh: 0.16,
+    sides: ['Ceph', 'Caud'],
+    view: 'Parasagittal view just medial and inferior to the coracoid process, cephalad edge of the probe against the clavicle (right side, arm adducted); needle from behind the clavicle',
+    structures: [
+      S('nv-fat', 'fat', '', 'Perivascular fat (neurovascular compartment)', P([0, 17], [20, 23.5], [40, 29.5], [53, 34.5], [53, 43], [34, 44.5], [22, 49], [15, 39], [8, 33.5], [0, 31]), { style: 'mottled', nolabel: true }),
+      S('pmaj', 'muscle', 'PMaj', 'Pectoralis major', PS([9.6, 3], [53, 3], [53, 23.5], [40, 20.5], [30, 18], [20, 15.5], [12, 10.5], [6, 8.5], [0, 8], [0, 5.6], [4, 5.4], [7, 6.1], [8.9, 7.0], [9.6, 5.2]), { stri: 17, len: [3, 8], dens: 0.25, sAmp: 0.7, fibre: 17, echo: 0.18, lab: [34, 9], inside: true }),
+      S('ip-fat', 'fat', '', 'Interpectoral fat', P([0, 8], [6, 8.5], [12, 10.5], [20, 15.5], [16, 14.8], [8, 13.5], [0, 12.5]), { style: 'bright', nolabel: true }),
+      S('pmin', 'muscle', 'PMin', 'Pectoralis minor', PS([0, 12.5], [8, 13.5], [16, 14.8], [20, 15.5], [30, 18], [40, 20.5], [53, 23.5], [53, 34.5], [40, 29.5], [30, 26], [20, 23.5], [10, 20], [0, 17]), { stri: 20, len: [1.5, 4], dens: 0.3, sAmp: 0.25, sG: [0.18, 0.4], fibre: 20, echo: 0.05, lab: [41, 25.5], inside: true }),
+      S('ssc', 'muscle', 'SSc', 'Subscapularis', P([0, 31], [8, 33.5], [15, 39], [22, 49], [0, 49]), { stri: 30, len: [1, 3.5], echo: 0.08, dens: 0.35, sG: [0.2, 0.42], sAmp: 0.15, att: 0.25, lab: [6, 42], inside: true }),
+      S('cw', 'muscle', 'CW', 'Chest wall (serratus anterior / intercostals over a rib)', P([34, 44.5], [45, 43.5], [53, 43], [53, 49], [34, 49]), { stri: 0, echo: 0.3, dens: 2.5, lab: [37.5, 45.6], inside: true }),
+      S('ip-fascia', 'fascia', '', 'Interpectoral fascia (deep fascia of pectoralis major)', L(0.6, [0, 8], [6, 8.5], [12, 10.5], [20, 15.5], [30, 18], [40, 20.5], [53, 23.5]), { amp: 1, vary: 0.3, wav: 0.3, gaps: 2, nolabel: true }),
+      S('cpf', 'fascia', 'CPF', 'Clavipectoral fascia (deep fascia of pectoralis minor)', L(0.7, [0, 17], [10, 20], [20, 23.5], [30, 26], [40, 29.5], [53, 34.5]), { amp: 0.7, vary: 0.3, wav: 0.3, gaps: 2, lab: [13, 18.2] }),
+      S('clav', 'bone', 'Clav', 'Clavicle (cephalad end of the probe): its acoustic shadow hides the first part of the needle', L(1.6, [0, 3.4], [3, 3.6], [5.6, 4.1], [7.6, 4.9], [9.0, 6.3]), { lab: [17, 4.2] }),
+      S('pleura', 'pleura', 'Pleura', 'Pleura (deep, caudal; keep the needle away)', L(0.6, [36, 48.6], [45, 48], [53, 47.5]), { lung: true, lab: [45, 46.6] }),
+      S('ipv', 'vein', 'PV', 'Pectoral (thoraco-acromial) vein', E(9.9, 11.0, 1.5, 1.3), { lab: [11.5, 6.4] }),
+      S('taa', 'artery', 'TAA', 'Thoraco-acromial (pectoral) artery', E(12.6, 12.0, 1.0, 1.0), { lab: [16.5, 7.4] }),
+      S('aa', 'artery', 'AA', 'Axillary artery', E(22.8, 31.7, 4.35, 4.35), { lab: [22.8, 31.7], inside: true }),
+      S('av', 'vein', 'AV', 'Axillary vein (caudal, larger, compressible)', E(43.3, 38.9, 6.15, 4.55, 10), { lab: [43.3, 38.9], inside: true }),
+      S('lpn', 'nerve', 'LPN', 'Lateral pectoral nerve', E(16.3, 14, 2.4, 0.85, 15), { ids: ['n-lat-pectoral'], tex: 'honeycomb', lab: [21.5, 11.5] }),
+      S('lc', 'nerve', 'LC', 'Lateral cord (~9 o’clock)', E(15.7, 29.2, 1.15, 2.15, 20), { ids: ['cord-lat'], tex: 'cord', lab: [11.5, 24.6] }),
+      S('pc', 'nerve', 'PC', 'Posterior cord (~6–7 o’clock): the target', E(18.4, 37.4, 1.0, 2.15, 20), { ids: ['cord-post'], tex: 'cord', lab: [14, 41.8] }),
+      S('mc', 'nerve', 'MC', 'Medial cord (~3 o’clock, between artery and vein)', E(30.2, 32.9, 1.15, 2.25, -20), { ids: ['cord-med'], tex: 'cord', lab: [31.8, 27.8] }),
+    ],
+    injections: [
+      { from: [0, 28.1], to: [18.0, 34.8], note: '1. Needle enters about 1 cm behind the clavicle and passes beneath it: the first ~2 cm are hidden in the clavicle’s shadow. It then runs at about 20° to the probe face (easy to see) to the space between the posterior cord and the artery (about 7 o’clock): U-shaped spread around the artery', bathes: ['pc', 'lc', 'mc'],
+        push: { key: 'aa', d: [0.7, -0.7] },
+        blobs: [
+          { c: [17.9, 35.2], r: [1.9, 1.2], a: 50 },
+          ...arcBlobs([22.8, 31.7], 6.5, [210, 195, 180, 164, 147, 130, 113, 96, 79, 62, 45, 28, 12], 147, [1.9, 1.7], 0.08, 0.6 / 135),
+          ...arcBlobs([22.8, 31.7], 8.2, [165, 145, 125, 105, 85, 65], 147, [2.0, 1.3], 0.4, 0.4 / 135),
+        ] },
+      { from: [0, 23.3], to: [22.5, 26.6], note: '2. Optional, through the same skin puncture: a flatter pass just superficial to the artery (12 o’clock, deep to the clavipectoral fascia) if spread has not reached the medial cord', bathes: ['mc'],
+        blobs: [
+          { c: [22.6, 25.9], r: [1.8, 0.9], a: 14 },
+          { c: [20.4, 25.0], r: [1.6, 0.8], a: 14, d: 0.15 },
+          { c: [25.2, 26.5], r: [1.8, 0.85], a: 16, d: 0.2 },
+          { c: [27.8, 27.3], r: [1.6, 0.85], a: 22, d: 0.35 },
+          { c: [29.6, 28.8], r: [1.4, 0.8], a: 55, d: 0.5 },
+          { c: [30.4, 30.4], r: [1.2, 0.7], a: 80, d: 0.65 },
+        ] },
     ],
   },
 };
@@ -1011,15 +1148,26 @@ export function mount(containerEl, bus) {
   const chooser = el('section', { class: 'bpus-chooser', 'aria-label': 'Choose a block' }, root);
   el('h3', { class: 'bpus-h', text: 'Ultrasound anatomy: choose a block' }, chooser);
   el('p', { class: 'bpus-muted', text: 'Each block shows a simulated scan, drawn to scale, beside a labelled diagram, with the needle path and local anaesthetic spread.' }, chooser);
-  const chooserGrid = el('div', { class: 'bpus-chooser-grid' }, chooser);
   const thumbs = [];
-  for (const id of BLOCK_ORDER) {
+  const chooserRows = [[BLOCK_ORDER, null], [BLOCK_ORDER_ADVANCED, 'Advanced']];
+  for (const [order, rowName] of chooserRows) {
+    const ids = (order || []).filter((id) => SCENES[id] && BLOCKS[id]);
+    if (!ids.length) continue;
+    if (rowName) el('h4', { class: 'bpus-h bpus-h-sm bpus-chooser-row', text: rowName }, chooser);
+    const chooserGrid = el('div', { class: 'bpus-chooser-grid' }, chooser);
+  for (const id of ids) {
     const b = el('button', { type: 'button', class: 'bpus-card', 'data-block': id }, chooserGrid);
-    const c = el('canvas', { class: 'bpus-thumb', width: 320, height: Math.round((320 * SCENES[id].h) / SCENES[id].w), 'aria-hidden': 'true' }, b);
+    const c = el('canvas', { class: 'bpus-thumb is-pending', width: 320, height: Math.round((320 * SCENES[id].h) / SCENES[id].w), 'aria-hidden': 'true' }, b);
     thumbs.push([id, c]);
+    { // placeholder until the scan is drawn (thumbnails render one at a time)
+      const g = c.getContext('2d');
+      g.fillStyle = '#5b6170'; g.font = '600 15px system-ui, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      g.fillText('Rendering scan\u2026', c.width / 2, c.height / 2);
+    }
     el('span', { class: 'bpus-card-name', text: BLOCKS[id].name.replace(/ \(.*\)/, '') }, b);
     el('span', { class: 'bpus-card-sub', text: `Targets the ${levelWord(BLOCKS[id].level)}` }, b);
     b.addEventListener('click', () => chooseBlock(id));
+  }
   }
 
   // ---- main ----
@@ -1027,11 +1175,17 @@ export function mount(containerEl, bus) {
   const head = el('div', { class: 'bpus-head' }, main);
   const tabs = el('div', { class: 'bpus-tabs', role: 'group', 'aria-label': 'Block' }, head);
   const tabBtns = {};
-  for (const id of BLOCK_ORDER) {
+  const addTab = (id) => {
     tabBtns[id] = el('button', { type: 'button', class: 'bpus-tab', text: shortBlock(id) }, tabs);
     tabBtns[id].addEventListener('click', () => chooseBlock(id));
+  };
+  BLOCK_ORDER.forEach(addTab);
+  const advIds = (BLOCK_ORDER_ADVANCED || []).filter((id) => SCENES[id] && BLOCKS[id]);
+  if (advIds.length) {
+    el('span', { class: 'bpus-tabs-sep', text: 'Advanced', 'aria-hidden': 'true' }, tabs);
+    for (const id of advIds) { addTab(id); tabBtns[id].classList.add('bpus-tab-adv'); tabBtns[id].setAttribute('aria-label', `${shortBlock(id)} (advanced)`); }
   }
-  const allBtn = el('button', { type: 'button', class: 'bpus-tab bpus-tab-all', text: 'Overview', title: 'Show all four scans (keeps the block chosen in the other views)' }, tabs);
+  const allBtn = el('button', { type: 'button', class: 'bpus-tab bpus-tab-all', text: 'Overview', title: 'Show all the scans (keeps the block chosen in the other views)' }, tabs);
   allBtn.addEventListener('click', () => showBlock(null));
 
   const controls = el('div', { class: 'bpus-controls' }, main);
@@ -1238,6 +1392,7 @@ export function mount(containerEl, bus) {
     const [id, c] = next;
     c.getContext('2d').drawImage(buildBase(SCENES[id]), 0, 0, c.width, c.height);
     c.dataset.done = '1';
+    c.classList.remove('is-pending');
     thumbTimer = setTimeout(drawThumbs, 30);
   }
 
@@ -1778,5 +1933,6 @@ export function mount(containerEl, bus) {
 }
 
 function levelWord(level) { return { root: 'roots', trunk: 'trunks and divisions', cord: 'cords', terminal: 'terminal nerves' }[level] || level; }
-function shortBlock(id) { return { interscalene: 'Interscalene', supraclavicular: 'Supraclavicular', infraclavicular: 'Infraclavicular', axillary: 'Axillary' }[id]; }
+function shortBlock(id) { return { interscalene: 'Interscalene', supraclavicular: 'Supraclavicular', infraclavicular: 'Infraclavicular', axillary: 'Axillary',
+  'superior-trunk': 'Superior trunk', costoclavicular: 'Costoclavicular', raptir: 'RAPTIR' }[id] || BLOCKS[id]?.name || id; }
 function statusWord(s) { return { target: 'Target', covers: 'Blocked', variable: 'Variable', spares: 'Spared' }[s] || s; }

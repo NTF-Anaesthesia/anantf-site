@@ -10,7 +10,7 @@
 //   'block'  {id: blockId|null, source: 'coverage'}
 
 import {
-  ELEMENTS, REGIONS, REGION_IDS, BLOCKS, BLOCK_ORDER, DISCLAIMER,
+  ELEMENTS, REGIONS, REGION_IDS, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED, DISCLAIMER,
   regionStatus, regionsForElement,
 } from './data.js';
 
@@ -25,7 +25,7 @@ const MODES = [
   { id: 'cutaneous', label: 'Skin' , long: 'Cutaneous (skin)' },
   { id: 'motor', label: 'Motor', long: 'Motor (muscle groups)' },
   { id: 'osteotome', label: 'Bone', long: 'Osteotomes (bones and joints)' },
-  { id: 'compare', label: 'Compare', long: 'Compare all four blocks' },
+  { id: 'compare', label: 'Compare', long: 'Compare all blocks (core and advanced)' },
 ];
 
 const BLOCK_SHORT = {
@@ -33,7 +33,12 @@ const BLOCK_SHORT = {
   supraclavicular: 'Supraclavicular',
   infraclavicular: 'Infraclavicular',
   axillary: 'Axillary',
+  'superior-trunk': 'Superior trunk',
+  costoclavicular: 'Costoclavicular',
+  raptir: 'RAPTIR',
 };
+const ADVANCED_IDS = BLOCK_ORDER_ADVANCED.filter((id) => BLOCKS[id]);
+const shortName = (id) => BLOCK_SHORT[id] || BLOCKS[id]?.name || id;
 
 // Categorical colour per nerve, used when no block is selected (classic innervation map).
 const NERVE_COLOR = {
@@ -87,6 +92,41 @@ const SUPPLEMENT = {
     'Tourniquet or upper medial arm: add subcutaneous infiltration across the axillary crease for the intercostobrachial and medial cutaneous nerve of the arm (deck: 23G needle, 5 ml of 0.5% ropivacaine).',
     'Shoulder and upper arm: not covered.',
   ],
+  'superior-trunk': [
+    'Incision over the cape or clavicle: the supraclavicular nerves (cervical plexus, C3–C4) are not covered; add a superficial cervical plexus block.',
+    'Forearm or hand surgery: C8–T1 (ulnar and medial cutaneous nerves) is spared and C7 is variable; choose a more distal block.',
+    'No respiratory reserve at all: phrenic sparing is reduced risk, not zero; consider a more distal shoulder option (e.g. suprascapular plus axillary nerve blocks).',
+  ],
+  costoclavicular: [
+    'Shoulder surgery: not suitable (suprascapular nerve spared).',
+    'Tourniquet or upper medial arm: add intercostobrachial infiltration (T2 is not part of the plexus).',
+    'Musculocutaneous: no separate injection needed; it is still inside the lateral cord in the cluster.',
+  ],
+  raptir: [
+    'Shoulder surgery: not suitable (suprascapular nerve spared).',
+    'Tourniquet or upper medial arm: add intercostobrachial infiltration.',
+    'Spread not reaching the medial cord: reposition, as for the coracoid infraclavicular block.',
+  ],
+};
+
+// Side-effect and safety notes for the advanced variants (shown under the phrenic line).
+const BLOCK_NOTES = {
+  'superior-trunk': [
+    'Lower phrenic risk than interscalene: hemidiaphragmatic paralysis about 5% vs 71% in one randomised trial (Kim 2019), but not abolished.',
+    'Suprascapular nerve included: inject proximal to its take-off from the superior trunk, so the shoulder joint is covered.',
+  ],
+  costoclavicular: [
+    'Musculocutaneous nerve covered by the single injection: no separate injection needed (unlike axillary).',
+    'Pneumothorax caution: the pleura lies deep to the second rib and serratus anterior; keep the needle tip in view.',
+  ],
+  raptir: [
+    'Side effects as for the infraclavicular block: phrenic usually spared, no shoulder cover.',
+    'The early needle path is hidden in the clavicle’s acoustic shadow: advance slowly (vascular puncture risk).',
+  ],
+};
+// Block-specific wording for the phrenic line where the generic text would overstate it.
+const PHRENIC_OVERRIDE = {
+  costoclavicular: 'Phrenic nerve usually spared: diaphragm weakness is uncommon, but reported with proximal spread.',
 };
 
 const PHRENIC_TEXT = {
@@ -335,10 +375,14 @@ export function mount(containerEl, bus, opts = {}) {
   tabs.append(...tabBtns);
 
   const chips = el('div', { class: 'cv-chips', role: 'group', 'aria-label': 'Choose a block' });
-  const chipBtns = [null, ...BLOCK_ORDER].map((b) => el('button', {
-    type: 'button', class: 'cv-chip', 'data-block': b || '', text: b ? BLOCK_SHORT[b] : 'No block',
-  }));
-  chips.append(...chipBtns);
+  const chipBtn = (b) => el('button', {
+    type: 'button', class: `cv-chip${b && BLOCKS[b]?.advanced ? ' cv-chip--adv' : ''}`, 'data-block': b || '', text: b ? shortName(b) : 'No block',
+  });
+  const coreChips = [null, ...BLOCK_ORDER].map(chipBtn);
+  const advChips = ADVANCED_IDS.map(chipBtn);
+  const chipBtns = [...coreChips, ...advChips];
+  chips.append(...coreChips);
+  if (advChips.length) chips.append(el('span', { class: 'cv-chipgroup', text: 'Advanced' }), ...advChips);
   head.append(tabs, chips);
 
   const body = el('div', { class: 'cv-body' });
@@ -381,14 +425,23 @@ export function mount(containerEl, bus, opts = {}) {
     // Compare uses the layer chosen last (Skin, Motor or Bone), so there is only one
     // layer switch: the tabs above.
     const layerName = MODES.find((m) => m.id === state.compareLayer)?.label || 'Skin';
-    stage.append(el('p', { class: 'cv-note cv-compare-note', text: `Comparing ${layerName.toLowerCase()} coverage of the four blocks. To compare another layer, choose it in the tabs above, then Compare again. Select a card to make that block active.` }));
-    const grid = el('div', { class: 'cv-grid' });
-    for (const bid of BLOCK_ORDER) {
+    stage.append(el('p', { class: 'cv-note cv-compare-note', text: `Comparing ${layerName.toLowerCase()} coverage of the four core blocks${ADVANCED_IDS.length ? ' and the advanced variants' : ''}. To compare another layer, choose it in the tabs above, then Compare again. Select a card to make that block active.` }));
+    stage.append(compareGrid(BLOCK_ORDER, 'cv-grid'));
+    if (ADVANCED_IDS.length) {
+      stage.append(el('h3', { class: 'cv-gridhead', text: 'Advanced blocks' }));
+      stage.append(compareGrid(ADVANCED_IDS, 'cv-grid cv-grid--adv'));
+    }
+  }
+
+  function compareGrid(ids, cls) {
+    const grid = el('div', { class: cls });
+    for (const bid of ids) {
       const b = BLOCKS[bid];
       const card = el('div', { class: 'cv-card', 'data-card': bid });
+      const rel = b.advanced && BLOCKS[b.relatedTo] ? ` · variant of ${shortName(b.relatedTo).toLowerCase()}` : '';
       const btn = el('button', { type: 'button', class: 'cv-cardbtn', 'aria-pressed': String(state.block === bid), title: `Show ${b.name}` }, [
-        el('span', { class: 'cv-cardname', text: BLOCK_SHORT[bid] }),
-        el('span', { class: 'cv-cardlevel', text: `${b.level[0].toUpperCase()}${b.level.slice(1)}s` }),
+        el('span', { class: 'cv-cardname', text: shortName(bid) }),
+        el('span', { class: 'cv-cardlevel', text: `${b.level[0].toUpperCase()}${b.level.slice(1)}s${rel}` }),
       ]);
       btn.addEventListener('click', () => bus.emit('block', { id: state.block === bid ? null : bid, source: SRC }));
       const figs = el('div', { class: 'cv-cardfigs' });
@@ -402,7 +455,7 @@ export function mount(containerEl, bus, opts = {}) {
         el('p', { class: 'cv-cardspare', text: keySpared.length ? `Spares: ${keySpared.join(', ')}` : 'Spares: (see list)' }));
       grid.append(card);
     }
-    stage.append(grid);
+    return grid;
   }
 
   function legend() {
@@ -427,7 +480,8 @@ export function mount(containerEl, bus, opts = {}) {
       const sec = el('section', { class: 'cv-sum' });
       sec.append(el('h3', { text: b.name }), el('p', { class: 'cv-covtext', text: b.coverageText }));
       const ph = regionStatus(bid, 'mot-diaphragm');
-      sec.append(el('p', { class: `cv-phren cv-phren--${ph}`, html: `<span class="cv-dot" aria-hidden="true"></span><span>${esc(PHRENIC_TEXT[ph])}</span>` }));
+      sec.append(el('p', { class: `cv-phren cv-phren--${ph}`, html: `<span class="cv-dot" aria-hidden="true"></span><span>${esc(PHRENIC_OVERRIDE[bid] || PHRENIC_TEXT[ph])}</span>` }));
+      if (BLOCK_NOTES[bid]) sec.append(el('ul', { class: 'cv-notes' }, BLOCK_NOTES[bid].map((t) => el('li', { text: t }))));
       const spared = b.spares.filter((n) => REASONS[n]);
       const missed = b.variable.filter((n) => REASONS[n]);
       const other = b.spares.filter((n) => !REASONS[n] && n !== 'n-phrenic' && ELEMENTS[n]?.level !== 'root' && !/^(trunk|div|cord)-/.test(n));
@@ -555,7 +609,7 @@ export function mount(containerEl, bus, opts = {}) {
       b.tabIndex = on ? 0 : -1;
     }
     for (const c of chipBtns) c.setAttribute('aria-pressed', String((c.dataset.block || null) === state.block));
-    // Compare shows all four blocks, so the block chips would only mislead there.
+    // Compare shows every block, so the block chips would only mislead there.
     chips.hidden = state.mode === 'compare';
     root.dataset.mode = state.mode;
     for (const c of root.querySelectorAll('.cv-card')) {

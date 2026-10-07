@@ -79,6 +79,16 @@ export const LEVEL_BANDS = {
   supraclavicular: { x0: 250, x1: 600 },
   infraclavicular: { x0: 600, x1: 860 },
   axillary: { x0: 860, x1: 1206 },
+  // Advanced variants. Optional y0 / y1 narrow the band vertically; label
+  // overrides the pill text (default: block name without brackets).
+  // Superior trunk: just distal to where C5 and C6 join, proximal to (and
+  // including) the suprascapular take-off at x = 285.
+  'superior-trunk': { x0: 238, x1: 322, y0: 34, y1: 300, label: 'Superior trunk' },
+  // Costoclavicular: medial (proximal) part of the cords, where they are still
+  // clustered just past the division-cord junction.
+  costoclavicular: { x0: 584, x1: 724, label: 'Costoclavicular' },
+  // RAPTIR: same target as the coracoid infraclavicular block, different needle path.
+  raptir: { x0: 600, x1: 860, label: 'RAPTIR (retroclavicular)' },
 };
 
 const ROOT_CURVES = {
@@ -417,15 +427,22 @@ export function mount(containerEl, bus) {
 
     if (block && BLOCKS[block] && LEVEL_BANDS[block]) {
       const b = LEVEL_BANDS[block];
+      const y0 = b.y0 ?? -8, y1 = b.y1 ?? 714;
+      band.classList.toggle('is-advanced', !!BLOCKS[block].advanced);
       bandRect.setAttribute('x', b.x0 + 2);
       bandRect.setAttribute('width', b.x1 - b.x0 - 4);
-      const label = BLOCKS[block].name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
+      bandRect.setAttribute('y', y0);
+      bandRect.setAttribute('height', y1 - y0);
+      bandPill.setAttribute('y', y0 + 2);
+      bandText.setAttribute('y', y0 + 20);
+      const label = b.label || BLOCKS[block].name.replace(/\s*\(.*?\)\s*/g, ' ').trim();
       bandText.textContent = label;
-      const cx = (b.x0 + b.x1) / 2;
-      bandText.setAttribute('x', cx);
       let tw = label.length * 8.4;
       try { tw = bandText.getComputedTextLength() || tw; } catch { /* not rendered yet */ }
-      const w = Math.min(b.x1 - b.x0 - 8, tw + 26);
+      // Narrow bands (superior trunk) let the pill overhang the band; keep it inside the drawing.
+      const w = b.x1 - b.x0 - 8 >= tw + 26 ? tw + 26 : Math.max(b.x1 - b.x0 - 8, tw + 18);
+      const cx = Math.min(VB.w - 8 - w / 2, Math.max(8 + w / 2, (b.x0 + b.x1) / 2));
+      bandText.setAttribute('x', cx);
       bandPill.setAttribute('x', cx - w / 2);
       bandPill.setAttribute('width', w);
     }
@@ -683,7 +700,7 @@ export function mount(containerEl, bus) {
       const id = p?.id ?? null;
       st.block = id && BLOCKS[id] ? id : null;
       render();
-      if (st.block) { const b = LEVEL_BANDS[st.block]; revealX(b.x0, b.x1); }
+      if (st.block && LEVEL_BANDS[st.block]) { const b = LEVEL_BANDS[st.block]; revealX(b.x0, b.x1); }
     }));
   }
 

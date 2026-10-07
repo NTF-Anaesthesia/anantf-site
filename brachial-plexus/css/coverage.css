@@ -248,3 +248,13 @@
 .cv[data-mode="compare"][data-size="wide"] .cv-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .cv-chips[hidden] { display: none; }
 .cv-compare-note { margin: 0 0 10px; }
+
+/* ---- advanced blocks ---- */
+.cv-chipgroup { display: inline-flex; align-items: center; padding: 0 2px 0 10px; margin-left: 2px; border-left: 2px solid var(--cv-border); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--cv-muted); min-height: 36px; }
+.cv-chip--adv { border-style: dashed; }
+.cv-chip--adv[aria-pressed="true"] { border-style: solid; }
+.cv-gridhead { font-size: 0.95rem; margin: 16px 0 8px; color: var(--cv-muted); text-transform: uppercase; letter-spacing: .05em; }
+/* Same column width as the core row above (4 across when there is room). */
+.cv[data-mode="compare"][data-size="wide"] .cv-grid--adv { grid-template-columns: repeat(auto-fill, minmax(max(240px, calc((100% - 30px) / 4)), 1fr)); }
+.cv-notes { margin: 6px 0; padding-left: 1.1em; }
+.cv-notes li { margin: 3px 0; font-size: 0.92rem; }

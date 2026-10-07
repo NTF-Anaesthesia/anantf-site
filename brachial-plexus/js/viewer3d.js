@@ -221,6 +221,7 @@ const MUSCLES = [
 // Block geometry (schematic coordinates).
 // probe: P = centre of footprint on the skin, A = long axis, toward = point the beam aims at.
 // needleFrom: +1/-1 = which end of the probe (along A) the needle enters from.
+// entry (optional, block or deposit): explicit skin entry point instead of the probe end.
 // deposits: needle-tip targets in order, each with local anaesthetic blobs.
 export const BLOCK_GEOM = {
   interscalene: {
@@ -344,6 +345,99 @@ export const BLOCK_GEOM = {
       'Separate injection around the musculocutaneous nerve in the coracobrachialis plane.',
     ],
   },
+
+  // ---- Advanced blocks. Paths checked with needleReport() on both models (all > 0.2).
+  'superior-trunk': {
+    // Transverse probe low in the neck, below where C5 and C6 join and above the
+    // suprascapular take-off (schematic y 6.0 to 4.9). Needle posterolateral to anteromedial.
+    P: [7.8, 5.3, 0.4], A: [0, 0, 1], toward: [5.2, 5.3, -0.1], needleFrom: -1, needleLen: 5, entryLift: 0.1,
+    probeLabel: 'Linear probe, transverse, low in the neck', probeShort: 'Probe',
+    deposits: [
+      {
+        tip: [5.38, 5.3, -0.7],
+        blobs: [{ c: [5.4, 5.3, -0.62], r: 0.42 }, { c: [5.78, 5.25, -0.12], r: 0.36 }, { c: [5.22, 5.32, 0.4], r: 0.32 }],
+      },
+    ],
+    camera: { pos: [12.5, 14, 16], target: [5.6, 5.0, -0.2] },
+    glb: {
+      // Blender model: C5 and C6 merge at y ~6.9, the suprascapular nerve leaves at y ~6.4.
+      P: [10.6, 6.75, 3.0], A: [0, 0, 1], toward: [8.5, 6.75, 3.0], needleFrom: -1, entryLift: 0.1,
+      deposits: [
+        {
+          tip: [8.88, 6.75, 2.28],
+          blobs: [{ c: [8.88, 6.75, 2.32], r: 0.42 }, { c: [9.12, 6.75, 3.1], r: 0.36 }, { c: [8.4, 6.75, 2.42], r: 0.32 }, { c: [8.7, 6.78, 3.55], r: 0.3 }],
+        },
+      ],
+      camera: { pos: [11, 23, 9], target: [8.8, 6.0, 2.6] },
+    },
+    steps: [
+      'Probe transverse, low in the neck: follow C5 and C6 down until they join as the superior trunk, above the suprascapular take-off.',
+      'Needle in-plane, posterolateral to anteromedial, to the posterolateral border of the superior trunk.',
+      'Inject so local anaesthetic surrounds the superior trunk before the suprascapular nerve leaves it. The phrenic nerve on the anterior scalene is further away than at the roots.',
+    ],
+  },
+  costoclavicular: {
+    // Probe below the middle of the clavicle and parallel to it, tilted cephalad; the
+    // cords are clustered lateral to the artery. Needle lateral to medial.
+    P: [9.3, -0.2, 3.3], A: [0.92, 0.13, -0.37], toward: [8.28, 0.82, 0.67], needleFrom: 1, needleLen: 6, entryLift: 0.1,
+    probeLabel: 'Linear probe below the middle of the clavicle, parallel to it', probeShort: 'Probe',
+    deposits: [
+      {
+        tip: [9.86, 0.7, 0.94],
+        blobs: [{ c: [9.86, 0.7, 0.94], r: 0.42 }, { c: [9.75, 0.95, 0.5], r: 0.38 }, { c: [9.95, 0.3, 0.05], r: 0.34 }, { c: [10.1, 0.85, -0.2], r: 0.32 }],
+      },
+    ],
+    camera: { pos: [7, 9, 16], target: [9.4, 0.5, 0.6] },
+    glb: {
+      // Plane runs along the clavicle (seen from the front) and crosses the artery and
+      // the cords almost at right angles. Cords lie lateral and deep to the artery here.
+      P: [13.14, 1.92, 7.3], A: [0.81, 0.58, 0], toward: [13.14, 1.92, 2.2], needleFrom: 1, entryLift: 0.1, needleLen: 7,
+      deposits: [
+        {
+          tip: [13.65, 2.28, 2.2],
+          blobs: [{ c: [13.62, 2.26, 2.2], r: 0.42 }, { c: [13.1, 1.9, 2.15], r: 0.4 }, { c: [13.3, 2.02, 2.85], r: 0.34 }, { c: [13.2, 1.98, 1.5], r: 0.32 }],
+        },
+      ],
+      camera: { pos: [4.5, 14.5, 15.5], target: [13.4, 1.6, 4.0] },
+    },
+    steps: [
+      'Probe below the middle of the clavicle, parallel to it, tilted cephalad: the three cords lie together lateral to the axillary artery in the costoclavicular space.',
+      'Needle in-plane, lateral to medial, into the cluster of cords (away from the artery and vein).',
+      'Inject between the cords: one injection spreads around all three while they are still bunched together.',
+    ],
+  },
+  raptir: {
+    // Same parasagittal probe as infraclavicular; the needle enters above and behind the
+    // clavicle (supraclavicular fossa) and passes caudally under it to the back of the artery.
+    P: [10.8, -0.8, 3.3], A: [0, 1, 0], toward: [10.8, -0.8, -0.4], needleLen: 5.5,
+    entry: [10.8, 4.0, 0.5],
+    probeLabel: 'Linear probe parasagittal, medial to the coracoid (as infraclavicular)', probeShort: 'Probe',
+    deposits: [
+      {
+        tip: [10.8, 0.1, -0.42],
+        blobs: [{ c: [10.8, 0.05, -0.45], r: 0.42 }, { c: [10.8, -0.5, -0.5], r: 0.38 }, { c: [10.8, 0.5, -0.2], r: 0.34 }, { c: [10.8, -1.0, -0.1], r: 0.32 }],
+      },
+    ],
+    camera: { pos: [20, 9, 15], target: [10.8, 1.0, 0.3] },
+    glb: {
+      // On the Blender model the coracoid lies in the infraclavicular plane cephalad of the
+      // cords, so the plane sits 1.5 units more medial, where a path behind the clavicle exists.
+      P: [14.5, -0.6, 7.0], A: [0, 1, 0], toward: [14.5, -0.6, 2.5], needleLen: 12.5,
+      entry: [14.5, 9.0, -3.07],
+      deposits: [
+        {
+          tip: [14.5, -0.5, 2.8],
+          blobs: [{ c: [14.5, -0.45, 2.85], r: 0.42 }, { c: [14.5, -1.05, 3.0], r: 0.38 }, { c: [14.5, 0.1, 2.95], r: 0.34 }, { c: [14.5, -1.45, 3.5], r: 0.32 }],
+        },
+      ],
+      camera: { pos: [33, 12.2, 20.2], target: [14.5, 2.4, 2.2] },
+    },
+    steps: [
+      'Probe parasagittal, medial to the coracoid, as for an infraclavicular block: axillary artery in cross-section with the cords around it.',
+      'Needle in-plane from above and behind the clavicle (supraclavicular fossa), passing caudally under the clavicle toward the back of the artery.',
+      'Deposit posterior to the artery (6 o’clock), between the artery and the posterior cord, for U-shaped spread around the cords.',
+    ],
+  },
 };
 
 // Centroid of the C5 root in the Blender model as placed by setupGLB (model frame).
@@ -363,21 +457,21 @@ const LEVEL_LABELS = [
 ];
 
 const STRUCT_LABELS = [
-  { group: 'muscles', text: 'Anterior scalene', at: [4.9, 9.4, 1.6], blocks: ['interscalene'] },
-  { group: 'muscles', text: 'Middle scalene', at: [3.6, 10.2, -2.3], blocks: ['interscalene'] },
+  { group: 'muscles', text: 'Anterior scalene', at: [4.9, 9.4, 1.6], blocks: ['interscalene', 'superior-trunk'] },
+  { group: 'muscles', text: 'Middle scalene', at: [3.6, 10.2, -2.3], blocks: ['interscalene', 'superior-trunk'] },
   { group: 'muscles', text: 'Sternocleidomastoid', at: [5.2, 11.8, 0.4], blocks: ['interscalene'], only: true },
-  { group: 'muscles', text: 'Pectoralis minor', at: [9.0, -3.3, 3.2], blocks: ['infraclavicular'] },
-  { group: 'muscles', text: 'Pectoralis major', at: [7.0, -2.6, 4.6], blocks: ['infraclavicular'], only: true },
+  { group: 'muscles', text: 'Pectoralis minor', at: [9.0, -3.3, 3.2], blocks: ['infraclavicular', 'raptir'] },
+  { group: 'muscles', text: 'Pectoralis major', at: [7.0, -2.6, 4.6], blocks: ['infraclavicular', 'costoclavicular'], only: true },
   { group: 'muscles', text: 'Coracobrachialis', at: [19, -0.4, 1.0], blocks: ['axillary'] },
   { group: 'muscles', text: 'Biceps', at: [21, 1.6, 1.4], blocks: ['axillary'], only: true },
-  { group: 'bones', text: 'First rib', at: [6.3, 0.8, 1.9], blocks: ['supraclavicular'] },
-  { group: 'bones', text: 'Clavicle', at: [10.2, 2.3, 0.9], blocks: ['supraclavicular', 'infraclavicular'] },
-  { group: 'bones', text: 'Coracoid', at: [11.9, 0.9, 1.9], blocks: ['infraclavicular'] },
+  { group: 'bones', text: 'First rib', at: [6.3, 0.8, 1.9], blocks: ['supraclavicular', 'costoclavicular'] },
+  { group: 'bones', text: 'Clavicle', at: [10.2, 2.3, 0.9], blocks: ['supraclavicular', 'infraclavicular', 'costoclavicular', 'raptir'] },
+  { group: 'bones', text: 'Coracoid', at: [11.9, 0.9, 1.9], blocks: ['infraclavicular', 'raptir'] },
   { group: 'bones', text: 'Humerus', at: [27, 0.7, -1.0], blocks: ['axillary'] },
   { group: 'bones', text: 'C6', at: [-0.2, 6.5, 0.0], blocks: ['interscalene'] },
   { group: 'vessels', text: 'Subclavian artery', at: [4.0, 2.4, 0.7], blocks: ['supraclavicular'] },
-  { group: 'vessels', text: 'Axillary artery', at: [17, -2.2, 0.3], blocks: ['infraclavicular', 'axillary'] },
-  { group: 'vessels', text: 'Axillary vein', at: [21, -3.5, -0.9], blocks: ['infraclavicular', 'axillary'] },
+  { group: 'vessels', text: 'Axillary artery', at: [17, -2.2, 0.3], blocks: ['infraclavicular', 'axillary', 'costoclavicular', 'raptir'] },
+  { group: 'vessels', text: 'Axillary vein', at: [21, -3.5, -0.9], blocks: ['infraclavicular', 'axillary', 'costoclavicular'] },
 ];
 
 const ICONS = {
@@ -1324,8 +1418,13 @@ export function mount(containerEl, bus, options = {}) {
     // Needle pivot (entry) at the needle end of the probe; "lift" moves it deeper, which
     // gives a flatter needle. A deposit may set its own lift (a separate pass).
     const entry = (lift, from) => P.clone().addScaledVector(A, from * (PROBE_LEN / 2 + 0.5)).addScaledVector(B, lift);
-    const Es = g.deposits.map((d) => entry(d.lift ?? g.entryLift ?? 0.15, d.from ?? g.needleFrom));
     const projectToPlane = (q) => q.clone().sub(N.clone().multiplyScalar(N.dot(q.clone().sub(P))));
+    // A deposit (or the block) may give an explicit skin entry point away from the
+    // probe (e.g. RAPTIR: above and behind the clavicle); it is kept in plane.
+    const Es = g.deposits.map((d) => {
+      const e = d.entry || g.entry;
+      return e ? projectToPlane(V(e)) : entry(d.lift ?? g.entryLift ?? 0.15, d.from ?? g.needleFrom);
+    });
     const tips = g.deposits.map((d) => projectToPlane(V(d.tip)));
     return { P, A, B, N, E: Es[0], Es, tips };
   }
@@ -1918,7 +2017,7 @@ export function mount(containerEl, bus, options = {}) {
       const from = i === 0 ? cur.clone() : newPass ? Ei.clone().lerp(tip, 0.04) : Ei.clone().lerp(cur, 0.35);
       const shafts = [];
       for (let f = sweep ? 0 : 1; f <= 1.0001; f += 0.25) shafts.push(from.clone().lerp(tip, f));
-      paths.push({ deposit: i + 1, shafts, E: Ei });
+      paths.push({ deposit: i + 1, shafts, E: Ei, tip });
       cur = tip.clone();
     });
     const meshes = structureMeshes().map((m) => ({ ...m, c: meshPoints(m.mesh) }));
@@ -1930,7 +2029,9 @@ export function mount(containerEl, bus, options = {}) {
         const dir = p.E.clone().sub(t);
         const dv = dir.dot(B);
         const back = dv < -1e-6 ? -t.clone().sub(P).dot(B) / dv : 1;
-        const Ew = toWorld(t.clone().addScaledVector(dir, Math.max(1, back)));
+        // A tip still outside the entry point (start of a pass) has no shaft in the body.
+        const outside = t.clone().sub(p.E).dot(p.tip.clone().sub(p.E)) < 0;
+        const Ew = toWorld(outside ? t : t.clone().addScaledVector(dir, Math.max(1, back)));
         const Tw = toWorld(t);
         const len = Tw.distanceTo(Ew);
         const steps = Math.max(8, Math.ceil(len / 0.08));
