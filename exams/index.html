@@ -232,13 +232,12 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
     </header>
     <div class="exam-workspace">
       <div class="tabs" role="tablist" aria-label="Exam parts">
-        <button class="tab active" id="part-reflections" type="button" data-part="reflections" role="tab" aria-selected="true" aria-controls="sub-content" tabindex="0">Reflections <span class="tab-count" id="count-reflections">0</span></button>
-        <button class="tab" id="part-partB" type="button" data-part="partB" role="tab" aria-selected="false" aria-controls="sub-content" tabindex="-1">Part B <span class="tab-count" id="count-partB">0</span></button>
+        <button class="tab active" id="part-partB" type="button" data-part="partB" role="tab" aria-selected="true" aria-controls="sub-content" tabindex="0">Part B <span class="tab-count" id="count-partB">0</span></button>
         <button class="tab" id="part-partC" type="button" data-part="partC" role="tab" aria-selected="false" aria-controls="sub-content" tabindex="-1">Part C <span class="tab-count" id="count-partC">0</span></button>
       </div>
       <div id="part-overview"></div>
       <div id="subtabs-wrap"></div>
-      <div id="sub-content" role="tabpanel" aria-labelledby="part-reflections" tabindex="0"></div>
+      <div id="sub-content" role="tabpanel" aria-labelledby="part-partB" tabindex="0"></div>
       <noscript><p class="exam-noscript">Enable JavaScript to browse the exam materials.</p></noscript>
     </div>
   </div>
@@ -448,37 +447,6 @@ const studyPlan = {
 
 const exams = {
 
-  reflections: {
-    posts: [
-      {
-        id: "what-matters-most-passing-exams",
-        title: "What matters most in passing exams?",
-        date: "2026-06-09",
-        strand: "exams",
-        body: `
-          <p>Some juniors register for the exams without believing they will pass.</p>
-          <p>They will not say it that way. They will say they are sitting early to leave a buffer for a second attempt. That this first try is just practice, before doing it properly the following year. The logic sounds prudent. Underneath it is a belief: <em>I don't believe that I will pass.</em></p>
-          <p>Limiting beliefs are self-fulfilling. Stop thinking "I only have a 30% chance", "I can't finish studying", "I am not ready". I am not arguing for blind confidence over preparation. You need a high degree of commitment and resilience. Hard work, deliberate practice, attending tutorials are important. But these are downstream. Energy flows where your focus goes. They come in naturally once you believe that you can and will pass.</p>
-          <p>There is a quieter dividend. Believing that preparing properly for the exams makes you a better clinician, and the preparation stops being punishment. You are not grinding towards a meaningless degree. You are building the doctor you want to become.</p>
-          <p>Good news: you have 100% control over what you choose to believe. Beliefs shape thoughts. Thoughts shape action. Action shapes outcomes. Make it work for you.</p>
-        `
-      },
-      {
-        id: "clone-then-modify",
-        title: "Clone, then modify",
-        date: "2026-06-08",
-        strand: "exams",
-        body: `
-          <p>Mohnish Pabrai built a successful fund by copying Warren Buffett. He calls it cloning, and says it without embarrassment. There is no reward for originality in investing. The reward is portfolio return.</p>
-          <p>The same applies to anaesthesia exam preparation. Juniors spend weeks working out how to prepare, then months executing a plan they built from scratch — only to go back to the drawing board with each unsuccessful attempt.</p>
-          <p>Originality doesn't have to be the starting point. The answers already exist in the seniors who have passed. First, identify who to copy from. Someone trusted, reliable, and similar enough to you. Find time to ask them. Copy what worked.</p>
-          <p>Then modify. Work out from first principles whether their strategy holds true for you. Map the differences between you and your seniors (studying style, environment) and adapt your approach to fit your context.</p>
-          <p>There is no reward for originality in a high-stakes exam. The reward is passing.</p>
-        `
-      }
-    ]
-  },
-
   partB: {
     overview: `
       <p>Part B has <strong>two components</strong>: a written SAQ paper and a 12-station OSCE. Both must be passed. The SAQ tests structured clinical reasoning on paper; the OSCE tests the same reasoning out loud, across stations covering viva, investigation, equipment, RA, crisis, and simulated patients.</p>
@@ -606,7 +574,7 @@ const exams = {
 // Engine
 // ═══════════════════════════════════════════════════════════════════
 
-let currentPart = 'reflections';
+let currentPart = 'partB';
 let currentSub = null;
 let currentSubSub = null;
 
@@ -871,35 +839,6 @@ function renderSubContent(section) {
   return parts.join('');
 }
 
-// ─── Reflections renderer (exact writing.html accordion) ────────────────────────
-function formatDate(isoDate) {
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return isoDate.slice(8,10) + ' ' + months[Number(isoDate.slice(5,7))-1] + ' ' + isoDate.slice(0,4);
-}
-function togglePost(el) {
-  const open = el.classList.toggle('expanded');
-  const btn = el.querySelector('.post-expand-icon');
-  const body = el.querySelector('.post-body');
-  btn?.setAttribute('aria-expanded', String(open));
-  if (body) body.hidden = !open;
-  updateRoute(open ? `reflections/${el.dataset.id}` : 'reflections');
-}
-function renderReflections() {
-  document.getElementById('part-overview').innerHTML = '';
-  document.getElementById('subtabs-wrap').innerHTML = '';
-  const scEl = document.getElementById('sub-content');
-  const list = exams.reflections.posts;
-  scEl.innerHTML = `<div class="feed">` + list.map(p => `
-    <article class="post" data-id="${escapeHtml(p.id)}">
-      <div class="post-meta">
-        <span class="post-strand ${p.strand}">${escapeHtml(p.strand)}</span>
-        <span class="post-date">${formatDate(p.date)}</span>
-      </div>
-      <h2 class="post-title"><button type="button" class="post-expand-icon" aria-expanded="false" aria-controls="reflection-${escapeHtml(p.id)}" onclick="togglePost(this.closest('.post'))"><span>${escapeHtml(p.title)}</span><span class="reflection-symbol" aria-hidden="true">+</span></button></h2>
-      <div class="post-body" id="reflection-${escapeHtml(p.id)}" hidden>${p.body.trim()}</div>
-    </article>`).join('') + `</div>`;
-}
-
 // ─── Part renderer ────────────────────────────────────────────────────────────
 function renderPart(partKey) {
   const part = exams[partKey];
@@ -974,10 +913,6 @@ function updateCounts() {
   Object.keys(exams).forEach(key => {
     const el = document.getElementById('count-' + key);
     if (!el) return;
-    if (key === 'reflections') {
-      el.textContent = (exams.reflections.posts || []).length;
-      return;
-    }
     const total = exams[key].sections.reduce((acc, s) =>
       acc + (s.items ? s.items.length : s.subsections ? s.subsections.length : 0), 0);
     el.textContent = total;
@@ -1025,25 +960,10 @@ function showSub(subKey, tertiaryKey = null, route = true) {
 }
 
 function showPart(partKey, subKey = null, tertiaryKey = null, route = true) {
-  if (!Object.prototype.hasOwnProperty.call(exams, partKey)) partKey = 'reflections';
+  if (!Object.prototype.hasOwnProperty.call(exams, partKey)) partKey = 'partB';
   currentPart = partKey;
   currentSubSub = tertiaryKey;
   setActiveTab(partKey);
-  if (partKey === 'reflections') {
-    currentSub = null;
-    renderReflections();
-    if (subKey) {
-      const card = Array.from(document.querySelectorAll('.post')).find(el => el.dataset.id === subKey);
-      if (card) {
-        card.classList.add('expanded');
-        card.querySelector('.post-expand-icon').setAttribute('aria-expanded', 'true');
-        card.querySelector('.post-body').hidden = false;
-      }
-    }
-    syncPanelLabel();
-    if (route) updateRoute(`reflections${subKey ? '/' + subKey : ''}`);
-    return;
-  }
   const validSub = subKey && exams[partKey].sections.find(s => s.key === subKey);
   currentSub = validSub ? subKey : exams[partKey].sections[0].key;
   renderPart(partKey);
@@ -1055,7 +975,7 @@ function showPart(partKey, subKey = null, tertiaryKey = null, route = true) {
 function handleRoute() {
   if (location.hash === '#main' && document.getElementById('sub-content').hasChildNodes()) return;
   const [part, sub, tertiary] = location.hash.slice(1).split('/');
-  showPart(part || 'reflections', sub, tertiary, false);
+  showPart(part || 'partB', sub, tertiary, false);
 }
 
 document.querySelectorAll('.exam-page .tab').forEach(tab => {
