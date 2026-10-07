@@ -1,0 +1,324 @@
+/* Ultrasound anatomy module (js/ultrasound.js). All rules are scoped to .bpus. */
+
+.bpus {
+  --us-text: #1e293b;
+  --us-muted: #556070;
+  --us-bg: #ffffff;
+  --us-surface: #f6f7f9;
+  --us-border: #d9dee5;
+  --us-accent: #0e6e8c;
+  --us-accent-ink: #ffffff;
+  --us-focus: #b45309;
+  --us-hl: #f59e0b;
+  --us-screen: #050607;
+
+  /* Structure palette (labels and idealised diagram) */
+  --us-nerve: #facc15;
+  --us-nerve-edge: #a16207;
+  --us-nerve-fasc: #ca8a04;
+  --us-artery: #dc2626;
+  --us-vein: #2563eb;
+  --us-muscle: #e7a9a4;
+  --us-muscle-edge: #b9706a;
+  --us-muscle-fibre: rgba(150, 70, 66, 0.28);
+  --us-bone: #e9dcc0;
+  --us-bone-edge: #a68a5b;
+  --us-tendon: #f1efe9;
+  --us-tendon-edge: #8f8a80;
+  --us-pleura: #c026d3;
+  --us-lung: #f4e8f7;
+  --us-tissue: #f8efe2;
+  --us-fat: #fbf3d6;
+  --us-skin: #c08b5c;
+  --us-sheath: #fbe7a8;
+  --us-la: #22d3ee;
+  --us-needle: #475569;
+  --us-target: #be123c;
+  --us-air: #eef2f6;
+  --us-probe: #334155;
+
+  --st-covers: #0e7490;
+  --st-covers-bg: #d7f3f8;
+  --st-variable: #9a4a06;
+  --st-variable-bg: #fde7c7;
+  --st-spares: #4b5563;
+  --st-spares-bg: #e5e7eb;
+
+  container-type: inline-size;
+  color: var(--us-text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  min-width: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .bpus {
+    --us-text: #e5e9f0;
+    --us-muted: #a7b0bf;
+    --us-bg: #0f141b;
+    --us-surface: #161d26;
+    --us-border: #2b3543;
+    --us-accent: #38bdf8;
+    --us-accent-ink: #0b1220;
+    --us-focus: #fbbf24;
+    --us-muscle: #7c3f45;
+    --us-muscle-edge: #a65f66;
+    --us-muscle-fibre: rgba(255, 190, 190, 0.18);
+    --us-bone: #a8987a;
+    --us-bone-edge: #d8c7a3;
+    --us-tendon: #9ca3af;
+    --us-tendon-edge: #d1d5db;
+    --us-pleura: #e879f9;
+    --us-lung: #2c2233;
+    --us-tissue: #2a2420;
+    --us-fat: #3a3424;
+    --us-skin: #d6a57a;
+    --us-sheath: #574a22;
+    --us-needle: #cbd5e1;
+    --us-target: #fb7185;
+    --us-air: #1b232e;
+    --us-probe: #94a3b8;
+    --st-covers: #67e8f9;
+    --st-covers-bg: #0c3a46;
+    --st-variable: #fbbf24;
+    --st-variable-bg: #47300a;
+    --st-spares: #cbd5e1;
+    --st-spares-bg: #333c4a;
+  }
+}
+:root[data-theme="dark"] .bpus {
+  --us-text: #e5e9f0;
+  --us-muted: #a7b0bf;
+  --us-bg: #0f141b;
+  --us-surface: #161d26;
+  --us-border: #2b3543;
+  --us-accent: #38bdf8;
+  --us-accent-ink: #0b1220;
+  --us-focus: #fbbf24;
+  --us-muscle: #7c3f45;
+  --us-muscle-edge: #a65f66;
+  --us-muscle-fibre: rgba(255, 190, 190, 0.18);
+  --us-bone: #a8987a;
+  --us-bone-edge: #d8c7a3;
+  --us-tendon: #9ca3af;
+  --us-tendon-edge: #d1d5db;
+  --us-pleura: #e879f9;
+  --us-lung: #2c2233;
+  --us-tissue: #2a2420;
+  --us-fat: #3a3424;
+  --us-skin: #d6a57a;
+  --us-sheath: #574a22;
+  --us-needle: #cbd5e1;
+  --us-target: #fb7185;
+  --us-air: #1b232e;
+  --us-probe: #94a3b8;
+  --st-covers: #67e8f9;
+  --st-covers-bg: #0c3a46;
+  --st-variable: #fbbf24;
+  --st-variable-bg: #47300a;
+  --st-spares: #cbd5e1;
+  --st-spares-bg: #333c4a;
+}
+
+.bpus [hidden] { display: none !important; }
+.bpus *, .bpus *::before, .bpus *::after { box-sizing: border-box; }
+.bpus :focus-visible { outline: 3px solid var(--us-focus); outline-offset: 2px; }
+.bpus button { font: inherit; color: inherit; }
+
+.bpus-h { font-size: 1.05rem; margin: 0 0 0.5rem; line-height: 1.3; }
+.bpus-h-sm { font-size: 0.95rem; }
+.bpus-muted { color: var(--us-muted); margin: 0.25rem 0 0.75rem; }
+
+/* ---------- chooser ---------- */
+.bpus-chooser-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); }
+.bpus-card {
+  display: flex; flex-direction: column; gap: 4px; text-align: left; padding: 8px 8px 12px;
+  background: var(--us-surface); border: 1px solid var(--us-border); border-radius: 12px; cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.bpus-card:hover { border-color: var(--us-accent); transform: translateY(-1px); }
+.bpus-thumb { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 8px; background: var(--us-screen); display: block; margin-bottom: 4px; }
+.bpus-card-name { font-weight: 650; }
+.bpus-card-sub { font-size: 0.875rem; color: var(--us-muted); }
+
+/* ---------- head / controls ---------- */
+.bpus-head { margin-bottom: 8px; }
+.bpus-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.bpus-tab {
+  border: 1px solid var(--us-border); background: var(--us-bg); border-radius: 999px; padding: 6px 14px;
+  min-height: 40px; cursor: pointer; font-size: 0.95rem;
+}
+.bpus-tab[aria-pressed="true"] { background: var(--us-accent); color: var(--us-accent-ink); border-color: var(--us-accent); font-weight: 600; }
+.bpus-tab-all { color: var(--us-muted); }
+
+.bpus-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 8px 0 12px; }
+.bpus-steps { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; flex-wrap: wrap; }
+.bpus-step {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 4px 12px 4px 6px;
+  background: var(--us-surface); border: 1px solid var(--us-border); border-radius: 999px; cursor: pointer;
+}
+.bpus-step-n {
+  display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--us-bg); border: 1px solid var(--us-border); font-size: 0.85rem; font-weight: 700;
+}
+.bpus-step.is-done .bpus-step-n { background: var(--st-covers-bg); border-color: var(--st-covers); }
+.bpus-step[aria-current="step"] { border-color: var(--us-accent); background: var(--us-accent); color: var(--us-accent-ink); font-weight: 600; }
+.bpus-step[aria-current="step"] .bpus-step-n { background: var(--us-accent-ink); color: var(--us-accent); border-color: transparent; }
+
+.bpus-btn {
+  min-height: 40px; padding: 6px 16px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--us-accent); background: var(--us-bg); color: var(--us-accent); font-weight: 600;
+}
+.bpus-btn:hover { background: var(--st-covers-bg); }
+.bpus-btn-sm { min-height: 32px; padding: 3px 10px; font-size: 0.875rem; display: inline-flex; align-items: center; }
+.bpus-switch { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; min-height: 40px; }
+.bpus-switch input { width: 20px; height: 20px; accent-color: var(--us-accent); }
+
+/* ---------- panels ---------- */
+.bpus-panels { display: grid; gap: 12px; grid-template-columns: 1fr; align-items: start; }
+@container (min-width: 640px) {
+  .bpus-panels { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+}
+.bpus-panel { margin: 0; min-width: 0; background: var(--us-surface); border: 1px solid var(--us-border); border-radius: 12px; padding: 8px; }
+.bpus-panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 8px; padding: 0 2px 6px; }
+.bpus-panel-title { font-weight: 650; font-size: 0.95rem; }
+.bpus-tag { font-size: 0.8rem; color: var(--us-muted); }
+.bpus-cap { font-size: 0.85rem; color: var(--us-muted); margin-top: 6px; }
+
+.bpus-stage { position: relative; width: 100%; background: var(--us-screen); border-radius: 8px; overflow: hidden; touch-action: manipulation; }
+.bpus-canvas, .bpus-overlay { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.bpus-overlay { overflow: visible; }
+.bpus-injnote {
+  margin-top: 6px; display: inline-block; background: var(--st-covers-bg); color: var(--us-text);
+  border-left: 3px solid var(--us-la); font-size: 0.875rem; line-height: 1.35; padding: 3px 8px; border-radius: 4px;
+}
+.bpus-idwrap { width: 100%; border-radius: 8px; overflow: hidden; }
+.bpus-idsvg { width: 100%; height: 100%; display: block; }
+
+.bpus-photo-wrap { background: var(--us-screen); border-radius: 8px; overflow: hidden; display: grid; place-items: center; }
+.bpus-photo-wrap img { max-width: 100%; height: auto; display: block; }
+
+.bpus-drop {
+  margin-top: 10px; padding: 8px 12px; border: 1.5px dashed var(--us-border); border-radius: 10px;
+  font-size: 0.9rem; color: var(--us-muted);
+}
+.bpus-drop p { margin: 0; }
+.bpus-drop.is-over { border-color: var(--us-accent); background: var(--st-covers-bg); }
+.bpus-file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.bpus-file:focus-visible + p label { outline: 3px solid var(--us-focus); outline-offset: 2px; }
+.bpus-drop label.bpus-btn { margin: 2px 2px; }
+
+.bpus-readout { margin: 10px 0 0; min-height: 1.5em; font-size: 0.95rem; }
+.bpus-badge { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; font-size: 0.78rem; font-weight: 650; border: 1px solid; }
+.bpus-badge.st-target, .bpus-badge.st-covers { color: var(--st-covers); background: var(--st-covers-bg); }
+.bpus-badge.st-variable { color: var(--st-variable); background: var(--st-variable-bg); }
+.bpus-badge.st-spares { color: var(--st-spares); background: var(--st-spares-bg); }
+
+/* ---------- info ---------- */
+.bpus-info { margin-top: 12px; padding: 12px 14px; background: var(--us-bg); border: 1px solid var(--us-border); border-radius: 12px; }
+.bpus-dl { display: grid; grid-template-columns: 1fr; gap: 2px 14px; margin: 0; }
+@container (min-width: 560px) { .bpus-dl { grid-template-columns: max-content 1fr; } }
+.bpus-dl dt { font-weight: 650; color: var(--us-muted); }
+.bpus-dl dd { margin: 0 0 6px; }
+.bpus-list { margin: 0.25rem 0; padding-left: 1.2rem; }
+.bpus-list li { margin: 2px 0; }
+.bpus-cov { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.bpus-cov-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.bpus-cov-row .bpus-badge { margin: 0 4px 0 0; min-width: 72px; text-align: center; }
+.bpus-chip-sm { border: 1px solid var(--us-border); background: var(--us-surface); border-radius: 999px; padding: 3px 10px; font-size: 0.85rem; cursor: pointer; min-height: 32px; }
+.bpus-chip-sm:hover { border-color: var(--us-accent); }
+.bpus-pearls { margin-top: 10px; }
+.bpus-pearls summary { cursor: pointer; font-weight: 650; min-height: 32px; display: list-item; }
+
+/* ---------- legend ---------- */
+.bpus-legend { margin-top: 12px; }
+.bpus-legend-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+.bpus-chip {
+  width: 100%; display: flex; align-items: center; gap: 8px; text-align: left; padding: 6px 10px; min-height: 40px;
+  background: var(--us-bg); border: 1px solid var(--us-border); border-radius: 8px; cursor: pointer;
+}
+.bpus-chip:hover, .bpus-chip.is-hl { border-color: var(--us-hl); box-shadow: 0 0 0 2px color-mix(in srgb, var(--us-hl) 40%, transparent); }
+.bpus-chip.is-path { border-style: dashed; border-color: var(--us-hl); }
+.bpus-sw { width: 14px; height: 14px; border-radius: 4px; flex: none; background: var(--sw, #999); border: 1px solid rgba(0, 0, 0, 0.25); }
+.bpus-chip-short { font-weight: 700; min-width: 3.2em; flex: none; }
+.bpus-chip-long { font-size: 0.875rem; color: var(--us-muted); min-width: 0; }
+
+.bpus .k-nerve { --sw: var(--us-nerve); }
+.bpus .k-artery { --sw: var(--us-artery); }
+.bpus .k-vein { --sw: var(--us-vein); }
+.bpus .k-muscle { --sw: var(--us-muscle); }
+.bpus .k-bone { --sw: var(--us-bone); }
+.bpus .k-tendon { --sw: var(--us-tendon); }
+.bpus .k-pleura { --sw: var(--us-pleura); }
+.bpus .k-point { --sw: var(--us-la); }
+
+/* ---------- SVG: shared label pills ---------- */
+.bpus-pill { fill: var(--pill-bg, #334155); stroke: rgba(0, 0, 0, 0.35); stroke-width: 0.15; }
+.bpus-pill-text { fill: var(--pill-fg, #fff); font-weight: 700; text-anchor: middle; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; pointer-events: none; }
+.bpus-lab { cursor: default; }
+.bpus-lab.has-id { cursor: pointer; }
+.bpus-lab:focus { outline: none; }
+.bpus-lab:focus-visible .bpus-pill { stroke: var(--us-focus); stroke-width: 0.8; }
+.bpus-leader { stroke: var(--pill-bg, #fff); stroke-width: 1.4px; }
+.bpus-leader-dot { fill: var(--pill-bg, #fff); }
+.bpus-lab.k-nerve { --pill-bg: #facc15; --pill-fg: #1c1917; }
+.bpus-lab.k-artery { --pill-bg: #dc2626; --pill-fg: #fff; }
+.bpus-lab.k-vein { --pill-bg: #2563eb; --pill-fg: #fff; }
+.bpus-lab.k-muscle { --pill-bg: #8f3d48; --pill-fg: #fff; }
+.bpus-lab.k-bone { --pill-bg: #e9dcc0; --pill-fg: #1c1917; }
+.bpus-lab.k-tendon { --pill-bg: #e7e5e4; --pill-fg: #1c1917; }
+.bpus-lab.k-pleura { --pill-bg: #c026d3; --pill-fg: #fff; }
+.bpus-lab.k-point { --pill-bg: #0891b2; --pill-fg: #fff; }
+.bpus-lab.is-hl .bpus-pill, .bpus-lab.is-path .bpus-pill { stroke: var(--us-hl); stroke-width: 0.9; }
+.bpus-lab.is-hl .bpus-leader { stroke: var(--us-hl); stroke-width: 2.2px; }
+
+/* Simulated scan overlay */
+.bpus-overlay .bpus-hit { fill: transparent; stroke: transparent; pointer-events: all; }
+.bpus-overlay .bpus-hit.is-line { fill: none; stroke-width: 14px; pointer-events: stroke; }
+.bpus-overlay .bpus-item.k-nerve, .bpus-overlay .bpus-item.k-artery, .bpus-overlay .bpus-item.k-vein { cursor: pointer; }
+.bpus-overlay .is-path .bpus-outline { stroke: rgba(253, 224, 71, 0.75); stroke-width: 1.5px; stroke-dasharray: 3 3; }
+.bpus-overlay .is-hl .bpus-outline { stroke: #fde047; stroke-width: 2.4px; filter: drop-shadow(0 0 2px rgba(253, 224, 71, 0.9)); }
+.bpus-overlay .is-hl .bpus-outline.is-line, .bpus-overlay .is-path .bpus-outline.is-line { stroke-width: 3px; }
+.bpus-side { fill: #f1f5f9; font-weight: 600; font-family: system-ui, sans-serif; paint-order: stroke; stroke: rgba(0, 0, 0, 0.7); stroke-width: 0.6; }
+.bpus-marker { fill: #4ade80; stroke: rgba(0, 0, 0, 0.5); stroke-width: 0.2; }
+.bpus-traj { stroke: rgba(255, 255, 255, 0.55); stroke-width: 1.2px; stroke-dasharray: 5 5; }
+
+/* Idealised diagram */
+.id-air { fill: var(--us-air); }
+.id-tissue { fill: var(--us-tissue); }
+.id-fat { fill: var(--us-fat); }
+.id-skin { stroke: var(--us-skin); stroke-width: 3px; }
+.id-s.k-muscle .id-shape { fill: var(--us-muscle); stroke: var(--us-muscle-edge); stroke-width: 0.5; }
+.id-fibres line { stroke: var(--us-muscle-fibre); stroke-width: 1px; }
+.id-s.k-artery .id-shape { fill: var(--us-artery); stroke: #991b1b; stroke-width: 0.5; }
+.id-s.k-vein .id-shape { fill: var(--us-vein); stroke: #1e3a8a; stroke-width: 0.4; }
+.id-s.k-nerve .id-shape { fill: var(--us-nerve); stroke: var(--us-nerve-edge); stroke-width: 0.5; }
+.id-fasc { fill: var(--us-nerve-fasc); opacity: 0.55; pointer-events: none; }
+.id-s.k-bone .id-shape { fill: none; stroke: var(--us-bone-edge); stroke-linecap: round; }
+.id-s.k-tendon .id-shape { fill: none; stroke: var(--us-tendon); stroke-linecap: round; }
+.id-s.k-fascia .id-shape { fill: none; stroke: var(--us-muscle-edge); }
+.id-s.k-pleura .id-shape { fill: none; stroke: var(--us-pleura); stroke-width: 1; }
+.id-lung { fill: var(--us-lung); }
+.id-s.k-sheath .id-shape { fill: var(--us-sheath); stroke: none; }
+.id-point { fill: none; stroke: var(--us-la); stroke-width: 2px; stroke-dasharray: 3 2; }
+.id-s.k-nerve, .id-s.k-artery, .id-s.k-vein { cursor: pointer; }
+.id-s .bpus-outline { transition: stroke 0.15s, stroke-width 0.15s; }
+.id-s.is-path .id-shape:not(.is-line) { stroke: var(--us-hl); stroke-width: 0.9; stroke-dasharray: 2 1.2; }
+.id-s.is-hl .id-shape:not(.is-line) { stroke: var(--us-hl); stroke-width: 1.4; }
+.id-s.k-bone.is-hl .id-shape, .id-s.k-tendon.is-hl .id-shape { stroke: var(--us-hl); }
+.id-s.is-hl .id-point { stroke: var(--us-hl); }
+.id-s.k-nerve.is-bathed .id-shape { stroke: var(--us-la); stroke-width: 1.3; }
+.id-la { fill: var(--us-la); opacity: 0.45; pointer-events: none; }
+.id-traj { stroke: var(--us-needle); stroke-opacity: 0.7; }
+.id-needle-shaft { stroke: var(--us-needle); stroke-width: 2.5px; stroke-linecap: round; }
+.id-needle-tip { fill: var(--us-needle); }
+.id-target-ring { fill: none; stroke: var(--us-target); stroke-width: 1.6px; }
+.id-probe-body { fill: var(--us-probe); }
+.id-probe-face { fill: #94a3b8; }
+.id-probe-text { fill: #f8fafc; font-weight: 600; font-family: system-ui, sans-serif; }
+.id-probe-mid { fill: #cbd5e1; font-weight: 500; }
+:root[data-theme="dark"] .bpus .id-probe-text { fill: #0f172a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bpus .id-probe-text { fill: #0f172a; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .bpus-card, .id-s .bpus-outline { transition: none; }
+}

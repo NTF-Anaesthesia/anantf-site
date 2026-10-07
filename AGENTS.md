@@ -43,12 +43,13 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `ac/index.html` | Guide to AC Life, **password-locked** | No (unlisted) |
 | `tools/ac-guide.mjs` | Unlock / re-lock script for the AC guide | — |
 | `tools/ac-editor.html` | Browser alternative to the script | — |
+| `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app | No (unlisted) |
 
 The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
 
 ## Rules
 
-- Don't add links to `exams/`, `popliteal/` or `ac/` from the homepage, and keep their
+- Don't add links to `exams/`, `popliteal/`, `ac/` or `brachial-plexus/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
