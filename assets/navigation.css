@@ -1,6 +1,6 @@
 @import url("./couture.css?v=2");
 @import url("./editorial-layout.css?v=1");
-@import url("./site-shell.css?v=20261007-essays");
+@import url("./site-shell.css?v=20261007-banners");
 .ntf-header{position:sticky;top:0;z-index:60;background:rgba(237,237,235,.96);backdrop-filter:blur(16px);border-bottom:1px solid #cacac4;color:#262626;font-family:"Helvetica Neue",Arial,sans-serif}
 .ntf-header-inner{max-width:1440px;margin:auto;padding:22px 56px;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:86px}
 .ntf-logo{display:block;width:148px;line-height:0}.ntf-logo img{display:block;width:100%;height:auto}
