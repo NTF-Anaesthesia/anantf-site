@@ -1,0 +1,23 @@
+@font-face{font-family:NTF Serif;src:url('../fonts/fraunces-roman.woff2');font-weight:400 600;font-display:swap}@font-face{font-family:NTF Serif;src:url('../fonts/fraunces-italic.woff2');font-style:italic;font-weight:400 600;font-display:swap}
+:root{--bg:#fffaf0;--surface:#fffaf0;--surface-2:#f4ede1;--text:#211a23;--muted:#68616a;--border:#c9c0b4;--primary:#2537cf;--primary-hover:#192699;--primary-soft:#ebe6ff;--on-primary:#fffaf0;--focus:#2537cf;--radius:0;--shadow:none}
+.plexus-app .top{border-top:5px solid var(--primary)}.plexus-app .top-inner{padding-top:20px;padding-bottom:22px}.plexus-app h1{font:400 clamp(32px,4vw,49px)/1.1 'NTF Serif',Georgia,serif;letter-spacing:-.04em}.plexus-app h1 em{color:var(--primary)}.plexus-app .org{display:flex;align-items:center;gap:15px;font-size:11px;margin-bottom:16px}.plexus-app .org img{display:block}.plexus-app .tool-btn,.plexus-app .chip,.plexus-app .panel{border-radius:0}.plexus-app .panel-head{border-top:3px solid var(--primary)}.plexus-app .intro{max-width:850px;font-size:14px}.plexus-app .blockbar-label{font-size:10px}.plexus-app .chip[aria-pressed=true]{background:var(--primary);color:var(--on-primary)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#211a23;--surface:#2a222e;--surface-2:#342938;--text:#fffaf0;--muted:#c6b8c6;--border:#5c465e;--primary:#bca5ff;--primary-hover:#d5c4f0;--primary-soft:#43305a;--on-primary:#211a23;--focus:#e6ef57}.plexus-app:not([data-theme=light]) .org img{filter:brightness(0) invert(1)}}
+:root[data-theme=dark]{--bg:#211a23;--surface:#2a222e;--surface-2:#342938;--text:#fffaf0;--muted:#c6b8c6;--border:#5c465e;--primary:#bca5ff;--primary-hover:#d5c4f0;--primary-soft:#43305a;--on-primary:#211a23;--focus:#e6ef57}:root[data-theme=dark] .plexus-app .org img{filter:brightness(0) invert(1)}:root[data-theme=light] .plexus-app .org img{filter:none}
+
+@media(max-width:700px){
+ .plexus-app .top-inner{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:14px 8px;padding-top:16px;padding-bottom:16px}
+ .plexus-app .top-inner>div:first-child{display:contents}
+ .plexus-app .org{grid-column:1;grid-row:1;font-size:0;gap:0;margin:0}
+ .plexus-app .org>span{display:none}
+ .plexus-app .top-tools{grid-column:2;grid-row:1;align-self:center;gap:6px}
+ .plexus-app .top-tools .tool-btn{width:44px;min-height:44px;padding:10px;justify-content:center}
+ .plexus-app h1{grid-column:1/-1;grid-row:2;font-size:clamp(32px,9vw,46px)}
+ .plexus-app .intro{font-size:15px;line-height:1.65}
+ .plexus-app .chips{min-width:0;overscroll-behavior-x:contain;scroll-padding-inline:4px}
+ .plexus-app .chip{min-height:48px;flex-shrink:0}
+ .plexus-app .panel-head button{min-height:44px;min-width:44px}
+ .plexus-app input,.plexus-app select{font-size:16px}
+}
+/* Match the quieter editorial shell while retaining anatomical colour coding. */
+:root,:root[data-theme=light]{--bg:#f7f5ef;--surface:#f7f5ef;--surface-2:#eeece5;--text:#272722;--muted:#68665f;--border:#d7d2c8;--primary:#633d3c;--primary-hover:#4b2e2d;--primary-soft:#e9e3d8;--on-primary:#fffaf0;--focus:#633d3c}
+.plexus-app .top{border-top:0}.plexus-app .panel-head{border-top:1px solid var(--border)}.plexus-app .chip[aria-pressed=true]{background:var(--primary-soft);color:var(--text)}
