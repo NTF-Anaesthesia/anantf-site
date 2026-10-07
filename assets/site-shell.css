@@ -124,3 +124,18 @@ body .ntf-footer-inner{min-height:70px;padding-block:20px}
 @media(max-width:359px){body .ntf-header-inner{padding-inline:16px;gap:8px}body .ntf-logo,body .ntf-logo img{width:80px;height:46px}body .ntf-nav{gap:8px;font-size:11px}}
 
 body .ntf-footer-identity>.ntf-copyright{font-size:11px;letter-spacing:0;line-height:1.7;text-transform:none;text-wrap:pretty}
+
+/* Frame whole subjects, cropping the study illustration's empty upper margin. */
+body .department-banner{min-height:300px}
+body .department-banner .ether-art{width:58%;mask-image:none;-webkit-mask-image:none}
+body .department-banner .ether-art img{position:absolute;right:0;width:auto;height:100%;max-width:none;object-fit:contain;object-position:right center;mask-image:linear-gradient(to right,transparent,black 22%);-webkit-mask-image:linear-gradient(to right,transparent,black 22%)}
+body .department-banner .ether-art:after,body .ether-banner .study-banner-art:after{display:none}
+body .ether-banner .study-banner-art{width:48%;overflow:hidden;mask-image:linear-gradient(to right,transparent,black 8%);-webkit-mask-image:linear-gradient(to right,transparent,black 8%)}
+body .exam-hero.ether-banner .study-banner-art img,body .essay-directory-hero.ether-banner .study-banner-art img{position:absolute;bottom:0;left:0;width:100%;height:140%;max-height:none;object-fit:cover;object-position:left bottom}
+body .naps-feature .page-link{margin-top:18px}
+@media(max-width:700px){
+ body .department-banner{min-height:0}
+ body .department-banner .ether-art,body .ether-banner .study-banner-art{width:calc(100% + 48px);height:210px;margin:18px -24px 0;mask-image:linear-gradient(to bottom,transparent,black 12%);-webkit-mask-image:linear-gradient(to bottom,transparent,black 12%)}
+ body .department-banner .ether-art img{position:static;width:100%;object-fit:contain;object-position:center;mask-image:none;-webkit-mask-image:none}
+ body .exam-hero.ether-banner .study-banner-art img,body .essay-directory-hero.ether-banner .study-banner-art img{height:140%;object-position:left bottom}
+}
