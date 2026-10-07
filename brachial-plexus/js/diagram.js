@@ -19,7 +19,7 @@ const SOURCE = 'diagram';
 const SVGNS = 'http://www.w3.org/2000/svg';
 
 export const CORD_COLOURS = {
-  // Nerves are yellow throughout the app (arteries red, veins purple); the
+  // Nerves are yellow throughout the app (arteries red, veins blue); the
   // cord families keep separate keys so a cord palette can be restored later.
   lateral: '#a87d00',
   posterior: '#a87d00',
