@@ -23,3 +23,6 @@
 .plexus-app .top{border-top:0}.plexus-app .panel-head{border-top:1px solid var(--border)}.plexus-app .chip[aria-pressed=true]{background:var(--primary-soft);color:var(--text)}
 
 .plexus-app .bpd-btn{min-height:44px}
+
+/* The shared site stylesheet (via navigation.css) sets body colours for light mode only; keep the app on its own theme. */
+body.plexus-app{background:var(--bg);color:var(--text)}

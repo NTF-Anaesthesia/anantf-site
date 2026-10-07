@@ -35,15 +35,6 @@
     "slide": 25,
     "treatment": "Original extracted photograph, displayed in original colour"
   },
-  "ntf-hospital": {
-    "file": "assets/ntf-hospital.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Ng_Teng_Fong_General_Hospital_and_Jurong_Community_Hospital.jpg",
-    "author": "Joey Foo",
-    "date": "2016-12-14",
-    "license": "CC BY-SA 4.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
-    "treatment": "Responsive crop, CSS warm tint, reduced saturation and translucent overlays; adapted photographic presentation under CC BY-SA 4.0"
-  },
   "ether-teaching": {
     "file": "assets/ether-teaching.webp",
     "source": "User-supplied ETHER Illustrations collection",
@@ -61,12 +52,6 @@
       "asset": "ether-theatre.webp",
       "source": "User-supplied ETHER Illustrations",
       "source_file": "Gemini_Generated_Image_1t69911t69911t69.jpeg",
-      "treatment": "Resized and compressed for web use; original composition retained."
-    },
-    {
-      "asset": "ether-career.webp",
-      "source": "User-supplied ETHER Illustrations",
-      "source_file": "Gemini_Generated_Image_1wsymq1wsymq1wsy.jpeg",
       "treatment": "Resized and compressed for web use; original composition retained."
     },
     {
@@ -94,10 +79,10 @@
       "treatment": "Resized and compressed for web use; original composition retained."
     }
   ],
-  "regional-ultrasound-illustration": {
-    "file": "assets/regional-ultrasound-illustration.jpg",
+  "regional-axillary-block": {
+    "file": "assets/regional-axillary-block.jpg",
     "source": "Generated for NTF Anaesthesia using OpenAI image generation",
-    "description": "Editorial ultrasound-guided regional anaesthesia illustration; created to complement the ETHER visual style.",
-    "treatment": "Responsive CSS banner crop and translucent blending."
+    "description": "Axillary block illustration; probe positioned proximally near the axilla using the orientation selected by the site owner. Ultrasound display is illustrative, not a patient scan.",
+    "treatment": "JPEG web encoding, responsive banner presentation."
   }
 }

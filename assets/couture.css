@@ -136,9 +136,9 @@ body[data-page=library] .resource-grid .card-title{grid-column:1;grid-row:1;font
 body[data-page=library] .resource-grid .card-desc{grid-column:1;grid-row:2;font-size:13px;line-height:1.5;max-width:none;margin:0;color:var(--muted)}
 body[data-page=library] .resource-grid .card-footer{grid-column:2;grid-row:1/3;margin:0;padding:0;border:0;align-self:center;justify-content:center;font-size:20px;color:var(--wine)}
 body[data-page=library] .resource-grid .card-open:hover{padding-left:12px;background:#e9e5dc66}
-/* Only selected page introductions carry a photograph. */
+/* ETHER artwork frames selected page introductions. */
 body .photo-mast,body .teaching-mast{isolation:isolate;position:relative;padding:44px 32px;margin-top:24px;border:0;background:#eeeae1}
-body .photo-mast:before,body .teaching-mast:before{content:'';position:absolute;inset:0;z-index:-2;background:url('ntf-hospital.jpg') 65% 48%/cover;filter:saturate(.25) sepia(.15);opacity:.52}
+body .photo-mast:before,body .teaching-mast:before{content:'';position:absolute;inset:0;z-index:-2;background:url('ether-team.webp') right 52%/cover;filter:none;opacity:.52}
 body .photo-mast:after,body .teaching-mast:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#f4f1e9f7 15%,#f4f1e9b0 60%,#f4f1e94d)}
 body .teaching-mast:before{background-image:url('ultrasound-teaching.png');background-size:44% auto;background-position:right 35%;background-repeat:no-repeat;filter:saturate(.75);opacity:.6}
 body .photo-mast h1,body .photo-mast .heading-accent,body .teaching-mast .heading-accent{color:var(--ink)}body .photo-mast .source-note{font-size:11px;max-width:500px}
@@ -171,7 +171,7 @@ body .credits-main{max-width:760px;margin:55px auto;padding:0 24px 50px;font:15p
  body .ntf-footer .footer-links{gap:16px}body .credits-main{margin-top:32px}body .credits-main h1{font-size:42px}
 }
 body[data-page=library] .section-topline{display:none}body[data-page=library] .section-heading h1{margin:0}body:has(.ntf-crumbs) .page-hero>.page-kicker{display:none}body .exam-hero>.eyebrow{display:none}
-@media(max-width:700px){body[data-page=library] .directory-photo{display:none}body[data-page=library] .section-heading{isolation:isolate;position:relative;margin:-25px -20px 18px;padding:28px 20px 26px;background:#eeeae1}body[data-page=library] .section-heading:before{content:'';position:absolute;inset:0;z-index:-2;background:url('ntf-hospital.jpg') 65% 43%/cover;filter:saturate(.25) sepia(.2);opacity:.32}body[data-page=library] .section-heading:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#f7f5eff5,#f7f5ef66)}body[data-page=library] .section-heading>p{max-width:29ch}body .photo-mast,body .teaching-mast{margin-top:12px}body .exam-page .exam-hero{padding-top:20px}}
+@media(max-width:700px){body[data-page=library] .directory-photo{display:none}body[data-page=library] .section-heading{isolation:isolate;position:relative;margin:-25px -20px 18px;padding:28px 20px 26px;background:#eeeae1}body[data-page=library] .section-heading:before{content:'';position:absolute;inset:0;z-index:-2;background:url('ether-navigation.webp') right center/cover;filter:none;opacity:.32}body[data-page=library] .section-heading:after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#f7f5eff5,#f7f5ef66)}body[data-page=library] .section-heading>p{max-width:29ch}body .photo-mast,body .teaching-mast{margin-top:12px}body .exam-page .exam-hero{padding-top:20px}}
 /* ETHER illustrations: context for learning, kept clear of body text. */
 body .exam-page .exam-hero{position:relative;isolation:isolate;padding:38px 0 32px}
 body .exam-page .exam-hero:before{content:'';position:absolute;inset:0 0 0 auto;width:46%;z-index:-1;background:url('ether-study.webp') center 69%/cover no-repeat;mix-blend-mode:multiply;opacity:.74;mask-image:linear-gradient(90deg,transparent,#000 30%);pointer-events:none}
