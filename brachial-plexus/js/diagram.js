@@ -19,20 +19,22 @@ const SOURCE = 'diagram';
 const SVGNS = 'http://www.w3.org/2000/svg';
 
 export const CORD_COLOURS = {
-  lateral: '#2563eb',
-  posterior: '#7c3aed',
-  medial: '#0f766e',
-  median: '#1f6fae',   // midpoint of lateral + medial roots
-  neutral: '#475569',  // roots and trunks
-  related: '#b45309',  // nerves outside the plexus
+  // Nerves are yellow throughout the app (arteries red, veins purple); the
+  // cord families keep separate keys so a cord palette can be restored later.
+  lateral: '#a87d00',
+  posterior: '#a87d00',
+  medial: '#a87d00',
+  median: '#a87d00',
+  neutral: '#a87d00',  // roots and trunks
+  related: '#7c5a3a',  // nerves outside the plexus
 };
 export const CORD_COLOURS_DARK = {
-  lateral: '#6ea8ff',
-  posterior: '#b49cff',
-  medial: '#34d1bf',
-  median: '#50bede',
-  neutral: '#a3b0c2',
-  related: '#f0a050',
+  lateral: '#facc15',
+  posterior: '#facc15',
+  medial: '#facc15',
+  median: '#facc15',
+  neutral: '#facc15',
+  related: '#d6b08c',
 };
 
 const KEY_CLASS = { lateral: 'k-lat', posterior: 'k-post', medial: 'k-med', median: 'k-median', neutral: 'k-neutral', related: 'k-related' };
@@ -383,10 +385,7 @@ export function mount(containerEl, bus) {
   const swatchLine = (cls, style = '') => `<svg width="28" height="12" aria-hidden="true"><line x1="3" y1="6" x2="25" y2="6" stroke-linecap="round" stroke-width="5" style="${style}" class="${cls}"/></svg>`;
   legend.innerHTML = [
     `<li class="hdr">Colour:</li>`,
-    `<li>${swatchLine('', 'stroke:var(--bpd-neutral)')}Roots / trunks</li>`,
-    `<li>${swatchLine('', 'stroke:var(--bpd-lat)')}Lateral cord</li>`,
-    `<li>${swatchLine('', 'stroke:var(--bpd-post)')}Posterior cord</li>`,
-    `<li>${swatchLine('', 'stroke:var(--bpd-med)')}Medial cord</li>`,
+    `<li>${swatchLine('', 'stroke:var(--bpd-neutral)')}Brachial plexus</li>`,
     `<li>${swatchLine('', 'stroke:var(--bpd-related);stroke-dasharray:5 4;stroke-width:3')}Outside plexus</li>`,
     `<li><svg width="28" height="12" aria-hidden="true"><line x1="3" y1="6" x2="25" y2="6" stroke-linecap="round" stroke-width="11" style="stroke:var(--bpd-m);stroke-opacity:.45"/></svg>The “M”</li>`,
     `<li class="grp bpd-lg-block" aria-hidden="true"></li>`,

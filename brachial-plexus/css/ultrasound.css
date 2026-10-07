@@ -17,7 +17,7 @@
   --us-nerve-edge: #a16207;
   --us-nerve-fasc: #ca8a04;
   --us-artery: #dc2626;
-  --us-vein: #2563eb;
+  --us-vein: #7e3fa6;
   --us-muscle: #e7a9a4;
   --us-muscle-edge: #b9706a;
   --us-muscle-fibre: rgba(150, 70, 66, 0.28);
@@ -262,7 +262,7 @@
 .bpus-leader-dot { fill: var(--pill-bg, #fff); }
 .bpus-lab.k-nerve { --pill-bg: #facc15; --pill-fg: #1c1917; }
 .bpus-lab.k-artery { --pill-bg: #dc2626; --pill-fg: #fff; }
-.bpus-lab.k-vein { --pill-bg: #2563eb; --pill-fg: #fff; }
+.bpus-lab.k-vein { --pill-bg: #7e3fa6; --pill-fg: #fff; }
 .bpus-lab.k-muscle { --pill-bg: #8f3d48; --pill-fg: #fff; }
 .bpus-lab.k-bone { --pill-bg: #e9dcc0; --pill-fg: #1c1917; }
 .bpus-lab.k-tendon { --pill-bg: #e7e5e4; --pill-fg: #1c1917; }
@@ -290,11 +290,12 @@
 .id-s.k-muscle .id-shape { fill: var(--us-muscle); stroke: var(--us-muscle-edge); stroke-width: 0.5; }
 .id-fibres line { stroke: var(--us-muscle-fibre); stroke-width: 1px; }
 .id-s.k-artery .id-shape { fill: var(--us-artery); stroke: #991b1b; stroke-width: 0.5; }
-.id-s.k-vein .id-shape { fill: var(--us-vein); stroke: #1e3a8a; stroke-width: 0.4; }
+.id-s.k-vein .id-shape { fill: var(--us-vein); stroke: #4c1d6e; stroke-width: 0.4; }
 .id-s.k-nerve .id-shape { fill: var(--us-nerve); stroke: var(--us-nerve-edge); stroke-width: 0.5; }
 .id-fasc { fill: var(--us-nerve-fasc); opacity: 0.55; pointer-events: none; }
 .id-s.k-bone .id-shape { fill: none; stroke: var(--us-bone-edge); stroke-linecap: round; }
 .id-s.k-tendon .id-shape { fill: none; stroke: var(--us-tendon); stroke-linecap: round; }
+.id-tendon-edge { fill: none; stroke: var(--us-tendon-edge); stroke-linecap: round; pointer-events: none; }
 .id-s.k-fascia .id-shape { fill: none; stroke: var(--us-muscle-edge); }
 .id-s.k-pleura .id-shape { fill: none; stroke: var(--us-pleura); stroke-width: 1; }
 .id-lung { fill: var(--us-lung); }
@@ -322,3 +323,33 @@
 @media (prefers-reduced-motion: reduce) {
   .bpus-card, .id-s .bpus-outline { transition: none; }
 }
+
+/* ---------- view modes, real scans, ruler (to-scale rework) ---------- */
+.bpus-views { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.bpus-view {
+  min-height: 40px; padding: 4px 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--us-border); background: var(--us-bg);
+}
+.bpus-view[aria-pressed="true"] { border-color: var(--us-accent); background: var(--st-covers-bg); font-weight: 600; }
+.bpus-view[aria-pressed="false"] { color: var(--us-muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+.bpus-real-nav { display: inline-flex; align-items: center; gap: 6px; }
+.bpus-real-stage { position: relative; background: var(--us-screen); border-radius: 8px; overflow: hidden; }
+.bpus-real-stage img { display: block; width: 100%; height: auto; }
+.bpus-real-ov { position: absolute; inset: 0; width: 100%; height: 100%; }
+.bpus-cap a { color: var(--us-accent); }
+
+.id-shadow { fill: rgba(30, 41, 59, 0.14); }
+.id-s.k-fat .id-shape { fill: var(--us-fat); stroke: none; opacity: 0.9; }
+.id-s.k-fascia .id-shape { fill: none; }
+.id-tick { stroke: var(--us-text); stroke-width: 1.2px; opacity: 0.75; }
+.id-tick-text { fill: var(--us-muted); font-family: system-ui, sans-serif; font-weight: 600; }
+.bpus .k-fascia { --sw: #cbd5e1; }
+.bpus .k-fat { --sw: var(--us-fat); }
+.bpus .k-sheath { --sw: var(--us-sheath); }
+.bpus-lab.k-fascia { --pill-bg: #cbd5e1; --pill-fg: #1c1917; }
+.bpus-lab.k-fat { --pill-bg: #fde68a; --pill-fg: #1c1917; }
+.bpus-lab.k-sheath { --pill-bg: #fde68a; --pill-fg: #1c1917; }
+.bpus-alt-line { stroke: rgba(253, 224, 71, 0.85); stroke-width: 1.4px; stroke-dasharray: 2 4; }
+.bpus-alt-ring { fill: none; stroke: rgba(253, 224, 71, 0.9); stroke-width: 1.4px; }
+.id-alt .bpus-alt-line { stroke: var(--us-target); }
+.id-alt .bpus-alt-ring { stroke: var(--us-target); }
