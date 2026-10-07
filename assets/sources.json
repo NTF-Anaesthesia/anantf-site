@@ -55,5 +55,43 @@
     "source": "User-supplied ETHER Illustrations collection",
     "original_file": "Gemini_Generated_Image_g1h2h6g1h2h6g1h2.jpeg",
     "treatment": "Resized and compressed for web delivery; CSS opacity and blending only; original composition preserved"
-  }
+  },
+  "ether_additional_illustrations": [
+    {
+      "asset": "ether-theatre.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_1t69911t69911t69.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-career.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_1wsymq1wsymq1wsy.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-navigation.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_idglw1idglw1idgl.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-regional.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_lmm8bzlmm8bzlmm8.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-team.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_u0rbhzu0rbhzu0rb.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-compass.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_z3rboyz3rboyz3rb.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    }
+  ]
 }
