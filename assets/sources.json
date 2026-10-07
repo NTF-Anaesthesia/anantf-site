@@ -3,19 +3,19 @@
     "file": "assets/ultrasound-teaching.png",
     "source": "SR Engagement Oct 2025.pptx",
     "slide": 14,
-    "treatment": "Original extracted photograph, displayed in original colour"
+    "treatment": "Original colour in photo galleries; translucent CSS background on the regional introduction"
   },
   "airway-simulation": {
     "file": "assets/airway-simulation.png",
     "source": "SR Engagement Oct 2025.pptx",
     "slide": 14,
-    "treatment": "Original extracted photo; grayscale applied only through CSS"
+    "treatment": "Original extracted photograph, displayed in original colour"
   },
   "procedure-simulation": {
     "file": "assets/procedure-simulation.png",
     "source": "SR Engagement Oct 2025.pptx",
     "slide": 14,
-    "treatment": "Original extracted photo; grayscale applied only through CSS"
+    "treatment": "Original extracted photograph, displayed in original colour"
   },
   "kokedama-workshop": {
     "file": "assets/kokedama-workshop.jpg",
@@ -34,5 +34,26 @@
     "source": "SR Engagement Oct 2025.pptx",
     "slide": 25,
     "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "ntf-hospital": {
+    "file": "assets/ntf-hospital.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Ng_Teng_Fong_General_Hospital_and_Jurong_Community_Hospital.jpg",
+    "author": "Joey Foo",
+    "date": "2016-12-14",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "treatment": "Responsive crop, CSS warm tint, reduced saturation and translucent overlays; adapted photographic presentation under CC BY-SA 4.0"
+  },
+  "ether-teaching": {
+    "file": "assets/ether-teaching.webp",
+    "source": "User-supplied ETHER Illustrations collection",
+    "original_file": "Gemini_Generated_Image_9ln7nw9ln7nw9ln7.jpeg",
+    "treatment": "Resized and compressed for web delivery; CSS opacity and blending only; original composition preserved"
+  },
+  "ether-study": {
+    "file": "assets/ether-study.webp",
+    "source": "User-supplied ETHER Illustrations collection",
+    "original_file": "Gemini_Generated_Image_g1h2h6g1h2h6g1h2.jpeg",
+    "treatment": "Resized and compressed for web delivery; CSS opacity and blending only; original composition preserved"
   }
 }
