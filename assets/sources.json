@@ -95,7 +95,7 @@
     }
   ],
   "regional-ultrasound-illustration": {
-    "file": "assets/regional-ultrasound-illustration.png",
+    "file": "assets/regional-ultrasound-illustration.jpg",
     "source": "Generated for NTF Anaesthesia using OpenAI image generation",
     "description": "Editorial ultrasound-guided regional anaesthesia illustration; created to complement the ETHER visual style.",
     "treatment": "Responsive CSS banner crop and translucent blending."
