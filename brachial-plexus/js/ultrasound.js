@@ -1177,6 +1177,7 @@ export function mount(containerEl, bus) {
     el('span', { text: r.credit || '' }, realCap);
     if (r.licence && !(r.credit || '').includes(r.licence)) realCap.append(` ${r.licence}.`);
     if (r.sourceUrl) { realCap.append(' '); el('a', { href: r.sourceUrl, text: 'Source', rel: 'noopener', target: '_blank' }, realCap); }
+    if (r.caption) { el('span', { class: 'bpus-real-legend', text: ` Original legend: ${r.caption}` }, realCap); }
     if (realImg.complete && realImg.naturalWidth) renderRealLabels();
   }
 
