@@ -464,7 +464,7 @@ export function mount(containerEl, bus, options = {}) {
     mode: 'schematic', // 'schematic' | 'glb'
     layers: {
       collateral: true, related: true, bones: true, vessels: true, muscles: true,
-      labels: 'levels', colour: 'cord', // 'cord' matches the plexus diagram
+      labels: 'levels', colour: 'classic', // nerves yellow, arteries red, veins blue
     },
   };
 
@@ -717,7 +717,7 @@ export function mount(containerEl, bus, options = {}) {
   // Vessels
   const vesselMats = {
     artery: materialFor('#d62f2f', { roughness: 0.35 }),
-    vein: materialFor('#5a6796', { roughness: 0.4, transparent: true, opacity: 0.85 }),
+    vein: materialFor('#2563eb', { roughness: 0.4, transparent: true, opacity: 0.85 }),
   };
   for (const [k, v] of Object.entries(VESSELS)) {
     const c = new THREE.CatmullRomCurve3(v.pts.map(V), false, 'centripetal');
@@ -834,7 +834,7 @@ export function mount(containerEl, bus, options = {}) {
   const GLB_MAT = {
     nerve: { color: CLASSIC_NERVE, roughness: 0.5 },
     artery: { color: '#d62f2f', roughness: 0.35 },
-    vein: { color: '#5a6796', roughness: 0.4 },
+    vein: { color: '#2563eb', roughness: 0.4 },
     bone: { color: '#e8dfcb', roughness: 0.75 },
     muscle: { color: '#c2554d', roughness: 0.8, transparent: true, opacity: 0.32, depthWrite: false, side: THREE.DoubleSide },
     skin: { color: '#e0b49a', roughness: 0.8, transparent: true, opacity: 0.15, depthWrite: false, side: THREE.DoubleSide },
@@ -1216,7 +1216,7 @@ export function mount(containerEl, bus, options = {}) {
       items = LEVELS.map((l) => [l.color, l.name]);
       if (state.layers.related) items.push([RELATED_COLOR, 'Non-plexus nerves']);
     } else {
-      items = [[CLASSIC_NERVE, 'Nerve'], ['#d62f2f', 'Artery'], ['#5a6796', 'Vein']];
+      items = [[CLASSIC_NERVE, 'Nerve'], ['#d62f2f', 'Artery'], ['#2563eb', 'Vein']];
     }
     const ul = el('ul', { class: 'v3d-legend-list', 'aria-label': 'Colour key' });
     for (const [c, t] of items) {

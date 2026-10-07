@@ -1,15 +1,15 @@
 /* Brachial plexus schematic (js/diagram.js). All rules are scoped to .bpd. */
 
 .bpd {
-  --bpd-lat: #2563eb;        /* lateral cord family */
-  --bpd-post: #7c3aed;       /* posterior cord family */
-  --bpd-med: #0f766e;        /* medial cord family */
-  --bpd-neutral: #475569;    /* roots and trunks */
-  --bpd-related: #b45309;    /* nerves outside the plexus */
+  --bpd-lat: #a87d00;        /* lateral cord family */
+  --bpd-post: #a87d00;       /* posterior cord family */
+  --bpd-med: #a87d00;        /* medial cord family */
+  --bpd-neutral: #a87d00;    /* roots and trunks */
+  --bpd-related: #7c5a3a;    /* nerves outside the plexus */
   --bpd-variable: #b45309;
   --bpd-variable-bg: #fde7c7;
   --bpd-spared: #9aa3af;
-  --bpd-m: #facc15;
+  --bpd-m: #b08968;
   --bpd-text: #1e293b;
   --bpd-muted: #5b6575;
   --bpd-bg: #ffffff;
@@ -20,7 +20,7 @@
   --bpd-band-edge: rgba(37, 99, 235, 0.45);
   --bpd-band-ink: #1d4ed8;
   --bpd-focus: #b45309;
-  --bpd-halo: rgba(250, 204, 21, 0.55);
+  --bpd-halo: rgba(99, 61, 60, 0.30);
   --bpd-tip-bg: #1e293b;
   --bpd-tip-fg: #f8fafc;
 
@@ -32,15 +32,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .bpd {
-    --bpd-lat: #6ea8ff;
-    --bpd-post: #b49cff;
-    --bpd-med: #34d1bf;
-    --bpd-neutral: #a3b0c2;
-    --bpd-related: #f0a050;
+    --bpd-lat: #facc15;
+    --bpd-post: #facc15;
+    --bpd-med: #facc15;
+    --bpd-neutral: #facc15;
+    --bpd-related: #d6b08c;
     --bpd-variable: #f0a050;
     --bpd-variable-bg: #4a3415;
     --bpd-spared: #5d6675;
-    --bpd-m: #eab308;
+    --bpd-m: #d6b08c;
     --bpd-text: #e5e9f0;
     --bpd-muted: #a7b0bd;
     --bpd-bg: #11161d;
@@ -51,21 +51,21 @@
     --bpd-band-edge: rgba(110, 168, 255, 0.5);
     --bpd-band-ink: #9cc4ff;
     --bpd-focus: #fbbf24;
-    --bpd-halo: rgba(234, 179, 8, 0.45);
+    --bpd-halo: rgba(255, 250, 240, 0.35);
     --bpd-tip-bg: #e5e9f0;
     --bpd-tip-fg: #11161d;
   }
 }
 :root[data-theme="dark"] .bpd {
-  --bpd-lat: #6ea8ff;
-  --bpd-post: #b49cff;
-  --bpd-med: #34d1bf;
-  --bpd-neutral: #a3b0c2;
-  --bpd-related: #f0a050;
+  --bpd-lat: #facc15;
+  --bpd-post: #facc15;
+  --bpd-med: #facc15;
+  --bpd-neutral: #facc15;
+  --bpd-related: #d6b08c;
   --bpd-variable: #f0a050;
   --bpd-variable-bg: #4a3415;
   --bpd-spared: #5d6675;
-  --bpd-m: #eab308;
+  --bpd-m: #d6b08c;
   --bpd-text: #e5e9f0;
   --bpd-muted: #a7b0bd;
   --bpd-bg: #11161d;
@@ -76,7 +76,7 @@
   --bpd-band-edge: rgba(110, 168, 255, 0.5);
   --bpd-band-ink: #9cc4ff;
   --bpd-focus: #fbbf24;
-  --bpd-halo: rgba(234, 179, 8, 0.45);
+  --bpd-halo: rgba(255, 250, 240, 0.35);
   --bpd-tip-bg: #e5e9f0;
   --bpd-tip-fg: #11161d;
 }
