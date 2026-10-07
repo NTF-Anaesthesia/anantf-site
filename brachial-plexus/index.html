@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Brachial plexus for regional anaesthesia</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath d=%22M4 8h10l8 8h6M4 16h10M4 24h10l8-8%22 fill=%22none%22 stroke=%22%231d4ed8%22 stroke-width=%223%22 stroke-linecap=%22round%22/%3E%3C/svg%3E">
+<meta name="description" content="Interactive brachial plexus anatomy for ultrasound-guided regional anaesthesia: 3D model, labelled diagram, ultrasound views, needle and local anaesthetic placement, and block coverage for interscalene, supraclavicular, infraclavicular and axillary blocks.">
+<meta name="color-scheme" content="light dark">
+<script>
+  // Apply a saved theme before first paint (per-viewer convenience only).
+  try { const t = localStorage.getItem('bp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<script type="importmap">
+{"imports":{"three":"./vendor/three/build/three.module.min.js","three/addons/":"./vendor/three/examples/jsm/"}}
+</script>
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/viewer3d.css">
+<link rel="stylesheet" href="css/diagram.css">
+<link rel="stylesheet" href="css/ultrasound.css">
+<link rel="stylesheet" href="css/coverage.css">
+<link rel="modulepreload" href="js/data.js">
+<link rel="modulepreload" href="js/bus.js">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top" id="top">
+  <div class="top-inner">
+    <div class="brand">
+      <p class="org"><a href="https://anantf.com/">NTF Anaesthesia</a> <span aria-hidden="true">·</span> Regional anaesthesia</p>
+      <h1>Brachial plexus for regional anaesthesia</h1>
+    </div>
+    <div class="top-tools">
+      <button type="button" class="tool-btn" id="btn-share" aria-describedby="share-status">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>
+        <span>Copy link</span>
+      </button>
+      <button type="button" class="tool-btn" id="btn-theme" aria-label="Colour theme: automatic">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" class="fill"/></svg>
+        <span class="theme-label">Auto</span>
+      </button>
+      <span id="share-status" class="sr-status" role="status" aria-live="polite"></span>
+    </div>
+  </div>
+  <nav class="blockbar" aria-label="Choose a block">
+    <div class="blockbar-inner">
+      <span class="blockbar-label" id="blockbar-label">Block</span>
+      <div class="chips" role="group" aria-labelledby="blockbar-label" id="block-chips"></div>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+  <p class="intro" id="intro">Select any nerve in the 3D model, the diagram, the ultrasound view or the coverage map and every view follows. Choose a block to see its target, needle path, local anaesthetic spread and coverage.</p>
+
+  <div class="stage">
+    <section class="panel panel-3d" id="sec-3d" aria-labelledby="h-3d">
+      <div class="panel-head">
+        <h2 id="h-3d">3D anatomy</h2>
+        <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="body-3d"><span class="sr-only">Show or hide 3D anatomy</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      </div>
+      <div class="panel-body" id="body-3d"><div class="mount mount-3d" id="mount-3d"></div></div>
+    </section>
+
+    <section class="panel panel-diagram" id="sec-diagram" aria-labelledby="h-diagram">
+      <div class="panel-head">
+        <h2 id="h-diagram">Plexus diagram</h2>
+        <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="body-diagram"><span class="sr-only">Show or hide the plexus diagram</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      </div>
+      <div class="panel-body" id="body-diagram"><div class="mount" id="mount-diagram"></div></div>
+    </section>
+  </div>
+
+  <section class="panel panel-tabs" id="sec-tabs" aria-label="Ultrasound, block guide and coverage">
+    <div class="tabbar">
+      <div class="tabs" role="tablist" aria-label="Detail views">
+        <button type="button" role="tab" id="tab-ultrasound" aria-controls="tp-ultrasound" aria-selected="true">Ultrasound</button>
+        <button type="button" role="tab" id="tab-guide" aria-controls="tp-guide" aria-selected="false" tabindex="-1">Block guide</button>
+        <button type="button" role="tab" id="tab-coverage" aria-controls="tp-coverage" aria-selected="false" tabindex="-1">Coverage</button>
+      </div>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="tp-ultrasound" aria-labelledby="tab-ultrasound" tabindex="0"><div class="mount" id="mount-ultrasound"></div></div>
+    <div class="tabpanel" role="tabpanel" id="tp-guide" aria-labelledby="tab-guide" tabindex="0" hidden><div class="guide" id="mount-guide"></div></div>
+    <div class="tabpanel" role="tabpanel" id="tp-coverage" aria-labelledby="tab-coverage" tabindex="0" hidden><div class="mount" id="mount-coverage"></div></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-inner">
+    <p class="disclaimer" id="disclaimer"></p>
+    <p>Created by Dr Koh Wenjun, NTF Anaesthesia. <span id="attribution"></span></p>
+    <p id="model-credit">3D model derived from <a href="https://www.z-anatomy.com/">Z-Anatomy</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>), based on BodyParts3D © DBCLS (CC BY-SA 2.1 JP). Modified. The model files are shared under CC BY-SA 4.0. 3D rendering uses <a href="https://threejs.org/">three.js</a> (MIT).</p>
+    <p>Questions or corrections: <a href="mailto:contact@anantf.com">contact@anantf.com</a> · <a href="https://anantf.com/">Back to anantf.com</a></p>
+  </div>
+</footer>
+
+<script type="module" src="js/app.js"></script>
+<noscript><p class="noscript">This teaching app needs JavaScript to run.</p></noscript>
+</body>
+</html>
