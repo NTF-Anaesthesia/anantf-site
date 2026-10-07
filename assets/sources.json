@@ -35,15 +35,6 @@
     "slide": 25,
     "treatment": "Original extracted photograph, displayed in original colour"
   },
-  "ntf-hospital": {
-    "file": "assets/ntf-hospital.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Ng_Teng_Fong_General_Hospital_and_Jurong_Community_Hospital.jpg",
-    "author": "Joey Foo",
-    "date": "2016-12-14",
-    "license": "CC BY-SA 4.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
-    "treatment": "Responsive crop, CSS warm tint, reduced saturation and translucent overlays; adapted photographic presentation under CC BY-SA 4.0"
-  },
   "ether-teaching": {
     "file": "assets/ether-teaching.webp",
     "source": "User-supplied ETHER Illustrations collection",
