@@ -122,3 +122,5 @@ body .ntf-nav .ntf-contact:hover{background:#e9e5dc;text-decoration:none}
 body .ntf-footer-inner{min-height:70px;padding-block:20px}
 @media(max-width:760px){body .ntf-nav{gap:12px}body .ntf-header-inner{gap:12px}}
 @media(max-width:359px){body .ntf-header-inner{padding-inline:16px;gap:8px}body .ntf-logo,body .ntf-logo img{width:80px;height:46px}body .ntf-nav{gap:8px;font-size:11px}}
+
+body .ntf-footer-identity>.ntf-copyright{font-size:11px;letter-spacing:0;line-height:1.7;text-transform:none;text-wrap:pretty}
