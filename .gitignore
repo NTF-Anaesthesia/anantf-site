@@ -1,3 +1,4 @@
-# Readable copy of the AC guide made by tools/ac-guide.mjs. Never commit it.
-ac-guide.unlocked.html
+# Readable protected guides and private input must never be committed.
 *.unlocked.html
+*.unlocked.json
+*.password
