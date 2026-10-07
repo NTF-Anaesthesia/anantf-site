@@ -1,6 +1,6 @@
 # MOPEX / Junior Resident guide
 
-The page decrypts `handbook.enc.json` in the browser. No password or readable handbook is committed. It includes internal posting arrangements, so it is protected and excluded from indexing. Personal and vendor phone numbers and source photographs were omitted.
+The page decrypts `handbook.enc.json` in the browser. No password or readable handbook is committed. It includes internal posting arrangements, so it is protected and excluded from indexing. Contact numbers and internal access details from the handbook are retained inside the encrypted payload at the owner’s request. Source photographs were omitted. Never copy protected contact numbers or codes into public HTML, documentation or pull-request text.
 
 To update it, keep the private JSON outside this repository. Use `{ "chapters": [{ "id": "unique-id", "title": "Chapter title", "html": "Trusted, reviewed chapter HTML" }] }`. Review clinical changes and retain source links and the review date. Do not insert untrusted HTML.
 
