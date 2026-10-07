@@ -73,3 +73,44 @@ body .ntf-footer:not(:has(.ntf-footer-inner))>a{min-height:44px;display:inline-f
 @media(max-width:760px){body .ntf-footer:not(:has(.ntf-footer-inner)){align-items:flex-start;flex-direction:column;gap:8px;padding-block:20px}}
 /* Keep page navigation immediate and avoid cross-document transition glitches. */
 @view-transition{navigation:none}
+/* ETHER: panoramic paper banners, with copy kept clear of the illustration. */
+body .ether-banner,body .exam-page .exam-hero.ether-banner,body[data-page=library] .section-heading.ether-banner{position:relative;isolation:isolate;display:block;overflow:hidden;background:#f0e7d8;border:0;padding:38px 40px;min-height:280px;margin:24px 0 32px;box-sizing:border-box}
+body .ether-banner> :not(.ether-art):not(.directory-illustration){position:relative;z-index:2;max-width:56%}
+body .ether-banner .ether-art,body .ether-banner .directory-illustration{position:absolute;z-index:0;inset:0 0 0 auto;display:block;width:65%;height:100%;max-width:none;margin:0;pointer-events:none;mask-image:linear-gradient(to right,transparent,black 24%);-webkit-mask-image:linear-gradient(to right,transparent,black 24%)}
+body .ether-banner .ether-art img,body .ether-banner .directory-illustration img{display:block;position:static;width:100%;height:100%;max-height:none;object-fit:cover;object-position:center 62%;mix-blend-mode:multiply;opacity:.82;filter:none}
+body .ether-banner .hero-text{padding:0}
+body .ether-banner h1,body .exam-page .exam-hero.ether-banner h1{font-size:clamp(40px,4.5vw,60px);margin:0 0 18px;line-height:1.08}
+body .ether-banner .page-lead,body .ether-banner .essay-intro{max-width:35ch}
+body .ether-banner:before,body .ether-banner:after{display:none}
+body .ether-banner .ether-art:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#f0e7d8b3,transparent 65%)}
+body .editorial-callout.ether-banner{min-height:220px;padding-block:36px}
+body .editorial-callout.ether-banner .ether-art{width:60%}
+body .page-columns:has(.priorities-banner){display:block}
+body .priorities-banner{min-height:220px;margin-top:0}
+body .priorities-banner>p,body .priorities-banner>h2{max-width:48%}
+body .priorities-banner .aside-art{width:60%}
+body .ac-banner{grid-column:1/-1;margin:0;min-height:260px}
+body .ac-entry:has(.ac-banner){grid-template-columns:1fr;gap:0}
+body .ac-entry:has(.ac-banner) .ac-form-panel{width:100%;max-width:600px;margin-inline:auto;box-sizing:border-box}
+body[data-page=library] .directory-layout{display:block}
+body[data-page=library] .section-heading.ether-banner{min-height:250px;padding:40px;margin-top:0}
+body[data-page=library] .section-heading.ether-banner h1{font-size:60px;margin:0 0 18px}
+body[data-page=library] .section-heading.ether-banner p{font-size:15px;max-width:30ch;margin:0}
+body[data-page=library] .section-heading.ether-banner .directory-illustration:after{display:none}
+body .essay-directory-hero.ether-banner .ether-art img,body .exam-hero.ether-banner .ether-art img{object-position:center 80%}
+@media(max-width:760px){
+ body .ether-banner,body .exam-page .exam-hero.ether-banner,body[data-page=library] .section-heading.ether-banner{padding:25px 24px 0;min-height:0;margin:20px 0 26px;display:flex;flex-direction:column}
+ body .ether-banner> :not(.ether-art):not(.directory-illustration){max-width:none;width:100%}
+ body .ether-banner .ether-art,body .ether-banner .directory-illustration,body .editorial-callout.ether-banner .ether-art,body .priorities-banner .aside-art{position:relative;inset:auto;align-self:stretch;width:calc(100% + 48px);height:145px;flex:none;margin:20px -24px 0;mask-image:linear-gradient(to bottom,transparent,black 24%);-webkit-mask-image:linear-gradient(to bottom,transparent,black 24%)}
+ body .ether-banner .ether-art img,body .ether-banner .directory-illustration img{height:100%;max-height:none;object-position:center 62%;opacity:1}
+ body .ether-banner .ether-art:after{display:none}
+ body .ether-banner h1,body .exam-page .exam-hero.ether-banner h1,body[data-page=library] .section-heading.ether-banner h1{font-size:clamp(34px,8.8vw,48px);margin:0 0 15px}
+ body .ether-banner .page-lead{font-size:15px}
+ body .ether-banner .author-credit{font-size:13px}
+ body .ether-banner .essay-collection-link{margin-top:8px;font-size:12px}
+ body .ether-banner .page-link{margin-top:10px}
+ body .priorities-banner>p,body .priorities-banner>h2{max-width:none}
+ body .ac-banner{margin-top:0}
+ body .ac-banner .ether-art img{object-position:center 45%}
+}
+body .ac-entry:has(.ac-banner){row-gap:24px}
