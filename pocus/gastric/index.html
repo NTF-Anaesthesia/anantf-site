@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gastric Ultrasound Masterclass</title>
+<title>Gastric ultrasound — NTF Anaesthesia</title>
 <meta name="description" content="Masterclass: point-of-care gastric ultrasound — I-AIM, aorta vs IVC, CSA to volume, and five peri-operative cases. Interactive 35-minute tutorial by Chew Shi Hao.">
 <style>
 :root{
@@ -266,21 +266,15 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 #jumpChips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .jump .chip{font-family:var(--mono);font-size:11px;padding:3px 8px;margin:0}
 </style>
-<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008"></script></head>
+<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-editorial"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script></head>
 <body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../../department.html">About us</a><a href="../../why-join-us.html">Why join us?</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../../mopex/">Junior Residents / MOPEX</a><a href="../../senior-resident.html">Senior Residents</a><a href="../../exams/">MMed Exam Prep Materials</a></div></details></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
-<main class="deck" id="deck" tabindex="-1">
+<nav class="course-toolbar" aria-label="Tutorial navigation"><div class="course-toolbar-inner"><div class="course-breadcrumb"><a href="../">POCUS</a><span aria-hidden="true">/</span><span>Gastric ultrasound</span></div><label class="course-section-picker"><span class="course-sr-only">Tutorial section</span><select id="course-section" aria-label="Tutorial section"></select></label></div></nav><main class="deck" id="deck" tabindex="-1">
 
 <!-- ============ 1 TITLE ============ -->
-<section class="slide" data-min="0.5" data-title="Title" data-prompt="Ask: who has delayed or cancelled a case for an uncertain fasting history this month? Who has scanned a stomach before?">
-  <div class="inner two" style="align-items:center;flex:1">
+<section class="slide course-intro" data-min="0.5" data-title="Start here" data-prompt="Ask: who has delayed or cancelled a case for an uncertain fasting history this month? Who has scanned a stomach before?">
+  <div class="inner two course-start-grid"><section class="course-hero" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS / Interactive tutorial</p><h1>Gastric ultrasound.</h1><p class="course-hero-lead">Find the antrum. Read the scan. Plan the next step.</p><p class="course-author">By Chew Shi Hao</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
     <div>
-      <div class="kicker">Masterclass series</div>
-      <h1>Point-of-care<br>gastric<br>ultrasound.</h1>
-      <p class="lede" style="margin-top:22px">Look before you induce. Find the antrum, read what is in it, decide.</p>
-      <div class="rule" style="max-width:420px"></div>
-      <div style="font-size:18px">Chew Shi Hao</div>
-      <div class="cap" style="margin-top:4px">Anaesthetist · Singapore</div>
-      <ul class="agenda" style="max-width:440px">
+      <p class="course-eyebrow">In this tutorial</p><ul class="agenda" style="max-width:440px">
         <li><span>01–02 · Why scan · I-AIM</span><span>4 min</span></li>
         <li><span>Part I · Acquisition · aorta vs IVC</span><span>9.5 min</span></li>
         <li><span>Part II · Interpretation · CSA → volume</span><span>8.5 min</span></li>
@@ -289,7 +283,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
       </ul>
       <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
       <p class="mini" style="margin-top:10px">One rule throughout: <b>never call a stomach empty from the supine view alone.</b></p>
-      <div class="hint"><kbd>←</kbd> <kbd>→</kbd> navigate · <kbd>O</kbd> overview · <kbd>F</kbd> fullscreen · <kbd>T</kbd> theme · <kbd>P</kbd> pause timer · <kbd>N</kbd> presenter prompts · <kbd>C</kbd> jump to cases · <kbd>R</kbd> reveal next step</div>
+
     </div>
     <div>
       <div class="grid2"><div><div class="pov">Ultrasound · sagittal epigastrium</div><div class="scanner"><canvas id="hero" class="us"></canvas></div></div><div><div class="pov">Anatomy · same slice</div><canvas id="heroA" class="side"></canvas></div></div>
@@ -745,18 +739,18 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 <aside id="notes" hidden><div class="cap">Presenter prompt · <kbd>N</kbd> to hide</div><p id="notesTxt"></p></aside>
 <div id="overview"><div class="og" id="ovGrid"></div></div>
 <div id="lb" hidden><div class="lbIn"><button class="lbX" id="lbX" aria-label="Close">✕</button><div class="lbStage" id="lbStage"></div><div class="lbBar"><button id="lbP" aria-label="Previous">←</button><div class="lbCap" id="lbCap"></div><button id="lbN" aria-label="Next">→</button></div></div></div>
-<nav class="bar" aria-label="Slide controls">
+<nav class="bar" aria-label="Slide controls"><div class="course-bar-inner">
   <div class="prog" id="prog"></div><div class="pace" id="pace" title="Where you should be at this point"></div>
-  <button id="prevB" aria-label="Previous slide">←</button>
+  <button id="prevB" aria-label="Previous section">← Previous</button>
   <span id="cnt">1 / 22</span>
-  <button id="nextB" aria-label="Next slide">→</button>
+  <button id="nextB" aria-label="Next section">Next →</button>
   <span class="q">“If you love what you do, you will teach yourself. If you do not love what you do, others will teach you.” — Yukitaka Yamaguchi</span>
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 35:30</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
   <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
-  <button id="ovB" aria-label="Slide overview" title="Overview (O)">▦</button>
+  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents ↗</button>
   <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
   <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
-</nav>
+</div></nav>
 
 <script>
 const SRC = {"i0728": "media/i0728.jpg", "i0729": "media/i0729.jpg", "i1392": "media/i1392.jpg", "i1547": "media/i1547.jpg", "i1946": "media/i1946.jpg", "i2987": "media/i2987.jpg", "i2988": "media/i2988.jpg", "i3004": "media/i3004.jpg", "i3103": "media/i3103.jpg", "i7132": "media/i7132.jpg", "i7133": "media/i7133.jpg", "i7135": "media/i7135.jpg", "i7136": "media/i7136.jpg", "i7429": "media/i7429.jpg", "i7430": "media/i7430.jpg", "i7431": "media/i7431.jpg", "i7432": "media/i7432.jpg", "i9179": "media/i9179.jpg", "i9208": "media/i9208.jpg", "i9294": "media/i9294.jpg", "i9525": "media/i9525.jpg", "i9545": "media/i9545.jpg", "i9546": "media/i9546.jpg", "i9717": "media/i9717.jpg", "v0774": "media/v0774.mp4", "v0777": "media/v0777.mp4", "v1546": "media/v1546.mp4", "v2749": "media/v2749.mp4", "v3005": "media/v3005.mp4", "v3010": "media/v3010.mp4", "v7134": "media/v7134.mp4", "v8774": "media/v8774.mp4", "v8912": "media/v8912.mp4", "v9295": "media/v9295.mp4", "v9454": "media/v9454.mp4", "v9504": "media/v9504.mp4", "v9543": "media/v9543.mp4"};
