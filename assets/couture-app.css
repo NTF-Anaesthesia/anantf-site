@@ -21,3 +21,5 @@
 /* Match the quieter editorial shell while retaining anatomical colour coding. */
 :root,:root[data-theme=light]{--bg:#f7f5ef;--surface:#f7f5ef;--surface-2:#eeece5;--text:#272722;--muted:#68665f;--border:#d7d2c8;--primary:#633d3c;--primary-hover:#4b2e2d;--primary-soft:#e9e3d8;--on-primary:#fffaf0;--focus:#633d3c}
 .plexus-app .top{border-top:0}.plexus-app .panel-head{border-top:1px solid var(--border)}.plexus-app .chip[aria-pressed=true]{background:var(--primary-soft);color:var(--text)}
+
+.plexus-app .bpd-btn{min-height:44px}
