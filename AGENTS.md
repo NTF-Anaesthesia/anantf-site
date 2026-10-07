@@ -1,7 +1,21 @@
 # Instructions for AI assistants working on anantf.com
 
 This repo is the NTF Anaesthesia department site, published by GitHub Pages at https://anantf.com.
-**Anything pushed to `main` is public on the internet within about a minute.** There is no review step.
+**Anything merged into `main` is public on the internet within about a minute.**
+
+## How we work
+
+Two maintainers: Dr Koh Wen Jun and Dr Chew Shi Hao. Both work through Claude Code; neither needs
+local copies of the files.
+
+- Make each change on a new branch and open a pull request. Don't push straight to `main`.
+- After opening the pull request, merge it yourself straight away (squash merge, delete the branch),
+  unless the human asks to wait for review. Merging publishes it to anantf.com within a minute or two,
+  so check the page works before merging.
+- Raw material (source PDFs, photos, notes) lives in the shared Google Drive folder
+  "NTF Anaesthesia Site". If asked to use something from it, find it there via the Google Drive
+  connector, then commit only the finished, web-ready version here.
+- Don't commit files over 50 MB; link to them in Drive instead.
 
 ## What belongs here, and what doesn't
 

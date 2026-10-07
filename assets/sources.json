@@ -1,0 +1,103 @@
+{
+  "ultrasound-teaching": {
+    "file": "assets/ultrasound-teaching.png",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 14,
+    "treatment": "Original colour in photo galleries; translucent CSS background on the regional introduction"
+  },
+  "airway-simulation": {
+    "file": "assets/airway-simulation.png",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 14,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "procedure-simulation": {
+    "file": "assets/procedure-simulation.png",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 14,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "kokedama-workshop": {
+    "file": "assets/kokedama-workshop.jpg",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 17,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "mo-farewell": {
+    "file": "assets/mo-farewell.jpeg",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 18,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "residency-conversations": {
+    "file": "assets/residency-conversations.jpeg",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 25,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "ntf-hospital": {
+    "file": "assets/ntf-hospital.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Ng_Teng_Fong_General_Hospital_and_Jurong_Community_Hospital.jpg",
+    "author": "Joey Foo",
+    "date": "2016-12-14",
+    "license": "CC BY-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "treatment": "Responsive crop, CSS warm tint, reduced saturation and translucent overlays; adapted photographic presentation under CC BY-SA 4.0"
+  },
+  "ether-teaching": {
+    "file": "assets/ether-teaching.webp",
+    "source": "User-supplied ETHER Illustrations collection",
+    "original_file": "Gemini_Generated_Image_9ln7nw9ln7nw9ln7.jpeg",
+    "treatment": "Resized and compressed for web delivery; CSS opacity and blending only; original composition preserved"
+  },
+  "ether-study": {
+    "file": "assets/ether-study.webp",
+    "source": "User-supplied ETHER Illustrations collection",
+    "original_file": "Gemini_Generated_Image_g1h2h6g1h2h6g1h2.jpeg",
+    "treatment": "Resized and compressed for web delivery; CSS opacity and blending only; original composition preserved"
+  },
+  "ether_additional_illustrations": [
+    {
+      "asset": "ether-theatre.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_1t69911t69911t69.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-career.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_1wsymq1wsymq1wsy.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-navigation.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_idglw1idglw1idgl.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-regional.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_lmm8bzlmm8bzlmm8.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-team.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_u0rbhzu0rbhzu0rb.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    },
+    {
+      "asset": "ether-compass.webp",
+      "source": "User-supplied ETHER Illustrations",
+      "source_file": "Gemini_Generated_Image_z3rboyz3rboyz3rb.jpeg",
+      "treatment": "Resized and compressed for web use; original composition retained."
+    }
+  ],
+  "regional-ultrasound-illustration": {
+    "file": "assets/regional-ultrasound-illustration.jpg",
+    "source": "Generated for NTF Anaesthesia using OpenAI image generation",
+    "description": "Editorial ultrasound-guided regional anaesthesia illustration; created to complement the ETHER visual style.",
+    "treatment": "Responsive CSS banner crop and translucent blending."
+  }
+}
