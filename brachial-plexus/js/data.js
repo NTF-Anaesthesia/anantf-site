@@ -2,9 +2,11 @@
 // Author: Dr Koh Wenjun, NTF Anaesthesia. Educational use only.
 //
 // Everything other modules need lives here: the plexus topology (ELEMENTS),
-// the levels (LEVELS), the four blocks (BLOCKS) and the coverage maps (REGIONS).
+// the levels (LEVELS), the blocks (BLOCKS: four core + three advanced variants)
+// and the coverage maps (REGIONS).
 // Block wording and values follow the author's own R1 teaching deck; gaps are
-// filled with conservative, standard textbook facts. No drug doses beyond the deck.
+// filled with conservative, standard textbook facts. No drug doses beyond the deck,
+// except advanced blocks, whose volumes are commonly reported ranges cited in `sources`.
 //
 // Conventions for BLOCKS[...].covers / spares / variable:
 //   - Lists include plexus parts (trunks, cords, ...) AND named nerves, so any view
@@ -384,7 +386,11 @@ export const REGION_IDS = {
 // ---------------------------------------------------------------------------
 // BLOCKS
 // ---------------------------------------------------------------------------
+// Core blocks (the deck's four). BLOCK_ORDER stays core-only so existing views are unchanged.
 export const BLOCK_ORDER = ['interscalene', 'supraclavicular', 'infraclavicular', 'axillary'];
+// Advanced variants: each has advanced: true and relatedTo: <core block id>.
+export const BLOCK_ORDER_ADVANCED = ['superior-trunk', 'costoclavicular', 'raptir'];
+export const BLOCK_ORDER_ALL = [...BLOCK_ORDER, ...BLOCK_ORDER_ADVANCED];
 
 export const BLOCKS = {
   interscalene: {
@@ -709,13 +715,280 @@ export const BLOCKS = {
       osteotome: ['ost-humerus-distal'],
     },
   },
+
+  // -------------------------------------------------------------------------
+  // ADVANCED blocks (variants of the core four). advanced: true; relatedTo names
+  // the core block each one modifies. Deck wording where the deck covers it
+  // (slides 70, 83, 89); everything else is cited in `sources`. Volumes are
+  // NOT from the deck: they are the ranges commonly reported in studies (cited).
+  // -------------------------------------------------------------------------
+  'superior-trunk': {
+    id: 'superior-trunk',
+    name: 'Superior trunk block',
+    advanced: true,
+    relatedTo: 'interscalene',
+    level: 'trunk',
+    targetIds: ['trunk-sup'],
+    covers: [
+      'trunk-sup', 'div-sup-ant', 'div-sup-post',
+      'n-suprascapular', 'n-subclavius', 'n-axillary', 'n-musculocutaneous', 'n-lat-pectoral',
+      'n-upper-subscap', 'n-lower-subscap',
+    ],
+    // C5–C6 roots and the C5 phrenic contribution lie proximal to the injection;
+    // retrograde spread is possible, so the phrenic nerve is "variable", not spared.
+    variable: [
+      'trunk-mid', 'div-mid-ant', 'div-mid-post', 'cord-lat', 'cord-post',
+      'n-radial', 'n-median', 'n-thoracodorsal', 'n-dorsal-scapular', 'n-long-thoracic',
+      'n-phrenic',
+    ],
+    spares: [
+      'trunk-inf', 'div-inf-ant', 'div-inf-post', 'cord-med',
+      'n-ulnar', 'n-med-pectoral', 'n-mcn-arm', 'n-mcn-forearm',
+      'n-supraclavicular-cx', 'n-intercostobrachial',
+    ],
+    separateInjectionIds: [],
+    sideEffectIds: ['n-phrenic'],
+    position: 'Supine or semi-sitting, head turned away, arm by the side (as for interscalene).',
+    equipment: 'High-frequency linear probe, 50 mm echogenic needle.',
+    needle: { length: '50 mm', type: 'Echogenic', plane: 'In-plane', direction: 'Posterior to anterior (lateral to medial)' },
+    probe: 'High-frequency linear probe, transverse across the lower neck: start in the interscalene position and slide caudally towards the supraclavicular fossa.',
+    landmark: 'Start with interscalene, scan caudad until the C5 and C6 roots join as the superior trunk; stop before the suprascapular nerve leaves its lateral side (between the interscalene and supraclavicular levels).',
+    approach: 'In-plane, posterior to anterior (lateral to medial), under the prevertebral (deep cervical) fascia and superficial to the middle scalene.',
+    sonoanatomy: [
+      'Sternocleidomastoid (superficial, medial)',
+      'Superior trunk: a single larger hypoechoic structure where C5 and C6 have joined, often superficial / lateral to the anterior scalene',
+      'Suprascapular nerve: a small round structure just lateral to the superior trunk, about to leave it (inject proximal to its take-off)',
+      'Anterior scalene (medial) with the phrenic nerve on its anterior surface',
+      'Middle scalene (lateral and deep)',
+      'Subclavian artery and pleura coming into view caudally (scan too far and you are at the supraclavicular level)',
+    ],
+    sonoStructures: [
+      { label: 'Sternocleidomastoid', kind: 'muscle', ids: [] },
+      { label: 'Superior trunk', kind: 'nerve', ids: ['trunk-sup'] },
+      { label: 'Suprascapular nerve', kind: 'nerve', ids: ['n-suprascapular'] },
+      { label: 'Anterior scalene', kind: 'muscle', ids: [] },
+      { label: 'Middle scalene', kind: 'muscle', ids: [] },
+      { label: 'Phrenic nerve', kind: 'nerve', ids: ['n-phrenic'] },
+      { label: 'Subclavian artery', kind: 'artery', ids: [] },
+      { label: 'Pleura', kind: 'pleura', ids: [] },
+    ],
+    needleTarget: 'Lateral border of the superior trunk, deep to the prevertebral fascia, at a level where the suprascapular nerve has not yet branched off (so it is included).',
+    laDeposition: 'Inject beside the superior trunk inside its sheath so local anaesthetic surrounds the trunk and the origin of the suprascapular nerve. Watch that spread does not track medially over the anterior scalene towards the phrenic nerve.',
+    volume: 'Commonly 10–15 ml in studies (e.g. 15 ml of 0.5% ropivacaine); no deck value',
+    coverageText: 'Same shoulder coverage as interscalene (C5–C6: suprascapular, axillary, lateral pectoral, musculocutaneous), with a lower but not zero rate of hemidiaphragmatic paresis. C7 territory is variable and C8–T1 (ulnar) is spared. The cape of the shoulder (supraclavicular nerves, cervical plexus) is not covered.',
+    indications: 'Shoulder surgery (arthroscopy, rotator cuff repair, arthroplasty) and proximal humerus surgery, especially when you want to reduce the risk of phrenic palsy.',
+    complications: [
+      'Phrenic nerve block / hemidiaphragmatic paresis: less frequent than interscalene, but not abolished (the phrenic nerve lies on the anterior scalene, just medial)',
+      'Horner’s syndrome and hoarseness (less often than interscalene)',
+      'Pneumothorax if the needle is taken too far caudally towards the pleura',
+      'Vascular puncture (transverse cervical, suprascapular and dorsal scapular arteries cross here: colour Doppler)',
+      'Nerve injury / intraneural injection',
+    ],
+    pearls: [
+      'Start with interscalene, scan caudad until C5 and C6 roots join as the superior trunk; it is often superficial to the anterior scalene (deck).',
+      'Inject proximal to where the suprascapular nerve leaves the trunk: the suprascapular nerve supplies most of the shoulder joint, so missing it defeats the point of the block.',
+      'Good for shoulder surgery while reducing the risk of phrenic palsy (deck). In a randomised trial, hemidiaphragmatic paralysis was about 5% after superior trunk block versus about 71% after interscalene, with non-inferior pain scores (Kim et al. 2019).',
+      'Volume: 15 ml of 0.5% ropivacaine with adrenaline (Kang et al. 2019) or 15–20 ml of 0.5% bupivacaine (Kim et al. 2019); 10–15 ml is the commonly reported range.',
+      'First described as a refinement of the interscalene block: trace C5 and C6 distally to where they coalesce, proximal to the suprascapular take-off (Burckett-St Laurent et al. 2014).',
+      'Still not for patients who cannot tolerate any loss of diaphragm function: phrenic sparing is reduced risk, not zero.',
+    ],
+    examQs: [
+      { q: 'Why choose a superior trunk block over an interscalene block for shoulder surgery?', a: 'It gives similar shoulder analgesia (C5–C6 including the suprascapular nerve) but is further from the phrenic nerve on the anterior scalene, so hemidiaphragmatic paresis is much less common (though not abolished).' },
+      { q: 'How do you find the superior trunk on ultrasound?', a: 'Start at the interscalene level, find the C5 and C6 roots, and scan caudally until they join into one trunk, often superficial to the anterior scalene. Inject before the suprascapular nerve branches off its lateral side.' },
+      { q: 'Which nerve must be included, and why?', a: 'The suprascapular nerve. It leaves the superior trunk and supplies most of the shoulder joint (posterior and superior capsule); if you inject distal to its take-off it may be missed.' },
+      { q: 'What is still not covered for shoulder surgery?', a: 'The supraclavicular nerves (cervical plexus) to the cape of the shoulder; add a superficial cervical plexus block if needed. C8–T1 (ulnar) is also spared, which does not matter for the shoulder.' },
+    ],
+    coverage: {
+      cutaneous: ['cut-upper-lateral-arm', 'cut-lateral-forearm'],
+      motor: ['mot-deltoid', 'mot-rotator-cuff', 'mot-elbow-flexors'],
+      osteotome: ['ost-shoulder-joint', 'ost-humerus-proximal'],
+    },
+    coverageVariable: {
+      cutaneous: ['cut-lower-lateral-arm', 'cut-posterior-arm', 'cut-posterior-forearm', 'cut-dorsum-lateral-hand', 'cut-palm-lateral'],
+      motor: ['mot-diaphragm', 'mot-scapular', 'mot-pectorals', 'mot-elbow-extensors', 'mot-wrist-finger-extensors', 'mot-lat-dorsi'],
+      osteotome: ['ost-clavicle-lateral', 'ost-humerus-distal', 'ost-elbow'],
+    },
+    sources: [
+      { label: 'Author’s R1 teaching deck, slide 70 (superior trunk)', url: '' },
+      { label: 'Burckett-St Laurent D, et al. Refining the ultrasound-guided interscalene brachial plexus block: the superior trunk approach. Can J Anaesth 2014;61:1098–1102', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Burckett-St+Laurent+superior+trunk+approach+2014' },
+      { label: 'Kim DH, et al. Superior trunk block: a phrenic-sparing alternative to the interscalene block. A randomized controlled trial. Anesthesiology 2019;131:521–533', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Kim+superior+trunk+block+phrenic-sparing+alternative+2019' },
+      { label: 'Kang R, et al. Superior trunk block provides noninferior analgesia compared with interscalene brachial plexus block in arthroscopic shoulder surgery. Anesthesiology 2019;131:1316–1326', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Kang+superior+trunk+block+noninferior+analgesia+interscalene+2019' },
+    ],
+  },
+
+  costoclavicular: {
+    id: 'costoclavicular',
+    name: 'Costoclavicular block',
+    advanced: true,
+    relatedTo: 'infraclavicular',
+    level: 'cord',
+    targetIds: ['cord-lat', 'cord-post', 'cord-med'],
+    covers: [
+      'cord-lat', 'cord-post', 'cord-med',
+      'n-musculocutaneous', 'n-axillary', 'n-radial', 'n-median', 'n-ulnar',
+      'n-thoracodorsal', 'n-lower-subscap', 'n-mcn-arm', 'n-mcn-forearm',
+    ],
+    variable: ['n-lat-pectoral', 'n-med-pectoral', 'n-upper-subscap'],
+    spares: ['n-suprascapular', 'n-phrenic', 'n-dorsal-scapular', 'n-long-thoracic', 'n-subclavius', 'n-supraclavicular-cx', 'n-intercostobrachial'],
+    separateInjectionIds: [],
+    sideEffectIds: [],
+    position: 'Supine, head turned slightly away, arm abducted to about 90° (moves the clavicle up and opens the costoclavicular space; the opposite of supraclavicular, where the arm is by the side).',
+    equipment: 'Ultrasound with high-frequency linear probe, 50–80 mm echogenic needle.',
+    needle: { length: '50–80 mm', type: 'Echogenic', plane: 'In-plane', direction: 'Lateral to medial' },
+    probe: 'High-frequency linear probe in the medial infraclavicular fossa, just below and parallel to the clavicle (transverse / slightly oblique), tilted cephalad to look under the clavicle.',
+    landmark: 'Below the middle of the clavicle, medial to the coracoid. The costoclavicular space lies between the clavicle (with subclavius) and the first rib. On the scan, the axillary artery and vein and the cord cluster lie under subclavius, with serratus anterior over the second rib and pleura forming the deep floor.',
+    approach: 'In-plane, lateral to medial, single injection into the centre of the cord cluster.',
+    sonoanatomy: [
+      'Pectoralis major (superficial) and subclavius (under the clavicle)',
+      'Axillary artery, with the axillary vein medial to it',
+      'Cords clustered together lateral to the artery: lateral cord most superficial, posterior and medial cords deeper',
+      'Serratus anterior and the second rib (with intercostal muscle) deep to the plexus',
+      'Pleura deep and medial: keep the needle tip in view',
+    ],
+    sonoStructures: [
+      { label: 'Pectoralis major', kind: 'muscle', ids: [] },
+      { label: 'Subclavius', kind: 'muscle', ids: [] },
+      { label: 'Axillary artery', kind: 'artery', ids: [] },
+      { label: 'Axillary vein', kind: 'vein', ids: [] },
+      { label: 'Lateral cord', kind: 'nerve', ids: ['cord-lat'] },
+      { label: 'Posterior cord', kind: 'nerve', ids: ['cord-post'] },
+      { label: 'Medial cord', kind: 'nerve', ids: ['cord-med'] },
+      { label: 'Serratus anterior', kind: 'muscle', ids: [] },
+      { label: 'Second rib', kind: 'bone', ids: [] },
+      { label: 'Intercostal muscle', kind: 'muscle', ids: [] },
+      { label: 'Pleura', kind: 'pleura', ids: [] },
+    ],
+    needleTarget: 'The centre of the three-cord cluster, lateral to the axillary artery (between the cords, ideally between the lateral and posterior / medial cords).',
+    laDeposition: 'Single injection into the middle of the cord cluster; because the cords are still bundled together (like the trunks in a supraclavicular block) one injection usually reaches all three. Reposition if spread does not reach a cord.',
+    volume: 'Commonly 20 ml of 0.5% ropivacaine in studies (15–20 ml range); no deck value',
+    coverageText: 'Like infraclavicular: arm (except the shoulder), elbow, forearm and hand, with a faster onset because the cords are clustered. Spares the suprascapular nerve, so not for shoulder surgery. The phrenic nerve is usually spared. The musculocutaneous nerve is reliably covered (unlike a single-injection axillary block).',
+    indications: 'Surgery of the elbow, forearm, wrist and hand (and mid / distal humerus). Good for catheters.',
+    complications: [
+      'Pneumothorax (pleura deep to the second rib)',
+      'Vascular puncture / intravascular injection: axillary artery and vein are close and not compressible under the clavicle',
+      'Hemidiaphragmatic paresis: uncommon, but reported (proximal spread)',
+      'Horner’s syndrome (occasional, with proximal spread)',
+    ],
+    pearls: [
+      'Variation of infraclavicular where local anaesthetic is deposited more medially, where the cords are still clustered next to the axillary artery (like supraclavicular) (deck).',
+      'Arm abducted to move the clavicle up (instead of down for supraclavicular) (deck).',
+      'Like infraclavicular, good for catheter stability because of the muscular tunnel (deck).',
+      'Volume: 20 ml of 0.5% ropivacaine was used in the original technique description (Li et al. 2017).',
+      'Faster onset and more reliable spread than the lateral (coracoid) approach because one injection reaches all three cords.',
+      'Phrenic nerve sparing is likely but not guaranteed; diaphragmatic paresis is much less common than after interscalene.',
+    ],
+    examQs: [
+      { q: 'How does the costoclavicular block differ from the coracoid (parasagittal) infraclavicular block?', a: 'It is more medial, in the costoclavicular space between the clavicle and the first rib (the scan floor is serratus anterior over the second rib). Here the cords are clustered together lateral to the axillary artery, so a single injection reaches all three, with faster onset. The coracoid approach has the cords spread around the artery (9, 6 and 3 o’clock).' },
+      { q: 'Why abduct the arm?', a: 'Abduction moves the clavicle up and opens the costoclavicular space, making the plexus easier to see and reach (the opposite of supraclavicular, where the arm is by the side).' },
+      { q: 'Name the structures in the costoclavicular view.', a: 'Pectoralis major, subclavius, axillary artery and vein, the cord cluster lateral to the artery (lateral cord most superficial), serratus anterior, second rib, intercostal muscle and pleura.' },
+      { q: 'Can it be used for shoulder surgery?', a: 'No. Like the coracoid infraclavicular block it spares the suprascapular nerve, which leaves the superior trunk well above this level.' },
+    ],
+    coverage: {
+      cutaneous: ['cut-upper-lateral-arm', 'cut-lower-lateral-arm', 'cut-posterior-arm', 'cut-posterior-forearm', 'cut-lateral-forearm', 'cut-lower-medial-arm', 'cut-medial-forearm', 'cut-palm-lateral', 'cut-dorsum-lateral-hand', 'cut-ulnar-hand'],
+      motor: ['mot-deltoid', 'mot-lat-dorsi', 'mot-elbow-flexors', 'mot-elbow-extensors', 'mot-wrist-finger-flexors', 'mot-wrist-finger-extensors', 'mot-thenar', 'mot-hand-intrinsics'],
+      osteotome: ['ost-humerus-distal', 'ost-elbow', 'ost-forearm', 'ost-wrist-hand'],
+    },
+    coverageVariable: {
+      cutaneous: [],
+      motor: ['mot-pectorals', 'mot-rotator-cuff'],
+      osteotome: ['ost-humerus-proximal'],
+    },
+    sources: [
+      { label: 'Author’s R1 teaching deck, slide 83 (costoclavicular)', url: '' },
+      { label: 'Li JW, Songthamwat B, Sala-Blanch X, Karmakar MK. Ultrasound-guided costoclavicular brachial plexus block: sonoanatomy, technique, and block dynamics. Reg Anesth Pain Med 2017;42:233–240', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Li+costoclavicular+brachial+plexus+block+sonoanatomy+technique+block+dynamics' },
+      { label: 'Karmakar MK, et al. Benefits of the costoclavicular space for ultrasound-guided infraclavicular brachial plexus block: description of a costoclavicular approach. Reg Anesth Pain Med 2015;40:287–288', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Karmakar+benefits+of+the+costoclavicular+space' },
+    ],
+  },
+
+  raptir: {
+    id: 'raptir',
+    name: 'RAPTIR (retroclavicular) block',
+    advanced: true,
+    relatedTo: 'infraclavicular',
+    level: 'cord',
+    targetIds: ['cord-lat', 'cord-post', 'cord-med'],
+    covers: [
+      'cord-lat', 'cord-post', 'cord-med',
+      'n-musculocutaneous', 'n-axillary', 'n-radial', 'n-median', 'n-ulnar',
+      'n-thoracodorsal', 'n-lower-subscap', 'n-mcn-arm', 'n-mcn-forearm',
+    ],
+    variable: ['n-lat-pectoral', 'n-med-pectoral', 'n-upper-subscap'],
+    spares: ['n-suprascapular', 'n-phrenic', 'n-dorsal-scapular', 'n-long-thoracic', 'n-subclavius', 'n-supraclavicular-cx', 'n-intercostobrachial'],
+    separateInjectionIds: [],
+    sideEffectIds: [],
+    position: 'Supine, arm adducted by the side, head turned slightly away; room to work above the clavicle.',
+    equipment: 'Ultrasound with high-frequency linear probe, 80–100 mm echogenic needle (long path from the supraclavicular fossa to the artery).',
+    needle: { length: '80–100 mm', type: 'Echogenic', plane: 'In-plane', direction: 'Cephalad to caudad (behind the clavicle)' },
+    probe: 'High-frequency linear probe placed parasagittally, just medial and inferior to the coracoid process: the same view as the coracoid infraclavicular block.',
+    landmark: 'Probe in the infraclavicular parasagittal position (artery and cords in cross-section). Needle insertion point in the supraclavicular fossa, between the clavicle and trapezius, so the needle passes behind (deep to) the clavicle.',
+    approach: 'In-plane, cephalad to caudad: the needle enters above the clavicle, passes beneath it and enters the image nearly parallel to the probe face.',
+    sonoanatomy: [
+      'Same view as the coracoid infraclavicular block: pectoralis major and minor, axillary artery and vein',
+      'Cords around the artery: lateral ~9 o’clock, posterior ~6 o’clock, medial ~3 o’clock',
+      'Clavicle acoustic shadow at the cephalad edge of the image: the needle shaft is hidden there at first',
+      'Subscapularis deep to the plexus; pleura deep and medial',
+    ],
+    sonoStructures: [
+      { label: 'Clavicle (acoustic shadow)', kind: 'bone', ids: [] },
+      { label: 'Pectoralis major', kind: 'muscle', ids: [] },
+      { label: 'Pectoralis minor', kind: 'muscle', ids: [] },
+      { label: 'Axillary artery', kind: 'artery', ids: [] },
+      { label: 'Axillary vein', kind: 'vein', ids: [] },
+      { label: 'Lateral cord', kind: 'nerve', ids: ['cord-lat'] },
+      { label: 'Posterior cord', kind: 'nerve', ids: ['cord-post'] },
+      { label: 'Medial cord', kind: 'nerve', ids: ['cord-med'] },
+      { label: 'Subscapularis', kind: 'muscle', ids: [] },
+      { label: 'Pleura', kind: 'pleura', ids: [] },
+    ],
+    needleTarget: 'Posterior to the axillary artery (6 o’clock), around the posterior cord, as for the coracoid approach.',
+    laDeposition: 'Deposit between the posterior cord and the artery, aiming for U-shaped spread around the artery. Reposition for the medial cord if spread does not reach it.',
+    volume: 'As for the coracoid infraclavicular block (deck: 25 ml of 0.5% ropivacaine); the original series used 40 ml (Charbonneau 2015). 20–30 ml is typical.',
+    coverageText: 'Same as infraclavicular: arm (except the shoulder), elbow, forearm and hand. Spares the suprascapular nerve (not for shoulder surgery) and usually the phrenic nerve.',
+    indications: 'As for the infraclavicular block (mid-humerus / elbow and below), particularly when the steep needle angle of the coracoid approach makes the needle hard to see (e.g. obese patients, deep plexus).',
+    complications: [
+      'Vascular puncture (axillary or subclavian vessels; the needle tip is not visible while it is behind the clavicle)',
+      'Pneumothorax (low, but the pleura is deep and medial)',
+      'Needle can be blocked by the clavicle or the coracoid; needs repositioning',
+      'Paraesthesia / nerve contact',
+    ],
+    pearls: [
+      'Alt: retroclavicular approach (RAPTIR), same view, just that the needle is inserted deep to the clavicle (deck).',
+      'Why: in the coracoid approach the needle is steep and hard to see. Entering behind the clavicle makes the needle run almost parallel to the probe, so the shaft and tip are much easier to see.',
+      'The first part of the needle path is hidden in the clavicle’s acoustic shadow: advance slowly until the tip appears below it.',
+      'Arm can stay adducted by the side (useful if abduction is painful).',
+      'Name and first clinical series: Charbonneau et al. 2015 (48 of 50 successful blocks, no pneumothorax; musculocutaneous block was slowest in onset; 1 arterial puncture). A posterior approach was first described by Hebbard and Royse in 2007.',
+    ],
+    examQs: [
+      { q: 'What does RAPTIR stand for and what problem does it solve?', a: 'Retroclavicular APproach To the Infraclavicular Region. The needle enters above the clavicle and passes beneath it, so it runs nearly parallel to the probe in the standard parasagittal view, which improves needle visibility compared with the steep coracoid approach.' },
+      { q: 'Where is the target, and what spread do you want?', a: 'Posterior to the axillary artery (around the posterior cord), aiming for U-shaped spread around the artery, as in the coracoid infraclavicular block.' },
+      { q: 'What makes the early part of the needle path hard to see?', a: 'The clavicle casts an acoustic shadow at the cephalad end of the image; the needle shaft is hidden until the tip emerges below the clavicle.' },
+    ],
+    coverage: {
+      cutaneous: ['cut-upper-lateral-arm', 'cut-lower-lateral-arm', 'cut-posterior-arm', 'cut-posterior-forearm', 'cut-lateral-forearm', 'cut-lower-medial-arm', 'cut-medial-forearm', 'cut-palm-lateral', 'cut-dorsum-lateral-hand', 'cut-ulnar-hand'],
+      motor: ['mot-deltoid', 'mot-lat-dorsi', 'mot-elbow-flexors', 'mot-elbow-extensors', 'mot-wrist-finger-flexors', 'mot-wrist-finger-extensors', 'mot-thenar', 'mot-hand-intrinsics'],
+      osteotome: ['ost-humerus-distal', 'ost-elbow', 'ost-forearm', 'ost-wrist-hand'],
+    },
+    coverageVariable: {
+      cutaneous: [],
+      motor: ['mot-pectorals', 'mot-rotator-cuff'],
+      osteotome: ['ost-humerus-proximal'],
+    },
+    sources: [
+      { label: 'Author’s R1 teaching deck, slide 89 (retroclavicular alternative)', url: '' },
+      { label: 'Charbonneau J, et al. The ultrasound-guided retroclavicular block: a prospective feasibility study. Reg Anesth Pain Med 2015;40:605–609', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Charbonneau+ultrasound-guided+retroclavicular+block+feasibility' },
+      { label: 'Hebbard P, Royse C. Ultrasound guided posterior approach to the infraclavicular brachial plexus. Anaesthesia 2007;62:204', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Hebbard+Royse+posterior+approach+infraclavicular+brachial+plexus' },
+      { label: 'ASRA News (May 2020). How I do it: retroclavicular approach to the infraclavicular region (RAPTIR) block', url: 'https://asra.com/news-publications/asra-newsletter/newsletter-item/asra-news/2020/05/01/how-i-do-it-retroclavicular-approach-to-the-infraclavicular-region-(raptir)-block' },
+    ],
+  },
 };
 
 // Comparison table rows for quick revision (from slide 103 and the coverage slides).
-export const BLOCK_SUMMARY = BLOCK_ORDER.map((id) => {
+const summaryRow = (id) => {
   const b = BLOCKS[id];
-  return { id, name: b.name, level: b.level, volume: b.volume, needle: b.needle.length, approach: b.approach, indications: b.indications };
-});
+  return { id, name: b.name, level: b.level, volume: b.volume, needle: b.needle.length, approach: b.approach, indications: b.indications, advanced: !!b.advanced, relatedTo: b.relatedTo || null };
+};
+export const BLOCK_SUMMARY = BLOCK_ORDER.map(summaryRow);
+export const BLOCK_SUMMARY_ALL = BLOCK_ORDER_ALL.map(summaryRow);
 
 // ---------------------------------------------------------------------------
 // Helpers (pure; safe for any module to use)

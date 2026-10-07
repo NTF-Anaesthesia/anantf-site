@@ -353,3 +353,25 @@
 .bpus-alt-ring { fill: none; stroke: rgba(253, 224, 71, 0.9); stroke-width: 1.4px; }
 .id-alt .bpus-alt-line { stroke: var(--us-target); }
 .id-alt .bpus-alt-ring { stroke: var(--us-target); }
+
+/* ---------- advanced blocks ---------- */
+.bpus-tabs { align-items: center; }
+.bpus-tabs-sep {
+  display: inline-flex; align-items: center; gap: 6px; margin-left: 6px; padding-left: 10px;
+  border-left: 1px solid var(--us-border); color: var(--us-muted); font-size: 0.8rem;
+  font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.bpus-tab-adv { border-style: dashed; }
+.bpus-tab-adv[aria-pressed="true"] { border-style: solid; }
+.bpus-chooser-row { margin: 1.1rem 0 0.5rem; color: var(--us-muted); text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.85rem; }
+.bpus-tabs-sep ~ .bpus-tab-all { margin-left: 10px; }
+
+/* Thumbnail placeholder while the scan renders */
+.bpus-thumb.is-pending { animation: bpus-thumb-pulse 1.2s ease-in-out infinite; }
+@keyframes bpus-thumb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+@media (prefers-reduced-motion: reduce) { .bpus-thumb.is-pending { animation: none; } }
+
+/* Phones: put "Advanced" on its own line above the advanced tabs */
+@media (max-width: 600px) {
+  .bpus-tabs-sep { flex-basis: 100%; margin-left: 0; padding-left: 0; border-left: 0; margin-top: 2px; }
+}

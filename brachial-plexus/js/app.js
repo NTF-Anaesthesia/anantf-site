@@ -4,8 +4,8 @@
 
 import { bus } from './bus.js';
 import {
-  ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_SUMMARY,
-  ATTRIBUTION, DISCLAIMER, blockStatus,
+  ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED,
+  BLOCK_SUMMARY, BLOCK_SUMMARY_ALL, ATTRIBUTION, DISCLAIMER, blockStatus,
 } from './data.js';
 
 window.bpBus = bus; // handy for debugging in the console
@@ -67,20 +67,48 @@ window.addEventListener('hashchange', () => {
 
 // ---------------------------------------------------------------- block chips
 const chipsEl = $('#block-chips');
-const chipDefs = [{ id: null, label: 'None', sub: 'Anatomy' }, ...BLOCK_ORDER.map((id) => ({ id, label: shortBlockName(BLOCKS[id]), sub: LEVEL_NAME[BLOCKS[id].level] }))];
+const chipDef = (id) => ({ id, label: shortBlockName(BLOCKS[id]), sub: LEVEL_NAME[BLOCKS[id].level], advanced: !!BLOCKS[id].advanced });
+const chipDefs = [
+  { id: null, label: 'None', sub: 'Anatomy' },
+  ...BLOCK_ORDER.map(chipDef),
+  { group: 'Advanced' },
+  ...BLOCK_ORDER_ADVANCED.filter((id) => BLOCKS[id]).map(chipDef),
+];
 for (const c of chipDefs) {
+  if (c.group) {
+    // Visual divider + label between the core four and the advanced variants
+    // (stays inside the one scrollable row on phones).
+    const g = document.createElement('span');
+    g.className = 'chip-group-label';
+    g.id = 'chip-group-advanced';
+    g.textContent = c.group;
+    chipsEl.append(g);
+    continue;
+  }
   const b = document.createElement('button');
   b.type = 'button';
-  b.className = 'chip';
+  b.className = c.advanced ? 'chip chip--advanced' : 'chip';
   b.dataset.block = c.id || '';
   b.innerHTML = `<span class="chip-main">${esc(c.label)}</span><span class="chip-sub">${esc(c.sub)}</span>`;
+  if (c.advanced) b.setAttribute('aria-describedby', 'chip-group-advanced');
   b.addEventListener('click', () => bus.emit('block', { id: c.id, source: 'app' }));
   chipsEl.append(b);
 }
 function syncChips() {
-  for (const b of chipsEl.children) {
+  for (const b of chipsEl.querySelectorAll('.chip')) {
     const on = (b.dataset.block || null) === (bus.state.block || null);
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    // Keep the active chip visible in the scrollable row (phones: advanced chips sit off-screen).
+    if (on && chipsEl.scrollWidth > chipsEl.clientWidth + 1) {
+      const x = (node) => node.getBoundingClientRect().left - chipsEl.getBoundingClientRect().left + chipsEl.scrollLeft;
+      const left = x(b), right = left + b.offsetWidth, view = chipsEl.clientWidth;
+      if (left < chipsEl.scrollLeft || right > chipsEl.scrollLeft + view) {
+        // Advanced chip: show the 'Advanced' label too when it fits; otherwise centre the chip.
+        const g = b.classList.contains('chip--advanced') ? chipsEl.querySelector('.chip-group-label') : null;
+        const gl = g ? x(g) - 6 : null;
+        chipsEl.scrollLeft = gl !== null && right - gl <= view ? gl : Math.max(0, left - (view - b.offsetWidth) / 2);
+      }
+    }
   }
   document.body.dataset.block = bus.state.block || '';
 }
@@ -228,7 +256,8 @@ function elementCard() {
 
 function overviewHTML() {
   const levels = LEVELS.map((l, i) => {
-    const blocks = (l.blockIds || []).map((bid) => `<button type="button" class="btn-ghost" data-block="${esc(bid)}">${esc(BLOCKS[bid].name)}</button>`).join('');
+    const adv = BLOCK_ORDER_ADVANCED.filter((bid) => BLOCKS[bid]?.level === l.id);
+    const blocks = [...(l.blockIds || []), ...adv].map((bid) => `<button type="button" class="btn-ghost${BLOCKS[bid].advanced ? ' btn-ghost--advanced' : ''}" data-block="${esc(bid)}">${esc(BLOCKS[bid].name)}${BLOCKS[bid].advanced ? ' <span class="adv-tag">Advanced</span>' : ''}</button>`).join('');
     return `<li class="card level-card" style="--level-colour:${esc(l.color)}">
       <div class="level-head"><span class="level-num" aria-hidden="true">${i + 1}</span><h4>${esc(l.name)} <span class="count">× ${l.count}</span></h4></div>
       <p><strong>Where:</strong> ${esc(l.location)}</p>
@@ -238,18 +267,21 @@ function overviewHTML() {
       ${blocks ? `<div class="level-blocks"><span class="muted small">Blocked here:</span> ${blocks}</div>` : ''}
     </li>`;
   }).join('');
-  const rows = BLOCK_SUMMARY.map((r) => `<tr>
-      <th scope="row"><button type="button" class="link-btn" data-block="${esc(r.id)}">${esc(shortBlockName(BLOCKS[r.id]))}</button></th>
-      <td>${esc(LEVEL_NAME[r.level])}</td><td>${esc(r.needle)}</td><td>${esc(r.volume)}</td><td>${esc(r.approach)}</td><td>${esc(r.indications)}</td></tr>`).join('');
+  const row = (r) => `<tr${r.advanced ? ' class="row-advanced"' : ''}>
+      <th scope="row"><button type="button" class="link-btn" data-block="${esc(r.id)}">${esc(shortBlockName(BLOCKS[r.id]))}</button>${r.relatedTo && BLOCKS[r.relatedTo] ? `<span class="row-variant">Variant of ${esc(shortBlockName(BLOCKS[r.relatedTo]).toLowerCase())}</span>` : ''}</th>
+      <td>${esc(LEVEL_NAME[r.level])}</td><td>${esc(r.needle)}</td><td>${esc(r.volume)}</td><td>${esc(r.approach)}</td><td>${esc(r.indications)}</td></tr>`;
+  const advRows = BLOCK_SUMMARY_ALL.filter((r) => r.advanced);
+  const rows = BLOCK_SUMMARY.map(row).join('') +
+    (advRows.length ? `<tr class="group-row"><th scope="rowgroup" colspan="6">Advanced blocks <span class="muted">(variants of the core four; volumes from published studies, not the deck)</span></th></tr>${advRows.map(row).join('')}` : '');
   return `<div class="guide-grid">
     <div class="guide-main">
       <h3 class="guide-title">How the plexus is organised</h3>
       <p class="mnemonic"><strong>${esc(LEVEL_MNEMONIC.text)}</strong>: ${esc(LEVEL_MNEMONIC.meaning)}<br><span class="muted">${esc(LEVEL_MNEMONIC.blocks)}</span></p>
       <ol class="levels">${levels}</ol>
-      <h3 class="guide-title">The four blocks at a glance</h3>
-      <div class="table-wrap" tabindex="0" role="region" aria-label="Comparison of the four blocks">
+      <h3 class="guide-title">The blocks at a glance</h3>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Comparison of the core and advanced blocks">
         <table class="summary">
-          <thead><tr><th scope="col">Block</th><th scope="col">Plexus level</th><th scope="col">Needle</th><th scope="col">Volume (deck)</th><th scope="col">Approach</th><th scope="col">Typical indications</th></tr></thead>
+          <thead><tr><th scope="col">Block</th><th scope="col">Plexus level</th><th scope="col">Needle</th><th scope="col">Volume</th><th scope="col">Approach</th><th scope="col">Typical indications</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
       </div>
@@ -268,13 +300,28 @@ function blockHTML(b) {
     ['Scan', `${esc(b.probe)}<br><span class="muted">${esc(b.landmark)}</span>`],
     ['Identify the sonoanatomy', list(b.sonoanatomy)],
     ['Advance the needle', `${esc(b.approach)}<br><strong>Target:</strong> ${esc(b.needleTarget)}`],
-    ['Deposit local anaesthetic', `${esc(b.laDeposition)}<br><strong>Volume (deck):</strong> ${esc(b.volume)}`],
+    ['Deposit local anaesthetic', `${esc(b.laDeposition)}<br><strong>Volume${b.advanced ? '' : ' (deck)'}:</strong> ${esc(b.volume)}`],
   ];
+  const core = b.advanced && BLOCKS[b.relatedTo];
+  const coreName = core ? shortBlockName(core) : '';
+  // 'Why choose this' text: an explicit data field if present, otherwise the
+  // first exam answer (each advanced block's Q1 is the "why / how it differs" question).
+  const why = core ? (b.whyChoose || b.examQs?.[0]?.a || '') : '';
+  const variantHTML = core ? `
+        <p class="note variant-note"><span class="adv-tag">Advanced</span> <span>Variant of the <button type="button" class="link-btn" data-block="${esc(core.id)}">${esc(coreName.toLowerCase())} block</button>. Learn that one first; this page covers what changes.</span></p>
+        ${why ? `<div class="why-box"><p class="why-title">Why choose this over ${esc(coreName.toLowerCase())}?</p><p>${esc(why)}</p></div>` : ''}` : '';
+  // Core blocks: point to their advanced variants (blocks whose relatedTo is this one).
+  const variants = b.advanced ? [] : Object.keys(BLOCKS).filter((id) => BLOCKS[id].advanced && BLOCKS[id].relatedTo === b.id);
+  const variantsHTML = variants.length ? `
+        <div class="jump-row variants-row"><span class="muted">Advanced variants:</span> ${variants.map((id) => `<button type="button" class="btn-ghost btn-ghost--advanced" data-block="${esc(id)}">${esc(shortBlockName(BLOCKS[id]))} <span class="adv-tag">Advanced</span></button>`).join(' ')}</div>` : '';
+  const sources = (b.sources || []).length ? `
+      <h4>Sources</h4>
+      <ul class="sources">${b.sources.map((s) => `<li>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.label)}</a>` : esc(s.label)}</li>`).join('')}</ul>` : '';
   return `<div class="guide-grid">
     <div class="guide-main">
       <div class="block-head">
         <p class="eyebrow">Targets the ${esc((LEVEL_NAME[b.level] || '').toLowerCase())}</p>
-        <h3>${esc(b.name)}</h3>
+        <h3>${esc(b.name)}</h3>${variantHTML}
         <div class="facts-row">
           <span class="fact"><span class="muted">Needle</span> ${esc(b.needle.length)} ${esc(b.needle.type.toLowerCase())}, ${esc(b.needle.plane.toLowerCase())}, ${esc(b.needle.direction.toLowerCase())}</span>
           <span class="fact"><span class="muted">Volume</span> ${esc(b.volume)}</span>
@@ -283,6 +330,7 @@ function blockHTML(b) {
           <button type="button" class="btn-ghost" data-tab="ultrasound">Watch it on ultrasound</button>
           <button type="button" class="btn-ghost" data-tab="coverage">See the coverage map</button>
         </div>
+        ${variantsHTML}
       </div>
 
       <h4>Set-up</h4>
@@ -318,6 +366,7 @@ function blockHTML(b) {
 
       <h4>Exam questions</h4>
       <div class="qa">${(b.examQs || []).map((x, i) => `<details><summary><span class="q-num">Q${i + 1}</span> ${esc(x.q)}</summary><p>${esc(x.a)}</p></details>`).join('')}</div>
+${sources}
     </div>
     ${asideHTML()}
   </div>`;
@@ -389,6 +438,8 @@ bus.on('select', () => { updateGuideSelection(); writeHash(); });
 
 // ---------------------------------------------------------------- boot
 syncChips();
+// Web fonts change chip widths; re-run so the active chip stays in view on phones.
+document.fonts?.ready?.then(() => syncChips()).catch(() => {});
 mountModule('viewer3d', './viewer3d.js', '#mount-3d');
 mountModule('diagram', './diagram.js', '#mount-diagram');
 selectTab(initial.tab || 'ultrasound');
