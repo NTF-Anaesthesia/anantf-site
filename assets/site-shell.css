@@ -1,0 +1,75 @@
+/* Shared site chrome: one grid, one logo size, one footer across every page. */
+:root{--site-width:1240px;--site-gutter:56px}
+body .site-container,body .ntf-header-inner,body .ntf-footer-inner{box-sizing:border-box;width:100%;max-width:var(--site-width);margin-inline:auto;padding-inline:var(--site-gutter)}
+body .ntf-header{color:#272722;background:#f7f5eff5;border-bottom:1px solid #d7d2c8;font-family:Inter,Arial,sans-serif}
+body .ntf-header-inner{height:92px;min-height:92px;padding-block:12px;gap:24px;display:flex;align-items:center;justify-content:space-between}
+body .ntf-logo,body .ntf-logo img{display:block;flex-shrink:0;width:124px;height:65px;object-fit:contain}
+body .ntf-nav{display:flex;align-items:center;gap:32px;font:400 13px/1.5 Inter,Arial,sans-serif}
+body .ntf-nav> a,body .ntf-menu>summary{min-height:44px;display:flex;align-items:center}
+body .ntf-footer{display:block;box-sizing:border-box;width:100%;max-width:none;margin:0;padding:0;border-top:1px solid #d7d2c8;background:#f7f5ef;color:#68665f;font:11px/1.7 Inter,Arial,sans-serif}
+body .ntf-footer-inner{padding-block:24px;min-height:94px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+body .ntf-footer-identity{display:flex;flex-direction:column;gap:3px}
+body .ntf-footer-identity>span:first-child{font-size:10px;letter-spacing:.08em}
+body .ntf-footer a{color:inherit;text-decoration:none}
+body .ntf-footer a:hover{text-decoration:underline;text-underline-offset:4px}
+body .ntf-footer .footer-links{display:flex;align-items:center;gap:24px;flex-shrink:0;font:inherit}
+body .ntf-footer .footer-links a{display:inline-flex;align-items:center;min-height:44px}
+body .page-wrap,body .ntf-crumbs,body .exam-page>.container,body .credits-main,body .ac-entry{box-sizing:border-box;max-width:var(--site-width);padding-inline:var(--site-gutter);margin-inline:auto}
+body .author-credit{font:14px/1.8 Inter,Arial,sans-serif;color:#68665f;margin:0}
+body .author-credit a{color:#633d3c;text-decoration:underline;text-underline-offset:4px}
+body .essay-collection-link{display:inline-flex;align-items:center;gap:16px;min-height:44px;margin-top:14px;border-bottom:1px solid #a59a89;color:#633d3c;font:500 13px/1.5 Inter,Arial,sans-serif;text-decoration:none}
+body .resource-notice{padding-block:28px;border-top:1px solid #d7d2c8}
+body .resource-notice .footer-note{max-width:760px;font:12px/1.8 Inter,Arial,sans-serif;color:#68665f}
+body.plexus-app .top{position:static}
+body.plexus-app .top-inner{max-width:var(--site-width);padding-inline:var(--site-gutter);display:flex;align-items:center;justify-content:space-between}
+body.plexus-app .brand{display:block}
+body.plexus-app .org{display:block;font-size:11px;margin:0 0 14px}
+body.plexus-app .blockbar-inner,body.plexus-app .foot-inner{max-width:var(--site-width);padding-inline:var(--site-gutter)}
+body.plexus-app .foot{border-bottom:0}
+.embedded-demo .ntf-header,.embedded-demo .ntf-footer{display:none}
+body[data-page=essays]{margin:0;background:#f7f5ef;color:#272722;font:15px/1.7 Inter,Arial,sans-serif}
+body .essay-directory{padding-bottom:44px}
+body .essay-breadcrumb{display:flex;flex-wrap:wrap;gap:12px;padding-top:24px;font-size:12px;color:#68665f}
+body .essay-breadcrumb a{color:inherit;text-underline-offset:4px}
+body .essay-directory-hero{display:grid;grid-template-columns:1.25fr 1fr;gap:32px;align-items:center;padding-block:32px;border-bottom:1px solid #d7d2c8}
+body .essay-directory h1{font:400 clamp(42px,5.2vw,68px)/1.08 'NTF Serif',Georgia,serif;letter-spacing:-.045em;margin:14px 0 18px}
+body .essay-directory-hero .ether-art{max-width:380px;justify-self:end}
+body .essay-intro{font-size:14px;color:#68665f;max-width:42ch;margin:14px 0 0}
+body .essay-topics{display:grid;grid-template-columns:1fr 1fr;gap:30px 48px;padding-top:32px;align-items:start}
+body .essay-topic h2{font:400 25px/1.3 'NTF Serif',Georgia,serif;letter-spacing:-.025em;margin:0 0 12px}
+body .essay-topic ul{list-style:none;padding:0;margin:0}
+body .essay-topic li{display:flex;align-items:center;gap:8px;border-bottom:1px solid #d7d2c8}
+body .essay-title-link{display:flex;align-items:center;justify-content:space-between;gap:16px;flex:1;min-width:0;min-height:56px;padding-block:10px;color:inherit;text-decoration:none;font-size:14px;line-height:1.6}
+body .essay-title-link:hover{color:#633d3c}
+body .pdf-label{white-space:nowrap;color:#633d3c;font-size:10px}
+body .essay-download{display:flex;align-items:center;justify-content:center;width:44px;min-height:44px;flex-shrink:0;color:#633d3c;text-decoration:none;font-size:20px}
+body .essay-download:hover{background:#eeece5}
+body .essay-use-note{margin-top:36px;font-size:12px;color:#68665f}
+body .ntf-header a:focus-visible,body .ntf-header summary:focus-visible,body .ntf-footer a:focus-visible,body .essay-directory a:focus-visible{outline:2px solid #633d3c;outline-offset:3px}
+@media(max-width:760px){
+ :root{--site-gutter:22px}
+ body .ntf-header-inner{height:80px;min-height:80px;padding-block:12px;gap:16px}
+ body .ntf-logo,body .ntf-logo img{width:105px;height:55px}
+ body .ntf-nav{gap:20px;font-size:12px}
+ body .ntf-menu-panel{position:fixed;top:80px;left:16px;right:16px;width:auto;max-height:calc(100dvh - 96px);overflow:auto}
+ body .ntf-footer-inner{align-items:flex-start;flex-direction:column;gap:8px;padding-block:20px}
+ body .ntf-footer .footer-links{gap:24px}
+ body .essay-directory-hero{grid-template-columns:1fr;gap:20px;padding-block:26px}
+ body .essay-directory-hero .ether-art{max-width:260px;justify-self:center}
+ body .essay-topics{grid-template-columns:1fr;gap:28px;padding-top:28px}
+ body .essay-topic h2{font-size:24px}
+ body .essay-directory h1{font-size:44px}
+ body.plexus-app .top-inner>div:first-child{display:block}
+ body.plexus-app .top-tools{align-self:flex-start}
+ body.plexus-app h1{font-size:32px}
+}
+@media(max-width:359px){body .ntf-nav{gap:12px}body .ntf-header-inner{gap:10px}}
+body{margin:0}
+body .ntf-footer .footer-links{margin:0;padding:0;border:0}
+body .ntf-footer-identity>a{min-height:0;display:block}
+/* The encrypted guide loads this shared stylesheet after it is unlocked. */
+body .ntf-footer:not(:has(.ntf-footer-inner)){box-sizing:border-box;max-width:var(--site-width);margin-inline:auto;padding:24px var(--site-gutter);display:flex;align-items:center;justify-content:space-between;gap:24px}
+body .ntf-footer:not(:has(.ntf-footer-inner))>a{min-height:44px;display:inline-flex;align-items:center}
+@media(max-width:760px){body .ntf-footer:not(:has(.ntf-footer-inner)){align-items:flex-start;flex-direction:column;gap:8px;padding-block:20px}}
+/* Keep page navigation immediate and avoid cross-document transition glitches. */
+@view-transition{navigation:none}
