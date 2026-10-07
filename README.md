@@ -4,8 +4,13 @@ Static site served by GitHub Pages at https://anantf.com.
 
 | Path | What it is |
 |---|---|
-| `index.html` | Homepage (lists NAPS only; exams and popliteal are unlisted for now) |
-| `exams/` | MMed exam resources by Dr Chew Shi Hao (his design; this is now the master copy) |
+| `index.html` | Monochrome ana ntf landing page and clinical resource navigation |
+| `resources.html` | Searchable learning library |
+| `airway.html` | Airway learning and NAPS model collection |
+| `regional.html` | Regional anaesthesia learning |
+| `senior-resident.html` | Senior resident rotation guide |
+| `department.html` | Department photographs and teaching |
+| `exams/` | MMed exam resources by Dr Chew Shi Hao (canonical master copy) |
 | `exams/reference/` | Part B model-answer PDFs |
 | `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
 | `AGENTS.md`, `CLAUDE.md` | Instructions for AI assistants editing this site |
