@@ -40,16 +40,13 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `exams/index.html` | MMed exam resources by Dr Chew Shi Hao (his design) | No (unlisted) |
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
 | `popliteal/index.html` | Popliteal sciatic block animation by Dr Chew Shi Hao | No (unlisted) |
-| `ac/index.html` | Guide to AC Life, **password-locked** | No (unlisted) |
-| `tools/ac-guide.mjs` | Unlock / re-lock script for the AC guide | — |
-| `tools/ac-editor.html` | Browser alternative to the script | — |
 | `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app | No (unlisted) |
 
 The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
 
 ## Rules
 
-- Don't add links to `exams/`, `popliteal/`, `ac/` or `brachial-plexus/` from the homepage, and keep their
+- Don't add links to `exams/`, `popliteal/` or `brachial-plexus/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
@@ -64,27 +61,6 @@ The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
 To add a PDF: put it in `exams/reference/` and add `{ title: "...", url: "reference/<file>.pdf" }`
 to the right group in `essayBank`.
 
-## Editing the AC guide (`ac/index.html`)
+## Removed content
 
-The guide is encrypted inside `ac/index.html` (`const DATA={salt,iv,iters,ct}`). **Never edit the
-`DATA` block by hand and never try to decrypt it yourself.** Use the script:
-
-1. Ask the human to run the unlock **themselves** in their terminal, so they type the password,
-   not you. In Claude Code they can type `! node tools/ac-guide.mjs unlock` in the prompt.
-   This writes the readable guide to `ac-guide.unlocked.html` in the repo root.
-2. Make the requested edits in `ac-guide.unlocked.html`.
-3. Ask the human to run `! node tools/ac-guide.mjs lock`. It re-locks the guide into `ac/index.html`
-   with the same password and deletes the readable copy.
-4. Commit and push `ac/index.html` only.
-
-Hard rules for the AC guide:
-
-- **Never ask for, repeat, store or write down the password**: not in chat, files, commit
-  messages, environment variables or command lines.
-- **Never commit or push `ac-guide.unlocked.html`** (or any other readable copy of the guide). It is
-  git-ignored; don't force-add it. Before every commit, run `git status` and make sure it isn't staged.
-- If `ac/index.html` ever stops containing `const DATA=`, stop and tell the human. Something
-  overwrote the locked page.
-- Don't copy the guide's contents into other pages, files or the README.
-- Changing the password: the human runs `! node tools/ac-guide.mjs lock --new-password`.
-  Older locked versions remain in git history and still open with their old password.
+The AC guide, its redirect, editing tools and public links were removed at the owner’s request on 7 October 2026. Do not restore them unless explicitly requested. Never publish readable copies of the former guide.
