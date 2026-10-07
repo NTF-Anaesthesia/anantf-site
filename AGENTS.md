@@ -9,7 +9,9 @@ Two maintainers: Dr Koh Wen Jun and Dr Chew Shi Hao. Both work through Claude Co
 local copies of the files.
 
 - Make each change on a new branch and open a pull request. Don't push straight to `main`.
-- Whoever opened the pull request merges it. Merging publishes it to anantf.com within a minute or two.
+- After opening the pull request, merge it yourself straight away (squash merge, delete the branch),
+  unless the human asks to wait for review. Merging publishes it to anantf.com within a minute or two,
+  so check the page works before merging.
 - Raw material (source PDFs, photos, notes) lives in the shared Google Drive folder
   "NTF Anaesthesia Site". If asked to use something from it, find it there via the Google Drive
   connector, then commit only the finished, web-ready version here.
