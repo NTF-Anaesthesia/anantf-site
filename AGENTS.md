@@ -3,6 +3,21 @@
 This repo is the NTF Anaesthesia department site, published by GitHub Pages at https://anantf.com.
 **Anything pushed to `main` is public on the internet within about a minute.** There is no review step.
 
+## What belongs here, and what doesn't
+
+This site is for **specialised web pages and web apps** (interactive tools, animations, model viewers,
+calculators, resource pages that need custom code). Other kinds of material live elsewhere, so don't
+suggest adding them to this repo:
+
+| Material | Where it goes |
+|---|---|
+| Official department documents (guidelines, policies, protocols) | The department's Microsoft Teams group |
+| Teaching slides that colleagues should be able to update themselves | Google Drive, shared with edit access, so no one has to go through this repo |
+| Specialised web pages and web apps | This repo |
+
+If someone asks for a guideline, policy or slide deck to be put on the site, tell them where it
+belongs instead. Many of the people editing here are not technical, so explain things in plain English.
+
 ## Layout
 
 | Path | What it is | Listed on homepage? |

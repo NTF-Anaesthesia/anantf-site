@@ -8,9 +8,6 @@ Static site served by GitHub Pages at https://anantf.com.
 | `exams/` | MMed exam resources by Dr Chew Shi Hao (his design; this is now the master copy) |
 | `exams/reference/` | Part B model-answer PDFs |
 | `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
-| `ac/` | Guide to AC Life (password-locked, unlisted). The password is shared separately and is not stored in this repo |
-| `tools/ac-guide.mjs` | Command-line unlock / re-lock for the AC guide |
-| `tools/ac-editor.html` | Browser editor for the AC guide (unlock, edit, re-lock) |
 | `AGENTS.md`, `CLAUDE.md` | Instructions for AI assistants editing this site |
 
 The NAPS 2026 models live in their own repo: NTF-Anaesthesia/naps2026-site (https://naps2026.anantf.com).
@@ -33,22 +30,3 @@ To add a model-answer PDF, upload it to `exams/reference/` and add an entry like
 
 Keep the commas and quotes intact when editing; open the page afterwards to check it still loads.
 Changes pushed to `main` go live in about a minute.
-
-## Editing the AC guide
-
-`ac/index.html` is encrypted, so it can't be edited directly. Two ways:
-
-**With the script** (for AI assistants or anyone with Node.js; see AGENTS.md):
-
-    node tools/ac-guide.mjs unlock     # asks for the password, writes ac-guide.unlocked.html
-    # ...edit ac-guide.unlocked.html...
-    node tools/ac-guide.mjs lock       # asks again, re-locks into ac/index.html, deletes the readable copy
-
-Then commit and push `ac/index.html`. Add `--new-password` to `lock` to change the password.
-`ac-guide.unlocked.html` is git-ignored. Never commit it.
-
-**In the browser:** https://anantf.com/tools/ac-editor.html. Load from site, unlock, edit, then
-**Lock and download index.html** and upload it to the `ac` folder on GitHub.
-
-Either way, nothing readable leaves your computer. Older locked versions stay in the repo history
-and still open with the password they used.
