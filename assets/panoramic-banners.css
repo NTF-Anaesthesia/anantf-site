@@ -1,0 +1,41 @@
+/* Full-width ETHER artwork, aligned to the shared page grid. */
+body .wide-illustration-banner,
+body[data-page=library] .section-heading.ether-banner.wide-illustration-banner,
+body.pocus-course .course-hero.wide-illustration-banner{
+ position:relative;isolation:isolate;display:block;overflow:hidden;box-sizing:border-box;
+ width:100%;min-height:280px;padding:38px 40px;margin:0 0 32px;border:0;background:#f0e7d8;
+}
+body .wide-illustration-banner>div:first-child{position:relative;z-index:2;max-width:52%;width:auto}
+body .wide-illustration-banner>img,
+body .wide-illustration-banner .directory-illustration,
+body.pocus-course .wide-illustration-banner figure{
+ position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;max-width:none;margin:0;
+ pointer-events:none;mask-image:none;-webkit-mask-image:none;
+}
+body .wide-illustration-banner>img,
+body .wide-illustration-banner .directory-illustration img,
+body.pocus-course .wide-illustration-banner figure img{
+ display:block;width:100%;height:100%;max-height:none;object-fit:cover;object-position:center 56%;
+ opacity:.82;mix-blend-mode:multiply;
+}
+body .wide-illustration-banner:after{content:'';display:block;position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,#f0e7d8 0%,#f0e7d8f5 26%,#f0e7d8c9 45%,#f0e7d82b 70%,transparent 100%)}
+body .wide-illustration-banner h1{font:400 clamp(40px,4.5vw,60px)/1.08 Georgia,serif;letter-spacing:-.045em;margin:0 0 18px}
+body .wide-illustration-banner p{max-width:35ch;margin:0;color:#68665f}
+body .wide-illustration-banner .collection-kicker,body .wide-illustration-banner .course-eyebrow{margin-bottom:12px}
+body.pocus-course .wide-illustration-banner .course-author{margin-top:14px;font-size:11px}
+body.pocus-course .course-hero.wide-illustration-banner{min-height:260px;margin-bottom:2px;padding:30px 32px}
+@media(max-width:760px){
+ body .wide-illustration-banner,
+ body[data-page=library] .section-heading.ether-banner.wide-illustration-banner,
+ body.pocus-course .course-hero.wide-illustration-banner{display:flex;flex-direction:column;padding:25px 24px 0;min-height:0;margin-bottom:26px}
+ body .wide-illustration-banner>div:first-child{max-width:none;width:100%}
+ body .wide-illustration-banner>img,
+ body .wide-illustration-banner .directory-illustration,
+ body.pocus-course .wide-illustration-banner figure{position:relative;inset:auto;align-self:stretch;width:calc(100% + 48px);height:180px;flex:none;margin:18px -24px 0;mask-image:linear-gradient(to bottom,transparent,black 20%);-webkit-mask-image:linear-gradient(to bottom,transparent,black 20%)}
+ body .wide-illustration-banner>img,body .wide-illustration-banner .directory-illustration img,body.pocus-course .wide-illustration-banner figure img{opacity:1;object-position:center 55%}
+ body .wide-illustration-banner:after{display:none!important}
+ body .wide-illustration-banner h1,body[data-page=library] .section-heading.ether-banner.wide-illustration-banner h1{font-size:clamp(34px,8.8vw,48px)}
+ body.pocus-course .course-hero.wide-illustration-banner{margin-bottom:2px}
+}
+/* Keep the ultrasound monitor visible in the shallow desktop crop. */
+@media(min-width:761px){body .collection-hero.wide-illustration-banner>img,body.pocus-course .wide-illustration-banner figure img{object-position:center top}}
