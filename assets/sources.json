@@ -1,0 +1,38 @@
+{
+  "ultrasound-teaching": {
+    "file": "assets/ultrasound-teaching.png",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 14,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "airway-simulation": {
+    "file": "assets/airway-simulation.png",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 14,
+    "treatment": "Original extracted photo; grayscale applied only through CSS"
+  },
+  "procedure-simulation": {
+    "file": "assets/procedure-simulation.png",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 14,
+    "treatment": "Original extracted photo; grayscale applied only through CSS"
+  },
+  "kokedama-workshop": {
+    "file": "assets/kokedama-workshop.jpg",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 17,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "mo-farewell": {
+    "file": "assets/mo-farewell.jpeg",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 18,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  },
+  "residency-conversations": {
+    "file": "assets/residency-conversations.jpeg",
+    "source": "SR Engagement Oct 2025.pptx",
+    "slide": 25,
+    "treatment": "Original extracted photograph, displayed in original colour"
+  }
+}
