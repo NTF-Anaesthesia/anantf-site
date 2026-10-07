@@ -17,7 +17,7 @@
   --us-nerve-edge: #a16207;
   --us-nerve-fasc: #ca8a04;
   --us-artery: #dc2626;
-  --us-vein: #2563eb;
+  --us-vein: #7e3fa6;
   --us-muscle: #e7a9a4;
   --us-muscle-edge: #b9706a;
   --us-muscle-fibre: rgba(150, 70, 66, 0.28);
@@ -262,7 +262,7 @@
 .bpus-leader-dot { fill: var(--pill-bg, #fff); }
 .bpus-lab.k-nerve { --pill-bg: #facc15; --pill-fg: #1c1917; }
 .bpus-lab.k-artery { --pill-bg: #dc2626; --pill-fg: #fff; }
-.bpus-lab.k-vein { --pill-bg: #2563eb; --pill-fg: #fff; }
+.bpus-lab.k-vein { --pill-bg: #7e3fa6; --pill-fg: #fff; }
 .bpus-lab.k-muscle { --pill-bg: #8f3d48; --pill-fg: #fff; }
 .bpus-lab.k-bone { --pill-bg: #e9dcc0; --pill-fg: #1c1917; }
 .bpus-lab.k-tendon { --pill-bg: #e7e5e4; --pill-fg: #1c1917; }
@@ -290,7 +290,7 @@
 .id-s.k-muscle .id-shape { fill: var(--us-muscle); stroke: var(--us-muscle-edge); stroke-width: 0.5; }
 .id-fibres line { stroke: var(--us-muscle-fibre); stroke-width: 1px; }
 .id-s.k-artery .id-shape { fill: var(--us-artery); stroke: #991b1b; stroke-width: 0.5; }
-.id-s.k-vein .id-shape { fill: var(--us-vein); stroke: #1e3a8a; stroke-width: 0.4; }
+.id-s.k-vein .id-shape { fill: var(--us-vein); stroke: #4c1d6e; stroke-width: 0.4; }
 .id-s.k-nerve .id-shape { fill: var(--us-nerve); stroke: var(--us-nerve-edge); stroke-width: 0.5; }
 .id-fasc { fill: var(--us-nerve-fasc); opacity: 0.55; pointer-events: none; }
 .id-s.k-bone .id-shape { fill: none; stroke: var(--us-bone-edge); stroke-linecap: round; }
