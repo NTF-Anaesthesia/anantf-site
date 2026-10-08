@@ -266,13 +266,13 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 #jumpChips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .jump .chip{font-family:var(--mono);font-size:11px;padding:3px 8px;margin:0}
 </style>
-<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"></head>
+<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"></head>
 <body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../../department.html">About Us</a><a href="../../why-join-us.html">Why Join Us?</a><a href="../../clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../../mopex/">MO Handbook</a><a href="../../senior-resident.html">Senior Residency</a><a href="../../exams/">MMed Exam Prep</a></div></details><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
 <nav class="course-toolbar" aria-label="Tutorial navigation"><div class="course-toolbar-inner"><div class="course-breadcrumb"><a href="../">POCUS</a><span aria-hidden="true">/</span><span>Gastric ultrasound</span></div><label class="course-section-picker"><span class="course-sr-only">Tutorial section</span><select id="course-section" aria-label="Tutorial section"></select></label></div></nav><main class="deck" id="deck" tabindex="-1">
 
 <!-- ============ 1 TITLE ============ -->
 <section class="slide course-intro" data-min="0.5" data-title="Start here" data-prompt="Ask: who has delayed or cancelled a case for an uncertain fasting history this month? Who has scanned a stomach before?">
-  <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS / Interactive tutorial</p><h1>Gastric ultrasound.</h1><p class="course-hero-lead">Find the antrum. Read the scan. Plan the next step.</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
+  <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner ntf-illustrated-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS / Interactive tutorial</p><h1>Gastric ultrasound.</h1><p class="course-hero-lead">Find the antrum. Read the scan. Plan the next step.</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
     <div>
       <p class="course-eyebrow">In this tutorial</p><ul class="agenda" style="max-width:440px">
         <li><span>01–02 · Why scan · I-AIM</span><span>4 min</span></li>
@@ -1733,7 +1733,7 @@ calc();
    ===================================================================== */
 const CASES = [
   { tag: 'Upper GI bleed', short: 'Melaena', title: 'Melaena · emergency OGD',
-    vignette: 'An elderly man on dual antiplatelet therapy after a recent PCI, with two days of melaena. Transfused and listed for OGD ± haemostasis; the endoscopist would prefer MAC (monitored anaesthesia care) without intubation.',
+    vignette: 'An elderly man on dual antiplatelet therapy after a recent PCI, with two days of melaena. Transfused and listed for OGD ± haemostasis; the endoscopist would prefer Monitored Anaesthesia Care (MAC) without intubation.',
     facts: [['Patient', '72 M · 68 kg · ASA 3E'], ['Bleed', 'Melaena × 2 days · Hb 10 → 6.8 g/dL · HR 108 · BP 104/62'], ['Drugs', 'Aspirin + clopidogrel'], ['Fasting', 'Last meal 10 h ago'], ['Plan', 'OGD ± haemostasis under MAC']],
     media: ['i7132', 'v7134', 'i7133', 'i7135', 'i7136'], badges: { i7135: 'Endoscopy', i7136: 'Endoscopy' },
     steps: [
@@ -1773,14 +1773,14 @@ const CASES = [
       ['What will you do?', 'Water empties fast and exponentially (half-life in the order of 10–20 min). Wait 45–60 min and rescan rather than cancel. Rescan: CSA 5.70 cm² → 27.0 + 83.2 − 57.6 = 53 mL → <b class="ok">0.75 mL/kg</b>. Proceed with a standard induction.', 'i3103']
     ], pearl: 'Clear fluid? Measure it. Too much? Wait, then rescan.' },
   { tag: 'Unreliable history', short: "Parkinson's", title: 'Uncertain history, empty stomach',
-    vignette: 'A frail woman with Parkinson\'s disease and mild dementia, for diagnostic OGD under propofol sedation. Her helper is not sure whether she had breakfast.',
-    facts: [['Patient', '79 F · 52 kg'], ['Background', "Parkinson's disease on levodopa · mild dementia"], ['History', 'Breakfast? — uncertain'], ['Plan', 'Diagnostic OGD under sedation, iron-deficiency anaemia']],
+    vignette: 'A frail woman with Parkinson\'s disease and dementia, for diagnostic OGD under Monitored Anaesthesia Care (MAC). Her helper is not sure whether she had breakfast.',
+    facts: [['Patient', '79 F · 52 kg'], ['Background', "Parkinson's disease on levodopa · dementia"], ['History', 'Breakfast? — uncertain'], ['Plan', 'Diagnostic OGD under MAC · iron-deficiency anaemia']],
     media: ['v8774', 'i9546', 'i1547'], badges: { i1547: 'Endoscopy' },
     steps: [
       ['Is a scan indicated?', "Yes. An unreliable history plus a condition associated with delayed gastric emptying. A clear answer avoids both an unnecessary cancellation and an unnecessary RSI in a frail patient."],
       ['How will you scan?', 'Supine then RLD — she may need pillows and help to roll.'],
       ['What is in the antrum?', 'Small, flat, <b>target-shaped antrum</b> in supine and RLD — <b class="ok">Grade 0, empty.</b>', 'v8774'],
-      ['What will you do?', '<b class="ok">Low risk:</b> proceed with propofol sedation as planned; keep the levodopa schedule. At endoscopy: clean gastric mucosa, no residue — the scan was right.', 'i1547']
+      ['What will you do?', '<b class="ok">Low risk:</b> proceed with MAC as planned; keep the levodopa schedule. At endoscopy: clean gastric mucosa, no residue — the scan was right.', 'i1547']
     ], pearl: 'Gastric ultrasound also lets you say yes — confidently.' }
 ];
 const CASE_ST = [];

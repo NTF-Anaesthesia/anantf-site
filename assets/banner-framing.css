@@ -1,0 +1,53 @@
+/* Shared framing supersedes the legacy cover crops. Keep complete subjects inside each banner. */
+body .ntf-illustrated-banner{
+ display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)!important;
+ align-items:center;gap:24px!important;width:100%!important;min-height:260px!important;
+ padding:26px 32px!important;margin:0 0 30px!important;border:0!important;
+ background:#f0e7d8!important;overflow:hidden;isolation:isolate;
+}
+body .ntf-illustrated-banner>div:first-child{position:relative!important;max-width:none!important;width:100%!important;min-width:0;padding:0!important;z-index:2}
+body .ntf-illustrated-banner:before,body .ntf-illustrated-banner:after,
+body .ntf-illustrated-banner :is(figure,aside):after{display:none!important}
+body .ntf-illustrated-banner>:is(figure,aside,img){
+ position:relative!important;inset:auto!important;width:100%!important;height:250px!important;
+ max-width:none!important;margin:0!important;min-width:0;justify-self:stretch;
+ mask-image:none!important;-webkit-mask-image:none!important;
+}
+body .ntf-illustrated-banner img{
+ position:static!important;inset:auto!important;display:block;width:100%!important;height:100%!important;
+ max-width:100%!important;max-height:100%!important;object-fit:contain!important;object-position:center!important;
+ opacity:.9;mix-blend-mode:multiply;mask-image:none!important;-webkit-mask-image:none!important;transform:none!important;
+}
+body .ntf-illustrated-banner>img{height:250px!important}
+body .ntf-illustrated-banner h1{font:400 clamp(34px,4vw,54px)/1.08 Georgia,serif!important;letter-spacing:-.045em;margin:0 0 18px!important;white-space:normal!important}
+body .ntf-illustrated-banner :is(.page-lead,.guide-intro){font-size:15px;line-height:1.7;max-width:38ch}
+body .ntf-illustrated-banner .source-note{margin-top:12px;padding-block:0}
+body .ntf-illustrated-banner .study-banner-art{overflow:hidden}
+/* The study artwork has empty space on the right; retain the full book stack and tabletop. */
+body .ntf-illustrated-banner .study-banner-art img{width:auto!important;max-width:none!important;height:100%!important;margin-left:0}
+body .priorities-banner .ether-art img{object-fit:contain!important;object-position:center!important}
+body .source-gallery.culture img{object-fit:contain;aspect-ratio:4/3;background:#eee9df}
+body .landing-image img{object-fit:contain;object-position:center}
+@media(max-width:760px){
+ body .ntf-illustrated-banner{grid-template-columns:minmax(0,1fr)!important;gap:12px!important;min-height:0!important;padding:24px 22px 12px!important;margin-bottom:24px!important}
+ body .ntf-illustrated-banner>:is(figure,aside,img){height:auto!important;aspect-ratio:1.9;max-height:220px!important}
+ body .ntf-illustrated-banner img{height:100%!important;opacity:1}
+ body .ntf-illustrated-banner>img{height:auto!important;object-fit:contain!important}
+ body .ntf-illustrated-banner h1{font-size:clamp(32px,8.5vw,42px)!important;margin-bottom:14px!important}
+ body .ntf-illustrated-banner .study-banner-art img{width:100%!important;max-width:100%!important;object-fit:contain!important}
+ body .priorities-banner .ether-art{height:auto;aspect-ratio:1.9}
+ body .landing{display:flex;flex-direction:column;min-height:0}
+ body .landing-content{order:1;width:100%;padding:30px 24px 16px}
+ body .landing-copy{margin-top:0}
+ body .landing-image{position:relative;inset:auto;order:2;width:100%;aspect-ratio:1100/614;z-index:0}
+ body .landing-image:after{display:none}
+ body .landing-image img{object-fit:contain;opacity:.86}
+}
+/* Lift the paper tone so the illustration blends into the banner instead of reading as a photo card. */
+body .ntf-illustrated-banner img{filter:brightness(1.12)!important}
+body .ntf-illustrated-banner img[src*="ether-airway-equipment"]{filter:saturate(.45) brightness(1.24)!important}
+body .ntf-illustrated-banner img[src*="ether-pocus-equipment"]{filter:brightness(1.16)!important}
+body .ntf-illustrated-banner .study-banner-art img{position:absolute!important;left:0!important;bottom:0!important;top:auto!important;height:145%!important;max-height:none!important;width:auto!important}
+@media(max-width:760px){body .ntf-illustrated-banner .study-banner-art img{height:140%!important;width:auto!important;max-width:none!important}}
+body .ntf-illustrated-banner>:is(figure,aside){mix-blend-mode:multiply}
+body .page-wrap>.ntf-illustrated-banner:first-child{margin-top:24px!important}
