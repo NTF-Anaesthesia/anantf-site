@@ -3,7 +3,7 @@
   const host = document.getElementById('fit-app');
   if (!host) return;
   const questions = [
-    {id:'role',title:'Which role are you exploring?',hint:'Your career stage does not affect the score.',options:['MOPEX','Fellow','Resident Physician','Resident','Consultant']},
+    {id:'role',title:'Which role are you exploring?',hint:'Your career stage does not affect the score.',options:['MOPEX','Resident Physician','Resident','Consultant']},
     {id:'scope',title:'Do any of these need to be a major part of your next posting or role?',hint:'Choose all that are essential. An interest in a specialty is different from needing it in your next role.',multi:true,options:['Cardiac anaesthesia','Obstetric anaesthesia (OBAN)','Paediatric anaesthesia','Transplant anaesthesia','None of these is essential']},
     {id:'interests',title:'What would you like to learn or develop?',hint:'Choose all that interest you. You do not need prior experience.',multi:true,options:['Regional anaesthesia','Perioperative care','Airway management','POCUS','Medical education','Still exploring']},
     {id:'learning',title:'When a useful technique is new to you, what is your usual approach?',hint:'Choose the answer closest to how you like to work.',options:['Seek guidance, prepare and practise with appropriate supervision.','Learn it when it becomes part of my assigned work.','Prefer to focus on techniques I already know well.'],points:[3,1,0]},
