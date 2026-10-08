@@ -5,7 +5,7 @@
 import { bus } from './bus.js';
 import {
   ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED,
-  BLOCK_SUMMARY, BLOCK_SUMMARY_ALL, ATTRIBUTION, DISCLAIMER, blockStatus,
+  BLOCK_SUMMARY, BLOCK_SUMMARY_ALL, DISCLAIMER, blockStatus,
 } from './data.js';
 
 window.bpBus = bus; // handy for debugging in the console
@@ -21,7 +21,7 @@ const spinalText = (list = []) => (list.length > 1 ? `${list[0]}–${list[list.l
 
 // ---------------------------------------------------------------- footer text
 $('#disclaimer').textContent = DISCLAIMER;
-$('#attribution').textContent = ATTRIBUTION;
+
 
 // ---------------------------------------------------------------- URL hash state
 const TABS = ['ultrasound', 'guide', 'coverage'];
