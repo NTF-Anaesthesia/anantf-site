@@ -24,11 +24,9 @@ body .ntf-footer{max-width:none;margin:0;padding:20px max(24px,calc((100vw - 132
 }
 @media(prefers-reduced-motion:reduce){.landing-copy{animation:none}.landing-link{transition:none}}
 
-/* Three quiet lines beneath the main resource entry point. */
-.site-introduction{max-width:1280px;margin:0 auto;padding:22px max(24px,6vw);color:#706d66}
-.site-introduction-line{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
-.site-introduction h2{font:500 12px/1.8 var(--font);letter-spacing:0;margin:0;flex-shrink:0}
-.site-introduction p{font:12px/1.8 var(--font);color:inherit;margin:0}
-.site-introduction a{color:inherit;text-decoration:underline;text-decoration-color:#b6afa4;text-underline-offset:3px}
-.site-introduction a:hover{color:#633d3c}
-@media(max-width:700px){.site-introduction{padding:20px 24px}.site-introduction-line{gap:2px 12px}}
+/* Original introduction, one wider paragraph. */
+.site-introduction{max-width:1440px;margin:0 auto;padding:36px max(24px,6vw);display:grid;grid-template-columns:240px minmax(0,1fr);gap:36px;align-items:start}
+.site-introduction h2{font:400 clamp(28px,3vw,36px)/1.15 var(--serif);letter-spacing:-.035em;margin:0}
+.site-introduction p{font:12px/1.8 var(--font);color:#68665f;margin:0}
+.site-introduction a{color:#633d3c;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:700px){.site-introduction{grid-template-columns:1fr;gap:18px;padding:28px 24px}}
