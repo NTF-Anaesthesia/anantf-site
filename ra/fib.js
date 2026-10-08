@@ -276,7 +276,7 @@ function fixLedger(label,off,tFix){return(s,t)=>{if(t<tFix)return null;const b=s
 // the caudad edge of the deep circumflex vessels. Fix: advance on the same line, tent and pierce fascia iliaca
 // (FIX = positive(IP) on a shifted clock), then the planned 40 mL. The misplaced pool stays on top of the fascia.
 (function(){
-  const G=GEO.fib,NS=IP.NS,NT=[765,424];
+  const G=GEO.fib,NS=IP.NS,NT=[765,yAt(G.fiR,765)-12];
   const L=Math.hypot(NT[0]-NS[0],NT[1]-NS[1]),D=[(NT[0]-NS[0])/L,(NT[1]-NS[1])/L];
   const OFF=5,uR=(NS[0]-NT[0])/(NS[0]-IP.NT[0]);   // the stopped tip lies on the in-plane line
   const uS=(NS[0]-905)/(NS[0]-NT[0]);               // sartorius epimysium on this line
@@ -330,10 +330,10 @@ function fixLedger(label,off,tFix){return(s,t)=>{if(t<tFix)return null;const b=s
     }};
 })();
 // negative example 2: intramuscular. Fascia iliaca tents and gives (positive() on a deeper line), but the tip keeps
-// going ~7 mm into iliacus and 2 mL swells inside the muscle, along its fibres. Fix: slow withdrawal to just beneath
+// going ~2 mm into iliacus and 2 mL swells inside the muscle, along its fibres. Fix: slow withdrawal to just beneath
 // fascia iliaca, then the correct spread (positive() on a shifted clock).
 (function(){
-  const G=GEO.fib,NS=IP.NS,NT=[640,545];          // deep tip, inside iliacus
+  const G=GEO.fib,NS=IP.NS,NT=[690,yAt(G.fiR,690)+30];          // deep tip, inside iliacus
   const L=Math.hypot(NT[0]-NS[0],NT[1]-NS[1]);
   const OFF=2,TW=19.4,TR=20.0,TB=22.2,FA=-0.17;  // misplaced volume; warnings fade, withdrawal start and end; fibre angle
   const uS=(NS[0]-950)/(NS[0]-NT[0]);
@@ -344,17 +344,17 @@ function fixLedger(label,off,tFix){return(s,t)=>{if(t<tFix)return null;const b=s
   // intramuscular LA: a contained swelling elongated along the fibres, with streaks tracking between them
   const imLA=v=>{const k=v/OFF;if(k<=0)return null;const sk=Math.sqrt(k),cr=Math.cos(FA),sr=Math.sin(FA),P=[];
     const cx=NT[0]-6,cy=NT[1],R=(x,y)=>[cx+x*cr-y*sr,cy+x*sr+y*cr];
-    for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push(R(Math.cos(a)*50*sk*w,Math.sin(a)*16*sk*w))}
-    const st=[[-1,-6,70],[1,5,62],[-1,9,46],[1,-8,40]].map(([d,dy,len])=>{const ln=len*sk,x0=d*42*sk+d*ln/2,c0=R(x0,dy*sk);
+    for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push(R(Math.cos(a)*30*sk*w,Math.sin(a)*8*sk*w))}
+    const st=[[-1,-3,28],[1,3,26],[-1,5,20],[1,-4,18]].map(([d,dy,len])=>{const ln=len*sk,x0=d*24*sk+d*ln/2,c0=R(x0,dy*sk);
       return ellipsePts(c0[0],c0[1],ln/2,2.2*sk+.5,24,-Math.PI/2,FA)});
-    return{x:cx,y:cy,rx:50*sk,ry:16*sk,rot:FA,polys:[P].concat(st)}};
+    return{x:cx,y:cy,rx:30*sk,ry:8*sk,rot:FA,polys:[P].concat(st)}};
   SC.intraIliacus={anat:'fib',pill:'Into iliacus (iliopsoas)',Tend:MT+6.2,vol:DOSE,volT:12.4,magT:MT,laT:FXI+1.2,neg:true,
     subtitle:'Negative example: a common needle error',
     mag:{CX:300,CY:700,R:120,Z:1.5,focus:s=>[640,480],text:['2 mL in iliacus,','40 mL beneath fascia iliaca']},
     la:[[430,590,'left',s=>laAnchor(s,300,s.la,560),'LA beneath fascia iliaca',FXI+1.2]],
     guides:[[along(NS,NT,.3),NT,7,11]],
     caps:[[0,8.2,'1','Sagittal at the bow-tie. Fascia iliaca lies on iliacus; the deep circumflex iliac artery sits above it.'],
-      [8.2,13.4,'2','Error: fascia iliaca tents and gives, but the tip keeps going, 7 mm deep into iliacus.'],
+      [8.2,13.4,'2','Error: fascia iliaca tents and gives, but the tip keeps going, just beyond the intended plane into iliacus.'],
       [13.4,17.4,'3','LA swells inside iliacus, between its fibres. Fascia iliaca does not lift off the muscle.'],
       [17.4,TR,'4','Error recognised: intramuscular injection, a common cause of failure. Stop after 2 mL.'],
       [TR,FXI+.6,'5','Fix: withdraw slowly until the tip sits just beneath fascia iliaca, on the iliacus surface.'],

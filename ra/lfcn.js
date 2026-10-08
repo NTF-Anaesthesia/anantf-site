@@ -348,25 +348,25 @@ SC.inplane=positive(Object.assign({},IP,{
 function fixLedger(label,off,tFix,label2){return(s,t)=>{if(t<tFix)return null;const b=s.v||0,tot=off+b;
   return{a:seg(t,tFix,tFix+.6),lines:[label+': '+off.toFixed(1)+' mL',label2+': '+b.toFixed(1)+' mL',DRUG.replace('R','Total r')+': '+tot.toFixed(1)+' mL ('+Math.round(tot*MGML)+' mg)']}}}
 /* negative example: too steep. The tip passes fused fascia lata just lateral to the end of the tunnel, under the
-   tunnel's lateral tip, and comes to rest 3 mm deep to the TFL surface. 1 mL swells inside TFL; the tunnel stays
+   tunnel's lateral tip, and comes to rest just beyond the tunnel floor, in superficial TFL. 1 mL swells inside TFL; the tunnel stays
    flat. Fix: withdraw into the subcutaneous fat, flatten onto the in-plane line, re-enter the tunnel (the in-plane
    scenario's own tent, pop and aliquots on a shifted clock). */
 (function(){
   const A=ANAT.lfcn,G=GEO.lfcn;
   // same skin puncture E as the in-plane line, steeper (about 38 degrees): the redirect pivots at E
-  const uE=(150-IP.NS[1])/(IP.NT[1]-IP.NS[1]),E=along(IP.NS,IP.NT,uE),NT=[996,295];
+  const uE=(150-IP.NS[1])/(IP.NT[1]-IP.NS[1]),E=along(IP.NS,IP.NT,uE),NT=[895,G.top(895)+24];
   const dE=Math.hypot(E[0]-NT[0],E[1]-NT[1]),NS=[E[0]+(E[0]-NT[0])/dE*435,E[1]+(E[1]-NT[1])/dE*435];
   const OFF=1,TW=16.4,TR=16.8,TD=17.8,TB=18.4;          // warnings fade; withdraw start, withdrawn, redirected
   const DEEP=positive(Object.assign({},IP,{NS,NT,k:[1e9],disp:[0,0]}));
   const uW=(NS[0]-1140)/(NS[0]-NT[0]),W1=along(NS,NT,uW);  // withdrawn into subcutaneous fat at x 1140
   const LI=Math.hypot(IP.NT[0]-NS[0],IP.NT[1]-NS[1]),uR=Math.hypot(W1[0]-NS[0],W1[1]-NS[1])/LI;
   const FIX=positive(Object.assign({},IP,{u0:uR,u1:uR})),SHIFT=TB-9.0,FXI=IP.k[0]+SHIFT;
-  const IMC=NT;   // inside TFL, about 9 mm lateral to its medial border: all of the intramuscular LA stays in the muscle
+  const IMC=NT;   // inside TFL, a few millimetres lateral to its medial border: all of the intramuscular LA stays in the muscle
   const imLA=v=>{const k=v/OFF;if(k<=0)return null;const sk=Math.sqrt(k),P=[];
-    for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push([IMC[0]+Math.cos(a)*40*sk*w,IMC[1]+Math.sin(a)*15*sk*w])}
-    const st=[[-1,-6,44],[1,5,56],[1,-8,34],[-1,7,30]].map(([d,dy,len])=>{const x0=IMC[0]+d*34*sk,ln=len*sk;
+    for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push([IMC[0]+Math.cos(a)*23*sk*w,IMC[1]+Math.sin(a)*7*sk*w])}
+    const st=[[-1,-3,16],[1,3,22],[1,-4,16],[-1,4,14]].map(([d,dy,len])=>{const x0=IMC[0]+d*18*sk,ln=len*sk;
       return ellipsePts(x0+d*ln/2,IMC[1]+dy*sk,ln/2,2*sk+.5,24)});
-    return{x:IMC[0],y:IMC[1],rx:40*sk,ry:15*sk,polys:[P].concat(st)}};
+    return{x:IMC[0],y:IMC[1],rx:23*sk,ry:7*sk,polys:[P].concat(st)}};
   SC.intraTFL={anat:'lfcn',pill:'Into TFL',tunA:t=>1-seg(t,10.2,10.7),   // tunnel pill off before the steep needle reaches TFL: its leader would cross the shaft and the TFL pocket; the LA and cue pills label the tunnel after the fix
     Tend:30.5,vol:DOSE,volT:12.4,magT:27,laT:FXI+1.2,neg:true,
     subtitle:'Negative example: a common needle error',
@@ -374,7 +374,7 @@ function fixLedger(label,off,tFix,label2){return(s,t)=>{if(t<tFix)return null;co
     la:[[1080,226,'left',s=>laMid(s,950),'LA in the tunnel',FXI+1.2]],
     guides:[[along(NS,NT,.3),NT,7,11]],
     caps:[[0,8.2,'1','The LFCN lies in a flat fat-filled tunnel within fascia lata, between sartorius and TFL.'],
-      [8.2,12.4,'2','Error: too steep. The tip passes under the lateral end of the tunnel, 3 mm deep to the TFL surface.'],
+      [8.2,12.4,'2','Error: too steep. The tip passes just beyond the tunnel floor, just beyond the tunnel floor, in superficial TFL.'],
       [12.4,15.4,'3','LA swells inside tensor fasciae latae, between its fibres. The tunnel stays flat.'],
       [15.4,TR,'4','Error recognised: the nerve is not outlined. Intramuscular injection: stop after 1 mL.'],
       [TR,FXI-.6,'5','Fix: withdraw into the fat, flatten the angle and re-enter the tunnel lateral to the nerve.'],

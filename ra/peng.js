@@ -5,7 +5,7 @@ RA.register('peng', {
   tabsLabel: 'Approach',
   tabs: [['linear', 'Linear: slim patient', 'In-plane, lateral to medial'],
          ['curvi', 'Curvilinear: large patient', 'Sector view, steep in-plane'],
-         ['error', 'Negative examples', 'Two needle errors']],
+         ['error', 'Negative example', 'Just short of the plane']],
   pills: null,
   probe: true,
   notes: `<p class="note"><strong>Dose:</strong> ropivacaine 0.2%, 20 mL to PENG. With an LFCN block add 5 mL 0.2% (total 25 mL, 50 mg).</p>
@@ -290,15 +290,15 @@ const NEGCAP1=[0,8.2,'1','AIIS lateral, iliopubic eminence medial. Psoas tendon 
 // then the correct injection on a shifted clock.
 (function(){
   const A=ANAT.lin,G=GEO.lin,POS=positive(Object.assign({},IPL)),N=POS.N;
-  const uIM=uAtX(N,874),TIP=along(N.NS,N.B,uIM);
+  const uIM=N.uT-26/N.L,TIP=along(N.NS,N.B,uIM);
   const OFF=2,TW=19.4,TR=20.0,TBc=21.2,TB=21.9,FXI=22.6,SHIFT=FXI-ALQ_L[0][0];
   const toNerve=Math.atan2(A.nerve.y+8-TIP[1],A.nerve.x+40-TIP[0]);
   // intramuscular LA: a contained swelling along the fibres, with streaks tracking superficially between them
   const imLA=v=>{const k=v/OFF;if(k<=0)return null;const sk=Math.sqrt(k),P=[];
-    for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push([TIP[0]-6+Math.cos(a)*50*sk*w,TIP[1]+Math.sin(a)*19*sk*w])}
-    const st=[[40,64,2.6,0],[30,46,2.2,10],[-36,40,2.2,-6]].map(([d,len,w,off])=>{const c=Math.cos(toNerve),s=Math.sin(toNerve),dd=d*sk+Math.sign(d)*len*sk/2;
+    for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push([TIP[0]-6+Math.cos(a)*16*sk*w,TIP[1]+Math.sin(a)*7*sk*w])}
+    const st=[[12,16,1.5,0],[10,14,1.3,4],[-10,12,1.3,-3]].map(([d,len,w,off])=>{const c=Math.cos(toNerve),s=Math.sin(toNerve),dd=d*sk+Math.sign(d)*len*sk/2;
       return rotEll(TIP[0]+c*dd-s*off*sk,TIP[1]+s*dd+c*off*sk,len*sk/2,w*sk+.5,toNerve,24)});
-    return{x:TIP[0]-6,y:TIP[1],rx:50*sk,ry:19*sk,polys:[P].concat(st)}};
+    return{x:TIP[0]-6,y:TIP[1],rx:16*sk,ry:7*sk,polys:[P].concat(st)}};
   const ph=t=>{if(t<11.05)return needlePhase(N,t);if(t<12.0)return{u:lerp(N.P,uIM,ease(seg(t,11.05,12.0)))};if(t<TR)return{u:uIM};
     if(t<TBc)return{u:lerp(uIM,1,ease(seg(t,TR,TBc)))};if(t<TBc+.3)return boneStop(t,TBc);return{u:lerp(1,N.uT,ease(seg(t,TBc+.3,TB)))}};
   SC.intraMusc={anat:'lin',pill:'Into iliopsoas, short of bone',neg:true,Tend:34.5,vol:DOSE,volT:12.4,magT:31,laT:FXI+1.2,
@@ -308,8 +308,8 @@ const NEGCAP1=[0,8.2,'1','AIIS lateral, iliopubic eminence medial. Psoas tendon 
     guides:[[along(N.NS,N.B,.3),TIP,7,11],[TIP,N.NT,TR-.2,TB+1.2]],
     cues:[[FXI+3.2,'Tendon lifting off bone: correct plane',1010,650]],
     caps:[NEGCAP1,
-      [8.2,13.6,'2','Error: fascia iliaca gives, then the tip stops in iliopsoas, short of bone and superficial to the tendon.'],
-      [13.6,16.4,'3','LA swells inside the muscle and tracks towards the femoral nerve. The psoas tendon does not lift.'],
+      [8.2,13.6,'2','Error: fascia iliaca gives, then the tip stops in iliopsoas, just lateral to the tendon and short of the target plane.'],
+      [13.6,16.4,'3','A small pocket remains in muscle just short of the target plane. The psoas tendon does not lift.'],
       [16.4,TR,'4','Error recognised: no bone contact, spread inside muscle. Stop: more here risks failure and weakness.'],
       [TR,23.2,'5','Fix: advance beneath the psoas tendon to bone. Withdraw 1 mm and aspirate.'],
       [23.2,31,'6','Ropivacaine 0.2%, the planned 20 mL, in 5 mL aliquots with aspiration. The tendon lifts off the bone.'],
@@ -330,64 +330,8 @@ const NEGCAP1=[0,8.2,'1','AIIS lateral, iliopubic eminence medial. Psoas tendon 
       if(a2>0)warnPill(c,'Tip in iliopsoas: intramuscular',1010,682,[s.tip[0]+6,s.tip[1]+22],a2);
       const a3=seg(t,15.5,16.0)*f;
       if(a3>0)warnPill(c,'Tendon not lifting',420,700,[s.tendon.x-20,s.tendon.y+s.tendon.ry],a3);
-      const a4=seg(t,16.2,16.7)*f;
-      if(a4>0){const n=s.nerve;c.save();c.globalAlpha=a4*.8;c.strokeStyle=RED;c.lineWidth=1.8;c.setLineDash([6,6]);c.beginPath();c.ellipse(n.x,n.y,n.rx+11,n.ry+11,0,0,Math.PI*2);c.stroke();c.restore();
-        warnPill(c,'Tracking to femoral nerve',560,270,[n.x-28,n.y-n.ry-5],a4)}
       const a5=seg(t,17.5,18.0)*f;
       if(a5>0)warnPill(c,'Stop at 2 mL',1010,732,null,a5);
-    }};
-})();
-// negative example 2: the tip stops just beneath fascia iliaca, beside the femoral nerve, ~2 cm above the target.
-// 5 mL lifts fascia iliaca and outlines the femoral nerve (a femoral nerve block: loses motor sparing). The pocket stays.
-(function(){
-  const A=ANAT.lin,G=GEO.lin,POS=positive(Object.assign({},IPL)),N=POS.N,NF=Object.assign({},N);
-  NF.ut=N.uc+10/N.L;NF.P=N.uc+12/N.L;NF.tentPx=10;
-  const TIP=along(N.NS,N.B,NF.P),OFF=5,TW=20.0,TR=20.6,TBc=21.8,TB=22.5,FXI=23.0,SHIFT=FXI-ALQ_L[0][0];
-  const nv=A.nerve;
-  // LA beneath fascia iliaca: lifts it around the tip, tracks medially over the nerve and wraps it
-  function fiPocket(k){if(k<=0)return null;const sk=Math.sqrt(k),xr=TIP[0]+50,xc=TIP[0]-26;
-    const xm=lerp(TIP[0]-24,nv.x-nv.rx-12,ease(clamp(k*1.6))),Tm=26*Math.pow(k,.6),cov=clamp(k*2)*clamp((nv.x+nv.rx-xm)/(nv.rx*2));
-    const lift=x=>x<xm||x>xr?0:Math.max(Tm*bump((x-xc)/(x<xc?Math.max(xc-xm,8):xr-xc)),9*cov*bump((x-nv.x)/(nv.rx+16)));
-    const dip=x=>{let d=7*Math.sqrt(k)*bump((x-TIP[0])/26);const dx=(x-nv.x)/(nv.rx+6);
-      if(Math.abs(dx)<1&&x>=xm-6)d=Math.max(d,(nv.y+nv.ry*Math.sqrt(1-dx*dx)+4-yAt(G.fiR,x))*cov);return d};
-    return{lift,dip,x0:Math.floor(Math.min(xm,nv.x-nv.rx-8)),x1:Math.ceil(xr)}}
-  const ph=t=>{if(t<10.6)return needlePhase(NF,t);if(t<11.05)return pop(t,10.6,NF.ut,NF.P,2.5);if(t<TR)return{u:NF.P};
-    if(t<TBc)return{u:lerp(NF.P,1,ease(seg(t,TR,TBc)))};if(t<TBc+.3)return boneStop(t,TBc);return{u:lerp(1,N.uT,ease(seg(t,TBc+.3,TB)))}};
-  SC.fiPlane={anat:'lin',emFade:true,pill:'Beneath fascia iliaca, above the tendon',neg:true,Tend:35,vol:DOSE,volT:12.4,magT:31.5,laT:FXI+1.2,
-    subtitle:'Negative example: loses motor sparing',
-    mag:{CY:690,R:140,Z:1.15,focus:()=>[690,502],text:['5 mL around the femoral nerve,','20 mL beneath the tendon']},
-    la:[[1060,425,'left',s=>laAnchor(s,TIP[0]+16,s.laOff,TIP[0]+48),'LA beneath fascia iliaca',13.6],
-      [900,612,'left',s=>laAnchor(s,640,s.la,880),'LA beneath psoas tendon',FXI+1.2]],
-    guides:[[along(N.NS,N.B,.3),TIP,7,11],[TIP,N.NT,TR-.2,TB+1.2]],
-    cues:[[FXI+3.2,'Tendon lifting off bone: correct plane',1010,650]],
-    caps:[NEGCAP1,
-      [8.2,12.4,'2','Error: fascia iliaca gives and the tip stops there, beside the femoral nerve, well above the tendon.'],
-      [12.4,16.6,'3','LA lifts fascia iliaca and outlines the femoral nerve: a femoral nerve block, not PENG. The tendon stays down.'],
-      [16.6,TR,'4','Error recognised: this is likely to weaken the quadriceps and lose motor sparing. Stop at 5 mL.'],
-      [TR,23.4,'5','Fix: advance through iliopsoas to bone beneath the psoas tendon. Withdraw 1 mm and aspirate.'],
-      [23.4,31.5,'6','Ropivacaine 0.2%, the planned 20 mL, in 5 mL aliquots with aspiration. The tendon lifts off the bone.'],
-      [31.5,99,'7','Total 25 mL, 50 mg: 5 mL beneath fascia iliaca; 20 mL beneath the tendon. Expect some quadriceps weakness.']],
-    ledger:fixLedger('Beneath fascia iliaca',OFF,TR),
-    state(t){
-      const vF=OFF*ease(seg(t,12.8,15.8)),sp=fiPocket(vF/OFF);let s;
-      if(t<TB){s=POS.state(Math.min(t,8.29));s.v=t<TR?vF:0;s.k=0;s.paused=false;s.la=null;
-        if(t>=8.3){const r=needleAt(NF,t,ph(t));s.tip=r.tip;s.na=r.na;s.fi=tentFI(G.fiR,NF,r.tent)}}
-      else s=POS.state(Math.max(t-SHIFT,12.6));
-      if(sp){s.fi=s.fi.map(p=>[p[0],p[1]-sp.lift(p[0])]);s.laOff=planeLA(G.fiR,sp.lift,sp.dip,sp.x0,sp.x1)}
-      s.nerve=Object.assign({},s.nerve,{y:s.nerve.y+2*clamp(vF/OFF)});
-      return s;
-    },
-    warnings(c,t,s){
-      const f=1-seg(t,TW,TR);if(f<=0)return;
-      const a1=seg(t,12.2,12.7)*f;
-      if(a1>0){ring(c,s.tip,a1,t,0);warnPill(c,'Too superficial: above the tendon',1180,566,[s.tip[0]+18,s.tip[1]+16],a1)}
-      const a2=seg(t,14,14.5)*f;
-      if(a2>0)warnPill(c,'Fascia iliaca lifting',910,222,[930,yAt(s.fi,930)-2],a2);
-      const a3=seg(t,15.8,16.3)*f;
-      if(a3>0){const n=s.nerve;c.save();c.globalAlpha=a3*.8;c.strokeStyle=RED;c.lineWidth=1.8;c.setLineDash([6,6]);c.beginPath();c.ellipse(n.x,n.y,n.rx+13,n.ry+13,0,0,Math.PI*2);c.stroke();c.restore();
-        warnPill(c,'Nerve outlined: motor block',560,270,[n.x-28,n.y-n.ry-5],a3)}
-      const a4=seg(t,17.4,17.9)*f;
-      if(a4>0)warnPill(c,'Stop at 5 mL',1010,700,null,a4);
     }};
 })();
 /* Find the view: scanning scenario, no needle (absolute time). 7-9 transverse on the ASIS, 9-13 slide caudad and
@@ -408,7 +352,7 @@ SC.find={anat:'lin',scan:true,guideA:ANAT.linA,pill:'Find the view',Tend:24,vol:
     const vis={tendon:ease(seg(t,14.4,16.6)),vessels:ease(seg(t,14.8,17)),nerve:ease(seg(t,14.8,17)),pect:ease(seg(t,13.6,16.6)),rf:ease(seg(t,10.4,12.4)),asis:1-ease(seg(t,9.4,10.6)),ip:ease(seg(t,10,12.5))};
     return{S:[0,0],tip:[-99,-99],na:0,k:0,v:0,nerve:A.nerve,tendon:A.tendon,fi:G.fiR,fl:G.fasciaLata,la:null,bone,vis,gA:1-seg(t,8.3,9)};
   }};
-const TABS={linear:['find','inplane'],curvi:['curvi'],error:['intraMusc','fiPlane']};
+const TABS={linear:['find','inplane'],curvi:['curvi'],error:['intraMusc']};
 // local anaesthetic collected in a fascial plane: s.la (target plane) and s.laOff (misplaced pocket, negative example)
 function drawLA(c,s,fillA){
   if(s.im){const m=s.im;c.save();c.globalAlpha=fillA;

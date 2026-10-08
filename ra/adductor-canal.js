@@ -288,7 +288,7 @@ function laAnchor(P,xmin,xmax,fb){
 function imLA(c0,v,OFF,ang,RX,RY){const k=v/OFF;if(k<=0)return null;const sk=Math.sqrt(k),ca=Math.cos(ang),sa=Math.sin(ang);
   const rot=P=>P.map(([x,y])=>[c0[0]+(x-c0[0])*ca-(y-c0[1])*sa,c0[1]+(x-c0[0])*sa+(y-c0[1])*ca]),P=[];
   for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push([c0[0]+Math.cos(a)*RX*sk*w,c0[1]+Math.sin(a)*RY*sk*w])}
-  const st=[[-1,-6,60],[1,5,54],[-1,9,40],[1,-8,36]].map(([d,dy,len])=>{const x0=c0[0]+d*(RX-6)*sk,ln=len*sk;return rot(ellipsePts(x0+d*ln/2,c0[1]+dy*sk,ln/2,2*sk+.5,24))});
+  const st=[[-1,-2,12],[1,2,16],[-1,3,10],[1,-3,12]].map(([d,dy,len])=>{const x0=c0[0]+d*(RX-6)*sk,ln=len*sk;return rot(ellipsePts(x0+d*ln/2,c0[1]+dy*sk,ln/2,2*sk+.5,24))});
   return{x:c0[0],y:c0[1],rx:RX*sk,ry:RY*sk,ang,polys:[rot(P)].concat(st)}}
 const LINE_FT=lineE([795,468]),NT_AC=[735,458],NS_AC=[1560,-40];
 // correct single shot: one pass through sartorius, a pop at the target fascia (sartorius floor or VAM), two 5 mL aliquots
@@ -330,10 +330,10 @@ SC.ac=positive({geo:'ac',target:'vam',NS:NS_AC,NT:NT_AC,segs:SEG2(13.1),disp:[-6
 function fixLedger(label,off,tFix,drug,mgml){return(s,t)=>{if(t<tFix)return null;const b=s.v||0,tot=off+b;
   return{a:seg(t,tFix,tFix+.6),lines:[label+': '+off.toFixed(1)+' mL','Beneath sartorius: '+b.toFixed(1)+' mL',drug.replace('R','Total r')+': '+tot.toFixed(1)+' mL ('+Math.round(tot*mgml)+' mg)']}}}
 const CAP1_FT=SC.ft.caps[0];
-// negative 1: intramuscular sartorius. The tip stops in the sartorius belly, 2 mL swells between fibres.
+// negative 1: intramuscular sartorius. The tip stops just superficial to the deep sartorius fascia, 2 mL swells between fibres.
 // Fix: advance along the same line through the deep fascia (tent, pop), then the planned 10 mL beneath sartorius.
 (function(){
-  const G0=GEO.ft,L=LINE_FT,uE=(L.NS[0]-935)/(L.NS[0]-L.NT[0]),NTe=along(L.NS,L.NT,uE);
+  const G0=GEO.ft,L=LINE_FT,uE=(()=>{let u=.5;for(;u<1;u+=.0005){const p=along(L.NS,L.NT,u);if(p[1]>=yAt(G0.floor,p[0])-16)break}return u})(),NTe=along(L.NS,L.NT,uE);
   const OFF=2,TW=18.6,TR=19.2,FXI=21.2;
   const err=pass(L.NS,NTe,null,{u0:.04,a:8.3,e:11.9}),fix=pass(L.NS,L.NT,G0.floor,{u0:uE,a:TR,c:19.9,p:20.4,e:21.0});
   SC.intraSart={p:PFT,pill:'Into sartorius',neg:true,fixT:TR,Tend:29.5,vol:10,volT:12.4,magT:26.5,laT:FXI+1.2,drug:'Ropivacaine 0.4%',mgml:4,
@@ -341,7 +341,7 @@ const CAP1_FT=SC.ft.caps[0];
     mag:{CY:672,R:150,Z:1.15,focus:()=>[812,432],text:['2 mL in sartorius,','10 mL beneath it']},
     la:[[1010,610,'left',s=>laAnchor(s.laMain,s.G.nerve.x+s.G.nerve.rx,840,[810,440]),'LA beneath sartorius',FXI+1.2]],
     guides:[[along(L.NS,L.NT,.3),NTe,7.6,11.6]],
-    caps:[CAP1_FT,[8.2,12.8,'2','Error: the tip stops inside sartorius. No give at its deep fascia; the artery is not yet reached.'],
+    caps:[CAP1_FT,[8.2,12.8,'2','Error: the tip is close to the nerve but remains just inside sartorius, above its deep fascia.'],
       [12.8,17,'3','LA streaks between muscle fibres. Sartorius does not lift; nothing reaches the artery or nerve.'],
       [17,TR,'4','Error recognised: intramuscular injection. Stop after 2 mL.'],
       [TR,FXI+.7,'5','Fix: advance through the deep fascia of sartorius. A give; the tip lies lateral to the artery.'],
@@ -349,7 +349,7 @@ const CAP1_FT=SC.ft.caps[0];
       [26.5,99,'7','Total 12 mL, 48 mg: 2 mL in sartorius; 10 mL beneath it outlines the nerve and artery.']],
     ledger:fixLedger('Intramuscular',OFF,TR,'Ropivacaine 0.4%',4),
     state(t){
-      const vIM=OFF*ease(seg(t,12.8,15.5)),im=imLA(NTe,vIM,OFF,-.39,46,16);
+      const vIM=OFF*ease(seg(t,12.8,15.5)),im=imLA(NTe,vIM,OFF,-.12,24,6);
       let tip=[-99,-99],na=0,tent=null;
       if(t>=8.3){na=seg(t,8.3,8.9);if(t<TR)tip=err.at(t).tip;else{const r=fix.at(t);tip=r.tip;if(r.tent)tent={line:'floor',Pc:fix.Pc,D:fix.D,v:r.tent}}}
       const I=volume(t,SEG2(FXI)),k=I.v/10,n0=G0.nerve,n=Object.assign({},n0,{x:n0.x-8*k,y:n0.y+4*k});
@@ -364,47 +364,6 @@ const CAP1_FT=SC.ft.caps[0];
       if(a2>0)warnPill(c,'Sartorius not lifting',1010,645,[800,yAt(s.G.floor,800)],a2);
       const a3=seg(t,17.4,18)*f;
       if(a3>0)warnPill(c,'Stop at 2 mL',1010,690,null,a3);
-    }};
-})();
-// negative 2: above sartorius. The give at fascia lata is taken as the target; 3 mL spreads on top of sartorius.
-// Fix: withdraw slightly, redirect steeper about the skin entry onto the femoral triangle line, through sartorius.
-(function(){
-  const G0=GEO.ft,LA=lineE([1000,296]),L=LINE_FT,OFF=3,TW=20.6,TR=21.2,FXI=24.3,uA=uAtD(LA,260),uF=uAtD(L,260);
-  const err=pass(LA.NS,LA.NT,G0.fl,{u0:.04,a:8.3,c:11.2,p:11.6,e:11.9,tent:10}),fix=pass(L.NS,L.NT,G0.floor,{u0:uF,a:22.2,c:22.9,p:23.4,e:24.0});
-  SC.aboveSart={p:PFT,pill:'Above sartorius',neg:true,fixT:TR,afcnPills:true,Tend:33.5,vol:10,volT:12.4,magT:29.6,laT:FXI+1.2,drug:'Ropivacaine 0.4%',mgml:4,
-    subtitle:'Negative example: a common needle error',
-    mag:{CY:670,R:155,Z:1.05,focus:()=>[832,392],text:['3 mL above sartorius,','10 mL beneath it']},
-    la:[[1010,610,'left',s=>laAnchor(s.laMain,s.G.nerve.x+s.G.nerve.rx,840,[810,440]),'LA beneath sartorius',FXI+1.2],
-      [880,212,'right',s=>laAnchor(s.laOff,900,1100,[1000,280]),'LA above sartorius',14.6]],
-    guides:[[along(LA.NS,LA.NT,.3),LA.NT,7.6,11.4],[along(L.NS,L.NT,.62),L.NT,TR+.4,FXI-.2]],
-    caps:[CAP1_FT,[8.2,12.8,'2','Error: a give at fascia lata is mistaken for the target. The tip lies on top of sartorius.'],
-      [12.8,17.6,'3','LA lies beneath fascia lata on sartorius: the AFCN plane, not the saphenous. The artery stays dry.'],
-      [17.6,TR,'4','Error recognised: wrong compartment, no LA deep to sartorius. Stop at 3 mL.'],
-      [TR,FXI+.75,'5','Fix: redirect steeper, through sartorius. Its deep fascia gives; the tip lies lateral to the artery.'],
-      [FXI+.75,29.6,'6','Ropivacaine 0.4%, the planned 10 mL, in 5 mL aliquots. Sartorius lifts off the artery.'],
-      [29.6,99,'7','Total 13 mL, 52 mg: 3 mL above sartorius; 10 mL beneath it outlines the nerve and artery.']],
-    ledger:fixLedger('Above sartorius',OFF,TR,'Ropivacaine 0.4%',4),
-    state(t){
-      const vOff=OFF*ease(seg(t,12.8,15.8)),spO=lensFL(G0,LA.NT,vOff/OFF,24,860,1140),laOff=pocket(G0.fl,spO);
-      let tip=[-99,-99],na=0,tent=null,S=LA.NS;
-      if(t>=8.3){na=seg(t,8.3,8.9);
-        if(t<TR){const r=err.at(t);tip=r.tip;if(r.tent)tent={line:'fl',Pc:err.Pc,D:err.D,v:r.tent}}
-        else if(t<21.7)tip=along(LA.NS,LA.NT,lerp(1,uA,ease(seg(t,TR,21.7))));
-        else if(t<22.2){const q=ease(seg(t,21.7,22.2));tip=along(along(LA.NS,LA.NT,uA),along(L.NS,L.NT,uF),q);S=along(LA.NS,L.NS,q)}
-        else{const r=fix.at(t);tip=r.tip;S=L.NS;if(r.tent)tent={line:'floor',Pc:fix.Pc,D:fix.D,v:r.tent}}}
-      const I=volume(t,SEG2(FXI)),k=I.v/10,n0=G0.nerve,n=Object.assign({},n0,{x:n0.x-8*k,y:n0.y+4*k});
-      const sp=subSart(G0,n,L.NT,k),la=pocket(G0.floor,sp);
-      return{G:deform(G0,{floor:sp?sp.lift:null,fl:spO?spO.lift:null},tent,n),S,tip,na,v:t<TR?vOff:I.v,paused:I.paused,la:[laOff,la],laMain:la,laOff};
-    },
-    warnings(c,t,s){
-      const f=1-seg(t,TW,TR);if(f<=0){const ok=seg(t,FXI+2.4,FXI+3.0);if(ok>0)cuePill(c,'Sartorius lifting: correct plane',1010,690,ok);return}
-      const a1=seg(t,12.1,12.6)*f;
-      if(a1>0){ring(c,s.tip,a1,t,0);warnPill(c,'Above sartorius',1150,290,[s.tip[0]+8,s.tip[1]+22],a1)}
-      const a2=seg(t,16.2,16.8)*f;
-      if(a2>0){const A=s.G.art;c.save();c.globalAlpha=a2*.8;c.strokeStyle=RED;c.lineWidth=1.8;c.setLineDash([6,6]);c.beginPath();c.arc(A.x,A.y,A.r+12,0,Math.PI*2);c.stroke();c.restore();
-        warnPill(c,'Artery not outlined',1010,645,[A.x+A.r*.75+8,A.y+A.r*.75+8],a2)}
-      const a3=seg(t,17.6,18.2)*f;
-      if(a3>0)warnPill(c,'Stop at 3 mL',1010,690,null,a3);
     }};
 })();
 // TKR: one lateral skin entry, three tip positions, deep to superficial (saphenous, NVM, AFCN), ropivacaine 0.2%
@@ -473,7 +432,7 @@ function apexGuide(c,s,a){
     c.save();c.globalAlpha*=a;c.strokeStyle=`rgb(${K})`;c.lineWidth=2.2;c.setLineDash([7,6]);c.beginPath();c.moveTo(top[0],top[1]-14);c.lineTo(bot[0],bot[1]+14);c.stroke();c.setLineDash([]);
     [top,bot].forEach(q=>{c.beginPath();c.arc(q[0],q[1],6,0,Math.PI*2);c.fillStyle=`rgb(${K})`;c.fill()});c.restore();
 }
-const TABS={scan:['scan'],single:['ft','ac','intraSart','aboveSart'],tkr:['tkr']};
+const TABS={scan:['scan'],single:['ft','ac','intraSart'],tkr:['tkr']};
 for(const k in SC){const s=SC[k];s.key=k;s.G0=geoAt(s.p);s.gd=guideSet(s.G0,s.p>=.9?s.G0.vam:s.G0.floor)}
 function drawLA(c,s,fillA){
   if(s.im){const m=s.im;c.save();c.globalAlpha=fillA;
