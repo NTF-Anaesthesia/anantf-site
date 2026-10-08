@@ -14,7 +14,7 @@
 (function(){var d=document,q=location.search.match(/[?&]b=([\w-]+)/),s=q?q[1]:location.hash.slice(1).split('/')[0]||'femoral',p=function(h,a){var l=d.createElement('link');l.rel='preload';l.as=a;l.href=h;if(a==='font'){l.type='font/woff2';l.crossOrigin='anonymous'}d.head.appendChild(l)};
 if(location.protocol!=='file:')['fraunces-roman','inter'].forEach(function(f){p('fonts/'+f+'.woff2','font')});
 if(/^(femoral|peng|lfcn|fib|adductor-canal|popliteal|ankle)$/.test(s))p('ra/'+s+'.js','script')})()</script>
-<script src="ra/engine.js?v=20261008-near" defer></script>
+<script src="ra/engine.js?v=20261008-no-intro" defer></script>
 <style>
 @font-face{font-family:Fraunces;src:url('fonts/fraunces-roman.woff2') format('woff2');font-weight:400 600;font-display:swap}
 @font-face{font-family:Fraunces;src:url('fonts/fraunces-italic.woff2') format('woff2');font-style:italic;font-weight:400 600;font-display:swap}

@@ -182,7 +182,7 @@ function ring(c,p,a,t,dy){const pl=reduceMotion?1:.55+.45*Math.abs(Math.sin(t*4)
 
 /* ================= player, shell and routing (one copy, shared by every block) =================
    Generic version of the block pages' player. P is the live state; modules read it, only the engine writes it. */
-const P={block:null,tab:null,curScen:{},cur:null,dT:0,playT:0,playing:false,started:false,ended:false,clock:0,showLabels:true,scrubbing:false,probeView:false};
+const P={block:null,tab:null,curScen:{},cur:null,dT:9,playT:0,playing:false,started:false,ended:false,clock:0,showLabels:true,scrubbing:false,probeView:false};
 const E={W,H,TS0,cvs,ctx,reduceMotion,rng,clamp,seg,ease,easeOut,lerp,along,spline,ellipsePts,mkPath,strokePartial,polyPath,inPoly,shrink,bbox,hull,resample,angDiff,pop,yAt,bump,
   C,RED,PROBE,BEAM,LS,layer,paperC,pg,lobules,fibres,makeFascicles,planeLA,laAnchor,tentPhase,drawVessels,drawNerve,drawNeedle,guideLine,pill,muscleLabel,warnPill,cuePill,ring,P};
 const $=id=>document.getElementById(id);
@@ -205,7 +205,8 @@ function setPlaying(p){
   else{P.playing=false}
   syncBtn();
 }
-function resetScenario(){dirty=true;P.playing=false;P.started=false;P.ended=false;P.playT=0;syncBtn()}
+// Show complete anatomy immediately; only the demonstration timeline plays.
+function resetScenario(){dirty=true;P.dT=9;P.playing=false;P.started=false;P.ended=false;P.playT=0;syncBtn()}
 function setAria(){if(rt&&rt.aria)cvs.setAttribute('aria-label',rt.aria(P))}
 function selectScenario(){P.cur=rt.SC[P.curScen[P.tab]];
   scenBox.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scen===P.curScen[P.tab]));
@@ -217,8 +218,8 @@ function selectTab(k){
   // scenario pills only when a tab holds more than one scenario
   const list=rt.TABS[k];scenBox.innerHTML='';scenBox.hidden=list.length<2;
   if(list.length>1)list.forEach(key=>{const b=document.createElement('button');b.type='button';b.dataset.scen=key;b.textContent=pillLabel(key);if(pillNeg(key))b.className='neg';
-    b.onclick=()=>{P.curScen[P.tab]=key;selectScenario();if(rt.introOnScenario)P.dT=reduceMotion?8:0;writeHash(false)};scenBox.appendChild(b)});
-  if(rt.onTab)rt.onTab(k,P.curScen[k]);selectScenario();P.dT=reduceMotion?8:0;
+    b.onclick=()=>{P.curScen[P.tab]=key;selectScenario();writeHash(false)};scenBox.appendChild(b)});
+  if(rt.onTab)rt.onTab(k,P.curScen[k]);selectScenario();
 }
 function setProbeView(on){dirty=true;P.probeView=on;pvBtn.setAttribute('aria-pressed',on);setAria()}
 function exitFull(){stage.classList.remove('full');if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})}
@@ -238,7 +239,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')exitFull();if(e.code
 /* ---------- one animation loop at a time ---------- */
 function frame(now){
   const dt=Math.min(.1,(now-last)/1000);last=now;P.clock+=dt;
-  if(P.dT<9)P.dT+=dt;
   if(P.playing&&!P.scrubbing){P.playT+=dt;if(TS0+P.playT>=P.cur.Tend){P.playT=P.cur.Tend-TS0;P.playing=false;P.ended=true;dirty=true;syncBtn()}}
   // paused with reduced motion: nothing on the canvas changes (no pulse, intro done), so skip identical redraws
   const still=reduceMotion&&!P.playing&&!P.scrubbing&&P.dT>=9&&!dirty;
