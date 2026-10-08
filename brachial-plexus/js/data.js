@@ -17,11 +17,6 @@
 //   - "spares" lists nerves that matter clinically because they are missed
 //     (e.g. suprascapular for infraclavicular, intercostobrachial for all).
 
-export const ATTRIBUTION =
-  'Content: Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia (R1 regional anaesthesia teaching). ' +
-  'Supplemented with standard textbook anatomy (NYSORA / ASRA consensus level). ' +
-  'Diagrams, ultrasound simulations and the schematic 3D model are original illustrations; the Blender 3D model is adapted from Z-Anatomy (credited below).';
-
 export const DISCLAIMER =
   'For education only. This is a simplified teaching aid and not a substitute for ' +
   'supervised clinical training, local guidelines or your own clinical judgement. ' +
