@@ -24,9 +24,10 @@ body .ntf-footer{max-width:none;margin:0;padding:20px max(24px,calc((100vw - 132
 }
 @media(prefers-reduced-motion:reduce){.landing-copy{animation:none}.landing-link{transition:none}}
 
-/* Original introduction, one wider paragraph. */
-.site-introduction{max-width:none;margin:0;padding:28px 24px;display:grid;grid-template-columns:128px minmax(0,1fr);gap:16px;align-items:start}
-.site-introduction h2{font:400 20px/1.35 var(--serif);letter-spacing:-.035em;margin:0}
-.site-introduction p{font:10px/1.8 var(--font);color:#68665f;margin:0}
+/* Centred introduction with naturally balanced lines. */
+.site-introduction{max-width:1280px;margin:0 auto;padding:24px 24px 28px;text-align:center}
+.site-introduction h2{font:400 20px/1.35 var(--serif);letter-spacing:-.035em;margin:0 0 12px}
+.site-introduction p{font:12px/1.8 var(--font);color:#68665f;margin:0 auto;max-width:1200px;text-wrap:balance}
+.site-interest{white-space:nowrap}
 .site-introduction a{color:#633d3c;text-decoration:underline;text-underline-offset:3px}
-@media(max-width:700px){.site-introduction{grid-template-columns:1fr;gap:18px;padding:28px 24px}.site-introduction p{font-size:12px}}
+@media(max-width:700px){.site-introduction{padding:24px}.site-introduction p{font-size:12px;text-wrap:pretty}}
