@@ -229,10 +229,11 @@ scrub.addEventListener('input',()=>{if(!rt)return;dirty=true;P.scrubbing=true;P.
 scrub.addEventListener('change',()=>{P.scrubbing=false});
 lblBtn.onclick=()=>{dirty=true;P.showLabels=!P.showLabels;lblBtn.setAttribute('aria-pressed',P.showLabels)};
 pvBtn.onclick=()=>{if(rt)setProbeView(!P.probeView)};
+$('exit-full').onclick=exitFull;
 $('fs').onclick=()=>{stage.classList.add('full');visible=true;const r=stage.requestFullscreen||stage.webkitRequestFullscreen;if(r)try{const p=r.call(stage);p&&p.catch&&p.catch(()=>{})}catch(e){}};
 cvs.addEventListener('click',()=>{if(stage.classList.contains('full'))exitFull();else setPlaying(!P.playing)});
 document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)stage.classList.remove('full')});
-document.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target===document.body){e.preventDefault();setPlaying(!P.playing)}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')exitFull();if(e.code==='Space'&&e.target===document.body){e.preventDefault();setPlaying(!P.playing)}});
 
 /* ---------- one animation loop at a time ---------- */
 function frame(now){
@@ -242,6 +243,9 @@ function frame(now){
   // paused with reduced motion: nothing on the canvas changes (no pulse, intro done), so skip identical redraws
   const still=reduceMotion&&!P.playing&&!P.scrubbing&&P.dT>=9&&!dirty;
   if(visible&&!still){rt.sync(P);rt.render(P);dirty=false}
+  const cap=P.cur.caps&& (P.cur.caps.find(c=>TS0+P.playT>=c[0]&&TS0+P.playT<c[1])||P.cur.caps[P.cur.caps.length-1]);
+  const caption=$('ra-caption'),text=cap?cap[2]+'. '+cap[3]:'';
+  if(caption.textContent!==text)caption.textContent=text;
   if(!P.scrubbing)scrub.value=P.playT.toFixed(2);
   tc.textContent=P.playT.toFixed(1)+' s';
 }
@@ -254,7 +258,7 @@ function load(slug){
   if(reg[slug])return Promise.resolve(reg[slug]);
   if(loads[slug])return loads[slug];
   return loads[slug]=new Promise((res,rej)=>{
-    const s=document.createElement('script');s.src=BASE+slug+'.js';
+    const s=document.createElement('script');s.src=BASE+slug+'.js?v=20261008-near';
     const fail=()=>{s.remove();delete loads[slug];rej(new Error('block '+slug+' did not load'))};
     s.onload=()=>reg[slug]?res(reg[slug]):fail();s.onerror=fail;document.head.appendChild(s);
   });

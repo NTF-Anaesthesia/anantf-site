@@ -215,65 +215,33 @@ const SC={
       [19,99,'4','15 mL in: circumferential spread, outside the epineurium, inside the sheath.']]}),
 };
 
-// negative in-plane: dent at 3 o'clock, then shallow redirect that indents, skids, deposits outside
+// Two near misses: the tip remains just outside the paraneural sheath, without nerve contact.
 (function(){
-  const A=ANAT.sup;
-  const S1=[1500,-30],C1=[938,251],S2=[1580,87],T2=[817,190],TSk=[742,187],P2=[813,199];
-  const L1=Math.hypot(C1[0]-S1[0],C1[1]-S1[1]),D1=[(C1[0]-S1[0])/L1,(C1[1]-S1[1])/L1],PUSH=22/L1;
+  const A=ANAT.sup,S1=[1500,-30],C1=[950,251],S2=[1580,87],T2=[815,181];
   SC.supErr={anat:'sup',Tend:37.2,vol:5,volT:26.2,magT:31,laT:28,sheathFadeT:26.6,neg:true,
-    subtitle:'Negative example: two needle errors to avoid',
+    subtitle:'Negative example: close to the nerve, outside the sheath',
     mag:{CY:650,R:140,Z:1.9,focus:s=>[s.tib.x-30,s.tib.y-36],text:['Sheath intact:','LA sits on the outside']},
     la:[600,214,'right',s=>[s.tib.x-62,s.tib.y-58]],
     guides:[[along(S1,C1,.5),C1,7,11],[along(S2,T2,.5),T2,16.7,19.6]],
-    caps:[[0,7.8,'1','Superficial level: tibial and common peroneal nerves side by side in one paraneural sheath.'],
-      [7.8,15,'2','Error 1: approach at 3 o\u2019clock. The tip dents the sheath onto the common peroneal nerve. Stop.'],
-      [15,26.6,'3','Error 2: redirect to 12 o\u2019clock, between the nerves. Too shallow: pushing harder only indents the sheath, then the tip skids.'],
-      [26.6,31,'4','LA pools outside the sheath and the nerves stay together. Error recognised: stop at 5 mL.'],
-      [31,99,'5','Expect a slow, patchy block. Fix: steepen, confirm spread inside the sheath, then inject.']],
+    caps:[[0,7.8,'1','Superficial level: tibial and common peroneal nerves share a paraneural sheath.'],
+      [7.8,15,'2','Near miss: the tip is close to the common peroneal nerve, but still just outside the sheath.'],
+      [15,26.6,'3','Redirect above the interval between the nerves. The tip again stops just superficial to the sheath.'],
+      [26.6,31,'4','LA pools outside the sheath; the nerves do not separate. Stop when the wrong spread is recognised.'],
+      [31,99,'5','Reposition under vision and confirm the intended spread before continuing. Do not advance into a nerve.']],
     state(t){
-      let S=S1,tip=[-99,-99],na=seg(t,8,8.5),shake=0,dent=0,skim=0,dp=T2;
-      if(t>=8){
-        let u;
-        if(t<8.6)u=lerp(.1,.45,easeOut(seg(t,8,8.6)));
-        else if(t<10.2)u=lerp(.45,.84,ease(seg(t,8.6,10.2)));
-        else if(t<10.65){const p=pop(t,10.2,.84,.87,3);u=p.u;shake=p.sh}
-        else if(t<11.6)u=lerp(.87,1,ease(seg(t,10.65,11.6)));
-        else if(t<12.8)u=lerp(1,1+PUSH,ease(seg(t,11.6,12.8)));
-        else if(t<15)u=1+PUSH+(reduceMotion?0:Math.sin(t*3)*.0015);
-        else if(t<16.6)u=lerp(1+PUSH,.45,ease(seg(t,15,16.6)));
-        if(t<16.6){tip=along(S1,C1,u);dent=clamp((u-1)/PUSH);if(shake&&!reduceMotion){tip[0]+=D1[0]*shake;tip[1]+=D1[1]*shake}}
-        else if(t<17.6){const q=ease(seg(t,16.6,17.6));S=[lerp(S1[0],S2[0],q),lerp(S1[1],S2[1],q)];const a=along(S1,C1,.45),b=along(S2,T2,.45);tip=[lerp(a[0],b[0],q),lerp(a[1],b[1],q)]}
-        else{S=S2;
-          if(t<19.6)tip=along(S2,T2,lerp(.45,1,ease(seg(t,17.6,19.6))));
-          else if(t<25.8){
-            let q,tr=0;
-            if(t<21)q=.75*ease(seg(t,19.6,21));
-            else if(t<21.6)q=lerp(.75,.3,ease(seg(t,21,21.6)));
-            else if(t<23.2){q=lerp(.3,1.2,ease(seg(t,21.6,23.2)));tr=seg(t,22.4,23.2)}
-            else{q=1.2;tr=1}
-            if(t<23.6){tip=[lerp(T2[0],P2[0],q),lerp(T2[1],P2[1],q)];if(!reduceMotion){tip[0]+=Math.sin(t*37)*1.3*tr;tip[1]+=Math.sin(t*29)*.9*tr}skim=q;dp=T2}
-            else{const uu=seg(t,23.6,25.8),e=ease(uu),P=[lerp(T2[0],P2[0],1.2),lerp(T2[1],P2[1],1.2)];
-              tip=[lerp(P[0],TSk[0],e),lerp(P[1],TSk[1],e)];
-              if(!reduceMotion){tip[0]+=Math.max(0,Math.sin(uu*Math.PI*9))*2.2;tip[1]+=Math.sin(uu*55)*(1-uu)*1.8}
-              skim=1.2-.95*e;dp=[lerp(T2[0],TSk[0],e),lerp(T2[1],TSk[1]+2,e)]}
-          }
-          else{tip=TSk.slice();skim=.25*(1-seg(t,25.8,26.4));dp=[TSk[0],TSk[1]+2]}
-        }
-      }
-      const v=5*ease(seg(t,26.6,29.8)),k=v/5;
-      const tib=Object.assign({},A.tib,{x:A.tib.x+3*k,y:A.tib.y+4*k});
-      const cpn=Object.assign({},A.cpn,{x:A.cpn.x-9*dent,rx:A.cpn.rx-9*dent,ry:A.cpn.ry+3*dent});
-      const base=sheathShape(A,tib,A.cpn,11);
-      let pts=resample(base.pts,4);
-      if(dent>0)pts=pts.map(p=>{const d=Math.hypot(p[0]-C1[0],p[1]-C1[1]),w=Math.exp(-((d/24)**2));return[p[0]+D1[0]*24*dent*w,p[1]+D1[1]*24*dent*w]});
-      if(skim>0)pts=pts.map(p=>{const d=Math.hypot(p[0]-dp[0],p[1]-dp[1]),w=Math.exp(-((d/24)**2));return[p[0]-3*skim*w,p[1]+11*skim*w]});
-      return{S,tip,na,k,v,tib,cpn,sh:{pts,cx:base.cx,cy:base.cy},inj:TSk,mode:'out'};
+      let S=S1,tip=[-99,-99];
+      if(t>=8&&t<15)tip=along(S1,C1,lerp(.1,1,ease(seg(t,8,11.9))));
+      else if(t<16.6&&t>=15)tip=along(S1,C1,lerp(1,.45,ease(seg(t,15,16.6))));
+      else if(t>=16.6&&t<17.6){const q=ease(seg(t,16.6,17.6));S=along(S1,S2,q);tip=along(along(S1,C1,.45),along(S2,T2,.45),q)}
+      else if(t>=17.6){S=S2;tip=along(S2,T2,lerp(.45,1,ease(seg(t,17.6,20.5))))}
+      const v=5*ease(seg(t,26.6,29.8)),k=v/5,tib=Object.assign({},A.tib),cpn=Object.assign({},A.cpn),base=sheathShape(A,tib,cpn,11);
+      return{S,tip,na:seg(t,8,8.5),k,v,tib,cpn,sh:{pts:resample(base.pts,4),cx:base.cx,cy:base.cy},inj:T2,mode:'out'};
     },
     warnings(c,t,s){
       const a1=seg(t,12.6,13.1)*(1-seg(t,14.9,15.3));
-      if(a1>0){ring(c,s.tip,a1,t,0);warnPill(c,'Stop: sheath dented onto the nerve',1000,392,[s.tip[0]+14,s.tip[1]+20],a1)}
+      if(a1>0){ring(c,s.tip,a1,t,0);warnPill(c,'Close, but outside the sheath',1000,392,[s.tip[0]+14,s.tip[1]+20],a1)}
       const a2=seg(t,22.6,23.1)*(1-seg(t,26.4,26.8));
-      if(a2>0){ring(c,s.tip,a2,t,6);warnPill(c,'Sheath won\u2019t give: tip skids off',1000,392,[s.tip[0]+14,s.tip[1]+14],a2)}
+      if(a2>0){ring(c,s.tip,a2,t,0);warnPill(c,'Tip just superficial to the sheath',1000,392,[s.tip[0]+14,s.tip[1]+14],a2)}
       const a3=seg(t,28.4,29.1);
       if(a3>0)warnPill(c,'LA outside the sheath',372,262,[s.tib.x-84,s.tib.y-26],a3);
     }};

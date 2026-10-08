@@ -452,24 +452,24 @@ SC.sural=positive({view:'sur',surf:'lateral',pill:'Sural nerve',NS:[1510,-40],NT
 /* fixLedger: volume ledger for a negative example with an animated fix */
 function fixLedger(label,off,tFix,label2){return(s,t)=>{if(t<tFix)return null;const b=s.v||0,tot=off+b;
   return{a:seg(t,tFix,tFix+.6),lines:[label+': '+off.toFixed(1)+' mL',label2+': '+b.toFixed(1)+' mL','Total r'+DRUG.slice(1)+': '+tot.toFixed(1)+' mL ('+Math.round(tot*MGML)+' mg)']}}}
-/* negative example: the needle runs too shallow and stops in fat above the flexor retinaculum; 2 mL spreads under the skin.
+/* negative example: the tip stops just short of the flexor retinaculum; 2 mL spreads under the skin.
    Fix: withdraw to just under the skin, steepen onto the tibial line (same skin entry), then the tibial scenario's own
    tent, pop and aliquots on a shifted clock. The misplaced lens stays on top of the retinaculum. */
 (function(){
-  const G=GEO.tib,T=SC.tibial,NS=[1600,37],NT=[790,214],L=Math.hypot(NT[0]-NS[0],NT[1]-NS[1]),D=[(NT[0]-NS[0])/L,(NT[1]-NS[1])/L];
+  const G=GEO.tib,T=SC.tibial,NS=[1600,37],NT=[865,yAt(G.fasR,865)-10],L=Math.hypot(NT[0]-NS[0],NT[1]-NS[1]),D=[(NT[0]-NS[0])/L,(NT[1]-NS[1])/L];
   const uS=uCross(G.skinTop,NS,NT),v0=Math.max(.04,uS-110/L),v1=uS+16/L,uW=uS+10/L;
   const OFF=2,TW=18.0,TR=18.6,TB=19.8,TF=20.6,SHIFT=TF-9,FXI=T.K0+SHIFT;
-  const lens=(fas,v)=>{const k=v/OFF;if(k<=0)return null;const sk=Math.sqrt(k),xc=lerp(792,800,sk),w=16+84*sk,Tm=30*Math.pow(k,.6);
+  const lens=(fas,v)=>{const k=v/OFF;if(k<=0)return null;const sk=Math.sqrt(k),xc=lerp(NT[0],845,sk),w=16+84*sk,Tm=30*Math.pow(k,.6);
     return{p:planeLA(fas,x=>{const u=(x-xc)/w;return Math.abs(u)>=1?0:Tm*Math.pow(1-u*u,.75)},()=>0,Math.floor(xc-w),Math.ceil(xc+w))}};
   const magT=FXI+4.6;
   SC.tibialAbove={view:'tib',surf:'medial',pill:'Above flexor retinaculum',neg:true,Tend:magT+4.4,vol:5,volT:12.2,magT,
     subtitle:'Tibial nerve: injection above the retinaculum',
     mag:{CY:672,R:150,Z:1.25,focus:s=>[815,300],text:['2 mL above the retinaculum,','5 mL beneath: nerve outlined']},
-    la:[[580,200,'right',s=>[740,212],'LA above the retinaculum',13.4],[1000,380,'left',s=>[s.nerves[0].x+s.nerves[0].rx+8,s.nerves[0].y+4],'LA beneath the retinaculum',FXI+1.4]],
+    la:[[580,200,'right',s=>[845,yAt(G.fasR,845)-12],'LA above the retinaculum',13.4],[1000,380,'left',s=>[s.nerves[0].x+s.nerves[0].rx+8,s.nerves[0].y+4],'LA beneath the retinaculum',FXI+1.4]],
     guides:[[along(NS,NT,uS+.04),NT,7.6,11.6],[along(T.NS,T.NT,T.uS+.04),T.NT,TB,TF+2.2]],
     hide:{'Tibial nerve':[15.0,TR+.4],'Flexor retinaculum':[11.6,TR+.4]},
     caps:[[0,8.2,'1','Tibial nerve: posterior to the posterior tibial artery and veins, deep to the flexor retinaculum.'],
-      [8.2,12.6,'2','Error: the needle runs too shallow and stops in fat, above the flexor retinaculum.'],
+      [8.2,12.6,'2','Error: the tip stops just short of the flexor retinaculum.'],
       [12.6,15.6,'3','LA spreads under the skin, superficial to the retinaculum. The nerve does not move.'],
       [15.6,TR,'4','Error recognised: no spread deep to the retinaculum, so LA cannot reach the nerve. Stop at 2 mL.'],
       [TR,FXI,'5','Fix: withdraw to the skin, steepen, and advance until the tip gives through the retinaculum.'],

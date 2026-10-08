@@ -208,13 +208,13 @@ function fixLedger(label,off,tFix){return(s,t)=>{if(t<tFix)return null;const b=s
 // tent, pop and aliquots (FIX = positive(IP) run on a shifted clock). The misplaced pocket (laOff) stays on top.
 (function(){
   const A=ANAT.groin,G=GEO.groin;
-  const NS=IP.NS,NT=[900,397];
+  const NS=IP.NS,NT=[835,yAt(G.fiR,835)-12];
   const L=Math.hypot(NT[0]-NS[0],NT[1]-NS[1]),D=[(NT[0]-NS[0])/L,(NT[1]-NS[1])/L];
   const OFF=5,uR=.875;                         // misplaced volume; in-plane u the redirected tip starts from
   const TW=20.6,TR=21.2,TF=21.8,SHIFT=TF-11.05; // warnings fade, redirect start, hand-off to the in-plane clock
   const FIX=positive(Object.assign({},IP,{phase:[uR,uR,uR,uR,0,0]}));
   // the misplaced pocket: a lens resting on fascia iliaca (follows it when the correct spread lifts it)
-  const lensLA=(fi,v)=>{const k=v/OFF,sk=Math.sqrt(k),xc=lerp(900,870,sk),wl=20+150*sk,wr=24+150*sk,Tm=44*Math.pow(k,.6);
+  const lensLA=(fi,v)=>{const k=v/OFF,sk=Math.sqrt(k),xc=lerp(NT[0],805,sk),wl=20+150*sk,wr=24+150*sk,Tm=44*Math.pow(k,.6);
     return k>0?planeLA(fi,x=>Tm*bump((x-xc)/(x<xc?wl:wr)),()=>0,Math.floor(xc-wl),Math.ceil(xc+wr)):null};
   const FXI=FIX.k[0]+SHIFT;                    // corrected injection starts (absolute time)
   SC.aboveFI={anat:'groin',pill:'Above fascia iliaca',Tend:35.5,vol:DOSE,volT:12.4,magT:29.6,laT:14.2,neg:true,
@@ -262,11 +262,11 @@ function fixLedger(label,off,tFix){return(s,t)=>{if(t<tFix)return null;const b=s
     }};
 })();
 // negative example 2: intramuscular. The tip tents and pierces fascia iliaca (positive() tent and pop on a deeper
-// line), keeps going ~8.5 mm into iliopsoas lateral to and below the nerve, and 2 mL swells inside the muscle.
+// line), keeps going ~2.5 mm into iliopsoas lateral to and below the nerve, and 2 mL swells inside the muscle.
 // Fix: slow withdrawal to just beneath fascia iliaca, then the correct spread (positive() on a shifted clock).
 (function(){
   const A=ANAT.groin,G=GEO.groin;
-  const NS=IP.NS,NT=[870,532];                 // deep tip, inside iliopsoas
+  const NS=IP.NS,NT=[837,yAt(G.fiR,837)+32];                 // deep tip, inside iliopsoas
   const L=Math.hypot(NT[0]-NS[0],NT[1]-NS[1]);
   const OFF=2,TW=19.4,TR=20.0,TB=22.2;          // misplaced volume; warnings fade, withdrawal start and end
   const DEEP=positive(Object.assign({},IP,{NT,phase:[.04,.26,.585,.605,0,0],k:[1e9],disp:[0,0]}));
@@ -275,17 +275,17 @@ function fixLedger(label,off,tFix){return(s,t)=>{if(t<tFix)return null;const b=s
   const FXI=22.6,FIX=positive(Object.assign({},IP,{NT:INJ,phase:[1,1,1,1,0,0]})),SHIFT=FXI-FIX.k[0];
   // intramuscular LA: a contained swelling elongated along the fibres, with streaks tracking between them
   const imLA=v=>{const k=v/OFF;if(k<=0)return null;const sk=Math.sqrt(k),r=rng(21),P=[];
-    for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push([NT[0]-6+Math.cos(a)*50*sk*w,NT[1]+Math.sin(a)*19*sk*w])}
-    const st=[[-1,-7,70],[1,6,62],[-1,11,46],[1,-9,40]].map(([d,dy,len])=>{const x0=NT[0]-6+d*42*sk,ln=len*sk;
+    for(let i=0;i<=40;i++){const a=i/40*Math.PI*2,w=1+.12*Math.sin(a*3+1)+.06*Math.sin(a*5);P.push([NT[0]-6+Math.cos(a)*20*sk*w,NT[1]+Math.sin(a)*8*sk*w])}
+    const st=[[1,-3,20],[1,3,22],[1,6,16],[1,-5,14]].map(([d,dy,len])=>{const x0=NT[0]-6+d*17*sk,ln=len*sk;
       return ellipsePts(x0+d*ln/2,NT[1]+dy*sk,ln/2,2.2*sk+.5,24)});
-    return{x:NT[0]-6,y:NT[1],rx:50*sk,ry:19*sk,polys:[P].concat(st)}};
+    return{x:NT[0]-6,y:NT[1],rx:20*sk,ry:8*sk,polys:[P].concat(st)}};
   SC.intraMusc={anat:'groin',pill:'Into iliopsoas',Tend:34.3,vol:DOSE,volT:12.4,magT:28.4,laT:FXI+1.2,neg:true,
     subtitle:'Negative example: a common needle error',
     mag:{CY:680,R:140,Z:1.4,focus:s=>[s.nerve.x+70,s.nerve.y+12],text:['2 mL in iliopsoas,','15 mL beneath fascia iliaca']},
     la:[[960,560,'left',s=>laAnchor(s,s.nerve.x+s.nerve.rx+30),'LA below fascia iliaca',FXI+1.2]],
     guides:[[along(NS,NT,.3),NT,7,11]],
     caps:[[0,8.2,'1','Femoral nerve lies lateral to the femoral artery, on iliopsoas, deep to fascia iliaca.'],
-      [8.2,13.4,'2','Error: fascia iliaca tents and gives, but the tip keeps going, 8 mm deep into iliopsoas.'],
+      [8.2,13.4,'2','Error: fascia iliaca tents and gives, but the tip keeps going, just beyond the intended plane into iliopsoas.'],
       [13.4,17.4,'3','LA swells inside the muscle, between its fibres. Fascia iliaca does not lift; the nerve does not move.'],
       [17.4,TR,'4','Error recognised: intramuscular injection. Stop after 2 mL.'],
       [TR,FXI+.6,'5','Fix: withdraw slowly until the tip sits just beneath fascia iliaca, lateral to the nerve.'],
