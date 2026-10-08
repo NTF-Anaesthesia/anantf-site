@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lower-limb blocks — NTF Anaesthesia</title><meta name="robots" content="noindex,follow"><link rel="icon" href="ana-ntf-monogram.svg" type="image/svg+xml">
+<meta name="description" content="Ultrasound-guided lower-limb blocks grouped by region: hip, knee, foot and ankle. Animated anatomy and needle technique, with the dose used on each page.">
+
+
+
+
+
+<script>/* preload the routed block; the two upright fonts too (not on file://, where a crossorigin preload is refused) */
+(function(){var d=document,q=location.search.match(/[?&]b=([\w-]+)/),s=q?q[1]:location.hash.slice(1).split('/')[0]||'femoral',p=function(h,a){var l=d.createElement('link');l.rel='preload';l.as=a;l.href=h;if(a==='font'){l.type='font/woff2';l.crossOrigin='anonymous'}d.head.appendChild(l)};
+if(location.protocol!=='file:')['fraunces-roman','inter'].forEach(function(f){p('fonts/'+f+'.woff2','font')});
+if(/^(femoral|peng|lfcn|fib|adductor-canal|popliteal|ankle)$/.test(s))p('ra/'+s+'.js','script')})()</script>
+<script src="ra/engine.js" defer></script>
+<style>
+@font-face{font-family:Fraunces;src:url('fonts/fraunces-roman.woff2') format('woff2');font-weight:400 600;font-display:swap}
+@font-face{font-family:Fraunces;src:url('fonts/fraunces-italic.woff2') format('woff2');font-style:italic;font-weight:400 600;font-display:swap}
+@font-face{font-family:Inter;src:url('fonts/inter.woff2') format('woff2');font-weight:400 600;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url('fonts/jetbrains-mono.woff2') format('woff2');font-weight:400 500;font-display:swap}
+@font-face{font-family:'Fraunces-fallback';src:local('Georgia');size-adjust:109.57%;ascent-override:89.26%;descent-override:23.27%;line-gap-override:0%}
+:root{
+  --bg:#f7f2ea; --bg-2:#efe7da; --paper:#fdfaf3;
+  --ink:#2a241d; --ink-med:#5a4f42; --ink-soft:#776a59; --ink-dim:#7a6d5b;
+  --line:#e0d6c2; --line-2:#cfc2a8;
+  --accent:#a8541f; --on-accent:#fff; --blush:#f3dbc4; --neg:#9b2b1a;
+  --radius:14px; --shadow:rgba(90,79,66,.18); --noise:.35;
+  --serif:'Fraunces','Fraunces-fallback',Georgia,serif; --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#1d1714; --bg-2:#221a16; --paper:#2a211c; --ink:#f1e6da; --ink-med:#dccbb9; --ink-soft:#c2ab98; --ink-dim:#b49e8d;
+    --line:#43362e; --line-2:#5a4a3f; --accent:#e0915f; --on-accent:#1d1714; --blush:#4a2f20; --neg:#d0624c; --shadow:rgba(0,0,0,.45); --noise:.18; color-scheme:dark; }
+}
+:root[data-theme="dark"]{ --bg:#1d1714; --bg-2:#221a16; --paper:#2a211c; --ink:#f1e6da; --ink-med:#dccbb9; --ink-soft:#c2ab98; --ink-dim:#b49e8d;
+    --line:#43362e; --line-2:#5a4a3f; --accent:#e0915f; --on-accent:#1d1714; --blush:#4a2f20; --neg:#d0624c; --shadow:rgba(0,0,0,.45); --noise:.18; color-scheme:dark; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:12px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(ellipse 70% 40% at 15% 0%,rgba(201,122,60,.08),transparent 60%),radial-gradient(ellipse 50% 30% at 90% 10%,rgba(90,122,79,.07),transparent 60%);background-attachment:fixed}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:var(--noise);z-index:1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.shell{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:22px 28px 64px;padding-left:max(28px,env(safe-area-inset-left));padding-right:max(28px,env(safe-area-inset-right))}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* header */
+.back{display:inline-flex;align-items:center;gap:8px;font:400 14px/1.4 var(--sans);color:var(--ink-soft);text-decoration:none;padding:4px 0;white-space:nowrap}
+.back svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.back:hover{color:var(--accent)}
+.hd{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:4px 16px;margin:4px 0 14px}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3vw,32px);line-height:1.08;letter-spacing:-.02em;font-variation-settings:"opsz" 144}
+h1 em,h3 em{font-style:italic;color:var(--accent);font-weight:400}
+
+/* level 1: regions */
+.ptabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line)}
+.ptabs button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:12px 6px 11px;font:400 11px/1.3 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);transition:color .15s,border-color .15s}
+.ptabs button:hover{color:var(--ink-med)}
+.ptabs button[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent);font-weight:500}
+.lead{font-family:var(--serif);font-style:italic;font-size:14.5px;line-height:1.5;color:var(--ink-soft);margin:8px 0;font-variation-settings:"opsz" 14}
+
+/* level 2: blocks */
+.stabs{display:flex;flex-wrap:wrap;gap:6px;min-height:33px}
+.stabs button{padding:7px 14px;font:400 14px/1.2 var(--sans);color:var(--ink-med);background:var(--bg-2);border:1px solid var(--line);border-radius:100px;transition:color .15s,border-color .15s,background .15s}
+.stabs button:hover{color:var(--ink);border-color:var(--line-2)}
+.stabs button[aria-selected="true"]{color:var(--accent);background:var(--blush);border-color:var(--accent);font-weight:500}
+
+/* block */
+#block{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.bh{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 24px;margin-bottom:10px}
+.bh h2{font:500 26px/1.2 var(--serif);letter-spacing:-.012em;font-variation-settings:"opsz" 48}
+.dose{text-align:right}
+.dr{display:block;font-size:14px;line-height:1.5;color:var(--ink-med)}
+.dr .drug{color:var(--ink);font-weight:500}
+.dr b{font:500 14px/1.4 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.dr .mg{font:400 13.5px/1.4 var(--mono);color:var(--ink-soft)}
+.dr .mg::before{content:'· '}
+.dnote{font-size:13px;line-height:1.45;color:var(--ink-soft)}
+
+/* level 3: the block's own tabs and scenario pills (as on the block pages) */
+.tabs{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:10px;background:var(--paper)}
+.tabs:empty{min-height:58px}   /* the view tabs arrive with the block script: keep their room so the stage does not jump */
+/* player group: capped by viewport height so the canvas and its controls fit together on a laptop screen */
+.tabs,.scen,.stage,.ctl{max-width:min(100%,max(560px,calc((100vh - 470px)*16/9)));max-width:min(100%,max(560px,calc((100svh - 470px)*16/9)));margin-inline:auto}
+.tabs button{border:0;background:transparent;padding:9px 8px;font:500 15px/1.25 var(--sans);color:var(--ink)}
+.tabs button+button{border-left:1px solid var(--line)}
+.tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.tabs small{display:block;font-weight:400;font-size:12.5px;opacity:.75;margin-top:3px}
+.scen{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.scen button,.ctl button{font:500 14px/1 var(--sans);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:9px 14px}
+.scen button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.scen button.neg[aria-pressed="true"]{background:var(--neg);border-color:var(--neg);color:#fff}
+
+/* player */
+.stage{position:relative;border-radius:8px;overflow:hidden;background:#f4ece1;box-shadow:0 1px 0 var(--line),0 10px 30px rgba(60,30,15,.12)}
+canvas{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#f4ece1;touch-action:manipulation;-webkit-font-smoothing:auto;-moz-osx-font-smoothing:auto}   /* canvas text inherits font smoothing: keep the block pages' default */
+.stage.full{position:fixed;inset:0;z-index:20;border-radius:0;display:flex;align-items:center;justify-content:center}
+.stage.full canvas{width:min(100vw,177.78vh);max-height:100vh}
+.ld{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;font:400 15px/1.4 var(--sans);color:#7a6456}
+.ld button{font:500 14px/1 var(--sans);color:#2b1e18;background:#fbf7f1;border:1px solid #d8c8b5;border-radius:999px;padding:9px 14px}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:12px}
+.bar{display:flex;align-items:center;gap:10px;flex:1 1 380px;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+.ctl button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+#play{height:44px;padding:0 18px;font-size:15px;background:var(--accent);border-color:var(--accent);color:var(--on-accent);white-space:nowrap}
+#reset{height:44px}
+input[type=range]{flex:1;accent-color:var(--accent);min-width:0}
+#tc{font:400 13px/1 var(--mono);font-variant-numeric:tabular-nums;color:var(--ink-soft);min-width:5ch;text-align:right}
+.note{color:var(--ink-soft);font-size:13.5px;margin:12px 2px 0;line-height:1.55;max-width:820px}
+.note strong{color:var(--ink-med);font-weight:600}
+
+/* panels */
+.panels{margin-top:28px;border-top:1px solid var(--line)}
+details.panel{border-bottom:1px solid var(--line)}
+details.panel>summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 2px;cursor:pointer;font:500 19px/1.3 var(--serif);font-variation-settings:"opsz" 36}
+details.panel>summary::-webkit-details-marker{display:none}
+details.panel>summary::after{content:'';flex:none;width:8px;height:8px;margin-right:6px;border-right:1.6px solid var(--ink-soft);border-bottom:1.6px solid var(--ink-soft);transform:translateY(-2px) rotate(45deg);transition:transform .2s}
+details.panel[open]>summary::after{transform:translateY(2px) rotate(-135deg)}
+details.panel>summary:hover{color:var(--accent)}
+.pb{padding:0 2px 24px;max-width:780px}
+.pb .lede{color:var(--ink-soft);font-size:14px;line-height:1.5;margin:0 0 4px}
+.pb h3{font:500 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin:20px 0 8px}
+.pb ul{list-style:none}
+#tips li{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 8px;font-size:15px;line-height:1.55;overflow-wrap:break-word}
+.tag,.src{display:inline-block;font:500 11.5px/1 var(--sans);color:var(--ink-soft);border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin-left:6px;white-space:nowrap;vertical-align:1px}
+.pb ol{padding-left:20px;color:var(--ink-soft);font-size:13.5px;line-height:1.55}
+.pb ol li{margin-bottom:6px;overflow-wrap:anywhere}
+.pb a{color:var(--accent)}
+.ind{display:grid;gap:6px}
+.ind li{position:relative;padding-left:18px;font-size:15px;line-height:1.5;color:var(--ink-med)}
+.ind li::before{content:'';position:absolute;left:0;top:.75em;width:9px;height:1px;background:var(--ink-dim)}
+.combos{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:none}
+.cmb{border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;background:var(--paper)}
+.cmb .for{font:400 10px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px}
+.cmb h3{font:500 20px/1.25 var(--serif);letter-spacing:0;text-transform:none;color:var(--ink);margin:0 0 8px;font-variation-settings:"opsz" 36}
+.cmb p{font-family:var(--serif);font-size:15.5px;line-height:1.6;color:var(--ink-med);margin-bottom:10px;font-variation-settings:"opsz" 14}
+.split{border-top:1px solid var(--line);margin:4px 0 14px}
+.split li{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-med)}
+.split li b{font-weight:500;color:var(--ink)}
+.split .v{font:400 13.5px/1.4 var(--mono);color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+.split li.tot{border-bottom:0}
+.split li.tot .v{font-weight:500;color:var(--accent)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{font:500 13px/1 var(--sans);text-decoration:none;color:var(--ink);border:1px solid var(--line-2);border-radius:999px;padding:9px 14px;background:var(--bg)}
+.links a:hover{border-color:var(--accent);color:var(--accent)}
+.cnote{font-size:13px;line-height:1.55;color:var(--ink-soft);margin-top:14px}
+
+footer{margin-top:28px;font-size:13px;line-height:1.55;color:var(--ink-soft)}
+footer .foot{margin-top:10px;padding-top:12px;border-top:1px solid var(--line);font:400 11px/1.6 var(--mono);letter-spacing:.04em;color:var(--ink-dim)}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (max-width:760px){.combos{grid-template-columns:1fr}}
+@media (max-width:600px){
+  .shell{padding:14px 16px 48px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
+  .hd{margin:0 0 12px}
+  .back{order:-1;width:100%}
+  h1{font-size:28px}
+  .ptabs button{letter-spacing:.1em;padding:12px 2px 11px}
+  .lead{font-size:15px}
+  #block{margin-top:20px;padding-top:18px}
+  .bh{display:block}
+  .bh h2{font-size:21px;margin-bottom:4px}
+  .dose{text-align:left}
+  .tabs button{font-size:13.5px;padding:10px 5px}
+  .tabs small{font-size:11.5px}
+  .tabs:empty{min-height:56px}
+  .bar{flex-basis:100%}
+  #tips li{font-size:14.5px;padding:11px 12px}
+  .cmb{padding:16px 14px 14px}
+}
+</style>
+<script>
+window.RA_INDEX = {
+ regions: [
+  { key:'hip',  label:'Hip',            blocks:['peng','lfcn','fib','femoral'],
+    lead:'Cover the capsule with a PENG or fascia iliaca block. Add the LFCN when the incision is lateral.' },
+  { key:'knee', label:'Knee',           blocks:['adductor-canal','femoral','popliteal'],
+    lead:'Start with the femoral triangle or adductor canal to keep the quadriceps working. Use the femoral block when weakness does not matter.' },
+  { key:'foot', label:'Foot and ankle', blocks:['popliteal','ankle'],
+    lead:'Block in the popliteal fossa for major foot and ankle surgery, or at the ankle for forefoot work. Add the saphenous nerve for the medial side.' } ],
+ blocks: {
+  peng:   { name:'PENG block', short:'PENG', dose:[['Ropivacaine 0.2%','20 mL','40 mg']],
+    dnote:'With an LFCN block add 5 mL 0.2% (total 25 mL, 50 mg)',
+    ind:['Hip fracture analgesia before surgery, including pain on positioning for spinal anaesthesia','Bipolar hemiarthroplasty and total hip arthroplasty postoperative analgesia, combined with an LFCN block for the incision','Hip surgery where early mobilisation matters and quadriceps sparing is wanted'] },
+  lfcn:   { name:'Lateral femoral cutaneous nerve block', short:'LFCN', dose:[['Ropivacaine 0.2%','5 mL','10 mg']],
+    dnote:'1 mL test, then 2 mL aliquots into the tunnel',
+    ind:['Analgesia for the lateral or anterolateral hip incision in hip surgery, often added to a PENG block (NYSORA)','Meralgia paraesthetica, diagnostic or therapeutic (NYSORA)','Muscle biopsy of the proximal lateral thigh (NYSORA)','Split-skin graft harvest from the lateral thigh (Hofstra case series, title and abstract only)'] },
+  fib:    { name:'Supra-inguinal fascia iliaca block', short:'Fascia iliaca', dose:[['Ropivacaine 0.2%','40 mL','80 mg']],
+    dnote:'5 mL aliquots, a volume block spreading cephalad',
+    ind:['Hip fracture analgesia (neck of femur), in the emergency department or before surgery','Total hip arthroplasty, as an analgesic adjunct','Proximal and shaft femoral fractures','Hip and proximal thigh surgery where the femoral and lateral femoral cutaneous nerves need covering','Above-knee amputation, as part of a multimodal plan'] },
+  femoral:{ name:'Femoral nerve block', short:'Femoral', home:'hip', dose:[['Ropivacaine 0.4%','15 mL','60 mg']],
+    dnote:'5 mL aliquots beneath fascia iliaca',
+    ind:['Analgesia for hip fracture','Femoral shaft fracture, pre- and postoperative','Surgery on the femur, patella and quadriceps tendon','Knee surgery (anterior knee and thigh analgesia)','Anterior and medial thigh analgesia down to the knee, plus a variable saphenous strip on the medial leg'] },
+  'adductor-canal':{ name:'Adductor canal and femoral triangle block', short:'Adductor canal',
+    dose:[['Single shot: ropivacaine 0.4%','10 mL','40 mg'],['TKR, three targets: ropivacaine 0.2%','25 mL','50 mg']],
+    dnote:'TKR split: saphenous 10 mL, NVM 10 mL, AFCN 5 mL',
+    ind:['Analgesia after total knee arthroplasty as part of a multimodal regimen, sparing quadriceps strength compared with a femoral nerve block','Analgesia for other knee surgery (anteromedial knee) alongside multimodal analgesia','Medial leg, ankle and foot surgery, combined with a sciatic (popliteal) block for the saphenous territory','Saphenous vein stripping or harvesting'] },
+  popliteal:{ name:'Popliteal sciatic block', short:'Popliteal', home:'foot', dose:[['Ropivacaine 0.4%','15 mL','60 mg']],
+    dnote:'5 mL aliquots inside the paraneural sheath',
+    ind:['Foot and ankle surgery, combined with a saphenous block for the medial leg and ankle','Achilles tendon repair','Below-knee anaesthesia or analgesia of the calf, tibia and fibula; hamstring function is spared','Foot debridement and other distal procedures','Continuous catheter analgesia after major foot and ankle surgery'] },
+  ankle:  { name:'Ankle block', short:'Ankle', dose:[['Ropivacaine 0.5%','17 mL','85 mg']],
+    dnote:'Tibial 5 mL, then 3 mL each for the deep peroneal, superficial peroneal, sural and saphenous nerves',
+    ind:["Forefoot surgery, including hallux valgus (PROSPECT's preferred technique, per BJA Education 2022)",'Midfoot and toe surgery, and amputations below the ankle','Heel surgery, with the tibial nerve blocked 5 to 10 cm above the malleolus','Analgesia or anaesthesia when an ankle tourniquet is used','Analgesia only when a calf or thigh tourniquet is planned','Patients for whom keeping knee and ankle movement matters more than a popliteal block would allow'] } }
+};
+/* first paint: region tabs, block pills and block header straight from the URL, before the engine arrives; the engine reuses these */
+(function(I){const $=id=>document.getElementById(id);
+I.esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+I.regionOf=s=>I.regions.find(r=>r.key===I.blocks[s].home)||I.regions.find(r=>r.blocks.includes(s));
+I.paintNav=(r,cur)=>{document.querySelectorAll('#regions [role=tab]').forEach(b=>{const on=b.dataset.r===r.key;b.setAttribute('aria-selected',on);b.tabIndex=on?0:-1});
+  $('rlead').textContent=r.lead;const B=$('blocks');B.setAttribute('aria-labelledby','r-'+r.key);
+  B.innerHTML=r.blocks.map(s=>`<button type="button" role="tab" id="b-${s}" data-b="${s}" aria-controls="block" aria-selected="${s===cur}" tabindex="${s===cur?0:-1}">${I.esc(I.blocks[s].short)}</button>`).join('')};
+I.paintHead=s=>{const b=I.blocks[s];$('block').setAttribute('aria-labelledby','b-'+s);$('bname').textContent=b.name;
+  $('bdose').innerHTML=b.dose.map(d=>`<span class="dr"><span class="drug">${I.esc(d[0])}</span> <b>${I.esc(d[1])}</b> <span class="mg">${I.esc(d[2])}</span></span>`).join('');$('dnote').textContent=b.dnote||''};
+I.first=()=>{const q=location.search.match(/[?&]b=([\w-]+)/),h=q?q[1]:decodeURIComponent(location.hash.slice(1)),r=I.regions.find(x=>x.key===h);
+  let s=r?r.blocks[0]:h.split('/')[0];if(!I.blocks[s])s='femoral';I.paintNav(r||I.regionOf(s),s);I.paintHead(s)};
+})(window.RA_INDEX);
+</script>
+<meta name="theme-color" content="#f7f5ef"><link rel="stylesheet" href="assets/navigation.css?v=20261008"><link rel="stylesheet" href="assets/site-shell.css?v=20261008"><link rel="stylesheet" href="assets/header-nav.css?v=20261008"><link rel="stylesheet" href="assets/lower-limb.css?v=20261008"><script defer src="assets/navigation.js?v=20261008"></script></head>
+<body class="lower-limb-app"><a class="ra-skip" href="#main">Skip to lower-limb blocks</a><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="index.html" aria-label="NTF Anaesthesia home"><img src="ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="department.html">About Us</a><a href="why-join-us.html">Why Join Us?</a><a href="clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="mopex/">MO Handbook</a><a href="senior-resident.html">Senior Residency</a><a href="exams/">MMed Exam Prep</a></div></details><a href="airway.html">Airway</a><a href="regional.html" aria-current="page">Regional Anaesthesia</a><a href="pocus/">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<main class="shell" id="main">
+  <header class="hd"><div><p class="ra-eyebrow">Regional anaesthesia</p><h1>Lower-limb blocks</h1></div><a class="back" href="regional.html">Regional anaesthesia <span aria-hidden="true">↗</span></a></header>
+
+  <nav aria-label="Blocks">
+    <div class="ptabs" role="tablist" aria-label="Region" id="regions">
+      <button type="button" role="tab" id="r-hip" data-r="hip" aria-controls="block" aria-selected="true" tabindex="0">Hip</button>
+      <button type="button" role="tab" id="r-knee" data-r="knee" aria-controls="block" aria-selected="false" tabindex="-1">Knee</button>
+      <button type="button" role="tab" id="r-foot" data-r="foot" aria-controls="block" aria-selected="false" tabindex="-1">Foot and ankle</button>
+    </div>
+    <p class="lead" id="rlead">Cover the capsule with a PENG or fascia iliaca block. Add the LFCN when the incision is lateral.</p>
+    <div class="stabs" role="tablist" aria-label="Block" id="blocks" aria-labelledby="r-hip"></div>
+  </nav>
+
+  <section id="block" role="tabpanel" aria-labelledby="b-femoral">
+    <div class="bh">
+      <h2 id="bname"></h2>
+      <div class="dose"><p id="bdose"></p><p class="dnote" id="dnote"></p></div>
+    </div>
+    <script>RA_INDEX.first()</script>
+    <div class="tabs" role="tablist" id="vtabs"></div>
+    <div class="scen" id="scen" hidden></div>
+    <div class="stage" id="stage" role="tabpanel"><canvas id="c" role="img" aria-label="Animated ultrasound-guided block"></canvas><p class="ld" id="ld" hidden></p></div>
+    <div class="ctl">
+      <div class="bar">
+        <button type="button" id="play">▶ Play</button>
+        <button type="button" id="reset">Reset</button>
+        <input id="scrub" type="range" min="0" max="16" step="0.01" value="0" aria-label="Demonstration timeline">
+        <span id="tc">0.0 s</span>
+      </div>
+      <div class="row">
+        <button type="button" id="pv" aria-pressed="false">Probe view</button>
+        <button type="button" id="lbl" aria-pressed="true">Labels</button>
+        <button type="button" id="fs">Full screen</button>
+      </div>
+    </div>
+    <div id="notes"></div>
+    <div class="panels">
+      <details class="panel" id="tips"><summary>Tips and pitfalls</summary><div class="pb"></div></details>
+      <details class="panel" id="srcs"><summary>Sources</summary><div class="pb"></div></details>
+      <details class="panel" id="ind"><summary>Indications</summary><div class="pb"></div></details>
+    </div>
+  </section>
+
+  <details class="panel" id="combinations">
+    <summary>Example block combinations</summary>
+    <div class="pb" style="max-width:none">
+      <div class="combos">
+        <div class="cmb">
+          <div class="for">Bipolar hip hemiarthroplasty · THR</div>
+          <h3>PENG with an <em>LFCN</em> block</h3>
+          <p>PENG covers the anterior hip capsule and is motor sparing, but it does not cover the incision. The LFCN block covers the lateral incision.</p>
+          <ul class="split">
+            <li><span><b>PENG</b> beneath the psoas tendon</span><span class="v">20 mL</span></li>
+            <li><span><b>LFCN</b> in the sartorius and TFL tunnel</span><span class="v">5 mL</span></li>
+            <li class="tot"><span>Ropivacaine 0.2%</span><span class="v">25 mL · 50 mg</span></li>
+          </ul>
+          <div class="links"><a href="#peng">PENG block</a><a href="#lfcn">LFCN block</a></div>
+        </div>
+        <div class="cmb">
+          <div class="for">Total knee replacement</div>
+          <h3>Adductor canal, <em>three targets</em></h3>
+          <p>One lateral skin entry, three tip positions from deep to superficial. The saphenous nerve and the nerve to vastus medialis cover the joint; the anterior femoral cutaneous nerves cover the anterior incision.</p>
+          <ul class="split">
+            <li><span><b>Saphenous nerve</b> beside the artery, deep to sartorius</span><span class="v">10 mL</span></li>
+            <li><span><b>Nerve to vastus medialis</b> between sartorius and vastus medialis</span><span class="v">10 mL</span></li>
+            <li><span><b>Anterior femoral cutaneous nerves</b> beneath fascia lata, superficial to sartorius</span><span class="v">5 mL</span></li>
+            <li class="tot"><span>Ropivacaine 0.2%</span><span class="v">25 mL · 50 mg</span></li>
+          </ul>
+          <div class="links"><a href="#adductor-canal/tkr">TKR: three targets</a></div>
+        </div>
+      </div>
+      <p class="cnote">These examples are shown for reference rather than as a protocol. Confirm every volume against the patient's weight and the maximum safe dose of local anaesthetic.</p>
+    </div>
+  </details>
+
+  <footer>
+    <p>To record: turn the phone landscape, tap Full screen, then screen-record. Tap the picture to leave full screen.</p>
+    <p class="foot">Technique reference, not department policy. Clinical judgement applies.</p>
+  </footer>
+</main><footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer>
+</body>
+</html>
