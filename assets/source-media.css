@@ -7,3 +7,6 @@
 .source-gallery.source-duo{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:550px){.source-gallery.source-duo{grid-template-columns:1fr}}
 
 .source-photo-open[data-photo-colour="true"] img,.source-dialog.colour-photo img{filter:none}
+
+/* Gallery images are static, with no enlargement affordance. */
+.source-photo-frame{display:block;position:relative;width:100%;overflow:hidden;background:#d6d6d0}
