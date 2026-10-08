@@ -41,12 +41,13 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
 | `popliteal/index.html` | Popliteal sciatic block animation by Dr Chew Shi Hao | No (unlisted) |
 | `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app | No (unlisted) |
+| `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting, ultrasound and quiz (Dr Koh Wenjun and Dr Chew Shi Hao) | No (unlisted) |
 
 The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
 
 ## Rules
 
-- Don't add links to `exams/`, `popliteal/` or `brachial-plexus/` from the homepage, and keep their
+- Don't add links to `exams/`, `popliteal/`, `brachial-plexus/` or `spinal/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
