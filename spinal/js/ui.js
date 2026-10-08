@@ -1,7 +1,7 @@
 // Shared UI helpers for the spinal page. Owned by B1; section modules import from here.
 // Every component uses `sp-*` classes styled in css/base.css. See js/CONTRACT.md for usage.
 
-export { cite, citeEl } from './refs.js';
+export { cite, citeEl } from './refs.js?v=1';
 
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -136,7 +136,7 @@ export function table({ caption, head = [], rows = [], stack = true, id, classNa
   if (!stack) {
     const label = caption ? String(caption).replace(/<[^>]+>/g, '').trim() : 'Table';
     const scroller = el('div', { class: 'sp-table-scroll', tabindex: '0', role: 'region', 'aria-label': label }, t);
-    wrap.append(el('p', { class: 'sp-scroll-hint', 'aria-hidden': 'true', text: 'Scroll →' }), scroller);
+    wrap.append(scroller, el('p', { class: 'sp-scroll-hint', 'aria-hidden': 'true', text: 'Scroll sideways →' }));
   } else wrap.append(t);
   return wrap;
 }

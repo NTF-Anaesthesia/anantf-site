@@ -88,7 +88,8 @@ const link = (id) => `<a href="#ref-${id}" data-ref="${id}" aria-label="Referenc
 
 /** HTML string: <sup class="sp-cite"><a …>[?]</a>, …</sup>. Numbers are filled in by finalise(). */
 export function cite(...ids) {
-  return `<sup class="sp-cite">${ids.map(link).join(',')}</sup>`;
+  // U+2060 word joiner stops the line breaking between the text and its citation.
+  return `<sup class="sp-cite">\u2060${ids.map(link).join(",\u2060")}</sup>`;
 }
 
 /** Same as cite(), as an Element. */
