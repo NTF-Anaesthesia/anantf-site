@@ -31,3 +31,10 @@ body .ntf-footer{max-width:none;margin:0;padding:20px max(24px,calc((100vw - 132
 .site-interest{white-space:nowrap}
 .site-introduction a{color:#633d3c;text-decoration:underline;text-underline-offset:3px}
 @media(max-width:700px){.site-introduction{padding:24px}.site-introduction p{font-size:12px;text-wrap:pretty}}
+
+/* Fill the mobile viewport below the 80px navigation and its 1px border. */
+@media(max-width:760px){
+ body[data-page="home"] .landing{min-height:calc(100vh - 81px);min-height:calc(100svh - 81px);min-height:calc(100dvh - 81px);justify-content:space-between}
+ body[data-page="home"] .landing-content{flex:1;display:flex;align-items:center;padding-top:clamp(30px,6vh,60px);padding-bottom:30px}
+ body[data-page="home"] .landing-image{flex:none}
+}
