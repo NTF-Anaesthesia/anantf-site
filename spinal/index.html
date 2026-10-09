@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="css/base.css?v=1">
 <link rel="stylesheet" href="css/anatomy.css?v=1">
 <link rel="stylesheet" href="css/technique.css?v=1">
+<link rel="stylesheet" href="css/spines.css?v=1">
 <link rel="stylesheet" href="css/ultrasound.css?v=1">
 <link rel="stylesheet" href="css/troubleshooting.css?v=1">
 <link rel="stylesheet" href="css/complications.css?v=1">
@@ -39,15 +40,51 @@
   <h1>Spinal anaesthesia: <em>how to do it</em> and how to troubleshoot it</h1>
   <p class="sp-lead">Anatomy, technique, ultrasound and decision trees for residents and medical officers.</p>
   <p class="sp-credit">Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia</p>
+  <div class="sp-controls" id="sp-controls" role="group" aria-label="Reading level" hidden>
+    <div class="sp-controls-row">
+      <span class="sp-controls-label" id="sp-level-label">Level</span>
+      <div class="sp-level" role="group" aria-labelledby="sp-level-label">
+        <button type="button" class="sp-level-btn" data-level="1" aria-pressed="false" title="MO: MOPEX level. What you need for your first supervised spinals.">MO</button>
+        <button type="button" class="sp-level-btn" data-level="2" aria-pressed="false" title="Resident: everything up to the MMed exam.">Resident</button>
+        <button type="button" class="sp-level-btn" data-level="3" aria-pressed="true" title="Advanced: subspecialty detail and consultant pearls.">Advanced</button>
+      </div>
+      <button type="button" class="sp-quick-btn" id="sp-quick" aria-pressed="false" title="Show only headings, key points and the 60-second checklist."><span class="sp-quick-box" aria-hidden="true"></span>Quick read</button>
+    </div>
+    <p class="sp-controls-hint" id="sp-level-hint">Showing everything: MO, Resident and Advanced.</p>
+  </div>
 </div>
 
 <nav class="sp-secnav" aria-label="Sections of this page"><div class="sp-secnav-inner site-container"><ol>
-  <li><a href="#anatomy"><span>01</span>Anatomy</a></li><li><a href="#technique"><span>02</span>Technique</a></li>
-  <li><a href="#ultrasound"><span>03</span>Ultrasound</a></li><li><a href="#troubleshooting"><span>04</span>Troubleshooting</a></li>
-  <li><a href="#complications"><span>05</span>Complications</a></li><li><a href="#populations"><span>06</span>Populations</a></li>
-  <li><a href="#quiz"><span>07</span>Quiz</a></li><li><a href="#references"><span>·</span>References</a></li></ol></div></nav>
+  <li><a href="#sixty"><span>60s</span>In 60 seconds</a></li><li><a href="#anatomy"><span>01</span>Anatomy</a></li><li><a href="#technique"><span>02</span>Technique</a></li>
+  <li><a href="#spines"><span>03</span>Challenging spines</a></li><li><a href="#ultrasound"><span>04</span>Ultrasound</a></li>
+  <li><a href="#troubleshooting"><span>05</span>Troubleshooting</a></li><li><a href="#complications"><span>06</span>Complications</a></li>
+  <li><a href="#populations"><span>07</span>Populations</a></li><li><a href="#quiz"><span>08</span>Quiz</a></li><li><a href="#references"><span>·</span>References</a></li></ol></div></nav>
 
 <main id="main" class="site-container">
+  <section id="sixty" class="sp-section sp-sixty" data-tier="1" data-quick="keep" aria-labelledby="sixty-h">
+    <p class="sp-kicker">Start here</p><h2 id="sixty-h">Spinal in 60 seconds</h2>
+    <p class="sp-lead">A safe single-shot spinal, from consent to block check. Details follow in the sections below.</p>
+    <ol class="sp-sixty-list">
+      <li><strong>Consent.</strong> Explain the benefits, the common effects and the rare serious risks. Offer the alternative. Confirm the side and site.</li>
+      <li><strong>Bleeding and infection check.</strong> Anticoagulants, platelets and clotting, and any sepsis or skin infection near the site.</li>
+      <li><strong>Brief your senior.</strong> Say what you plan to do, and who is nearby if it goes wrong.</li>
+      <li><strong>Set up.</strong> Monitors on, working IV, oxygen, airway kit and a vasopressor ready. Have a trained assistant.</li>
+      <li><strong>Check the drug.</strong> Read the ampoule label, with a second person. Right drug, right dose, in date. Use neuraxial-only connectors.</li>
+      <li><strong>Position.</strong> Sitting or lateral, back arched. Choose an interspace well below the end of the cord, usually L3/4 or L4/5.</li>
+      <li><strong>Aseptic technique.</strong> Hands, mask, sterile gloves, skin prep left to dry fully, sterile drape.</li>
+      <li><strong>Needle in slowly.</strong> Local anaesthetic to the skin. Advance in small steps and stop to check for CSF each time.</li>
+      <li><strong>Inject only with free CSF.</strong> Attach, check CSF flows, inject slowly. Never inject against resistance or into pain.</li>
+      <li><strong>Lie back and check.</strong> Position as planned, then BP and heart rate every few minutes. Test the sensory level and leg movement before surgery. Write it down.</li>
+    </ol>
+    <aside class="sp-stop" aria-label="Stop and get help">
+      <p class="sp-stop-title">Stop and get help if</p>
+      <ul>
+        <li><strong>Pain or persistent paraesthesia</strong> when the needle goes in or on injection. Don&rsquo;t inject. Withdraw.</li>
+        <li><strong>Blood-stained CSF that doesn&rsquo;t clear</strong>, or you aren&rsquo;t sure the clotting is safe.</li>
+        <li><strong>Falling blood pressure, slow heart rate, breathlessness or drowsiness</strong> after the injection. Call for help, give oxygen and treat early.</li>
+      </ul>
+    </aside>
+  </section>
   <section id="anatomy" class="sp-section" aria-labelledby="anatomy-h">
     <p class="sp-kicker">01 · Anatomy</p><h2 id="anatomy-h">Anatomy for neuraxial block</h2>
     <div class="sp-mount" id="mount-anatomy"></div>
@@ -56,24 +93,28 @@
     <p class="sp-kicker">02 · Technique</p><h2 id="technique-h">Performing a spinal</h2>
     <div class="sp-mount" id="mount-technique"></div>
   </section>
+  <section id="spines" class="sp-section" aria-labelledby="spines-h">
+    <p class="sp-kicker">03 · Challenging spines</p><h2 id="spines-h">Challenging spines</h2>
+    <div class="sp-mount" id="mount-spines"></div>
+  </section>
   <section id="ultrasound" class="sp-section" aria-labelledby="ultrasound-h">
-    <p class="sp-kicker">03 · Ultrasound</p><h2 id="ultrasound-h">Ultrasound-assisted neuraxial</h2>
+    <p class="sp-kicker">04 · Ultrasound</p><h2 id="ultrasound-h">Ultrasound-assisted neuraxial</h2>
     <div class="sp-mount" id="mount-ultrasound"></div>
   </section>
   <section id="troubleshooting" class="sp-section" aria-labelledby="troubleshooting-h">
-    <p class="sp-kicker">04 · Troubleshooting</p><h2 id="troubleshooting-h">Troubleshooting</h2>
+    <p class="sp-kicker">05 · Troubleshooting</p><h2 id="troubleshooting-h">Troubleshooting</h2>
     <div class="sp-mount" id="mount-troubleshooting"></div>
   </section>
   <section id="complications" class="sp-section" aria-labelledby="complications-h">
-    <p class="sp-kicker">05 · Complications</p><h2 id="complications-h">Complications and safety</h2>
+    <p class="sp-kicker">06 · Complications</p><h2 id="complications-h">Complications and safety</h2>
     <div class="sp-mount" id="mount-complications"></div>
   </section>
   <section id="populations" class="sp-section" aria-labelledby="populations-h">
-    <p class="sp-kicker">06 · Special populations</p><h2 id="populations-h">Special populations</h2>
+    <p class="sp-kicker">07 · Special populations</p><h2 id="populations-h">Special populations</h2>
     <div class="sp-mount" id="mount-populations"></div>
   </section>
   <section id="quiz" class="sp-section" aria-labelledby="quiz-h">
-    <p class="sp-kicker">07 · Quiz</p><h2 id="quiz-h">Exam questions and self-quiz</h2>
+    <p class="sp-kicker">08 · Quiz</p><h2 id="quiz-h">Exam questions and self-quiz</h2>
     <div class="sp-mount" id="mount-quiz"></div>
   </section>
   <section id="references" class="sp-section" aria-labelledby="references-h">

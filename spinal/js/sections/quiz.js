@@ -1,11 +1,12 @@
-// Section 07: Exam questions and self-quiz.
-import { el, segmented, details, cite, announce, callout } from '../ui.js?v=1';
+// Section 08: Exam questions and self-quiz.
+import { el, segmented, details, cite, announce, callout, tier, keyPoints } from '../ui.js?v=1';
 import { MCQS, SAQS, TOPICS } from '../quiz/data.js';
 
 export const meta = { id: 'quiz', prefix: 'qz', title: 'Exam questions and self-quiz' };
 export const refs = {};
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E'];
+const tierMax = () => Number(document.body.dataset.tierMax) || 3;
 const TOPIC_LABEL = Object.fromEntries(TOPICS.map((t) => [t.value, t.label]));
 const ICON_OK = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 8.5 6.5 12.5 13.5 4" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
 const ICON_BAD = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
@@ -24,7 +25,16 @@ export function mount(root) {
   let filter = 'all';
 
   root.append(
-    el('p', { class: 'sp-lead', text: 'Twenty single-best-answer questions drawn from this page, then exam-style short-answer and viva questions with model answers. Nothing is saved; reload to start again.' }),
+    keyPoints([
+      'Choose an answer first, then read the explanation. It links back to the section.',
+      'Questions follow the level chosen at the top: MO basics, Resident exam material, Advanced hard cases.',
+      'The topic filter works together with the level, and the score counts only the questions you can see.',
+      'Safety questions to be sure of: pain on injection, high spinal, weakness returning after a block, wrong-route injection.',
+      'Anticoagulation: know the drug, the dose group and the interval before you answer.',
+      'In a viva: one-line definition, then recognise, call for help, ABC, specific treatment, follow-up.',
+      'Short-answer questions carry marks for each point. Write your answer first, then compare.',
+    ]),
+    el('p', { class: 'sp-lead', text: `${MCQS.length} single-best-answer questions drawn from this page, then exam-style short-answer and viva questions with model answers. Each question is tagged MO, Resident or Advanced. Nothing is saved; reload to start again.` }),
     el('ul', { class: 'sp-jump', html: '<li><a href="#qz-mcq">Self-quiz</a></li><li><a href="#qz-saq">Short-answer and viva questions</a></li>' }),
   );
 
@@ -42,6 +52,7 @@ export function mount(root) {
     const num = i + 1;
     const id = `qz-q${num}`;
     const card = el('li', { class: 'qz-q', id, dataset: { topic: q.topic } });
+    tier(card, q.tier);
     const stemId = `${id}-stem`;
     card.append(el('p', { class: 'qz-meta', text: `Q${num} · ${TOPIC_LABEL[q.topic]}` }));
     card.append(el('p', { class: 'qz-stem', id: stemId, text: q.stem }));
@@ -69,7 +80,7 @@ export function mount(root) {
     return { card, btns, showBtn, result, explain };
   });
   mcqSec.append(list);
-  const empty = el('p', { class: 'qz-empty', hidden: true, text: 'No questions for this topic.' });
+  const empty = el('p', { class: 'qz-empty', hidden: true, text: 'No questions for this topic at this level.' });
   mcqSec.append(empty);
 
   // score bar (sticky at the bottom of #quiz on small screens)
@@ -131,24 +142,32 @@ export function mount(root) {
     first?.btns[0].focus();
   }
   function updateScore() {
-    const attempted = state.filter((s) => s.chosen != null).length;
-    const right = state.filter((s, i) => s.chosen === MCQS[i].answer).length;
-    scoreText.innerHTML = `Score <span class="sp-num">${right} / ${attempted}</span> <span class="qz-score-sub">· ${attempted} of ${MCQS.length} answered</span>`;
+    const vis = MCQS.map((_, i) => i).filter(isVisible);
+    const attempted = vis.filter((i) => state[i].chosen != null).length;
+    const right = vis.filter((i) => state[i].chosen === MCQS[i].answer).length;
+    scoreText.innerHTML = `Score <span class="sp-num">${right} / ${attempted}</span> <span class="qz-score-sub">· ${attempted} of ${vis.length} answered</span>`;
+  }
+  function isVisible(i) {
+    const q = MCQS[i];
+    return (q.tier || 1) <= tierMax() && (filter === 'all' || q.topic === filter);
   }
   function applyFilter(v, user) {
     filter = v;
     seg.set(v);
     let shown = 0;
     cards.forEach((c, i) => {
-      const on = v === 'all' || MCQS[i].topic === v;
+      const on = isVisible(i);
       c.card.hidden = !on;
       if (on) shown += 1;
     });
     empty.hidden = shown > 0;
+    updateScore();
     if (user) announce(`${shown} question${shown === 1 ? '' : 's'} shown: ${TOPIC_LABEL[v]}.`);
   }
   MCQS.forEach((_, i) => paint(i));
-  updateScore();
+  applyFilter('all', false);
+  // The global level (body[data-tier-max]) changes which questions count.
+  new MutationObserver(() => applyFilter(filter, false)).observe(document.body, { attributes: true, attributeFilter: ['data-tier-max'] });
 
   // On narrow screens the score bar is sticky at the bottom: keep focused controls clear of it (WCAG 2.4.11).
   mcqSec.addEventListener('focusin', (e) => {
@@ -161,7 +180,7 @@ export function mount(root) {
   // ------------------------------------------------------------ SAQs
   const saqSec = el('div', { class: 'qz-sub', id: 'qz-saq' });
   saqSec.append(el('h3', { class: 'qz-h3', id: 'qz-saq-h' }, 'Short-answer and viva questions'));
-  saqSec.append(el('p', { class: 'sp-prose', text: 'MMed-style questions. Write or say your answer first, then open the model answer. Marks are a guide to weighting, not an official scheme.' }));
+  saqSec.append(el('p', { class: 'sp-prose', text: 'MMed-style questions. Write or say your answer first, then open the model answer. Each question is tagged MO, Resident or Advanced. Marks are a guide to weighting, not an official scheme.' }));
   SAQS.forEach((s, i) => {
     const total = s.points.reduce((a, p) => a + p[1], 0);
     const body = el('div', { class: 'qz-model' });
@@ -175,9 +194,10 @@ export function mount(root) {
     body.append(ol);
     const d = details({ id: s.id, summary: `<span class="qz-saq-head"><span class="qz-saq-n">SAQ ${i + 1} · ${total} marks</span><span class="qz-saq-q">${s.q}</span></span>`, body });
     d.classList.add('qz-saq');
+    tier(d, s.tier || 2);
     saqSec.append(d);
   });
-  saqSec.append(callout('pearl', { title: 'Viva technique', body: '<p>Start with a one-line definition or classification, then structure the answer (patient, drug, procedure; or recognise, call for help, ABC, specific treatment, follow-up). Examiners reward safe priorities over lists of numbers.</p>' }));
+  saqSec.append(tier(callout('pearl', { title: 'Viva technique', body: '<p>Start with a one-line definition or classification, then structure the answer (patient, drug, procedure; or recognise, call for help, ABC, specific treatment, follow-up). Examiners reward safe priorities over lists of numbers.</p>' }), 2));
   root.append(saqSec);
 
   // Opening a deep link to an SAQ opens its model answer.

@@ -1,5 +1,5 @@
 // spinal/ page controller: theme, share, scroll-spy, section mounts, references, deep links.
-import { $, $$, el, isDark } from './ui.js?v=1';
+import { $, $$, el, isDark, announce } from './ui.js?v=1';
 import { registerRefs, finalise } from './refs.js?v=1';
 
 const root = document.documentElement;
@@ -115,8 +115,87 @@ if ('IntersectionObserver' in window) {
 window.addEventListener('scroll', scheduleSpy, { passive: true });
 window.addEventListener('resize', scheduleSpy);
 
+// ---------------------------------------------------------------- level (tier) and Quick read
+const LEVELS = {
+  1: { name: 'MO', hint: 'MO: MOPEX level. Showing what you need for your first supervised spinals.' },
+  2: { name: 'Resident', hint: 'Resident: showing everything up to the MMed exam (MO and Resident).' },
+  3: { name: 'Advanced', hint: 'Advanced: showing everything, including subspecialty detail and consultant pearls.' },
+};
+const controls = $('#sp-controls');
+const levelBtns = controls ? $$('.sp-level-btn', controls) : [];
+const quickBtn = $('#sp-quick');
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage may be blocked */ } },
+};
+const tierMax = () => Number(document.body.dataset.tierMax) || 3;
+const quickOn = () => document.body.dataset.quick === 'on';
+
+function paintControls() {
+  const t = tierMax();
+  levelBtns.forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.level) === t)));
+  quickBtn?.setAttribute('aria-pressed', String(quickOn()));
+  const hint = $('#sp-level-hint');
+  if (hint) hint.textContent = quickOn() ? 'Quick read: headings, key points and the 60-second checklist only.' : LEVELS[t].hint;
+}
+
+/** Keep the heading the reader is looking at where it was while content above it appears or disappears. */
+function withScrollAnchor(change) {
+  const line = window.innerHeight * 0.3;
+  const heads = $$('main h2, main h3').filter((h) => h.getClientRects().length);
+  let anchor = null;
+  for (const h of heads) if (h.getBoundingClientRect().top <= line) anchor = h;
+  anchor = anchor || heads.find((h) => h.getBoundingClientRect().top > 0) || null;
+  const before = anchor ? anchor.getBoundingClientRect().top : 0;
+  change();
+  if (anchor && anchor.getClientRects().length) {
+    const delta = anchor.getBoundingClientRect().top - before;
+    if (Math.abs(delta) > 1) window.scrollBy({ top: delta, behavior: 'instant' });
+  } else {
+    const sec = anchor?.closest('.sp-section');
+    if (sec) window.scrollTo({ top: window.scrollY + sec.getBoundingClientRect().top - line, behavior: 'instant' });
+  }
+  computeActive();
+}
+
+function applyFilters({ tier = tierMax(), quick = quickOn() } = {}, { save = true, say = false, keepView = true } = {}) {
+  const change = () => {
+    document.body.dataset.tierMax = String(tier);
+    if (quick) document.body.dataset.quick = 'on'; else delete document.body.dataset.quick;
+    paintControls();
+  };
+  if (keepView && document.body.dataset.spReady) withScrollAnchor(change); else change();
+  if (save) { store.set('spinal-tier', String(tier)); store.set('spinal-quick', quick ? '1' : '0'); }
+  if (say) announce(quick ? 'Quick read on. Showing headings, key points and the 60-second checklist.' : `Level ${LEVELS[tier].name}. ${LEVELS[tier].hint}`);
+}
+
+{
+  const t = Number(store.get('spinal-tier'));
+  document.body.dataset.tierMax = String(t >= 1 && t <= 3 ? t : 3);
+  if (store.get('spinal-quick') === '1') document.body.dataset.quick = 'on';
+  paintControls();
+  if (controls) controls.hidden = false;
+  levelBtns.forEach((b) => b.addEventListener('click', () => applyFilters({ tier: Number(b.dataset.level) }, { say: true })));
+  quickBtn?.addEventListener('click', () => applyFilters({ quick: !quickOn() }, { say: true }));
+}
+
+/** A deep link to something the current filters hide: relax the filters just enough to show it. */
+function relaxFor(target) {
+  if (!target) return false;
+  let need = 1;
+  for (let p = target; p; p = p.parentElement) if (p.dataset?.tier) need = Math.max(need, Number(p.dataset.tier) || 1);
+  const stays = target.matches('h2,h3,.sp-kicker,.sp-section,.sp-mount,main') || target.closest('.sp-keypoints,[data-quick="keep"],#references')
+    || target.querySelector('h2,h3,.sp-keypoints,[data-quick="keep"]');
+  const newTier = Math.max(tierMax(), need);
+  const newQuick = quickOn() && !!stays;
+  if (newTier === tierMax() && newQuick === quickOn()) return false;
+  applyFilters({ tier: newTier, quick: newQuick }, { keepView: false });
+  announce('Level or Quick read changed to show the linked item.');
+  return true;
+}
+
 // ---------------------------------------------------------------- deep links
-const mods = ['anatomy', 'technique', 'ultrasound', 'troubleshooting', 'complications', 'populations', 'quiz'];
+const mods = ['anatomy', 'technique', 'spines', 'ultrasound', 'troubleshooting', 'complications', 'populations', 'quiz'];
 const revealers = new Map(); // prefix -> reveal(hashId)
 
 function isShown(node) { return !!node && node.getClientRects().length > 0 && !node.closest('[hidden]'); }
@@ -129,6 +208,7 @@ async function goToHash(hash, { initial = false } = {}) {
   const id = decodeURIComponent((hash || '').replace(/^#/, ''));
   if (!id) return;
   let target = document.getElementById(id);
+  relaxFor(target);
   if (!isShown(target)) {
     const prefix = id.split('-')[0];
     const reveal = revealers.get(prefix);
@@ -136,6 +216,7 @@ async function goToHash(hash, { initial = false } = {}) {
       try { await reveal(id); } catch (err) { console.error('[spinal] reveal failed', err); }
     }
     target = document.getElementById(id);
+    relaxFor(target);
     if (target && !isShown(target)) openAncestors(target);
   }
   if (!target || !isShown(target)) return;
@@ -147,7 +228,24 @@ async function goToHash(hash, { initial = false } = {}) {
       if (!target.matches('a,button,input,select,textarea,summary,[tabindex]')) target.setAttribute('tabindex', '-1');
       target.focus({ preventScroll: true });
     }
+    settleOn(target);
   });
+}
+
+// Figures above the target can finish laying out after the jump and push it down.
+// Re-align a few times over the next ~1.5 s, unless the reader starts scrolling.
+function settleOn(target) {
+  let cancelled = false;
+  const stop = () => { cancelled = true; };
+  const evs = ['wheel', 'touchstart', 'keydown', 'mousedown'];
+  evs.forEach((e) => window.addEventListener(e, stop, { once: true, passive: true }));
+  const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  [450, 900, 1500].forEach((ms, i, all) => setTimeout(() => {
+    if (!cancelled && Math.abs(target.getBoundingClientRect().top - pad) > 24) {
+      target.scrollIntoView({ block: 'start', behavior: 'instant' });
+    }
+    if (i === all.length - 1) evs.forEach((e) => window.removeEventListener(e, stop));
+  }, ms));
 }
 window.addEventListener('hashchange', () => goToHash(location.hash));
 

@@ -1,4 +1,4 @@
-/* spinal/ — 06 Special populations. Every selector starts with .spinal-app .pp- or #pp-. */
+/* spinal/ — 07 Special populations. Every selector starts with .spinal-app .pp- or #pp-. */
 .spinal-app .pp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:16px;margin:8px 0 0;padding:0}
 .spinal-app .pp-card{display:flex;flex-direction:column;padding:18px 20px 16px;background:var(--sp-surface);border:1px solid var(--sp-line);border-top:3px solid var(--sp-ink);min-width:0}
 .spinal-app .pp-card:target{border-top-color:var(--sp-accent);outline:1px solid var(--sp-accent);outline-offset:-1px}

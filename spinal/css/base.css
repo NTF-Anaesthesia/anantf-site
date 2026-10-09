@@ -282,3 +282,66 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 
 /* Programmatic focus targets (deep links, tree headings) need no ring; interactive controls keep theirs. */
 body.spinal-app [tabindex="-1"]:is(:focus,:focus-visible){outline:none}
+
+/* ------------------------------------------------------------------ levels, quick read, key points */
+.spinal-app .sp-controls{margin:18px 0 0;max-width:640px}
+.spinal-app .sp-controls[hidden]{display:none}
+.spinal-app .sp-controls-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.spinal-app .sp-controls-label{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted)}
+.spinal-app .sp-level{display:inline-flex;border:1px solid var(--sp-line-strong)}
+.spinal-app .sp-level-btn{min-height:44px;min-width:44px;padding:0 16px;border:0;border-left:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1 var(--sp-sans);cursor:pointer;transition:background-color .15s}
+.spinal-app .sp-level-btn:first-child{border-left:0}
+.spinal-app .sp-level-btn:hover{background:var(--sp-accent-soft)}
+.spinal-app .sp-level-btn[aria-pressed=true]{background:var(--sp-accent);color:var(--sp-on-accent);font-weight:500}
+.spinal-app .sp-level-btn:focus-visible{outline-offset:-4px}
+.spinal-app .sp-quick-btn{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 14px;border:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1 var(--sp-sans);cursor:pointer;transition:border-color .15s,background-color .15s}
+.spinal-app .sp-quick-btn:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+.spinal-app .sp-quick-box{width:14px;height:14px;border:1.5px solid currentColor;flex-shrink:0;position:relative}
+.spinal-app .sp-quick-btn[aria-pressed=true]{border-color:var(--sp-accent);background:var(--sp-accent-soft);font-weight:500}
+.spinal-app .sp-quick-btn[aria-pressed=true] .sp-quick-box{background:var(--sp-accent);border-color:var(--sp-accent)}
+.spinal-app .sp-quick-btn[aria-pressed=true] .sp-quick-box::after{content:'';position:absolute;left:3px;top:0;width:4px;height:8px;border:solid var(--sp-on-accent);border-width:0 2px 2px 0;transform:rotate(40deg)}
+.spinal-app .sp-controls-hint{margin:8px 0 0;font-size:13px;line-height:1.5;color:var(--sp-muted)}
+
+/* Tier filtering: levels are cumulative. body[data-tier-max] = 1 (MO), 2 (Resident), 3 (Advanced, default). */
+body.spinal-app[data-tier-max="1"] [data-tier="2"],
+body.spinal-app[data-tier-max="1"] [data-tier="3"],
+body.spinal-app[data-tier-max="2"] [data-tier="3"]{display:none!important}
+
+/* Tier badges (drawn by CSS on tagged blocks; hidden in Quick read). */
+.spinal-app main [data-tier]{position:relative}
+.spinal-app main [data-tier]::after{position:absolute;top:-8px;right:6px;z-index:1;padding:2px 5px 1px;background:var(--sp-bg);border:1px solid currentColor;font:400 10px/1.4 var(--sp-mono);letter-spacing:.06em;text-transform:uppercase;pointer-events:none;white-space:nowrap}
+.spinal-app main [data-tier="1"]::after{content:'MO';color:var(--sp-muted)}
+.spinal-app main [data-tier="2"]::after{content:'Resident';color:var(--sp-accent)}
+.spinal-app main [data-tier="3"]::after{content:'Advanced';color:var(--sp-pearl)}
+.spinal-app main :is([data-tier="1"] [data-tier="1"],[data-tier="2"] [data-tier="2"],[data-tier="3"] [data-tier="3"],.sp-keypoints,.sp-sixty)::after{display:none}
+body.spinal-app[data-quick="on"] main [data-tier]::after{display:none}
+.spinal-app main :is(td,th,tr,tbody,thead)[data-tier]::after{display:none}
+
+/* Key points box */
+.spinal-app .sp-keypoints{margin:0 0 28px;padding:14px 18px 6px;max-width:72ch;background:var(--sp-surface);border:1px solid var(--sp-line);border-left:4px solid var(--sp-accent)}
+.spinal-app .sp-keypoints-title{margin:0 0 8px;font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-accent)}
+.spinal-app main .sp-keypoints ul{list-style:none;margin:0 0 8px;padding:0}
+.spinal-app main .sp-keypoints li{position:relative;margin:0 0 6px;padding-left:16px;font-size:15px;line-height:1.55;max-width:none}
+.spinal-app main .sp-keypoints li::before{content:'';position:absolute;left:0;top:.58em;width:6px;height:6px;background:var(--sp-accent)}
+
+/* 60 seconds block */
+.spinal-app .sp-sixty-list{list-style:none;counter-reset:sixty;margin:0 0 24px;padding:0;max-width:72ch}
+.spinal-app main .sp-sixty-list li{counter-increment:sixty;position:relative;padding:11px 0 11px 46px;margin:0;border-top:1px solid var(--sp-line);font-size:15px;line-height:1.6;max-width:none}
+.spinal-app main .sp-sixty-list li:last-child{border-bottom:1px solid var(--sp-line)}
+.spinal-app .sp-sixty-list li::before{content:counter(sixty);display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--sp-ink);color:var(--sp-bg);font:500 13px/1 var(--sp-mono);position:absolute;left:0;top:10px}
+.spinal-app .sp-stop{max-width:72ch;padding:14px 18px 6px;background:var(--sp-danger-bg);border-left:4px solid var(--sp-danger)}
+.spinal-app .sp-stop-title{margin:0 0 8px;font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-danger)}
+.spinal-app main .sp-stop ul{list-style:none;margin:0 0 8px;padding:0}
+.spinal-app main .sp-stop li{position:relative;margin:0 0 8px;padding-left:16px;font-size:15px;line-height:1.55;max-width:none}
+.spinal-app main .sp-stop li::before{content:'';position:absolute;left:0;top:.58em;width:6px;height:6px;background:var(--sp-danger)}
+
+/* Quick read: only headings, kickers, key points and [data-quick=keep] blocks stay. */
+body.spinal-app[data-quick="on"] main .sp-section:not(#references) *:not(h2,h3,.sp-kicker,.sp-keypoints,[data-quick="keep"]):not(:has(h2,h3,.sp-keypoints,[data-quick="keep"])):not(.sp-keypoints *):not([data-quick="keep"] *){display:none!important}
+body.spinal-app[data-quick="on"] main h3{margin-top:20px}
+body.spinal-app[data-quick="on"] main .sp-section{padding-block:32px}
+
+@media (max-width:760px){
+  .spinal-app .sp-controls-row{gap:10px}
+  .spinal-app .sp-level-btn{padding:0 12px}
+  .spinal-app .sp-keypoints{padding:12px 14px 4px}
+}

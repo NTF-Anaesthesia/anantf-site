@@ -58,6 +58,22 @@ export function announce(text) {
   requestAnimationFrame(() => { live.textContent = text; });
 }
 
+// ---------------------------------------------------------------- tiers and key points
+/** Tag a block with a learning tier (1 MO, 2 Resident, 3 Advanced). Returns the node. */
+export function tier(node, n) {
+  const t = Number(n);
+  if (node && (t === 1 || t === 2 || t === 3)) node.dataset.tier = String(t);
+  return node;
+}
+
+/** keyPoints(['one line', …], {title}) → the section's Key points box (tier 1, kept in Quick read). */
+export function keyPoints(items = [], { title = 'Key points' } = {}) {
+  const ul = el('ul');
+  for (const it of items) ul.append(fill(el('li'), it));
+  const box = el('aside', { class: 'sp-keypoints', 'aria-label': title }, el('p', { class: 'sp-keypoints-title', text: title }), ul);
+  return tier(box, 1);
+}
+
 // ---------------------------------------------------------------- callouts
 const ICONS = {
   key: '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="3" y="3" width="10" height="10" fill="currentColor"/></svg>',
