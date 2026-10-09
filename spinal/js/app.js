@@ -116,10 +116,12 @@ window.addEventListener('scroll', scheduleSpy, { passive: true });
 window.addEventListener('resize', scheduleSpy);
 
 // ---------------------------------------------------------------- level (tier) and Quick read
+// Levels: '1' MO only, '2' MO + Resident, 'adv' Advanced pearls only (a digest per section), 'all' everything.
 const LEVELS = {
-  1: { name: 'MO', hint: 'MO: MOPEX level. Showing what you need for your first supervised spinals.' },
-  2: { name: 'Resident', hint: 'Resident: showing everything up to the MMed exam (MO and Resident).' },
-  3: { name: 'Advanced', hint: 'Advanced: showing everything, including subspecialty detail and consultant pearls.' },
+  1: { name: 'MO', tier: 1, hint: 'MO: MOPEX level. Showing what you need for your first supervised spinals.' },
+  2: { name: 'Resident', tier: 2, hint: 'Resident: everything up to the MMed exam (MO and Resident).' },
+  adv: { name: 'Advanced', tier: 3, hint: 'Advanced: subspecialty detail and consultant pearls only, collected section by section.' },
+  all: { name: 'All', tier: 3, hint: 'All: everything on the page, from MO basics to consultant pearls.' },
 };
 const controls = $('#sp-controls');
 const levelBtns = controls ? $$('.sp-level-btn', controls) : [];
@@ -128,15 +130,59 @@ const store = {
   get(k) { try { return localStorage.getItem(k); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage may be blocked */ } },
 };
-const tierMax = () => Number(document.body.dataset.tierMax) || 3;
+const level = () => (LEVELS[document.body.dataset.level] ? document.body.dataset.level : 'all');
+const tierMax = () => LEVELS[level()].tier;
 const quickOn = () => document.body.dataset.quick === 'on';
 
 function paintControls() {
-  const t = tierMax();
-  levelBtns.forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.level) === t)));
+  const lv = level();
+  levelBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === lv)));
   quickBtn?.setAttribute('aria-pressed', String(quickOn()));
   const hint = $('#sp-level-hint');
-  if (hint) hint.textContent = quickOn() ? 'Quick read: headings, key points and the 60-second checklist only.' : LEVELS[t].hint;
+  if (hint) hint.textContent = quickOn() ? 'Quick read: headings, key points and the 60-second checklist only.' : LEVELS[lv].hint;
+}
+
+/** Text that says where a pearl comes from: the open panel or tab, and the nearest heading above it. */
+function contextFor(node, section) {
+  const parts = [];
+  const panel = node.closest('[role="tabpanel"],[data-panel-title]');
+  if (panel && section.contains(panel)) {
+    const lab = panel.dataset.panelTitle || (panel.getAttribute('aria-labelledby') && document.getElementById(panel.getAttribute('aria-labelledby'))?.textContent)
+      || panel.getAttribute('aria-label');
+    if (lab) parts.push(lab.trim());
+  }
+  for (let n = node; n && n !== section; n = n.parentElement) {
+    let p = n.previousElementSibling;
+    while (p && !p.matches('h3,h4,.sp-h4')) p = p.previousElementSibling;
+    if (p) { parts.push(p.textContent.trim()); break; }
+  }
+  return [...new Set(parts)].filter(Boolean).join(' · ');
+}
+
+/** Build (or rebuild) the Advanced digest: every tier-3 block in a section, copied into one list. */
+function buildDigests() {
+  $$('main .sp-section').forEach((sec) => {
+    if (sec.id === 'references' || sec.id === 'quiz') return;
+    sec.querySelector(':scope > .sp-adv-digest')?.remove();
+    const items = $$('[data-tier="3"]', sec).filter((n) => !n.parentElement.closest('[data-tier="3"]'));
+    const box = el('div', { class: 'sp-adv-digest', 'data-quick': 'keep' });
+    if (!items.length) {
+      box.append(el('p', { class: 'sp-adv-empty', text: 'No Advanced material in this section. Choose All or Resident to read it.' }));
+    } else {
+      items.forEach((n) => {
+        const copy = n.cloneNode(true);
+        copy.removeAttribute('data-tier');
+        [copy, ...copy.querySelectorAll('[id]')].forEach((x) => x.removeAttribute('id'));
+        copy.querySelectorAll('[aria-controls],[aria-labelledby],[aria-describedby]').forEach((x) => {
+          x.removeAttribute('aria-controls'); x.removeAttribute('aria-labelledby'); x.removeAttribute('aria-describedby');
+        });
+        copy.querySelectorAll('[hidden]').forEach((x) => x.removeAttribute('hidden'));
+        const ctx = contextFor(n, sec);
+        box.append(el('div', { class: 'sp-adv-item' }, ...(ctx ? [el('p', { class: 'sp-adv-from', text: ctx })] : []), copy));
+      });
+    }
+    sec.append(box);
+  });
 }
 
 /** Keep the heading the reader is looking at where it was while content above it appears or disappears. */
@@ -158,24 +204,29 @@ function withScrollAnchor(change) {
   computeActive();
 }
 
-function applyFilters({ tier = tierMax(), quick = quickOn() } = {}, { save = true, say = false, keepView = true } = {}) {
+function applyFilters({ lv = level(), quick = quickOn() } = {}, { save = true, say = false, keepView = true } = {}) {
   const change = () => {
-    document.body.dataset.tierMax = String(tier);
+    if (lv === 'adv' && document.body.dataset.spReady) buildDigests();
+    document.body.dataset.level = lv;
+    document.body.dataset.tierMax = String(LEVELS[lv].tier);
     if (quick) document.body.dataset.quick = 'on'; else delete document.body.dataset.quick;
     paintControls();
   };
   if (keepView && document.body.dataset.spReady) withScrollAnchor(change); else change();
-  if (save) { store.set('spinal-tier', String(tier)); store.set('spinal-quick', quick ? '1' : '0'); }
-  if (say) announce(quick ? 'Quick read on. Showing headings, key points and the 60-second checklist.' : `Level ${LEVELS[tier].name}. ${LEVELS[tier].hint}`);
+  if (save) { store.set('spinal-level', lv); store.set('spinal-quick', quick ? '1' : '0'); }
+  if (say) announce(quick ? 'Quick read on. Showing headings, key points and the 60-second checklist.' : `Level ${LEVELS[lv].name}. ${LEVELS[lv].hint}`);
 }
 
 {
-  const t = Number(store.get('spinal-tier'));
-  document.body.dataset.tierMax = String(t >= 1 && t <= 3 ? t : 3);
+  const saved = store.get('spinal-level');
+  const legacy = { 1: '1', 2: '2', 3: 'all' }[store.get('spinal-tier')];
+  const lv = LEVELS[saved] ? saved : (legacy || 'all');
+  document.body.dataset.level = lv;
+  document.body.dataset.tierMax = String(LEVELS[lv].tier);
   if (store.get('spinal-quick') === '1') document.body.dataset.quick = 'on';
   paintControls();
   if (controls) controls.hidden = false;
-  levelBtns.forEach((b) => b.addEventListener('click', () => applyFilters({ tier: Number(b.dataset.level) }, { say: true })));
+  levelBtns.forEach((b) => b.addEventListener('click', () => applyFilters({ lv: b.dataset.level }, { say: true })));
   quickBtn?.addEventListener('click', () => applyFilters({ quick: !quickOn() }, { say: true }));
 }
 
@@ -186,10 +237,12 @@ function relaxFor(target) {
   for (let p = target; p; p = p.parentElement) if (p.dataset?.tier) need = Math.max(need, Number(p.dataset.tier) || 1);
   const stays = target.matches('h2,h3,.sp-kicker,.sp-section,.sp-mount,main') || target.closest('.sp-keypoints,[data-quick="keep"],#references')
     || target.querySelector('h2,h3,.sp-keypoints,[data-quick="keep"]');
-  const newTier = Math.max(tierMax(), need);
   const newQuick = quickOn() && !!stays;
-  if (newTier === tierMax() && newQuick === quickOn()) return false;
-  applyFilters({ tier: newTier, quick: newQuick }, { keepView: false });
+  let lv = level();
+  if (lv === 'adv') { if (!target.closest('.sp-adv-digest,#quiz,#references') && !target.matches('.sp-section,h2,.sp-kicker')) lv = 'all'; }
+  else if (need > tierMax()) lv = need === 2 ? '2' : 'all';
+  if (lv === level() && newQuick === quickOn()) return false;
+  applyFilters({ lv, quick: newQuick }, { keepView: false });
   announce('Level or Quick read changed to show the linked item.');
   return true;
 }
@@ -282,6 +335,7 @@ async function boot() {
   try { finalise(); } catch (err) { console.error('[spinal] references failed', err); }
   paintOverflow();
   computeActive();
+  if (level() === 'adv') buildDigests();
   document.body.dataset.spReady = 'true';
   document.dispatchEvent(new CustomEvent('sp-ready'));
   if (location.hash) await goToHash(location.hash, { initial: true });

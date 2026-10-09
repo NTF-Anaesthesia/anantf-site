@@ -365,3 +365,18 @@ body.spinal-app{padding-bottom:84px}
 @media print{.spinal-app .sp-controls,.spinal-app .sp-controls-note{display:none!important}body.spinal-app{padding-bottom:0}}
 html:has(body.spinal-app){scroll-padding-bottom:96px}
 .spinal-app main :is(p,ul,ol,h4)[data-tier]::after{top:-17px;right:0}
+
+/* Advanced level: each section shows only its digest of consultant pearls (built by app.js). */
+.spinal-app .sp-adv-digest{display:none}
+body.spinal-app[data-level="adv"] main .sp-section:not(#quiz):not(#references) > :not(.sp-kicker,h2,.sp-adv-digest){display:none!important}
+body.spinal-app[data-level="adv"] .sp-adv-digest{display:block}
+body.spinal-app[data-level="adv"] #quiz [data-tier="1"],body.spinal-app[data-level="adv"] #quiz [data-tier="2"]{display:none!important}
+.spinal-app .sp-adv-digest{max-width:860px}
+.spinal-app .sp-adv-item{margin:0 0 22px}
+.spinal-app .sp-adv-item > :not(.sp-adv-from){margin-top:6px}
+.spinal-app .sp-adv-from{margin:0;font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-pearl)}
+.spinal-app .sp-adv-empty{margin:0;color:var(--sp-muted);font-style:italic}
+@media (max-width:760px){.spinal-app .sp-controls .sp-level-btn{padding:0 8px;font-size:13.5px}.spinal-app .sp-controls .sp-quick-btn{padding:0 8px;font-size:13.5px}}
+.spinal-app .sp-adv-digest .sp-callout-label{display:none}
+.spinal-app .sp-controls .sp-quick-btn,.spinal-app .sp-controls .sp-level-btn{white-space:nowrap}
+@media (max-width:400px){.spinal-app .sp-controls .sp-level-btn{padding:0 7px}.spinal-app .sp-controls .sp-quick-btn{padding:0 7px;gap:6px}.spinal-app .sp-controls .sp-quick-box{width:12px;height:12px}}
