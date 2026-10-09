@@ -75,7 +75,7 @@ export const dryTap = {
     xGo: {
       outcome: 'Proceed only when clear CSF flows freely',
       tone: 'ok',
-      body: `<p>Steady the hub against the patient’s back. Attach the syringe firmly, aspirate CSF easily, inject, and many people aspirate again at the end to check the needle hasn’t moved.${cite('ts-nysora-failed')}</p>`,
+      body: `<p>Steady the hub against the patient’s back so the needle can’t move. Attach the syringe firmly and confirm that CSF aspirates easily before you inject.${cite('ts-nysora-failed')}</p>`,
     },
     xBone: {
       outcome: 'Work through the bone contact tree',
@@ -251,8 +251,9 @@ export const bone = {
       ],
     },
     paraShallow: {
-      prompt: 'The entry is probably too lateral, so the needle meets the facet column. Withdraw and increase the medial angle slightly.',
-      short: 'Too lateral',
+      prompt: 'Bone much earlier than expected: the needle isn’t where you think. Withdraw to the subcutaneous tissue and re-check the entry point and angles.',
+      short: 'Early bone',
+      detail: '<p>A steep medial angle can meet the side of a spinous process early. Reduce the medial angle, then advance until you meet the lamina at the expected depth. If you can’t make sense of it, an ultrasound pre-scan or a senior colleague will help.</p>',
       guide: 'para-shallow',
       choices: [
         { label: 'Now reaching lamina at the expected depth', to: 'paraDeep' },
@@ -504,7 +505,7 @@ export const highSpinal = {
     xCirc: {
       outcome: 'Treat the circulation, then sedate and plan ongoing care',
       tone: 'danger',
-      body: `<p>QRH 3-11 doses for this emergency:${cite('ts-qrh2023')}</p>
+      body: `<p>Doses as printed in the Association of Anaesthetists QRH 3-11 for this emergency (they differ slightly from the product-label doses in the hypotension tree; follow your local protocol):${cite('ts-qrh2023')}</p>
         <ul>
           <li>Bradycardia: atropine ${D('0.6–1.2 mg')} or glycopyrronium ${D('0.2–0.4 mg')} IV.</li>
           <li>Hypotension: metaraminol ${D('1–2 mg')} boluses, phenylephrine ${D('50–100 µg')} boluses or infusion, or ephedrine ${D('6–12 mg')} boluses (up to ${D('30 mg')}; repeated doses work less well).</li>
@@ -534,7 +535,7 @@ export const hypotension = {
     cause: {
       prompt: 'Check the block height and look for other causes. Is the block higher than you planned?',
       short: 'Block height',
-      detail: `<p>Hypotension is more likely with a block at or above T5, age 40 or over, a low baseline blood pressure, and a spinal combined with general anaesthesia.${cite('ts-carpenter1992')} Also think about bleeding, surgical compression of the vena cava, anaphylaxis and embolism.</p>`,
+      detail: `<p>Hypotension is more likely with a higher block (at or above T5) and in older patients.${cite('ts-carpenter1992')} Also think about bleeding, surgical compression of the vena cava, anaphylaxis and embolism.</p>`,
       choices: [
         { label: 'Yes: weak hands, breathless or struggling to speak', to: 'xHigh' },
         { label: 'No: block about as planned', to: 'hr' },
@@ -586,7 +587,7 @@ export const hypotension = {
     xOk: {
       outcome: 'Keep treating early, and watch closely',
       tone: 'ok',
-      body: '<p>Recheck the blood pressure every 1–2 minutes until it is stable, then at your usual interval. Treat early rather than waiting for a big fall. Recheck the block height. Consider an infusion if repeated boluses are needed.</p>',
+      body: '<p>Set the blood pressure to cycle frequently until it is stable. Treat early rather than waiting for a big fall. Recheck the block height. Consider an infusion if repeated boluses are needed, and ask for help if they are.</p>',
     },
     xHigh: {
       outcome: 'Treat as a high spinal',
@@ -828,17 +829,17 @@ export const caseHip = {
       short: 'Partial response',
       choices: [
         { label: 'Check the block height, keep treating early, and consider an infusion and arterial line', to: 'xGood', note: '<p>Good. She is still well below her likely baseline. Keep going.</p>' },
-        { label: 'She’s talking: wait and recheck in 10 minutes', to: 'xWait', note: '<p>Too long. An elderly patient with a fixed hip fracture can deteriorate quickly; recheck every 1–2 minutes until stable.</p>' },
+        { label: 'She’s talking: wait and recheck in 10 minutes', to: 'xWait', note: '<p>Too long. An elderly patient can deteriorate quickly; keep the blood pressure cycling frequently until it is stable.</p>' },
         { label: 'Give adrenaline now', to: 'xAdr', note: '<p>Not yet. She is responding. Adrenaline is for severe or refractory hypotension or bradycardia.</p>' },
       ],
     },
     xGood: {
       outcome: 'Treat early and keep close watch',
       tone: 'ok',
-      body: `<p>Age, block height and a low starting pressure all raise the risk of hypotension.${cite('ts-carpenter1992')} Check the block height, look for blood loss, and keep the surgeon informed. See ${go('ts-hypotension', 'Hypotension and bradycardia')}.</p>`,
+      body: `<p>Older age and a higher block both raise the risk of hypotension.${cite('ts-carpenter1992')} Check the block height, look for blood loss, and keep the surgeon informed. See ${go('ts-hypotension', 'Hypotension and bradycardia')}.</p>`,
     },
     xWait: {
-      outcome: 'Don’t wait: recheck every 1–2 minutes',
+      outcome: 'Don’t wait: recheck at short intervals',
       tone: 'warn',
       body: '<p>Keep treating until the pressure is close to her baseline, and recheck often. Ask for help if it isn’t improving.</p>',
     },

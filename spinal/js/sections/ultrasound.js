@@ -1,6 +1,6 @@
 // 03 Ultrasound-assisted neuraxial. Owner: B4.
 // Simulated scans are computed in the browser (js/ultrasound/*): original procedural images, not patient scans.
-// Facts from research file 01 part B; journal refs checked on PubMed (9 October 2026); the NYSORA chapter was read in full.
+// Facts from research file 01 part B; journal refs and abstracts checked on PubMed/Crossref (9 October 2026); the NYSORA chapter was read in full.
 import { el, cite, callout, steps, table } from '../ui.js?v=1';
 import { createViewer } from '../ultrasound/viewer.js';
 
@@ -8,8 +8,8 @@ export const meta = { id: 'ultrasound', prefix: 'us', title: 'Ultrasound-assiste
 
 export const refs = {
   'us-nysora': {
-    label: 'Karmakar (NYSORA)',
-    text: 'Karmakar MK, Chin KJ. Spinal sonography and applications of ultrasound for central neuraxial blocks. New York School of Regional Anesthesia (NYSORA). Accessed 9 October 2026.',
+    label: 'NYSORA',
+    text: 'New York School of Regional Anesthesia (NYSORA). Spinal sonography and applications of ultrasound for central neuraxial blocks [online chapter]. Accessed 9 October 2026.',
     url: 'https://www.nysora.com/techniques/neuraxial-and-perineuraxial-techniques/spinal-sonography-and-applications-of-ultrasound-for-central-neuraxial-blocks/',
   },
   'us-shaikh2013': {
@@ -127,7 +127,7 @@ export function mount(root) {
       caption: 'Ultrasound before spinal or epidural: key studies',
       head: ['Study', 'Who', 'What it found'],
       rows: [
-        [{ html: `Chin 2011, randomised trial${cite('chin2011')}`, th: true }, '120 orthopaedic patients with difficult landmarks: BMI over 35 with poorly palpable spines, scoliosis, or previous lumbar surgery', 'Spinal on the first attempt in <span class="sp-num">65%</span> with a pre-procedure scan versus <span class="sp-num">32%</span> with landmarks; median <span class="sp-num">1</span> versus <span class="sp-num">2</span> insertion attempts'],
+        [{ html: `Chin 2011, randomised trial${cite('chin2011')}`, th: true }, '120 orthopaedic patients with difficult landmarks: BMI over 35 with poorly palpable spines, moderate to severe scoliosis, or previous lumbar surgery', 'Spinal on the first attempt in <span class="sp-num">65%</span> with a pre-procedure scan versus <span class="sp-num">32%</span> with landmarks; median <span class="sp-num">1</span> versus <span class="sp-num">2</span> insertion attempts'],
         [{ html: `Shaikh 2013, meta-analysis${cite('us-shaikh2013')}`, th: true }, '14 randomised trials, 1334 patients having a lumbar puncture or an epidural catheter', 'Fewer failed procedures (risk ratio <span class="sp-num">0.21</span>, 95% CI <span class="sp-num">0.10–0.43</span>) and fewer traumatic procedures (risk ratio <span class="sp-num">0.27</span>, 95% CI <span class="sp-num">0.11–0.67</span>)'],
         [{ html: `Perlas 2016, systematic review${cite('perlas2016')}`, th: true }, '31 clinical trials and 1 meta-analysis of adult spinal and epidural anaesthesia', 'Level identified more accurately than by palpation; depth agrees with needle depth (within about <span class="sp-num">3 mm</span> in most studies); higher success and easier insertion; probably fewer traumatic procedures; not enough evidence on other safety outcomes'],
         [{ html: `Furness 2002${cite('us-furness2002')}`, th: true }, '50 patients, level checked on lateral X-ray', 'Correct level in up to <span class="sp-num">71%</span> with ultrasound versus <span class="sp-num">30%</span> with palpation'],
