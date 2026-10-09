@@ -42,10 +42,18 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `popliteal/index.html` | Popliteal sciatic block animation by Dr Chew Shi Hao | No (unlisted) |
 | `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app | No (unlisted) |
 | `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting, ultrasound and quiz (Dr Koh Wenjun and Dr Chew Shi Hao) | No (unlisted) |
+| `ra.html` | Popliteal sciatic block (the only lower-limb block on the main site; linked from `regional.html`) | Via Regional |
+| `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
+| `draft-ra.html` | Draft copy of the full lower-limb block app (all 7 blocks, combinations) | No (draft) |
+| `pocus/{cardiac,lung,shock,efast,dvt}/` | Draft POCUS tutorials, reached from `draft.html` | No (draft) |
 
 The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
 
 ## Rules
+
+- Drafts live behind `draft.html` (noindex). Don't link `draft.html`, `draft-ra.html` or the draft POCUS pages from the homepage,
+  navigation or the POCUS and Regional hubs. To publish a draft: add its card to the right hub, remove it from `draft.html`,
+  and drop "draft" from its breadcrumb. To publish another lower-limb block, add it back to `RA_INDEX` in `ra.html`.
 
 - Don't add links to `exams/`, `popliteal/`, `brachial-plexus/` or `spinal/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.

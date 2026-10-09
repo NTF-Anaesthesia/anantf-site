@@ -268,7 +268,7 @@ function register(slug,m,build){reg[slug]={meta:m,build}}
 /* ---------- shell: regions, blocks, header, panels ---------- */
 const regBox=$('regions'),blkBox=$('blocks');
 let region=null;const lastIn={};
-const regionOf=IDX.regionOf,esc=IDX.esc;   // shared with the shell's first-paint script in ra.html
+const regionOf=IDX.regionOf,esc=IDX.esc,START=IDX.start||'femoral';   // shared with the shell's first-paint script in ra.html
 function roving(box,activate){
   box.addEventListener('keydown',e=>{const t=[...box.querySelectorAll('[role=tab]')],i=t.indexOf(document.activeElement);if(i<0)return;
     let j={ArrowRight:i+1,ArrowLeft:i-1,Home:0,End:t.length-1}[e.key];if(j===undefined)return;e.preventDefault();j=(j+t.length)%t.length;
@@ -330,7 +330,7 @@ async function mount(slug,tab,scen,before){
   if(location.hash&&location.hash!=='#combinations')writeHash();   // normalise a deep link that named an unknown tab or scenario
 }
 function go(slug,tab,scen,opt={}){
-  if(!IDX.blocks[slug])slug='femoral';
+  if(!IDX.blocks[slug])slug=START;
   const key=opt.region||(region&&region.blocks.includes(slug)?region.key:regionOf(slug).key);
   if(!region||region.key!==key)setRegion(key);
   lastIn[key]=slug;
@@ -353,10 +353,10 @@ function route(){routed=location.hash;
   const h=decodeURIComponent(location.hash.slice(1));
   const r=IDX.regions.find(x=>x.key===h);
   if(r){const s=r.blocks[0];if(!TEST)history.replaceState(null,'','#'+s);return go(s,null,null,{region:r.key})}
-  if(h==='combinations'){const d=$('combinations');d.open=true;if(!P.block&&!pending)go('femoral');setTimeout(()=>d.scrollIntoView({block:'start'}),0);return}
-  let [slug,tab,scen]=(h||'femoral').split('/');
+  if(h==='combinations'&&$('combinations')){const d=$('combinations');d.open=true;if(!P.block&&!pending)go(START);setTimeout(()=>d.scrollIntoView({block:'start'}),0);return}
+  let [slug,tab,scen]=(h||START).split('/');
   if(rt&&slug===P.block&&!tab){tab=rt.defaultTab;scen=rt.curScen[tab]}   // back to the bare block link: its default view
-  return go(IDX.blocks[slug]?slug:(pending||P.block||'femoral'),tab||null,scen||null);
+  return go(IDX.blocks[slug]?slug:(pending||P.block||START),tab||null,scen||null);
 }
 // in-page links (#lfcn, #adductor-canal/tkr in tips, notes and combinations): push a history entry and bring the player back into view
 document.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href^="#"]');if(!a||TEST||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
@@ -374,7 +374,7 @@ function hooks(o){return()=>{
   dirty=true;
   if(tt!==null&&tt!==undefined&&tt!==''&&isFinite(+tt)){const T=clamp(+tt,TS0,P.cur.Tend);P.dT=9;P.playT=T-TS0;P.started=T>8.3;P.ended=T>=P.cur.Tend;P.playing=false;syncBtn()}
 }}
-function test(o){const slug=IDX.blocks[o.b]?o.b:'femoral';P.showLabels=true;lblBtn.setAttribute('aria-pressed','true');
+function test(o){const slug=IDX.blocks[o.b]?o.b:START;P.showLabels=true;lblBtn.setAttribute('aria-pressed','true');
   if(slug===(pending||P.block))unmount();   // remount: same path as a fresh page
   return go(slug,null,null,{before:hooks(o)})}
 
@@ -384,5 +384,5 @@ window.RA={register,
 
 if(TEST)test({b:Q.get('b'),v:Q.get('v'),s:Q.get('s'),t:Q.get('t'),nolabels:Q.has('nolabels'),probe:Q.has('probe')});
 else{addEventListener('popstate',route);addEventListener('hashchange',()=>{if(location.hash!==routed)route()});   // hashchange only when no popstate routed it
-  if(location.hash)route();else go('femoral')}
+  if(location.hash)route();else go(START)}
 })();
