@@ -38,7 +38,7 @@ export function anticoagLookup() {
       el('p', { class: 'tq-ac-name', text: d.name }),
       d.dose ? el('p', { class: 'tq-ac-dose', text: d.dose }) : null);
     const grid = el('div', { class: 'tq-ac-grid' },
-      col(`ASRA 2025${cite('asra2025')}`, 'From published summary — verify against full text', d.asra, 'tq-ac-col--asra'),
+      col(`ASRA 2025${cite('asra2025')}`, 'Full text', d.asra, 'tq-ac-col--asra'),
       col(`ESAIC/ESRA 2022${cite('esaic2022')}`, 'Full text', d.esaic, 'tq-ac-col--esaic'));
     out.append(head, grid);
     const notes = [];
@@ -73,7 +73,7 @@ export function anticoagTable() {
     esc(d.esaic.next),
   ]);
   return table({
-    caption: `Minimum intervals around a spinal: ASRA 2025 (from published summary — verify against full text)${cite('asra2025')} and ESAIC/ESRA 2022${cite('esaic2022')}`,
+    caption: `Minimum intervals around a spinal: ASRA 2025${cite('asra2025')} and ESAIC/ESRA 2022${cite('esaic2022')}`,
     head: ['Drug', 'ASRA: last dose → spinal', 'ASRA: spinal → next dose', 'ESAIC/ESRA: last dose → spinal', 'ESAIC/ESRA: spinal → next dose'],
     rows,
     id: 'tq-ac-table',

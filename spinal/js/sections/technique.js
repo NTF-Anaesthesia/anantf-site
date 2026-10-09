@@ -1,6 +1,6 @@
 // 02 Performing a spinal, step by step.
 // Doses: only from product labels (SmPC / Singapore NDF) and guidelines listed in `refs` below.
-// ASRA 2025 anticoagulation values come from a published summary and are labelled as such.
+// ASRA 2025 anticoagulation values were read in the full text (Kopp 2025).
 import { el, cite, callout, steps, table, tabs, segmented, figure, details, onResize, whenVisible } from '../ui.js?v=1';
 import { sittingSvg, lateralSvg, approachSvg, needlesSvg, timelineSvg } from '../technique/figures.js';
 import { anticoagLookup, anticoagTable, checklist, spreadFactors, blockCheck } from '../technique/widgets.js';
@@ -202,7 +202,7 @@ export function mount(root) {
       title: 'Check the NUHS/NTFGH policy first',
       body: '<p>These intervals are for teaching. Where the local policy differs, the local policy applies. Everything here assumes a <strong>single-shot spinal with no catheter</strong>. Where a guideline gives a rule for catheter removal, agree the timing of the next dose with the surgical team and the local policy.</p>',
     }),
-    P(`Spinal haematoma is rare but catastrophic. The intervals are built from pharmacokinetics, because the event is too rare to study in trials.${cite('asra2025')} The two current guidelines are ASRA 2025 and ESAIC/ESRA 2022.${cite('asra2025', 'esaic2022')} The ASRA column below comes from a published summary of the 5th edition; check it against the full text before you rely on it.`),
+    P(`Spinal haematoma is rare but catastrophic. The intervals are built from pharmacokinetics, because the event is too rare to study in trials.${cite('asra2025')} The two current guidelines are ASRA 2025 and ESAIC/ESRA 2022.${cite('asra2025', 'esaic2022')}`),
     lookup.node,
     el('h4', { text: 'Low dose and high dose' }),
     P(`Both guidelines now say “low dose” and “high dose” rather than “prophylactic” and “therapeutic”, because the same dose can be treatment in one patient and prophylaxis in another.${cite('esaic2022')}`),
@@ -221,8 +221,8 @@ export function mount(root) {
       `On more than one drug: use the longest interval.${cite('esaic2022')}`,
       `Ultrasound guidance does not shorten the interval, and nor does non-specific reversal (PCC, aPCC or andexanet) of a DOAC.${cite('esaic2022')}`,
       `A bloody tap may justify a longer gap before the next dose. Decide with the team.${cite('esaic2022')}`,
-      `On heparin for more than 4 days: check the platelet count (heparin-induced thrombocytopenia).${cite('aagbi2013')}`,
-      `Residual drug: a DOAC level under ${N('30 ng/mL')}, or an anti-Xa activity of ${N('0.1 IU/mL')} or less for anti-Xa drugs and LMWH, is the usual target if you measure before a block.${cite('esaic2022')}`,
+      `On heparin for more than 4 days: check the platelet count (heparin-induced thrombocytopenia).${cite('asra2025', 'aagbi2013')}`,
+      `Residual drug: a DOAC level under ${N('30 ng/mL')}, or an anti-Xa activity of ${N('0.1 IU/mL')} or less for anti-Xa drugs and LMWH, is the usual target if you measure before a block.${cite('asra2025', 'esaic2022')}`,
     ]),
     fullTable,
     callout('key', { title: 'The 2013 UK table is out of date for DOACs', body: `<p>The Association of Anaesthetists’ 2013 guideline is under review. Its DOAC intervals are shorter than both current guidelines, so don’t teach them as current.${cite('aagbi2013')}</p>` }),
