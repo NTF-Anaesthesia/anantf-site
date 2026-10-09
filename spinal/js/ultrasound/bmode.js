@@ -267,6 +267,7 @@ function paintScene(scene) {
     hb.setTransform(1, 0, 0, 1, 0, 0); hb.filter = `blur(${0.45 * PM}px)`; hb.drawImage(C.hb.canvas, 0, 0);
     C.hb = hb;
   }
+  const tq = []; for (const k of ['e','sp','at','hb']) { const tp = performance.now(); C[k].getImageData(0,0,1,1); tq.push(Math.round(performance.now()-tp)); } TP.push(tq.join('/'));
   return C;
 }
 
@@ -288,7 +289,6 @@ function convRows(src, W, H, k) {
       for (let x = 0; x < W; x++) out[o + x] += src[so + x] * w;
     }
   }
-  TM.push(performance.now());
   return out;
 }
 function boxRadii(sigma, n = 3) {
@@ -322,17 +322,13 @@ function blurRow(src, dst, tmp, o, W, radii, gain) {
 }
 
 // ------------------------------------------------------------------ B-mode in the polar grid
-export const TM=[];
 function renderPolar(C, seed) {
-  TM.length=0; TM.push(performance.now());
   const N = NA * NR, idx = polarIndex();
   const eD = C.e.getImageData(0, 0, MW, MH).data, sD = C.sp.getImageData(0, 0, MW, MH).data;
   const aD = C.at.getImageData(0, 0, MW, MH).data, bD = C.hb.getImageData(0, 0, MW, MH).data;
-  TM.push(performance.now());
   const E = new Float32Array(N), S = new Float32Array(N), A = new Uint8Array(N), B = new Uint8Array(N);
   for (let k = 0; k < N; k++) { const m = idx[k] * 4; E[k] = eD[m] / 255; S[k] = sD[m] / 255; A[k] = aD[m]; B[k] = bD[m]; }
 
-  TM.push(performance.now());
   const { R, depth, focus } = PROBE;
   // Axial PSF (along the beam): sigma about 0.24 mm. Lateral PSF: about 0.5 mm at the focus,
   // wider above and below it, converted to beam-angle columns for each depth row.
@@ -351,7 +347,6 @@ function renderPolar(C, seed) {
   for (let j = 0; j < NR; j++) blurRow(sp, sp2, tmp, j * NA, NA, rowK[j].radii, 1);
   sp = null;
 
-  TM.push(performance.now());
   const CS = 2.6, LOOKS = 1, amp = new Float32Array(N), rRe = new Float32Array(N), rIm = new Float32Array(N);
   for (let look = 0; look < LOOKS; look++) {
     let re = new Float32Array(N), im = new Float32Array(N);
@@ -366,7 +361,6 @@ function renderPolar(C, seed) {
     for (let k = 0; k < N; k++) { const r = rRe[k] + sp2[k] * CS, q = rIm[k]; amp[k] += Math.sqrt(r * r + q * q) / LOOKS; }
   }
 
-  TM.push(performance.now());
   // Light frequency compounding: average the envelope over neighbouring samples, which fills
   // the thin speckle nulls the way a modern scanner's compounding does.
   {
@@ -380,7 +374,6 @@ function renderPolar(C, seed) {
     }
     for (let k = NA; k < N - NA; k++) amp[k] = a2[k] || amp[k];
   }
-  TM.push(performance.now());
   // Attenuation walk down each scan line: bone shadows, enhancement under fluid.
   const G = new Float32Array(N);
   const kE = 0.045, kS = 0.6, relax = Math.exp(-DR / 7), HFLOOR = 0.0035;
@@ -401,7 +394,6 @@ function renderPolar(C, seed) {
   const gR = boxRadii(1.6), G2 = new Float32Array(N);
   for (let j = 0; j < NR; j++) blurRow(G, G2, tmp, j * NA, NA, gR, 1);
 
-  TM.push(performance.now());
   // Depth gain (residual after TGC), focal zone, edge apodisation, noise, log compression.
   const IW = 1.75, DRdB = 44, GAM = 1.85, LUTN = 8192, LS = LUTN / 8, lut = new Uint8ClampedArray(LUTN);
   for (let q = 0; q < LUTN; q++) {
@@ -426,7 +418,7 @@ function renderPolar(C, seed) {
 }
 
 // ------------------------------------------------------------------ public API (cached)
-export const TIMING = [];
+export const TIMING = [], TP = [];
 const polarCache = new Map();
 const imgCache = new Map();
 

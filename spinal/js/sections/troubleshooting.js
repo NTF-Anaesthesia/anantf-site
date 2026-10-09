@@ -81,7 +81,7 @@ const BACKS = [
     value: 'elderly', label: 'Elderly: calcified ligaments',
     points: [
       'Calcified supraspinous and interspinous ligaments, narrow interspaces and stiffness make the midline hard going.',
-      `A paramedian approach avoids the midline ligaments and is often easier.${cite('ts-nysora-failed')} See <a href="#tq-paramedian">Paramedian approach</a>.`,
+      'A paramedian approach avoids the midline ligaments and is often easier. See <a href="#tq-approach">Midline and paramedian approaches</a>.',
       'Positioning may be limited by pain (for example a hip fracture). Give analgesia before you position.',
       `Older patients are more prone to hypotension after the spinal: be ready to treat it.${cite('ts-carpenter1992')}`,
     ],
