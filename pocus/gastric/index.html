@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gastric ultrasound — NTF Anaesthesia</title>
-<meta name="description" content="Masterclass: point-of-care gastric ultrasound — I-AIM, aorta vs IVC, CSA to volume, and five peri-operative cases. Interactive 35-minute tutorial.">
+<meta name="description" content="Masterclass: point-of-care gastric ultrasound — I-AIM, aorta vs IVC, CSA to volume, five peri-operative cases and a bonus case. Interactive 37-minute tutorial.">
 <style>
 :root{
   --bg:#F7F2EA; --panel:#FDFAF3; --line:#E0D6C2; --line2:#CFC2A8; --ink:#2A241D; --ink2:#5A4F42; --mute:#8A7E6D; --faint:#B3A795;
@@ -278,7 +278,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
         <li><span>01–02 · Why scan · I-AIM</span><span>4 min</span></li>
         <li><span>Part I · Acquisition · aorta vs IVC</span><span>9.5 min</span></li>
         <li><span>Part II · Interpretation · CSA → volume</span><span>8.5 min</span></li>
-        <li><span>Part III · Five peri-operative cases</span><span>11 min</span></li>
+        <li><span>Part III · Five peri-operative cases + a bonus</span><span>13 min</span></li>
         <li><span>Quick check · Questions</span><span>2 min</span></li>
       </ul>
       <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
@@ -663,14 +663,14 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 </section>
 
 <!-- ============ 14 PART III ============ -->
-<section class="slide divider" id="partIII" data-min="0.5" data-title="Part III · Cases" data-prompt="Five cases. For each: read the vignette, then reveal one I-AIM step at a time (R). Make the room commit before each reveal.">
+<section class="slide divider" id="partIII" data-min="0.5" data-title="Part III · Cases" data-prompt="Five cases and a bonus. For each: read the vignette, then reveal one I-AIM step at a time (R). Make the room commit before each reveal.">
   <div class="inner two" style="align-items:center;flex:1">
     <div>
       <div class="kicker">Part III · Peri-operative cases</div>
-      <h1>Five patients.</h1>
+      <h1>Five patients, and a bonus.</h1>
       <p class="big-quote" style="font-style:normal">Images and clips from my scan library. Commit to an answer before each reveal.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Indication · Acquisition · Interpretation · Medical decision</p>
-      <p class="mini" style="max-width:56ch">Clinical details are teaching vignettes built around real library images; images within a case are not necessarily from one patient.</p>
+      <p class="mini" style="max-width:56ch">Cases 1–5: clinical details are teaching vignettes built around real library images; images within a case are not necessarily from one patient. Case 6 is a real case shared by Dr Zhang Jinbin.</p>
     </div>
     <div><div class="caseGrid" id="caseGrid"></div></div>
   </div>
@@ -682,6 +682,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 <section class="slide case" data-case="2" data-min="2" data-title="Case 3 · Diabetes with autonomic neuropathy" data-prompt="Ask: which features in the history predict gastroparesis? Then: what anaesthetic keeps airway reflexes for a foot debridement?"></section>
 <section class="slide case" data-case="3" data-min="2" data-title="Case 4 · Plain water 30 minutes ago, FESS" data-prompt="Have someone do the arithmetic aloud: 27 + 14.6 × 11.3 − 1.28 × 45. Then ask: cancel, or wait and rescan?"></section>
 <section class="slide case" data-case="4" data-min="2" data-title="Case 5 · Uncertain history, empty stomach" data-prompt="The counter-example: the scan lets you proceed confidently. Ask what the plan would have been without it (cancel, or an unnecessary RSI in a frail patient)."></section>
+<section class="slide case" data-case="5" data-min="2" data-title="Case 6 · Bonus: from Dr Zhang Jinbin" data-prompt="Show the unannotated supine still first. Ask the room to point at the antrum and commit before revealing Interpretation. Most will pick the round structure at 8–11 cm. It is bowel."></section>
 
 <!-- ============ 21 LIBRARY ============ -->
 <section class="slide" data-min="0.5" data-title="Image library" data-prompt="Leave this up during questions. Filter by category; tap to enlarge. Use the arrow buttons in the viewer to step through.">
@@ -753,8 +754,8 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 </div></nav>
 
 <script>
-const SRC = {"i0728": "media/i0728.jpg", "i0729": "media/i0729.jpg", "i1392": "media/i1392.jpg", "i1547": "media/i1547.jpg", "i1946": "media/i1946.jpg", "i2987": "media/i2987.jpg", "i2988": "media/i2988.jpg", "i3004": "media/i3004.jpg", "i3103": "media/i3103.jpg", "i7132": "media/i7132.jpg", "i7133": "media/i7133.jpg", "i7135": "media/i7135.jpg", "i7136": "media/i7136.jpg", "i7429": "media/i7429.jpg", "i7430": "media/i7430.jpg", "i7431": "media/i7431.jpg", "i7432": "media/i7432.jpg", "i9179": "media/i9179.jpg", "i9208": "media/i9208.jpg", "i9294": "media/i9294.jpg", "i9525": "media/i9525.jpg", "i9545": "media/i9545.jpg", "i9546": "media/i9546.jpg", "i9717": "media/i9717.jpg", "v0774": "media/v0774.mp4", "v0777": "media/v0777.mp4", "v1546": "media/v1546.mp4", "v2749": "media/v2749.mp4", "v3005": "media/v3005.mp4", "v3010": "media/v3010.mp4", "v7134": "media/v7134.mp4", "v8774": "media/v8774.mp4", "v8912": "media/v8912.mp4", "v9295": "media/v9295.mp4", "v9454": "media/v9454.mp4", "v9504": "media/v9504.mp4", "v9543": "media/v9543.mp4"};
-const POSTER = {"v0774": "media/v0774-poster.jpg", "v0777": "media/v0777-poster.jpg", "v1546": "media/v1546-poster.jpg", "v2749": "media/v2749-poster.jpg", "v3005": "media/v3005-poster.jpg", "v3010": "media/v3010-poster.jpg", "v7134": "media/v7134-poster.jpg", "v8774": "media/v8774-poster.jpg", "v8912": "media/v8912-poster.jpg", "v9295": "media/v9295-poster.jpg", "v9454": "media/v9454-poster.jpg", "v9504": "media/v9504-poster.jpg", "v9543": "media/v9543-poster.jpg"};
+const SRC = {"i0728": "media/i0728.jpg", "i0729": "media/i0729.jpg", "i1392": "media/i1392.jpg", "i1547": "media/i1547.jpg", "i1946": "media/i1946.jpg", "i2987": "media/i2987.jpg", "i2988": "media/i2988.jpg", "i3004": "media/i3004.jpg", "i3103": "media/i3103.jpg", "i7132": "media/i7132.jpg", "i7133": "media/i7133.jpg", "i7135": "media/i7135.jpg", "i7136": "media/i7136.jpg", "i7429": "media/i7429.jpg", "i7430": "media/i7430.jpg", "i7431": "media/i7431.jpg", "i7432": "media/i7432.jpg", "i9179": "media/i9179.jpg", "i9208": "media/i9208.jpg", "i9294": "media/i9294.jpg", "i9525": "media/i9525.jpg", "i9545": "media/i9545.jpg", "i9546": "media/i9546.jpg", "i9717": "media/i9717.jpg", "v0774": "media/v0774.mp4", "v0777": "media/v0777.mp4", "v1546": "media/v1546.mp4", "v2749": "media/v2749.mp4", "v3005": "media/v3005.mp4", "v3010": "media/v3010.mp4", "v7134": "media/v7134.mp4", "v8774": "media/v8774.mp4", "v8912": "media/v8912.mp4", "v9295": "media/v9295.mp4", "v9454": "media/v9454.mp4", "v9504": "media/v9504.mp4", "v9543": "media/v9543.mp4", "zjSup": "media/zj-supine.jpg", "zjAnn": "media/zj-annotated.jpg", "zjRld": "media/zj-rld.jpg", "zjChat": "media/zj-chat.jpg", "zjCine": "media/zj-cine.mp4"};
+const POSTER = {"v0774": "media/v0774-poster.jpg", "v0777": "media/v0777-poster.jpg", "v1546": "media/v1546-poster.jpg", "v2749": "media/v2749-poster.jpg", "v3005": "media/v3005-poster.jpg", "v3010": "media/v3010-poster.jpg", "v7134": "media/v7134-poster.jpg", "v8774": "media/v8774-poster.jpg", "v8912": "media/v8912-poster.jpg", "v9295": "media/v9295-poster.jpg", "v9454": "media/v9454-poster.jpg", "v9504": "media/v9504-poster.jpg", "v9543": "media/v9543-poster.jpg", "zjCine": "media/zj-cine-poster.jpg"};
 const VIDURL = {};
 </script>
 <script>
@@ -1411,9 +1412,14 @@ const MEDIA = {
   i1547: { t: 'img', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy, same session as the IMG_1546 scan: clean gastric mucosa, no residue.' },
   i7135: { t: 'img', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy (image-enhanced mode), same day as IMG_7132: dark fluid with suspended particles in the lumen.' },
   i7136: { t: 'img', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy, same day as IMG_7132: dark altered material in the lumen, friable erythematous mucosa.' },
-  v0777: { t: 'vid', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy the same morning as IMG_0774 (image-enhanced mode): material in the gastric lumen.' }
+  v0777: { t: 'vid', k: 'Endoscopy', cat: ['endo'], cap: 'Endoscopy the same morning as IMG_0774 (image-enhanced mode): material in the gastric lumen.' },
+  zjSup: { t: 'img', f: 'Dr Zhang · 1', k: 'Supine', cat: ['empty'], cap: 'Supine, 116 kg, depth ≈ 18 cm. Where is the antrum? Commit before you look at the next image.' },
+  zjCine: { t: 'vid', f: 'Dr Zhang · 2', k: 'Cine', cat: ['empty'], cap: 'Supine cine at 18.3 cm. The round, busy structure deep in the field moves like bowel; the antrum is the small, flat structure just under the liver.' },
+  zjRld: { t: 'img', f: 'Dr Zhang · 3', k: 'RLD', cat: ['empty'], cap: 'Right lateral decubitus, depth 20.7 cm. No distended antrum and no content collecting in it.' },
+  zjAnn: { t: 'img', f: 'Dr Zhang · 4', k: 'Annotated', cat: ['empty'], cap: 'Red: the first guess, a round structure at 8–11 cm. It is bowel. Yellow: the real antrum, small and flat at about 5–6 cm, just under the liver.' },
+  zjChat: { t: 'img', f: 'Dr Zhang · 5', k: 'The story', cat: [], cap: 'The conversation afterwards: the stomach was empty at surgery; the calibration tube went in and nothing came out.' }
 };
-const fileId = id => 'IMG_' + id.slice(1);
+const fileId = id => MEDIA[id].f || 'IMG_' + id.slice(1);
 const _blob = {};
 function msrc(id) { return SRC[id] || ''; }
 const thumbSrc = id => MEDIA[id].t === 'img' ? msrc(id) : POSTER[id];
@@ -1781,7 +1787,17 @@ const CASES = [
       ['How will you scan?', 'Supine then RLD — she may need pillows and help to roll.'],
       ['What is in the antrum?', 'Small, flat, <b>target-shaped antrum</b> in supine and RLD — <b class="ok">Grade 0, empty.</b>', 'v8774'],
       ['What will you do?', '<b class="ok">Low risk:</b> proceed with MAC as planned; keep the levodopa schedule. At endoscopy: clean gastric mucosa, no residue — the scan was right.', 'i1547']
-    ], pearl: 'Gastric ultrasound also lets you say yes — confidently.' }
+    ], pearl: 'Gastric ultrasound also lets you say yes — confidently.' },
+  { tag: 'Bonus · from Dr Zhang Jinbin', short: 'Bonus', bonus: true, title: 'Bariatric surgery · liraglutide?',
+    vignette: 'A real case, scanned and shared by Dr Zhang Jinbin. A woman listed for bariatric surgery. Her electronic medical record lists liraglutide; she says she is taking the medicines prescribed on the record, but also that she is not on any weight-loss drug.',
+    facts: [['Patient', '44 F · 116 kg'], ['Drug', 'Liraglutide on the record · patient denies weight-loss drugs'], ['Symptoms', 'No GI symptoms'], ['Plan', 'Laparoscopic bariatric surgery']],
+    media: ['zjSup', 'zjCine', 'zjRld', 'zjAnn', 'zjChat'], badges: { zjAnn: 'Annotated', zjChat: 'Afterwards' },
+    steps: [
+      ['Is a scan indicated?', 'Yes. A GLP-1 receptor agonist on the record with a history that contradicts it. You cannot settle a conflicting drug history at the bedside, but you can look at the stomach.'],
+      ['How will you scan?', 'Supine then RLD, curvilinear probe, sagittal epigastrium. At 116 kg you need 16–20 cm of depth to reach the aorta, and at that depth a collapsed antrum is tiny on screen. Find the liver and the aorta first, freeze, then look for the antrum between them. Once you have found it, reduce the depth to read it.', 'zjCine'],
+      ['What is in the antrum?', 'The obvious round, heterogeneous structure at 8–11 cm (red) is tempting, but it is <b>bowel</b>. The antrum (yellow) is the small, flat structure at about 5–6 cm, just under the liver. No distended antrum in RLD either: <b class="ok">Grade 0, empty.</b>', 'zjAnn'],
+      ['What will you do?', '<b class="ok">Low risk:</b> proceed with the planned induction (with the usual precautions for obesity: ramped position, preoxygenation). At surgery the stomach was empty: the large calibration tube went in and nothing came out.', 'zjChat']
+    ], pearl: 'The biggest round thing on the screen is not always the antrum. Find the liver and the aorta, then look for the antrum between them.' }
 ];
 const CASE_ST = [];
 $$('.slide.case').forEach(sec => {
@@ -1801,7 +1817,7 @@ $$('.slide.case').forEach(sec => {
   $('.steps', sec).addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; if (li.classList.contains('shown') && !e.target.closest('.sb')) { li.classList.remove('shown'); $('.pearl', sec).classList.remove('shown'); } else reveal(li); });
   CASE_ST[n] = { revealNext: () => { const li = $$('.steps li', sec).find(x => !x.classList.contains('shown')); if (li) reveal(li); } };
 });
-$('#caseGrid').innerHTML = CASES.map((C, i) => `<button data-i="${i}"><img src="${thumbSrc(C.media[0])}" alt=""><div><span>CASE ${i + 1}</span><b>${C.title}</b></div></button>`).join('');
+$('#caseGrid').innerHTML = CASES.map((C, i) => `<button data-i="${i}"><img src="${thumbSrc(C.media[0])}" alt=""><div><span>CASE ${i + 1}${C.bonus ? ' · BONUS' : ''}</span><b>${C.title}</b></div></button>`).join('');
 $('#caseGrid').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(slides.indexOf($(`.slide.case[data-case="${b.dataset.i}"]`))); });
 $('#jumpChips').innerHTML = CASES.map((C, i) => `<button class="chip" data-i="${i}" title="Case ${i + 1} · ${C.title}">${i + 1} · ${C.short}</button>`).join('');
 $('#jumpChips').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(slides.indexOf($(`.slide.case[data-case="${b.dataset.i}"]`))); });
