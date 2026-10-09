@@ -35,7 +35,7 @@ body.spinal-app{
   --sp-bg:#15171a;--sp-surface:#1c1f23;--sp-surface-2:#24282d;
   --sp-ink:#ecebe7;--sp-ink-2:#d2d4d7;--sp-muted:#aeb3ba;--sp-line:#30343a;--sp-line-strong:#6d727a;
   --sp-accent:#e8aaa6;--sp-on-accent:#15171a;--sp-accent-soft:#35262a;--sp-focus:#f2c46d;
-  --sp-key:#7fd3cb;--sp-key-bg:#12302f;
+  --sp-key:#7fd3cb;--sp-key-bg:#182725;
   --sp-danger:#ff9d8f;--sp-danger-bg:#3b1e1b;
   --sp-warn:#e7b75a;--sp-warn-bg:#33291a;
   --sp-ok:#9bd59b;--sp-ok-bg:#1b2e1d;
@@ -66,7 +66,7 @@ body.spinal-app{
     --sp-bg:#15171a;--sp-surface:#1c1f23;--sp-surface-2:#24282d;
     --sp-ink:#ecebe7;--sp-ink-2:#d2d4d7;--sp-muted:#aeb3ba;--sp-line:#30343a;--sp-line-strong:#6d727a;
     --sp-accent:#e8aaa6;--sp-on-accent:#15171a;--sp-accent-soft:#35262a;--sp-focus:#f2c46d;
-    --sp-key:#7fd3cb;--sp-key-bg:#12302f;
+    --sp-key:#7fd3cb;--sp-key-bg:#182725;
     --sp-danger:#ff9d8f;--sp-danger-bg:#3b1e1b;
     --sp-warn:#e7b75a;--sp-warn-bg:#33291a;
     --sp-ok:#9bd59b;--sp-ok-bg:#1b2e1d;
@@ -418,8 +418,8 @@ body.spinal-app{padding-bottom:84px}
 }
 @media print{.spinal-app .sp-controls,.spinal-app .sp-controls-note{display:none!important}body.spinal-app{padding-bottom:0}}
 html:has(body.spinal-app){scroll-padding-bottom:96px}
-.spinal-app main :is(p,ul,ol,h4)[data-tier]::after{top:-20px;left:0}
-.spinal-app main :is(p,ul,ol,h4)[data-tier]{margin-top:24px}
+.spinal-app main :is(p,ul,ol,h4,.sp-table-wrap,.tq-grp)[data-tier]::after{top:-20px;left:0}
+.spinal-app main :is(p,ul,ol,h4,.sp-table-wrap,.tq-grp)[data-tier]{margin-top:28px}
 
 /* Advanced level: each section shows only its digest of consultant pearls (built by app.js). */
 .spinal-app .sp-adv-digest{display:none}
@@ -435,3 +435,6 @@ body.spinal-app[data-level="adv"] #quiz [data-tier="1"],body.spinal-app[data-lev
 .spinal-app .sp-adv-digest .sp-callout-label{display:none}
 .spinal-app .sp-controls .sp-quick-btn,.spinal-app .sp-controls .sp-level-btn{white-space:nowrap}
 @media (max-width:400px){.spinal-app .sp-controls .sp-level-btn{padding:0 7px}.spinal-app .sp-controls .sp-quick-btn{padding:0 7px;gap:6px}.spinal-app .sp-controls .sp-quick-box{width:12px;height:12px}}
+/* Advanced pearls (tier-3 key boxes) take the Advanced indigo, matching their badge. */
+.spinal-app .sp-callout--key[data-tier="3"],.spinal-app .sp-adv-digest .sp-callout--key{--c:var(--sp-pearl);--cb:var(--sp-pearl-bg)}
+.spinal-app main .sp-callout[data-tier]{margin-top:30px}
