@@ -1,6 +1,5 @@
 // Decision-tree content for 04 Troubleshooting.
 // Doses: only product-label (emc SmPC) or Association of Anaesthetists QRH values, each cited where it appears.
-// Anything that depends on local practice is flagged in the section's policy callouts.
 import { cite } from '../ui.js?v=1';
 
 const D = (s) => `<span class="sp-dose">${s}</span>`;
@@ -149,7 +148,7 @@ export const bloodyTap = {
     xAnticoag: {
       outcome: 'Proceed only with clear CSF; plan the next dose with the team',
       tone: 'warn',
-      body: `<p>A traumatic puncture matters more when clotting is affected. Record the bloody tap, tell the surgeons and the ward, and agree when the next anticoagulant dose can be given. ASRA advises delaying LMWH for ${N('24 h')} after a traumatic puncture; ESAIC/ESRA say a longer delay than usual may be justified.${cite('asra2025', 'esaic2022')} Agree the timing with the surgeons. Ask for regular neurological checks until the block has worn off. Follow the anticoagulation guideline your department uses.</p>`,
+      body: `<p>A traumatic puncture matters more when clotting is affected. Record the bloody tap, tell the surgeons and the ward, and agree when the next anticoagulant dose can be given. ASRA advises delaying LMWH for ${N('24 h')} after a traumatic puncture; ESAIC/ESRA say a longer delay than usual may be justified.${cite('asra2025', 'esaic2022')} Agree the timing with the surgeons. Ask for regular neurological checks until the block has worn off.</p>`,
     },
   },
 };
@@ -507,12 +506,12 @@ export const highSpinal = {
     xAirway: {
       outcome: 'Follow your difficult airway algorithm',
       tone: 'danger',
-      body: '<p>Oxygenation comes first. Call for the most experienced help available and follow the department’s difficult airway guideline.</p>',
+      body: '<p>Oxygenation comes first. Call for the most experienced help available and follow a difficult airway algorithm.</p>',
     },
     xCirc: {
       outcome: 'Treat the circulation, then sedate and plan ongoing care',
       tone: 'danger',
-      body: `<p>Doses as printed in the Association of Anaesthetists QRH 3-11 for this emergency (they differ slightly from the product-label doses in the hypotension tree; follow your local protocol):${cite('ts-qrh2023')}</p>
+      body: `<p>Doses as printed in the Association of Anaesthetists QRH 3-11 for this emergency (they differ slightly from the product-label doses in the hypotension tree):${cite('ts-qrh2023')}</p>
         ${QRH_CIRC_DOSES}
         <p>Once the airway is secure, keep the patient asleep: the block can leave them paralysed but aware. Consider other causes (local anaesthetic toxicity, embolism, haemorrhage, a vasovagal event). Support until the block wears off, in a suitable place.</p>`,
     },
@@ -665,7 +664,7 @@ export const nausea = {
     xAntiemetic: {
       outcome: 'Give an antiemetic',
       tone: 'ok',
-      body: `<p>Ondansetron ${D('4 mg')} by slow IV injection is the label dose for established postoperative nausea and vomiting.${cite('ts-smpc-ond')} Other antiemetics as per local protocol. Reassure, and keep checking the blood pressure.</p>`,
+      body: `<p>Ondansetron ${D('4 mg')} by slow IV injection is the label dose for established postoperative nausea and vomiting.${cite('ts-smpc-ond')} Other antiemetics are also used. Reassure, and keep checking the blood pressure.</p>`,
     },
   },
 };
@@ -705,9 +704,9 @@ export const shivering = {
       body: '<p>Continue active warming into recovery and recheck the temperature.</p>',
     },
     xDrug: {
-      outcome: 'Consider drug treatment, as per local protocol',
+      outcome: 'Consider drug treatment',
       tone: 'warn',
-      body: `<p>Pethidine is the most studied drug for this; others are used too.${cite('ts-crowley2008')} Use the dose in your local protocol. It is an opioid, so watch sedation and breathing, and check for drug interactions before giving it. Keep warming.</p>`,
+      body: `<p>Pethidine is the most studied drug for this; others are used too.${cite('ts-crowley2008')} It is an opioid, so watch sedation and breathing, and check for drug interactions before giving it. Keep warming.</p>`,
     },
   },
 };
@@ -749,17 +748,17 @@ export const pruritus = {
     xResp: {
       outcome: 'Treat as opioid-related respiratory depression',
       tone: 'danger',
-      body: `<p>Stimulate the patient, give oxygen, support the airway and call for help. Naloxone, as per local protocol: the product label gives ${D('100–200 µg')} IV, titrated in ${D('100 µg')} steps every 2 minutes. It may need repeating, or an infusion, because morphine outlasts it.${cite('ts-smpc-nal')} See ${go('tq-adjuncts', 'Intrathecal opioid monitoring')}.</p>`,
+      body: `<p>Stimulate the patient, give oxygen, support the airway and call for help. Naloxone: the product label gives ${D('100–200 µg')} IV, titrated in ${D('100 µg')} steps every 2 minutes. It may need repeating, or an infusion, because morphine outlasts it.${cite('ts-smpc-nal')} See ${go('tq-adjuncts', 'Intrathecal opioid monitoring')}.</p>`,
     },
     xReassure: {
       outcome: 'Reassure and observe',
       tone: 'ok',
-      body: '<p>It usually settles as the opioid wears off. Keep monitoring sedation and breathing as per your intrathecal opioid protocol.</p>',
+      body: '<p>It usually settles as the opioid wears off. Keep monitoring sedation and breathing.</p>',
     },
     xNaloxone: {
-      outcome: 'Low-dose naloxone, as per local protocol',
+      outcome: 'Low-dose naloxone',
       tone: 'warn',
-      body: '<p>Small, titrated doses of naloxone can relieve the itch but may also reduce the pain relief, so start low. Use the regimen in your local protocol. Keep monitoring sedation and breathing.</p>',
+      body: '<p>Small, titrated doses of naloxone can relieve the itch but may also reduce the pain relief, so start low. Keep monitoring sedation and breathing.</p>',
     },
   },
 };
@@ -769,7 +768,7 @@ export const retention = {
   start: 'n1',
   nodes: {
     n1: {
-      prompt: 'The patient hasn’t passed urine since the spinal. Are they uncomfortable, or has it been longer than your unit allows?',
+      prompt: 'The patient hasn’t passed urine since the spinal. Are they uncomfortable, or has it been an unusually long time?',
       short: 'No urine',
       detail: `<p>Retention after surgery is common: reported rates range from 5% to 70%, depending on how it is defined and who is studied.${cite('ts-baldini2009')}</p>`,
       choices: [
@@ -782,8 +781,8 @@ export const retention = {
       short: 'Bladder scan',
       detail: `<p>A bladder ultrasound scan measures the volume accurately and guides what to do.${cite('ts-baldini2009')}</p>`,
       choices: [
-        { label: 'Above the local threshold for catheterisation', to: 'xCath' },
-        { label: 'Small', to: 'low' },
+        { label: 'A large volume, or the patient is distressed', to: 'xCath' },
+        { label: 'A small volume, and the patient is comfortable', to: 'low' },
       ],
     },
     low: {
@@ -797,12 +796,12 @@ export const retention = {
     xWait: {
       outcome: 'Encourage voiding and reassess',
       tone: 'ok',
-      body: '<p>Help the patient to a normal position to void, keep track of fluids, and re-scan if they still haven’t passed urine within the time your unit uses.</p>',
+      body: '<p>Help the patient to a normal position to void, keep track of fluids, and re-scan if they still haven’t passed urine after a suitable interval.</p>',
     },
     xCath: {
-      outcome: 'Catheterise, as per local policy',
+      outcome: 'Catheterise',
       tone: 'warn',
-      body: `<p>Don’t let the bladder overdistend: it can damage the detrusor and lead to infection and catheter problems.${cite('ts-baldini2009')} Use the in–out or indwelling catheter policy your unit follows.</p>`,
+      body: `<p>Don’t let the bladder overdistend: it can damage the detrusor and lead to infection and catheter problems.${cite('ts-baldini2009')} Use an in–out or indwelling catheter.</p>`,
     },
     xOutput: {
       outcome: 'Assess for low urine output',

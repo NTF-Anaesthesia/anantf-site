@@ -68,8 +68,8 @@ const CARDS = [
     tag: 'Day surgery',
     title: 'Day-case spinal',
     points: [
-      'Choose a short-acting local anaesthetic so the patient can walk and go home the same day. Which agents are stocked depends on local policy.',
-      'Before discharge, check that the patient has passed urine or meets the local voiding criteria, and give written advice about headache and who to call.',
+      'Choose a short-acting local anaesthetic so the patient can walk and go home the same day.',
+      'Before discharge, check that the patient has passed urine or meets voiding criteria, and give written advice about headache and who to call.',
     ],
   },
   {

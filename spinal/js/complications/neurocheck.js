@@ -92,7 +92,7 @@ export function neuroCheck({ id = 'cx-neuro-check' } = {}) {
       box.append(el('p', { class: 'cx-check-out-label', html: '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2.5 8.5 6.5 12.5 13.5 4" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Expected regression</span>' }));
       box.append(el('p', { class: 'cx-check-out-title', text: 'Keep checking until the block has fully worn off.' }));
       box.append(el('ul', { class: 'cx-check-out-list', html: `
-        <li>Repeat the check at the intervals your ward protocol sets, and document each one.</li>
+        <li>Repeat the check at regular intervals, and document each one.</li>
         <li>Trained staff should keep checking for at least 24 h after a neuraxial block, longer in high-risk patients.${cite('esaic2022')}</li>
         <li>Tell the patient (especially day cases) to report back pain, new numbness or weakness, or bladder or bowel problems straight away.</li>` }));
       result.append(box);

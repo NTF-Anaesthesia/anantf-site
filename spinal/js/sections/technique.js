@@ -159,7 +159,7 @@ export function mount(root) {
       )),
     P(`<strong>National audit (NAP3).</strong> Across all central neuraxial blocks in the UK, permanent harm was ${N('4.2 per 100,000')} on pessimistic counting (about ${N('1 in 24,000')}) and ${N('2.0 per 100,000')} on optimistic counting (about ${N('1 in 54,000')}). Paraplegia or death was ${N('1.8')} and ${N('0.7 per 100,000')}. Spinals were among the lower-risk blocks; most harm followed perioperative epidurals. The data are from 2006–07.${cite('nap3')}`),
     P('Also cover: the alternative (general anaesthesia), sedation if wanted, that pulling and pressure may still be felt, and what happens if the block is not good enough (more local anaesthetic, or a general anaesthetic). Record what you discussed.'),
-    callout('policy', { title: 'Consent figures', body: '<p>The RCoA published updated spinal risk infographics in 2025. Check which figures the department uses, including any local failure rate, before quoting numbers to patients.</p>' }),
+    callout('key', { title: 'Consent figures', body: '<p>The RCoA published updated spinal risk infographics in 2025. Use them when quoting numbers to patients.</p>' }),
   ));
 
   // ---------------------------------------------------------------- 2 contraindications
@@ -190,7 +190,7 @@ export function mount(root) {
       `ESAIC/ESRA 2022 sets no fixed platelet threshold.${cite('esaic2022')}`,
       'A falling count, or other clotting problems, matter more than a single number.',
     ]),
-    callout('policy', { title: 'Platelet threshold', body: '<p>Use the department’s threshold for a single-shot spinal and ask a senior below it. Much of the published data is obstetric.</p>' }),
+    callout('key', { title: 'Platelet count', body: '<p>If the platelet count is low, ask a senior colleague before a single-shot spinal. Much of the published data is obstetric.</p>' }),
   ));
 
   // ---------------------------------------------------------------- 3 anticoagulants
@@ -198,9 +198,9 @@ export function mount(root) {
   api.lookup = lookup;
   const fullTable = details({ id: 'tq-ac-full', summary: 'Show the full table (every drug, both guidelines)', body: anticoagTable() });
   root.append(part('tq-anticoag', '2.3', 'Anticoagulants and antiplatelet drugs',
-    callout('policy', {
-      title: 'Check the NUHS/NTFGH policy first',
-      body: '<p>These intervals are for teaching. Where the local policy differs, the local policy applies. Everything here assumes a <strong>single-shot spinal with no catheter</strong>. Where a guideline gives a rule for catheter removal, agree the timing of the next dose with the surgical team and the local policy.</p>',
+    callout('key', {
+      title: 'Single-shot spinals only',
+      body: '<p>These intervals are for teaching. Everything here assumes a <strong>single-shot spinal with no catheter</strong>. Where a guideline gives a rule for catheter removal, agree the timing of the next dose with the surgical team.</p>',
     }),
     P(`Spinal haematoma is rare but catastrophic. The intervals are built from pharmacokinetics, because the event is too rare to study in trials.${cite('asra2025')} The two current guidelines are ASRA 2025 and ESAIC/ESRA 2022.${cite('asra2025', 'esaic2022')}`),
     lookup.node,
@@ -238,8 +238,7 @@ export function mount(root) {
           `<strong>Vasopressor drawn up.</strong> Treat hypotension promptly with an IV sympathomimetic.${cite('tq-hpra-heavy')} Have atropine, oxygen, airway equipment and general anaesthetic drugs ready in case the block is high or fails.`,
           `<strong>Fasting</strong> as for a general anaesthetic, because you may need to convert.${cite('tq-rcoa2014')}`,
           '<strong>Checks:</strong> consent, site and side, WHO sign-in, and anticoagulant timing and blood results where relevant.',
-        ]),
-        callout('policy', { title: 'Connectors and drug checks', body: '<p>Confirm whether NTFGH theatres use NRFit (non-Luer) neuraxial connectors, and follow the local rule for drug checking and labelling.</p>' })),
+        ])),
       checklist([
         'Consent recorded; site and side confirmed at sign-in',
         'Anticoagulants, platelets and clotting checked',
@@ -294,7 +293,6 @@ export function mount(root) {
       { title: 'Let it dry', body: 'Wait until the skin is dry before you feel for landmarks or puncture it.' },
       { title: 'Check your gloves', body: 'If chlorhexidine may have got onto your gloves, change them.' },
     ]),
-    callout('policy', { title: 'Antiseptic and gowns', body: '<p>Many units stock 2% chlorhexidine applicators. Confirm which product the department uses for neuraxial blocks, and whether a gown is expected for a single-shot spinal.</p>' }),
   ));
 
   // ---------------------------------------------------------------- 7 approach
@@ -416,14 +414,14 @@ export function mount(root) {
     ],
   });
   root.append(part('tq-drugs', '2.10', 'Drugs and doses',
-    callout('policy', {
-      title: 'Formulary and usual doses',
-      body: '<p>Which spinal products are stocked, and the department’s usual doses for common operations, are to be confirmed locally. The doses below are product-label ranges, not a department protocol. This page gives <strong>no obstetric doses</strong>, and no doses for intrathecal clonidine, dexmedetomidine or diamorphine.</p>',
+    callout('key', {
+      title: 'About the doses',
+      body: '<p>The doses below are product-label ranges, not a protocol. This page gives <strong>no obstetric doses</strong>, and no doses for intrathecal clonidine, dexmedetomidine or diamorphine.</p>',
     }),
     doseTable,
     UL([
       `<strong>Lidocaine</strong> is no longer recommended for spinals: it causes transient neurological symptoms far more often than bupivacaine.${cite('zaric2009')}`,
-      '<strong>Levobupivacaine and ropivacaine:</strong> check local availability and licensing before use. No dose is given here.',
+      '<strong>Levobupivacaine and ropivacaine:</strong> check the licence before use. No dose is given here.',
       'Use preservative-free preparations only.',
     ]),
     el('h4', { id: 'tq-adjuncts', text: 'Opioid adjuncts' }),
@@ -432,7 +430,6 @@ export function mount(root) {
         'Quick onset and short action. Adds analgesia without much prolonging the motor block.',
         'Itch and early respiratory depression.',
         `Monitor for at least ${N('2 h')}: continually for the first ${N('20 min')}, then at least hourly to ${N('2 h')}.${cite('tq-asa2016')}`,
-        'Dose: per local protocol.',
       ], 'tq-card--plain'),
       card('Morphine (hydrophilic)', [
         `PROSPECT (2026 update): low-dose intrathecal morphine ${D('100 microgram')} (${D('0.1 mg')}) <em>may be considered</em> with a spinal in inpatients having a hip replacement.${cite('tq-carella2026')} The 2021 version stressed its side-effects and showed that good analgesia is achievable without it.${cite('tq-anger2021')} For knee replacement, only when neither an adductor canal block nor local infiltration analgesia is possible.${cite('tq-lavandhomme2022')}`,
@@ -440,7 +437,6 @@ export function mount(root) {
         `Monitor for at least ${N('24 h')}: at least hourly for ${N('12 h')}, then at least every ${N('2 h')} to ${N('24 h')}. Watch breathing rate and depth, oxygenation and sedation. Keep naloxone and oxygen available.${cite('tq-asa2016')}`,
         `Not for day-case patients going home the same day.${cite('tq-asa2016')}`,
       ], 'tq-card--plain')),
-    callout('policy', { title: 'Intrathecal morphine on the ward', body: '<p>Check the NTFGH dose, which wards accept patients after intrathecal morphine, and the observation chart they use.</p>' }),
     el('h4', { id: 'tq-spread-h', text: 'What changes the spread' }),
     P('Ranked from the strongest effect. Tap a factor for the detail.'),
     spreadFactors([
@@ -485,7 +481,7 @@ export function mount(root) {
       { id: 'knee', label: 'Knee', target: 10, why: 'Knee surgery: T10 is commonly quoted, and also covers a thigh tourniquet more reliably.' },
       { id: 'hernia', label: 'Inguinal hernia', target: 8, why: 'Inguinal hernia: the incision is at T12–L1, but traction on the sac and peritoneum needs at least T10, and many aim for T8. T8 is used here.' },
     ]),
-    callout('policy', { title: 'Target levels', body: '<p>These targets are commonly quoted teaching figures, not taken from a guideline. Use the level your consultant and the surgeon expect.</p>' }),
+    callout('key', { title: 'Target levels', body: '<p>These targets are commonly quoted teaching figures, not taken from a guideline. Agree the level you need with the surgeon.</p>' }),
   ));
 
   // ---------------------------------------------------------------- 12 time course
@@ -508,7 +504,7 @@ export function mount(root) {
       '<strong>Reassess</strong> the level and blood pressure until the block is stable, again before incision, and whenever surgery runs long.',
       'A dense motor block that lasts much longer than expected, or comes back after it had started to wear off, needs urgent review for a spinal haematoma or abscess. See <a href="#complications">Complications</a>.',
     ]),
-    callout('key', { title: 'Day-case spinals', body: `<p>Short-acting drugs (prilocaine or chloroprocaine, above) let patients walk and go home the same day. Discharge on criteria, not the clock: normal sensation and power before walking, supervised first mobilisation, and voiding as the local pathway requires. Avoid intrathecal morphine.${cite('tq-asa2016')} See also <a href="#pp-day-case">Day-case spinal</a>.</p>` }),
+    callout('key', { title: 'Day-case spinals', body: `<p>Short-acting drugs (prilocaine or chloroprocaine, above) let patients walk and go home the same day. Discharge on criteria, not the clock: normal sensation and power before walking, supervised first mobilisation, and voiding. Avoid intrathecal morphine.${cite('tq-asa2016')} See also <a href="#pp-day-case">Day-case spinal</a>.</p>` }),
   ));
 
   // Chrome reports layout boxes for content inside a closed <details>, so app.js may treat the table as

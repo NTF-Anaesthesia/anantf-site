@@ -67,9 +67,9 @@ export function mount(root) {
     el('p', { html: `Use a <strong>low-frequency (2–5 MHz) curvilinear probe</strong>. The structures you need lie several centimetres deep, and the curved array gives a wide view at depth.${N} A high-frequency linear probe is for superficial targets such as the sacral hiatus.${N}` }),
     el('p', { html: 'Scan with the patient in the position you will use for the block, sitting or lateral, with the back flexed. Once the skin is marked the patient must stay still: if they move, the marks no longer lie over the gap.' }),
     el('p', { html: `Set the depth so the anterior complex is on the screen; you will need more depth in larger patients. In sagittal scans the probe marker points cranially.${N}` }),
-    callout('policy', {
-      title: 'Probe availability and screen orientation',
-      body: '<p>Check which machine and curvilinear probe you can use for neuraxial scanning in theatre, and who can teach you on it.</p><p>Screen conventions differ between machines and departments. On this page sagittal images have cranial on the left and transverse images have the patient’s left on the left. Set up your machine the way your department teaches, and check which side the marker is on before you mark the skin.</p>',
+    callout('key', {
+      title: 'Screen orientation',
+      body: '<p>Screen conventions differ between machines. On this page sagittal images have cranial on the left and transverse images have the patient’s left on the left. Check which side the marker is on before you mark the skin.</p>',
     }),
   );
 
