@@ -438,3 +438,7 @@ body.spinal-app[data-level="adv"] #quiz [data-tier="1"],body.spinal-app[data-lev
 /* Advanced pearls (tier-3 key boxes) take the Advanced indigo, matching their badge. */
 .spinal-app .sp-callout--key[data-tier="3"],.spinal-app .sp-adv-digest .sp-callout--key{--c:var(--sp-pearl);--cb:var(--sp-pearl-bg)}
 .spinal-app main .sp-callout[data-tier]{margin-top:30px}
+/* Badges never overlap text: every block that shows a badge reserves space above itself and the badge sits in that space. */
+body.spinal-app main [data-tier]:not(td,th,tr,tbody,thead,.sp-keypoints,.sp-sixty):not([data-tier="1"] [data-tier="1"],[data-tier="2"] [data-tier="2"],[data-tier="3"] [data-tier="3"]){margin-top:max(30px,var(--sp-tier-gap,30px))}
+body.spinal-app main [data-tier]:not(td,th,tr,tbody,thead,.sp-keypoints,.sp-sixty)::after{top:-24px;left:0}
+body.spinal-app[data-quick="on"] main [data-tier]{margin-top:revert-layer}
