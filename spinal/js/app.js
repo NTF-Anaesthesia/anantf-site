@@ -83,7 +83,7 @@ if ('IntersectionObserver' in window) {
 window.addEventListener('scroll', scheduleSpy, { passive: true });
 window.addEventListener('resize', scheduleSpy);
 
-// ---------------------------------------------------------------- level (tier) and Quick read
+// ---------------------------------------------------------------- level (tier)
 // Levels: '1' MO only, '2' MO + Resident, 'adv' Advanced pearls only (a digest per section), 'all' everything.
 const LEVELS = {
   1: { name: 'MO', tier: 1, hint: 'MO: MOPEX level. Showing what you need for your first supervised spinals.' },
@@ -93,21 +93,18 @@ const LEVELS = {
 };
 const controls = $('#sp-controls');
 const levelBtns = controls ? $$('.sp-level-btn', controls) : [];
-const quickBtn = $('#sp-quick');
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch { return null; } },
   set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage may be blocked */ } },
 };
 const level = () => (LEVELS[document.body.dataset.level] ? document.body.dataset.level : 'all');
 const tierMax = () => LEVELS[level()].tier;
-const quickOn = () => document.body.dataset.quick === 'on';
 
 function paintControls() {
   const lv = level();
   levelBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === lv)));
-  quickBtn?.setAttribute('aria-pressed', String(quickOn()));
   const hint = $('#sp-level-hint');
-  if (hint) hint.textContent = quickOn() ? 'Quick read: headings, key points and the 60-second checklist only.' : LEVELS[lv].hint;
+  if (hint) hint.textContent = LEVELS[lv].hint;
 }
 
 /** Text that says where a pearl comes from: the open panel or tab, and the nearest heading above it. */
@@ -133,7 +130,7 @@ function buildDigests() {
     if (sec.id === 'references' || sec.id === 'quiz') return;
     sec.querySelector(':scope > .sp-adv-digest')?.remove();
     const items = $$('[data-tier="3"]', sec).filter((n) => !n.parentElement.closest('[data-tier="3"]'));
-    const box = el('div', { class: 'sp-adv-digest', 'data-quick': 'keep' });
+    const box = el('div', { class: 'sp-adv-digest' });
     if (!items.length) {
       box.append(el('p', { class: 'sp-adv-empty', text: 'No Advanced material in this section. Choose All or Resident to read it.' }));
     } else {
@@ -172,17 +169,16 @@ function withScrollAnchor(change) {
   computeActive();
 }
 
-function applyFilters({ lv = level(), quick = quickOn() } = {}, { save = true, say = false, keepView = true } = {}) {
+function applyFilters({ lv = level() } = {}, { save = true, say = false, keepView = true } = {}) {
   const change = () => {
     if (lv === 'adv' && document.body.dataset.spReady) buildDigests();
     document.body.dataset.level = lv;
     document.body.dataset.tierMax = String(LEVELS[lv].tier);
-    if (quick) document.body.dataset.quick = 'on'; else delete document.body.dataset.quick;
     paintControls();
   };
   if (keepView && document.body.dataset.spReady) withScrollAnchor(change); else change();
-  if (save) { store.set('spinal-level', lv); store.set('spinal-quick', quick ? '1' : '0'); }
-  if (say) announce(quick ? 'Quick read on. Showing headings, key points and the 60-second checklist.' : `Level ${LEVELS[lv].name}. ${LEVELS[lv].hint}`);
+  if (save) store.set('spinal-level', lv);
+  if (say) announce(`Level ${LEVELS[lv].name}. ${LEVELS[lv].hint}`);
 }
 
 {
@@ -191,11 +187,9 @@ function applyFilters({ lv = level(), quick = quickOn() } = {}, { save = true, s
   const lv = LEVELS[saved] ? saved : (legacy || 'all');
   document.body.dataset.level = lv;
   document.body.dataset.tierMax = String(LEVELS[lv].tier);
-  if (store.get('spinal-quick') === '1') document.body.dataset.quick = 'on';
   paintControls();
   if (controls) controls.hidden = false;
   levelBtns.forEach((b) => b.addEventListener('click', () => applyFilters({ lv: b.dataset.level }, { say: true })));
-  quickBtn?.addEventListener('click', () => applyFilters({ quick: !quickOn() }, { say: true }));
 }
 
 /** A deep link to something the current filters hide: relax the filters just enough to show it. */
@@ -203,15 +197,12 @@ function relaxFor(target) {
   if (!target) return false;
   let need = 1;
   for (let p = target; p; p = p.parentElement) if (p.dataset?.tier) need = Math.max(need, Number(p.dataset.tier) || 1);
-  const stays = target.matches('h2,h3,.sp-kicker,.sp-section,.sp-mount,main') || target.closest('.sp-keypoints,[data-quick="keep"],#references')
-    || target.querySelector('h2,h3,.sp-keypoints,[data-quick="keep"]');
-  const newQuick = quickOn() && !!stays;
   let lv = level();
   if (lv === 'adv') { if (!target.closest('.sp-adv-digest,#quiz,#references') && !target.matches('.sp-section,h2,.sp-kicker')) lv = 'all'; }
   else if (need > tierMax()) lv = need === 2 ? '2' : 'all';
-  if (lv === level() && newQuick === quickOn()) return false;
-  applyFilters({ lv, quick: newQuick }, { keepView: false });
-  announce('Level or Quick read changed to show the linked item.');
+  if (lv === level()) return false;
+  applyFilters({ lv }, { keepView: false });
+  announce('Level changed to show the linked item.');
   return true;
 }
 
