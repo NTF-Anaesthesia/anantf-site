@@ -1,41 +1,9 @@
-// spinal/ page controller: theme, share, scroll-spy, section mounts, references, deep links.
-import { $, $$, el, isDark, announce } from './ui.js?v=1';
+// spinal/ page controller: share, scroll-spy, section mounts, references, deep links.
+import { $, $$, el, announce } from './ui.js?v=1';
 import { registerRefs, finalise } from './refs.js?v=1';
 
-const root = document.documentElement;
 
-// ---------------------------------------------------------------- theme (Auto → Light → Dark)
-const THEMES = ['auto', 'light', 'dark'];
-const themeBtn = $('#sp-theme');
-const mqDark = window.matchMedia('(prefers-color-scheme: dark)');
-const currentTheme = () => root.dataset.theme || 'auto';
-
-function emitTheme() {
-  document.dispatchEvent(new CustomEvent('sp-themechange', { detail: { dark: isDark() } }));
-}
-function paintThemeBtn() {
-  if (!themeBtn) return;
-  const t = currentTheme();
-  const label = t[0].toUpperCase() + t.slice(1);
-  themeBtn.querySelector('.sp-theme-label').textContent = label;
-  themeBtn.dataset.themeState = t;
-  themeBtn.setAttribute('aria-label', `Colour theme: ${t === 'auto' ? 'Auto, follows your device' : label}. Activate to change.`);
-}
-themeBtn?.addEventListener('click', () => {
-  const next = THEMES[(THEMES.indexOf(currentTheme()) + 1) % THEMES.length];
-  if (next === 'auto') delete root.dataset.theme;
-  else root.dataset.theme = next;
-  try {
-    if (next === 'auto') localStorage.removeItem('spinal-theme');
-    else localStorage.setItem('spinal-theme', next);
-  } catch { /* storage may be blocked */ }
-  paintThemeBtn();
-  emitTheme();
-});
-const onScheme = () => emitTheme(); // modules re-check isDark(); harmless when a theme is pinned
-if (mqDark.addEventListener) mqDark.addEventListener('change', onScheme);
-else if (mqDark.addListener) mqDark.addListener(onScheme);
-paintThemeBtn();
+// Light mode only: the page is pinned with <html data-theme="light">.
 
 // ---------------------------------------------------------------- copy link
 const shareBtn = $('#sp-share');
