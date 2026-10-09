@@ -35,3 +35,6 @@ Allowed ids: `asra2025`, `esaic2022`, `aagbi2013`, `uppal2023`, `iso80369-6` (co
 product labels only inside drug-dose tables or dose lines: `tq-hpra-heavy`, `tq-sg-heavy`, `tq-sg-plain`,
 `tq-prilotekal`, `tq-ampres`, `cx-marcain-smpc`, `ts-smpc-*`.
 Remove every other `cite(...)` but keep the sentence, and delete unused entries from your `export const refs`.
+
+## Levels (reader-facing)
+MO = tier 1 only; Resident = tiers 1-2; Advanced = tier-3 blocks only, shown as a per-section digest built by app.js (buildDigests); All = everything (default). body[data-level] holds 1|2|adv|all; body[data-tier-max] is derived.

@@ -149,7 +149,9 @@ export function mount(root) {
   }
   function isVisible(i) {
     const q = MCQS[i];
-    return (q.tier || 1) <= tierMax() && (filter === 'all' || q.topic === filter);
+    const t = q.tier || 1;
+    const levelOk = document.body.dataset.level === 'adv' ? t === 3 : t <= tierMax();
+    return levelOk && (filter === 'all' || q.topic === filter);
   }
   function applyFilter(v, user) {
     filter = v;
@@ -167,7 +169,7 @@ export function mount(root) {
   MCQS.forEach((_, i) => paint(i));
   applyFilter('all', false);
   // The global level (body[data-tier-max]) changes which questions count.
-  new MutationObserver(() => applyFilter(filter, false)).observe(document.body, { attributes: true, attributeFilter: ['data-tier-max'] });
+  new MutationObserver(() => applyFilter(filter, false)).observe(document.body, { attributes: true, attributeFilter: ['data-tier-max', 'data-level'] });
 
   // On narrow screens the score bar is sticky at the bottom: keep focused controls clear of it (WCAG 2.4.11).
   mcqSec.addEventListener('focusin', (e) => {
