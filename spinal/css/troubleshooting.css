@@ -1,4 +1,4 @@
-/* spinal/ — troubleshooting section styles. Owner: B5. Every selector starts with .spinal-app .ts- or #ts- (see js/CONTRACT.md). */
+/* spinal/ — troubleshooting section styles. Every selector starts with .spinal-app .ts- or #ts-. */
 
 /* ---------------------------------------------------------------- layout: index + panel */
 .spinal-app .ts-layout{display:grid;gap:28px;margin-top:28px}

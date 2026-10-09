@@ -1,5 +1,5 @@
-// Shared UI helpers for the spinal page. Owned by B1; section modules import from here.
-// Every component uses `sp-*` classes styled in css/base.css. See js/CONTRACT.md for usage.
+// Shared UI helpers for the spinal page.; section modules import from here.
+// Every component uses `sp-*` classes styled in css/base.css.
 
 export { cite, citeEl } from './refs.js?v=1';
 

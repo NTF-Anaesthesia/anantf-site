@@ -1,5 +1,5 @@
 /* spinal/js/anatomy/dermatomes.js — Fig 1.4: front-view body outline with dermatome landmarks; a slider shades the
-   region blocked for a chosen sensory level. Owner: B2. SVG, original drawing. */
+   region blocked for a chosen sensory level. SVG, original drawing. */
 const NS = 'http://www.w3.org/2000/svg';
 const S = (tag, attrs = {}, ...kids) => {
   const n = document.createElementNS(NS, tag);
@@ -14,7 +14,7 @@ const SANS = 'Inter,"NTF Sans",system-ui,sans-serif';
 
 export const STOPS = [
   { id: 'S2', label: 'S2–S4', where: 'perineum (saddle area)', ops: ['Perineal and perianal surgery (a “saddle” block)'] },
-  { id: 'L2', label: 'L2–L3', where: 'thigh and below', ops: ['Foot and ankle surgery'] },
+  { id: 'L2', label: 'L2–L3', where: 'thigh and below', ops: ['Foot and ankle surgery'], note: 'With a thigh tourniquet, aim higher (about T10–T12), as for knee surgery.' },
   { id: 'L1', label: 'L1', where: 'inguinal ligament (groin)', ops: ['Thigh and lower-limb surgery, including amputation', 'TURP without bladder distension'] },
   { id: 'T10', label: 'T10', where: 'umbilicus', ops: ['Hip surgery', 'TURP and bladder procedures', 'Vaginal procedures', 'Knee arthroplasty with a thigh tourniquet (T10–T12 is often targeted)'], note: 'For TURP, aim no higher than about T10: a higher block can hide the pain of bladder or capsule perforation and adds hypotension.' },
   { id: 'T8', label: 'T8', where: 'between xiphisternum and umbilicus', ops: ['Lower abdominal and pelvic surgery (about T6–T8)'] },

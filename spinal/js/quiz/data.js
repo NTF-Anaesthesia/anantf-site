@@ -1,4 +1,4 @@
-// Quiz content (B6). One best answer per MCQ; `answer` is the index into `options`.
+// Quiz content. One best answer per MCQ; `answer` is the index into `options`.
 // Every answer matches the page and the verified research notes. `refs` are ref ids rendered with cite().
 
 export const TOPICS = [
@@ -43,8 +43,8 @@ export const MCQS = [
   {
     topic: 'technique',
     stem: 'Which single change most reduces the risk of post-dural puncture headache?',
-    options: ['Bed rest for 24 h after the spinal', 'A pencil-point rather than a cutting needle', 'Generous IV fluids after the spinal', 'Inserting the cutting bevel perpendicular to the spine'],
-    answer: 1,
+    options: ['Bed rest for 24 h after the spinal', 'Inserting the cutting bevel perpendicular to the spine', 'Generous IV fluids after the spinal', 'A pencil-point rather than a cutting needle'],
+    answer: 3,
     explain: 'Atraumatic (pencil-point) needles cut the incidence from 11.0% to 4.2% in a meta-analysis of 31,412 patients. Bed rest and fluids do not prevent PDPH. With cutting needles, a bevel parallel (not perpendicular) to the long axis is the lower-risk orientation.',
     refs: ['tq-nath2018', 'uppal2023'],
     link: '#cx-pdph',
@@ -52,8 +52,8 @@ export const MCQS = [
   {
     topic: 'technique',
     stem: 'Which skin preparation practice best protects the CSF from chlorhexidine?',
-    options: ['Pour chlorhexidine into a pot on the sterile trolley for easy re-use', 'Apply it, let it dry fully, and keep it away from the drugs and needles', 'Wipe it off with saline before puncture', 'Use 2% rather than 0.5% so less volume is needed'],
-    answer: 1,
+    options: ['Apply it, let it dry fully, and keep it away from the drugs and needles', 'Pour chlorhexidine into a pot on the sterile trolley for easy re-use', 'Wipe it off with saline before puncture', 'Use 2% rather than 0.5% so less volume is needed'],
+    answer: 0,
     explain: 'Chlorhexidine is neurotoxic. Keep it well away from the neuraxial drugs and equipment, never in pots on or near the same surface, and let it dry before you touch or puncture the skin. The Association of Anaesthetists prefers 0.5% chlorhexidine in alcohol.',
     refs: ['tq-campbell2014'],
     link: '#cx-wrong-route',
@@ -61,8 +61,8 @@ export const MCQS = [
   {
     topic: 'drugs',
     stem: 'Transient neurological symptoms after spinal anaesthesia are most strongly associated with which drug?',
-    options: ['Bupivacaine', 'Lidocaine', 'Levobupivacaine', 'Prilocaine'],
-    answer: 1,
+    options: ['Bupivacaine', 'Prilocaine', 'Levobupivacaine', 'Lidocaine'],
+    answer: 3,
     explain: 'In 1,863 patients, lidocaine carried a relative risk of 5.1 compared with bupivacaine. Lithotomy and day-case status increased the risk further.',
     refs: ['cx-freedman1998'],
     link: '#cx-tns',
@@ -106,8 +106,8 @@ export const MCQS = [
   {
     topic: 'troubleshooting',
     stem: 'During injection the patient reports sharp pain shooting down one leg. What should you do?',
-    options: ['Inject faster to finish quickly', 'Stop injecting, withdraw and redirect or re-site', 'Continue, as this is normal with hyperbaric solutions', 'Give IV fentanyl and continue'],
-    answer: 1,
+    options: ['Stop injecting, withdraw and redirect or re-site', 'Inject faster to finish quickly', 'Continue, as this is normal with hyperbaric solutions', 'Give IV fentanyl and continue'],
+    answer: 0,
     explain: 'Pain on injection or persistent paraesthesia: stop, don’t inject, withdraw and redirect. Two-thirds of neurological deficits in a large French survey followed paraesthesia during puncture or pain on injection.',
     refs: ['ts-auroy1997'],
     link: '#ts-paraesthesia',
@@ -115,8 +115,8 @@ export const MCQS = [
   {
     topic: 'troubleshooting',
     stem: 'When is a repeat spinal most reasonable after a failed first attempt?',
-    options: ['When the first block is patchy but rising slowly at 10 min', 'When there is no appreciable block at all after 15–20 min, and the cause has been dealt with', 'Whenever the surgeon is in a hurry', 'Always, using the same full dose'],
-    answer: 1,
+    options: ['When there is no appreciable block at all after 15–20 min, and the cause has been dealt with', 'When the first block is patchy but rising slowly at 10 min', 'Whenever the surgeon is in a hurry', 'Always, using the same full dose'],
+    answer: 0,
     explain: 'Repeat only after a complete failure, judged at 15–20 min. Repeating onto a slow or partial block risks an unpredictable high spinal and neurotoxic concentrations of local anaesthetic.',
     refs: ['fettes2009', 'ts-nysora-failed'],
     link: '#ts-failed',
@@ -124,8 +124,8 @@ export const MCQS = [
   {
     topic: 'troubleshooting',
     stem: 'A patient with a high spinal is hypotensive and bradycardic. Which position is recommended?',
-    options: ['Head-down tilt', 'Sitting upright', 'Supine with the legs elevated, no head-down tilt', 'Prone'],
-    answer: 2,
+    options: ['Head-down tilt', 'Sitting upright', 'Prone', 'Supine with the legs elevated, no head-down tilt'],
+    answer: 3,
     explain: 'Elevate the legs to help venous return without tipping the head down, which could carry hyperbaric drug higher. Support the airway and circulation and call for help.',
     refs: ['ts-qrh2023'],
     link: '#ts-high-spinal',
@@ -160,8 +160,8 @@ export const MCQS = [
   {
     topic: 'complications',
     stem: 'What volume of blood does the 2023 multisociety consensus most often recommend for an epidural blood patch?',
-    options: ['5 mL', '15–20 mL', '40 mL', 'As much as possible, up to 60 mL'],
-    answer: 1,
+    options: ['15–20 mL', '5 mL', '40 mL', 'As much as possible, up to 60 mL'],
+    answer: 0,
     explain: 'Usually 15–20 mL, injected slowly, stopping if back pain, headache or radicular pressure becomes significant. More than 30 mL did not improve success.',
     refs: ['uppal2023'],
     link: '#cx-pdph',
@@ -178,8 +178,8 @@ export const MCQS = [
   {
     topic: 'complications',
     stem: 'How do NRFit (ISO 80369-6) connectors prevent wrong-route injection?',
-    options: ['They are colour-coded yellow only', 'They will not connect to Luer syringes or lines', 'They contain a one-way valve', 'They only fit 25G needles'],
-    answer: 1,
+    options: ['They are colour-coded yellow only', 'They contain a one-way valve', 'They will not connect to Luer syringes or lines', 'They only fit 25G needles'],
+    answer: 2,
     explain: 'NRFit is a neuraxial-specific connector that will not mate with Luer, so an IV syringe or line can’t be attached to a spinal needle or epidural, and vice versa.',
     refs: ['iso80369-6'],
     link: '#cx-wrong-route',
@@ -187,9 +187,9 @@ export const MCQS = [
   {
     topic: 'complications',
     stem: 'Local anaesthetic systemic toxicity: what is the initial bolus of 20% lipid emulsion on the Association of Anaesthetists card?',
-    options: ['0.5 mL/kg over 10 min', '1.5 mL/kg over 2–3 min', '5 mL/kg over 1 min', '100 mL regardless of weight'],
-    answer: 1,
-    explain: '1.5 mL/kg over 2–3 min, then an infusion of 15 mL/kg/h, to a maximum cumulative 12 mL/kg. Propofol is not a substitute.',
+    options: ['0.5 mL/kg over 10 min', '5 mL/kg over 1 min', '100 mL regardless of weight', '1.5 mL/kg over 2–3 min'],
+    answer: 3,
+    explain: '1.5 mL/kg over 2–3 min, then an infusion of 15 mL/kg/h. Repeat the bolus at 5 and 10 min and double the infusion to 30 mL/kg/h if needed, to a maximum cumulative 12 mL/kg. Propofol is not a substitute.',
     refs: ['cx-qrh310'],
     link: '#cx-last',
   },
@@ -237,11 +237,11 @@ export const SAQS = [
     q: 'A 35-year-old has a headache the day after a spinal for knee arthroscopy. How do you assess and manage it?',
     marks: 10,
     points: [
-      ['ICHD-3: onset within 5 days of dural puncture; postural feature typical but not required; neck stiffness, hearing symptoms', 2, ['cx-ichd3']],
-      ['Risk factors: younger age, female sex, previous PDPH, cutting or larger needles', 1, ['uppal2023']],
+      ['ICHD-3: onset within 5 days of dural puncture; postural feature typical but not required; neck stiffness, hearing symptoms. Risk factors: younger age, female sex, previous PDPH, cutting or larger needles', 2, ['cx-ichd3', 'uppal2023']],
       ['Red flags and differentials: focal signs, seizures, fever, non-postural or changing headache; meningitis, subdural haematoma, venous sinus thrombosis', 2, ['uppal2023']],
       ['Conservative: paracetamol and NSAID; caffeine up to 900 mg/day in the first 24 h; drink normally; bed rest only for comfort', 2, ['uppal2023']],
       ['Epidural blood patch if activity limited: 15–20 mL at or below the puncture level, stop on back pain or pressure; complete relief 33–91%; counsel about repeat if within 48 h; follow up', 3, ['uppal2023']],
+      ['Before a blood patch: exclude fever or sepsis, apply the antithrombotic timing rules, and consent for repeat dural puncture, backache and neurological complications; greater occipital nerve block (after a fine-gauge spinal) is a weaker alternative', 1, ['uppal2023']],
     ],
   },
   {
@@ -251,7 +251,7 @@ export const SAQS = [
     points: [
       ['Classify as high dose (AF stroke prevention); check renal function and the time of the last dose', 2],
       ['Stop at least 72 h before the spinal (ESAIC/ESRA 2022; ASRA 2025 summary); 36 h applies only to the 2.5 mg low dose', 3, ['esaic2022', 'asra2025']],
-      ['If the interval is uncertain or short: a drug-specific level under 30 ng/mL; non-specific reversal (PCC, andexanet) does not shorten the interval', 2, ['esaic2022']],
+      ['If the interval is uncertain or short: a drug-specific level under 30 ng/mL; reversal agents (PCC, aPCC or andexanet) do not shorten the interval for an elective block', 2, ['esaic2022']],
       ['Restart: ESAIC/ESRA only after any catheter is removed; ASRA summary at least 24 h after puncture for high dose; agree with surgeon and physician', 2, ['esaic2022', 'asra2025']],
       ['Follow the local policy, document the plan, and do neurological checks after surgery', 1],
     ],
@@ -261,9 +261,9 @@ export const SAQS = [
     q: 'Five minutes after a spinal, the patient says their hands feel weak and it is hard to breathe. Describe your recognition and management.',
     marks: 10,
     points: [
-      ['Recognise progression: hypotension and bradycardia, arm weakness, dyspnoea, weak voice, then loss of consciousness and apnoea', 2, ['ts-qrh2023']],
+      ['Recognise the sequence (QRH 3-11): hypotension and bradycardia, difficulty breathing, arm weakness, impaired consciousness, then apnoea; it may progress slowly or fast', 2, ['ts-qrh2023']],
       ['Call for help; reassure (the patient may be aware); stop any further local anaesthetic', 1],
-      ['Oxygen, support ventilation, intubate if needed with hypnosis to prevent awareness', 3, ['ts-qrh2023']],
+      ['Oxygen, jaw thrust, supraglottic airway or intubation with a reduced dose of induction agent; keep the patient asleep once intubated (risk of awareness)', 3, ['ts-qrh2023']],
       ['Circulation: IV fluid, legs elevated without head-down tilt, vasopressors and atropine, early adrenaline if severe; CPR if arrested', 3, ['ts-qrh2023']],
       ['Consider mimics (LAST, vasovagal, haemorrhage, embolism); debrief and document', 1],
     ],

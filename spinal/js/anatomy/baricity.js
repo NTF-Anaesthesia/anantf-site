@@ -1,5 +1,5 @@
 /* spinal/js/anatomy/baricity.js — Fig 1.3: supine spinal curves and where a hyperbaric, isobaric or hypobaric
-   solution injected at L3–4 tends to go. Owner: B2. A schematic particle model, not a simulation of real CSF flow. */
+   solution injected at L3–4 tends to go. A schematic particle model, not a simulation of real CSF flow. */
 import { setupCanvas } from '../ui.js?v=1';
 import * as K from './kit.js';
 

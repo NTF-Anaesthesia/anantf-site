@@ -1,4 +1,4 @@
-// spinal/ page controller: theme, share, scroll-spy, section mounts, references, deep links. Owned by B1.
+// spinal/ page controller: theme, share, scroll-spy, section mounts, references, deep links.
 import { $, $$, el, isDark } from './ui.js?v=1';
 import { registerRefs, finalise } from './refs.js?v=1';
 

@@ -1,4 +1,4 @@
-// 04 Troubleshooting. Owner: B5.
+// 04 Troubleshooting.
 // An index of problems (left column at >=1100px, stacked links on phones) and one panel per problem,
 // each holding a decision tree (js/troubleshooting/tree.js). Doses only from product labels (emc SmPC)
 // or the Association of Anaesthetists QRH; everything local is flagged with a policy callout.
@@ -52,6 +52,7 @@ export const refs = {
   'ts-smpc-atr': { label: 'Atropine SmPC', text: 'Atropine sulfate 3 mg/10 ml solution for injection in pre-filled syringe. Summary of Product Characteristics, section 4.2. emc.', url: emc(8790) },
   'ts-smpc-gly': { label: 'Glycopyrronium SmPC', text: 'Glycopyrronium bromide 200 micrograms/ml solution for injection. Summary of Product Characteristics, section 4.2. emc.', url: emc(2786) },
   'ts-smpc-ond': { label: 'Ondansetron SmPC', text: 'Ondansetron 2 mg/ml solution for injection. Summary of Product Characteristics, section 4.2 (treatment of established PONV). emc.', url: emc(6469) },
+  'ts-smpc-nal': { label: 'Naloxone SmPC', text: 'Naloxone hydrochloride 1 mg/ml solution for injection in pre-filled syringe. Summary of Product Characteristics, section 4.2 (postoperative opioid depression). emc.', url: emc(3590) },
 };
 
 const D = (s) => `<span class="sp-dose">${s}</span>`;
@@ -292,7 +293,7 @@ export function mount(root) {
     host.append(art);
   });
 
-  function select(id, { focus = false } = {}) {
+  function select(id, { focus = false, record = true } = {}) {
     if (!panels.has(id)) return false;
     if (current && current !== id) {
       panels.get(current).hidden = true;
@@ -301,6 +302,7 @@ export function mount(root) {
     current = id;
     panels.get(id).hidden = false;
     links.get(id).setAttribute('aria-current', 'true');
+    if (record) remember(id);
     if (focus) {
       const h = panels.get(id).querySelector('.ts-panel-h');
       h.focus({ preventScroll: true });
@@ -312,13 +314,28 @@ export function mount(root) {
   function onLink(e, id) {
     // Let the hash change (so the link is shareable), but switch the panel first; app.js then scrolls.
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
-    select(id);
+    // Don't record yet: the history entry this click creates doesn't exist until the hash changes.
+    select(id, { record: location.hash === `#${id}` });
     if (location.hash === `#${id}`) {
       e.preventDefault();
       panels.get(id).scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
       panels.get(id).querySelector('.ts-panel-h').focus({ preventScroll: true });
     }
   }
+
+  // Record the open panel on each history entry, so browser Back/Forward restores it
+  // (index links and in-tree links add hash entries; going back to an entry without a ts- hash,
+  // or with no hash, would otherwise leave the later panel showing).
+  function remember(id) {
+    try {
+      if (history.state?.tsPanel !== id) history.replaceState({ ...(history.state || {}), tsPanel: id }, '');
+    } catch { /* history unavailable: Back just won't restore the panel */ }
+  }
+  window.addEventListener('hashchange', () => { if (current) remember(current); });
+  window.addEventListener('popstate', (e) => {
+    const id = e.state?.tsPanel || (location.hash ? null : PANELS[0].id);
+    if (id && id !== current) select(id);
+  });
 
   select(PANELS[0].id);
 

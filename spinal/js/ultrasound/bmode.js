@@ -1,4 +1,4 @@
-// spinal/js/ultrasound/bmode.js — procedural B-mode for a low-frequency curvilinear probe. Owner: B4.
+// spinal/js/ultrasound/bmode.js — procedural B-mode for a low-frequency curvilinear probe.
 //
 // Original code, written for this page. The approach follows the brachial plexus app's simulator
 // (speckle from complex Gaussian scatterers convolved with a point-spread function, a per-line
@@ -321,12 +321,15 @@ function blurRow(src, dst, tmp, o, W, radii, gain) {
 }
 
 // ------------------------------------------------------------------ B-mode in the polar grid
-function renderPolar(C, seed) {
+// A generator, so the idle-time prebuild can yield between stages (each well under 50 ms);
+// buildPolar() simply runs it to the end.
+function* renderPolarSteps(C, seed) {
   const N = NA * NR, idx = polarIndex();
   const eD = C.e.getImageData(0, 0, MW, MH).data, sD = C.sp.getImageData(0, 0, MW, MH).data;
   const aD = C.at.getImageData(0, 0, MW, MH).data, bD = C.hb.getImageData(0, 0, MW, MH).data;
   const E = new Float32Array(N), S = new Float32Array(N), A = new Uint8Array(N), B = new Uint8Array(N);
   for (let k = 0; k < N; k++) { const m = idx[k] * 4; E[k] = eD[m] / 255; S[k] = sD[m] / 255; A[k] = aD[m]; B[k] = bD[m]; }
+  yield;
 
   const { R, depth, focus } = PROBE;
   // Axial PSF (along the beam): sigma about 0.24 mm. Lateral PSF: about 0.5 mm at the focus,
@@ -345,6 +348,7 @@ function renderPolar(C, seed) {
   const sp2 = new Float32Array(N);
   for (let j = 0; j < NR; j++) blurRow(sp, sp2, tmp, j * NA, NA, rowK[j].radii, 1);
   sp = null;
+  yield;
 
   const CS = 2.6, LOOKS = 1, amp = new Float32Array(N), rRe = new Float32Array(N), rIm = new Float32Array(N);
   for (let look = 0; look < LOOKS; look++) {
@@ -355,11 +359,14 @@ function renderPolar(C, seed) {
       sd ^= sd << 13; sd ^= sd >>> 17; sd ^= sd << 5;
       re[k] = a * GAUSS[sd & 0xffff]; im[k] = a * GAUSS[sd >>> 16];
     }
+    yield;
     re = convRows(re, NA, NR, ky2); im = convRows(im, NA, NR, ky2);
+    yield;
     for (let j = 0; j < NR; j++) { const rk = rowK[j], o = j * NA; blurRow(re, rRe, tmp, o, NA, rk.radii, rk.l2); blurRow(im, rIm, tmp, o, NA, rk.radii, rk.l2); }
     for (let k = 0; k < N; k++) { const r = rRe[k] + sp2[k] * CS, q = rIm[k]; amp[k] += Math.sqrt(r * r + q * q) / LOOKS; }
   }
 
+  yield;
   // Light frequency compounding: average the envelope over neighbouring samples, which fills
   // the thin speckle nulls the way a modern scanner's compounding does.
   {
@@ -373,6 +380,7 @@ function renderPolar(C, seed) {
     }
     for (let k = NA; k < N - NA; k++) amp[k] = a2[k] || amp[k];
   }
+  yield;
   // Attenuation walk down each scan line: bone shadows, enhancement under fluid.
   const G = new Float32Array(N);
   const kE = 0.045, kS = 0.6, relax = Math.exp(-DR / 7), HFLOOR = 0.0035;
@@ -393,6 +401,7 @@ function renderPolar(C, seed) {
   const gR = boxRadii(1.6), G2 = new Float32Array(N);
   for (let j = 0; j < NR; j++) blurRow(G, G2, tmp, j * NA, NA, gR, 1);
 
+  yield;
   // Depth gain (residual after TGC), focal zone, edge apodisation, noise, log compression.
   const IW = 1.75, DRdB = 44, GAM = 1.85, LUTN = 8192, LS = LUTN / 8, lut = new Uint8ClampedArray(LUTN);
   for (let q = 0; q < LUTN; q++) {
@@ -424,11 +433,20 @@ const imgCache = new Map();
 export function buildPolar(scene) {
   if (polarCache.has(scene.id)) return 0;
   const t0 = performance.now();
-  const C = paintScene(scene);
-  polarCache.set(scene.id, renderPolar(C, scene.seed || scene.id));
+  const it = buildPolarSteps(scene);
+  while (!it.next().done);
   return performance.now() - t0;
 }
+/** The same build as a sequence of short steps: call next() once per idle period until done. */
+export function* buildPolarSteps(scene) {
+  if (polarCache.has(scene.id)) return;
+  const C = paintScene(scene);
+  yield;
+  const out = yield* renderPolarSteps(C, scene.seed || scene.id);
+  if (!polarCache.has(scene.id)) polarCache.set(scene.id, out);
+}
 export const isBuilt = (scene) => polarCache.has(scene.id);
+export const hasScanImage = (scene, w, h) => imgCache.has(`${scene.id}@${w}x${h}`);
 
 /** Scan-convert to a sector image of w x h device pixels covering FRAME. Cached per scene and size. */
 export function scanImage(scene, w, h) {

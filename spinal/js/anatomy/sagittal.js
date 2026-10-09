@@ -1,6 +1,5 @@
 /* spinal/js/anatomy/sagittal.js — Fig 1.1: midline sagittal plate of the lumbar spine (T12–S3) with a spinal
-   needle advancing through the L3–4 interspace, plus a transverse inset at L3–4 showing midline vs paramedian.
-   Owner: B2. Original drawing (approximate scale, about 36 logical units per cm). Cranial is on the left,
+   needle advancing through the L3–4 interspace, plus a transverse inset at L3–4 showing midline vs paramedian. Original drawing (approximate scale, about 36 logical units per cm). Cranial is on the left,
    posterior (skin) at the top, as in a sagittal ultrasound image. */
 import { setupCanvas } from '../ui.js?v=1';
 import * as K from './kit.js';
@@ -316,7 +315,10 @@ export function createSagittal(canvas) {
         const tip = tipNow;
         const left = tip[0] > view.x + view.w / 2;
         const py = K.clamp(tip[1] - 46, view.y + 16 * u, view.y + view.h - 16 * u);
-        K.pill(c, PILL[key], left ? tip[0] - 26 : tip[0] + 26, py, { anchor: tip, s, align: left ? 'right' : 'left' });
+        // keep the pill inside the cropped view (it was clipped at the left edge on phones)
+        const pw = K.pillSize(c, PILL[key], s).w, lo = view.x + 6 * u, hi = view.x + view.w - 6 * u;
+        const px = left ? K.clamp(tip[0] - 26, lo + pw, hi) : K.clamp(tip[0] + 26, lo, hi - pw);
+        K.pill(c, PILL[key], px, py, { anchor: tip, s, align: left ? 'right' : 'left' });
       }
     }
   }
@@ -341,7 +343,8 @@ export function createSagittal(canvas) {
     if (st.mode === 'paramedian' && !view.compact && st.key !== 'csf') K.cuePill(c, 'Midline ligaments bypassed', 850, 494, { s: u });
     if (st.key === 'csf') {
       const x = view.compact ? view.x + 10 * u : 850;
-      K.warnPill(c, 'Pain or paraesthesia: stop', x, view.compact ? view.y + view.h - 18 * u : 494, { s: u });
+      // compact: sit over the vertebral bodies, clear of the level labels at the bottom
+      K.warnPill(c, 'Pain or paraesthesia: stop', x, view.compact ? BODY_T + 24 : 494, { s: u });
     }
     c.restore();
   }

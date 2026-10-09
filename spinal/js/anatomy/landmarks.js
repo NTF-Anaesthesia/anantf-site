@@ -1,5 +1,4 @@
-/* spinal/js/anatomy/landmarks.js — Fig 1.2: back-view schematic of surface landmarks and spinal levels.
-   Owner: B2. SVG, original drawing. Levels are buttons (HTML) mirrored by hover/click bands in the SVG. */
+/* spinal/js/anatomy/landmarks.js — Fig 1.2: back-view schematic of surface landmarks and spinal levels. SVG, original drawing. Levels are buttons (HTML) mirrored by hover/click bands in the SVG. */
 import { el, cite } from '../ui.js?v=1';
 
 const NS = 'http://www.w3.org/2000/svg';
@@ -27,12 +26,12 @@ const INFO = {
   'T12': () => `The 12th ribs attach here. In a minority of adults the conus ends as high as the middle of T12.${cite('an-saifuddin1998')}`,
   'T12–L1': () => 'Spinal cord. Never a level for spinal anaesthesia.',
   'L1': () => `Average position of the conus tip: the lower third of L1 (range middle of T12 to upper third of L3).${cite('an-saifuddin1998')}`,
-  'L1–2': () => `The conus usually ends around here.${cite('reynolds2001')} Spinal cord may lie under the needle: not a spinal level.`,
+  'L1–2': () => `Just below the average conus tip (lower third of L1); in a minority the cord still lies here. Not a spinal level.${cite('an-saifuddin1998')}`,
   'L2': () => `The cord ended below L1 in 19% of patients in one MRI study.${cite('broadbent2000')}`,
   'L2–3': () => `Avoid. The conus can reach this level, and the space you palpate is often higher than you think, so an intended L2–3 may really be L1–2.${cite('broadbent2000', 'reynolds2001')}`,
   'L3': () => `The lowest conus position in a large adult MRI series was the upper third of L3.${cite('an-saifuddin1998')}`,
   'L3–4': () => 'A usual choice for spinal anaesthesia: below the conus in almost all adults, with only cauda equina roots in the dural sac.',
-  'L4': () => 'Tuffier’s (intercristal) line traditionally crosses the L4 body or the L4–5 space, but varies with sex, age and build.',
+  'L4': () => 'Tuffier’s (intercristal) line traditionally crosses the L4 body or the L4–5 space, but it is an unreliable guide to level.',
   'L4–5': () => 'Also commonly used. Cauda equina only. If Tuffier’s line is at L4–5, this is the space on the line.',
   'L5': () => 'Cauda equina within the dural sac.',
   'L5–S1': () => 'The largest lumbar interlaminar gap. Useful when the higher spaces are narrow or calcified.',

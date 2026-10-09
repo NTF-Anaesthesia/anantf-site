@@ -1,6 +1,6 @@
 // spinal/js/ultrasound/diagram.js — idealised labelled diagram of a scan, drawn from the same
 // geometry as the simulated B-mode. "Printed plate" look shared with the anatomy section
-// (same plate colours in both themes). Owner: B4.
+// (same plate colours in both themes).
 
 import * as K from '../anatomy/kit.js';
 import { FRAME, FRAME_W, FRAME_H, PROBE, fanOutline, pathOf } from './bmode.js';
@@ -9,15 +9,43 @@ const MUSCLE = '#d9a48f', MUSCLE2 = '#cf9784', DISC = '#e3d3bd', VB = '#efe6d2',
 const ORDER = ['muscle', 'muscle2', 'fat', 'isl', 'epi', 'vb', 'disc', 'csf', 'roots', 'rootdot', 'septum', 'fascia', 'flavum', 'dura', 'adura', 'acline', 'bone', 'skin'];
 
 const cache = new Map();
+const TEXTURED = new Set(['fat', 'muscle', 'muscle2']);
+
+// The paper texture is the same for every scene, so it is drawn once per size and reused.
+const papers = new Map();
+function paperImage(w, h) {
+  const key = `${w}x${h}`;
+  let c = papers.get(key);
+  if (!c) {
+    c = document.createElement('canvas'); c.width = w; c.height = h;
+    K.paper(c.getContext('2d'), w, h, 11);
+    papers.set(key, c);
+    while (papers.size > 3) papers.delete(papers.keys().next().value);
+  }
+  return c;
+}
+
+export const hasDiagram = (scene, w, h) => cache.has(`${scene.id}@${w}x${h}`);
 
 /** Diagram base image (no labels) for a scene at w x h device px. Cached. */
 export function diagramImage(scene, w, h) {
   const key = `${scene.id}@${w}x${h}`;
   if (cache.has(key)) return cache.get(key);
+  const it = diagramSteps(scene, w, h);
+  let r;
+  do r = it.next(); while (!r.done);
+  return r.value;
+}
+
+/** The same drawing as short steps (yields between the textured parts), for idle-time prebuilding. */
+export function* diagramSteps(scene, w, h) {
+  const key = `${scene.id}@${w}x${h}`;
+  if (cache.has(key)) return cache.get(key);
   const c = document.createElement('canvas'); c.width = w; c.height = h;
   const ctx = c.getContext('2d');
   const s = w / FRAME_W; // px per mm
-  K.paper(ctx, w, h, 11);
+  ctx.drawImage(paperImage(w, h), 0, 0);
+  yield;
   ctx.save();
   ctx.translate(-FRAME.x0 * s, -FRAME.z0 * s);
   const P = (pts) => pts.map(([x, z]) => [x * s, z * s]);
@@ -31,8 +59,12 @@ export function diagramImage(scene, w, h) {
   for (const pass of [0, 1]) {
     ctx.save();
     if (pass === 0) ctx.globalAlpha = 0.22; else ctx.clip(fan);
-    for (const sh of parts) drawPart(ctx, sh, P, s, pass);
+    for (const sh of parts) {
+      drawPart(ctx, sh, P, s, pass);
+      if (pass && TEXTURED.has(sh.draw)) yield;
+    }
     ctx.restore();
+    yield;
   }
   // Sector outline and the probe footprint.
   ctx.save();
@@ -44,6 +76,7 @@ export function diagramImage(scene, w, h) {
   ctx.fillStyle = '#3a3532'; ctx.fill(); ctx.strokeStyle = K.C.ink; ctx.lineWidth = 1; ctx.stroke();
   ctx.restore();
   ctx.restore();
+  if (cache.has(key)) return cache.get(key);
   cache.set(key, c);
   while (cache.size > 12) cache.delete(cache.keys().next().value);
   return c;

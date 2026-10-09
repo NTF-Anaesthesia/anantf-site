@@ -1,4 +1,4 @@
-/* spinal/ — anatomy section styles. Owner: B2. Every selector starts with .spinal-app .an- or #an- (see js/CONTRACT.md). */
+/* spinal/ — anatomy section styles. Every selector starts with .spinal-app .an- or #an-. */
 
 .spinal-app .an-sub{margin-top:8px}
 .spinal-app .an-sub+.an-sub{margin-top:48px}

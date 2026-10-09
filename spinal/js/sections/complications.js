@@ -1,4 +1,4 @@
-// Section 05: Complications and safety. Owner: B6.
+// Section 05: Complications and safety.
 import { el, callout, table, figure, details, cite } from '../ui.js?v=1';
 import { PDPH_TREE } from '../complications/pdph-tree.js';
 import { neuroCheck } from '../complications/neurocheck.js';
@@ -39,6 +39,11 @@ export const refs = {
     label: 'Suy 2013',
     text: 'Suy F, Verhoeven PO, Lucht F, Grattard F, Carricajo A, Pozzetto B, et al. Nosocomial meningitis due to <i>Streptococcus salivarius</i> linked to the oral flora of an anesthesiologist. <i>Infect Control Hosp Epidemiol</i> 2013;34:331–2.',
     url: 'https://doi.org/10.1086/669517',
+  },
+  'cx-forget2019': {
+    label: 'Forget 2019',
+    text: 'Forget P, Borovac JA, Thackeray EM, Pace NL. Transient neurological symptoms (TNS) following spinal anaesthesia with lidocaine versus other local anaesthetics in adult surgical patients: a network meta-analysis. <i>Cochrane Database Syst Rev</i> 2019;12:CD003006.',
+    url: 'https://doi.org/10.1002/14651858.CD003006.pub4',
   },
   'cx-freedman1998': {
     label: 'Freedman 1998',
@@ -127,7 +132,7 @@ function pdph() {
       el('div', { class: 'cx-col' },
         callout('warn', {
           title: 'Red flags: don’t assume it’s PDPH',
-          body: `<ul><li>No postural element, a change in character, or onset more than 5 days after puncture.</li><li>Focal signs, seizures, drowsiness or confusion, or a change in vision.</li><li>Fever, or worsening after a blood patch.</li></ul><p>Image and refer. Dural puncture is associated with subdural haematoma and cerebral venous sinus thrombosis.${cite('uppal2023')}</p>`,
+          body: `<ul><li>A change in character, or onset more than 5 days after puncture.</li><li>Focal signs, seizures, drowsiness or confusion, or a change in vision.</li><li>Fever, or worsening after a blood patch.</li></ul><p>Image and refer. A headache with no postural element is atypical: get a senior review and consider imaging. Dural puncture is associated with subdural haematoma and cerebral venous sinus thrombosis.${cite('uppal2023')}</p>`,
         }),
         P('Other causes to consider: meningitis, subarachnoid or other intracranial haemorrhage, pneumocephalus, migraine or tension-type headache, caffeine withdrawal and sinusitis.', 'sp-prose cx-small'),
       ),
@@ -153,7 +158,7 @@ function pdph() {
         ],
       }),
     ),
-    P(`<strong>Greater occipital nerve block</strong> may be offered (a weak, grade C recommendation); the headache may come back, and severe cases still need a patch.${cite('uppal2023')}`),
+    P(`After a spinal with a fine (22G or smaller) needle, a <strong>greater occipital nerve block</strong> may be offered (a weak, grade C recommendation); the headache may come back, and severe cases still need a patch.${cite('uppal2023')}`),
     tree.el,
     outline,
     callout('policy', { title: 'Local PDPH pathway', body: '<p>Confirm who reviews headaches after a spinal, who performs blood patches and when, whether greater occipital nerve block is offered, and the patient leaflet and follow-up call used locally.</p>' }),
@@ -169,7 +174,7 @@ function neuro() {
       `<strong>Direct needle trauma</strong> to a root or the cord. In the French survey, two-thirds of patients with a deficit had paraesthesia during puncture or pain on injection, and the deficit followed the same distribution.${cite('ts-auroy1997')}`,
       `<strong>Conus injury from misjudging the level.</strong> In seven cases of conus damage, the space was usually believed to be L2–3 and every patient felt pain on insertion.${cite('reynolds2001')} See <a href="#an-tuffier">Tuffier’s line and level</a>: aim for L3–4 or below.`,
       `<strong>Compression</strong> by a <a href="#cx-haematoma">haematoma</a> or an <a href="#cx-infection">abscess</a>. These are the injuries that time can change.`,
-      `<strong>Local anaesthetic neurotoxicity.</strong> Three-quarters of deficits after atraumatic spinals in the French survey followed hyperbaric 5% lidocaine.${cite('ts-auroy1997')}`,
+      `<strong>Local anaesthetic neurotoxicity.</strong> In the French survey, of the deficits that followed spinals without paraesthesia or pain on injection, three-quarters were after hyperbaric 5% lidocaine.${cite('ts-auroy1997')}`,
       `<strong>Chemical injury</strong> from the wrong drug or from antiseptic carried into the CSF; chlorhexidine is neurotoxic.${cite('tq-campbell2014')}`,
       '<strong>Ischaemia</strong> of the cord, for example with prolonged severe hypotension.',
     ]),
@@ -229,7 +234,7 @@ function tns() {
     P('Pain or unpleasant sensations in the buttocks radiating to the legs, starting within about a day of an uneventful spinal. There is no objective deficit, and it settles within days.'),
     UL([
       `<strong>Lidocaine is the main cause.</strong> In 1,863 patients, lidocaine carried a relative risk of ${N('5.1')} compared with bupivacaine and ${N('3.2')} compared with tetracaine. With lidocaine, the lithotomy position (${N('2.6')}) and day-case status (${N('3.6')}) increased the risk. Needle type, lidocaine dose and concentration did not.${cite('cx-freedman1998')}`,
-      `A Cochrane network meta-analysis found lower risk with bupivacaine, levobupivacaine, prilocaine, procaine and ropivacaine than with lidocaine; chloroprocaine and mepivacaine did not differ from lidocaine (low-quality evidence).${cite('zaric2009')}`,
+      `A Cochrane network meta-analysis found lower risk with bupivacaine, levobupivacaine, prilocaine, procaine and ropivacaine than with lidocaine; chloroprocaine and mepivacaine did not differ from lidocaine (low-quality evidence).${cite('cx-forget2019')}`,
       'Treat with NSAIDs and reassurance. Any objective deficit means it isn’t TNS: examine and investigate.',
     ]),
     callout('policy', { body: '<p>Confirm whether lidocaine, prilocaine or chloroprocaine spinal products are on the local formulary.</p>' }),
@@ -246,7 +251,7 @@ function last() {
       '<strong>Hip fracture:</strong> a fascia iliaca or PENG block before or after the spinal, plus any local infiltration by the surgeon. Add up every local anaesthetic dose.',
       'Accidental intravenous injection; frail, small or elderly patients.',
     ]),
-    P(`Management follows the Association of Anaesthetists LAST card: stop injecting, call for help, get the lipid pack, oxygen and airway, benzodiazepine for seizures. Give ${D('20%')} lipid emulsion: a bolus of ${D('1.5 mL/kg')} over 2–3 min, then an infusion of ${D('15 mL/kg/h')}, to a maximum cumulative ${D('12 mL/kg')}. In cardiac arrest use smaller adrenaline doses (${D('≤1 µg/kg')}) and expect a long resuscitation.${cite('cx-qrh310')}`),
+    P(`Management follows the Association of Anaesthetists LAST card: stop injecting, call for help, get the lipid pack, oxygen and airway, benzodiazepine for seizures. Give ${D('20%')} lipid emulsion: a bolus of ${D('1.5 mL/kg')} over 2–3 min, then an infusion of ${D('15 mL/kg/h')}. If the circulation has not recovered, repeat the bolus at 5 and 10 min (no more than 3 boluses in total) and double the infusion to ${D('30 mL/kg/h')} after 5 min. Maximum cumulative dose ${D('12 mL/kg')}. In cardiac arrest use smaller adrenaline doses (${D('≤1 µg/kg')}) and expect a long resuscitation.${cite('cx-qrh310')}`),
     callout('policy', { body: '<p>Know where the lipid emulsion and the local LAST card are kept in each theatre and block room.</p>' }),
   );
 }

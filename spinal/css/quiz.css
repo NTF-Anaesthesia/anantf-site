@@ -1,4 +1,4 @@
-/* spinal/ — quiz section styles. Owner: B6. Every selector starts with .spinal-app .qz- or #qz- (see js/CONTRACT.md). */
+/* spinal/ — quiz section styles. Every selector starts with .spinal-app .qz- or #qz-. */
 
 .spinal-app .qz-sub + .qz-sub{border-top:1px solid var(--sp-line);margin-top:48px}
 .spinal-app main .qz-h3{margin-top:28px}
@@ -43,6 +43,7 @@
 .spinal-app .qz-score-sub{color:var(--sp-muted);font-weight:400}
 @media (max-width:760px){
   .spinal-app .qz-score{position:sticky;bottom:0;z-index:20;margin-inline:-1px;padding:6px 10px 6px 14px}
+  .spinal-app .qz-q :is(button,a,summary){scroll-margin-bottom:96px}
   .spinal-app .qz-q{padding:14px 14px 16px}
   .spinal-app .qz-stem{font-size:18px}
   .spinal-app .qz-opt{grid-template-columns:32px minmax(0,1fr);row-gap:4px}

@@ -1,4 +1,4 @@
-// 06 Special populations: a short note. Owner: B1. No doses here by design.
+// 06 Special populations: a short note. No doses here by design.
 import { el, cite } from '../ui.js?v=1';
 
 export const meta = { id: 'populations', prefix: 'pp', title: 'Special populations' };
@@ -30,7 +30,7 @@ const CARDS = [
     points: [
       'Expect more hypotension, and spread that may go a little higher than in younger patients. Many anaesthetists reduce the dose.' + cite('hocking2004'),
       'Calcified ligaments and narrow gaps make the midline hard. A paramedian approach often works better.',
-      'Hip fracture: give a femoral, fascia iliaca or PENG block before you sit the patient up.' + cite('pp-griffiths2021', 'pp-guay2020'),
+      'Hip fracture: give a femoral or fascia iliaca block before you sit the patient up.' + cite('pp-griffiths2021', 'pp-guay2020') + ' The PENG block is a newer alternative.',
       'Spinal rather than general anaesthesia hasn’t been shown to reduce postoperative delirium.' + cite('pp-neuman2021'),
     ],
   },

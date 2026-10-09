@@ -1,4 +1,4 @@
-// 02 Performing a spinal, step by step. Owner: B3.
+// 02 Performing a spinal, step by step.
 // Doses: only from product labels (SmPC / Singapore NDF) and guidelines listed in `refs` below.
 // ASRA 2025 anticoagulation values come from a published summary and are labelled as such.
 import { el, cite, callout, steps, table, tabs, segmented, figure, details, onResize, whenVisible } from '../ui.js?v=1';
@@ -68,6 +68,11 @@ export const refs = {
     label: 'Anger 2021',
     text: 'Anger M, Valovska T, Beloeil H, Lirk P, Joshi GP, Van de Velde M, et al. PROSPECT guideline for total hip arthroplasty: a systematic review and procedure-specific postoperative pain management recommendations. <i>Anaesthesia</i> 2021;76:1082–97.',
     url: 'https://doi.org/10.1111/anae.15498',
+  },
+  'tq-carella2026': {
+    label: 'Carella 2026',
+    text: 'Carella M, Bugada D, Van de Velde M, Beloeil H, Albrecht E, Lavand’homme P, Raeder J, Joshi GP; PROSPECT Working Group of the European Society of Regional Anaesthesia and Pain Therapy. PROSPECT guideline for total hip arthroplasty: updated systematic review and procedure-specific postoperative pain management recommendations. <i>Anaesthesia</i> 2026. Published online July 2026.',
+    url: 'https://doi.org/10.1111/anae.70299',
   },
   'tq-lavandhomme2022': {
     label: 'Lavand’homme 2022',
@@ -146,9 +151,9 @@ export function mount(root) {
             [{ th: true, html: 'Itching' }, 'Very common to common', 'Mainly with spinal opioids. Treatable.'],
             [{ th: true, html: 'Difficulty passing urine' }, 'Very common to common', 'Lasts as long as the block. A catheter may be needed for a while.'],
             [{ th: true, html: 'Pain or tingling during the injection' }, 'Very common to common', 'Tell me straight away if you feel it in your legs or bottom.'],
-            [{ th: true, html: 'Headache' }, 'Much less common in older patients', 'Can follow a spinal. Tell us if it is worse sitting up.'],
+            [{ th: true, html: 'Headache' }, `About ${N('1 in 200–300')} in young women having a spinal for childbirth; much less common in older patients`, 'Can follow a spinal. Tell us if it is worse sitting up.'],
             [{ th: true, html: 'Temporary nerve damage' }, 'Rare', 'Numbness or weakness that nearly always recovers in days to weeks.'],
-            [{ th: true, html: 'Permanent nerve damage' }, `About ${N('1 in 50,000')} spinals`, 'Very rare.'],
+            [{ th: true, html: 'Permanent nerve damage' }, `About ${N('1 in 50,000')} spinals`, `Rare: about ${N('1 in 50,000')}.`],
           ],
         }),
       )),
@@ -294,7 +299,11 @@ export function mount(root) {
 
   // ---------------------------------------------------------------- 7 approach
   const apFig = figure({ id: 'tq-fig-approach', num: '2.3', caption: 'Back view of one lumbar interspace. The midline needle enters in the middle of the gap; the paramedian needle starts just lateral and caudal and aims medially and upwards. Original drawing, not to scale.', plate: 'paper', aspect: '480/320' });
-  const apSvg = approachSvg();
+  // Phones get taller layouts of Figs 2.3 and 2.4 with larger label text (kept at 11px or more).
+  const mqNarrow = window.matchMedia('(max-width:640px)');
+  const apAspect = () => (mqNarrow.matches ? '480/400' : '480/320');
+  let apSvg = approachSvg({ narrow: mqNarrow.matches });
+  apFig.stage.style.aspectRatio = apAspect();
   apFig.stage.append(apSvg);
   const apText = el('div', { class: 'tq-ap-text', 'aria-live': 'polite' });
   const AP = {
@@ -332,7 +341,20 @@ export function mount(root) {
 
   // ---------------------------------------------------------------- 8 needles
   const ndFig = figure({ id: 'tq-fig-needles', num: '2.4', caption: 'Cutting versus pencil-point tips. With a pencil-point needle the whole side opening must be inside the dura before CSF flows freely and before you inject. Original drawing, not to scale.', plate: 'paper', aspect: '560/270' });
-  ndFig.stage.append(needlesSvg());
+  const ndAspect = () => (mqNarrow.matches ? '560/360' : '560/270');
+  ndFig.stage.style.aspectRatio = ndAspect();
+  ndFig.stage.append(needlesSvg({ narrow: mqNarrow.matches }));
+  mqNarrow.addEventListener('change', () => {
+    const narrow = mqNarrow.matches;
+    const nextAp = approachSvg({ narrow });
+    nextAp.dataset.mode = apSvg.dataset.mode;
+    nextAp.setAttribute('aria-label', apSvg.getAttribute('aria-label'));
+    apSvg.replaceWith(nextAp);
+    apSvg = nextAp;
+    apFig.stage.style.aspectRatio = apAspect();
+    ndFig.stage.querySelector('svg').replaceWith(needlesSvg({ narrow }));
+    ndFig.stage.style.aspectRatio = ndAspect();
+  });
   root.append(part('tq-needles', '2.8', 'Needles',
     el('div', { class: 'sp-split tq-split' },
       el('div', {},
@@ -345,7 +367,7 @@ export function mount(root) {
           ],
         }),
         UL([
-          `<strong>Tip design matters more than gauge.</strong> In the Cochrane review, cutting needles roughly doubled post-dural puncture headache compared with pencil-point needles (risk ratio ${N('2.14')}, 95% CI ${N('1.72–2.67')}; about ${N('64')} vs ${N('30 per 1,000')}). Gauge made no consistent difference.${cite('tq-arevalo2017')}`,
+          `<strong>Tip design matters more than gauge.</strong> In the Cochrane review, cutting needles roughly doubled post-dural puncture headache compared with pencil-point needles (risk ratio ${N('2.14')}, 95% CI ${N('1.72–2.67')}; about ${N('64')} vs ${N('30 per 1,000')}). Gauge made no consistent difference in the Cochrane review,${cite('tq-arevalo2017')} but the 2023 multisociety consensus found that narrower gauges lower the risk, clearly so for cutting needles.${cite('uppal2023')} Use the finest pencil-point needle you can handle.`,
           `A meta-analysis of 110 trials of lumbar puncture for any reason found the same: atraumatic needles cut headache (risk ratio ${N('0.40')}, 95% CI ${N('0.34–0.47')}).${cite('tq-nath2018')}`,
           '<strong>Introducer:</strong> fine needles bend easily. The introducer guides them through skin and ligament and keeps them on line.',
           '<strong>Length:</strong> a standard-length needle suits most adults; have a longer one ready for obesity or the Taylor approach.',
@@ -413,7 +435,7 @@ export function mount(root) {
         'Dose: per local protocol.',
       ], 'tq-card--plain'),
       card('Morphine (hydrophilic)', [
-        `PROSPECT: low-dose intrathecal morphine ${D('100 microgram')} (${D('0.1 mg')}) <em>may be considered</em> with a spinal for hip replacement.${cite('tq-anger2021')} For knee replacement, only when neither an adductor canal block nor local infiltration analgesia is possible.${cite('tq-lavandhomme2022')}`,
+        `PROSPECT (2026 update): low-dose intrathecal morphine ${D('100 microgram')} (${D('0.1 mg')}) <em>may be considered</em> with a spinal in inpatients having a hip replacement.${cite('tq-carella2026')} The 2021 version stressed its side-effects and showed that good analgesia is achievable without it.${cite('tq-anger2021')} For knee replacement, only when neither an adductor canal block nor local infiltration analgesia is possible.${cite('tq-lavandhomme2022')}`,
         'Slow onset; analgesia for many hours. Itch, nausea, urinary retention and <strong>delayed</strong> respiratory depression.',
         `Monitor for at least ${N('24 h')}: at least hourly for ${N('12 h')}, then at least every ${N('2 h')} to ${N('24 h')}. Watch breathing rate and depth, oxygenation and sedation. Keep naloxone and oxygen available.${cite('tq-asa2016')}`,
         `Not for day-case patients going home the same day.${cite('tq-asa2016')}`,
@@ -461,7 +483,7 @@ export function mount(root) {
       { id: 'turp', label: 'TURP', target: 10, why: 'TURP: T10 is the level commonly quoted, to cover bladder distension.' },
       { id: 'hip', label: 'Hip', target: 10, why: 'Hip surgery: T10 is commonly quoted; some accept lower for arthroplasty. The conservative figure is used here.' },
       { id: 'knee', label: 'Knee', target: 10, why: 'Knee surgery: T10 is commonly quoted, and also covers a thigh tourniquet more reliably.' },
-      { id: 'hernia', label: 'Inguinal hernia', target: 8, why: 'Inguinal hernia: about T10 covers the skin, but traction on the peritoneum and cord can need T8 or higher. T8 is used here.' },
+      { id: 'hernia', label: 'Inguinal hernia', target: 8, why: 'Inguinal hernia: the incision is at T12–L1, but traction on the sac and peritoneum needs at least T10, and many aim for T8. T8 is used here.' },
     ]),
     callout('policy', { title: 'Target levels', body: '<p>These targets are commonly quoted teaching figures, not taken from a guideline. Use the level your consultant and the surgeon expect.</p>' }),
   ));
@@ -501,8 +523,8 @@ export function mount(root) {
   // ---------------------------------------------------------------- reveal
   return {
     reveal(id) {
-      if (id === 'tq-sitting' || id === 'tq-pos-sitting') { posTabs.select('tq-pos-sitting'); return true; }
-      if (id === 'tq-lateral' || id === 'tq-pos-lateral') { posTabs.select('tq-pos-lateral'); return true; }
+      if (id === 'tq-sitting' || id.startsWith('tq-pos-sitting')) { posTabs.select('tq-pos-sitting'); return true; }
+      if (id === 'tq-lateral' || id.startsWith('tq-pos-lateral')) { posTabs.select('tq-pos-lateral'); return true; }
       if (id === 'tq-midline' || id === 'tq-paramedian') { const v = id.slice(3); apSeg.set(v); setAp(v); return true; }
       if (id === 'tq-ac-table' || id === 'tq-ac-full') { fullTable.open = true; return true; }
       if (id.startsWith('tq-spread')) {

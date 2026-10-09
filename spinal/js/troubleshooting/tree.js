@@ -1,4 +1,4 @@
-// Decision-tree component for the spinal page. Owner: B5 (troubleshooting). Reusable by other sections.
+// Decision-tree component for the spinal page. Reusable by other sections.
 //
 // STABLE API (other builders may import this file read-only):
 //

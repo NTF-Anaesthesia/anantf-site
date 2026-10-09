@@ -1,6 +1,6 @@
-/* spinal/js/anatomy/kit.js — shared canvas 2D drawing kit for the spinal page. Owner: B2 (anatomy).
+/* spinal/js/anatomy/kit.js — shared canvas 2D drawing kit for the spinal page.
    Ported from Dr Chew Shi Hao's ra/engine.js drawing idioms (pill, warnPill, cuePill, drawNeedle, rng, paper),
-   rewritten as ES-module exports. Ultrasound (B4) and troubleshooting (B5) may import it:
+   rewritten as ES-module exports. Ultrasound and troubleshooting may import it:
 
      import * as K from '../anatomy/kit.js';
 

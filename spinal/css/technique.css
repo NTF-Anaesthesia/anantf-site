@@ -1,4 +1,4 @@
-/* spinal/ — 02 Performing a spinal. Owner: B3. Every selector starts with .spinal-app .tq- or #tq- (see js/CONTRACT.md). */
+/* spinal/ — 02 Performing a spinal. Every selector starts with .spinal-app .tq- or #tq-. */
 
 /* ------------------------------------------------------------------ jump row + parts */
 .spinal-app .tq-jump{counter-reset:none}

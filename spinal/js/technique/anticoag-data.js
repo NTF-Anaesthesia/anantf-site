@@ -1,10 +1,15 @@
-// Antithrombotic intervals for a single-shot spinal. Owner: B3 (technique).
+// Antithrombotic intervals for a single-shot spinal.
 // ASRA 5th ed. (2025) values come from a published secondary summary (Guideline Central), not the paper's
 // own tables, and must be checked against the full text. ESAIC/ESRA 2022 values were read in the full text
 // (Table 3 and recommendations R1–R40). Wording is ours. "—" = not addressed in the source we read.
 //
 // stop = minimum time from the last dose to the spinal puncture.
 // next = minimum time from the puncture to the next dose, or the catheter rule the source gives.
+
+// ESAIC/ESRA gives DOAC restarts only as "after catheter removal" (R4). That is not a single-shot time and must
+// never read as "restart straight away". Table 3's "about 24 h after surgery" was checked only for dabigatran
+// high dose, so the other DOACs carry this wording until the owner checks Table 3 drug by drug.
+const ESAIC_DOAC_NEXT = 'No single-shot time given (only “after catheter removal”). Not straight away: agree timing with the surgical team, by bleeding risk';
 
 export const GROUPS = [
   'Antiplatelet drugs',
@@ -129,7 +134,7 @@ export const DRUGS = [
   {
     id: 'dabigatran-low', group: 'Direct oral anticoagulants (DOACs)', name: 'Dabigatran, low dose', dose: '220 mg daily (150 mg with dose adjustment)',
     asra: { stop: '48 h. CrCl under 30 mL/min: avoid unless level under 30 ng/mL', next: '6 h or more' },
-    esaic: { stop: '48 h', next: 'After any catheter is out' },
+    esaic: { stop: '48 h', next: ESAIC_DOAC_NEXT },
     note: '',
     renal: true,
   },
@@ -143,27 +148,27 @@ export const DRUGS = [
   {
     id: 'rivaroxaban-low', group: 'Direct oral anticoagulants (DOACs)', name: 'Rivaroxaban, low dose', dose: '10 mg daily',
     asra: { stop: '24 h. CrCl under 30 mL/min: 30 h', next: '6 h or more' },
-    esaic: { stop: '24 h. CrCl under 30 mL/min: 30 h', next: 'After any catheter is out' },
+    esaic: { stop: '24 h. CrCl under 30 mL/min: 30 h', next: ESAIC_DOAC_NEXT },
     note: '',
     renal: true,
   },
   {
     id: 'rivaroxaban-high', group: 'Direct oral anticoagulants (DOACs)', name: 'Rivaroxaban, high dose', dose: '15–20 mg daily',
     asra: { stop: '72 h (or level under 30 ng/mL, or anti-Xa 0.1 IU/mL or less)', next: '24 h or more' },
-    esaic: { stop: '72 h. CrCl under 30 mL/min: level under 30 ng/mL', next: 'After any catheter is out' },
+    esaic: { stop: '72 h. CrCl under 30 mL/min: level under 30 ng/mL', next: ESAIC_DOAC_NEXT },
     note: '',
     renal: true,
   },
   {
     id: 'apixaban-low', group: 'Direct oral anticoagulants (DOACs)', name: 'Apixaban, low dose', dose: '2.5 mg twice daily',
     asra: { stop: '36 h', next: '6 h or more' },
-    esaic: { stop: '36 h', next: 'After any catheter is out' },
+    esaic: { stop: '36 h', next: ESAIC_DOAC_NEXT },
     note: '',
   },
   {
     id: 'apixaban-high', group: 'Direct oral anticoagulants (DOACs)', name: 'Apixaban, high dose', dose: '5 mg twice daily (10 mg twice daily at the start of VTE treatment)',
     asra: { stop: '72 h', next: '24 h or more' },
-    esaic: { stop: '72 h', next: 'After any catheter is out' },
+    esaic: { stop: '72 h', next: ESAIC_DOAC_NEXT },
     note: '',
   },
   {
@@ -176,7 +181,7 @@ export const DRUGS = [
   {
     id: 'edoxaban-high', group: 'Direct oral anticoagulants (DOACs)', name: 'Edoxaban, high dose', dose: '60 mg daily (30 mg)',
     asra: { stop: '72 h', next: '24 h or more' },
-    esaic: { stop: '72 h', next: 'After any catheter is out' },
+    esaic: { stop: '72 h', next: ESAIC_DOAC_NEXT },
     note: '',
   },
   // ------------------------------------------------------------ other

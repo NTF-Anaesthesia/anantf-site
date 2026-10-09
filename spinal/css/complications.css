@@ -1,4 +1,4 @@
-/* spinal/ — complications section styles. Owner: B6. Every selector starts with .spinal-app .cx- or #cx- (see js/CONTRACT.md). */
+/* spinal/ — complications section styles. Every selector starts with .spinal-app .cx- or #cx-. */
 
 .spinal-app .cx-sub{padding-top:8px;margin-top:8px}
 .spinal-app .cx-sub + .cx-sub{border-top:1px solid var(--sp-line);margin-top:40px;padding-top:4px}

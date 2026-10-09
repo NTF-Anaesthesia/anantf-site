@@ -1,10 +1,10 @@
-// spinal/js/ultrasound/scenes.js — geometry for the simulated neuraxial scans. Owner: B4.
+// spinal/js/ultrasound/scenes.js — geometry for the simulated neuraxial scans.
 // Millimetres. x runs across the screen (sagittal: cranial on the left; transverse: patient's left on
 // the left), z is depth from the skin at the centre of the probe. One geometry feeds both the
 // simulated B-mode (bmode.js, via shape.paint) and the labelled diagram (diagram.js, via shape.draw).
 //
 // Depths are typical adult values for teaching, not to scale for any one patient: posterior complex
-// about 4.5–5 cm, intrathecal space about 5–6.5 cm, anterior complex about 6.5 cm (research file 01, B5).
+// about 4.5–5 cm, intrathecal space about 5–6.5 cm, anterior complex about 6.5 cm.
 
 import { PROBE, FRAME, skinZ, alongBeam, smooth } from './bmode.js';
 

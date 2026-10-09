@@ -1,13 +1,13 @@
-// spinal/js/ultrasound/viewer.js — the interactive scan viewer for section 03. Owner: B4.
+// spinal/js/ultrasound/viewer.js — the interactive scan viewer for section 03.
 // One figure: view switcher (PSO | count from the sacrum | transverse), labelled diagram and
 // simulated scan side by side (toggle on narrow screens), labels / level labels / caliper,
 // probe-position schematic, and a keyboard-accessible structure list that highlights on hover/focus.
 
 import { el, segmented, figure, setupCanvas, whenVisible, onResize, onThemeChange, reducedMotion } from '../ui.js?v=1';
 import * as K from '../anatomy/kit.js';
-import { FRAME, FRAME_W, FRAME_H, PROBE, skinZ, buildPolar, scanImage } from './bmode.js';
+import { FRAME, FRAME_W, FRAME_H, PROBE, skinZ, buildPolar, buildPolarSteps, scanImage, hasScanImage } from './bmode.js';
 import { getScene, STOPS } from './scenes.js';
-import { diagramImage } from './diagram.js';
+import { diagramImage, diagramSteps, hasDiagram } from './diagram.js';
 
 const ASPECT = FRAME_W / FRAME_H;
 const WINE = '#633d3c', HI = '#ffd166', US_TEXT = '#ffffff', US_PILL = '#1a1a1a', US_SCALE = '#9a9a9a';
@@ -84,7 +84,8 @@ export function createViewer({ num = '3.1', infos = {}, caption, calCite = '' })
     label: 'Transverse view', value: st.tmode, onChange: (v) => { st.tmode = v; changeScene(true); },
   });
   tmodeSeg.classList.add('us-tmodeseg');
-  const row1 = el('div', { class: 'us-ctlrow' }, showSeg, labelsBtn, levelsBtn, calBtn);
+  const calNa = el('span', { class: 'us-calna', id: 'us-calna', hidden: true, text: 'No depth caliper here: the bone hides the posterior complex.' });
+  const row1 = el('div', { class: 'us-ctlrow' }, showSeg, labelsBtn, levelsBtn, calBtn, calNa);
   const row2 = el('div', { class: 'us-ctlrow us-ctlrow--view' }, stopCtl, tmodeSeg);
   f.controls.append(row1, row2);
 
@@ -119,8 +120,12 @@ export function createViewer({ num = '3.1', infos = {}, caption, calCite = '' })
     stopCtl.hidden = st.view !== 'sacrum';
     tmodeSeg.hidden = st.view !== 'transverse';
     slideBtn.textContent = st.stop >= STOPS.length - 1 ? 'Back to the sacrum' : 'Slide cranially';
+    // Without a posterior complex the caliper is unavailable: show it unticked (st.caliper is kept,
+    // so it comes back in the next view that has one) and give the reason as visible text.
     calBtn.disabled = !sc.caliper;
-    calBtn.title = sc.caliper ? '' : 'No posterior complex in this view';
+    calBtn.setAttribute('aria-pressed', sc.caliper && st.caliper ? 'true' : 'false');
+    calNa.hidden = !!sc.caliper;
+    if (sc.caliper) calBtn.removeAttribute('aria-describedby'); else calBtn.setAttribute('aria-describedby', calNa.id);
     calNote.hidden = !st.caliper || !sc.caliper;
     if (sc.caliper) {
       const d = cm(sc.caliper.z - skinZ(sc.caliper.x));
@@ -181,7 +186,16 @@ export function createViewer({ num = '3.1', infos = {}, caption, calCite = '' })
     const dw = Math.round(w * dpr), dh = Math.round(h * dpr);
     let img;
     if (resizing && p.last && p.last.id === sc.id) img = p.last.img;
-    else {
+    else if (p.last && p.last.id !== sc.id && !(p.key === 'scan' ? hasScanImage(sc, dw, dh) : hasDiagram(sc, dw, dh))) {
+      // A scene that is not built yet (the idle prebuild has not reached it): build it in short
+      // steps off the click, holding the previous frame meanwhile, then cross-fade to it.
+      buildSoon(p, sc, dw, dh);
+      ctx.save();
+      ctx.fillStyle = p.key === 'scan' ? '#000' : K.C.paper; ctx.fillRect(0, 0, w, h);
+      ctx.drawImage((p.prev || p.last).img, 0, 0, w, h);
+      ctx.restore();
+      return;
+    } else {
       if (p.key === 'scan') { buildPolar(sc); img = scanImage(sc, dw, dh); }
       else img = diagramImage(sc, dw, dh);
       p.last = { id: sc.id, img };
@@ -196,6 +210,22 @@ export function createViewer({ num = '3.1', infos = {}, caption, calCite = '' })
     if (t >= 1) p.prev = null;
     overlays(p, sc, w, h);
     ctx.restore();
+  }
+  const building = new Set();
+  function buildSoon(p, sc, dw, dh) {
+    const key = `${p.key}:${sc.id}@${dw}x${dh}`;
+    if (building.has(key)) return;
+    building.add(key);
+    const steps = p.key === 'scan'
+      ? (function* () { yield* buildPolarSteps(sc); scanImage(sc, dw, dh); })()
+      : diagramSteps(sc, dw, dh);
+    const tick = () => {
+      if (!steps.next().done) { setTimeout(tick, 0); return; }
+      building.delete(key);
+      if (p.prev && !reducedMotion()) p.fade = performance.now();
+      drawAll(); animateFade();
+    };
+    setTimeout(tick, 0);
   }
   let fadeRaf = 0;
   function animateFade() {
@@ -348,20 +378,30 @@ export function createViewer({ num = '3.1', infos = {}, caption, calCite = '' })
     const ids = ['sag-l34', 'tr-il', ...STOPS.map((s) => `sag-${s.key}`), 'tr-sp'];
     const idle = window.requestIdleCallback ? (fn) => window.requestIdleCallback(fn, { timeout: 2500 }) : (fn) => setTimeout(fn, 200);
     // Build each scene's B-mode data, then its scan and diagram images at the current panel size,
-    // one small job per idle period, so switching views later only blits cached images.
+    // one short step per idle period (the B-mode build is split into stages), so the main thread is
+    // never blocked for long and switching views later only blits cached images.
     const jobs = [];
     for (const id of ids) {
-      jobs.push(() => buildPolar(getScene(id)));
+      let it = null;
+      const step = () => { it ||= buildPolarSteps(getScene(id)); if (!it.next().done) jobs.unshift(step); };
+      jobs.push(step);
       for (const key of ['scan', 'diagram']) {
-        jobs.push(() => {
+        let dit = null;
+        const job = () => {
           const p = P[key], w = p.cssW || P.scan.cssW || P.diagram.cssW, dpr = p.dpr || Math.min(window.devicePixelRatio || 1, 2.5);
           if (!w) return;
           const dw = Math.round(w * dpr), dh = Math.round(Math.round(w / ASPECT) * dpr), sc = getScene(id);
-          if (key === 'scan') scanImage(sc, dw, dh); else diagramImage(sc, dw, dh);
-        });
+          if (key === 'scan') { scanImage(sc, dw, dh); return; }
+          dit ||= diagramSteps(sc, dw, dh);
+          if (!dit.next().done) jobs.unshift(job);
+        };
+        jobs.push(job);
       }
     }
-    const next = () => { const job = jobs.shift(); if (!job) return; idle(() => { job(); next(); }); };
+    const next = () => {
+      if (!jobs.length) return;
+      idle(() => { jobs.shift()(); next(); });
+    };
     next();
   }
 
@@ -436,7 +476,7 @@ function probeSchematic() {
   const box = el('div', { class: 'us-probe' }, el('p', { class: 'us-mini-h', text: 'Probe position' }), holder, cap);
   function update(st) {
     let tx = 119, ty = y(-84), rot = 0, text = '';
-    if (st.view === 'pso') text = 'Paramedian, 1–2 cm from the midline at L3–4, marker cranial, beam tilted slightly towards the midline.';
+    if (st.view === 'pso') text = 'Paramedian, about 2–3 cm from the midline over the laminae at L3–4, marker cranial, beam tilted towards the midline.';
     else if (st.view === 'sacrum') { const s = STOPS[st.stop]; ty = y(s.uc); text = `Paramedian, marker cranial, ${s.long}. Slide cranially and count the gaps.`; }
     else if (st.tmode === 'il') { tx = 110; rot = -90; text = 'Across the midline in the L3–4 gap, marker to the patient’s left.'; }
     else { tx = 110; ty = y(-103); rot = -90; text = 'Across the midline over the L3 spinous process, marker to the patient’s left.'; }

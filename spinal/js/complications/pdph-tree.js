@@ -1,4 +1,4 @@
-// PDPH pathway data for the complications section (B6). Rendered with troubleshooting/tree.js.
+// PDPH pathway data for the complications section. Rendered with troubleshooting/tree.js.
 // Wording is original. Facts follow Uppal 2023 (multisociety PDPH consensus) and ICHD-3 7.2.1.
 
 const D = (s) => `<span class="sp-dose">${s}</span>`;
@@ -13,7 +13,7 @@ export const PDPH_TREE = {
       detail: `<ul>
         <li>Focal neurological signs, seizures, confusion or drowsiness, or a change in vision.</li>
         <li>Fever, or neck stiffness with fever.</li>
-        <li>A headache that is not postural at all, has changed in character, or began more than 5 days after the puncture.</li>
+        <li>A headache that has changed in character, or began more than 5 days after the puncture.</li>
         <li>Worsening despite an epidural blood patch.</li>
       </ul>`,
       refs: ['uppal2023'],
@@ -66,7 +66,7 @@ export const PDPH_TREE = {
       outcome: 'Think again before calling it PDPH.',
       tone: 'warn',
       body: `<ul>
-        <li>Onset more than 5 days after puncture, or a headache that changes character, calls for a senior review and consideration of brain imaging.</li>
+        <li>A headache that is not postural, onset more than 5 days after puncture, or a headache that changes character calls for a senior review and consideration of brain imaging.</li>
         <li>Consider the other causes listed below the pathway, including caffeine withdrawal, migraine and sinusitis as well as the serious ones.</li>
       </ul>`,
       refs: ['uppal2023'],
@@ -107,7 +107,7 @@ export const PDPH_TREE = {
       tone: 'warn',
       body: `<ul>
         <li>Defer a patch if there is fever or systemic infection; apply the neuraxial antithrombotic rules if relevant.</li>
-        <li>A greater occipital nerve block may be offered; the headache may recur.</li>
+        <li>After a spinal with a fine (22G or smaller) needle, a greater occipital nerve block may be offered (weak recommendation); the headache may recur.</li>
         <li>Sphenopalatine ganglion block, theophylline, triptans, hydrocortisone and gabapentin are not routinely supported.</li>
       </ul>`,
       refs: ['uppal2023'],

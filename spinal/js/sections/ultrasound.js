@@ -1,4 +1,4 @@
-// 03 Ultrasound-assisted neuraxial. Owner: B4.
+// 03 Ultrasound-assisted neuraxial.
 // Simulated scans are computed in the browser (js/ultrasound/*): original procedural images, not patient scans.
 // Facts from research file 01 part B; journal refs and abstracts checked on PubMed/Crossref (9 October 2026); the NYSORA chapter was read in full.
 import { el, cite, callout, steps, table } from '../ui.js?v=1';
@@ -40,7 +40,7 @@ export function mount(root) {
   const infos = {
     pso: viewInfo('pso', `
       <p class="us-mini-h">Paramedian sagittal oblique (PSO) view</p>
-      <p><strong>Probe:</strong> 1–2 cm from the midline, marker cranial, tilted slightly towards the midline so the beam passes through the gaps between the laminae.${N}</p>
+      <p><strong>Probe:</strong> about 2–3 cm from the midline, over the laminae, marker cranial, tilted towards the midline so the beam passes through the gaps between the laminae.${N}</p>
       <p><strong>You see:</strong> laminae as bright sloping lines, each with a black shadow beneath (the “horse head” or sawtooth pattern). In each gap: the posterior complex, the black intrathecal space and the anterior complex.${N}</p>`),
     sacrum: viewInfo('sacrum', `
       <p class="us-mini-h">Counting up from the sacrum</p>

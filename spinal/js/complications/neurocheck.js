@@ -1,4 +1,4 @@
-// Interactive post-spinal neurological check (B6). Five yes/no questions; any "yes" is a red flag.
+// Interactive post-spinal neurological check. Five yes/no questions; any "yes" is a red flag.
 // Uses native radio buttons in fieldsets for keyboard and screen-reader support.
 
 import { el, announce, cite } from '../ui.js?v=1';

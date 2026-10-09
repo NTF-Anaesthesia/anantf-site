@@ -1,4 +1,4 @@
-// Section 07: Exam questions and self-quiz. Owner: B6.
+// Section 07: Exam questions and self-quiz.
 import { el, segmented, details, cite, announce, callout } from '../ui.js?v=1';
 import { MCQS, SAQS, TOPICS } from '../quiz/data.js';
 
@@ -149,6 +149,14 @@ export function mount(root) {
   }
   MCQS.forEach((_, i) => paint(i));
   updateScore();
+
+  // On narrow screens the score bar is sticky at the bottom: keep focused controls clear of it (WCAG 2.4.11).
+  mcqSec.addEventListener('focusin', (e) => {
+    if (getComputedStyle(scoreBar).position !== 'sticky' || scoreBar.contains(e.target)) return;
+    const bar = scoreBar.getBoundingClientRect();
+    const r = e.target.getBoundingClientRect();
+    if (r.bottom > bar.top - 8 && r.top < bar.bottom) window.scrollBy({ top: r.bottom - bar.top + 16, behavior: 'auto' });
+  });
 
   // ------------------------------------------------------------ SAQs
   const saqSec = el('div', { class: 'qz-sub', id: 'qz-saq' });

@@ -1,4 +1,4 @@
-// Bone-contact redirect guide: original schematic SVG, drawn by the page. Owner: B5.
+// Bone-contact redirect guide: original schematic SVG, drawn by the page.
 // Two views side by side (side view and cross-section) for midline/paramedian × shallow/deep bone.
 // Uses the plate tokens (--an-*), which are the same in light and dark themes.
 import { el, figure, segmented, cite } from '../ui.js?v=1';

@@ -1,4 +1,4 @@
-// Decision-tree content for 04 Troubleshooting. Owner: B5.
+// Decision-tree content for 04 Troubleshooting.
 // Doses: only product-label (emc SmPC) or Association of Anaesthetists QRH values, each cited where it appears.
 // Anything that depends on local practice is flagged in the section's policy callouts.
 import { cite } from '../ui.js?v=1';
@@ -6,6 +6,12 @@ import { cite } from '../ui.js?v=1';
 const D = (s) => `<span class="sp-dose">${s}</span>`;
 const N = (s) => `<span class="sp-num">${s}</span>`;
 const go = (id, text) => `<a href="#${id}">${text}</a>`;
+
+// High-spinal circulation doses as printed in QRH 3-11 Box B; shown in both the 'support' node and xCirc.
+const QRH_CIRC_DOSES = `<ul>
+          <li>Bradycardia: atropine ${D('0.6–1.2 mg')} or glycopyrronium ${D('0.2–0.4 mg')} IV.</li>
+          <li>Hypotension: metaraminol ${D('1–2 mg')} boluses, phenylephrine ${D('50–100 µg')} boluses or infusion, or ephedrine ${D('6–12 mg')} boluses (up to ${D('30 mg')}; repeated doses work less well).</li>
+        </ul>`;
 
 // ------------------------------------------------------------------ during the procedure
 
@@ -118,7 +124,7 @@ export const bloodyTap = {
       ],
     },
     anticoag: {
-      prompt: 'Is the patient taking an anticoagulant or antiplatelet drug, or due thromboprophylaxis soon after surgery?',
+      prompt: 'Is anticoagulant or antiplatelet treatment (including thromboprophylaxis) planned after surgery, or was the last dose stopped only just long enough before the spinal?',
       short: 'Anticoagulants?',
       choices: [
         { label: 'No', to: 'xProceed' },
@@ -143,7 +149,7 @@ export const bloodyTap = {
     xAnticoag: {
       outcome: 'Proceed only with clear CSF; plan the next dose with the team',
       tone: 'warn',
-      body: `<p>A traumatic puncture matters more when clotting is affected. Record the bloody tap, tell the surgeons and the ward, and agree when the next anticoagulant dose can be given. Ask for regular neurological checks until the block has worn off. Follow the anticoagulation guideline your department uses.${cite('asra2025', 'esaic2022')}</p>`,
+      body: `<p>A traumatic puncture matters more when clotting is affected. Record the bloody tap, tell the surgeons and the ward, and agree when the next anticoagulant dose can be given. ASRA advises delaying LMWH for ${N('24 h')} after a traumatic puncture; ESAIC/ESRA say a longer delay than usual may be justified.${cite('asra2025', 'esaic2022')} Agree the timing with the surgeons. Ask for regular neurological checks until the block has worn off. Follow the anticoagulation guideline your department uses.</p>`,
     },
   },
 };
@@ -468,8 +474,9 @@ export const highSpinal = {
       detail: `<ul>
         <li>The patient may be fully aware: talk to them and explain.</li>
         <li>Rapid IV fluid. Raise the legs. Do not tilt head-down.${cite('ts-qrh2023')}</li>
-        <li>Treat a slow heart rate and low blood pressure (doses below).</li>
-      </ul>`,
+        <li>Treat a slow heart rate and low blood pressure. QRH 3-11 doses:${cite('ts-qrh2023')}</li>
+      </ul>
+      ${QRH_CIRC_DOSES}`,
       choices: [
         { label: 'Breathing adequate; the block has stopped rising', to: 'xWatch' },
         { label: 'Breathing failing, or consciousness falling', to: 'airway' },
@@ -506,10 +513,7 @@ export const highSpinal = {
       outcome: 'Treat the circulation, then sedate and plan ongoing care',
       tone: 'danger',
       body: `<p>Doses as printed in the Association of Anaesthetists QRH 3-11 for this emergency (they differ slightly from the product-label doses in the hypotension tree; follow your local protocol):${cite('ts-qrh2023')}</p>
-        <ul>
-          <li>Bradycardia: atropine ${D('0.6–1.2 mg')} or glycopyrronium ${D('0.2–0.4 mg')} IV.</li>
-          <li>Hypotension: metaraminol ${D('1–2 mg')} boluses, phenylephrine ${D('50–100 µg')} boluses or infusion, or ephedrine ${D('6–12 mg')} boluses (up to ${D('30 mg')}; repeated doses work less well).</li>
-        </ul>
+        ${QRH_CIRC_DOSES}
         <p>Once the airway is secure, keep the patient asleep: the block can leave them paralysed but aware. Consider other causes (local anaesthetic toxicity, embolism, haemorrhage, a vasovagal event). Support until the block wears off, in a suitable place.</p>`,
     },
     xArrest: {
@@ -559,7 +563,8 @@ export const hypotension = {
       </ul>`,
       choices: [
         { label: 'Yes, recovering', to: 'xOk' },
-        { label: 'No, or the heart rate is now falling', to: 'refractory' },
+        { label: 'No: pressure still low, heart rate normal', to: 'refractory' },
+        { label: 'The heart rate is now slow', to: 'brady' },
       ],
     },
     brady: {
@@ -744,7 +749,7 @@ export const pruritus = {
     xResp: {
       outcome: 'Treat as opioid-related respiratory depression',
       tone: 'danger',
-      body: `<p>Stimulate the patient, give oxygen, support the airway and call for help. Naloxone as per local protocol. See ${go('complications', 'Complications and safety')}.</p>`,
+      body: `<p>Stimulate the patient, give oxygen, support the airway and call for help. Naloxone, as per local protocol: the product label gives ${D('100–200 µg')} IV, titrated in ${D('100 µg')} steps every 2 minutes. It may need repeating, or an infusion, because morphine outlasts it.${cite('ts-smpc-nal')} See ${go('tq-adjuncts', 'Intrathecal opioid monitoring')}.</p>`,
     },
     xReassure: {
       outcome: 'Reassure and observe',

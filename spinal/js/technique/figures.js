@@ -1,4 +1,4 @@
-// Original SVG drawings for the technique section. Owner: B3.
+// Original SVG drawings for the technique section.
 // Posture, approach and needle drawings sit on the light "printed plate" (same in both themes, --an-* tokens).
 // The time-course chart follows the page theme (--sp-* tokens through classes in technique.css).
 
@@ -26,17 +26,21 @@ function body(parts) {
 const limb = (d, w = 20) => body([[d, w]]);
 
 // Label pill with a leader line to (tx, ty). Anchor is the pill's left or right edge.
-function pill(x, y, text, { tx, ty, align = 'left', kind = 'plain' } = {}) {
-  const w = Math.round(text.length * 7.1 + 18);
-  const h = 24;
+// fs = font size in viewBox units (13 by default; larger in the narrow-screen layouts so labels stay legible).
+// from: 'edge' (leader leaves the anchor edge) or 'top' (leader leaves the top centre, for pills below a drawing).
+function pill(x, y, text, { tx, ty, align = 'left', kind = 'plain', fs = 13, from = 'edge' } = {}) {
+  const w = Math.round(text.length * fs * 0.546 + fs * 1.4);
+  const h = Math.round(fs * 1.85);
   const x0 = align === 'right' ? x - w : x;
+  const [lx, ly] = from === 'top' ? [x0 + w / 2, y - h / 2] : [align === 'right' ? x0 + w : x0, y];
   const lead = tx != null
-    ? `<line x1="${align === 'right' ? x0 + w : x0}" y1="${y}" x2="${tx}" y2="${ty}" stroke="var(--an-ink)" stroke-width="1"/><circle cx="${tx}" cy="${ty}" r="2.6" fill="var(--an-ink)"/>`
+    ? `<line x1="${lx}" y1="${ly}" x2="${tx}" y2="${ty}" stroke="var(--an-ink)" stroke-width="1"/><circle cx="${tx}" cy="${ty}" r="2.6" fill="var(--an-ink)"/>`
     : '';
   const fill = kind === 'cue' ? 'var(--an-cue)' : 'var(--an-pill)';
   const ink = kind === 'cue' ? '#ffffff' : 'var(--an-ink)';
-  return `${lead}<rect x="${x0}" y="${y - h / 2}" width="${w}" height="${h}" rx="12" fill="${fill}" stroke="var(--an-ink)" stroke-width="1"/>`
-    + `<text x="${x0 + w / 2}" y="${y + 4.5}" text-anchor="middle" class="tq-svg-pill" fill="${ink}">${text}</text>`;
+  const size = fs === 13 ? '' : ` style="font-size:${fs}px"`;
+  return `${lead}<rect x="${x0}" y="${y - h / 2}" width="${w}" height="${h}" rx="${h / 2}" fill="${fill}" stroke="var(--an-ink)" stroke-width="1"/>`
+    + `<text x="${x0 + w / 2}" y="${y + fs * 0.35}" text-anchor="middle" class="tq-svg-pill"${size} fill="${ink}">${text}</text>`;
 }
 
 // ------------------------------------------------------------------ sitting posture (side view)
@@ -62,7 +66,7 @@ export function sittingSvg() {
   <!-- lumbar spine highlight -->
   <path d="M258 140 C 266 118, 252 90, 222 72" fill="none" stroke="var(--an-flavum)" stroke-width="4" stroke-dasharray="7 5" stroke-linecap="round"/>
   ${pill(300, 64, 'Chin to chest', { tx: 178, ty: 84, align: 'left' })}
-  ${pill(300, 108, 'Back pushed out', { tx: 262, ty: 116, align: 'left', kind: 'cue' })}
+  ${pill(286, 108, 'Back pushed out', { tx: 262, ty: 116, align: 'left', kind: 'cue' })}
   ${pill(26, 120, 'Hug a pillow', { tx: 146, ty: 122, align: 'left' })}
   ${pill(26, 226, 'Feet on a stool', { tx: 118, ty: 248, align: 'left' })}
   ${pill(254, 214, 'Upright, not leaning', { tx: 240, ty: 162, align: 'left' })}
@@ -94,10 +98,13 @@ export function lateralSvg() {
 }
 
 // ------------------------------------------------------------------ approach (posterior view of one interspace)
-export function approachSvg() {
+// narrow: phone layout. The drawing moves down 40 units and the cue labels sit in bands above and below it,
+// with larger type, so they stay at 11px or more when the figure is about 340px wide.
+export function approachSvg({ narrow = false } = {}) {
+  const dy = narrow ? 40 : 0;
+  const fs = narrow ? 16 : 13;
   // Two vertebral arches seen from behind; the interlaminar window (ligamentum flavum) between them.
-  const inner = `
-  <rect x="0" y="0" width="480" height="320" fill="var(--an-plate)"/>
+  const drawing = `
   <g class="tq-ap-bone">
     <!-- upper vertebra: laminae + transverse processes -->
     <path d="M140 40 L340 40 L360 96 L282 128 L198 128 L120 96 Z" fill="var(--an-bone)" stroke="var(--an-cortex)" stroke-width="2"/>
@@ -113,8 +120,8 @@ export function approachSvg() {
   <!-- spinous processes (drawn over the midline) -->
   <rect x="222" y="20" width="36" height="120" fill="var(--an-lig-supra)" stroke="var(--an-ink)" stroke-width="1.5"/>
   <rect x="222" y="186" width="36" height="118" fill="var(--an-lig-supra)" stroke="var(--an-ink)" stroke-width="1.5"/>
-  <line x1="240" y1="8" x2="240" y2="314" stroke="var(--an-ink)" stroke-width="1" stroke-dasharray="3 5" opacity=".6"/>
-  <text x="240" y="314" text-anchor="middle" class="tq-svg-small" fill="var(--an-ink)">midline</text>
+  <line x1="240" y1="8" x2="240" y2="${narrow ? 292 : 314}" stroke="var(--an-ink)" stroke-width="1" stroke-dasharray="3 5" opacity=".6"/>
+  <text x="240" y="${narrow ? 318 : 314}" text-anchor="middle" class="tq-svg-small"${narrow ? ' style="font-size:16px"' : ''} fill="var(--an-ink)">midline</text>
   <!-- midline entry -->
   <g class="tq-ap-mid">
     <circle cx="240" cy="164" r="9" fill="none" stroke="var(--an-warn)" stroke-width="2.5"/>
@@ -126,38 +133,71 @@ export function approachSvg() {
     <circle cx="300" cy="206" r="2.5" fill="var(--an-warn)"/>
     <path d="M296 198 L252 162" stroke="var(--an-warn)" stroke-width="2.5" fill="none"/>
     <path d="M252 162 L266 164 M252 162 L256 175" stroke="var(--an-warn)" stroke-width="2.5" fill="none" stroke-linecap="square"/>
-  </g>
+  </g>`;
+  const labels = narrow
+    ? `
+  <g class="tq-ap-label-mid">${pill(470, 22, 'Middle of the gap', { tx: 250, ty: 164 + dy, align: 'right', kind: 'cue', fs })}</g>
+  <g class="tq-ap-label-para">${pill(470, 382, 'Just lateral and caudal; aim medially and up', { tx: 306, ty: 214 + dy, align: 'right', kind: 'cue', fs, from: 'top' })}</g>
+  ${pill(12, 22, 'Spinous process', { tx: 222, ty: 40 + dy, align: 'left', fs })}
+  ${pill(8, 180, 'Ligamentum flavum', { tx: 160, ty: 168 + dy, align: 'left', fs })}
+  ${pill(8, 336, 'Lamina', { tx: 160, ty: 268 + dy, align: 'left', fs })}`
+    : `
   <g class="tq-ap-label-mid">${pill(470, 150, 'Middle of the gap', { tx: 250, ty: 164, align: 'right', kind: 'cue' })}</g>
   <g class="tq-ap-label-para">${pill(470, 262, 'Just lateral and caudal; aim medially and up', { tx: 306, ty: 214, align: 'right', kind: 'cue' })}</g>
   ${pill(12, 140, 'Ligamentum flavum', { tx: 160, ty: 168, align: 'left' })}
   ${pill(12, 24, 'Spinous process', { tx: 222, ty: 40, align: 'left' })}
-  ${pill(12, 298, 'Lamina', { tx: 160, ty: 268, align: 'left' })}
+  ${pill(12, 298, 'Lamina', { tx: 160, ty: 268, align: 'left' })}`;
+  const H = narrow ? 400 : 320;
+  const inner = `
+  <rect x="0" y="0" width="480" height="${H}" fill="var(--an-plate)"/>
+  <g transform="translate(0 ${dy})">${drawing}</g>${labels}
   `;
-  return svg('0 0 480 320', inner, 'Back view of one lumbar interspace');
+  return svg(`0 0 480 ${H}`, inner, 'Back view of one lumbar interspace');
 }
 
 // ------------------------------------------------------------------ needle tips
-export function needlesSvg() {
-  const inner = `
-  <rect x="0" y="0" width="560" height="270" fill="var(--an-plate)"/>
+// narrow: phone layout with larger type and the pencil-point labels stacked below its needle.
+export function needlesSvg({ narrow = false } = {}) {
+  const defs = `
   <defs>
     <linearGradient id="tq-steel" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#d9dce2"/><stop offset=".5" stop-color="var(--an-needle)"/><stop offset="1" stop-color="#7d828c"/>
     </linearGradient>
-  </defs>
-  <text x="24" y="34" class="tq-svg-title" fill="var(--an-ink)">Cutting (Quincke)</text>
+  </defs>`;
+  const cutting = `
   <path d="M24 56 L360 56 L470 84 L24 84 Z" fill="url(#tq-steel)" stroke="var(--an-needle-edge)" stroke-width="1.5" stroke-linejoin="miter"/>
-  <ellipse cx="413" cy="70" rx="46" ry="7" transform="rotate(14.3 413 70)" fill="#3a3c42"/>
+  <ellipse cx="413" cy="70" rx="46" ry="7" transform="rotate(14.3 413 70)" fill="#3a3c42"/>`;
+  // pencil-point needle drawn with its axis at y = 200; moved with a transform
+  const pencil = `
+  <path d="M24 186 L410 186 C 444 186, 466 194, 482 200 C 466 206, 444 214, 410 214 L24 214 Z" fill="url(#tq-steel)" stroke="var(--an-needle-edge)" stroke-width="1.5"/>
+  <rect x="370" y="186" width="32" height="11" rx="5" fill="#3a3c42"/>`;
+  if (narrow) {
+    const fs = 18;
+    const t = ' style="font-size:24px"';
+    const dy = 30;
+    const inner = `
+  <rect x="0" y="0" width="560" height="360" fill="var(--an-plate)"/>${defs}
+  <text x="24" y="36" class="tq-svg-title"${t} fill="var(--an-ink)">Cutting (Quincke)</text>${cutting}
+  ${pill(540, 122, 'Opening on the bevel; sharp tip', { tx: 464, ty: 82, align: 'right', kind: 'cue', fs })}
+  <text x="24" y="190" class="tq-svg-title"${t} fill="var(--an-ink)">Pencil-point (e.g. Whitacre)</text>
+  <g transform="translate(0 ${dy})">${pencil}</g>
+  ${pill(110, 290, 'Side opening behind the tip', { tx: 386, ty: 190 + dy, align: 'left', kind: 'cue', fs, from: 'top' })}
+  ${pill(540, 336, 'Closed, conical tip', { tx: 478, ty: 202 + dy, align: 'right', fs, from: 'top' })}
+  `;
+    return svg('0 0 560 360', inner, NEEDLES_LABEL);
+  }
+  const inner = `
+  <rect x="0" y="0" width="560" height="270" fill="var(--an-plate)"/>${defs}
+  <text x="24" y="34" class="tq-svg-title" fill="var(--an-ink)">Cutting (Quincke)</text>${cutting}
   ${pill(540, 118, 'Opening on the bevel; sharp tip', { tx: 464, ty: 82, align: 'right', kind: 'cue' })}
 
-  <text x="24" y="160" class="tq-svg-title" fill="var(--an-ink)">Pencil-point (e.g. Whitacre)</text>
-  <path d="M24 186 L410 186 C 444 186, 466 194, 482 200 C 466 206, 444 214, 410 214 L24 214 Z" fill="url(#tq-steel)" stroke="var(--an-needle-edge)" stroke-width="1.5"/>
-  <rect x="370" y="186" width="32" height="11" rx="5" fill="#3a3c42"/>
+  <text x="24" y="160" class="tq-svg-title" fill="var(--an-ink)">Pencil-point (e.g. Whitacre)</text>${pencil}
   ${pill(540, 156, 'Side opening behind the tip', { tx: 386, ty: 190, align: 'right', kind: 'cue' })}
   ${pill(540, 248, 'Closed, conical tip', { tx: 478, ty: 202, align: 'right' })}
   `;
-  return svg('0 0 560 270', inner, 'Drawing of two spinal needle tips. A Quincke cutting needle has a sharp bevel with the opening on the bevel face. A pencil-point needle has a closed conical tip with a side opening just behind it.');
+  return svg('0 0 560 270', inner, NEEDLES_LABEL);
 }
+const NEEDLES_LABEL = 'Drawing of two spinal needle tips. A Quincke cutting needle has a sharp bevel with the opening on the bevel face. A pencil-point needle has a closed conical tip with a side opening just behind it.';
 
 // ------------------------------------------------------------------ time course (theme-aware, drawn at container width)
 /**

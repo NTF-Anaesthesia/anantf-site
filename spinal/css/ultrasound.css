@@ -1,4 +1,4 @@
-/* spinal/ — ultrasound section styles. Owner: B4. Every selector starts with .spinal-app .us- or #us- (see js/CONTRACT.md).
+/* spinal/ — ultrasound section styles. Every selector starts with .spinal-app .us- or #us-.
    The scan image is black and the diagram is the printed plate in both themes; the frame and controls follow the theme. */
 
 /* ---------------------------------------------------------------- viewer frame */
@@ -36,6 +36,8 @@
 .spinal-app .us-stopctl[hidden],.spinal-app .us-tmodeseg[hidden]{display:none}
 .spinal-app .us-ctl-label{font:400 11px/1.4 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted)}
 .spinal-app .us-slide{white-space:nowrap}
+.spinal-app .us-calna{align-self:center;font-size:13px;line-height:1.4;color:var(--sp-muted);max-width:32ch}
+.spinal-app .us-calna[hidden]{display:none}
 .spinal-app .us-calnote{margin:12px 0 0;padding:10px 14px;border-left:3px solid var(--sp-accent);background:var(--sp-accent-soft);font-size:14px;line-height:1.6;color:var(--sp-ink);max-width:80ch}
 .spinal-app .us-calnote[hidden]{display:none}
 

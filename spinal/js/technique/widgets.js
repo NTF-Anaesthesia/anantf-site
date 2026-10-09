@@ -1,4 +1,4 @@
-// Interactive widgets for the technique section. Owner: B3. State lives in memory only.
+// Interactive widgets for the technique section. State lives in memory only.
 import { el, esc, cite, announce, segmented, table } from '../ui.js?v=1';
 import { GROUPS, DRUGS } from './anticoag-data.js';
 

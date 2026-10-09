@@ -1,4 +1,4 @@
-/* spinal/ — shared tokens, type, shell and every sp-* component. Owned by B1.
+/* spinal/ — shared tokens, type, shell and every sp-* component.
    Section styles live in css/<section>.css and must use their own prefix (an-, tq-, us-, ts-, cx-, pp-, qz-). */
 
 @font-face{font-family:'NTF Mono';src:url('../../fonts/jetbrains-mono.woff2') format('woff2');font-weight:400 500;font-display:swap}
@@ -103,12 +103,12 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 
 /* ------------------------------------------------------------------ sticky section nav */
 .spinal-app .sp-secnav{position:sticky;top:var(--sp-header-h);z-index:50;background:color-mix(in srgb,var(--sp-bg) 94%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--sp-line)}
-.spinal-app .sp-secnav ol{display:flex;gap:28px;margin:0;padding:0;list-style:none;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.spinal-app .sp-secnav ol{display:flex;gap:28px;margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .spinal-app .sp-secnav ol::-webkit-scrollbar{display:none}
 .spinal-app .sp-secnav.is-overflowing ol{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%)}
 .spinal-app .sp-secnav.is-overflowing.at-start ol{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent 100%)}
 .spinal-app .sp-secnav.is-overflowing.at-end ol{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px);mask-image:linear-gradient(to right,transparent 0,#000 18px)}
-.spinal-app .sp-secnav li{flex-shrink:0;scroll-snap-align:start}
+.spinal-app .sp-secnav li{flex-shrink:0}
 .spinal-app .sp-secnav a{display:flex;align-items:center;gap:7px;min-height:48px;font:14px/1.2 var(--sp-sans);color:var(--sp-muted);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .15s,border-color .15s}
 .spinal-app .sp-secnav a span{font:11px/1 var(--sp-mono);letter-spacing:.04em}
 .spinal-app .sp-secnav a:hover{color:var(--sp-ink)}
@@ -279,3 +279,6 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
   .spinal-app .sp-section{break-inside:auto;padding-block:24px}
   body.spinal-app{background:#fff;color:#000}
 }
+
+/* Programmatic focus targets (deep links, tree headings) need no ring; interactive controls keep theirs. */
+body.spinal-app [tabindex="-1"]:is(:focus,:focus-visible){outline:none}

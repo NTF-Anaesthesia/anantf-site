@@ -1,6 +1,6 @@
-// spinal/ — section 01 "Anatomy for neuraxial block". Owner: B2.
+// spinal/ — section 01 "Anatomy for neuraxial block".
 // Figures are drawn by js/anatomy/* (sagittal plate, landmarks, baricity, dermatomes) using js/anatomy/kit.js.
-import { el, callout, cite, segmented, figure, table, announce, whenVisible, onResize, reducedMotion, onThemeChange } from '../ui.js?v=1';
+import { el, callout, cite, segmented, figure, table, whenVisible, onResize, reducedMotion, onThemeChange } from '../ui.js?v=1';
 import { createSagittal, drawInset, LAYERS, hitStep } from '../anatomy/sagittal.js';
 import { buildLandmarksSVG, levelButtons, levelInfo, LEVELS } from '../anatomy/landmarks.js';
 import { createBaricity } from '../anatomy/baricity.js';
@@ -167,6 +167,9 @@ export function mount(root) {
   function sync(focusBtn, instant) {
     renderList(); renderPanel();
     count.textContent = `${step + 1} / 7`;
+    const ae = document.activeElement;
+    if (step === 6 && ae === next) prev.focus();
+    if (step === 0 && ae === prev) next.focus();
     prev.disabled = step === 0; next.disabled = step === 6;
     const k = LAYERS[mode][step], d = STEP[k];
     const text = `Layer ${step + 1} of 7: ${d.name}. ${d.feel}`;
@@ -179,15 +182,15 @@ export function mount(root) {
     if (focusBtn) act?.firstChild?.focus({ preventScroll: true });
     return text;
   }
+  // The figure's describe() region is aria-live, so it carries the announcement (no second announce()).
   function go(i, fromUser, focus = false) {
     step = Math.max(0, Math.min(6, i));
-    const t = sync(focus);
-    if (fromUser) announce(t);
+    sync(focus);
   }
   function setMode(v) {
     mode = v; seg.set(v);
     const t = sync(false);
-    announce(`${v === 'midline' ? 'Midline' : 'Paramedian'} approach. ${t}`);
+    f1.describe(`${v === 'midline' ? 'Midline' : 'Paramedian'} approach. ${t}`);
   }
   prev.addEventListener('click', () => go(step - 1, true));
   next.addEventListener('click', () => go(step + 1, true));
@@ -267,7 +270,7 @@ export function mount(root) {
   s2.append(f2.fig);
 
   s2.append(
-    el('p', { class: 'sp-prose', id: 'an-tuffier', html: '<strong>Tuffier’s line</strong> (the intercristal line) is traditionally said to cross the L4 body or the L4–5 space. It is an unreliable guide to level' + cite('reynolds2001') + ': imaging studies show it varies with sex, age and build. Treat it as a starting point, not proof of level.' }),
+    el('p', { class: 'sp-prose', id: 'an-tuffier', html: '<strong>Tuffier’s line</strong> (the intercristal line) is traditionally said to cross the L4 body or the L4–5 space. It is an unreliable guide to level.' + cite('reynolds2001') + ' Treat it as a starting point, not proof of level.' }),
     el('p', { class: 'sp-prose', html: 'Other landmarks: the posterior superior iliac spines (the dimples above the buttocks) lie at about S2; the 12th rib attaches to T12.' }),
     callout('warn', { title: 'Aim low', body: `<p>In a series of seven patients with conus damage after spinal or combined spinal-epidural anaesthesia with pencil-point needles, the space was usually believed to be L2–3 and every patient felt pain as the needle went in. MRI showed a syrinx in the conus. Because the conus can be low and the chosen space is often higher than intended, the needle should not go in above L3.${cite('reynolds2001')}</p>` }),
     callout('policy', { title: 'Preferred interspace', body: '<p>This page teaches L3–4 or below. Confirm the departmental preference, and consider ultrasound to confirm the level when landmarks are poor.</p>' }),

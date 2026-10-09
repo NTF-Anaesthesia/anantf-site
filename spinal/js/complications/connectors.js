@@ -1,4 +1,4 @@
-// Schematic Luer vs NRFit connector figure (B6). Original drawing; schematic, not to scale.
+// Schematic Luer vs NRFit connector figure. Original drawing; schematic, not to scale.
 
 import { el } from '../ui.js?v=1';
 

@@ -1,12 +1,12 @@
 // Shared reference list for the spinal page.
 // Each entry: { label: 'Author year', text: 'Vancouver-style citation (HTML allowed: <i>, <b>)', url?: 'https://doi.org/…' }
-// Details below were checked against PubMed / Crossref on 8 October 2026 (see the builders' verification log).
+// Details below were checked against PubMed / Crossref on 8 October 2026.
 // Section modules add their own refs through `export const refs = {...}` (ids prefixed with the module prefix).
 
 export const REFS = {
   asra2025: {
     label: 'Kopp 2025',
-    text: 'Kopp SL, Vandermeulen E, McBane RD, Perlas A, Leffert L, Horlocker T. Regional anesthesia in the patient receiving antithrombotic or thrombolytic therapy: American Society of Regional Anesthesia and Pain Medicine evidence-based guidelines (fifth edition). <i>Reg Anesth Pain Med</i> 2025. Published online 29 January 2025.',
+    text: 'Kopp SL, Vandermeulen E, McBane RD, Perlas A, Leffert L, Horlocker T. Regional anesthesia in the patient receiving antithrombotic or thrombolytic therapy: American Society of Regional Anesthesia and Pain Medicine evidence-based guidelines (fifth edition). <i>Reg Anesth Pain Med</i> 2025;50(10). Published online 29 January 2025.',
     url: 'https://doi.org/10.1136/rapm-2024-105766',
   },
   esaic2022: {
