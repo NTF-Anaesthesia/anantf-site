@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RUSH: ultrasound approach to shock — NTF Anaesthesia</title>
-<meta name="description" content="Masterclass: a structured bedside ultrasound approach to undifferentiated shock based on RUSH (Perera 2010). HI-MAP sequence (Heart, IVC, Morison's/eFAST, Aorta, Pneumothorax/lung), findings for each shock type, an aortic aneurysm screen, an interactive shock classifier and three resuscitation cases. All images are schematic simulations, not real scans.">
+<meta name="description" content="Masterclass: a structured bedside ultrasound approach to undifferentiated shock based on RUSH (Perera 2010). HI-MAP sequence (Heart, IVC, Morison's/eFAST, Aorta, Pneumothorax/lung), findings for each shock type, an aortic aneurysm screen, an interactive shock classifier, ultrasound in cardiac arrest (SESAME, a 10-second pulse-check simulator, ERC/AHA/ILCOR guidance) and four resuscitation cases. All images are schematic simulations, not real scans.">
 <style>
 :root{
   --bg:#F7F2EA; --panel:#FDFAF3; --line:#E0D6C2; --line2:#CFC2A8; --ink:#2A241D; --ink2:#5A4F42; --mute:#8A7E6D; --faint:#B3A795;
@@ -280,6 +280,21 @@ canvas.draw{touch-action:none;cursor:crosshair}
   .tabs{gap:4px} .tabs button{padding:5px 10px}
 }
 #rapT tr.on td{background:var(--accent-soft)}
+/* arrest: SESAME + pulse-check sim */
+#sesList li{grid-template-columns:1fr;padding:8px 6px;text-align:center;gap:2px}
+#sesList li b{font-size:13.5px}
+#sesList li .num{font-size:18px;font-family:var(--serif)}
+.pcbar{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:start;margin-top:10px}
+.pcclock{font-family:var(--mono);font-size:26px;font-weight:600;text-align:center;border:1px solid var(--line2);border-radius:10px;padding:10px 4px;background:var(--bg);color:var(--ink);line-height:1.1}
+.pcclock small{display:block;font-size:10px;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-top:4px}
+.pcclock.run{border-color:var(--accent);color:var(--accent)}
+.pcclock.over{border-color:var(--red);color:var(--red)}
+.pcsteps{display:flex;flex-wrap:wrap;gap:6px}
+.pcsteps .btn{padding:7px 10px;font-size:11.5px}
+.pcsteps .btn.next{border-color:var(--accent);color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.pcsteps .btn:disabled{opacity:.4;cursor:default}
+#pcAns{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+@media (max-width:560px){ #sesList{grid-template-columns:repeat(3,minmax(0,1fr))!important} .pcbar{grid-template-columns:minmax(0,1fr)} .pcclock{font-size:22px;padding:6px} }
 </style>
 <link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"></head>
 <body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../../department.html">About Us</a><a href="../../why-join-us.html">Why Join Us?</a><a href="../../clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../../mopex/">MO Handbook</a><a href="../../senior-resident.html">Senior Residency</a><a href="../../exams/">MMed Exam Prep</a></div></details><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
@@ -301,8 +316,9 @@ canvas.draw{touch-action:none;cursor:crosshair}
         <li><span>01–02 · Why scan · the framework</span><span>8 min</span></li>
         <li><span>Part I · Acquisition · the five windows</span><span>29 min</span></li>
         <li><span>Part II · Interpretation · classifier</span><span>18 min</span></li>
-        <li><span>Part III · Three hypotensive patients</span><span>15 min</span></li>
-        <li><span>Quick check · Close</span><span>10.5 min</span></li>
+        <li><span>Part III · Arrest and peri-arrest · SESAME, pulse check</span><span>20 min</span></li>
+        <li><span>Part IV · Four patients in shock</span><span>20 min</span></li>
+        <li><span>Quick check · Close</span><span>12.5 min</span></li>
       </ul>
       <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
       <div class="links"><a href="../cardiac/">Focused cardiac ultrasound</a><a href="../lung/">Lung ultrasound</a><a href="../efast/">eFAST</a><a href="../dvt/">DVT and vessels</a></div>
@@ -610,7 +626,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
         <div id="clfBan"></div>
         <div class="cap" style="margin-top:14px">Caveats</div>
         <ul class="cav" id="clfCav"></ul>
-        <div class="ctrls"><button class="btn ghost" id="clfReset">Reset</button><button class="btn ghost" data-case="0">Load case 1</button><button class="btn ghost" data-case="1">Load case 2</button><button class="btn ghost" data-case="2">Load case 3</button></div>
+        <div class="ctrls"><button class="btn ghost" id="clfReset">Reset</button><button class="btn ghost" data-case="0">Load case 1</button><button class="btn ghost" data-case="1">Load case 2</button><button class="btn ghost" data-case="2">Load case 3</button><button class="btn ghost" data-case="3">Load case 4</button></div>
         <p class="mini">Teaching model only. Weights are illustrative, not validated.</p>
       </div>
     </div>
@@ -644,13 +660,151 @@ canvas.draw{touch-action:none;cursor:crosshair}
   </div>
 </section>
 
-<!-- ============ 14 PART III ============ -->
-<section class="slide divider" id="partIII" data-min="1.5" data-title="Part III · Cases" data-prompt="Make the room vote (hypovolaemic / cardiogenic / obstructive / distributive) after the vignette and again after the Heart step. Ask what each person would do before the next reveal.">
+<!-- ============ PART III · ARREST ============ -->
+<section class="slide divider" id="partArrest" data-min="1" data-title="Part III · Arrest and peri-arrest" data-prompt="Ask: at your last cardiac arrest, who held the probe, how long was the pause, and did anyone time it? Then: what is the one ultrasound finding during CPR that should make you act within the next minute? (Tamponade, tension pneumothorax, massive haemorrhage, fine VF.)">
   <div class="inner two" style="align-items:center;flex:1">
     <div>
-      <div class="kicker">Part III · Cases</div>
-      <h1>Three hypotensive patients.</h1>
-      <p class="big-quote" style="font-style:normal">Read the vignette, commit to a shock type and a first action, then reveal one HI-MAP step at a time (<kbd>R</kbd>).</p>
+      <div class="kicker">Part III · Arrest and peri-arrest</div>
+      <h1>When the pulse goes.</h1>
+      <p class="big-quote" style="font-style:normal">The same windows, a different clock. In arrest, ultrasound has to fit inside the ALS loop: scan what you can during compressions, and give the heart no more than the pulse-check pause.</p>
+      <p class="cap" style="margin-top:22px;line-height:2">SESAME · the 10-second pulse check · pitfalls and guidance</p>
+    </div>
+    <div><div class="panel"><div class="svgbox"><svg viewBox="0 0 420 190" role="img" aria-label="Schematic of one two-minute CPR cycle: lung, veins and abdomen are scanned during compressions; the heart is scanned only during the pulse check pause of 10 seconds or less">
+      <rect x="10" y="62" width="300" height="34" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+      <rect x="314" y="62" width="40" height="34" rx="5" style="fill:var(--accent);stroke:var(--accent)"/>
+      <rect x="358" y="62" width="52" height="34" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+      <text x="160" y="83" text-anchor="middle" style="font-size:12px;fill:var(--ink)">Compressions · 2 min</text>
+      <text x="334" y="83" text-anchor="middle" style="font-size:11px;fill:#fff">≤10 s</text>
+      <text x="384" y="83" text-anchor="middle" style="font-size:11px;fill:var(--ink)">CPR</text>
+      <text x="160" y="40" text-anchor="middle" style="font-size:11px;fill:var(--ink2)">Lung · veins · abdomen (second operator)</text>
+      <text x="160" y="54" text-anchor="middle" style="font-size:11px;fill:var(--ink2)">Probe on subxiphoid, view found</text>
+      <path d="M334 100 v22" style="stroke:var(--accent);stroke-width:1.5"/>
+      <text x="334" y="138" text-anchor="middle" style="font-size:11px;fill:var(--ink)">Record a clip</text>
+      <path d="M384 100 v40" style="stroke:var(--line2);stroke-width:1.5"/>
+      <text x="410" y="156" text-anchor="end" style="font-size:11px;fill:var(--ink)">Review the clip</text>
+      <text x="410" y="170" text-anchor="end" style="font-size:11px;fill:var(--ink2)">while CPR continues</text>
+    </svg></div><div class="mini">Schematic of one ALS cycle. Timings are the usual 2-minute cycle and the conventional 10-second pulse-check limit.</div></div></div>
+  </div>
+</section>
+
+<!-- ============ SESAME ============ -->
+<section class="slide" id="sesameSlide" data-min="6" data-title="SESAME: lung first, heart last" data-prompt="Before revealing the order, ask the room to rank lung, legs, abdomen, pericardium and heart for an arrested patient. Then ask: why would Lichtenstein put the heart last when RUSH puts it first? (In arrest the heart can only be seen during a pause; the lung, veins and abdomen can be scanned while compressions continue, and pneumothorax is the quickest to fix.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">11 · SESAME</div>
+      <h2>SESAME: lung first, heart last.</h2>
+      <p class="lede" style="font-size:16.5px">Lichtenstein's <b class="ink">S</b>equential <b class="ink">E</b>chographic <b class="ink">S</b>canning <b class="ink">A</b>ssessing <b class="ink">M</b>echanism <b class="ink">O</b>r Origin of <b class="ink">S</b>evere Shock of <b class="ink">I</b>ndistinct Cause is a whole-body scan for cardiac arrest and severe shock. He does it with one microconvex probe, so no time is lost changing probes.</p>
+      <div class="tw"><table class="t sm"><thead><tr><th>Step</th><th>Looks for</th><th>If positive</th></tr></thead><tbody>
+        <tr><td><b class="ink">1 · Lung</b></td><td>Pneumothorax first (no sliding, then a lung point). The lung profile also feeds the BLUE and FALLS logic.</td><td>Decompress</td></tr>
+        <tr><td><b class="ink">2 · Veins</b></td><td>Lower-limb DVT, the clue to PE</td><td>With an A-profile: think PE, consider thrombolysis</td></tr>
+        <tr><td><b class="ink">3 · Abdomen</b></td><td>Massive haemorrhage. <b class="ink">In trauma, do this before the veins.</b></td><td>Blood, surgeon</td></tr>
+        <tr><td><b class="ink">4 · Pericardium</b></td><td>Effusion and tamponade</td><td>Drain</td></tr>
+        <tr><td><b class="ink">5 · Heart</b></td><td>Other cardiac causes, and whether there is any activity</td><td>Depends on the finding</td></tr>
+      </tbody></table></div>
+      <div class="card" style="margin-top:12px"><div class="cap">The logic</div><p>Start with the cause that is quickest to rule in and quickest to fix (pneumothorax). The lung, legs and abdomen can be scanned <b class="ink">while compressions continue</b>, by a second operator. The heart, which RUSH looks at first, comes last here: during CPR you can only see it clearly in the pulse-check pause. CASA uses the same split: lung and free fluid during compressions, the heart during pulse checks (Gardner 2018).</p></div>
+      <p class="mini">SESAME is an expert protocol (Lichtenstein 2014; Lichtenstein and Malbrain 2015). It has not been tested for its effect on survival.</p>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <ul class="plist" id="sesList" style="grid-template-columns:repeat(5,minmax(0,1fr));display:grid;gap:6px"></ul>
+        <div class="pov" id="sesPov" style="margin-top:10px">1 · Lung</div>
+        <div class="ctrls" style="margin:0 0 8px"><div class="seg" id="sesSeg" role="group" aria-label="Finding"></div></div>
+        <div class="scanner pp"><canvas id="sesUS" class="us"></canvas><button class="ppb" type="button">❚❚ Pause</button></div>
+        <div class="capx" id="sesCap"></div>
+        <a class="cvlink" id="sesLink" href="../lung/">Detail →</a>
+        <div class="mini">Schematic teaching simulation, not a real scan.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PULSE CHECK ============ -->
+<section class="slide" id="pcSlide" data-min="7" data-title="The 10-second pulse check" data-prompt="Run the simulator three times. First do it badly: stop compressions before the probe is on, and watch the clock run while you look for the window. Then do it properly. Then use Mystery and have the room call the finding from the recorded clip while compressions run. Ask: who on your team should hold the probe? (Not the team leader.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">12 · Ultrasound in the ALS loop</div>
+      <h2>Scan in the pause. Read it during compressions.</h2>
+      <div class="card"><div class="cap">Before the pause</div><ul>
+        <li>The person scanning is <b class="ink">not the team leader</b>. In one ED study, pauses were longer when the doctor leading the resuscitation also did the scan (Clattenburg 2018).</li>
+        <li>Put the probe on the <b class="ink">subxiphoid</b> window during compressions and find the view. It usually stays clear of the hands and pads; if it interferes with compressions, lift off and reapply just before the pause. Keep the probe in place for the pause (CASA).</li></ul></div>
+      <div class="card"><div class="cap">During the pause: 10 seconds at most</div><ul>
+        <li>Someone counts the seconds out loud. The pulse check, rhythm check and scan share the same pause, which should not last longer than 10 s.</li>
+        <li><b class="ink">Record a clip</b>; do not try to interpret it live. If you have no view by 10 s, restart compressions and try again at the next check.</li></ul></div>
+      <div class="card"><div class="cap">After compressions restart</div><ul>
+        <li>Review the clip and report <b class="ink">one question per pulse check</b> (CASA, Gardner 2018): 1 · tamponade? 2 · RV dilated? 3 · any cardiac activity?</li>
+        <li>Say the finding to the team leader, who decides what to do.</li></ul></div>
+    </div>
+    <div class="demo">
+      <div class="panel" id="pcPanel">
+        <div class="cap">Pulse-check simulator · subxiphoid clip</div>
+        <div class="ctrls" style="margin:0 0 8px"><div class="seg" id="pcPat" role="group" aria-label="Heart pattern"><button data-v="org" aria-pressed="true">Organised</button><button data-v="still" aria-pressed="false">Standstill</button><button data-v="tamp" aria-pressed="false">Tamponade</button><button data-v="rv" aria-pressed="false">Dilated RV</button><button data-v="vf" aria-pressed="false">Fine VF</button><button data-v="mys" aria-pressed="false">Mystery</button></div></div>
+        <div class="scanner pp"><canvas id="pcUS" class="us"></canvas><button class="ppb" type="button">❚❚ Pause</button></div>
+        <div class="pcbar"><div class="pcclock" id="pcClock" aria-live="off">CPR</div><div class="pcsteps" id="pcSteps">
+          <button class="btn ghost" type="button" data-a="probe">1 · Probe on (during CPR)</button>
+          <button class="btn ghost" type="button" data-a="stop">2 · "Stop for pulse check"</button>
+          <button class="btn ghost" type="button" data-a="rec">3 · Record clip</button>
+          <button class="btn ghost" type="button" data-a="go">4 · "Resume compressions"</button>
+          <button class="btn ghost" type="button" data-a="review">5 · Review clip</button>
+          <button class="btn ghost" type="button" data-a="reset">Reset</button></div></div>
+        <div class="status" id="pcStat" aria-live="polite"></div>
+        <div id="pcAsk" hidden><div class="cap" style="margin-top:10px">What does the recorded clip show?</div><div id="pcAns"></div></div>
+        <div class="mini">Teaching simulation. The countdown runs in real time. Images are schematic, not real scans.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EVIDENCE / PITFALLS / GUIDANCE ============ -->
+<section class="slide" data-min="6" data-title="Arrest: pitfalls, evidence, guidance" data-prompt="Start on Pitfalls and ask: ten minutes into a PEA arrest the clip shows no movement. What else do you need before deciding to stop? (Duration, cause, response to ALS, team discussion. Standstill is one factor, not the decision.) Then show Guidelines and ask what the three bodies agree on.">
+  <div class="inner">
+    <div class="kicker">13 · Pitfalls, evidence and guidance</div>
+    <h2>A good finding helps you act. One finding alone should not stop resuscitation.</h2>
+    <div class="tabs" role="tablist" aria-label="Arrest ultrasound topics" id="arTabs"><button role="tab" aria-selected="true" aria-controls="arP" id="arTP">Pitfalls</button><button role="tab" aria-selected="false" aria-controls="arE" id="arTE" tabindex="-1">Evidence</button><button role="tab" aria-selected="false" aria-controls="arG" id="arTG" tabindex="-1">Guidelines</button></div>
+    <div class="tabpanel" role="tabpanel" id="arP" aria-labelledby="arTP"><div class="two even" style="gap:14px">
+      <div>
+        <div class="card"><div class="cap">Pauses get longer</div><p>Video studies in the ED found longer pauses when ultrasound was used (Huis in 't Veld 2017; Clattenburg 2018). Scan to a count, record a clip, and review it later.</p></div>
+        <div class="card"><div class="cap">Standstill is not a reason to stop on its own</div><p>Standstill is strongly linked to death (0.6% survived to discharge in REASON), but not 0%. Observers disagree on what counts as activity, and studies define it differently. The decision to stop belongs to the team and rests on the whole picture.</p></div>
+        <div class="card"><div class="cap">People disagree on "activity"</div><p>Physician sonographers rating the same arrest clips reached only moderate agreement on standstill (Hu 2018). Clips with valve flutter or ventilation-related motion are commonly misread; neither counts as cardiac activity. Compression or ventilation moving the heart is not cardiac activity.</p></div>
+        <div class="card"><div class="cap">Pseudo-PEA</div><p>Organised wall motion with no palpable pulse is common in patients thought to be in PEA (Breitkreutz 2010). Continue ALS and compressions per protocol unless an arterial line shows an adequate pressure. Meanwhile look hard for a reversible cause and consider vasopressor support.</p></div>
+      </div>
+      <div>
+        <div class="card"><div class="cap">A dilated RV does not prove PE</div><p>The RV can dilate during arrest from non-PE causes: in pigs it dilated after hypovolaemic, hyperkalaemic and primary arrhythmic arrest (Aagaard 2017). ERC guidance advises against diagnosing PE from RV dilation on its own during arrest. Look for support: the story, a DVT, an early scan.</p></div>
+        <div class="card"><div class="cap">Fine VF or asystole?</div><p>Fine VF can look like asystole on the monitor. Ultrasound may show a quivering, uncoordinated myocardium. In one ED TOE study, TOE identified VF in some out-of-hospital arrests thought to be asystole (Teran 2019). Check the leads and the gain, and say what you see to the team leader.</p></div>
+        <div class="card"><div class="cap">TOE where available</div><p>After intubation, TOE gives continuous views during compressions without needing a pause. It also shows where compressions land, which in Teran 2019 was over the aortic root or LVOT in 53% of patients rather than over the LV. It needs a trained operator. ILCOR's 2025 scoping review of TOE made no treatment recommendation.</p></div>
+        <div class="links"><a href="../cardiac/">Cardiac: the subxiphoid view</a><a href="../lung/">Lung: sliding and the lung point</a><a href="../dvt/">DVT: 2-point compression</a></div>
+      </div>
+    </div></div>
+    <div class="tabpanel" role="tabpanel" id="arE" aria-labelledby="arTE" hidden><div class="tw"><table class="t sm wide"><thead><tr><th>Study</th><th>Design</th><th>Finding</th></tr></thead><tbody>
+      <tr><td>Huis in 't Veld 2017</td><td>23 ED arrests, pauses video-recorded</td><td>Pulse checks with POCUS lasted 21 s on average, against 13 s without it, well over the 10 s target.</td></tr>
+      <tr><td>Clattenburg 2018</td><td>24 ED arrests, 110 pauses, prospective</td><td>Pauses with POCUS were several seconds longer than pauses without it.</td></tr>
+      <tr><td>Clattenburg 2018 (CASA)</td><td>Before and after introducing CASA</td><td>Pauses with POCUS were shorter after a structured protocol was brought in, but most still went over 10 s.</td></tr>
+      <tr><td>Gaspari 2016 (REASON)</td><td>793 patients in PEA or asystole, 20 centres</td><td>Cardiac activity was the factor most strongly linked to survival (to discharge: OR 5.7, 1.5 to 21.9). With no activity, 0.6% (95% CI 0.3 to 2.3) survived to discharge.</td></tr>
+      <tr><td>Hu 2018</td><td>Physician sonographers rating recorded arrest clips</td><td>Only moderate agreement on standstill.</td></tr>
+      <tr><td>Breitkreutz 2010 (FEEL)</td><td>Prehospital, prospective</td><td>Echo during a pause of under 10 s within ALS was feasible, and it often showed wall motion in patients thought to be in PEA.</td></tr>
+      <tr><td>Teran 2019</td><td>33 out-of-hospital arrests, ED TOE</td><td>TOE identified VF in some patients thought to be in asystole. Area of maximal compression over the aortic root or LVOT in 53% of patients. Findings often changed management.</td></tr>
+    </tbody></table></div><p class="mini">All observational, mostly single-centre. No randomised trial has shown that ultrasound during CPR improves survival.</p></div>
+    <div class="tabpanel" role="tabpanel" id="arG" aria-labelledby="arTG" hidden><div class="grid2" style="gap:12px">
+      <div class="card"><div class="cap">ERC 2025 · Adult ALS (paraphrased)</div><ul>
+        <li>Only skilled operators should use point-of-care ultrasound (POCUS) during arrest.</li>
+        <li>POCUS must not add pauses or make pauses in chest compressions longer.</li>
+        <li>POCUS may help identify treatable causes such as cardiac tamponade and pneumothorax.</li>
+        <li>Right ventricular dilation on its own during arrest should not be used to diagnose (massive) pulmonary embolism.</li>
+        <li>Do not use the apparent contractility of the myocardium on POCUS as the only reason to stop CPR.</li></ul></div>
+      <div class="card"><div class="cap">AHA 2025 · Part 9, Adult ALS</div><p>AHA 2025 says POCUS by experienced professionals during cardiac arrest <b class="ink">may be considered</b> to look for reversible causes, provided it does not interrupt CPR. "May be considered" is AHA wording for a weak (class 2b) recommendation; check the exact class and level of evidence in the Part 9 recommendation table.</p></div>
+      <div class="card"><div class="cap">ILCOR CoSTR</div><p>2020: ILCOR <b class="ink">suggests against</b> using point-of-care echocardiography for <b class="ink">prognostication</b> during CPR (weak recommendation, very low-certainty evidence). This does not rule out using it to look for reversible causes. 2025: a scoping review of TOE during CPR found it feasible and often useful to management, but made no treatment recommendation.</p></div>
+      <div class="card"><div class="cap">What they agree on</div><ul>
+        <li>Skilled operators only.</li><li>Use it to find a cause you can treat.</li><li>It must not lengthen or add pauses.</li><li>Do not use it alone to decide to stop CPR.</li></ul><p class="mini" style="margin-top:8px">Follow your local resuscitation protocol.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ PART IV · CASES ============ -->
+<section class="slide divider" id="partIII" data-min="1.5" data-title="Part IV · Cases" data-prompt="Make the room vote (hypovolaemic / cardiogenic / obstructive / distributive) after the vignette and again after the first scanning step. Ask what each person would do before the next reveal. Case 4 is a cardiac arrest: run it with the SESAME order and the 10-second rule.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part IV · Cases</div>
+      <h1>Four patients in shock.</h1>
+      <p class="big-quote" style="font-style:normal">Read the vignette, commit to a shock type and a first action, then reveal one step at a time (<kbd>R</kbd>). Cases 1 to 3 follow HI-MAP; case 4 is an arrest, scanned in the SESAME order.</p>
       <p class="mini" style="max-width:56ch">Teaching vignettes. All images are schematic simulations. Each case can be loaded into the classifier.</p>
     </div>
     <div><div class="caseGrid" id="caseGrid"></div></div>
@@ -660,13 +814,14 @@ canvas.draw{touch-action:none;cursor:crosshair}
 <section class="slide case" data-case="0" data-min="4.5" data-title="Case 1 · Breathless after hip surgery" data-prompt="Vote after the vignette and again after the Heart step. Ask: what one more view do you want once you see the RV? (The legs.)"></section>
 <section class="slide case" data-case="1" data-min="4.5" data-title="Case 2 · Fever and confusion" data-prompt="Vote after the Heart and IVC steps: hypovolaemic or distributive? Ask what separates them. Before the rescan reveal, ask: what would make you stop fluid?"></section>
 <section class="slide case" data-case="2" data-min="4.5" data-title="Case 3 · Back pain, collapse" data-prompt="After the Morison's step (no free fluid), ask: does that reassure you? Then reveal the aorta. Ask: CT first or vascular surgeon first?"></section>
+<section class="slide case" data-case="3" data-min="5" data-title="Case 4 · PEA after PCI" data-prompt="Assign roles before revealing anything: team leader, compressor, scanner, someone to count the pause out loud. Reveal the lung, veins and abdomen steps 'during compressions'. Before the pericardium step, ask: what will you do if the first pulse-check clip shows an effusion? (Drain now, while CPR continues; do not wait for a second pulse check.) Ask: what could the abdominal scan not exclude after femoral access? (A retroperitoneal bleed.)"></section>
 
 <!-- ============ QUIZ ============ -->
-<section class="slide" data-min="8" data-title="Quick check" data-prompt="Have learners answer on their phones or by show of hands. For any question with < 70% correct, return to the relevant slide.">
+<section class="slide" data-min="10" data-title="Quick check" data-prompt="Have learners answer on their phones or by show of hands. For any question with < 70% correct, return to the relevant slide.">
   <div class="inner">
     <div class="kicker">Quick check</div>
-    <h2>Eight questions before we finish.</h2>
-    <p class="lede">Tamponade signs, the IVC, aorta measurement, pneumothorax, the PE pattern and the evidence. One at a time. <span id="qzScore" class="num"></span></p>
+    <h2>Ten questions before we finish.</h2>
+    <p class="lede">Tamponade signs, the IVC, aorta measurement, pneumothorax, the PE pattern, the evidence, and ultrasound during cardiac arrest. One at a time. <span id="qzScore" class="num"></span></p>
     <div class="qz" id="quiz" style="max-width:760px"></div>
   </div>
 </section>
@@ -677,10 +832,11 @@ canvas.draw{touch-action:none;cursor:crosshair}
     <div>
       <div class="kicker">Scan, act, rescan</div>
       <h1>Thank you.</h1>
-      <div class="card" style="margin-top:20px"><div class="cap">Three things to take away</div><ol>
+      <div class="card" style="margin-top:20px"><div class="cap">Four things to take away</div><ol>
         <li>Pump, tank, pipes, in the HI-MAP order. Finish the exam even after the first abnormal finding.</li>
         <li>Patterns rule in. A normal-looking scan does not rule out.</li>
-        <li>Rescan after every intervention.</li></ol></div>
+        <li>Rescan after every intervention.</li>
+        <li>In arrest: scan during compressions, record within a 10-second pause, and never stop CPR on one ultrasound finding.</li></ol></div>
       <div class="cap" style="margin-top:16px">Go deeper</div>
       <div class="links"><a href="../cardiac/">Focused cardiac ultrasound</a><a href="../lung/">Lung ultrasound</a><a href="../efast/">eFAST</a><a href="../dvt/">DVT and vessels</a><a href="../gastric/">Gastric ultrasound</a><a href="../vascular-access/">US-guided vascular access</a></div>
       <p class="mini" style="margin-top:14px">Simulations are purpose-built teaching models, not diagnostic images. Anatomy, echogenicity and thresholds are simplified. Key references on the next slide. Contact: <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
@@ -698,28 +854,42 @@ canvas.draw{touch-action:none;cursor:crosshair}
     <h2>Where the numbers come from.</h2>
     <details class="src" open><summary>Key references (tap to collapse)</summary>
       <ol class="refs">
-        <li>Perera P, Mailhot T, Riley D, Mandavia D. The RUSH exam: Rapid Ultrasound in SHock in the evaluation of the critically ill. <i>Emerg Med Clin North Am</i> 2010;28:29–56.</li>
-        <li>Weingart SD, Duque D, Nelson B. Rapid Ultrasound for Shock and Hypotension (RUSH exam, HI-MAP). EMCrit; 2008/2009. <a href="https://emcrit.org/rush-exam/">emcrit.org/rush-exam</a></li>
-        <li>Jones AE, Tayal VS, Sullivan DM, Kline JA. Randomized, controlled trial of immediate versus delayed goal-directed ultrasound to identify the cause of nontraumatic hypotension in emergency department patients. <i>Crit Care Med</i> 2004;32:1703–8.</li>
-        <li>Shokoohi H, Boniface KS, Pourmand A, et al. Bedside ultrasound reduces diagnostic uncertainty and guides resuscitation in patients with undifferentiated hypotension. <i>Crit Care Med</i> 2015;43:2562–9.</li>
-        <li>Atkinson PR, Milne J, Diegelmann L, et al. Does point-of-care ultrasonography improve clinical outcomes in emergency department patients with undifferentiated hypotension? An international randomized controlled trial from the SHoC-ED investigators. <i>Ann Emerg Med</i> 2018;72:478–89.</li>
-        <li>Stickles SP, Carpenter CR, Gekle R, et al. The diagnostic accuracy of a point-of-care ultrasound protocol for shock etiology: a systematic review and meta-analysis. <i>CJEM</i> 2019;21:406–17.</li>
-        <li>Yoshida T, Yoshida T, Noma H, Nomura T, Suzuki A, Mihara T. Diagnostic accuracy of point-of-care ultrasound for shock: a systematic review and meta-analysis. <i>Crit Care</i> 2023;27:200.</li>
-        <li>Spencer KT, Kimura BJ, Korcarz CE, et al. Focused cardiac ultrasound: recommendations from the American Society of Echocardiography. <i>J Am Soc Echocardiogr</i> 2013;26:567–81.</li>
-        <li>Via G, Hussain A, Wells M, et al. International evidence-based recommendations for focused cardiac ultrasound. <i>J Am Soc Echocardiogr</i> 2014;27:683.e1–683.e33.</li>
-        <li>Labovitz AJ, Noble VE, Bierig M, et al. Focused cardiac ultrasound in the emergent setting: a consensus statement of the American Society of Echocardiography and American College of Emergency Physicians. <i>J Am Soc Echocardiogr</i> 2010;23:1225–30.</li>
-        <li>Rudski LG, Lai WW, Afilalo J, et al. Guidelines for the echocardiographic assessment of the right heart in adults. <i>J Am Soc Echocardiogr</i> 2010;23:685–713.</li>
-        <li>Lang RM, Badano LP, Mor-Avi V, et al. Recommendations for cardiac chamber quantification by echocardiography in adults: an update from the ASE and EACVI. <i>J Am Soc Echocardiogr</i> 2015;28:1–39.</li>
-        <li>Barbier C, Loubières Y, Schmit C, et al. Respiratory changes in inferior vena cava diameter are helpful in predicting fluid responsiveness in ventilated septic patients. <i>Intensive Care Med</i> 2004;30:1740–6.</li>
-        <li>Volpicelli G, Elbarbary M, Blaivas M, et al. International evidence-based recommendations for point-of-care lung ultrasound. <i>Intensive Care Med</i> 2012;38:577–91.</li>
-        <li>Lichtenstein DA, Mezière GA. Relevance of lung ultrasound in the diagnosis of acute respiratory failure: the BLUE protocol. <i>Chest</i> 2008;134:117–25.</li>
-        <li>Lichtenstein D. FALLS-protocol: lung ultrasound in hemodynamic assessment of shock. <i>Heart Lung Vessel</i> 2013;5:142–7.</li>
-        <li>Rubano E, Mehta N, Caputo W, Paladino L, Sinert R. Systematic review: emergency department bedside ultrasonography for diagnosing suspected abdominal aortic aneurysm. <i>Acad Emerg Med</i> 2013;20:128–38.</li>
-        <li>Wanhainen A, Van Herzeele I, Bastos Goncalves F, et al. European Society for Vascular Surgery (ESVS) 2024 clinical practice guidelines on the management of abdominal aorto-iliac artery aneurysms. <i>Eur J Vasc Endovasc Surg</i> 2024;67:192–331.</li>
-        <li>Konstantinides SV, Meyer G, Becattini C, et al. 2019 ESC guidelines for the diagnosis and management of acute pulmonary embolism. <i>Eur Heart J</i> 2020;41:543–603.</li>
-        <li>Konstantinides SV, Meyer G, Becattini C, et al. 2019 ESC guidelines for the diagnosis and management of acute pulmonary embolism. <i>Eur Heart J</i> 2020;41:543–603.</li>
-        <li>Wanhainen A, Van Herzeele I, Bastos Goncalves F, et al. European Society for Vascular Surgery (ESVS) 2024 clinical practice guidelines on the management of abdominal aorto-iliac artery aneurysms. <i>Eur J Vasc Endovasc Surg</i> 2024;67:192–331.</li>
-        <li>Adler Y, Charron P, Imazio M, et al. 2015 ESC guidelines for the diagnosis and management of pericardial diseases. <i>Eur Heart J</i> 2015;36:2921–64.</li>
+        <li>Perera P, Mailhot T, Riley D, Mandavia D. The RUSH exam: Rapid Ultrasound in SHock in the evaluation of the critically ill. <i>Emerg Med Clin North Am</i>. 2010;28(1):29–56. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=The+RUSH+exam+Rapid+Ultrasound+in+SHock+in+the+evaluation+of+the+critically+ill+2010%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Weingart SD, Duque D, Nelson B. Rapid Ultrasound for Shock and Hypotension (RUSH-HIMAPP). <i>EMCrit [online]</i>. 2009. <a href="https://emcrit.org/rush-exam/" target="_blank" rel="noopener">Source</a></li>
+        <li>Jones AE, Tayal VS, Sullivan DM, Kline JA. Randomized, controlled trial of immediate versus delayed goal-directed ultrasound to identify the cause of nontraumatic hypotension in emergency department patients. <i>Crit Care Med</i>. 2004;32(8):1703–8. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Randomized+controlled+trial+of+immediate+versus+delayed+goal-directed+ultrasound+to+identify+the+cause+of+2004%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Shokoohi H, Boniface KS, Pourmand A, et al. Bedside ultrasound reduces diagnostic uncertainty and guides resuscitation in patients with undifferentiated hypotension. <i>Crit Care Med</i>. 2015;43(12):2562–9. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Bedside+ultrasound+reduces+diagnostic+uncertainty+and+guides+resuscitation+in+patients+with+undifferentiated+hypotension+2015%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Atkinson PR, Milne J, Diegelmann L, et al. Does point-of-care ultrasonography improve clinical outcomes in emergency department patients with undifferentiated hypotension? An international randomized controlled trial from the SHoC-ED investigators. <i>Ann Emerg Med</i>. 2018;72(4):478–89. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Does+point-of-care+ultrasonography+improve+clinical+outcomes+in+emergency+department+patients+with+undifferentiated+hypotension+An+2018%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Stickles SP, Carpenter CR, Gekle R, et al. The diagnostic accuracy of a point-of-care ultrasound protocol for shock etiology: a systematic review and meta-analysis. <i>CJEM</i>. 2019;21(3):406–17. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=The+diagnostic+accuracy+of+a+point-of-care+ultrasound+protocol+for+shock+etiology+a+systematic+review+2019%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Yoshida T, Yoshida T, Noma H, Nomura T, Suzuki A, Mihara T. Diagnostic accuracy of point-of-care ultrasound for shock: a systematic review and meta-analysis. <i>Crit Care</i>. 2023;27(1):200. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Diagnostic+accuracy+of+point-of-care+ultrasound+for+shock+a+systematic+review+and+meta-analysis+2023%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Spencer KT, Kimura BJ, Korcarz CE, et al. Focused cardiac ultrasound: recommendations from the American Society of Echocardiography. <i>J Am Soc Echocardiogr</i>. 2013;26(6):567–81. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Focused+cardiac+ultrasound+recommendations+from+the+American+Society+of+Echocardiography+2013%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Via G, Hussain A, Wells M, et al. International evidence-based recommendations for focused cardiac ultrasound. <i>J Am Soc Echocardiogr</i>. 2014;27(7):683.e1–683.e33. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=International+evidence-based+recommendations+for+focused+cardiac+ultrasound+2014%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Labovitz AJ, Noble VE, Bierig M, et al. Focused cardiac ultrasound in the emergent setting: a consensus statement of the American Society of Echocardiography and American College of Emergency Physicians. <i>J Am Soc Echocardiogr</i>. 2010;23(12):1225–30. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Focused+cardiac+ultrasound+in+the+emergent+setting+a+consensus+statement+of+the+American+Society+2010%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Rudski LG, Lai WW, Afilalo J, et al. Guidelines for the echocardiographic assessment of the right heart in adults: a report from the American Society of Echocardiography. <i>J Am Soc Echocardiogr</i>. 2010;23(7):685–713. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Guidelines+for+the+echocardiographic+assessment+of+the+right+heart+in+adults+a+report+from+2010%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Lang RM, Badano LP, Mor-Avi V, et al. Recommendations for cardiac chamber quantification by echocardiography in adults: an update from the American Society of Echocardiography and the European Association of Cardiovascular Imaging. <i>J Am Soc Echocardiogr</i>. 2015;28(1):1–39.e14. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Recommendations+for+cardiac+chamber+quantification+by+echocardiography+in+adults+an+update+from+the+American+2015%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Barbier C, Loubières Y, Schmit C, et al. Respiratory changes in inferior vena cava diameter are helpful in predicting fluid responsiveness in ventilated septic patients. <i>Intensive Care Med</i>. 2004;30(9):1740–6. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Respiratory+changes+in+inferior+vena+cava+diameter+are+helpful+in+predicting+fluid+responsiveness+in+2004%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Volpicelli G, Elbarbary M, Blaivas M, et al. International evidence-based recommendations for point-of-care lung ultrasound. <i>Intensive Care Med</i>. 2012;38(4):577–91. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=International+evidence-based+recommendations+for+point-of-care+lung+ultrasound+2012%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Lichtenstein DA, Mezière GA. Relevance of lung ultrasound in the diagnosis of acute respiratory failure: the BLUE protocol. <i>Chest</i>. 2008;134(1):117–25. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Relevance+of+lung+ultrasound+in+the+diagnosis+of+acute+respiratory+failure+the+BLUE+protocol+2008%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Lichtenstein D. FALLS-protocol: lung ultrasound in hemodynamic assessment of shock. <i>Heart Lung Vessel</i>. 2013;5(3):142–7. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=FALLS-protocol+lung+ultrasound+in+hemodynamic+assessment+of+shock+2013%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Rubano E, Mehta N, Caputo W, Paladino L, Sinert R. Systematic review: emergency department bedside ultrasonography for diagnosing suspected abdominal aortic aneurysm. <i>Acad Emerg Med</i>. 2013;20(2):128–38. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Systematic+review+emergency+department+bedside+ultrasonography+for+diagnosing+suspected+abdominal+aortic+aneurysm+2013%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Wanhainen A, Van Herzeele I, Bastos Goncalves F, et al. European Society for Vascular Surgery (ESVS) 2024 clinical practice guidelines on the management of abdominal aorto-iliac artery aneurysms. <i>Eur J Vasc Endovasc Surg</i>. 2024;67(2):192–331. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=European+Society+for+Vascular+Surgery+ESVS+2024+clinical+practice+guidelines+on+the+management+of+2024%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Konstantinides SV, Meyer G, Becattini C, et al. 2019 ESC guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS). <i>Eur Heart J</i>. 2020;41(4):543–603. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=2019+ESC+guidelines+for+the+diagnosis+and+management+of+acute+pulmonary+embolism+developed+in+2020%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Schulz-Menger J, Collini V, Gröschel J, et al. 2025 ESC guidelines for the management of myocarditis and pericarditis. <i>Eur Heart J</i>. 2025. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=2025+ESC+guidelines+for+the+management+of+myocarditis+and+pericarditis+2025%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Lichtenstein D. How can the use of lung ultrasound in cardiac arrest make ultrasound a holistic discipline. The example of the SESAME-protocol. <i>Med Ultrason</i>. 2014;16(3):252–5. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=How+can+the+use+of+lung+ultrasound+in+cardiac+arrest+make+ultrasound+a+holistic+2014%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Lichtenstein D, Malbrain ML. Critical care ultrasound in cardiac arrest. Technological requirements for performing the SESAME-protocol — a holistic approach. <i>Anaesthesiol Intensive Ther</i>. 2015;47(5):471–81. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Critical+care+ultrasound+in+cardiac+arrest+Technological+requirements+for+performing+the+SESAME-protocol+a+holistic+2015%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Gardner KF, Clattenburg EJ, Wroe P, et al. The Cardiac Arrest Sonographic Assessment (CASA) exam — a standardized approach to the use of ultrasound in PEA. <i>Am J Emerg Med</i>. 2018;36(4):729–31. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=The+Cardiac+Arrest+Sonographic+Assessment+CASA+exam+a+standardized+approach+to+the+use+of+2018%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Clattenburg EJ, Wroe PC, Gardner K, et al. Implementation of the Cardiac Arrest Sonographic Assessment (CASA) protocol for patients with cardiac arrest is associated with shorter CPR pulse checks. <i>Resuscitation</i>. 2018;131:69–73. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Implementation+of+the+Cardiac+Arrest+Sonographic+Assessment+CASA+protocol+for+patients+with+cardiac+arrest+2018%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Huis in 't Veld MA, Allison MG, Bostick DS, et al. Ultrasound use during cardiopulmonary resuscitation is associated with delays in chest compressions. <i>Resuscitation</i>. 2017;119:95–8. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Ultrasound+use+during+cardiopulmonary+resuscitation+is+associated+with+delays+in+chest+compressions+2017%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Clattenburg EJ, Wroe P, Brown S, et al. Point-of-care ultrasound use in patients with cardiac arrest is associated [sic] prolonged cardiopulmonary resuscitation pauses: a prospective cohort study. <i>Resuscitation</i>. 2018;122:65–8. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Point-of-care+ultrasound+use+in+patients+with+cardiac+arrest+is+associated+prolonged+cardiopulmonary+resuscitation+pauses+2018%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Gaspari R, Weekes A, Adhikari S, et al. Emergency department point-of-care ultrasound in out-of-hospital and in-ED cardiac arrest. <i>Resuscitation</i>. 2016;109:33–9. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Emergency+department+point-of-care+ultrasound+in+out-of-hospital+and+in-ED+cardiac+arrest+2016%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Hu K, Gupta N, Teran F, et al. Variability in interpretation of cardiac standstill among physician sonographers. <i>Ann Emerg Med</i>. 2018;71(2):193–8. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Variability+in+interpretation+of+cardiac+standstill+among+physician+sonographers+2018%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Breitkreutz R, Price S, Steiger HV, et al. Focused echocardiographic evaluation in life support and peri-resuscitation of emergency patients: a prospective trial. <i>Resuscitation</i>. 2010;81(11):1527–33. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Focused+echocardiographic+evaluation+in+life+support+and+peri-resuscitation+of+emergency+patients+a+prospective+trial+2010%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Aagaard R, Granfeldt A, Bøtker MT, et al. The right ventricle is dilated during resuscitation from cardiac arrest caused by hypovolemia: a porcine ultrasound study. <i>Crit Care Med</i>. 2017;45(9):e963–70. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=The+right+ventricle+is+dilated+during+resuscitation+from+cardiac+arrest+caused+by+hypovolemia+a+2017%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Teran F, Dean AJ, Centeno C, et al. Evaluation of out-of-hospital cardiac arrest using transesophageal echocardiography in the emergency department. <i>Resuscitation</i>. 2019;137:140–7. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Evaluation+of+out-of-hospital+cardiac+arrest+using+transesophageal+echocardiography+in+the+emergency+department+2019%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Soar J, Böttiger BW, Carli P, et al. European Resuscitation Council Guidelines 2025: adult advanced life support. <i>Resuscitation</i>. 2025;215 Suppl 1:110769. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=European+Resuscitation+Council+Guidelines+2025+adult+advanced+life+support+2025%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Wigginton JG, Agarwal S, Bartos JA, et al. Part 9: adult advanced life support: 2025 American Heart Association guidelines for cardiopulmonary resuscitation and emergency cardiovascular care. <i>Circulation</i>. 2025;152(16 Suppl 2):S538–77. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Part+9+adult+advanced+life+support+2025+American+Heart+Association+guidelines+for+cardiopulmonary+resuscitation+2025%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Berg KM, Soar J, Andersen LW, et al. Adult advanced life support: 2020 International Consensus on Cardiopulmonary Resuscitation and Emergency Cardiovascular Care Science With Treatment Recommendations. <i>Circulation</i>. 2020;142(16 Suppl 1):S92–139. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Adult+advanced+life+support+2020+International+Consensus+on+Cardiopulmonary+Resuscitation+and+Emergency+Cardiovascular+Care+2020%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Reynolds JC, Issa MS, Nicholson TC, et al. Prognostication with point-of-care echocardiography during cardiac arrest: a systematic review. <i>Resuscitation</i>. 2020;152:56–68. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Prognostication+with+point-of-care+echocardiography+during+cardiac+arrest+a+systematic+review+2020%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
+        <li>International Liaison Committee on Resuscitation Advanced Life Support Task Force. Advanced life support: 2025 International Consensus on Cardiopulmonary Resuscitation and Emergency Cardiovascular Care Science With Treatment Recommendations. <i>Circulation</i>. 2025. <a href="https://costr.ilcor.org/" target="_blank" rel="noopener">Source</a></li>
       </ol>
       <p class="mini">Simulations are purpose-built schematic teaching models, not diagnostic images. Anatomy, echogenicity, timing and thresholds are simplified. Check thresholds against current guidelines and local protocols.</p>
     </details>
@@ -1055,7 +1225,77 @@ function vA(S, st, t) {
   smk(S, 'l'); wm(S);
 }
 
-const VIEW = { H: vH, I: vI, M: vM, A: vA, P: vP, L: vL };
+/* ---------- Z: subxiphoid view during cardiac arrest (pulse-check clip) ---------- */
+// hr: rate of organised activity (0 = none); sq: squeeze fraction; eff: effusion; vf: fibrillation; ch: chamber geometry as HCH
+const ZP = {
+  org: { hr: 56, sq: .45, ch: HCH.normal, ecg: 'n' },
+  still: { hr: 0, sq: 0, ch: HCH.normal, ecg: 'b' },
+  tamp: { hr: 128, sq: .55, eff: true, ch: HCH.hyper, ecg: 'n' },
+  rv: { hr: 44, sq: .3, ch: HCH.rv, ecg: 'n' },
+  vf: { hr: 0, sq: 0, vf: true, ch: HCH.normal, ecg: 'f' }
+};
+const zPh = (t, hr) => hr ? ((t * hr / 60) % 1 + 1) % 1 : 0;
+function zEcg(S, st, t) {
+  const c = S.c, W = S.w, H = S.h, y0 = H - 20, span = 3, P = ZP[st.m] || ZP.org, x1 = W * .55;
+  const f = tt => {
+    if (st.cpr) return .55 * Math.sin(TAU * tt * 110 / 60) + .08 * Math.sin(tt * 23);
+    if (P.ecg === 'f') return .07 * (Math.sin(tt * 31) + Math.sin(tt * 47 + 1) + .6 * Math.sin(tt * 23 + 2));
+    if (P.ecg === 'b') { const p = ((tt * 18 / 60) % 1 + 1) % 1; return .5 * gss(p, .06, .03) - .15 * gss(p, .14, .04); }
+    return (P.eff ? .55 : 1) * ecgV(zPh(tt, P.hr));
+  };
+  c.save(); c.strokeStyle = '#6fd18a'; c.lineWidth = 1.4; c.beginPath();
+  for (let x = 0; x <= x1; x += 2) { const v = f(t - (x1 - x) / x1 * span); if (x === 0) c.moveTo(x + 6, y0 - v * 14); else c.lineTo(x + 6, y0 - v * 14); }
+  c.stroke(); c.restore();
+}
+function vZ(S, st, t) {
+  const c = S.c, W = S.w, H = S.h, P = ZP[st.m] || ZP.org, cpr = !!st.cpr;
+  const k = cpr ? .5 - .5 * Math.cos(TAU * t * 110 / 60) : 0; // compression depth 0..1
+  const p = zPh(t, P.hr), sy = P.hr ? sysF(p) * P.sq / .3 : 0, ed = P.hr ? edF(p) : 0;
+  c.fillStyle = '#000'; c.fillRect(0, 0, W, H);
+  c.save(); sectorPath(c, W / 2, 6, 0, H - 30, .7); c.clip();
+  c.fillStyle = g(24); c.fillRect(0, 0, W, H);
+  const dy = k * 22;
+  c.fillStyle = g(116); ell(c, W * .36, 30 + dy * .4, W * .62, 116, .1); c.fill();
+  const cx = W * .53, cy = H * .6 + dy, rot = -.22;
+  c.save(); c.translate(cx, cy); c.rotate(rot); c.scale(.8, .8 * (1 - .25 * k));
+  if (P.eff) { c.fillStyle = '#020202'; ell(c, 4, 14, 178, 110); c.fill(); c.strokeStyle = g(225); c.lineWidth = 4; c.stroke(); }
+  else { c.fillStyle = g(66); ell(c, 6, 6, 160, 92); c.fill(); c.strokeStyle = g(205); c.lineWidth = 5; c.stroke(); }
+  c.fillStyle = g(90); ell(c, 2, 2, 110, 30); c.fill();
+  const q = (i, s) => P.vf ? 1.6 * (Math.sin(t * 38 + i * 1.7) + Math.sin(t * 57 + i * 2.9) + .7 * Math.sin(t * 25 + i)) * s : 0;
+  const vent = (a, i) => ({ x: a[0] + q(i, .6), y: a[1] + q(i + 3, .6), rx: a[2] * (1 - .35 * a[4] * sy) + q(i + 5, 1), ry: a[3] * (1 - a[4] * sy) + q(i + 7, 1) });
+  const atr = (a, i) => ({ x: a[0], y: a[1], rx: a[2] * (1 + .06 * sy) + q(i, .5), ry: a[3] * (1 + .1 * sy) + q(i + 2, .5) });
+  const ch = P.ch, RV = vent(ch.RV, 1), LV = vent(ch.LV, 2), RA = atr(ch.RA, 3), LA = atr(ch.LA, 4);
+  if (P.eff) { const kk = .6 + .3 * ed; RV.y += ch.RV[3] * kk * .5; RV.ry *= 1 - kk * .8; RA.ry *= .55; RA.y += ch.RA[3] * .3; }
+  const walls = [[RV, 7], [LV, 12], [RA, 5], [LA, 5]];
+  c.fillStyle = g(152); for (const [a, w] of walls) { ell(c, a.x, a.y, a.rx + w, a.ry + w); c.fill(); }
+  c.fillStyle = g(6); for (const [a] of walls) { ell(c, a.x, a.y, a.rx, a.ry); c.fill(); }
+  if (st.m === 'still') { // spontaneous echo contrast drifting slowly in the still chambers
+    c.fillStyle = 'rgba(255,255,255,.16)';
+    for (const [a] of walls.slice(0, 2)) for (let i = 0; i < 26; i++) { const ang = i * 2.39 + t * .15, r = ((i * 37) % 100) / 100; ell(c, a.x + Math.cos(ang) * a.rx * .8 * r, a.y + Math.sin(ang) * a.ry * .8 * r, 2.2, 1.4); c.fill(); }
+  }
+  c.strokeStyle = g(200); c.lineWidth = 2.5; const op = P.hr ? 1 - sysF(p) : .5;
+  for (const [A, V] of [[RA, RV], [LA, LV]]) { const mx = (A.x + A.rx + V.x - V.rx) / 2 + 6, my = (A.y + V.y) / 2; c.beginPath(); c.moveTo(mx, my - 14); c.lineTo(mx + 14 * op + 3, my - 14 + 8 * op); c.moveTo(mx, my + 14); c.lineTo(mx + 14 * op + 3, my + 14 - 8 * op); c.stroke(); }
+  c.restore();
+  S.spk([1, 0, 0, 1, cpr ? Math.sin(t * 13) * 30 : 0, dy]);
+  if (cpr) { c.fillStyle = 'rgba(120,120,120,.38)'; c.fillRect(0, 0, W, H); S.spk([1.6, 0, 0, .7, t * 90, -t * 40], .9); }
+  const sr = clamp(st.search || 0, 0, 1);
+  if (sr > 0) { c.fillStyle = `rgba(10,10,10,${.92 * sr})`; c.fillRect(0, 0, W, H); S.spk([2, 0, 0, 1, t * 60, 0], .5 * sr); }
+  c.restore();
+  const T = (x, y) => { x *= .8; y *= .8; return [cx + x * Math.cos(rot) - y * Math.sin(rot), cy + x * Math.sin(rot) + y * Math.cos(rot)]; };
+  if (st.labels !== false && !cpr && sr < .5) {
+    label(c, 'Liver', W * .14, 44);
+    for (const [n, a] of [['RV', RV], ['LV', LV], ['RA', RA], ['LA', LA]]) { const [x, y] = T(a.x, a.y); label(c, n, x, y, 'center'); }
+    if (P.eff && !st.hide) { const [x, y] = T(30, 112); label(c, 'Effusion', x, y + 4, 'center', '#9fe0ff'); }
+  }
+  if (cpr) label(c, 'Compressions: no usable image', W / 2, H * .45, 'center', '#ffd678');
+  else if (sr >= .5) label(c, 'Looking for the window…', W / 2, H * .45, 'center', '#ffd678');
+  if (st.rec) { c.save(); c.fillStyle = '#ff4d4d'; c.beginPath(); c.arc(14, 74, 5, 0, TAU); c.fill(); c.restore(); label(c, 'REC ' + st.rec.toFixed(1) + ' s', 24, 74, 'left', '#ff8a8a'); }
+  if (st.replay) label(c, '▶ Recorded clip · CPR continuing', 8, 74, 'left', '#9fe0ff');
+  if (st.title) title(S, st.title);
+  smk(S, 'r'); zEcg(S, st, t); wm(S);
+}
+
+const VIEW = { H: vH, I: vI, M: vM, A: vA, P: vP, L: vL, Z: vZ };
 const vAny = (S, st, t) => VIEW[st.v](S, st, t);
 const CAPS = {
   'H.normal': 'Subxiphoid 4-chamber: liver in front, RV nearest the probe, LV deeper. The ventricles squeeze about 30% in systole; the RV is smaller than the LV.',
@@ -1074,7 +1314,12 @@ const CAPS = {
   'P.noslide': 'No sliding: static pleural line. M-mode: barcode (stratosphere) sign. Fits pneumothorax but is not specific; a lung point confirms.',
   'P.bl': 'B-lines: vertical, laser-like lines from the pleura to the bottom of the screen that move with sliding and erase the A-lines. They rule out pneumothorax at that point.',
   'L.normal': 'Right groin, transverse: artery lateral, vein medial. Common femoral vein (oval) beside the artery (round, pulsatile). With pressure the vein closes completely: no DVT here.',
-  'L.dvt': 'The vein stays round, with grey echoes inside, under pressure: non-compressible = DVT. In shock with a dilated RV, strongly supports PE.'
+  'L.dvt': 'The vein stays round, with grey echoes inside, under pressure: non-compressible = DVT. In shock with a dilated RV, strongly supports PE.',
+  'Z.org': 'Organised wall motion with no palpable pulse: pseudo-PEA. Continue ALS and compressions per protocol unless an arterial line shows an adequate pressure. Meanwhile hunt for a reversible cause (fluid, blood, decompression, drainage, lysis) and consider vasopressor support.',
+  'Z.still': 'Cardiac standstill: no wall motion; only slow swirling of blood (spontaneous echo contrast). Strongly linked to non-survival (REASON: 0.6% to discharge), but on its own it is not a reason to stop CPR. Valve flutter or ventilation-driven movement is not activity.',
+  'Z.tamp': 'Pericardial effusion with the RV and RA squashed: in an arrested or peri-arrest patient, tamponade until proven otherwise. Drain now: ultrasound-guided pericardiocentesis; emergency resternotomy after recent cardiac surgery; resuscitative thoracotomy in traumatic (especially penetrating) arrest where a trained team is present.',
+  'Z.rv': 'RV larger than the LV. The RV can dilate during arrest from non-PE causes, so on its own this does not diagnose PE (ERC 2025). It supports PE when the story fits, there is a DVT, or it is seen at the very first pulse check.',
+  'Z.vf': 'Fine, uncoordinated quivering of the myocardium with no organised contraction: fine VF. The monitor may read it as asystole. Check the leads and the gain, and tell the team leader, who treats VF as a shockable rhythm.'
 };
 const capKey = st => st.v === 'P' && st.bl && st.m !== 'noslide' ? 'P.bl' : st.v + '.' + (st.m || 'normal');
 
@@ -1405,7 +1650,8 @@ let F = F0();
 const CF_PRESET = [
   { rv: 1, ivc: 2, dvt: 1 },
   {},
-  { ao: 1 }
+  { ao: 1 },
+  { eff: 2 }
 ];
 $('#clfForm').innerHTML = CF.map(([k, l, o]) => `<div class="row"><div class="cap" id="cf-${k}">${l}</div><div class="seg" role="group" aria-labelledby="cf-${k}" data-k="${k}">${o.map((x, j) => `<button data-v="${j}" aria-pressed="${j === 0}">${x}</button>`).join('')}</div></div>`).join('');
 $('#clfForm').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const sg = b.closest('.seg'); F[sg.dataset.k] = +b.dataset.v; clfSync(); });
@@ -1453,7 +1699,8 @@ clfSync();
 /* =====================================================================
    CASES
    ===================================================================== */
-const STEPN = { H: ['H', 'Heart', 'Effusion? LV squeeze? RV size?'], I: ['I', 'IVC', 'Size and respiratory variation?'], M: ['M', "Morison's / eFAST", 'Free fluid? Pleural fluid?'], A: ['A', 'Aorta', 'Coeliac to bifurcation: calibre?'], P: ['P', 'Pneumothorax / lung', 'Sliding? A-lines or B-lines?'], L: ['L', 'Legs', '2-point compression?'], X: ['?', 'Interpretation', 'Which shock type?'], Y: ['→', 'Action', 'What will you do now?'], R: ['↻', 'Rescan', 'After a further 1.5 L and noradrenaline 0.2 mcg/kg/min']
+const STEPN = { H: ['H', 'Heart', 'Effusion? LV squeeze? RV size?'], I: ['I', 'IVC', 'Size and respiratory variation?'], M: ['M', "Morison's / eFAST", 'Free fluid? Pleural fluid?'], A: ['A', 'Aorta', 'Coeliac to bifurcation: calibre?'], P: ['P', 'Pneumothorax / lung', 'Sliding? A-lines or B-lines?'], L: ['L', 'Legs', '2-point compression?'], X: ['?', 'Interpretation', 'Which shock type?'], Y: ['→', 'Action', 'What will you do now?'], R: ['↻', 'Rescan', 'After a further 1.5 L and noradrenaline 0.2 mcg/kg/min'],
+  S1: ['1', 'Lung · during compressions', 'Sliding on both sides?'], S2: ['2', 'Veins · during compressions', 'Do the femoral veins compress?'], S3: ['3', 'Abdomen · during compressions', 'Free fluid?'], S4: ['4', 'Pericardium · pulse check 1', 'Effusion? (recorded clip)'], S5: ['5', 'Heart · pulse check 2', 'While the drain is set up: activity?'], Z2: ['↻', 'After drainage', 'Next pulse check']
 };
 const CASES = [
   { neutral: 'Breathless after hip surgery', type: 'Obstructive', short: 'Hip surgery',
@@ -1467,7 +1714,7 @@ const CASES = [
       ['P', '<b>Sliding present on both sides, A-lines throughout</b> (A-profile). Pneumothorax and pulmonary oedema are unlikely.', { v: 'P', m: 'slide' }],
       ['L', '<b>Non-compressible right common femoral vein</b> with grey echogenic material inside.', { v: 'L', m: 'dvt', auto: true }],
       ['X', 'Obstructive shock. The pattern fits <b>high-risk (massive) PE</b>: dilated RV, underfilled hyperdynamic LV, plethoric IVC, A-profile lungs and a proximal DVT.'],
-      ['Y', 'Start anticoagulation (unfractionated heparin) unless contraindicated. Call the senior and ICU. In high-risk PE, ESC 2019 accepts bedside echo evidence of RV dysfunction as enough to treat when CTPA is not immediately possible or the patient is too unstable. <b>Reperfusion is indicated.</b> Major surgery within the last 3 weeks is an <b>absolute</b> contraindication to systemic thrombolysis in ESC 2019, although the guideline accepts that absolute contraindications may become relative when PE is immediately life-threatening (for example peri-arrest). When thrombolysis is contraindicated, ESC 2019 recommends surgical embolectomy or catheter-directed therapy. Escalate early to the senior, ICU, cardiology or interventional radiology and cardiothoracics, following the local PE response pathway. If the patient arrests, thrombolysis may still be considered despite the surgery. Cautious small fluid boluses only (the RV is already overloaded). Noradrenaline for blood pressure. Avoid intubation if possible: induction and positive pressure can cause cardiovascular collapse.']
+      ['Y', 'Start anticoagulation (unfractionated heparin) unless contraindicated. Call the senior and ICU. In high-risk PE, ESC 2019 (the current ESC PE guideline) accepts bedside echo evidence of RV dysfunction as enough to treat when CTPA is not immediately possible or the patient is too unstable. <b>Reperfusion is indicated.</b> Major surgery within the last 3 weeks is an <b>absolute</b> contraindication to systemic thrombolysis in ESC 2019, although the guideline accepts that absolute contraindications may become relative when PE is immediately life-threatening (for example peri-arrest). When thrombolysis is contraindicated or has failed, ESC 2019 recommends surgical embolectomy, and says catheter-directed treatment should be considered. Escalate early to the senior, ICU, cardiology or interventional radiology and cardiothoracics, following the local PE response pathway. If the patient arrests, thrombolysis may still be considered despite the surgery. Cautious small fluid boluses only (the RV is already overloaded). Noradrenaline for blood pressure. Avoid intubation if possible: induction and positive pressure can cause cardiovascular collapse.']
     ], pearl: 'Shock + dilated RV + plethoric IVC + A-lines + DVT = PE until proven otherwise. The legs are part of the RUSH exam when the RV is large.' },
   { neutral: 'Fever and confusion', type: 'Distributive', short: 'Fever',
     vignette: 'A 74-year-old woman from a nursing home with 2 days of dysuria, now febrile (38.9 °C) and confused. BP 78/40 after 1 L of balanced crystalloid in ED, HR 118, RR 24, SpO<sub>2</sub> 95% on room air. <b class="ink">Warm peripheries</b>, capillary refill 2 s.',
@@ -1493,7 +1740,20 @@ const CASES = [
       ['P', 'Sliding present on both sides, A-lines.', { v: 'P', m: 'slide' }],
       ['X', 'Hypovolaemic (haemorrhagic) shock. <b>Hypotension + AAA = ruptured AAA until proven otherwise.</b> No free fluid is expected, because rupture is usually retroperitoneal. Ultrasound has found the aneurysm, not the rupture. The beta-blocker explains the modest heart rate.'],
       ['Y', 'Call the vascular surgeon and theatre at once. Activate the massive transfusion protocol. Use <b>permissive hypotension</b> (avoid aggressive crystalloid; the primary target is a conscious patient; confirm any numeric blood pressure target with the local vascular team; ESVS 2024). Two large-bore cannulae, crossmatch. CT angiography only if the patient is stable enough and it will not delay repair (EVAR planning). Do not send an unstable patient to CT.']
-    ], pearl: "Elderly 'renal colic' with hypotension: scan the aorta all the way to the bifurcation. A negative FAST does not exclude a ruptured AAA. Measure outer to outer, not the lumen." }
+    ], pearl: "Elderly 'renal colic' with hypotension: scan the aorta all the way to the bifurcation. A negative FAST does not exclude a ruptured AAA. Measure outer to outer, not the lumen." },
+  { neutral: 'PEA after PCI', type: 'Obstructive (tamponade)', short: 'PEA after PCI',
+    vignette: 'You are the ICU registrar on the medical emergency team. A 64-year-old man in the coronary care unit, 6 hours after a difficult PCI to the LAD via the right femoral artery, became pale and hypotensive, then unresponsive. CPR is in progress. The monitor shows a narrow-complex rhythm at 120/min with no palpable pulse: <b class="ink">PEA</b>. A colleague is managing the airway; you are the second operator with the ultrasound machine, not the team leader.',
+    facts: [['Patient', '64 M · 78 kg'], ['Procedure', 'PCI to LAD, right femoral access, 6 h ago'], ['Drugs', 'Aspirin, ticagrelor; heparin during PCI'], ['Rhythm', 'PEA, narrow complex 120/min']],
+    steps: [
+      ['S1', 'Anterior chest during compressions: <b>sliding on both sides</b> with each ventilation, A-lines. No pneumothorax under the probe.', { v: 'P', m: 'slide' }],
+      ['S2', 'Common femoral veins during compressions: <b>both compress fully</b>. No DVT at these sites (this does not exclude PE).', { v: 'L', m: 'normal', auto: true }],
+      ['S3', "Morison's and splenorenal views during compressions: <b>no free fluid</b>. Ultrasound cannot exclude a retroperitoneal bleed from the femoral puncture, so keep it on the list (look at the groin, check the Hb).", { v: 'M', m: 'normal' }],
+      ['S4', 'Probe on the subxiphoid window <b>before</b> the pause. A nurse counts out loud; a 5-second clip is recorded and compressions restart at 7 s. Reviewed during CPR: <b>a moderate circumferential effusion, with the RA and RV compressed</b>. In PEA after PCI this is tamponade until proven otherwise.', { v: 'Z', m: 'tamp', cap: 'Recorded pulse-check clip: pericardial effusion with the right heart compressed. Reviewed while compressions continue.' }],
+      ['X', 'Obstructive arrest: <b>tamponade, most likely from a coronary perforation</b> during PCI, with antiplatelet drugs and heparin on board. A finding that can be treated in minutes.'],
+      ['Y', '<b>Act on the first clip; do not wait for another pulse check.</b> Tell the team leader in one sentence. Immediate <b>ultrasound-guided pericardiocentesis</b> (subxiphoid) by the most experienced operator present, while CPR continues. Call interventional cardiology and cardiothoracic surgery at once: if the bleeding continues the patient needs surgery. Discuss reversing heparin with cardiology. Fluid and blood as a bridge. Continue ALS. Look at the right groin.'],
+      ['S5', 'While the kit is opened and CPR continues, the next pulse check shows small, fast but <b>organised contractions</b> inside the effusion: pseudo-PEA from tamponade, not standstill. <b>It does not change the plan</b>: do not wait for this clip before draining.', { v: 'Z', m: 'tamp', cap: CAPS['Z.tamp'] }],
+      ['Z2', 'After 150 mL of blood is aspirated, the next pulse check shows vigorous contractions and a palpable carotid pulse: <b>ROSC</b>. Leave a pericardial drain in, and rescan every few minutes because the effusion can come back.', { v: 'H', m: 'hyper', cap: 'After drainage: small, hyperdynamic heart with no effusion. Keep rescanning: blood can reaccumulate.' }]
+    ], pearl: 'In arrest, scan the lungs, legs and abdomen during compressions, and give the heart a counted, recorded pause. PEA with organised motion and an effusion means drain now.' }
 ];
 const CASE_ST = [];
 function caseLabel(i) { const C = CASES[i]; return CASE_ST[i] && CASE_ST[i].done ? `${C.neutral} · ${C.type}` : C.neutral; }
@@ -1512,7 +1772,7 @@ $$('.slide.case').forEach(sec => {
     <div class="ctrls"><button class="btn ghost cld" type="button">Load into classifier →</button></div><div class="mini">Teaching vignette. All images are schematic simulations, not real scans.</div></div></div></div>`;
   const st = { v: 'H', m: 'normal', labels: true };
   const sc = scene($('canvas', sec), 480, 360, st, vAny, ease);
-  const show = (vw, i) => { for (const k of ['m', 'bl', 'auto', 'lv', 'aaa']) delete st[k]; Object.assign(st, vw); $('.ccap', sec).textContent = vw.cap || CAPS[capKey(st)] || ''; $('.cpov', sec).textContent = 'Schematic · ' + STEPN[C.steps[i][0]][1]; dirty(sc); };
+  const show = (vw, i) => { for (const k of ['m', 'bl', 'auto', 'lv', 'aaa', 'cap']) delete st[k]; Object.assign(st, vw); $('.ccap', sec).textContent = vw.cap || CAPS[capKey(st)] || ''; $('.cpov', sec).textContent = 'Schematic · ' + STEPN[C.steps[i][0]][1]; dirty(sc); };
   const finish = () => { const all = $$('.steps li', sec).every(x => x.classList.contains('shown')); CASE_ST[n].done = all; $('.pearl', sec).classList.toggle('shown', all); $('.ctag', sec).textContent = all ? `${C.neutral} · ${C.type}` : C.neutral; caseGridRender(); return all; };
   const reveal = li => { li.classList.add('shown'); const i = +li.dataset.i, s = C.steps[i]; if (s[2]) show(s[2], i); const all = finish(); (all ? $('.pearl', sec) : li).scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' }); };
   $('.steps', sec).addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; if (li.classList.contains('shown') && !e.target.closest('.sb')) { li.classList.remove('shown'); finish(); } else reveal(li); });
@@ -1536,7 +1796,9 @@ const QZ = [
   ['A patient on positive-pressure ventilation has an IVC of 2.3 cm with little respiratory variation. Which statement is best?', ['RAP is 15 mmHg by the ASE table, so give diuretics', 'Positive pressure raises intrathoracic pressure and commonly dilates the IVC; this finding alone is of limited value', 'The patient is certainly fluid responsive', 'The IVC should collapse > 50% on inspiration in ventilated patients'], 1, 'The ASE RAP table applies to spontaneously breathing patients. On the ventilator the IVC distends on inspiration, and a dilated IVC is common and nonspecific. A small IVC on the ventilator is more informative. The distensibility index applies only to passive, fully ventilated patients in sinus rhythm.'],
   ['A ventilated patient becomes hypotensive. Lung sliding is absent on the right. What confirms pneumothorax at the bedside?', ['Barcode sign on M-mode', 'Absence of B-lines', 'A lung point', 'A-lines'], 2, 'Absent sliding and the barcode sign are also seen with left mainstem intubation (the right lung is not ventilated), apnoea, pleurodesis and bullae. A lung point (where sliding lung meets non-sliding pleura) is close to 100% specific. Tension pneumothorax remains a clinical diagnosis: do not delay decompression in a peri-arrest patient to search for a lung point.'],
   ['Shock with a dilated RV (RV ≥ LV), a small hyperdynamic LV, a plethoric IVC, A-lines in both lungs and a non-compressible common femoral vein. What is the most likely diagnosis?', ['Cardiogenic shock from LV failure', 'Massive pulmonary embolism', 'Septic shock', 'Hypovolaemia'], 1, 'This is the obstructive pattern of PE. The RV is overloaded and the LV underfilled, giving high venous pressure. A-lines make pulmonary oedema unlikely, and a proximal DVT strongly supports PE (BLUE-protocol logic).'],
-  ['Which statement about the evidence for POCUS in undifferentiated shock is correct?', ['The SHoC-ED RCT showed a mortality benefit', 'Pooled data show high specificity: positive findings are good at ruling causes in', 'A normal RUSH exam excludes obstructive shock', 'RUSH replaces CT for suspected aortic dissection'], 1, 'Meta-analyses (Stickles 2019; Yoshida 2023) show moderate-to-high sensitivity and high specificity. SHoC-ED (Atkinson 2018) found no survival benefit and no harm. TTE cannot exclude dissection.']
+  ['Which statement about the evidence for POCUS in undifferentiated shock is correct?', ['The SHoC-ED RCT showed a mortality benefit', 'Pooled data show high specificity: positive findings are good at ruling causes in', 'A normal RUSH exam excludes obstructive shock', 'RUSH replaces CT for suspected aortic dissection'], 1, 'Meta-analyses (Stickles 2019; Yoshida 2023) show moderate-to-high sensitivity and high specificity. SHoC-ED (Atkinson 2018) found no survival benefit and no harm. TTE cannot exclude dissection.'],
+  ['You are scanning during a cardiac arrest. Which approach fits current guidance?', ['The team leader scans and interprets live, holding the pause until the view is clear', 'Probe on the subxiphoid window during compressions, someone counts aloud, a clip is recorded in a pause of no more than 10 s, and it is reviewed after compressions restart', 'Stop compressions for about 30 s to get all five SESAME views', 'Scan only after ROSC, because ultrasound has no role during CPR'], 1, 'ERC 2025 (paraphrased): skilled operators only, and POCUS must not add or lengthen pauses in compressions. AHA 2025: it may be considered if it can be done without interrupting CPR. Pauses were longer when POCUS was used (Huis in \'t Veld 2017; Clattenburg 2018), and a structured approach (CASA) shortened them. The scanner should not be the team leader.'],
+  ['Twelve minutes into a PEA arrest, the recorded subxiphoid clip shows no wall motion and a dilated RV. Which statement is correct?', ['Stop resuscitation: standstill means no chance of survival', 'Give thrombolysis: the dilated RV proves PE', 'Neither finding settles it: standstill is strongly linked to death but not always fatal, observers often disagree on it, and the RV can dilate in arrest from non-PE causes', 'Hold the pause until the RV can be measured properly'], 2, 'In REASON, 0.6% (95% CI 0.3 to 2.3) of patients with standstill survived to discharge. Agreement on standstill between physicians was only moderate (Hu 2018). ERC 2025 (paraphrased): do not use apparent contractility on POCUS as the only reason to stop CPR, and do not diagnose PE from RV dilation alone. ILCOR suggests against using it for prognostication during CPR.']
 ];
 const QS = { i: 0, a: QZ.map(() => null) };
 function qzRender() {
@@ -1544,7 +1806,7 @@ function qzRender() {
   $('#qzScore').textContent = done ? `${score} / ${done}` : '';
   const dots = `<div class="qdots" aria-hidden="true">${QZ.map((_, i) => `<i class="${QS.a[i] === null ? '' : QS.a[i] === QZ[i][2] ? 'ok' : 'no'}${i === QS.i ? ' cur' : ''}"></i>`).join('')}</div>`;
   if (QS.i >= QZ.length) {
-    q.innerHTML = `<div class="card"><div class="num">Result</div><h3>You scored ${score} out of ${QZ.length}.</h3><p>${score >= 7 ? 'Well done.' : 'Go back to the slides for the questions you missed, then try again.'}</p><div class="qnav"><button class="btn" id="qzAgain" type="button">Try again</button>${dots}</div></div>`;
+    q.innerHTML = `<div class="card"><div class="num">Result</div><h3>You scored ${score} out of ${QZ.length}.</h3><p>${score >= 8 ? 'Well done.' : 'Go back to the slides for the questions you missed, then try again.'}</p><div class="qnav"><button class="btn" id="qzAgain" type="button">Try again</button>${dots}</div></div>`;
     $('#qzAgain').onclick = () => { QS.i = 0; QS.a = QZ.map(() => null); qzRender(); }; return;
   }
   const [qq, o, ans, why] = QZ[QS.i], my = QS.a[QS.i];
@@ -1555,6 +1817,129 @@ function qzRender() {
 }
 $('#quiz').addEventListener('click', e => { const b = e.target.closest('button[data-j]'); if (!b || QS.a[QS.i] !== null) return; QS.a[QS.i] = +b.dataset.j; qzRender(); });
 qzRender();
+
+/* ---------- SESAME walk-through ---------- */
+const SES = [
+  { n: 'Lung', pov: '1 · Lung · anterior chest', v: 'P', modes: [['slide', 'Sliding'], ['noslide', 'No sliding']], link: ['../lung/', 'Detail: Lung ultrasound →'],
+    cap: { slide: 'Sliding with A-lines: no pneumothorax under the probe. An A-profile also makes pulmonary oedema unlikely, which keeps PE on the list (BLUE logic).', noslide: 'No sliding, barcode on M-mode. A lung point confirms pneumothorax. In a peri-arrest patient with clinical tension, decompress without waiting for a lung point.' } },
+  { n: 'Veins', pov: '2 · Veins · common femoral, transverse', v: 'L', modes: [['normal', 'Compresses'], ['dvt', 'DVT']], link: ['../dvt/', 'Detail: DVT and vessels →'],
+    cap: { normal: 'The vein closes completely under pressure: no DVT at this site. A negative leg scan does not exclude PE.', dvt: 'Non-compressible vein with echoes inside: DVT. With an A-profile in severe shock or arrest, think PE.' } },
+  { n: 'Abdomen', pov: "3 · Abdomen · Morison's pouch", v: 'M', modes: [['normal', 'Dry'], ['ff', 'Free fluid']], link: ['../efast/', 'Detail: eFAST →'],
+    cap: { normal: "No free fluid in Morison's pouch. A retroperitoneal bleed can still hide.", ff: 'Free fluid: in trauma or after surgery, massive haemorrhage until proven otherwise. In trauma, look for haemorrhage early (many teams scan the abdomen straight after the lung).' } },
+  { n: 'Pericard.', pov: '4 · Pericardium · subxiphoid', v: 'H', modes: [['normal', 'No effusion'], ['eff', 'Effusion']], link: ['../cardiac/', 'Detail: Focused cardiac ultrasound →'],
+    cap: { normal: 'No pericardial effusion.', eff: 'Effusion with the RV collapsing in early diastole: tamponade physiology. In severe shock or arrest, drain.' } },
+  { n: 'Heart', pov: '5 · Heart · subxiphoid, pulse-check clip', v: 'Z', modes: [['org', 'Organised'], ['still', 'Standstill'], ['rv', 'Dilated RV']], link: ['../cardiac/', 'Detail: Focused cardiac ultrasound →'], cap: {} }
+];
+const sesSt = { v: 'P', m: 'slide' };
+const sesSc = scene($('#sesUS'), 480, 360, sesSt, vAny, ease);
+$('#sesList').innerHTML = SES.map((x, i) => `<li tabindex="0" role="button" data-i="${i}" aria-pressed="${i === 0}"><span class="num">${i + 1}</span><div><b>${x.n}</b></div></li>`).join('');
+let sesI = 0;
+function sesCap() { const S = SES[sesI]; $('#sesCap').textContent = S.cap[sesSt.m] || CAPS['Z.' + sesSt.m] || ''; dirty(sesSc); }
+function sesGo(i) {
+  sesI = i; const S = SES[i];
+  $$('#sesList li').forEach((li, k) => { li.classList.toggle('on', k === i); li.setAttribute('aria-pressed', String(k === i)); });
+  for (const k of ['m', 'auto', 'bl']) delete sesSt[k];
+  Object.assign(sesSt, { v: S.v, m: S.modes[0][0], auto: S.v === 'L' });
+  $('#sesPov').textContent = S.pov;
+  $('#sesSeg').innerHTML = S.modes.map(([v, l], k) => `<button data-v="${v}" aria-pressed="${k === 0}">${l}</button>`).join('');
+  const a = $('#sesLink'); a.href = S.link[0]; a.textContent = S.link[1];
+  sesCap();
+}
+seg($('#sesSeg'), v => { sesSt.m = v; sesCap(); });
+$('#sesList').addEventListener('click', e => { const li = e.target.closest('li'); if (li) sesGo(+li.dataset.i); });
+$('#sesList').addEventListener('keydown', e => { const li = e.target.closest('li'); if (li && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); sesGo(+li.dataset.i); } });
+sesGo(0);
+
+/* ---------- 10-second pulse-check simulator ---------- */
+const PCN = { org: 'Organised activity (pseudo-PEA)', still: 'Standstill', tamp: 'Effusion with tamponade', rv: 'Dilated RV', vf: 'Fine VF' };
+const pcSt = { v: 'Z', m: 'org', cpr: true, search: 1, rec: 0 };
+const PC = { pat: 'org' };
+const nowS = () => performance.now() / 1000;
+function pcReset() {
+  Object.assign(PC, { ph: 'cpr', probeAt: null, winDur: 2, late: false, pauseAt: null, recAt: null, recLen: 0, usable: 0, lastF: null, clip: null, el: 0, answered: false, done: false });
+  Object.assign(pcSt, { m: PC.pat === 'mys' ? 'org' : PC.pat, cpr: true, search: 1, rec: 0, replay: false, hide: PC.pat === 'mys' });
+  $('#pcAsk').hidden = true; $('#pcAns').innerHTML = '';
+  setStat($('#pcStat'), 'Compressions running. Get the probe on and find the subxiphoid window <b>before</b> anyone calls the pulse check.');
+  pcButtons(); dirty(pcSc);
+}
+function pcButtons() {
+  const ph = PC.ph, en = { probe: ph === 'cpr' && PC.probeAt === null && !PC.done, stop: ph === 'cpr' && !PC.done, rec: ph === 'pause', go: ph === 'pause', review: ph === 'cpr' && PC.done && PC.usable >= 1.5, reset: true };
+  const nx = ph === 'pause' ? (PC.recAt === null && PC.recLen === 0 ? 'rec' : 'go') : PC.done ? (en.review ? 'review' : 'reset') : PC.probeAt === null ? 'probe' : 'stop';
+  $$('#pcSteps button').forEach(b => { const a = b.dataset.a; b.disabled = !en[a]; b.classList.toggle('next', a === nx && en[a]); });
+  $('#pcSteps [data-a="rec"]').textContent = PC.recAt !== null ? '3 · Stop recording' : '3 · Record clip';
+}
+function pcClock() {
+  const el = $('#pcClock');
+  if (PC.ph === 'pause') {
+    const r = 10 - PC.el;
+    el.className = 'pcclock ' + (r >= 0 ? 'run' : 'over');
+    setStat(el, r >= 0 ? `${r.toFixed(1)}<small>s left</small>` : `+${(-r).toFixed(1)}<small>over 10 s</small>`);
+  } else { el.className = 'pcclock'; setStat(el, `CPR<small>${PC.ph === 'review' ? 'reviewing clip' : 'compressions'}</small>`); }
+}
+function pcFrame(st) {
+  const n = nowS(), dt = PC.lastF === null ? 0 : clamp(n - PC.lastF, 0, .25); PC.lastF = n;
+  st.search = PC.probeAt === null ? 1 : clamp(1 - (n - PC.probeAt) / PC.winDur, 0, 1);
+  if (PC.ph === 'pause') {
+    PC.el = n - PC.pauseAt;
+    if (PC.recAt !== null && st.search < .5) PC.usable += dt;
+    st.rec = PC.recAt !== null ? PC.recLen + (n - PC.recAt) : 0;
+    if (PC.el > 20) pcAct('go', true);
+  }
+  pcClock();
+}
+const pcSc = scene($('#pcUS'), 480, 360, pcSt, vAny, pcFrame);
+function pcAct(a, forced) {
+  const n = nowS();
+  if (a === 'reset') { pcReset(); return; }
+  if (a === 'probe' && PC.ph === 'cpr') { PC.probeAt = n; PC.winDur = 2; setStat($('#pcStat'), 'Probe on the subxiphoid window <b>during compressions</b>. You cannot read the image yet, but the view is set. Now call the pulse check.'); }
+  if (a === 'stop' && PC.ph === 'cpr') {
+    PC.ph = 'pause'; PC.pauseAt = n; PC.el = 0;
+    if (PC.probeAt === null) { PC.probeAt = n; PC.winDur = 3.5; PC.late = true; }
+    PC.clip = PC.pat === 'mys' ? Object.keys(PCN)[Math.floor(Math.random() * 5)] : PC.pat;
+    Object.assign(pcSt, { cpr: false, m: PC.clip, hide: PC.pat === 'mys', replay: false });
+    setStat($('#pcStat'), PC.late ? '<b class="warn">The pause has started but the probe was not on.</b> The clock is running while you look for the window.' : 'Hands off. Someone counts out loud; the pulse and rhythm are checked at the same time. <b>Record a clip.</b>');
+  }
+  if (a === 'rec' && PC.ph === 'pause') {
+    if (PC.recAt === null) PC.recAt = n; else { PC.recLen += n - PC.recAt; PC.recAt = null; }
+  }
+  if (a === 'go' && PC.ph === 'pause') {
+    if (PC.recAt !== null) { PC.recLen += n - PC.recAt; PC.recAt = null; }
+    const el = n - PC.pauseAt; PC.ph = 'cpr'; PC.done = true;
+    Object.assign(pcSt, { cpr: true, rec: 0 });
+    const ok = el <= 10, b = [
+      `<span class="${ok ? 'g' : 'r'}">Pause ${el.toFixed(1)} s</span>`,
+      `<span class="${PC.late ? 'r' : 'g'}">${PC.late ? 'Probe placed after the pause began' : 'Probe ready before the pause'}</span>`,
+      `<span class="${PC.usable >= 1.5 ? 'g' : 'r'}">Usable clip ${PC.usable.toFixed(1)} s</span>`];
+    setStat($('#pcStat'), (forced ? '<b class="bad">The team leader called "resume compressions" at 20 s.</b> ' : '') + (ok ? 'Compressions restarted within 10 s. ' : '<b class="bad">The pause went over 10 s.</b> ') + (PC.usable >= 1.5 ? 'Now <b>review the clip</b> while CPR continues.' : 'No usable clip: try again at the next pulse check (Reset).') + `<div class="badges">${b.join('')}</div>`);
+  }
+  if (a === 'review' && PC.ph === 'cpr' && PC.done) {
+    PC.ph = 'review'; Object.assign(pcSt, { cpr: false, replay: true, search: 0 }); PC.probeAt = n - 10;
+    $('#pcAsk').hidden = false;
+    $('#pcAns').innerHTML = Object.entries(PCN).map(([k, l]) => `<button class="chip" type="button" data-k="${k}">${l}</button>`).join('');
+    setStat($('#pcStat'), 'Compressions continue while you watch the recorded clip. Say what you see to the team leader. <b>Pick one below.</b>');
+  }
+  pcButtons(); dirty(pcSc);
+}
+$('#pcSteps').addEventListener('click', e => { const b = e.target.closest('button'); if (b && !b.disabled) pcAct(b.dataset.a); });
+$('#pcAns').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b || PC.answered) return; PC.answered = true; const k = b.dataset.k, right = k === PC.clip;
+  $$('#pcAns button').forEach(x => x.classList.toggle('on', x.dataset.k === PC.clip));
+  pcSt.hide = false; dirty(pcSc);
+  setStat($('#pcStat'), (right ? '<b class="ok">Correct.</b> ' : `<b class="bad">Not quite: the clip shows ${PCN[PC.clip]}.</b> `) + CAPS['Z.' + PC.clip]);
+});
+seg($('#pcPat'), v => { PC.pat = v; pcReset(); });
+pcReset();
+
+/* ---------- arrest tabs ---------- */
+(() => {
+  const tabs = $$('#arTabs [role=tab]');
+  const sel = b => { tabs.forEach(t => { const on = t === b; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; $('#' + t.getAttribute('aria-controls')).hidden = !on; }); };
+  $('#arTabs').addEventListener('click', e => { const b = e.target.closest('[role=tab]'); if (b) sel(b); });
+  $('#arTabs').addEventListener('keydown', e => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return; e.preventDefault(); e.stopPropagation();
+    const i = tabs.indexOf(document.activeElement), j = (i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length; sel(tabs[j]); tabs[j].focus();
+  });
+})();
 
 /* ---------- end slide ---------- */
 scene($('#endP'), 480, 360, { v: 'P', m: 'slide', title: 'Lung sliding' }, vAny);

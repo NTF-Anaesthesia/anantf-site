@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Focused cardiac ultrasound — NTF Anaesthesia</title>
-<meta name="description" content="Masterclass: focused cardiac ultrasound for critical care — probe handling, the five basic views and how to fix them, LV and RV function, effusion and tamponade, the IVC and fluid responsiveness, and five shocked patients. All images are schematic simulations, not real scans.">
+<meta name="description" content="Masterclass: focused cardiac ultrasound for critical care — probe handling, the five basic views and how to fix them, LV and RV function, effusion and tamponade, the IVC and fluid responsiveness, venous congestion (VExUS), and five shocked patients. All images are schematic simulations, not real scans.">
 <style>
 :root{
   --bg:#F7F2EA; --panel:#FDFAF3; --line:#E0D6C2; --line2:#CFC2A8; --ink:#2A241D; --ink2:#5A4F42; --mute:#8A7E6D; --faint:#B3A795;
@@ -244,7 +244,8 @@ b.ink{font-weight:400;color:var(--ink)}
 .flow path{stroke:var(--line2);fill:none;stroke-width:1.4}
 .flow .ah{fill:var(--line2);stroke:none}
 .refs{font-family:var(--serif);font-size:13.5px;color:var(--ink2);padding-left:18px;line-height:1.45}
-.refs li{margin-bottom:4px}
+.refs li{margin-bottom:4px;overflow-wrap:anywhere}
+.refs a{color:var(--accent);overflow-wrap:anywhere}
 .stage.sm{aspect-ratio:4/3}
 @media (max-width:1050px){ .caseGrid{grid-template-columns:1fr} .thumbs button{width:76px;height:57px} }
 .card p.mini{font-size:11.5px;color:var(--mute);line-height:1.45}
@@ -345,6 +346,9 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
   .ctrls{gap:8px 12px}
 }
 #rapT tr.on td{background:var(--accent-soft)}
+.vxw{margin-top:6px}.vxw svg{width:100%;height:auto;display:block;border-radius:6px}
+#s9IVC,#s9HV,#s9PV,#s9RV{margin-top:2px}
+.tw table#vxG td:first-child{white-space:nowrap}
 </style>
 <link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"></head>
 <body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../../department.html">About Us</a><a href="../../why-join-us.html">Why Join Us?</a><a href="../../clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../../mopex/">MO Handbook</a><a href="../../senior-resident.html">Senior Residency</a><a href="../../exams/">MMed Exam Prep</a></div></details><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
@@ -365,13 +369,14 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <li>Call a dilated, failing RV and tell acute from chronic.</li>
         <li>Tell pericardial from pleural effusion and epicardial fat, and recognise tamponade physiology.</li>
         <li>Use the IVC, LVOT VTI and passive leg raise sensibly, and know their limits.</li>
+        <li>Grade venous congestion with VExUS and use it to decide when to stop fluid.</li>
         <li>Know when to stop and ask for a formal echo.</li>
       </ul>
       <ul class="agenda" style="max-width:480px">
         <li><span>01 · The FoCUS questions</span><span>2.5 min</span></li>
         <li><span>Part I · Acquisition · five views</span><span>21 min</span></li>
         <li><span>Part II · LV and RV function</span><span>12.5 min</span></li>
-        <li><span>Part III · Effusion, IVC, VTI, red flags</span><span>17.5 min</span></li>
+        <li><span>Part III · Effusion, IVC, VTI, VExUS, red flags</span><span>26.5 min</span></li>
         <li><span>Part IV · Five shocked patients</span><span>20.5 min</span></li>
         <li><span>Quick check · Close</span><span>7.5 min</span></li>
       </ul>
@@ -415,6 +420,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
           <li>Answer each question from <b class="ink">at least two views</b> if you can. One view can mislead.</li>
           <li><i>Can't tell</i> is an honest answer. A poor-quality scan is not a negative scan.</li>
           <li>FoCUS is repeatable. Rescan after a fluid bolus, a vasopressor or intubation.</li>
+          <li>SCCM 2024 focused update: ultrasound is suggested to guide management in septic shock, acute dyspnoea or respiratory failure and cardiogenic shock, and for targeted volume management (Díaz-Gómez 2025).</li>
           <li>Write down which views you got, how good they were, and your answers.</li>
         </ul>
       </div>
@@ -736,7 +742,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <h2>Is the RV big? Is the septum flat? Is it moving?</h2>
       <div class="card"><div class="cap">Size · A4C at end-diastole, basal diameter compared with the LV</div>
         <ul><li>Normal RV is less than about two-thirds of the LV. <b class="ink">RV:LV ratio &lt;0.6</b> is normal; 0.6–1.0 is dilated; <b class="ink">≥1.0</b> is severely dilated.</li>
-        <li>ESC 2019 PE guideline: an RV/LV diameter ratio ≥1.0 is a marker of RV dysfunction.</li>
+        <li>ESC 2019 PE guideline: an RV/LV diameter ratio ≥1.0 is a marker of RV dysfunction. The 2026 AHA/ACC PE guideline also asks for RV size, RV/LV ratio, TAPSE and TR velocity, and prefers echo (including POCUS) to CT for judging the RV.</li>
         <li>RV basal diameter &gt;41 mm is dilated (ASE 2015).</li>
         <li>Check the RV apex: a normal LV forms the cardiac apex. An RV that reaches the apex is dilated.</li></ul></div>
       <div class="card"><div class="cap">Shape · PSAX septal position</div>
@@ -744,7 +750,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <li>D-sign in diastole only → <b class="ink">volume overload</b> (e.g. ASD, severe TR).</li>
         <li>Paradoxical septal motion towards the LV.</li></ul></div>
       <div class="card"><div class="cap">Function</div>
-        <ul><li><b class="ink">TAPSE</b>: M-mode at the lateral tricuspid annulus in A4C; longitudinal excursion of the annulus. <b class="ink">&lt;17 mm is abnormal</b> (ASE 2015; Rudski 2010 and ESC 2019 PE use &lt;16 mm). Angle- and load-dependent. Normal is about 20–25 mm.</li>
+        <ul><li><b class="ink">TAPSE</b>: M-mode at the lateral tricuspid annulus in A4C; longitudinal excursion of the annulus. <b class="ink">&lt;17 mm is abnormal</b> (ASE 2015; ASE right heart guideline 2025). The older Rudski 2010 guideline and ESC 2019 PE use &lt;16 mm. Angle- and load-dependent. Normal is about 20–25 mm.</li>
         <li><b class="ink">McConnell sign</b>: akinesis of the mid RV free wall with preserved apical motion. Original report in acute PE: sensitivity 77%, specificity 94% (McConnell 1996). Also seen in RV infarction, so it is not pathognomonic.</li></ul></div>
       <div class="tw" style="margin-top:12px"><table class="t sm"><thead><tr><th>Feature</th><th>Acute (e.g. massive PE)</th><th>Chronic (pulmonary hypertension)</th></tr></thead><tbody>
         <tr><td>RV free wall</td><td>Thin (≤5 mm)</td><td>Hypertrophied (&gt;5 mm)</td></tr>
@@ -752,7 +758,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <tr><td>RA</td><td>Mildly dilated</td><td>Large</td></tr>
         <tr><td>Clinical</td><td>Sudden</td><td>Long history, often known</td></tr>
       </tbody></table></div>
-      <p class="mini" style="font-size:12px">A thin-walled RV can't generate a pulmonary artery systolic pressure much above 60 mmHg. A very high TR gradient therefore points to chronic disease, or acute-on-chronic disease. Estimate PASP ≈ 4 × (peak TR velocity)² + RAP (from the IVC), e.g. TR 3.0 m/s → 36 + 8 = 44 mmHg (Rudski 2010).</p>
+      <p class="mini" style="font-size:12px">A thin-walled RV can't generate a pulmonary artery systolic pressure much above 60 mmHg. A very high TR gradient therefore points to chronic disease, or acute-on-chronic disease. Estimate PASP ≈ 4 × (peak TR velocity)² + RAP (from the IVC), e.g. TR 3.0 m/s → 36 + 8 = 44 mmHg (ASE right heart guideline 2025).</p>
     </div>
     <div class="demo"><div class="panel">
       <div class="cap">Sim 5 · RV lab</div>
@@ -862,7 +868,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
     <div>
       <div class="kicker">13 · IVC and fluid responsiveness</div>
       <h2>The IVC tells you about RA pressure. Whether stroke volume will rise is a different question.</h2>
-      <div class="cap" style="margin-top:6px">Spontaneously breathing: estimating RA pressure (ASE, Rudski 2010)</div>
+      <div class="cap" style="margin-top:6px">Spontaneously breathing: estimating RA pressure (ASE 2025, unchanged from Rudski 2010)</div>
       <div class="tw"><table class="t sm" id="rapT"><thead><tr><th>IVC diameter</th><th>Collapse with sniff</th><th>Estimated RAP</th></tr></thead><tbody>
         <tr data-k="0"><td>≤2.1 cm</td><td>&gt;50%</td><td>3 mmHg (0–5)</td></tr>
         <tr data-k="1"><td>≤2.1 cm</td><td>&lt;50%</td><td>8 mmHg (5–10)</td></tr>
@@ -871,7 +877,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       </tbody></table></div>
       <div class="formula">Collapsibility index = (Dmax − Dmin) / Dmax</div>
       <div class="card"><div class="cap">Fluid responsiveness: stroke volume rises by about 10–15% after a fluid challenge</div>
-        <ul><li><b class="ink">Mechanically ventilated, fully passive</b>: the IVC <i>distends</i> with each positive-pressure breath. Distensibility index (Dmax − Dmin)/Dmin <b class="ink">&gt;18%</b> predicted response (Barbier 2004). ΔIVC (Dmax − Dmin)/mean <b class="ink">&gt;12%</b> predicted response (Feissel 2004). Overall accuracy of IVC variation is only moderate (meta-analyses: sensitivity about 75%, specificity about 83%); use it as one input, not a test.</li>
+        <ul><li><b class="ink">Mechanically ventilated, fully passive</b>: the IVC <i>distends</i> with each positive-pressure breath. Distensibility index (Dmax − Dmin)/Dmin <b class="ink">&gt;18%</b> predicted response (Barbier 2004). ΔIVC (Dmax − Dmin)/mean <b class="ink">&gt;12%</b> predicted response (Feissel 2004). Overall accuracy of IVC variation is only moderate (meta-analysis in ventilated shocked patients: pooled sensitivity 69%, specificity 80%, AUROC 0.82; Huang 2018); use it as one input, not a test.</li>
         <li>Valid only with no spontaneous breathing effort, tidal volume about ≥8 mL/kg and no raised intra-abdominal pressure; a regular rhythm helps.</li>
         <li><b class="ink">Spontaneously breathing</b>: much weaker. A large collapse (e.g. ≥40–50%) makes response likely, but a small collapse does not rule it out (high specificity, low sensitivity; Airapetian 2015). Breathing effort varies breath to breath.</li></ul></div>
       <div class="card"><div class="cap">The useful extremes</div>
@@ -924,7 +930,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div class="card"><div class="cap">Passive leg raise (PLR)</div>
         <ul><li>Start semi-recumbent at 45°. Lower the trunk flat and raise the legs to 45° in one movement. This returns about 300 mL of venous blood, reversibly.</li>
         <li>Measure VTI (or cardiac output) at baseline and at 30–90 s.</li>
-        <li><b class="ink">A rise of ≥10%</b> predicts fluid responsiveness. Pooled sensitivity 85%, specificity 91%, AUROC 0.95 for cardiac output changes (Monnet 2016 meta-analysis). In spontaneously breathing patients, a PLR-induced VTI rise ≥12.5% predicted response (Lamia 2007).</li>
+        <li><b class="ink">A rise of ≥10%</b> predicts fluid responsiveness. Pooled sensitivity 85%, specificity 91%, AUROC 0.95 for cardiac output changes (Monnet 2016 meta-analysis). In spontaneously breathing patients, a PLR-induced rise in stroke volume (from LVOT VTI) ≥12.5% predicted response: sensitivity 77%, specificity 100% (Lamia 2007).</li>
         <li>Measure <b class="ink">flow</b>, not blood pressure: pulse pressure changes after PLR are much less sensitive.</li>
         <li>Pitfalls: pain, coughing or waking increase sympathetic tone and give a false positive. Raised intra-abdominal pressure gives a false negative. Not suitable with raised ICP or with unstable spine or leg fractures. Start from semi-recumbent: starting supine recruits less volume.</li></ul></div>
       <div class="callout">If the VTI rises with PLR, and fluid is needed and safe, give a bolus and remeasure.</div>
@@ -950,11 +956,113 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
   </div>
 </section>
 
+<!-- ============ 18b VExUS: GRADING (SIM 9) ============ -->
+<section class="slide" data-min="5" data-title="Fluid tolerance and venous congestion: VExUS" data-prompt="Ask first: the PLR was positive. Can this patient tolerate the fluid? Then set the calculator to IVC ≥2 cm (say the patient's IVC is 2.4 cm), hepatic S reversal, portal 30–49%, renal biphasic and ask the room for the grade (2: one severe pattern). Finally press 'Read a random patient' and make the room commit before revealing.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">15 · Fluid tolerance and VExUS</div>
+      <h2>Will the patient respond to fluid? Will they tolerate it? These are separate questions.</h2>
+      <div class="card"><div class="cap">Responsiveness vs tolerance</div>
+        <ul><li><b class="ink">Fluid responsiveness</b>: stroke volume rises with a fluid challenge (previous two slides). It tells you fluid <i>could</i> help.</li>
+        <li><b class="ink">Fluid tolerance</b>: the patient can take more fluid without harm from venous congestion or oedema (Kattan 2022). A patient can be both responsive and intolerant, for example a septic patient with ARDS or capillary leak, or with intra-abdominal hypertension, whose stroke volume still rises with fluid. A congested, failing RV is usually neither responsive nor tolerant.</li>
+        <li>High right atrial pressure is transmitted back to the liver, gut and kidneys. Venous congestion lowers the organ perfusion gradient, and the kidney is especially vulnerable.</li>
+        <li><b class="ink">VExUS</b> (venous excess ultrasound; Beaubien-Souligny 2020) grades how far that pressure reaches the organs, using the IVC plus three venous Doppler waveforms.</li></ul></div>
+      <div class="card"><div class="cap">The three Doppler patterns (time each one against the ECG)</div>
+        <div class="tw"><table class="t sm" id="vxT"><thead><tr><th>Vein</th><th>Normal</th><th>Mild</th><th>Severe</th></tr></thead><tbody>
+          <tr><td>Hepatic vein</td><td>S &gt; D</td><td>S &lt; D (S still towards the heart)</td><td>S reversed</td></tr>
+          <tr><td>Portal vein pulsatility</td><td>&lt;30%</td><td>30–49%</td><td>≥50%</td></tr>
+          <tr><td>Intrarenal vein</td><td>Continuous</td><td>Discontinuous, biphasic (S and D)</td><td>Discontinuous, monophasic (D only)</td></tr>
+        </tbody></table></div>
+        <div class="formula">Portal pulsatility fraction = (Vmax − Vmin) / Vmax × 100</div></div>
+      <div class="card"><div class="cap">The grade</div>
+        <div class="tw"><table class="t sm t2" id="vxG"><tbody>
+          <tr><td>Grade 0</td><td>IVC &lt;2 cm: no significant congestion (Doppler not needed for the grade)</td></tr>
+          <tr><td>Grade 1</td><td>IVC ≥2 cm with normal and/or mildly abnormal patterns only: mild</td></tr>
+          <tr><td>Grade 2</td><td>IVC ≥2 cm with <b class="ink">one</b> severely abnormal pattern: moderate</td></tr>
+          <tr><td>Grade 3</td><td>IVC ≥2 cm with <b class="ink">two or more</b> severely abnormal patterns: severe</td></tr>
+        </tbody></table></div>
+        <p class="mini">Grading as published (VExUS 'C' prototype, Beaubien-Souligny 2020). Only severe patterns raise the grade above 1.</p></div>
+    </div>
+    <div class="demo"><div class="panel">
+      <div class="cap">Sim 9 · VExUS calculator</div>
+      <div class="ctrls" style="margin-top:0"><span>IVC (max diameter)</span>
+        <div class="seg" id="s9IVC" role="group" aria-label="IVC diameter"><button data-v="0" aria-pressed="false">&lt;2 cm</button><button data-v="1" aria-pressed="true">≥2 cm</button></div></div>
+      <div class="pov">Hepatic vein · PW Doppler · towards the heart is below the baseline</div>
+      <div class="seg" id="s9HV" role="group" aria-label="Hepatic vein pattern"><button data-v="0" aria-pressed="true">S &gt; D</button><button data-v="1" aria-pressed="false">S &lt; D</button><button data-v="2" aria-pressed="false">S reversed</button></div>
+      <div class="vxw" id="s9HVw"></div>
+      <div class="pov">Portal vein · PW Doppler · towards the liver is above the baseline</div>
+      <div class="seg" id="s9PV" role="group" aria-label="Portal vein pattern"><button data-v="0" aria-pressed="true">Pulsatility &lt;30%</button><button data-v="1" aria-pressed="false">30–49%</button><button data-v="2" aria-pressed="false">≥50%</button></div>
+      <div class="vxw" id="s9PVw"></div>
+      <div class="pov">Intrarenal (interlobar) · artery above, vein below the baseline</div>
+      <div class="seg" id="s9RV" role="group" aria-label="Intrarenal venous pattern"><button data-v="0" aria-pressed="true">Continuous</button><button data-v="1" aria-pressed="false">Biphasic</button><button data-v="2" aria-pressed="false">Monophasic</button></div>
+      <div class="vxw" id="s9RVw"></div>
+      <div class="ctrls"><button class="btn" id="s9Rand">Read a random patient</button><button class="btn ghost" id="s9Clear" hidden>Back to calculator</button></div>
+      <div id="s9Q" hidden><div class="mini">Read the IVC and the three waveforms, then commit to a grade.</div><div class="opts3" id="s9QA"><button data-g="0">Grade 0</button><button data-g="1">Grade 1</button><button data-g="2">Grade 2</button><button data-g="3">Grade 3</button></div></div>
+      <div class="readout" id="s9Read"></div>
+      <div class="status big" id="s9Stat"></div>
+      <div class="mini">Schematic, not a real scan. Waveforms are drawn for teaching; real tracings are noisier and vary with respiration.</div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 18c VExUS: ACQUISITION, EVIDENCE, ACTION ============ -->
+<section class="slide" data-min="4" data-title="VExUS: acquisition, pitfalls and evidence" data-prompt="Ask: a patient in AF with severe TR has a reversed hepatic S wave. Is that congestion? (Not necessarily from volume: AF loses the A wave and blunts S, and severe TR reverses S. Lean on the portal and renal veins.) Then ask: grade 3 VExUS, MAP 60 on noradrenaline. What do you do? (Stop fluid and find the cause on the echo. Treat obstruction directly; consider decongestion only for volume overload or RV/cardiorenal congestion, with the pressure supported.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">16 · VExUS in practice</div>
+      <h2>Four looks, one ECG, and a lot of caveats.</h2>
+      <div class="card"><div class="cap">Acquisition: phased-array or curvilinear probe, ECG trace on, breath held if possible</div>
+        <div class="tw"><table class="t sm" id="vxAcq"><thead><tr><th>Look</th><th>How</th></tr></thead><tbody>
+          <tr><td>IVC</td><td>Subcostal long axis, about 1–2 cm from the cavo-atrial junction (slide 07). Use the maximum diameter. In ventilated patients on PEEP the IVC is often ≥2 cm: rely on the Doppler patterns and state that the IVC step is confounded.</td></tr>
+          <tr><td>Hepatic vein</td><td>Subcostal or right intercostal view of a large hepatic vein (often the middle) near the IVC. Colour, then a PW gate in the vein. Name each wave against the ECG: S follows the QRS, D follows the T wave.</td></tr>
+          <tr><td>Portal vein</td><td>Right mid-axillary intercostal view, coronal plane: the portal vein runs through the liver with bright walls. PW gate in the main or right portal vein; measure Vmax and Vmin over one cycle.</td></tr>
+          <tr><td>Intrarenal vein</td><td>Right kidney, posterolateral approach. Colour Doppler with a low velocity scale to find interlobar vessels. A wide PW gate captures the artery above and the vein below the baseline. Use a slow sweep.</td></tr>
+        </tbody></table></div></div>
+      <div class="card"><div class="cap">Caveats: when the waveforms mislead</div>
+        <ul><li><b class="ink">Atrial fibrillation</b>: no A wave and a small S wave, so S &lt; D is common at baseline. Interpret the hepatic vein with care.</li>
+        <li><b class="ink">Severe tricuspid regurgitation</b>: the regurgitant jet itself reverses the hepatic S wave. The finding reflects the TR more than overall venous pressure, so grade on the portal and renal veins and the IVC too.</li>
+        <li><b class="ink">Cirrhosis or portal hypertension</b>: a stiff liver flattens the hepatic vein waveform (often monophasic) and can damp or even reverse portal flow, whatever the RAP. Both hepatic and portal signals are unreliable; lean on the IVC, the renal vein and the echo.</li>
+        <li><b class="ink">Fit, thin, young people</b>: portal pulsatility can be a normal variant. A pulsatile portal vein with a small IVC is grade 0.</li>
+        <li><b class="ink">CKD and renal parenchymal disease</b>: intrarenal venous patterns are less reliable. This is also the hardest window; check you are not sampling the main renal vein.</li>
+        <li><b class="ink">Raised intra-abdominal pressure</b> compresses the IVC and can alter the waveforms. High PEEP and chronic pulmonary hypertension raise RAP without volume excess.</li>
+        <li>VExUS shows <b class="ink">pressure</b>, not volume. It cannot tell RV failure from fluid overload: the echo does that.</li></ul></div>
+    </div>
+    <div>
+      <div class="panel flow">
+        <div class="cap">VExUS grading, step by step (schematic)</div>
+        <svg viewBox="0 0 360 318" role="img" aria-label="Flowchart: IVC under 2 cm gives grade 0. If 2 cm or more, assess hepatic, portal and intrarenal Doppler and count severe patterns: none gives grade 1, one gives grade 2, two or more gives grade 3.">
+          <defs><marker id="vxAh" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L8 4L0 8Z"/></marker></defs>
+          <rect class="bx q" x="110" y="6" width="140" height="40" rx="8"/><text class="h" x="180" y="31" text-anchor="middle">IVC diameter</text>
+          <path d="M150 46 L80 82" marker-end="url(#vxAh)"/><path d="M210 46 L262 82" marker-end="url(#vxAh)"/>
+          <text class="s" x="92" y="64">&lt;2 cm</text><text class="s" x="244" y="64">≥2 cm</text>
+          <rect class="bx lo" x="6" y="84" width="140" height="50" rx="8"/><text x="76" y="105" text-anchor="middle">Grade 0</text><text class="s" x="76" y="123" text-anchor="middle">no congestion</text>
+          <rect class="bx q" x="176" y="84" width="178" height="68" rx="8"/><text x="265" y="103" text-anchor="middle">Doppler × 3</text><text class="s" x="265" y="120" text-anchor="middle">hepatic · portal · renal</text><text class="s" x="265" y="138" text-anchor="middle">count SEVERE patterns</text>
+          <path d="M210 152 L66 196" marker-end="url(#vxAh)"/><path d="M265 152 L180 196" marker-end="url(#vxAh)"/><path d="M320 152 L298 196" marker-end="url(#vxAh)"/>
+          <text class="s" x="104" y="172">none</text><text class="s" x="248" y="170">one</text><text class="s" x="316" y="182">≥2</text>
+          <rect class="bx md" x="6" y="198" width="112" height="56" rx="8"/><text x="62" y="219" text-anchor="middle">Grade 1</text><text class="s" x="62" y="238" text-anchor="middle">mild</text>
+          <rect class="bx hi" x="124" y="198" width="112" height="56" rx="8"/><text x="180" y="219" text-anchor="middle">Grade 2</text><text class="s" x="180" y="238" text-anchor="middle">moderate</text>
+          <rect class="bx hi" x="242" y="198" width="112" height="56" rx="8"/><text x="298" y="219" text-anchor="middle">Grade 3</text><text class="s" x="298" y="238" text-anchor="middle">severe</text>
+          <text class="s" x="6" y="280">Severe = hepatic S reversal · portal</text>
+          <text class="s" x="6" y="296">pulsatility ≥50% · monophasic (D-only)</text>
+          <text class="s" x="6" y="312">intrarenal venous flow</text>
+        </svg>
+      </div>
+      <div class="card" style="margin-top:12px"><div class="cap">What it does and does not predict</div>
+        <ul><li><b class="ink">Derivation</b> (145 patients after cardiac surgery): grade 3 predicted AKI, HR 3.69 (95% CI 1.65–8.24), 2.82 after adjustment. At ICU admission grade 3 was highly specific (96%) but insensitive (about 27%) (Beaubien-Souligny 2020).</li>
+        <li><b class="ink">General ICU</b> (145 patients, multicentre): VExUS ≥2 in about one in five at admission and <i>not</i> associated with AKI or 28-day mortality (Andrei 2023). In sepsis (108 patients, four ICUs), VExUS ≥2 was not independently associated with AKI: adjusted OR 1.82 (0.62–5.31) (Song 2025).</li>
+        <li><b class="ink">Meta-analysis</b> (9 observational studies, 1036 patients): VExUS ≥2 associated with AKI, OR 2.63 (1.06–6.54) with high heterogeneity; strongest after cardiac surgery (OR 3.86). No association with mortality (Melo 2025).</li>
+        <li><b class="ink">Physiology</b>: grade correlated with right atrial pressure at catheterisation, better than IVC size alone (pilot study; Longino 2023).</li>
+        <li><b class="ink">Guiding treatment</b>: in cardiorenal syndrome type 1 (RCT, 140 patients), VExUS-guided diuresis achieved decongestion more often, but kidney function recovery and 90-day survival did not differ (Islas-Rodríguez 2024). No trial yet shows better hard outcomes.</li></ul></div>
+      <div class="callout"><b class="ink">Grade 2–3</b> (expert consensus, not trial evidence): stop routine fluid boluses and find the cause on the echo (RV failure, PE, tamponade, tension pneumothorax, severe TR, high PEEP, fluid overload). Treat obstruction directly: drain tamponade, decompress a pneumothorax, reperfuse PE. Consider decongestion (diuretic or ultrafiltration) only when the cause is volume overload or RV/cardiorenal congestion, with perfusion pressure supported, then rescan: the waveforms improve as RAP falls. <b class="ink">Grade 0</b> does not mean fluid will help: that is the PLR question.</div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ 19 RED FLAGS ============ -->
 <section class="slide" data-min="3" data-title="Red flags and limits" data-prompt="Ask: which red flag here would make you change your anaesthetic plan today? (Severe AS, SAM/LVOT obstruction, flail leaflet.) Ask: what do you write when the views are poor? ('Inadequate views: cannot assess', not 'normal'.)">
   <div class="inner two">
     <div>
-      <div class="kicker">15 · Red flags and limits</div>
+      <div class="kicker">17 · Red flags and limits</div>
       <h2>See the red flag, then hand it to an echocardiographer.</h2>
       <div class="card"><div class="cap">Gross valve and structural red flags: recognise and refer, don't grade</div>
         <ul><li><b class="ink">Heavily calcified, immobile aortic valve</b> with restricted opening, ± LV hypertrophy: suspect severe aortic stenosis. This matters before a spinal or induction (keep SVR and sinus rhythm; avoid tachycardia).</li>
@@ -1009,7 +1117,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
 <section class="slide" data-min="5" data-title="Quick check" data-prompt="Do these as a room. For any question below 70% correct, return to the related sim for one minute.">
   <div class="inner">
     <div class="kicker">Quick check</div>
-    <h2>Eleven questions before we finish.</h2>
+    <h2>Thirteen questions before we finish.</h2>
     <p class="lede">Tap an answer. The explanation appears straight away. <span id="qzScore" class="num"></span></p>
     <div class="qz two even" id="quiz"></div>
   </div>
@@ -1029,6 +1137,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <li>A big, D-shaped RV in shock: think PE and stop the fluid.</li>
         <li>The descending aorta separates pericardial from pleural fluid. RA collapse is sensitive and RV collapse is specific; tamponade is clinical.</li>
         <li>The IVC is best at the extremes. Use PLR with VTI for the middle ground.</li>
+        <li>Responsive is not the same as tolerant. VExUS grade 2–3 means stop the fluid and look for the cause.</li>
         <li>FoCUS recognises red flags; formal echo grades them.</li>
       </ol>
       <p style="color:var(--ink2);font-size:15.5px"><b class="ink">Next</b>: aim for a logged, supervised scan series. The WINFOCUS/ASE recommendations suggest a structured programme with logged scans and supervision before independent practice. Log your next five scans this week.</p>
@@ -1048,23 +1157,37 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
     <h2>Where the numbers come from.</h2>
     <details class="src" open><summary>Key references (tap to collapse)</summary>
       <ol class="refs">
-        <li>Via G, Hussain A, Wells M, et al. International evidence-based recommendations for focused cardiac ultrasound. <i>J Am Soc Echocardiogr</i> 2014;27:683.e1–683.e33.</li>
-        <li>Labovitz AJ, Noble VE, Bierig M, et al. Focused cardiac ultrasound in the emergent setting: a consensus statement of the American Society of Echocardiography and American College of Emergency Physicians. <i>J Am Soc Echocardiogr</i> 2010;23:1225–30.</li>
-        <li>Spencer KT, Kimura BJ, Korcarz CE, et al. Focused cardiac ultrasound: recommendations from the American Society of Echocardiography. <i>J Am Soc Echocardiogr</i> 2013;26:567–81.</li>
-        <li>Levitov A, Frankel HL, Blaivas M, et al. Guidelines for the appropriate use of bedside general and cardiac ultrasonography in the evaluation of critically ill patients—Part II: cardiac ultrasonography. <i>Crit Care Med</i> 2016;44:1206–27.</li>
-        <li>Lang RM, Badano LP, Mor-Avi V, et al. Recommendations for cardiac chamber quantification by echocardiography in adults: an update from the ASE and EACVI. <i>J Am Soc Echocardiogr</i> 2015;28:1–39.e14.</li>
-        <li>Rudski LG, Lai WW, Afilalo J, et al. Guidelines for the echocardiographic assessment of the right heart in adults. <i>J Am Soc Echocardiogr</i> 2010;23:685–713.</li>
-        <li>Konstantinides SV, Meyer G, Becattini C, et al. 2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism. <i>Eur Heart J</i> 2020;41:543–603.</li>
-        <li>McConnell MV, Solomon SD, Rayan ME, et al. Regional right ventricular dysfunction detected by echocardiography in acute pulmonary embolism. <i>Am J Cardiol</i> 1996;78:469–73.</li>
-        <li>Adler Y, Charron P, Imazio M, et al. 2015 ESC Guidelines for the diagnosis and management of pericardial diseases. <i>Eur Heart J</i> 2015;36:2921–64.</li>
-        <li>Himelman RB, Kircher B, Rockey DC, Schiller NB. Inferior vena cava plethora with blunted respiratory response: a sensitive echocardiographic sign of cardiac tamponade. <i>J Am Coll Cardiol</i> 1988;12:1470–7.</li>
-        <li>McKaigney CJ, Krantz MJ, La Rocque CL, et al. E-point septal separation: a bedside tool for emergency physician assessment of left ventricular ejection fraction. <i>Am J Emerg Med</i> 2014;32:493–7.</li>
-        <li>Barbier C, Loubières Y, Schmit C, et al. Respiratory changes in inferior vena cava diameter are helpful in predicting fluid responsiveness in ventilated septic patients. <i>Intensive Care Med</i> 2004;30:1740–6.</li>
-        <li>Feissel M, Michard F, Faller JP, Teboul JL. The respiratory variation in inferior vena cava diameter as a guide to fluid therapy. <i>Intensive Care Med</i> 2004;30:1834–7.</li>
-        <li>Airapetian N, Maizel J, Alyamani O, et al. Does inferior vena cava respiratory variability predict fluid responsiveness in spontaneously breathing patients? <i>Crit Care</i> 2015;19:400.</li>
-        <li>Monnet X, Marik P, Teboul JL. Passive leg raising for predicting fluid responsiveness: a systematic review and meta-analysis. <i>Intensive Care Med</i> 2016;42:1935–47.</li>
-        <li>Lamia B, Ochagavia A, Monnet X, et al. Echocardiographic prediction of volume responsiveness in critically ill patients with spontaneously breathing activity. <i>Intensive Care Med</i> 2007;33:1125–32.</li>
-        <li>Perera P, Mailhot T, Riley D, Mandavia D. The RUSH exam: Rapid Ultrasound in SHock in the evaluation of the critically ill. <i>Emerg Med Clin North Am</i> 2010;28:29–56.</li>
+        <li>Via G, Hussain A, Wells M, et al. International evidence-based recommendations for focused cardiac ultrasound. <i>J Am Soc Echocardiogr</i>. 2014;27(7):683.e1–683.e33. <a href="https://doi.org/10.1016/j.echo.2014.05.001" target="_blank" rel="noopener">doi:10.1016/j.echo.2014.05.001</a></li>
+        <li>Labovitz AJ, Noble VE, Bierig M, et al. Focused cardiac ultrasound in the emergent setting: a consensus statement of the American Society of Echocardiography and American College of Emergency Physicians. <i>J Am Soc Echocardiogr</i>. 2010;23(12):1225–30. <a href="https://doi.org/10.1016/j.echo.2010.10.005" target="_blank" rel="noopener">doi:10.1016/j.echo.2010.10.005</a></li>
+        <li>Spencer KT, Kimura BJ, Korcarz CE, Pellikka PA, Rahko PS, Siegel RJ. Focused cardiac ultrasound: recommendations from the American Society of Echocardiography. <i>J Am Soc Echocardiogr</i>. 2013;26(6):567–81. <a href="https://doi.org/10.1016/j.echo.2013.04.001" target="_blank" rel="noopener">doi:10.1016/j.echo.2013.04.001</a></li>
+        <li>Kirkpatrick JN, Panebianco N, Díaz-Gómez JL, et al. Recommendations for cardiac point-of-care ultrasound nomenclature. <i>J Am Soc Echocardiogr</i>. 2024;37(9):809–19. <a href="https://doi.org/10.1016/j.echo.2024.05.001" target="_blank" rel="noopener">doi:10.1016/j.echo.2024.05.001</a></li>
+        <li>Levitov A, Frankel HL, Blaivas M, et al. Guidelines for the appropriate use of bedside general and cardiac ultrasonography in the evaluation of critically ill patients—Part II: cardiac ultrasonography. <i>Crit Care Med</i>. 2016;44(6):1206–27. <a href="https://doi.org/10.1097/CCM.0000000000001847" target="_blank" rel="noopener">doi:10.1097/CCM.0000000000001847</a></li>
+        <li>Díaz-Gómez JL, Sharif S, Ablordeppey E, et al. Society of Critical Care Medicine guidelines on adult critical care ultrasonography: focused update 2024. <i>Crit Care Med</i>. 2025;53(2):e447–e458. <a href="https://doi.org/10.1097/CCM.0000000000006530" target="_blank" rel="noopener">doi:10.1097/CCM.0000000000006530</a></li>
+        <li>Lang RM, Badano LP, Mor-Avi V, et al. Recommendations for cardiac chamber quantification by echocardiography in adults: an update from the American Society of Echocardiography and the European Association of Cardiovascular Imaging. <i>J Am Soc Echocardiogr</i>. 2015;28(1):1–39.e14. <a href="https://doi.org/10.1016/j.echo.2014.10.003" target="_blank" rel="noopener">doi:10.1016/j.echo.2014.10.003</a></li>
+        <li>Mukherjee M, Rudski LG, Addetia K, et al. Guidelines for the echocardiographic assessment of the right heart in adults and special considerations in pulmonary hypertension: recommendations from the American Society of Echocardiography. <i>J Am Soc Echocardiogr</i>. 2025;38(3):141–86. <a href="https://doi.org/10.1016/j.echo.2025.01.006" target="_blank" rel="noopener">doi:10.1016/j.echo.2025.01.006</a></li>
+        <li>Rudski LG, Lai WW, Afilalo J, et al. Guidelines for the echocardiographic assessment of the right heart in adults. <i>J Am Soc Echocardiogr</i>. 2010;23(7):685–713. (Superseded by the 2025 guideline; cited for the original thresholds.) <a href="https://doi.org/10.1016/j.echo.2010.05.010" target="_blank" rel="noopener">doi:10.1016/j.echo.2010.05.010</a></li>
+        <li>Konstantinides SV, Meyer G, Becattini C, et al. 2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS). <i>Eur Heart J</i>. 2020;41(4):543–603. <a href="https://doi.org/10.1093/eurheartj/ehz405" target="_blank" rel="noopener">doi:10.1093/eurheartj/ehz405</a></li>
+        <li>Creager MA, Barnes GD, Giri J, et al. 2026 AHA/ACC/ACCP/ACEP/CHEST/SCAI/SHM/SIR/SVM/SVN guideline for the evaluation and management of acute pulmonary embolism in adults. <i>Circulation</i>. 2026;153(12):e977–e1051. <a href="https://doi.org/10.1161/CIR.0000000000001415" target="_blank" rel="noopener">doi:10.1161/CIR.0000000000001415</a></li>
+        <li>McConnell MV, Solomon SD, Rayan ME, Come PC, Goldhaber SZ, Lee RT. Regional right ventricular dysfunction detected by echocardiography in acute pulmonary embolism. <i>Am J Cardiol</i>. 1996;78(4):469–73. <a href="https://pubmed.ncbi.nlm.nih.gov/8752195/" target="_blank" rel="noopener">PMID 8752195</a></li>
+        <li>Adler Y, Charron P, Imazio M, et al. 2015 ESC Guidelines for the diagnosis and management of pericardial diseases. <i>Eur Heart J</i>. 2015;36(42):2921–64. <a href="https://doi.org/10.1093/eurheartj/ehv318" target="_blank" rel="noopener">doi:10.1093/eurheartj/ehv318</a></li>
+        <li>Schulz-Menger J, Collini V, Gröschel J, et al. 2025 ESC Guidelines for the management of myocarditis and pericarditis. <i>Eur Heart J</i>. 2025;46(40):3952–4041. <a href="https://doi.org/10.1093/eurheartj/ehaf192" target="_blank" rel="noopener">doi:10.1093/eurheartj/ehaf192</a></li>
+        <li>Himelman RB, Kircher B, Rockey DC, Schiller NB. Inferior vena cava plethora with blunted respiratory response: a sensitive echocardiographic sign of cardiac tamponade. <i>J Am Coll Cardiol</i>. 1988;12(6):1470–7. <a href="https://pubmed.ncbi.nlm.nih.gov/3192844/" target="_blank" rel="noopener">PMID 3192844</a></li>
+        <li>McKaigney CJ, Krantz MJ, La Rocque CL, et al. E-point septal separation: a bedside tool for emergency physician assessment of left ventricular ejection fraction. <i>Am J Emerg Med</i>. 2014;32(6):493–7. <a href="https://pubmed.ncbi.nlm.nih.gov/24630604/" target="_blank" rel="noopener">PMID 24630604</a></li>
+        <li>Barbier C, Loubières Y, Schmit C, et al. Respiratory changes in inferior vena cava diameter are helpful in predicting fluid responsiveness in ventilated septic patients. <i>Intensive Care Med</i>. 2004;30(9):1740–6. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Respiratory+changes+in+inferior+vena+cava+diameter+are+helpful+in+predicting+fluid+responsiveness+in+ventilated+septic+patients" target="_blank" rel="noopener">PubMed</a></li>
+        <li>Feissel M, Michard F, Faller JP, Teboul JL. The respiratory variation in inferior vena cava diameter as a guide to fluid therapy. <i>Intensive Care Med</i>. 2004;30(9):1834–7. <a href="https://doi.org/10.1007/s00134-004-2233-5" target="_blank" rel="noopener">doi:10.1007/s00134-004-2233-5</a></li>
+        <li>Huang H, Shen Q, Liu Y, Xu H, Fang Y. Value of variation index of inferior vena cava diameter in predicting fluid responsiveness in patients with circulatory shock receiving mechanical ventilation: a systematic review and meta-analysis. <i>Crit Care</i>. 2018;22:204. <a href="https://doi.org/10.1186/s13054-018-2063-4" target="_blank" rel="noopener">doi:10.1186/s13054-018-2063-4</a></li>
+        <li>Airapetian N, Maizel J, Alyamani O, et al. Does inferior vena cava respiratory variability predict fluid responsiveness in spontaneously breathing patients? <i>Crit Care</i>. 2015;19:400. <a href="https://doi.org/10.1186/s13054-015-1100-9" target="_blank" rel="noopener">doi:10.1186/s13054-015-1100-9</a></li>
+        <li>Monnet X, Marik P, Teboul JL. Passive leg raising for predicting fluid responsiveness: a systematic review and meta-analysis. <i>Intensive Care Med</i>. 2016;42(12):1935–47. <a href="https://doi.org/10.1007/s00134-015-4134-1" target="_blank" rel="noopener">doi:10.1007/s00134-015-4134-1</a></li>
+        <li>Lamia B, Ochagavia A, Monnet X, Chemla D, Richard C, Teboul JL. Echocardiographic prediction of volume responsiveness in critically ill patients with spontaneously breathing activity. <i>Intensive Care Med</i>. 2007;33(7):1125–32. <a href="https://doi.org/10.1007/s00134-007-0646-7" target="_blank" rel="noopener">doi:10.1007/s00134-007-0646-7</a></li>
+        <li>Kattan E, Castro R, Miralles-Aguiar F, Hernández G, Rola P. The emerging concept of fluid tolerance: a position paper. <i>J Crit Care</i>. 2022;71:154070. <a href="https://doi.org/10.1016/j.jcrc.2022.154070" target="_blank" rel="noopener">doi:10.1016/j.jcrc.2022.154070</a></li>
+        <li>Beaubien-Souligny W, Rola P, Haycock K, et al. Quantifying systemic congestion with point-of-care ultrasound: development of the venous excess ultrasound grading system. <i>Ultrasound J</i>. 2020;12:16. <a href="https://doi.org/10.1186/s13089-020-00163-w" target="_blank" rel="noopener">doi:10.1186/s13089-020-00163-w</a></li>
+        <li>Andrei S, Bahr PA, Nguyen M, Bouhemad B, Guinot PG. Prevalence of systemic venous congestion assessed by Venous Excess Ultrasound Grading System (VExUS) and association with acute kidney injury in a general ICU cohort: a prospective multicentric study. <i>Crit Care</i>. 2023;27:224. <a href="https://doi.org/10.1186/s13054-023-04524-4" target="_blank" rel="noopener">doi:10.1186/s13054-023-04524-4</a></li>
+        <li>Longino A, Martin K, Leyba K, et al. Correlation between the VExUS score and right atrial pressure: a pilot prospective observational study. <i>Crit Care</i>. 2023;27:205. <a href="https://doi.org/10.1186/s13054-023-04471-0" target="_blank" rel="noopener">doi:10.1186/s13054-023-04471-0</a></li>
+        <li>Koratala A, Romero-González G, Soliman-Aboumarie H, Kazory A. Unlocking the potential of VExUS in assessing venous congestion: the art of doing it right. <i>Cardiorenal Med</i>. 2024;14(1):350–74. <a href="https://doi.org/10.1159/000539469" target="_blank" rel="noopener">doi:10.1159/000539469</a></li>
+        <li>Islas-Rodríguez JP, Miranda-Aquino T, Romero-González G, et al. Effect on kidney function recovery guiding decongestion with VExUS in patients with cardiorenal syndrome 1: a randomized control trial. <i>Cardiorenal Med</i>. 2024;14(1):1–11. <a href="https://doi.org/10.1159/000535641" target="_blank" rel="noopener">doi:10.1159/000535641</a></li>
+        <li>Melo RH, Gioli-Pereira L, Melo E, Rola P. Venous excess ultrasound score association with acute kidney injury in critically ill patients: a systematic review and meta-analysis of observational studies. <i>Ultrasound J</i>. 2025;17:16. <a href="https://doi.org/10.1186/s13089-025-00413-9" target="_blank" rel="noopener">doi:10.1186/s13089-025-00413-9</a></li>
+        <li>Song J, Chen G, Lai D, et al. Association between the Venous Excess Ultrasound (VExUS) score and acute kidney injury in critically ill patients with sepsis: a multicenter prospective observational study. <i>Ann Intensive Care</i>. 2025;15. <a href="https://doi.org/10.1186/s13613-025-01529-w" target="_blank" rel="noopener">doi:10.1186/s13613-025-01529-w</a></li>
+        <li>Perera P, Mailhot T, Riley D, Mandavia D. The RUSH exam: Rapid Ultrasound in SHock in the evaluation of the critically ill. <i>Emerg Med Clin North Am</i>. 2010;28(1):29–56. <a href="https://doi.org/10.1016/j.emc.2009.09.010" target="_blank" rel="noopener">doi:10.1016/j.emc.2009.09.010</a></li>
       </ol>
       <p class="mini">Simulations are purpose-built schematic teaching models, not diagnostic images. Anatomy, echogenicity, timing and thresholds are simplified. Check thresholds against current guidelines and local protocols.</p>
     </details>
@@ -1078,7 +1201,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
 <nav class="bar" aria-label="Slide controls"><div class="course-bar-inner">
   <div class="prog" id="prog"></div><div class="pace" id="pace" title="Where you should be at this point"></div>
   <button id="prevB" aria-label="Previous section">← Previous</button>
-  <span id="cnt">1 / 28</span>
+  <span id="cnt">1 / 30</span>
   <button id="nextB" aria-label="Next section">Next →</button>
   <span class="q">Five views, five questions. Get the picture, then judge the pump.</span>
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 0:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
@@ -2258,6 +2381,124 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
 })();
 
 /* =====================================================================
+   SIM 9 · VExUS calculator (schematic SVG Doppler waveforms)
+   ===================================================================== */
+(function sim9() {
+  const W = 360, H = 118, BEATS = 3, X0 = 6, X1 = W - 6, ECGY = 102;
+  const NM = { hv: ['S > D (normal)', 'S < D (mild)', 'S reversal (severe)'], pv: ['<30% (normal)', '30–49% (mild)', '≥50% (severe)'], rv: ['continuous (normal)', 'biphasic, discontinuous (mild)', 'monophasic, D only (severe)'] };
+  const PF = [16, 40, 72];
+  /* velocity in arbitrary units over one cardiac cycle; ph 0 = QRS */
+  const hvV = (k, ph) => {
+    const S = [1, .42, -.5][k], D = [.6, .85, .9][k];
+    return S * bump(ph, .2, .17) + D * bump(ph, .58, .15) - .22 * bump(ph, .9, .07) - .08 * bump(ph, .4, .05);
+  };
+  const pvV = (k, ph) => { const vmax = .7, f = PF[k] / 100; return vmax * (1 - f * bump(ph, .3, .3)); };
+  const rvV = (k, ph) => {
+    if (k === 0) return .42 + .06 * Math.sin(TAU * ph);
+    if (k === 1) return .55 * bump(ph, .24, .17) + .5 * bump(ph, .64, .17);
+    return .78 * bump(ph, .64, .22);
+  };
+  const raV = ph => .18 + .62 * bump(ph, .14, .12) + .18 * bump(ph, .4, .3);
+  function path(fn, base, sc) {
+    let d = `M${X0} ${base}`;
+    for (let i = 0; i <= 240; i++) { const x = X0 + (X1 - X0) * i / 240, ph = (i / 240 * BEATS) % 1; d += ` L${x.toFixed(1)} ${(base - sc * fn(ph)).toFixed(1)}`; }
+    return d + ` L${X1} ${base} Z`;
+  }
+  function ecg() {
+    let d = '';
+    for (let i = 0; i <= 300; i++) { const x = X0 + (X1 - X0) * i / 300, ph = (i / 300 * BEATS) % 1; d += (i ? ' L' : 'M') + x.toFixed(1) + ' ' + (ECGY - 12 * ecgV(ph)).toFixed(1); }
+    return `<path d="${d}" fill="none" stroke="#6fd38a" stroke-width="1.2"/>`;
+  }
+  const lab = (x, y, t, c = '#ffd678') => `<text x="${x}" y="${y}" fill="${c}" font-size="10" text-anchor="middle">${t}</text>`;
+  const beatX = (b, ph) => X0 + (X1 - X0) * (b + ph) / BEATS;
+  function svg(kind, k, hide) {
+    let body = '', base, aria;
+    const grid = b => `<line x1="${X0}" x2="${X1}" y1="${b}" y2="${b}" stroke="#7a7a7a" stroke-width=".8"/>`;
+    if (kind === 'hv') {
+      base = 30; const sc = -42;
+      body += grid(base) + `<path d="${path(ph => hvV(k, ph), base, sc)}" fill="rgba(235,235,235,.55)" stroke="#fff" stroke-width="1"/>`;
+      if (!hide) { const sy = base - sc * hvV(k, .2), dy = base - sc * hvV(k, .58); body += lab(beatX(1, .2), sy + (hvV(k, .2) > 0 ? 12 : -3), 'S') + lab(beatX(1, .58), dy + 12, 'D') + lab(beatX(1, .9), base - 14, 'A'); }
+      body += `<text x="${X1 - 2}" y="12" fill="#bbb" font-size="9" text-anchor="end">away from heart ↑</text><text x="${X1 - 2}" y="${ECGY - 18}" fill="#bbb" font-size="9" text-anchor="end">towards heart ↓</text>`;
+      aria = 'Hepatic vein Doppler: ' + (hide ? 'pattern hidden' : NM.hv[k]);
+    } else if (kind === 'pv') {
+      base = 80; const sc = 80;
+      body += grid(base) + `<path d="${path(ph => pvV(k, ph), base, sc)}" fill="rgba(235,235,235,.55)" stroke="#fff" stroke-width="1"/>`;
+      const ymax = base - sc * .7, ymin = base - sc * pvV(k, .3);
+      body += `<line x1="${beatX(1, 0)}" x2="${beatX(2, 0)}" y1="${ymax}" y2="${ymax}" stroke="#ffd678" stroke-dasharray="3 3" stroke-width=".9"/><line x1="${beatX(1, .1)}" x2="${beatX(1, .5)}" y1="${ymin}" y2="${ymin}" stroke="#ffd678" stroke-dasharray="3 3" stroke-width=".9"/>`;
+      body += lab(beatX(1, .3) - 22, ymax - 4, 'Vmax') + lab(beatX(1, .3), ymin + 12, 'Vmin');
+      if (!hide) body += `<text x="${X1 - 2}" y="12" fill="#ffd678" font-size="10" text-anchor="end">PF = (Vmax − Vmin)/Vmax ≈ ${PF[k]}%</text>`;
+      aria = 'Portal vein Doppler: ' + (hide ? 'pattern hidden' : 'pulsatility ' + NM.pv[k]);
+    } else {
+      base = 48;
+      body += grid(base) + `<path d="${path(raV, base, 38)}" fill="rgba(235,120,110,.45)" stroke="#f3a097" stroke-width="1"/>`;
+      body += `<path d="${path(ph => -rvV(k, ph), base, 38)}" fill="rgba(150,180,255,.45)" stroke="#aac4ff" stroke-width="1"/>`;
+      body += `<text x="${X1 - 2}" y="12" fill="#f3a097" font-size="9" text-anchor="end">artery ↑</text><text x="${X1 - 2}" y="${ECGY - 18}" fill="#aac4ff" font-size="9" text-anchor="end">vein ↓</text>`;
+      if (!hide && k > 0) { if (k === 1) body += lab(beatX(1, .24), base + 38 * .55 * .5 + 4, 'S', '#fff'); body += lab(beatX(1, .64), base + 38 * rvV(k, .64) * .5 + 4, 'D', '#fff'); }
+      aria = 'Intrarenal Doppler: ' + (hide ? 'pattern hidden' : 'venous flow ' + NM.rv[k]);
+    }
+    return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}"><rect width="${W}" height="${H}" fill="#000"/>${body}${ecg()}<text x="${X0 + 2}" y="${H - 3}" fill="#888" font-size="8.5">Schematic, not a real scan · ECG</text></svg>`;
+  }
+  const st = { ivc: 1, hv: 0, pv: 0, rv: 0, quiz: null };
+  function grade(s) {
+    if (!s.ivc) return 0;
+    const sev = [s.hv, s.pv, s.rv].filter(v => v === 2).length;
+    return sev === 0 ? 1 : sev === 1 ? 2 : 3;
+  }
+  const GN = ['Grade 0 · no significant congestion', 'Grade 1 · mild congestion', 'Grade 2 · moderate congestion', 'Grade 3 · severe congestion'];
+  function explain(s) {
+    const g = grade(s), sev = ['hv', 'pv', 'rv'].filter(k => s[k] === 2), mild = ['hv', 'pv', 'rv'].filter(k => s[k] === 1);
+    const VN = { hv: 'hepatic S reversal', pv: 'portal pulsatility ≥50%', rv: 'monophasic intrarenal flow' };
+    const MN = { hv: 'hepatic S < D', pv: 'portal pulsatility 30–49%', rv: 'biphasic intrarenal flow' };
+    let t;
+    if (g === 0) {
+      t = 'The IVC is under 2 cm, so the grade is 0 whatever the Doppler shows.';
+      if (sev.length || mild.length) t += ` <span class="warn">Abnormal patterns with a small IVC are discordant: recheck the IVC (off-axis cut, raised intra-abdominal pressure) and remember that portal pulsatility can be normal in fit, thin people.</span>`;
+    } else if (g === 1) {
+      t = 'Dilated IVC with ' + (mild.length ? 'only mild abnormalities (' + mild.map(k => MN[k]).join(', ') + ')' : 'normal Doppler patterns') + '. Mild patterns never raise the grade above 1.';
+    } else {
+      t = `Dilated IVC with ${sev.length === 1 ? 'one severe pattern' : sev.length + ' severe patterns'}: ${sev.map(k => VN[k]).join(', ')}.`;
+      t += g === 3 ? ' This was the pattern most strongly linked to AKI after cardiac surgery (derivation cohort: cardiac surgery only; weaker or absent association in general ICU and sepsis cohorts).' : '';
+      t += ' Stop routine fluid and look for the cause on the echo. Treat obstruction directly (tamponade, pneumothorax, PE); if the cause is volume overload, consider decongestion. (Expert consensus, not trial evidence.)';
+    }
+    return t;
+  }
+  function draw() {
+    const s = st.quiz || st, hide = !!st.quiz && !st.quiz.done;
+    $('#s9HVw').innerHTML = svg('hv', s.hv, hide); $('#s9PVw').innerHTML = svg('pv', s.pv, hide); $('#s9RVw').innerHTML = svg('rv', s.rv, hide);
+    if (hide) {
+      $('#s9Read').innerHTML = RO([['IVC', s.ivcCm + ' cm'], ['Hepatic', '?'], ['Portal', '?'], ['Intrarenal', '?']]);
+      setStat('s9Stat', 'Patient after cardiac surgery, on noradrenaline. What is the VExUS grade?');
+      return;
+    }
+    const g = grade(s), sevN = [s.hv, s.pv, s.rv].filter(v => v === 2).length;
+    $('#s9Read').innerHTML = RO([['IVC', s.ivcCm ? s.ivcCm + ' cm' : s.ivc ? '≥2 cm' : '<2 cm', s.ivc ? 'warn' : 'ok'], ['Hepatic', ['normal', 'mild', 'severe'][s.hv], ['', 'warn', 'bad'][s.hv]], ['Portal', PF[s.pv] + '%', ['', 'warn', 'bad'][s.pv]], ['Intrarenal', ['normal', 'mild', 'severe'][s.rv], ['', 'warn', 'bad'][s.rv]], ['Severe count', s.ivc ? String(sevN) : '—']]);
+    let h = `<span class="vv">${GN[g]}</span><br>${explain(s)}`;
+    if (st.quiz) h = `<span class="${st.quiz.ok ? 'ok' : 'bad'}">${st.quiz.ok ? '✓ Correct.' : '✗ Not quite.'}</span> ` + h;
+    setStat('s9Stat', h);
+  }
+  const segs = { hv: 's9HV', pv: 's9PV', rv: 's9RV' };
+  function leaveQuiz() { if (!st.quiz) return; st.quiz = null; $('#s9Q').hidden = true; $('#s9Clear').hidden = true; segSet('s9IVC', st.ivc); for (const k in segs) segSet(segs[k], st[k]); }
+  seg('s9IVC', d => { leaveQuiz(); st.ivc = +d.v; draw(); }, false);
+  for (const k in segs) seg(segs[k], d => { leaveQuiz(); st[k] = +d.v; draw(); }, false);
+  $('#s9Rand').onclick = () => {
+    const r = () => Math.floor(Math.random() * 3), big = Math.random() < .8;
+    st.quiz = { ivc: big ? 1 : 0, ivcCm: big ? fixed(2.1 + Math.random() * .8, 1) : fixed(1.0 + Math.random() * .8, 1), hv: r(), pv: r(), rv: r(), done: false };
+    segSet('s9IVC', -1); for (const k in segs) segSet(segs[k], -1);
+    $('#s9Q').hidden = false; $('#s9Clear').hidden = false; $$('#s9QA button').forEach(b => b.classList.remove('right', 'wrong'));
+    draw();
+  };
+  $('#s9Clear').onclick = () => { leaveQuiz(); draw(); };
+  $('#s9QA').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || !st.quiz || st.quiz.done) return;
+    const g = grade(st.quiz); st.quiz.done = true; st.quiz.ok = +b.dataset.g === g;
+    $$('#s9QA button').forEach(x => { if (+x.dataset.g === g) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    segSet('s9IVC', st.quiz.ivc); for (const k in segs) segSet(segs[k], st.quiz[k]);
+    draw();
+  });
+  draw();
+})();
+
+/* =====================================================================
    CASES
    ===================================================================== */
 const PE = { rvlv: 1.2, dsP: .85, tapse: 1.1, mcc: 1, lvd: 3.6, lvs: 2.0, hr: 124 };
@@ -2273,7 +2514,7 @@ const CASES = [
     ],
     links: [['../dvt/', 'DVT: compression ultrasound →']],
     steps: [
-      ['Is FoCUS indicated, and what is the question?', 'Yes. This is undifferentiated shock, and he may be too unstable for CT. In suspected high-risk PE, the absence of RV dysfunction makes PE unlikely as the cause of shock. If the RV is dilated and dysfunctional and CTPA is not immediately feasible, the ESC 2019 guideline accepts echocardiographic evidence to justify reperfusion therapy.'],
+      ['Is FoCUS indicated, and what is the question?', 'Yes. This is undifferentiated shock, and he may be too unstable for CT. In suspected high-risk PE, the absence of RV dysfunction makes PE unlikely as the cause of shock. If the RV is dilated and dysfunctional and CTPA is not immediately feasible, the ESC 2019 guideline accepts echocardiographic evidence to justify reperfusion therapy. In the 2026 AHA/ACC scheme, persistent hypotension makes this category E (cardiopulmonary failure), and the RV is best judged on echo, including POCUS.'],
       ['Which views, in which order?', "He is too unstable to reposition, so start with subcostal 4C (no repositioning needed), then PSAX for the septum, A4C if possible, then the IVC. Then compression ultrasound of both legs (see <a href=\"../dvt/\">DVT</a>).", 0],
       ['What do you see?', 'RV larger than LV (RV:LV about 1.2) with a thin free wall (4 mm), so this is acute. Septum flattened in systole and diastole (D-sign). Mid RV free wall akinetic with a moving apex (McConnell). TAPSE 11 mm. Small, underfilled, hyperdynamic LV. IVC 2.4 cm with minimal variation. No effusion. Left common femoral vein non-compressible.', 2],
       ['What will you do?', 'High-risk PE. Give unfractionated heparin and noradrenaline to keep RV perfusion pressure. Avoid large fluid boluses: a dilated RV gets worse with volume. Major surgery within the last 3 weeks is listed as an absolute contraindication to systemic thrombolysis (ESC 2019), though in immediately life-threatening PE it may be treated as relative. Call the PE response team / cardiothoracics early for catheter-directed therapy or surgical embolectomy. Consider systemic (possibly reduced-dose) thrombolysis as rescue only if he is peri-arrest and no alternative is available, after senior discussion and following the local protocol. If intubation becomes unavoidable, have the vasopressor running and use a minimal induction dose. Rescan after each intervention.', 1]
@@ -2375,10 +2616,12 @@ const QZ = [
   ['On PSAX, the septum flattens only in diastole and is round in systole. This suggests:', ['RV volume overload', 'RV pressure overload', 'Cardiac tamponade', 'Normal finding'], 'Diastolic-only flattening is the volume-overload pattern (e.g. ASD, severe TR). Pressure overload (PE, pulmonary hypertension) flattens the septum in systole and diastole.'],
   ['Which echocardiographic sign of tamponade is the most specific?', ['RV diastolic collapse', 'Plethoric IVC with <50% variation', 'Any RA systolic inversion', 'Pericardial effusion >10 mm'], 'RV diastolic collapse is less sensitive but more specific. RA inversion is the earliest and most sensitive sign; it becomes more specific when it lasts more than one-third of the cycle. A plethoric IVC is very sensitive but poorly specific. Effusion size alone does not define tamponade.'],
   ['A 70 kg patient is fully passive on the ventilator with Vt 8 mL/kg and no intra-abdominal hypertension. The IVC measures 1.8 cm in expiration and 2.2 cm in inspiration. The distensibility index is:', ['22%, suggesting likely fluid responsiveness', '22%, suggesting fluid unresponsiveness', '18%, borderline', 'Cannot be calculated in a ventilated patient'], 'Distensibility = (Dmax − Dmin)/Dmin = (2.2 − 1.8)/1.8 = 22%. Barbier 2004 used >18% to predict a response, valid only in fully passive ventilation. Fluid responsiveness is not by itself a reason to give fluid.'],
-  ['A spontaneously breathing patient has an IVC of 1.5 cm that collapses by more than 50% with a sniff. The estimated RA pressure is:', ['About 3 mmHg (0–5)', 'About 8 mmHg (5–10)', 'About 15 mmHg (10–20)', 'Cannot be estimated without Doppler'], 'ASE (Rudski 2010): an IVC ≤2.1 cm that collapses >50% with a sniff gives RAP about 3 mmHg (range 0–5). An IVC >2.1 cm with <50% collapse gives about 15 mmHg. Other combinations are intermediate (about 8 mmHg).'],
+  ['A spontaneously breathing patient has an IVC of 1.5 cm that collapses by more than 50% with a sniff. The estimated RA pressure is:', ['About 3 mmHg (0–5)', 'About 8 mmHg (5–10)', 'About 15 mmHg (10–20)', 'Cannot be estimated without Doppler'], 'ASE (2025 right heart guideline, unchanged from 2010): an IVC ≤2.1 cm that collapses >50% with a sniff gives RAP about 3 mmHg (range 0–5). An IVC >2.1 cm with <50% collapse gives about 15 mmHg. Other combinations are intermediate (about 8 mmHg).'],
   ['LVOT VTI is 15 cm at baseline and 17 cm 60 s after a correctly performed passive leg raise. The patient remained calm. Interpretation?', ['Likely fluid-responsive: about 13% rise', 'Not fluid-responsive: rise under 15%', 'Invalid: PLR must be read at 5 minutes', 'Invalid: VTI cannot be used for PLR'], '(17 − 15)/15 is about 13%. A PLR-induced rise in flow of 10% or more predicts fluid responsiveness (Monnet 2016: sensitivity 85%, specificity 91%). The effect peaks within about a minute. Pain or waking can cause false positives.'],
   ['Your A4C shows a rounded, thick apex that appears to contract vigorously, and the LV looks short. The most likely problem and fix:', ['Foreshortening: slide laterally and/or down a rib space to the true apex', 'Over-gain: reduce gain', '5-chamber view: tilt posteriorly', 'Normal appearance: no change'], 'Foreshortening cuts through the LV above the true apex. It overestimates function, misses apical akinesis and distorts the RV:LV comparison. Move to the true apex until the LV is long and tapered.'],
-  ['A small, hyperdynamic, thick-walled LV with systolic anterior motion of the mitral valve is seen in a hypotensive patient on adrenaline. Best immediate response:', ['Stop the inotrope, give fluid and a pure vasoconstrictor, slow the heart rate', 'Increase adrenaline', 'Start dobutamine', 'Give a diuretic'], 'Dynamic LVOT obstruction with SAM gets worse with inotropes, tachycardia and underfilling. Treat with preload, afterload (e.g. phenylephrine) and rate control, and get a formal echo.']
+  ['A small, hyperdynamic, thick-walled LV with systolic anterior motion of the mitral valve is seen in a hypotensive patient on adrenaline. Best immediate response:', ['Stop the inotrope, give fluid and a pure vasoconstrictor, slow the heart rate', 'Increase adrenaline', 'Start dobutamine', 'Give a diuretic'], 'Dynamic LVOT obstruction with SAM gets worse with inotropes, tachycardia and underfilling. Treat with preload, afterload (e.g. phenylephrine) and rate control, and get a formal echo.'],
+  ['After cardiac surgery: IVC 2.4 cm, hepatic vein S wave reversed, portal pulsatility 35%, intrarenal venous flow discontinuous and biphasic. The VExUS grade is:', ['Grade 2 (one severe pattern)', 'Grade 1 (only one abnormal vein besides the IVC)', 'Grade 3 (three abnormal patterns)', 'Grade 0'], 'With an IVC ≥2 cm, only <i>severe</i> patterns raise the grade: none gives grade 1, one gives grade 2, two or more give grade 3 (Beaubien-Souligny 2020). Here only the hepatic S reversal is severe; portal 30–49% and biphasic intrarenal flow are mild. Grade 2: stop routine fluid and look for the cause.'],
+  ['A fit, thin 22-year-old after a fall has an IVC of 1.2 cm that collapses with inspiration. Portal vein pulsatility is 55%. Best interpretation?', ['VExUS grade 0: portal pulsatility can be a normal variant in thin, healthy people', 'VExUS grade 2: stop fluids', 'VExUS grade 3: start a diuretic', 'Cannot be graded without intrarenal Doppler'], 'An IVC under 2 cm is grade 0 whatever the Doppler shows. Pulsatile portal flow without venous congestion is described in thin, healthy people. VExUS describes venous pressure, not whether fluid will help; that is the PLR question.']
 ];
 (function buildQuiz() {
   const q = $('#quiz'); let score = 0, done = 0;
