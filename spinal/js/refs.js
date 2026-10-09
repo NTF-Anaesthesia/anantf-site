@@ -25,10 +25,11 @@ export const REFS = {
     url: 'https://doi.org/10.1001/jamanetworkopen.2023.25387',
   },
   'iso80369-6': {
-    label: 'ISO 2016',
-    text: 'International Organization for Standardization. ISO 80369-6:2016. Small-bore connectors for liquids and gases in healthcare applications — Part 6: Connectors for neuraxial applications. Geneva: ISO; 2016. (Withdrawn in 2025 and replaced by ISO 80369-6:2025.)',
-    url: 'https://www.iso.org/standard/50734.html',
+    label: 'ISO 2025',
+    text: 'International Organization for Standardization. ISO 80369-6:2025. Small-bore connectors for liquids and gases in healthcare applications — Part 6: Connectors for neural applications. 2nd ed. Geneva: ISO; 2025. (Replaces ISO 80369-6:2016, which was titled “Connectors for neuraxial applications”.)',
+    url: 'https://www.iso.org/standard/85462.html',
   },
+
 };
 
 const registry = { ...REFS };

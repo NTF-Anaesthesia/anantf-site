@@ -10,6 +10,9 @@ export const TOPICS = [
   { value: 'troubleshooting', label: 'Troubleshooting' },
   { value: 'anticoagulation', label: 'Anticoagulation' },
   { value: 'complications', label: 'Complications' },
+  { value: 'physiology', label: 'Physiology' },
+  { value: 'special', label: 'Obstetric and infant' },
+  { value: 'evidence', label: 'Evidence' },
 ];
 
 export const MCQS = [

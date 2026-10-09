@@ -1,11 +1,11 @@
-// 03 Challenging spines: patient-type walkthroughs, the paramedian approach and the Taylor (L5-S1) approach.
-// Tiers: 1 MO, 2 Resident, 3 Advanced (see ../TIERS.md). No new doses, and no citations in this section.
-import { el, callout, steps, tier, keyPoints, segmented, figure, announce } from '../ui.js?v=1';
+// Difficult backs: one problem picker, the canonical paramedian approach (#sx-paramedian), Taylor (L5-S1) and when to stop.
+// Tiers: 1 MO, 2 Resident, 3 Advanced (see ../TIERS.md). No doses, and no citations in this section.
+import { el, callout, steps, table, tier, keyPoints, segmented, figure, announce } from '../ui.js?v=1';
 import { buildPanels } from '../spines/panels.js?v=1';
 import { paramedianFigure } from '../spines/paramedian.js?v=1';
 import { taylorSvg } from '../spines/figures.js?v=1';
 
-export const meta = { id: 'spines', prefix: 'sx', title: 'Challenging spines' };
+export const meta = { id: 'spines', prefix: 'sx', title: 'Difficult backs' };
 
 const T = tier;
 const UL = (items) => el('ul', { class: 'sx-list' }, ...items.map((h) => el('li', { html: h })));
@@ -21,15 +21,16 @@ export function mount(root) {
   root.append(
     keyPoints([
       'Plan a difficult back before you start: look, feel, check any imaging, scan if you can, and tell your supervisor.',
-      'Elderly or calcified spine: give analgesia first, sit the patient if possible, and move early to a paramedian approach.',
-      'Paramedian entry is 0.5–1 cm lateral to the upper edge of the lower spinous process, 5–15° medial. If you hit lamina, walk off it cranially.',
+      'Pick the patient type below: elderly or calcified, scoliosis, obesity, kyphosis or ankylosing spondylitis, previous surgery, or cannot position.',
+      'Paramedian entry (the canonical version, used on every page): 0.5–1 cm lateral to the upper edge of the lower spinous process, angled 5–15° medially and slightly towards the head. If you hit lamina, walk off it cranially.',
       'L5–S1 (Taylor) is the usual fallback: 1 cm medial and 1 cm below the PSIS, aimed up and in.',
-      'Scoliosis: the spinous processes point to the concave side but the canal lies off to the convex side. Enter from the convex side.',
-      'Obesity: sit the patient up, scan for the midline and depth, use an introducer, and a longer, firmer needle (a 22G Quincke) if the depth needs it.',
+      'Scoliosis: rotation turns the spinous processes towards the concave side and the canal towards the convex side. The space is generally more open on the convex side. Scan to find the most open window.',
+      'Obesity: sit the patient up, scan for the midline and depth, use an introducer, and a longer pencil-point needle if the measured depth needs it.',
       'Ankylosing spondylitis: expect no midline gap. Try once by a paramedian route or at L5–S1, and keep a low threshold for another technique.',
       'After spinal surgery: go a level above or below, record the baseline neurology, and expect unpredictable spread.',
     ]),
-    T(P('Some backs make a spinal hard. This part gives a plan for each type of patient, then the two approaches you will use most: paramedian and Taylor.', 'sp-lead'), 1),
+
+    T(P('Some backs make a spinal hard. Pick the patient type for a plan, then use the two approaches you will need most: paramedian and Taylor. <a href="#us-six">Ultrasound</a> follows in the next section.', 'sp-lead'), 1),
     T(callout('key', {
       title: 'Before any difficult back',
       body: UL([
@@ -46,6 +47,36 @@ export function mount(root) {
       'A systematic way to cope is the same in each case: choose the position, map the spine, choose the route, keep the needle straight, and stop early.',
     ]),
   );
+
+  // ------------------------------------------------------------------ at a glance
+  root.append(part('sx-glance', 'At a glance',
+    T(table({
+      caption: 'Which difficult back? First move and fallback',
+      head: ['Patient', 'What goes wrong', 'First move', 'Fallback'],
+      rows: [
+        [{ html: '<a href="#sx-elderly">Elderly or calcified</a>', th: true }, 'Calcified ligaments, narrow gaps, cannot flex', 'Analgesia, sit up, midline once', '<a href="#sx-paramedian">Paramedian</a>, then <a href="#sx-taylor">Taylor</a>'],
+        [{ html: '<a href="#sx-scoliosis">Scoliosis</a>', th: true }, 'Rotation: spinous tips do not mark the canal', 'Scan; enter on the convex side', 'Another level, or another plan'],
+        [{ html: '<a href="#sx-obesity">Obesity</a>', th: true }, 'No landmarks, deep canal, midline drifts', 'Sit up, scan for midline and depth', 'Longer needle with introducer; count up from the sacrum'],
+        [{ html: '<a href="#sx-as">Kyphosis or AS</a>', th: true }, 'Fused or fixed in flexion, no midline gap', 'Senior help; paramedian or L5–S1', 'GA or a nerve block'],
+        [{ html: '<a href="#sx-surgery">Previous surgery</a>', th: true }, 'Scar, missing bone, metal', 'Level above or below; record baseline', 'Scan; another plan'],
+        [{ html: '<a href="#sx-position">Cannot position</a>', th: true }, 'Pain, confusion, fracture', 'Treat pain first; helper; same position for mark and puncture', 'Do not advance in a moving patient'],
+      ],
+    }), 1),
+    T(table({
+      caption: 'Approaches compared',
+      head: ['', 'Midline', 'Paramedian', 'Taylor (L5–S1)'],
+      rows: [
+        [{ html: 'Structures crossed', th: true }, 'Skin, fat, supraspinous and interspinous ligaments, flavum', 'Skin, fat, paraspinal muscle, flavum. Midline ligaments bypassed', 'As paramedian, through the widest lumbar gap'],
+        [{ html: 'Flexion needed', th: true }, 'Most', 'Less', 'Less'],
+        [{ html: 'Best for', th: true }, 'Normal backs', 'Calcified, stiff or kyphotic spines', 'Closed higher spaces, AS'],
+        [{ html: 'Watch for', th: true }, 'Midline gap closed by calcification', 'Facet or lamina contact; lateral drift', 'Long oblique path; bent needles'],
+      ],
+    }), 2),
+    T(callout('pearl', {
+      title: 'Why the paramedian route works, and what the trials say',
+      body: '<p>The interlaminar gap seen from the paramedian side is a larger, more open target than the midline gap in a stiff spine, and it needs less flexion. Pooled trials of paramedian against midline show little or no difference in first-pass success overall, and the evidence is low in certainty. Its place is the stiff, calcified or older spine, not every back.</p>',
+    }), 3),
+  ));
 
   // ------------------------------------------------------------------ patient type
   const panels = buildPanels();
@@ -67,14 +98,14 @@ export function mount(root) {
   seg.classList.add('sx-seg');
   panels.forEach((p) => { p.node.hidden = true; host.append(p.node); });
 
-  root.append(part('sx-patients', 'Walkthrough by patient type',
-    el('div', { class: 'sx-picker' }, el('p', { class: 'sx-picker-label', id: 'sx-picker-label', text: 'Type of patient' }), seg, hint),
+  root.append(part('sx-patients', 'Plan by patient type',
+    el('div', { class: 'sx-picker' }, el('p', { class: 'sx-picker-label', id: 'sx-picker-label', text: 'Type of patient (the only picker for difficult backs)' }), seg, hint),
     host));
   show(panels[0].value);
 
   // ------------------------------------------------------------------ paramedian
   root.append(part('sx-paramedian', 'The paramedian approach',
-    T(P('The needle goes in beside the midline and passes lateral to the supraspinous and interspinous ligaments. It is often the best route in an older, stiff or calcified spine.'), 1),
+    T(P('The needle goes in beside the midline and passes lateral to the supraspinous and interspinous ligaments. It is often the best route in an older, stiff or calcified spine. <strong>This is the one version of the entry point used on this page</strong> (as taught by Poots and Chin, BJA Education 2024): <strong>0.5–1 cm lateral to the upper edge of the lower spinous process, angled 5–15° medially and slightly towards the head.</strong>'), 1),
     T(steps([
       { title: 'Position and landmarks as for the midline', body: '<p>Choose the space. Find the spinous process of the lower vertebra of that space.</p>' },
       { title: 'Mark the entry', body: '<p>About 0.5–1 cm lateral to the upper edge of the lower spinous process. Use either side.</p>' },
@@ -102,7 +133,7 @@ export function mount(root) {
 
   // ------------------------------------------------------------------ Taylor
   const tf = figure({
-    id: 'sx-taylor-fig', num: '3.3', title: 'Taylor approach at L5–S1', plate: 'paper', aspect: '28/23',
+    id: 'sx-taylor-fig', num: '5.3', title: 'Taylor approach at L5–S1', plate: 'paper', aspect: '28/23',
     caption: 'Posterior view, head up. Not to scale.'
       + ' The entry point is 1 cm medial and 1 cm below the posterior superior iliac spine (PSIS). The needle is aimed up and in towards the L5–S1 gap.',
   });
@@ -119,7 +150,7 @@ export function mount(root) {
     ]), 1),
     T(tf.fig, 2),
     G(2, 'Detail', [
-      'The usual teaching is about 55° towards the head and about 45° towards the midline. Treat these as a guide and check the line on a scan.',
+      'Teaching texts quote about 55° towards the head and about 45° towards the midline, but the quoted angles vary between sources. Treat them as a rough guide and take the line from the scan.',
       'L5–S1 lies below the end of the spinal cord, so the level itself is safe. Make sure you are really at L5–S1, because the sacrum can have extra or missing segments. Count up from the sacrum on the scan.',
       'The path is long and oblique. Use an introducer and a needle of enough length, and watch for bending.',
       'The cauda equina fills the canal at this level, so the usual rule applies: if the patient reports pain or tingling in a leg, stop and do not inject.',

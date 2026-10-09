@@ -1,6 +1,7 @@
-// spinal/ page controller: share, scroll-spy, section mounts, references, deep links.
+// spinal/ page controller: chapters + routing, search, share, levels, section mounts, references, deep links.
 import { $, $$, el, announce } from './ui.js?v=1';
 import { registerRefs, finalise } from './refs.js?v=1';
+import { attachSearch, buildIndex } from './search.js?v=3';
 
 
 // Light mode only: the page is pinned with <html data-theme="light">.
@@ -25,63 +26,55 @@ shareBtn?.addEventListener('click', async () => {
   shareTimer = setTimeout(() => { span.textContent = 'Copy link'; status.textContent = ''; }, 2200);
 });
 
-// ---------------------------------------------------------------- section nav: overflow fade + scroll-spy
-const secnav = $('.sp-secnav');
-const navList = secnav?.querySelector('ol');
-const navLinks = navList ? $$('a[href^="#"]', navList) : [];
-const sections = navLinks.map((a) => document.getElementById(a.hash.slice(1))).filter(Boolean);
+// ---------------------------------------------------------------- chapters
+const chapters = $$('main .sp-chapter');
+const chapterById = new Map(chapters.map((c) => [c.id, c]));
+const ALIAS = { sixty: 'ch-card', populations: 'ch-technique' }; // retired ids that still route somewhere sensible
+const prefixChapter = new Map(); // module prefix -> chapter element
+const BASE_TITLE = 'Spinal anaesthesia — NTF Anaesthesia';
+let current = null;
 
-function paintOverflow() {
-  if (!navList) return;
-  const over = navList.scrollWidth > navList.clientWidth + 2;
-  secnav.classList.toggle('is-overflowing', over);
-  secnav.classList.toggle('at-start', over && navList.scrollLeft <= 2);
-  secnav.classList.toggle('at-end', over && navList.scrollLeft + navList.clientWidth >= navList.scrollWidth - 2);
-}
-navList?.addEventListener('scroll', paintOverflow, { passive: true });
-window.addEventListener('resize', paintOverflow);
-paintOverflow();
+// Chapter kicker and previous/next buttons.
+chapters.forEach((c, i) => {
+  if (c.id === 'ch-home') return;
+  c.prepend(el('p', { class: 'sp-ch-kicker', text: `Chapter ${i} of ${chapters.length - 1} · ${c.dataset.title}` }));
+  const prev = chapters[i - 1];
+  const next = chapters[i + 1];
+  const pager = el('nav', { class: 'sp-pager', 'aria-label': 'Chapter navigation' });
+  pager.append(el('a', { class: 'sp-pager-a sp-pager-prev', href: `#${prev.id}` }, el('small', { text: 'Previous' }), el('span', { text: prev.id === 'ch-home' ? 'Hub' : prev.dataset.title })));
+  pager.append(el('a', { class: 'sp-pager-a sp-pager-hub', href: '#ch-home' }, el('small', { text: 'Back to' }), el('span', { text: 'Hub' })));
+  if (next) pager.append(el('a', { class: 'sp-pager-a sp-pager-next', href: `#${next.id}` }, el('small', { text: 'Next' }), el('span', { text: next.dataset.title })));
+  c.append(pager);
+});
 
-function keepLinkVisible(a) {
-  if (!navList || !a) return;
-  const li = a.parentElement;
-  const left = li.offsetLeft - navList.offsetLeft;
-  const right = left + li.offsetWidth;
-  const pad = 28;
-  let target = null;
-  if (left - pad < navList.scrollLeft) target = Math.max(0, left - pad);
-  else if (right + pad > navList.scrollLeft + navList.clientWidth) target = right + pad - navList.clientWidth;
-  if (target != null) navList.scrollTo({ left: target, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+const chSelect = $('#sp-chselect');
+function paintChapterNav() {
+  $$('#sp-chlist a').forEach((a) => {
+    if (a.dataset.ch === current?.id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+  if (chSelect && current) chSelect.value = current.id;
+  const home = $('#sp-home-link');
+  if (home) home.toggleAttribute('hidden', current?.id === 'ch-home');
 }
 
-let activeId = null;
-function setActive(id) {
-  if (id === activeId) return;
-  activeId = id;
-  for (const a of navLinks) {
-    if (a.hash.slice(1) === id) { a.setAttribute('aria-current', 'true'); keepLinkVisible(a); }
-    else a.removeAttribute('aria-current');
-  }
+function kickResize() {
+  requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+  setTimeout(() => window.dispatchEvent(new Event('resize')), 150);
 }
-function computeActive() {
-  const line = window.innerHeight * 0.3;
-  let current = null;
-  for (const s of sections) if (s.getBoundingClientRect().top <= line) current = s.id;
-  // At the very bottom the last (short) section can never reach the 30% line.
-  if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4 && sections.length) {
-    const last = sections[sections.length - 1];
-    if (last.getBoundingClientRect().top < window.innerHeight) current = last.id;
-  }
-  setActive(current);
+
+/** Make `ch` the visible chapter. Returns true if it changed. */
+function showChapter(ch) {
+  if (!ch || ch === current) return false;
+  current = ch;
+  chapters.forEach((c) => c.classList.toggle('is-current', c === ch));
+  document.body.dataset.chapter = ch.id;
+  document.title = ch.id === 'ch-home' ? BASE_TITLE : `${ch.dataset.title} — ${BASE_TITLE}`;
+  paintChapterNav();
+  kickResize();
+  return true;
 }
-let spyRaf = 0;
-const scheduleSpy = () => { cancelAnimationFrame(spyRaf); spyRaf = requestAnimationFrame(computeActive); };
-if ('IntersectionObserver' in window) {
-  const io = new IntersectionObserver(scheduleSpy, { rootMargin: '-30% 0px -70% 0px', threshold: 0 });
-  sections.forEach((s) => io.observe(s));
-}
-window.addEventListener('scroll', scheduleSpy, { passive: true });
-window.addEventListener('resize', scheduleSpy);
+
+chSelect?.addEventListener('change', () => { location.hash = chSelect.value; });
 
 // ---------------------------------------------------------------- level (tier)
 // Levels: '1' MO only, '2' MO + Resident, 'adv' Advanced pearls only (a digest per section), 'all' everything.
@@ -127,7 +120,7 @@ function contextFor(node, section) {
 /** Build (or rebuild) the Advanced digest: every tier-3 block in a section, copied into one list. */
 function buildDigests() {
   $$('main .sp-section').forEach((sec) => {
-    if (sec.id === 'references' || sec.id === 'quiz') return;
+    if (sec.id === 'references' || sec.id === 'quiz' || sec.id === 'card') return;
     sec.querySelector(':scope > .sp-adv-digest')?.remove();
     const items = $$('[data-tier="3"]', sec).filter((n) => !n.parentElement.closest('[data-tier="3"]'));
     const box = el('div', { class: 'sp-adv-digest' });
@@ -166,7 +159,6 @@ function withScrollAnchor(change) {
     const sec = anchor?.closest('.sp-section');
     if (sec) window.scrollTo({ top: window.scrollY + sec.getBoundingClientRect().top - line, behavior: 'instant' });
   }
-  computeActive();
 }
 
 function applyFilters({ lv = level() } = {}, { save = true, say = false, keepView = true } = {}) {
@@ -198,16 +190,16 @@ function relaxFor(target) {
   let need = 1;
   for (let p = target; p; p = p.parentElement) if (p.dataset?.tier) need = Math.max(need, Number(p.dataset.tier) || 1);
   let lv = level();
-  if (lv === 'adv') { if (!target.closest('.sp-adv-digest,#quiz,#references') && !target.matches('.sp-section,h2,.sp-kicker')) lv = 'all'; }
+  if (lv === 'adv') { if (!target.closest('.sp-adv-digest,#quiz,#references,#card,.sp-hub') && !target.matches('.sp-chapter,.sp-section,h2,.sp-kicker')) lv = 'all'; }
   else if (need > tierMax()) lv = need === 2 ? '2' : 'all';
   if (lv === level()) return false;
-  applyFilters({ lv }, { keepView: false });
+  applyFilters({ lv }, { keepView: false, save: false }); // a deep link never overwrites the saved level
   announce('Level changed to show the linked item.');
   return true;
 }
 
 // ---------------------------------------------------------------- deep links
-const mods = ['anatomy', 'technique', 'spines', 'ultrasound', 'troubleshooting', 'complications', 'populations', 'quiz'];
+const mods = ['card', 'anatomy', 'pharm', 'technique', 'spines', 'ultrasound', 'troubleshooting', 'complications', 'exam', 'quiz'];
 const revealers = new Map(); // prefix -> reveal(hashId)
 
 function isShown(node) { return !!node && node.getClientRects().length > 0 && !node.closest('[hidden]'); }
@@ -216,10 +208,41 @@ function openAncestors(node) {
   for (let p = node.parentElement; p; p = p.parentElement) if (p.tagName === 'DETAILS' && !p.open) p.open = true;
 }
 
+/** Generic reveal: select the tab of any hidden tab panel that contains the target. */
+function revealTabs(node) {
+  for (let p = node.parentElement; p; p = p.parentElement) {
+    if (p.getAttribute('role') === 'tabpanel' && p.hidden) {
+      const tab = document.getElementById(p.getAttribute('aria-labelledby') || '');
+      if (tab) tab.click();
+    }
+  }
+}
+
+const decode = (h) => { try { return decodeURIComponent((h || '').replace(/^#/, '')); } catch { return (h || '').replace(/^#/, ''); } };
+
 async function goToHash(hash, { initial = false } = {}) {
-  const id = decodeURIComponent((hash || '').replace(/^#/, ''));
-  if (!id) return;
+  let id = decode(hash);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!id) id = 'ch-home';
+  if (ALIAS[id] && !document.getElementById(id)) id = ALIAS[id];
+
+  // Whole chapter.
+  if (chapterById.has(id)) {
+    const ch = chapterById.get(id);
+    showChapter(ch);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (!initial) {
+      const h = ch.querySelector('h1,h2');
+      if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }
+      announce(`${ch.dataset.title} chapter`);
+    }
+    return;
+  }
+
   let target = document.getElementById(id);
+  const chapter = target?.closest('.sp-chapter') || prefixChapter.get(id.split('-')[0]);
+  const changed = showChapter(chapter);
+  if (changed) window.scrollTo({ top: 0, behavior: 'instant' });
   relaxFor(target);
   if (!isShown(target)) {
     const prefix = id.split('-')[0];
@@ -229,13 +252,12 @@ async function goToHash(hash, { initial = false } = {}) {
     }
     target = document.getElementById(id);
     relaxFor(target);
-    if (target && !isShown(target)) openAncestors(target);
+    if (target && !isShown(target)) { revealTabs(target); openAncestors(target); }
   }
   if (!target || !isShown(target)) return;
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Wait a frame so layout from reveal() is settled.
   requestAnimationFrame(() => {
-    target.scrollIntoView({ block: 'start', behavior: initial || reduce ? 'instant' : 'smooth' });
+    target.scrollIntoView({ block: 'start', behavior: initial || changed || reduce ? 'instant' : 'smooth' });
     if (!initial) {
       if (!target.matches('a,button,input,select,textarea,summary,[tabindex]')) target.setAttribute('tabindex', '-1');
       target.focus({ preventScroll: true });
@@ -260,6 +282,42 @@ function settleOn(target) {
   }, ms));
 }
 window.addEventListener('hashchange', () => goToHash(location.hash));
+// Clicking a link to the hash we are already on fires no hashchange; route it ourselves.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('a[href^="#"]');
+  if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+  if (a.hash && a.hash === location.hash) { e.preventDefault(); goToHash(a.hash); }
+  else if (a.getAttribute('href') === '#ch-home' && !location.hash) { e.preventDefault(); goToHash('#ch-home'); }
+});
+
+// ---------------------------------------------------------------- search
+{
+  const sheet = $('#sp-sheet');
+  const openBtn = $('#sp-search-open');
+  const sheetQ = $('#sp-sheet-q');
+  const hubQ = $('#sp-hub-q');
+  const closeSheet = (refocus = false) => {
+    if (!sheet || sheet.hidden) return;
+    sheet.hidden = true;
+    openBtn?.setAttribute('aria-expanded', 'false');
+    if (refocus) openBtn?.focus();
+  };
+  if (sheet && sheetQ) attachSearch(sheetQ, $('#sp-sheet-res'), { onPick: () => closeSheet(), onEscape: () => closeSheet(true) });
+  if (hubQ) attachSearch(hubQ, $('#sp-hub-res'));
+  $('#sp-sheet-close')?.addEventListener('click', () => closeSheet(true));
+  const openSearch = () => {
+    if (current?.id === 'ch-home' && hubQ) { hubQ.scrollIntoView({ block: 'center' }); hubQ.focus(); return; }
+    if (!sheet) return;
+    sheet.hidden = false;
+    openBtn?.setAttribute('aria-expanded', 'true');
+    sheetQ.focus();
+  };
+  openBtn?.addEventListener('click', () => { if (sheet && !sheet.hidden) closeSheet(); else openSearch(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && !e.target.closest?.('input,textarea,select,[contenteditable]')) { e.preventDefault(); openSearch(); }
+  });
+  window.addEventListener('hashchange', () => closeSheet());
+}
 
 // ---------------------------------------------------------------- mount sections
 function mountError(host, name, err) {
@@ -270,6 +328,13 @@ function mountError(host, name, err) {
 }
 
 async function boot() {
+  // Start on the right chapter straight away. Hidden chapters are laid out off-screen while mounting,
+  // so widgets that measure their width at mount still see the real width.
+  {
+    const id0 = decode(location.hash);
+    const direct = chapterById.get(id0) || chapterById.get(ALIAS[id0]) || document.getElementById(id0)?.closest('.sp-chapter');
+    if (direct) showChapter(direct); else if (!id0) showChapter(chapterById.get('ch-home'));
+  }
   const loaded = await Promise.allSettled(mods.map((m) => import(`./sections/${m}.js?v=1`)));
   // Register every module's refs before any mount, so cross-section citations resolve.
   loaded.forEach((r, i) => {
@@ -284,20 +349,23 @@ async function boot() {
     const mod = r.value;
     try {
       if (typeof mod.mount !== 'function') throw new Error('module has no mount()');
-      const api = await mod.mount(host);
       const prefix = mod.meta?.prefix;
+      if (prefix && host?.closest('.sp-chapter')) prefixChapter.set(prefix, host.closest('.sp-chapter'));
+      const api = await mod.mount(host);
       if (prefix && api && typeof api.reveal === 'function') revealers.set(prefix, api.reveal.bind(api));
       if (prefix && typeof mod.reveal === 'function' && !revealers.has(prefix)) revealers.set(prefix, mod.reveal);
     } catch (err) { mountError(host, name, err); }
   });
   await Promise.allSettled(mounts);
   try { finalise(); } catch (err) { console.error('[spinal] references failed', err); }
-  paintOverflow();
-  computeActive();
   if (level() === 'adv') buildDigests();
+  try { buildIndex(); } catch (err) { console.error('[spinal] search index failed', err); }
+  document.body.classList.remove('sp-booting');
+  document.body.classList.add('sp-chapters-on');
   document.body.dataset.spReady = 'true';
   document.dispatchEvent(new CustomEvent('sp-ready'));
-  if (location.hash) await goToHash(location.hash, { initial: true });
+  await goToHash(location.hash, { initial: true });
+  kickResize();
 }
 
 boot();

@@ -431,7 +431,7 @@ function describeScene(sc, st) {
     const base = `paramedian sagittal oblique view ${where}, cranial on the left`;
     let body;
     if (sc.id === 'sag-sacrum') body = 'The sacrum is a long, flat bright line with a dense shadow and no gaps. At the cranial (left) edge is the L5–S1 gap, the first window above it.';
-    else body = `Bright sloping laminae with black acoustic shadows beneath them (the sawtooth pattern). Through the gap in the centre${sc.caliper ? ` (${sc.caliper.name})` : ''}: the bright posterior complex at about ${d} cm, the black intrathecal space with faint cauda equina, and the bright anterior complex at about 6.5 cm.`;
+    else body = `Bright sloping laminae with black acoustic shadows beneath them (the “horse head” pattern). Through the gap in the centre${sc.caliper ? ` (${sc.caliper.name})` : ''}: the bright posterior complex at about ${d} cm, the black intrathecal space with faint cauda equina, and the bright anterior complex at about 6.5 cm.`;
     if (sc.id === 'sag-l5s1') body += ' The flat sacrum is on the right (caudal) side.';
     return { scan: `Simulated ${base}. ${body}`, diagram: `Labelled diagram of the ${base}, same geometry as the simulated scan.`, short: `Showing the ${base}.` };
   }

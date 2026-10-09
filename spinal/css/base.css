@@ -103,7 +103,7 @@ html{scroll-padding-top:160px}
 
 /* ------------------------------------------------------------------ base type */
 body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--sp-focus);outline-offset:3px;border-radius:0}
-.spinal-app :is(.sp-hero,main,.sp-secnav,.sp-foot) a{color:var(--sp-accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.spinal-app :is(.sp-hero,main,.sp-foot) a{color:var(--sp-accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
 .spinal-app :is(.sp-hero,main,.sp-foot) a:hover{text-decoration-thickness:2px}
 .spinal-app main{display:block;padding-bottom:24px}
 .spinal-app main :is(h2,h3,h4){color:var(--sp-ink);margin:0}
@@ -146,24 +146,9 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 .spinal-app .sp-tool[data-theme-state=light] svg .fill{fill:none}
 .spinal-app .sp-tool[data-theme-state=dark] svg circle{fill:currentColor}
 
-/* ------------------------------------------------------------------ sticky section nav */
-.spinal-app .sp-secnav{position:sticky;top:var(--sp-header-h);z-index:50;background:color-mix(in srgb,var(--sp-bg) 94%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--sp-line)}
-.spinal-app .sp-secnav ol{display:flex;gap:28px;margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.spinal-app .sp-secnav ol::-webkit-scrollbar{display:none}
-.spinal-app .sp-secnav.is-overflowing ol{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%)}
-.spinal-app .sp-secnav.is-overflowing.at-start ol{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent 100%)}
-.spinal-app .sp-secnav.is-overflowing.at-end ol{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px);mask-image:linear-gradient(to right,transparent 0,#000 18px)}
-.spinal-app .sp-secnav li{flex-shrink:0}
-.spinal-app .sp-secnav a{display:flex;align-items:center;gap:7px;min-height:48px;font:14px/1.2 var(--sp-sans);color:var(--sp-muted);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .15s,border-color .15s}
-.spinal-app .sp-secnav a span{font:11px/1 var(--sp-mono);letter-spacing:.04em}
-.spinal-app .sp-secnav a:hover{color:var(--sp-ink)}
-.spinal-app .sp-secnav a[aria-current=true]{color:var(--sp-ink);border-bottom-color:var(--sp-accent)}
-.spinal-app .sp-secnav a:focus-visible{outline-offset:-2px}
-
 /* ------------------------------------------------------------------ sections */
 .spinal-app .sp-section{padding-block:72px;border-top:1px solid var(--sp-line-strong)}
 .spinal-app .sp-section>.sp-kicker{color:var(--sp-accent)}
-.spinal-app .sp-section:first-child{border-top:0}
 .spinal-app .sp-mount{min-height:40px}
 .spinal-app .sp-mount-error{font-size:15px;color:var(--sp-danger);background:var(--sp-danger-bg);border-left:3px solid var(--sp-danger);padding:12px 16px;max-width:68ch}
 .spinal-app .sp-placeholder{color:var(--sp-muted);font-style:italic}
@@ -317,7 +302,6 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
   .spinal-app .sp-tool span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
   .spinal-app .sp-section{padding-block:48px}
   .spinal-app main h3{font-size:22px;margin-top:56px}
-  .spinal-app .sp-secnav ol{gap:22px}
   .spinal-app .sp-lead{font-size:16.5px}
 }
 
@@ -326,7 +310,7 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 }
 
 @media print{
-  .spinal-app :is(.sp-secnav,.sp-tools,.sp-skip,.sp-fig-controls){display:none!important}
+  .spinal-app :is(.sp-tools,.sp-skip,.sp-fig-controls){display:none!important}
   .spinal-app .sp-section{break-inside:auto;padding-block:24px}
   body.spinal-app{background:#fff;color:#000}
 }
@@ -411,7 +395,7 @@ html:has(body.spinal-app){scroll-padding-bottom:96px}
 
 /* Advanced level: each section shows only its digest of consultant pearls (built by app.js). */
 .spinal-app .sp-adv-digest{display:none}
-body.spinal-app[data-level="adv"] main .sp-section:not(#quiz):not(#references) > :not(.sp-kicker,h2,.sp-adv-digest){display:none!important}
+body.spinal-app[data-level="adv"] main .sp-section:not(#quiz):not(#references):not(#card) > :not(.sp-kicker,h2,.sp-adv-digest){display:none!important}
 body.spinal-app[data-level="adv"] .sp-adv-digest{display:block}
 body.spinal-app[data-level="adv"] #quiz [data-tier="1"],body.spinal-app[data-level="adv"] #quiz [data-tier="2"]{display:none!important}
 .spinal-app .sp-adv-digest{max-width:860px}
@@ -430,3 +414,107 @@ body.spinal-app[data-level="adv"] #quiz [data-tier="1"],body.spinal-app[data-lev
 body.spinal-app main [data-tier]:not(td,th,tr,tbody,thead,.sp-keypoints,.sp-sixty):not([data-tier="1"] [data-tier="1"],[data-tier="2"] [data-tier="2"],[data-tier="3"] [data-tier="3"]){margin-top:max(30px,var(--sp-tier-gap,30px))}
 body.spinal-app main [data-tier]:not(td,th,tr,tbody,thead,.sp-keypoints,.sp-sixty)::after{top:-24px;left:0}
 @media (max-width:760px){.spinal-app .sp-controls .sp-level{flex:1;display:flex}.spinal-app .sp-controls .sp-level-btn{flex:1}}
+
+/* ================================================================== v3: hub + chapters */
+.spinal-app main{position:relative}
+.spinal-app .sp-chapter{display:block}
+/* While mounting, hidden chapters sit off-screen at full width so widgets can measure themselves. */
+body.spinal-app.sp-booting .sp-chapter:not(.is-current){position:absolute;left:-200vw;top:0;width:100%;visibility:hidden;pointer-events:none}
+body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
+.spinal-app .sp-chapter>.sp-section{padding-block:28px 40px;border-top:0}
+.spinal-app .sp-chapter>.sp-section+.sp-section{border-top:1px solid var(--sp-line-strong);padding-top:48px}
+.spinal-app .sp-ch-kicker{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-accent);margin:28px 0 0}
+
+/* Sticky bar: hub button, chapter nav, search, share */
+.spinal-app .sp-bar{position:sticky;top:var(--sp-header-h);z-index:50;background:color-mix(in srgb,var(--sp-bg) 96%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--sp-line)}
+.spinal-app .sp-bar-inner{display:flex;align-items:center;gap:8px;min-height:56px;padding-block:6px}
+.spinal-app .sp-bar-home{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 8px;border:1px solid var(--sp-line-strong);color:var(--sp-ink);font:500 14px/1 var(--sp-sans);text-decoration:none;flex-shrink:0;background:var(--sp-surface)}
+.spinal-app .sp-bar-home svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.spinal-app .sp-bar-home[hidden]{display:none}
+.spinal-app .sp-bar-home:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+.spinal-app .sp-chnav{flex:1;min-width:0;display:flex}
+.spinal-app .sp-chlist{display:none;list-style:none;margin:0;padding:0;gap:2px 14px;flex-wrap:nowrap;align-items:center;min-width:0}
+.spinal-app .sp-chlist a{display:flex;align-items:center;min-height:44px;font:13.5px/1.2 var(--sp-sans);color:var(--sp-muted);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+.spinal-app .sp-chlist a:hover{color:var(--sp-ink)}
+.spinal-app .sp-chlist a[aria-current=page]{color:var(--sp-ink);border-bottom-color:var(--sp-accent);font-weight:500}
+.spinal-app .sp-chsel{display:block;flex:1;min-width:0}
+.spinal-app .sp-chsel select{width:100%;min-height:44px;padding:0 10px;border:1px solid var(--sp-line-strong);border-radius:0;background:var(--sp-surface);color:var(--sp-ink);font:15px/1 var(--sp-sans);text-overflow:ellipsis}
+@media (min-width:1240px){
+  .spinal-app .sp-chlist{display:flex}
+  .spinal-app .sp-chsel{display:none}
+  .spinal-app .sp-chnav{justify-content:center}
+}
+.spinal-app .sp-bar-btn{flex-shrink:0}
+@media (max-width:1239px){.spinal-app .sp-bar-btn{width:44px;padding:0;justify-content:center}.spinal-app .sp-bar-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}}
+@media (max-width:420px){.spinal-app .sp-bar-inner{gap:6px}.spinal-app .sp-bar-home span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.spinal-app .sp-bar-home{padding:0 10px;min-width:44px;justify-content:center}}
+
+/* Search */
+.spinal-app .sp-sheet{position:fixed;z-index:56;left:0;right:0;top:calc(var(--sp-header-h) + 56px);max-height:calc(100vh - var(--sp-header-h) - 56px - 90px);overflow-y:auto;background:var(--sp-bg);border-bottom:2px solid var(--sp-accent);box-shadow:0 12px 24px rgba(0,0,0,.12)}
+.spinal-app .sp-sheet[hidden]{display:none}
+.spinal-app .sp-sheet-inner{padding-block:12px 16px}
+.spinal-app .sp-search-row{display:flex;gap:8px;align-items:stretch}
+.spinal-app .sp-search-input{flex:1;min-width:0;min-height:48px;padding:0 14px;border:1px solid var(--sp-line-strong);border-radius:0;background:var(--sp-surface);color:var(--sp-ink);font:16px/1.2 var(--sp-sans)}
+.spinal-app .sp-sresults{list-style:none;margin:10px 0 0;padding:0;max-width:820px}
+.spinal-app .sp-sresults:empty{display:none}
+.spinal-app main .sp-sresults li,.spinal-app .sp-sheet .sp-sresults li{margin:0;max-width:none}
+.spinal-app .sp-sres{display:block;padding:10px 12px;min-height:44px;border:1px solid var(--sp-line);border-top-width:0;background:var(--sp-surface);color:var(--sp-ink);text-decoration:none!important}
+.spinal-app .sp-sresults li:first-child .sp-sres{border-top-width:1px}
+.spinal-app .sp-sres:hover,.spinal-app .sp-sres:focus-visible{background:var(--sp-accent-soft)}
+.spinal-app .sp-sres-t{display:block;font:500 15px/1.35 var(--sp-sans)}
+.spinal-app .sp-sres-c{display:block;font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-accent)}
+.spinal-app .sp-sres-s{display:block;font-size:13.5px;line-height:1.5;color:var(--sp-muted)}
+.spinal-app .sp-sres mark{background:var(--sp-warn-bg);color:var(--sp-ink);padding:0 1px}
+.spinal-app .sp-sres-none{padding:12px;color:var(--sp-muted);background:var(--sp-surface);border:1px solid var(--sp-line);list-style:none}
+
+/* Hub */
+.spinal-app .sp-hub{padding-block:32px 40px}
+.spinal-app .sp-hub h1{font:400 clamp(38px,5vw,60px)/1.08 var(--sp-serif);letter-spacing:-.04em;margin:0 0 12px;color:var(--sp-ink)}
+.spinal-app .sp-hub .sp-eyebrow{margin:0 0 12px}
+.spinal-app .sp-hub .sp-lead{margin:0 0 8px}
+.spinal-app .sp-hub .sp-credit{font-size:14px;line-height:1.6;color:var(--sp-muted);margin:0 0 22px}
+.spinal-app .sp-hub-search{max-width:720px}
+.spinal-app .sp-hub-h{font:400 clamp(24px,2.6vw,30px)/1.2 var(--sp-serif)!important;letter-spacing:-.02em;margin:36px 0 14px!important}
+.spinal-app .sp-hub-note{font-size:14px;color:var(--sp-muted);margin:0 0 12px}
+.spinal-app main .sp-tiles{list-style:none;padding:0;margin:0}
+.spinal-app main .sp-tiles li{margin:0;max-width:none}
+.spinal-app main .sp-tiles li+li{margin-top:0}
+.spinal-app main a.sp-tile{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:64px;height:100%;box-sizing:border-box;padding:10px 14px;border:1px solid var(--sp-line-strong);border-left:4px solid var(--sp-accent);background:var(--sp-surface);color:var(--sp-ink);text-decoration:none}
+.spinal-app main a.sp-tile:hover,.spinal-app main a.sp-tile:focus-visible{background:var(--sp-accent-soft)}
+.spinal-app .sp-tile-t{font:500 16px/1.3 var(--sp-sans)}
+.spinal-app .sp-tile-d{font-size:13.5px;line-height:1.4;color:var(--sp-muted)}
+.spinal-app main .sp-hubch{list-style:none;margin:0;padding:0;display:grid;gap:0;max-width:820px;counter-reset:hubch}
+.spinal-app main .sp-hubch li{margin:0;max-width:none;counter-increment:hubch;border-top:1px solid var(--sp-line)}
+.spinal-app main .sp-hubch li:last-child{border-bottom:1px solid var(--sp-line)}
+.spinal-app main .sp-hubch li+li{margin-top:0}
+.spinal-app main .sp-hubch a{display:grid;grid-template-columns:28px 1fr;column-gap:10px;align-items:baseline;min-height:56px;padding:10px 4px;color:var(--sp-ink);text-decoration:none}
+.spinal-app main .sp-hubch a::before{content:counter(hubch);grid-row:span 2;font:500 13px/1.6 var(--sp-mono);color:var(--sp-muted)}
+.spinal-app main .sp-hubch a:hover,.spinal-app main .sp-hubch a:focus-visible{background:var(--sp-accent-soft)}
+.spinal-app .sp-hubch-t{font:500 16px/1.35 var(--sp-sans)}
+.spinal-app .sp-hubch-d{font-size:14px;line-height:1.45;color:var(--sp-muted)}
+.spinal-app main .sp-levels-key{display:grid;gap:8px;margin:0;max-width:720px}
+.spinal-app .sp-levels-key div{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:baseline;padding:8px 0;border-top:1px solid var(--sp-line)}
+.spinal-app .sp-levels-key dt{font:500 14px/1.4 var(--sp-mono);color:var(--sp-accent)}
+.spinal-app .sp-levels-key dd{margin:0;font-size:15px;line-height:1.5}
+
+/* Layout utilities for chapter authors */
+.spinal-app .sp-grid{display:grid;gap:10px;grid-template-columns:1fr;list-style:none;padding:0;margin:0 0 24px}
+@media (min-width:600px){.spinal-app .sp-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}.spinal-app .sp-grid--2{grid-template-columns:repeat(2,minmax(0,1fr))}.spinal-app .sp-grid--3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.spinal-app .sp-box{padding:14px 16px;border:1px solid var(--sp-line);background:var(--sp-surface)}
+.spinal-app .sp-scroll-x{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+.spinal-app .sp-nowrap{white-space:nowrap}
+
+/* Previous / next chapter */
+.spinal-app .sp-pager{display:grid;grid-template-columns:1fr;gap:8px;margin:32px 0 8px;padding-top:20px;border-top:1px solid var(--sp-line-strong)}
+@media (min-width:700px){.spinal-app .sp-pager{grid-template-columns:1fr auto 1fr}}
+.spinal-app main a.sp-pager-a{display:flex;flex-direction:column;justify-content:center;min-height:56px;padding:8px 14px;border:1px solid var(--sp-line-strong);background:var(--sp-surface);color:var(--sp-ink);text-decoration:none}
+.spinal-app main a.sp-pager-a:hover,.spinal-app main a.sp-pager-a:focus-visible{background:var(--sp-accent-soft);border-color:var(--sp-accent)}
+.spinal-app .sp-pager-a small{font:400 11px/1.5 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted)}
+.spinal-app .sp-pager-a span{font:500 15px/1.35 var(--sp-sans)}
+.spinal-app .sp-pager-next{text-align:right;align-items:flex-end}
+.spinal-app .sp-pager-hub{align-items:center;text-align:center}
+
+/* Print: current chapter only (the ward card relies on this) */
+@media print{
+  .spinal-app :is(.ntf-header,.ntf-footer,.sp-bar,.sp-sheet,.sp-pager,.sp-foot,.sp-controls,.sp-skip,.sp-ch-kicker){display:none!important}
+  body.spinal-app .sp-chapter:not(.is-current){display:none!important}
+}

@@ -16,6 +16,7 @@ import { el, cite, tier, keyPoints, callout } from '../ui.js?v=1';
 | 2 | Resident | up to the MMed exam | why the block spreads higher in pregnancy-like states (reasoning); viva points; guideline detail |
 | 3 | Advanced | subspecialty and consultant pearls | fine needle-handling tips for a calcified spine; limits of the evidence |
 
+The level explanation lives once, on the hub (ch-home). Don't repeat it in chapters.
 Badges ("MO", "Resident", "Advanced") are drawn by CSS on tagged blocks.
 
 ## Key points (every section)
@@ -30,6 +31,9 @@ Allowed ids: `asra2025`, `esaic2022`, `aagbi2013`, `uppal2023`, `iso80369-6` (co
 product labels only inside drug-dose tables or dose lines: `tq-hpra-heavy`, `tq-sg-heavy`, `tq-sg-plain`,
 `tq-prilotekal`, `tq-ampres`, `cx-marcain-smpc`, `ts-smpc-*`.
 Remove every other `cite(...)` but keep the sentence, and delete unused entries from your `export const refs`.
+
+## Search
+`registerSearch([{ title, text, id }])` (from `ui.js`) adds text the page scan can't see (tree nodes, canvas labels). `id` must be an element that exists. Call it in `mount()`. See V3-SHELL.md.
 
 ## Levels (reader-facing)
 MO = tier 1 only; Resident = tiers 1-2; Advanced = tier-3 blocks only, shown as a per-section digest built by app.js (buildDigests); All = everything (default). body[data-level] holds 1|2|adv|all; body[data-tier-max] is derived.
