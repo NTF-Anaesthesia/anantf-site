@@ -3,14 +3,13 @@
 /* ------------------------------------------------------------------ jump row + parts */
 .spinal-app .tq-jump{counter-reset:none}
 .spinal-app .tq-jump-n{font:400 11px/1 var(--sp-mono);color:var(--sp-muted);margin-right:6px;letter-spacing:.04em}
-.spinal-app .tq-part{padding-top:8px;margin-top:40px;border-top:1px solid var(--sp-line)}
-.spinal-app .tq-part:first-of-type{margin-top:8px}
-.spinal-app main .tq-h{margin:20px 0 14px;max-width:none}
-.spinal-app .tq-num{display:inline-block;min-width:3.2em;font:400 13px/1 var(--sp-mono);letter-spacing:.04em;color:var(--sp-muted);vertical-align:.32em}
+.spinal-app .tq-part{padding-top:0;margin-top:0}
+.spinal-app main .tq-h{margin:56px 0 14px;max-width:none}
+.spinal-app .tq-num{display:inline-block;min-width:3.2em;font:400 13px/1 var(--sp-mono);letter-spacing:.04em;color:var(--sp-muted);vertical-align:.22em}
 .spinal-app .tq-part:target>.tq-h{color:var(--sp-accent)}
 .spinal-app main .tq-list{padding-left:1.2em;margin:0 0 16px}
 .spinal-app main .tq-list li{margin:0 0 8px}
-.spinal-app main .tq-list li::marker{color:var(--sp-line-strong)}
+.spinal-app main .tq-list li::marker{color:var(--sp-muted)}
 .spinal-app .tq-two{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin:8px 0 8px}
 @media (min-width:900px){.spinal-app .tq-two{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px}}
 .spinal-app .tq-two>*>:first-child{margin-top:0}
