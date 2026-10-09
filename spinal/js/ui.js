@@ -58,6 +58,22 @@ export function announce(text) {
   requestAnimationFrame(() => { live.textContent = text; });
 }
 
+// ---------------------------------------------------------------- search registry
+const searchExtras = [];
+/**
+ * registerSearch([{title, text, id}]) adds items to the page search for content that lives inside
+ * trees, canvases or other places the text scan can't see. `id` must be an element id that exists
+ * (the link target). Call it during mount().
+ */
+export function registerSearch(items) {
+  if (!Array.isArray(items)) return;
+  for (const it of items) {
+    if (it && it.id && (it.title || it.text)) searchExtras.push({ title: String(it.title || ''), text: String(it.text || ''), id: String(it.id) });
+  }
+}
+/** Used by the shell search. */
+export function getSearchExtras() { return searchExtras; }
+
 // ---------------------------------------------------------------- tiers and key points
 /** Tag a block with a learning tier (1 MO, 2 Resident, 3 Advanced). Returns the node. */
 export function tier(node, n) {
@@ -81,7 +97,7 @@ const ICONS = {
   pearl: '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="5.2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
   policy: '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3.5 1.5h6l3 3v10h-9z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="miter"/><path d="M9.5 1.5v3h3M5.5 8h5M5.5 10.5h5M5.5 13h3" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>',
 };
-const CALLOUT_LABEL = { key: 'Key point', warn: 'Warning', pearl: 'Exam pearl', policy: 'Check local policy' };
+const CALLOUT_LABEL = { key: 'Key point', warn: 'Warning', pearl: 'Exam pearl', policy: 'Note' };
 
 /**
  * callout('warn', {title:'Stop if paraesthesia persists', body:'<p>…</p>'})

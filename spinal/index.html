@@ -5,129 +5,161 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Spinal anaesthesia — NTF Anaesthesia</title>
-<meta name="description" content="How to perform a spinal anaesthetic and how to troubleshoot it: neuraxial anatomy, step-by-step technique, ultrasound-assisted neuraxial, decision trees, complications and self-quiz.">
+<meta name="description" content="Spinal anaesthesia for residents and medical officers: ward card, anatomy, pharmacology, technique, difficult backs and ultrasound, troubleshooting, complications and FRCA exam knowledge.">
 <meta name="color-scheme" content="light">
 <link rel="icon" href="../ana-ntf-monogram.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/navigation.css?v=20261008">
 <link rel="stylesheet" href="../assets/site-shell.css?v=20261008">
 <link rel="stylesheet" href="../assets/header-nav.css?v=20261008">
 <script defer src="../assets/navigation.js?v=20261008"></script>
-<link rel="stylesheet" href="css/base.css?v=1">
+<link rel="stylesheet" href="css/base.css?v=3">
 <link rel="stylesheet" href="css/anatomy.css?v=1">
 <link rel="stylesheet" href="css/technique.css?v=1">
 <link rel="stylesheet" href="css/spines.css?v=1">
 <link rel="stylesheet" href="css/ultrasound.css?v=1">
 <link rel="stylesheet" href="css/troubleshooting.css?v=1">
 <link rel="stylesheet" href="css/complications.css?v=1">
-<link rel="stylesheet" href="css/populations.css?v=1">
 <link rel="stylesheet" href="css/quiz.css?v=1">
 <link rel="modulepreload" href="js/ui.js?v=1"><link rel="modulepreload" href="js/refs.js?v=1">
+<noscript><style>body.sp-booting .sp-chapter{position:static!important;visibility:visible!important}</style></noscript>
 </head>
-<body class="spinal-app">
+<body class="spinal-app sp-booting">
 <a class="sp-skip" href="#main">Skip to content</a>
 <header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../department.html">About Us</a><a href="../why-join-us.html">Why Join Us?</a><a href="../clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../mopex/">MO Handbook</a><a href="../senior-resident.html">Senior Residency</a><a href="../exams/">MMed Exam Prep</a></div></details><a href="../airway.html">Airway</a><a href="../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../pocus/">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
 
-<div class="sp-hero site-container">
-  <div class="sp-hero-top">
-    <p class="sp-eyebrow">Regional anaesthesia · Neuraxial</p>
-    <div class="sp-tools">
-      <button type="button" class="sp-tool" id="sp-share" aria-describedby="sp-share-status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span>Copy link</span></button>
-      <span id="sp-share-status" class="sp-sr" role="status" aria-live="polite"></span>
-    </div>
-  </div>
-  <h1>Spinal anaesthesia: <em>how to do it</em> and how to troubleshoot it</h1>
-  <p class="sp-lead">Anatomy, technique, ultrasound and decision trees for residents and medical officers.</p>
-  <p class="sp-credit">Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia</p>
-  <p class="sp-controls-note">Choose your level (MO, Resident, Advanced or All) with the controls that stay at the bottom of the screen.</p>
-  <div class="sp-controls" id="sp-controls" role="group" aria-label="Reading controls" hidden>
-    <div class="sp-controls-row">
-      <span class="sp-controls-label" id="sp-level-label">Level</span>
-      <div class="sp-level" role="group" aria-labelledby="sp-level-label">
-        <button type="button" class="sp-level-btn" data-level="1" aria-pressed="false" title="MO: MOPEX level. What you need for your first supervised spinals.">MO</button>
-        <button type="button" class="sp-level-btn" data-level="2" aria-pressed="false" title="Resident: MO and Resident content, up to the MMed exam.">Resident</button>
-        <button type="button" class="sp-level-btn" data-level="adv" aria-pressed="false" title="Advanced: subspecialty detail and consultant pearls only.">Advanced</button>
-        <button type="button" class="sp-level-btn" data-level="all" aria-pressed="true" title="All: everything on the page.">All</button>
-      </div>
-    </div>
-    <p class="sp-controls-hint" id="sp-level-hint">Showing everything: MO, Resident and Advanced.</p>
+<div class="sp-bar" id="sp-bar"><div class="sp-bar-inner site-container">
+  <a class="sp-bar-home" id="sp-home-link" href="#ch-home" aria-label="Back to the hub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7M6 9.5V20h12V9.5M10 20v-5.5h4V20"/></svg><span>Hub</span></a>
+  <nav class="sp-chnav" aria-label="Chapters">
+    <ol class="sp-chlist" id="sp-chlist"><li><a href="#ch-card" data-ch="ch-card">Ward card</a></li><li><a href="#ch-anatomy" data-ch="ch-anatomy">Anatomy</a></li><li><a href="#ch-pharm" data-ch="ch-pharm">Pharmacology</a></li><li><a href="#ch-technique" data-ch="ch-technique">Technique</a></li><li><a href="#ch-backs" data-ch="ch-backs">Backs &amp; US</a></li><li><a href="#ch-trouble" data-ch="ch-trouble">Troubleshooting</a></li><li><a href="#ch-complications" data-ch="ch-complications">Complications</a></li><li><a href="#ch-exam" data-ch="ch-exam">Exam &amp; quiz</a></li><li><a href="#ch-refs" data-ch="ch-refs">References</a></li></ol>
+    <label class="sp-chsel"><span class="sp-sr">Go to chapter</span><select id="sp-chselect"><option value="ch-home">Hub (home)</option><option value="ch-card">Ward card</option><option value="ch-anatomy">Anatomy &amp; physiology</option><option value="ch-pharm">Pharmacology</option><option value="ch-technique">Technique</option><option value="ch-backs">Difficult backs &amp; ultrasound</option><option value="ch-trouble">Troubleshooting</option><option value="ch-complications">Complications &amp; aftercare</option><option value="ch-exam">Exam (FRCA) &amp; quiz</option><option value="ch-refs">References</option></select></label>
+  </nav>
+  <button type="button" class="sp-tool sp-bar-btn" id="sp-search-open" aria-expanded="false" aria-controls="sp-sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><span>Search</span></button>
+  <button type="button" class="sp-tool sp-bar-btn" id="sp-share" aria-describedby="sp-share-status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span>Copy link</span></button>
+  <span id="sp-share-status" class="sp-sr" role="status" aria-live="polite"></span>
+</div></div>
+
+<div class="sp-sheet" id="sp-sheet" role="dialog" aria-label="Search this page" hidden>
+  <div class="sp-sheet-inner site-container">
+    <div class="sp-search-row"><input type="search" class="sp-search-input" id="sp-sheet-q" placeholder="Search, e.g. headache, apixaban, dry tap" autocomplete="off" spellcheck="false" aria-label="Search this page"><button type="button" class="sp-tool" id="sp-sheet-close">Close</button></div>
+    <ul class="sp-sresults" id="sp-sheet-res" aria-live="polite"></ul>
   </div>
 </div>
 
-<nav class="sp-secnav" aria-label="Sections of this page"><div class="sp-secnav-inner site-container"><ol>
-  <li><a href="#sixty"><span>60s</span>In 60 seconds</a></li><li><a href="#anatomy"><span>01</span>Anatomy</a></li><li><a href="#technique"><span>02</span>Technique</a></li>
-  <li><a href="#spines"><span>03</span>Challenging spines</a></li><li><a href="#ultrasound"><span>04</span>Ultrasound</a></li>
-  <li><a href="#troubleshooting"><span>05</span>Troubleshooting</a></li><li><a href="#complications"><span>06</span>Complications</a></li>
-  <li><a href="#populations"><span>07</span>Populations</a></li><li><a href="#quiz"><span>08</span>Quiz</a></li><li><a href="#references"><span>·</span>References</a></li></ol></div></nav>
-
 <main id="main" class="site-container">
-  <section id="sixty" class="sp-section sp-sixty" data-tier="1" aria-labelledby="sixty-h">
-    <p class="sp-kicker">Start here</p><h2 id="sixty-h">Spinal in 60 seconds</h2>
-    <p class="sp-lead">A safe single-shot spinal, from consent to block check. Details follow in the sections below.</p>
-    <ol class="sp-sixty-list">
-      <li><strong>Consent.</strong> Explain the benefits, the common effects and the rare serious risks. Offer the alternative. Confirm the side and site.</li>
-      <li><strong>Bleeding and infection check.</strong> Anticoagulants, platelets and clotting, and any sepsis or skin infection near the site.</li>
-      <li><strong>Brief your senior.</strong> Say what you plan to do, and who is nearby if it goes wrong.</li>
-      <li><strong>Set up.</strong> Monitors on, working IV, oxygen, airway kit and a vasopressor ready. Have a trained assistant.</li>
-      <li><strong>Check the drug.</strong> Read the ampoule label, with a second person. Right drug, right dose, in date. Use neuraxial-only connectors.</li>
-      <li><strong>Position.</strong> Sitting or lateral, back arched. Choose an interspace well below the end of the cord, usually L3/4 or L4/5.</li>
-      <li><strong>Aseptic technique.</strong> Hands, mask, sterile gloves, skin prep left to dry fully, sterile drape.</li>
-      <li><strong>Needle in slowly.</strong> Local anaesthetic to the skin. Advance in small steps and stop to check for CSF each time.</li>
-      <li><strong>Inject only with free CSF.</strong> Attach, check CSF flows, inject slowly. Never inject against resistance or into pain.</li>
-      <li><strong>Lie back and check.</strong> Position as planned, then BP and heart rate every few minutes. Test the sensory level and leg movement before surgery. Write it down.</li>
-    </ol>
-    <aside class="sp-stop" aria-label="Stop and get help">
-      <p class="sp-stop-title">Stop and get help if</p>
-      <ul>
-        <li><strong>Pain or persistent paraesthesia</strong> when the needle goes in or on injection. Don&rsquo;t inject. Withdraw.</li>
-        <li><strong>Blood-stained CSF that doesn&rsquo;t clear</strong>, or you aren&rsquo;t sure the clotting is safe.</li>
-        <li><strong>Falling blood pressure, slow heart rate, breathlessness or drowsiness</strong> after the injection. Call for help, give oxygen and treat early.</li>
-      </ul>
-    </aside>
+  <section class="sp-chapter" id="ch-home" data-title="Hub" aria-labelledby="home-h">
+    <div class="sp-hub">
+      <p class="sp-eyebrow">Regional anaesthesia · Neuraxial</p>
+      <h1 id="home-h">Spinal anaesthesia</h1>
+      <p class="sp-lead">Do it safely at the bedside, fix it when it goes wrong, and know it for the exam.</p>
+      <p class="sp-credit">Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia</p>
+      <div class="sp-search-row sp-hub-search" role="search"><input type="search" class="sp-search-input" id="sp-hub-q" placeholder="Search, e.g. headache, apixaban, dry tap" autocomplete="off" spellcheck="false" aria-label="Search this page"></div>
+      <ul class="sp-sresults" id="sp-hub-res" aria-live="polite"></ul>
+      <h2 class="sp-hub-h" id="hub-need">I need to&hellip;</h2>
+      <ul class="sp-grid sp-tiles"><li><a class="sp-tile" href="#tq-prep"><span class="sp-tile-t">Prepare and position</span><span class="sp-tile-d">Checks, set-up, sitting or lateral</span></a></li><li><a class="sp-tile" href="#tq-drugs"><span class="sp-tile-t">Choose drug and dose</span><span class="sp-tile-d">Drug, baricity and label dose ranges</span></a></li><li><a class="sp-tile" href="#tq-anticoag"><span class="sp-tile-t">Anticoagulant timing</span><span class="sp-tile-d">When is a spinal safe, and the next dose</span></a></li><li><a class="sp-tile" href="#ts-dry-tap"><span class="sp-tile-t">Dry tap or can&rsquo;t find the space</span><span class="sp-tile-d">No CSF: step-by-step</span></a></li><li><a class="sp-tile" href="#ts-hypotension"><span class="sp-tile-t">Hypotension</span><span class="sp-tile-d">Low BP or slow heart rate after the block</span></a></li><li><a class="sp-tile" href="#sx-scoliosis"><span class="sp-tile-t">Scoliotic or elderly spine</span><span class="sp-tile-d">Difficult back: approach and ultrasound</span></a></li><li><a class="sp-tile" href="#cx-pdph"><span class="sp-tile-t">Post-dural puncture headache</span><span class="sp-tile-d">Recognise, treat, blood patch</span></a></li><li><a class="sp-tile" href="#ch-card"><span class="sp-tile-t">Ward card</span><span class="sp-tile-d">One page to use at the bedside</span></a></li><li><a class="sp-tile" href="#quiz"><span class="sp-tile-t">Self-quiz</span><span class="sp-tile-d">Test yourself</span></a></li><li><a class="sp-tile" href="#ch-exam"><span class="sp-tile-t">FRCA exam knowledge</span><span class="sp-tile-d">Physiology, pharmacology, viva points</span></a></li></ul>
+      <h2 class="sp-hub-h" id="hub-chapters">Chapters</h2>
+      <ol class="sp-hubch"><li><a href="#ch-card"><span class="sp-hubch-t">Ward card</span><span class="sp-hubch-d">The short version: steps, doses and red flags on one page. Prints cleanly.</span></a></li><li><a href="#ch-anatomy"><span class="sp-hubch-t">Anatomy &amp; physiology</span><span class="sp-hubch-d">Spine, cord, meninges, dermatomes and what the block does to the body.</span></a></li><li><a href="#ch-pharm"><span class="sp-hubch-t">Pharmacology</span><span class="sp-hubch-d">Local anaesthetics, baricity, adjuvants and vasopressors.</span></a></li><li><a href="#ch-technique"><span class="sp-hubch-t">Technique</span><span class="sp-hubch-d">Preparation, positioning, the step-by-step spinal, drugs and doses, special patients.</span></a></li><li><a href="#ch-backs"><span class="sp-hubch-t">Difficult backs &amp; ultrasound</span><span class="sp-hubch-d">Scoliosis, elderly and obese spines; ultrasound-assisted neuraxial.</span></a></li><li><a href="#ch-trouble"><span class="sp-hubch-t">Troubleshooting</span><span class="sp-hubch-d">Decision trees: dry tap, bloody tap, paraesthesia, failed or patchy block, hypotension.</span></a></li><li><a href="#ch-complications"><span class="sp-hubch-t">Complications &amp; aftercare</span><span class="sp-hubch-d">Headache, nerve injury, haematoma, infection, high block, LAST and follow-up.</span></a></li><li><a href="#ch-exam"><span class="sp-hubch-t">Exam (FRCA) &amp; quiz</span><span class="sp-hubch-d">Exam-level knowledge, viva points and a self-quiz.</span></a></li><li><a href="#ch-refs"><span class="sp-hubch-t">References</span><span class="sp-hubch-d">Guidelines cited on this page.</span></a></li></ol>
+      <h2 class="sp-hub-h" id="hub-levels">Choose your level</h2>
+      <p class="sp-hub-note">The buttons at the bottom of the screen set how much you see. Your choice is remembered on this device.</p>
+      <dl class="sp-levels-key">
+        <div><dt>MO</dt><dd>MOPEX level: what you need for your first supervised spinals.</dd></div>
+        <div><dt>Resident</dt><dd>MO plus resident: everything up to the MMed exam.</dd></div>
+        <div><dt>Advanced</dt><dd>Consultant-level pearls and edge cases only.</dd></div>
+        <div><dt>All</dt><dd>Everything on the page.</dd></div>
+      </dl>
+    </div>
   </section>
-  <section id="anatomy" class="sp-section" aria-labelledby="anatomy-h">
-    <p class="sp-kicker">01 · Anatomy</p><h2 id="anatomy-h">Anatomy for neuraxial block</h2>
-    <div class="sp-mount" id="mount-anatomy"></div>
+
+  <section class="sp-chapter" id="ch-card" data-title="Ward card">
+    <section id="card" class="sp-section" aria-labelledby="card-h">
+      <h2 id="card-h">Ward card</h2>
+      <div class="sp-mount" id="mount-card"></div>
+    </section>
   </section>
-  <section id="technique" class="sp-section" aria-labelledby="technique-h">
-    <p class="sp-kicker">02 · Technique</p><h2 id="technique-h">Performing a spinal</h2>
-    <div class="sp-mount" id="mount-technique"></div>
+
+  <section class="sp-chapter" id="ch-anatomy" data-title="Anatomy &amp; physiology">
+    <section id="anatomy" class="sp-section" aria-labelledby="anatomy-h">
+      <h2 id="anatomy-h">Anatomy &amp; physiology</h2>
+      <div class="sp-mount" id="mount-anatomy"></div>
+    </section>
   </section>
-  <section id="spines" class="sp-section" aria-labelledby="spines-h">
-    <p class="sp-kicker">03 · Challenging spines</p><h2 id="spines-h">Challenging spines</h2>
-    <div class="sp-mount" id="mount-spines"></div>
+
+  <section class="sp-chapter" id="ch-pharm" data-title="Pharmacology">
+    <section id="pharm" class="sp-section" aria-labelledby="pharm-h">
+      <h2 id="pharm-h">Pharmacology</h2>
+      <div class="sp-mount" id="mount-pharm"></div>
+    </section>
   </section>
-  <section id="ultrasound" class="sp-section" aria-labelledby="ultrasound-h">
-    <p class="sp-kicker">04 · Ultrasound</p><h2 id="ultrasound-h">Ultrasound-assisted neuraxial</h2>
-    <div class="sp-mount" id="mount-ultrasound"></div>
+
+  <section class="sp-chapter" id="ch-technique" data-title="Technique">
+    <section id="technique" class="sp-section" aria-labelledby="technique-h">
+      <h2 id="technique-h">Performing a spinal</h2>
+      <div class="sp-mount" id="mount-technique"></div>
+    </section>
   </section>
-  <section id="troubleshooting" class="sp-section" aria-labelledby="troubleshooting-h">
-    <p class="sp-kicker">05 · Troubleshooting</p><h2 id="troubleshooting-h">Troubleshooting</h2>
-    <div class="sp-mount" id="mount-troubleshooting"></div>
+
+  <section class="sp-chapter" id="ch-backs" data-title="Difficult backs &amp; ultrasound">
+    <section id="spines" class="sp-section" aria-labelledby="spines-h">
+      <h2 id="spines-h">Difficult backs</h2>
+      <div class="sp-mount" id="mount-spines"></div>
+    </section>
+    <section id="ultrasound" class="sp-section" aria-labelledby="ultrasound-h">
+      <h2 id="ultrasound-h">Ultrasound-assisted neuraxial</h2>
+      <div class="sp-mount" id="mount-ultrasound"></div>
+    </section>
   </section>
-  <section id="complications" class="sp-section" aria-labelledby="complications-h">
-    <p class="sp-kicker">06 · Complications</p><h2 id="complications-h">Complications and safety</h2>
-    <div class="sp-mount" id="mount-complications"></div>
+
+  <section class="sp-chapter" id="ch-trouble" data-title="Troubleshooting">
+    <section id="troubleshooting" class="sp-section" aria-labelledby="troubleshooting-h">
+      <h2 id="troubleshooting-h">Troubleshooting</h2>
+      <div class="sp-mount" id="mount-troubleshooting"></div>
+    </section>
   </section>
-  <section id="populations" class="sp-section" aria-labelledby="populations-h">
-    <p class="sp-kicker">07 · Special populations</p><h2 id="populations-h">Special populations</h2>
-    <div class="sp-mount" id="mount-populations"></div>
+
+  <section class="sp-chapter" id="ch-complications" data-title="Complications &amp; aftercare">
+    <section id="complications" class="sp-section" aria-labelledby="complications-h">
+      <h2 id="complications-h">Complications &amp; aftercare</h2>
+      <div class="sp-mount" id="mount-complications"></div>
+    </section>
   </section>
-  <section id="quiz" class="sp-section" aria-labelledby="quiz-h">
-    <p class="sp-kicker">08 · Quiz</p><h2 id="quiz-h">Exam questions and self-quiz</h2>
-    <div class="sp-mount" id="mount-quiz"></div>
+
+  <section class="sp-chapter" id="ch-exam" data-title="Exam (FRCA) &amp; quiz">
+    <section id="exam" class="sp-section" aria-labelledby="exam-h">
+      <h2 id="exam-h">Exam (FRCA) knowledge</h2>
+      <div class="sp-mount" id="mount-exam"></div>
+    </section>
+    <section id="quiz" class="sp-section" aria-labelledby="quiz-h">
+      <h2 id="quiz-h">Exam questions and self-quiz</h2>
+      <div class="sp-mount" id="mount-quiz"></div>
+    </section>
   </section>
-  <section id="references" class="sp-section" aria-labelledby="references-h">
-    <p class="sp-kicker">References</p><h2 id="references-h">References</h2><ol class="sp-refs" id="sp-refs"></ol>
+
+  <section class="sp-chapter" id="ch-refs" data-title="References">
+    <section id="references" class="sp-section" aria-labelledby="references-h">
+      <h2 id="references-h">References</h2><ol class="sp-refs" id="sp-refs"></ol>
+    </section>
   </section>
 </main>
 <div id="sp-live" class="sp-sr" aria-live="polite" aria-atomic="true"></div>
+
+<div class="sp-controls" id="sp-controls" role="group" aria-label="Reading controls" hidden>
+  <div class="sp-controls-row">
+    <span class="sp-controls-label" id="sp-level-label">Level</span>
+    <div class="sp-level" role="group" aria-labelledby="sp-level-label">
+      <button type="button" class="sp-level-btn" data-level="1" aria-pressed="false" title="MO: MOPEX level. What you need for your first supervised spinals.">MO</button>
+      <button type="button" class="sp-level-btn" data-level="2" aria-pressed="false" title="Resident: MO and Resident content, up to the MMed exam.">Resident</button>
+      <button type="button" class="sp-level-btn" data-level="adv" aria-pressed="false" title="Advanced: subspecialty detail and consultant pearls only.">Advanced</button>
+      <button type="button" class="sp-level-btn" data-level="all" aria-pressed="true" title="All: everything on the page.">All</button>
+    </div>
+  </div>
+  <p class="sp-controls-hint" id="sp-level-hint">Showing everything: MO, Resident and Advanced.</p>
+</div>
 
 <section class="sp-foot" aria-label="Disclaimer and credits"><div class="site-container">
   <p class="sp-disclaimer"><strong>For education only.</strong> This is a teaching aid, not a protocol. It doesn't replace supervised training or your own clinical judgement.</p>
   <p>Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia. Illustrations and ultrasound images are drawn by the page in your browser; they're simulations, not patient images.</p>
   <p><a href="../regional.html">Regional anaesthesia</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
 </div></section>
-<script type="module" src="js/app.js?v=1"></script>
+<script type="module" src="js/app.js?v=3"></script>
 <noscript><p class="sp-noscript site-container">The interactive figures, decision trees and quiz need JavaScript. The headings above still work as an outline.</p></noscript>
 <footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer>
 </body></html>

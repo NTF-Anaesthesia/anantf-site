@@ -53,15 +53,15 @@ export function judge(a, b) {
 export function paramedianFigure() {
   const f = figure({
     id: 'sx-paramedian-fig',
-    num: '3.2',
+    num: '5.2',
     title: 'Paramedian approach: bone or gap?',
     plate: 'paper',
     aspect: '4/3',
     caption: 'Posterior view, head up. Move the sliders to aim the needle. Distances are illustrative.'
-      + ' <span class="sx-key"><b>1</b> Spinous process · <b>2</b> Lamina · <b>3</b> Interlaminar gap · <b>4</b> Facet joint · <b>5</b> Entry, about 1 cm lateral at the upper edge of the lower spinous process</span>',
+      + ' <span class="sx-key"><b>1</b> Spinous process · <b>2</b> Lamina · <b>3</b> Interlaminar gap · <b>4</b> Facet joint · <b>5</b> Entry, 0.5–1 cm lateral to the upper edge of the lower spinous process</span>',
   });
   const svg = svgEl('0 0 560 420', `${staticLayer()}<g class="sx-pm-dyn"></g>`,
-    'Posterior drawing of two lumbar vertebrae with the interlaminar gap between them. A needle enters about 1 cm lateral to the midline at the upper edge of the lower spinous process. The sliders change its medial and cranial angle, and the figure shows whether it meets a lamina or passes through the gap.');
+    'Posterior drawing of two lumbar vertebrae with the interlaminar gap between them. A needle enters 0.5 to 1 cm lateral to the midline at the upper edge of the lower spinous process. The sliders change its medial and cranial angle, and the figure shows whether it meets a lamina or passes through the gap.');
   f.stage.append(svg);
   const dyn = svg.querySelector('.sx-pm-dyn');
 

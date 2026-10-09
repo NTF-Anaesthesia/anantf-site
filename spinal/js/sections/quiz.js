@@ -1,6 +1,10 @@
 // Section 08: Exam questions and self-quiz.
 import { el, segmented, details, cite, announce, callout, tier, keyPoints } from '../ui.js?v=1';
-import { MCQS, SAQS, TOPICS } from '../quiz/data.js';
+import { MCQS as MCQS_BASE, SAQS as SAQS_BASE, TOPICS } from '../quiz/data.js';
+import { MCQS_EXAM, SAQS_EXAM } from '../quiz/data-exam.js';
+
+const MCQS = [...MCQS_BASE, ...MCQS_EXAM];
+const SAQS = [...SAQS_BASE, ...SAQS_EXAM];
 
 export const meta = { id: 'quiz', prefix: 'qz', title: 'Exam questions and self-quiz' };
 export const refs = {};
