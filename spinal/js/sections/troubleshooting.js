@@ -1,7 +1,7 @@
 // 04 Troubleshooting.
 // An index of problems (left column at >=1100px, stacked links on phones) and one panel per problem,
 // each holding a decision tree (js/troubleshooting/tree.js). Doses only from product labels (emc SmPC)
-// or the Association of Anaesthetists QRH; everything local is flagged with a policy callout.
+// or the Association of Anaesthetists QRH; anything uncertain is flagged in the text.
 import { el, callout, table, segmented, cite, announce } from '../ui.js?v=1';
 import { createTree, treeOutline, numberCites } from '../troubleshooting/tree.js';
 import { redirectGuide } from '../troubleshooting/redirect.js';
@@ -155,12 +155,12 @@ const PANELS = [
   {
     id: 'ts-dry-tap', group: 'during', title: 'No CSF (dry tap)', tree: T.dryTap,
     intro: `Work from the simplest explanation outwards: patience, needle position, a blocked needle, then the patient’s position and anatomy.${cite('ts-nysora-failed')}`,
-    after: () => [callout('policy', { title: 'How many passes?', body: '<p>No international guideline sets a maximum number of passes. When to change approach, call a senior colleague or abandon the spinal is local practice: agree it with your supervisor before you start.</p>' })],
+    after: () => [callout('key', { title: 'How many passes?', body: '<p>No international guideline sets a maximum number of passes. Agree with your supervisor, before you start, when to change approach, call a senior colleague or abandon the spinal.</p>' })],
   },
   {
     id: 'ts-bloody-tap', group: 'during', title: 'Blood in the needle hub', tree: T.bloodyTap,
     intro: 'Blood that clears to clear CSF is usually a grazed vessel. Blood that doesn’t clear means the tip is not where you want it.',
-    after: () => [callout('policy', { title: 'Thromboprophylaxis after a bloody tap', body: `<p>When the next anticoagulant dose can be given after a traumatic puncture depends on the drug and on the guideline your department follows. Agree it with the surgical team and record it.${cite('asra2025', 'esaic2022')}</p>` })],
+    after: () => [callout('key', { title: 'Thromboprophylaxis after a bloody tap', body: `<p>When the next anticoagulant dose can be given after a traumatic puncture depends on the drug and the guideline you follow. Agree it with the surgical team and record it.${cite('asra2025', 'esaic2022')}</p>` })],
   },
   {
     id: 'ts-paraesthesia', group: 'during', title: 'Paraesthesia', tree: T.paraesthesia,
@@ -184,33 +184,32 @@ const PANELS = [
   {
     id: 'ts-high-spinal', group: 'after', title: 'High or total spinal', tree: T.highSpinal,
     intro: `Signs come in sequence: hypotension and bradycardia, then difficulty breathing, arm weakness, falling consciousness and apnoea. Manage airway, breathing and circulation; intubate and ventilate if needed, then keep the patient asleep.${cite('ts-qrh2023')}`,
-    after: () => [callout('policy', { title: 'Position and local guidance', body: '<p>The QRH advises raising the legs and avoiding head-down tilt. Use your department’s crisis checklists and difficult airway guideline alongside this tree.</p>' })],
+    after: () => [callout('key', { title: 'Position', body: '<p>The QRH advises raising the legs and avoiding head-down tilt.</p>' })],
   },
   {
     id: 'ts-hypotension', group: 'after', title: 'Hypotension and bradycardia', tree: T.hypotension,
     intro: `Common after a spinal, and more likely with a higher block and in older patients.${cite('ts-carpenter1992')} Look for other causes, treat early, and treat the heart rate as well as the pressure.`,
-    before: () => [callout('policy', { title: 'When to treat, and with what', body: '<p>There is no single definition of hypotension. Many teams treat a systolic pressure below about 90 mmHg or a fall of more than 20–30% from baseline, adjusted for the patient (for example chronic hypertension or cerebrovascular disease). Use your local threshold and your local first-line vasopressor.</p>' })],
-    after: () => [doseTable(), callout('policy', { title: 'Adrenaline', body: `<p>For severe or refractory hypotension or bradycardia, the QRH lists adrenaline ${D('1 µg/kg')} (adult ${D('10–100 µg')}) IV, in emergency only.${cite('ts-qrh2023')} Dilution and dosing as per local protocol; call for senior help.</p>` })],
+    before: () => [callout('key', { title: 'When to treat, and with what', body: '<p>There is no single definition of hypotension. Many teams treat a systolic pressure below about 90 mmHg or a fall of more than 20–30% from baseline, adjusted for the patient (for example chronic hypertension or cerebrovascular disease).</p>' })],
+    after: () => [doseTable(), callout('key', { title: 'Adrenaline', body: `<p>For severe or refractory hypotension or bradycardia, the QRH lists adrenaline ${D('1 µg/kg')} (adult ${D('10–100 µg')}) IV, in emergency only.${cite('ts-qrh2023')} Call for senior help.</p>` })],
   },
   {
     id: 'ts-nausea', group: 'after', title: 'Nausea and vomiting', tree: T.nausea,
     intro: 'After a spinal, nausea means low blood pressure until proved otherwise. Treat the pressure first.',
-    after: () => [callout('policy', { title: 'Antiemetics', body: '<p>Ondansetron is used here because its label dose is clear. Other antiemetics as per your local protocol.</p>' })],
+    after: () => [callout('key', { title: 'Antiemetics', body: '<p>Ondansetron is used here because its label dose is clear. Other antiemetics are also used.</p>' })],
   },
   {
     id: 'ts-shivering', group: 'after', title: 'Shivering', tree: T.shivering,
     intro: `Very common after neuraxial anaesthesia.${cite('ts-crowley2008')} Warm first; drugs are second line.`,
-    after: () => [callout('policy', { title: 'Drug treatment', body: '<p>Pethidine is the most studied drug for shivering. Its dose, and the alternatives used (tramadol, clonidine, dexmedetomidine), are per local protocol; check the BNF and for interactions (for example MAOIs).</p>' })],
+    after: () => [callout('key', { title: 'Drug treatment', body: '<p>Pethidine is the most studied drug for shivering. Alternatives include tramadol, clonidine and dexmedetomidine. Check a drug reference for doses and interactions (for example MAOIs).</p>' })],
   },
   {
     id: 'ts-pruritus', group: 'after', title: 'Itch (pruritus)', tree: T.pruritus,
     intro: 'Itch after an intrathecal opioid is common and usually settles. Remember it is an opioid effect: check sedation and breathing.',
-    after: () => [callout('policy', { title: 'Naloxone for itch', body: '<p>Low-dose naloxone regimens for itch vary. Use the dose in your local intrathecal opioid protocol or the BNF, and titrate: too much reverses the analgesia.</p>' })],
+    after: () => [callout('key', { title: 'Naloxone for itch', body: '<p>Low-dose naloxone regimens for itch vary. Start small and titrate: too much reverses the analgesia.</p>' })],
   },
   {
     id: 'ts-retention', group: 'after', title: 'Urinary retention', tree: T.retention,
     intro: `Common after surgery, especially with long-acting spinals and intrathecal opioids. A bladder scan guides what to do.${cite('ts-baldini2009')}`,
-    after: () => [callout('policy', { title: 'Scan volume and voiding rules', body: `<p>The bladder volume at which to catheterise, and whether a day-case patient must void before going home, are set by local policy.${cite('ts-baldini2009')}</p>` })],
   },
   // ---- scenarios
   { id: 'ts-case-hip', group: 'case', title: 'Hip fracture: BP 70/40, HR 45', tree: T.caseHip, scenario: true, intro: 'Choose what you would do. Feedback appears after each choice.' },
@@ -228,7 +227,7 @@ const GROUPS = [
 export function mount(root) {
   root.append(
     P('Decision trees for problems during and after a spinal. Pick a problem, answer each question, and the tree gives you the next step. Every tree ends in an action, a caution or an escalation.', 'sp-lead'),
-    callout('warn', { title: 'If the patient deteriorates', body: '<p><strong>Call for help early.</strong> Go back to airway, breathing and circulation. These trees support your judgement and a senior colleague’s; they don’t replace them, or your department’s policies.</p>' }),
+    callout('warn', { title: 'If the patient deteriorates', body: '<p><strong>Call for help early.</strong> Go back to airway, breathing and circulation. These trees support your judgement and a senior colleague’s; they don’t replace them.</p>' }),
   );
 
   const layout = el('div', { class: 'ts-layout' });

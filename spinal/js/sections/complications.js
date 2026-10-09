@@ -161,7 +161,6 @@ function pdph() {
     P(`After a spinal with a fine (22G or smaller) needle, a <strong>greater occipital nerve block</strong> may be offered (a weak, grade C recommendation); the headache may come back, and severe cases still need a patch.${cite('uppal2023')}`),
     tree.el,
     outline,
-    callout('policy', { title: 'Local PDPH pathway', body: '<p>Confirm who reviews headaches after a spinal, who performs blood patches and when, whether greater occipital nerve block is offered, and the patient leaflet and follow-up call used locally.</p>' }),
   );
 }
 
@@ -224,7 +223,6 @@ function check() {
   return block('cx-check', 'Post-spinal neuro check',
     P('Use this when a nurse calls about a block that seems slow to wear off, or on your post-operative round. It reflects the red flags above; it doesn’t replace examining the patient.'),
     neuroCheck({ id: 'cx-neuro-check' }),
-    callout('policy', { title: 'Out-of-hours pathway', body: '<p>Confirm locally: who the ward calls, how to get an emergency spinal MRI out of hours, where the on-call neurosurgical team is and how to reach them, and which observation chart records block regression.</p>' }),
   );
 }
 
@@ -237,7 +235,6 @@ function tns() {
       `A Cochrane network meta-analysis found lower risk with bupivacaine, levobupivacaine, prilocaine, procaine and ropivacaine than with lidocaine; chloroprocaine and mepivacaine did not differ from lidocaine (low-quality evidence).${cite('cx-forget2019')}`,
       'Treat with NSAIDs and reassurance. Any objective deficit means it isn’t TNS: examine and investigate.',
     ]),
-    callout('policy', { body: '<p>Confirm whether lidocaine, prilocaine or chloroprocaine spinal products are on the local formulary.</p>' }),
   );
 }
 
@@ -252,7 +249,6 @@ function last() {
       'Accidental intravenous injection; frail, small or elderly patients.',
     ]),
     P(`Management follows the Association of Anaesthetists LAST card: stop injecting, call for help, get the lipid pack, oxygen and airway, benzodiazepine for seizures. Give ${D('20%')} lipid emulsion: a bolus of ${D('1.5 mL/kg')} over 2–3 min, then an infusion of ${D('15 mL/kg/h')}. If the circulation has not recovered, repeat the bolus at 5 and 10 min (no more than 3 boluses in total) and double the infusion to ${D('30 mL/kg/h')} after 5 min. Maximum cumulative dose ${D('12 mL/kg')}. In cardiac arrest use smaller adrenaline doses (${D('≤1 µg/kg')}) and expect a long resuscitation.${cite('cx-qrh310')}`),
-    callout('policy', { body: '<p>Know where the lipid emulsion and the local LAST card are kept in each theatre and block room.</p>' }),
   );
 }
 
@@ -293,7 +289,6 @@ function wrongRoute() {
       `Keep chlorhexidine off the drug tray: apply it before the drugs are opened, don’t pour it into pots on the sterile field, and let it dry.${cite('tq-campbell2014')}`,
       'Use preservative-free drugs only. Label every syringe.',
     ]),
-    callout('policy', { body: '<p>Confirm whether NRFit is in use for spinals locally, and the pharmacy storage rules for tranexamic acid and vinca alkaloids.</p>' }),
   );
 }
 

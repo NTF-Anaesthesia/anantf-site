@@ -273,7 +273,7 @@ export function mount(root) {
     el('p', { class: 'sp-prose', id: 'an-tuffier', html: '<strong>Tuffier’s line</strong> (the intercristal line) is traditionally said to cross the L4 body or the L4–5 space. It is an unreliable guide to level.' + cite('reynolds2001') + ' Treat it as a starting point, not proof of level.' }),
     el('p', { class: 'sp-prose', html: 'Other landmarks: the posterior superior iliac spines (the dimples above the buttocks) lie at about S2; the 12th rib attaches to T12.' }),
     callout('warn', { title: 'Aim low', body: `<p>In a series of seven patients with conus damage after spinal or combined spinal-epidural anaesthesia with pencil-point needles, the space was usually believed to be L2–3 and every patient felt pain as the needle went in. MRI showed a syrinx in the conus. Because the conus can be low and the chosen space is often higher than intended, the needle should not go in above L3.${cite('reynolds2001')}</p>` }),
-    callout('policy', { title: 'Preferred interspace', body: '<p>This page teaches L3–4 or below. Confirm the departmental preference, and consider ultrasound to confirm the level when landmarks are poor.</p>' }),
+    callout('key', { title: 'Preferred interspace', body: '<p>This page teaches L3–4 or below. Consider ultrasound to confirm the level when landmarks are poor.</p>' }),
   );
   root.append(s2);
 
@@ -369,7 +369,7 @@ export function mount(root) {
   setStop(3);
   s5.append(f4.fig);
   s5.append(
-    callout('policy', { title: 'Block-height targets', body: '<p>These are approximate, commonly taught targets for non-obstetric surgery. Confirm local targets, especially for knee arthroplasty with a tourniquet, hip surgery and TURP.</p>' }),
+    callout('key', { title: 'Block-height targets', body: '<p>These are approximate, commonly taught targets for non-obstetric surgery. Take particular care with knee arthroplasty with a tourniquet, hip surgery and TURP, and agree the level you need with the surgeon.</p>' }),
     el('h4', { text: 'Differential block' }),
     el('p', { class: 'sp-prose', text: 'Small and myelinated fibres block at lower concentrations, and the concentration falls with distance from the injection site. So the sympathetic block extends roughly two segments above the pinprick level, and the motor block sits roughly two segments below it. Recovery is broadly in the reverse order.' }),
     callout('pearl', { body: '<p>Landmarks: T4 nipples, T6 xiphisternum, T10 umbilicus, L1 inguinal ligament, S2–S4 perineum. Sympathetic about 2 segments above sensory; motor about 2 below.</p>' }),

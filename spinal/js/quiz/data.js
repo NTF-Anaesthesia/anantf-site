@@ -135,7 +135,7 @@ export const MCQS = [
     stem: 'A patient takes apixaban 5 mg twice daily for atrial fibrillation. What is the minimum interval from the last dose to a spinal?',
     options: ['12 h', '24 h', '36 h', '72 h'],
     answer: 3,
-    explain: 'This is a high dose (AF stroke prevention). Both ESAIC/ESRA 2022 and ASRA 2025 give 72 h. 36 h applies to the low (prophylactic) dose of 2.5 mg twice daily. Check local policy.',
+    explain: 'This is a high dose (AF stroke prevention). Both ESAIC/ESRA 2022 and ASRA 2025 give 72 h. 36 h applies only to low-dose prophylaxis after hip or knee replacement; ASRA counts the dose-reduced AF dose (also 2.5 mg twice daily) as high dose.',
     refs: ['esaic2022', 'asra2025'],
     link: '#tq-ac-full',
   },
@@ -253,7 +253,7 @@ export const SAQS = [
       ['Stop at least 72 h before the spinal (ESAIC/ESRA 2022; ASRA 2025); 36 h applies only to low-dose prophylaxis after hip or knee replacement; the dose-reduced AF dose of 2.5 mg twice daily still counts as high dose (ASRA 2025)', 3, ['esaic2022', 'asra2025']],
       ['If the interval is uncertain or short: a drug-specific level under 30 ng/mL; reversal agents (PCC, aPCC or andexanet) do not shorten the interval for an elective block', 2, ['esaic2022', 'asra2025']],
       ['Restart: ESAIC/ESRA only after any catheter is removed; ASRA 2025: first high-dose DOAC dose at least 24 h after the puncture; agree with surgeon and physician', 2, ['esaic2022', 'asra2025']],
-      ['Follow the local policy, document the plan, and do neurological checks after surgery', 1],
+      ['Document the plan, and do neurological checks after surgery', 1],
     ],
   },
   {
