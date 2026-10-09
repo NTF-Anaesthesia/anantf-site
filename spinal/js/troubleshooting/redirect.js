@@ -158,7 +158,7 @@ export const STATES = {
   'mid-shallow': {
     structure: 'A spinous process (of the vertebra above or below)',
     why: 'You are in the midline, but the angle misses the gap between the spinous processes.',
-    fix: `Withdraw to the subcutaneous tissue, then angle slightly more cephalad: the commonest correction. If you were already angled steeply up, try slightly caudad.${cite('ts-nysora-failed')}`,
+    fix: `Withdraw to the subcutaneous tissue, then angle slightly more cephalad: the commonest correction. If you were already angled steeply up, try slightly caudad.`,
     more: 'Re-feel the interspace, improve flexion, or try the space above or below.',
     side(g, m) { needle(g, 182, 6, 202, 66); contact(g, 202, 66); redirect(g, 182, 24, 167, 190, m); pill(g, 214, 64, 'Spinous process', 'warn', [204, 70]); pill(g, 16, 76, 'More cephalad', 'cue', [176, 116]); tissueLabel(g, 152, 132, 'flavum', 'end'); },
     cross(g, m) { needle(g, 170, 6, 170, 60); contact(g, 170, 60); redirect(g, 170, 64, 170, 150, m); pill(g, 196, 56, 'Spinous process (above/below)', 'warn', [176, 64]); pill(g, 200, 90, 'Side-to-side line OK', 'cue', [172, 100]); },
@@ -167,7 +167,7 @@ export const STATES = {
   'mid-deep': {
     structure: 'A lamina, beside the midline',
     why: 'Bone near the expected depth suggests the needle has drifted off the midline onto a lamina.',
-    fix: `Withdraw to the subcutaneous tissue. Check the back is square and not rotated, re-feel the midline, ask which side the patient feels the needle, and aim back towards the midline.${cite('ts-nysora-failed')}`,
+    fix: `Withdraw to the subcutaneous tissue. Check the back is square and not rotated, re-feel the midline, ask which side the patient feels the needle, and aim back towards the midline.`,
     more: 'Paramedian approach, ultrasound, or senior help.',
     side(g, m) { needle(g, 172, 6, 170, 134); contact(g, 170, 134); redirect(g, 172, 24, 169, 190, m); pill(g, 196, 96, 'Bone at flavum depth', 'warn', [176, 134]); pill(g, 8, 112, 'Back on the midline', 'cue', [167, 176]); },
     cross(g, m) { needle(g, 174, 6, 211, 120); contact(g, 211, 120); redirect(g, 174, 24, 170, 150, m); pill(g, 222, 96, 'Lamina', 'warn', [214, 122]); pill(g, 18, 92, 'Back to the midline', 'cue', [171, 104]); },

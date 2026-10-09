@@ -1,6 +1,6 @@
 // spinal/ — section 01 "Anatomy for neuraxial block".
 // Figures are drawn by js/anatomy/* (sagittal plate, landmarks, baricity, dermatomes) using js/anatomy/kit.js.
-import { el, callout, cite, segmented, figure, table, whenVisible, onResize, reducedMotion, onThemeChange } from '../ui.js?v=1';
+import { el, callout, tier, keyPoints, segmented, figure, table, whenVisible, onResize, reducedMotion, onThemeChange } from '../ui.js?v=1';
 import { createSagittal, drawInset, LAYERS, hitStep } from '../anatomy/sagittal.js';
 import { buildLandmarksSVG, levelButtons, levelInfo, LEVELS } from '../anatomy/landmarks.js';
 import { createBaricity } from '../anatomy/baricity.js';
@@ -8,34 +8,8 @@ import { buildDermSVG, STOPS } from '../anatomy/dermatomes.js';
 
 export const meta = { id: 'anatomy', prefix: 'an', title: 'Anatomy for neuraxial block' };
 
-// Module references (each checked on PubMed / Europe PMC on 9 Oct 2026).
-export const refs = {
-  'an-saifuddin1998': {
-    label: 'Saifuddin 1998',
-    text: 'Saifuddin A, Burnett SJ, White J. The variation of position of the conus medullaris in an adult population: a magnetic resonance imaging study. <i>Spine</i> 1998;23:1452–6.',
-    url: 'https://doi.org/10.1097/00007632-199807010-00005',
-  },
-  'an-carpenter1998': {
-    label: 'Carpenter 1998',
-    text: 'Carpenter RL, Hogan QH, Liu SS, Crane B, Moore J. Lumbosacral cerebrospinal fluid volume is the primary determinant of sensory block extent and duration during spinal anesthesia. <i>Anesthesiology</i> 1998;89:24–9.',
-    url: 'https://doi.org/10.1097/00000542-199807000-00007',
-  },
-  'an-hogan1996': {
-    label: 'Hogan 1996',
-    text: 'Hogan QH, Prost R, Kulier A, Taylor ML, Liu S, Mark L. Magnetic resonance imaging of cerebrospinal fluid volume and the influence of body habitus and abdominal pressure. <i>Anesthesiology</i> 1996;84:1341–9.',
-    url: 'https://doi.org/10.1097/00000542-199606000-00010',
-  },
-  'an-margetis-csf': {
-    label: 'Margetis 2025',
-    text: 'Margetis K, Baker S. Physiology, cerebral spinal fluid. In: <i>StatPearls</i>. Treasure Island (FL): StatPearls Publishing; 2025. PMID 30085549.',
-    url: 'https://www.ncbi.nlm.nih.gov/books/NBK519007/',
-  },
-  'an-hocking2006': {
-    label: 'Hocking 2006',
-    text: 'Hocking G. Spinal anaesthetic spread. <i>Anaesthesia Tutorial of the Week</i> 37. World Federation of Societies of Anaesthesiologists; 28 November 2006.',
-    url: 'https://resources.wfsahq.org/atotw/spinal-anaesthetic-spread-anaesthesia-tutorial-of-the-week-37/',
-  },
-};
+// No module-level references: only major guidelines are cited on this page.
+export const refs = {};
 
 // ------------------------------------------------------------------ layer content
 const STEP = {
@@ -101,6 +75,16 @@ export function mount(root) {
   const api = {};
 
   root.append(
+    keyPoints([
+      'Put the needle in at L3–4 or below. The cord can end as low as L3, and the space you feel is often higher than the one you think.',
+      'Midline path: skin, fat, supraspinous and interspinous ligaments, ligamentum flavum, dura, then CSF. Paramedian skips the two midline ligaments.',
+      'Free-flowing clear CSF confirms the tip is in the right place. Pain or paraesthesia on insertion or injection: stop and withdraw.',
+      'Blood in the hub or no CSF means reposition. Do not inject.',
+      'Baricity and posture decide where the drug goes. A glucose-containing solution, injected slowly and then supine, is the most predictable.',
+      'Less lumbosacral CSF (obesity, raised abdominal pressure) means a higher block from the same dose.',
+      'Test the block the same way each time and record the modality. Cold reads about two segments higher than pinprick.',
+      'Landmarks: T4 nipples, T6 xiphisternum, T10 umbilicus, L1 inguinal ligament, S2–S4 perineum.',
+    ]),
     el('p', { class: 'sp-lead', text: 'What the needle passes, where the cord and dural sac end, how to choose a level, and how the injected drug moves in the CSF.' }),
     el('ul', { class: 'sp-jump', html: '<li><a href="#an-layers">Layers</a></li><li><a href="#an-landmarks">Landmarks and levels</a></li><li><a href="#an-conus">Conus and dural sac</a></li><li><a href="#an-csf">CSF and baricity</a></li><li><a href="#an-dermatomes">Dermatomes</a></li>' }),
   );
@@ -108,7 +92,7 @@ export function mount(root) {
   // ================================================================ 1. Layers
   const s1 = el('div', { class: 'an-sub', id: 'an-layers' });
   s1.append(el('h3', { text: 'Layers the needle passes' }));
-  s1.append(el('p', { class: 'sp-prose', html: 'Step through the layers of a midline spinal at L3–4. Switch to <strong>Paramedian</strong> to see the needle enter beside the midline and reach the ligamentum flavum without crossing the midline ligaments.' }));
+  s1.append(tier(el('p', { class: 'sp-prose', html: 'Step through the layers of a midline spinal at L3–4. Switch to <strong>Paramedian</strong> to see the needle enter beside the midline and reach the ligamentum flavum without crossing the midline ligaments.' }), 1));
 
   const f1 = figure({ id: 'an-fig-layers', num: '1.1', aspect: 'auto', caption: 'Midline sagittal section of the lumbar spine, T12 to S3, approximately to scale. Head to the left, skin at the top. The inset is a transverse section through L3–4. Select a layer below, use the arrow keys, or tap the figure.' });
   const grid = el('div', { class: 'an-sag-grid' });
@@ -221,21 +205,37 @@ export function mount(root) {
   whenVisible(f1.fig, () => { if (shown) return; shown = true; layout(); sag.fadeIn(rm); });
   onThemeChange(layout);
 
+  tier(f1.fig, 1); tier(stepper, 1);
   s1.append(f1.fig, stepper);
   sync(false, true);
 
   s1.append(
-    callout('key', { title: 'Depth', body: '<p>The skin-to-epidural distance is typically about <span class="sp-num">4–6 cm</span> in an adult of normal build and is mostly set by the thickness of subcutaneous fat. It can be much deeper with a high BMI, so a longer needle may be needed. The CSF lies only a few millimetres beyond the epidural space.</p>' }),
-    el('h4', { id: 'an-paramedian-h', text: 'Paramedian approach' }),
-    el('p', { class: 'sp-prose', html: 'Enter about <span class="sp-num">1 cm</span> lateral to the midline (often about <span class="sp-num">1 cm</span> caudal too), next to the lower spinous process of the chosen space. Aim medially and cephalad (roughly <span class="sp-num">10–15°</span>). If you meet lamina, note the depth and walk off its upper edge into the gap. The first ligament you meet is the ligamentum flavum. This helps when the midline ligaments are calcified, the patient cannot flex well, or the midline gap is narrow.' }),
-    callout('pearl', { body: '<p>Midline order, outside in: skin, subcutaneous fat, supraspinous ligament, interspinous ligament, ligamentum flavum, epidural space, dura, arachnoid, subarachnoid space. Paramedian: skin, fat, paraspinal muscle, ligamentum flavum, then the same.</p>' }),
+    tier(el('div', { class: 'an-feel', id: 'an-feel' },
+      el('h4', { text: 'Where the needle goes and what you feel' }),
+      table({
+        caption: 'Midline spinal, outside in',
+        head: ['Layer', 'What you feel', 'What to do'],
+        rows: [
+          [{ html: 'Skin and fat', th: true }, 'Slight resistance at the skin, then soft', 'Infiltrate. Keep the introducer upright and in the midline.'],
+          [{ html: 'Supraspinous and interspinous ligaments', th: true }, 'Firm, gritty. The needle stands up by itself', 'Advance slowly. If it flops sideways you are off the midline.'],
+          [{ html: 'Ligamentum flavum', th: true }, 'Dense, leathery. Resistance rises, then gives', 'Advance a millimetre or two at a time.'],
+          [{ html: 'Dura and arachnoid', th: true }, 'Often a click or pop', 'Remove the stylet and watch the hub.'],
+          [{ html: 'Subarachnoid space', th: true }, 'Nothing: CSF appears at the hub', 'Free flow of clear CSF: attach the syringe, aspirate, inject slowly.'],
+        ],
+      }),
+      el('p', { class: 'sp-prose', html: '<strong>Bone early:</strong> withdraw and redirect. <strong>Bone deep:</strong> note the depth, then walk off the lamina. <strong>Blood or no CSF:</strong> reposition, do not inject. <strong>Pain or paraesthesia:</strong> stop and withdraw.' })), 1),
+    tier(callout('key', { title: 'Depth', body: '<p>The skin-to-epidural distance is typically about <span class="sp-num">4–6 cm</span> in an adult of normal build and is mostly set by the thickness of subcutaneous fat. It can be much deeper with a high BMI, so a longer needle may be needed. The CSF lies only a few millimetres beyond the epidural space.</p>' }), 1),
+    tier(el('div', {}, el('h4', { id: 'an-paramedian-h', text: 'Paramedian approach' }),
+    el('p', { class: 'sp-prose', html: 'Enter about <span class="sp-num">1 cm</span> lateral to the midline (often about <span class="sp-num">1 cm</span> caudal too), next to the lower spinous process of the chosen space. Aim medially and cephalad (roughly <span class="sp-num">10–15°</span>). If you meet lamina, note the depth and walk off its upper edge into the gap. The first ligament you meet is the ligamentum flavum. This helps when the midline ligaments are calcified, the patient cannot flex well, or the midline gap is narrow.' })), 2),
+    tier(callout('pearl', { body: '<p>Midline order, outside in: skin, subcutaneous fat, supraspinous ligament, interspinous ligament, ligamentum flavum, epidural space, dura, arachnoid, subarachnoid space. Paramedian: skin, fat, paraspinal muscle, ligamentum flavum, then the same.</p>' }), 2),
+    tier(callout('pearl', { title: 'Calcified or rotated spine', body: '<p>When the midline will not open, the paramedian route works because the needle meets the ligamentum flavum from the side, where the gap between laminae is wider. Bone at the expected depth means you are on lamina; small changes in the cephalad angle, not more force, find the gap. Rotation or scoliosis moves the midline gap away from the spinous processes you can see, so palpate for the gap and expect to adjust the angle. Ultrasound can show the rotation and the best entry point before you start.</p>' }), 3),
   );
   root.append(s1);
 
   // ================================================================ 2. Landmarks and levels
   const s2 = el('div', { class: 'an-sub', id: 'an-landmarks' });
   s2.append(el('h3', { text: 'Surface landmarks and choosing a level' }));
-  s2.append(el('p', { class: 'sp-prose', html: 'Palpation is less accurate than most of us think. In an MRI study, anaesthetists named a marked lumbar space correctly only <span class="sp-num">29%</span> of the time; in <span class="sp-num">51%</span> the mark was one space higher than they believed, and the error ranged from one space below to four above. Accuracy was worse in obese patients and higher on the back.' + cite('broadbent2000') + ' The cord itself can end as low as the upper third of L3' + cite('an-saifuddin1998') + ', and conus injury has followed spinals that went in higher than the anaesthetist believed.' + cite('reynolds2001') }));
+  s2.append(tier(el('p', { class: 'sp-prose', html: 'Palpation is less accurate than most of us think. In an MRI study, anaesthetists named a marked lumbar space correctly only <span class="sp-num">29%</span> of the time; in <span class="sp-num">51%</span> the mark was one space higher than they believed, and the error ranged from one space below to four above. Accuracy was worse in obese patients and higher on the back. The cord itself can end as low as the upper third of L3, and conus injury has followed spinals that went in higher than the anaesthetist believed.' }), 2));
 
   const f2 = figure({ id: 'an-tuffier-fig', num: '1.2', plate: 'paper', aspect: 'auto', caption: 'Back view, schematic. Tuffier’s line joins the tops of the iliac crests. Choose a level to see what lies there; turn on the overlay to see where the conus and dural sac usually end.' });
   const land = buildLandmarksSVG();
@@ -267,43 +267,54 @@ export function mount(root) {
   land.bands.addEventListener('pointerleave', () => pickLevel(curLevel, false));
   land.bands.addEventListener('click', (e) => { const id = e.target.dataset?.level; if (id) pickLevel(id, true); });
   pickLevel('L3–4', true);
+  tier(f2.fig, 2);
   s2.append(f2.fig);
 
   s2.append(
-    el('p', { class: 'sp-prose', id: 'an-tuffier', html: '<strong>Tuffier’s line</strong> (the intercristal line) is traditionally said to cross the L4 body or the L4–5 space. It is an unreliable guide to level.' + cite('reynolds2001') + ' Treat it as a starting point, not proof of level.' }),
-    el('p', { class: 'sp-prose', html: 'Other landmarks: the posterior superior iliac spines (the dimples above the buttocks) lie at about S2; the 12th rib attaches to T12.' }),
-    callout('warn', { title: 'Aim low', body: `<p>In a series of seven patients with conus damage after spinal or combined spinal-epidural anaesthesia with pencil-point needles, the space was usually believed to be L2–3 and every patient felt pain as the needle went in. MRI showed a syrinx in the conus. Because the conus can be low and the chosen space is often higher than intended, the needle should not go in above L3.${cite('reynolds2001')}</p>` }),
-    callout('key', { title: 'Preferred interspace', body: '<p>This page teaches L3–4 or below. Consider ultrasound to confirm the level when landmarks are poor.</p>' }),
+    tier(el('p', { class: 'sp-prose', id: 'an-tuffier', html: '<strong>Tuffier’s line</strong> (the intercristal line) is traditionally said to cross the L4 body or the L4–5 space. It is an unreliable guide to level. Treat it as a starting point, not proof of level.' }), 1),
+    tier(el('p', { class: 'sp-prose', html: 'Other landmarks: the posterior superior iliac spines (the dimples above the buttocks) lie at about S2; the 12th rib attaches to T12.' }), 2),
+    tier(el('div', { id: 'an-surface-special' },
+      el('h4', { text: 'Surface anatomy in the elderly and the obese' }),
+      el('p', { class: 'sp-prose', html: 'In the obese, subcutaneous fat hides the spinous processes and the iliac crests. The midline can be found by the gluteal cleft and the vertebra prominens, and by feeling for the groove between the paraspinal muscles. Sit the patient up: the midline is easier to see and the fat falls away from it. Use a longer needle and expect a greater depth.' }),
+      el('p', { class: 'sp-prose', html: 'In the elderly, ligaments are calcified, the spine is often kyphotic or scoliotic, and the interlaminar gaps are narrower. Flexion is limited, so the midline may be hard to open. The paramedian approach is often easier.' }),
+      el('p', { class: 'sp-prose', html: 'In both groups, Tuffier’s line is even less reliable. The crests are hard to feel, the line is easily misplaced, and the space you choose may be higher than you think. Aim for L4–5 or L3–4 and not higher. Ultrasound to count the spaces and measure the depth is most useful here.' })), 2),
+    tier(callout('warn', { title: 'Aim low', body: `<p>In a series of seven patients with conus damage after spinal or combined spinal-epidural anaesthesia with pencil-point needles, the space was usually believed to be L2–3 and every patient felt pain as the needle went in. MRI showed a syrinx in the conus. Because the conus can be low and the chosen space is often higher than intended, the needle should not go in above L3.</p>` }), 1),
+    tier(callout('key', { title: 'Preferred interspace', body: '<p>This page teaches L3–4 or below. Consider ultrasound to confirm the level when landmarks are poor.</p>' }), 1),
   );
   root.append(s2);
 
   // ================================================================ 3. Conus and dural sac
   const s3 = el('div', { class: 'an-sub', id: 'an-conus' });
   s3.append(el('h3', { text: 'Where the cord and dural sac end' }));
-  s3.append(table({
+  s3.append(tier(table({
     caption: 'Adult conus and dural sac',
     head: ['Structure', 'Usual level', 'Range or note'],
     rows: [
-      [{ html: 'Conus medullaris (tip of the cord)', th: true }, `Lower third of L1 (mean)${cite('an-saifuddin1998')}`, `Middle of T12 to upper third of L3 in 504 adult MRI scans${cite('an-saifuddin1998')}`],
-      [{ html: 'Conus below L1', th: true }, '—', `<span class="sp-num">19%</span> of 100 patients in an MRI study${cite('broadbent2000')}`],
+      [{ html: 'Conus medullaris (tip of the cord)', th: true }, `Lower third of L1 (mean)`, `Middle of T12 to upper third of L3 in 504 adult MRI scans`],
+      [{ html: 'Conus below L1', th: true }, '—', `<span class="sp-num">19%</span> of 100 patients in an MRI study`],
       [{ html: 'Dural sac', th: true }, 'About S2', 'Most often S2; a minority end at S3'],
       [{ html: 'Cauda equina', th: true }, 'Below the conus', 'Lumbar and sacral roots floating in CSF, which is why spinals are done below the conus'],
     ],
-  }));
-  s3.append(callout('pearl', { body: '<p>Cord ends around L1–2 in most adults (range T12 to L3); dural sac ends around S2. Spinal anaesthesia goes in at L3–4 or below, where the sac holds only CSF and roots.</p>' }));
+  }), 2));
+  s3.append(tier(callout('pearl', { body: '<p>Cord ends around L1–2 in most adults (range T12 to L3); dural sac ends around S2. Spinal anaesthesia goes in at L3–4 or below, where the sac holds only CSF and roots.</p>' }), 1));
+  s3.append(tier(el('div', { id: 'an-cordsupply' },
+    el('h4', { text: 'Blood supply of the cord and why hypotension matters' }),
+    el('p', { class: 'sp-prose', html: 'The cord has one <strong>anterior spinal artery</strong>, which supplies roughly the anterior two-thirds, and two <strong>posterior spinal arteries</strong>. They are fed from above by the vertebral arteries and, at lower levels, by radicular arteries that enter with the nerve roots. The largest of these, the <strong>artery of Adamkiewicz</strong>, usually arises on the left in the lower thoracic or upper lumbar region and supplies much of the lower cord. Between the feeders lie watershed zones, notably the mid-thoracic cord.' }),
+    el('p', { class: 'sp-prose', html: 'Occlusion or low flow in the anterior spinal artery causes the anterior cord syndrome: motor loss and loss of pain and temperature, with dorsal column function spared. Cord blood flow is autoregulated, as in the brain, and depends on perfusion pressure. A spinal injected below the conus does not touch the cord directly, but severe or prolonged hypotension, on top of fixed arterial disease, aortic pathology, a very high block or raised CSF pressure, can reduce flow in these vulnerable territories. Treat hypotension early and keep the pressure close to the patient’s baseline.' }),
+    el('p', { class: 'sp-prose', html: 'This is also why new weakness that outlasts the expected block, or back pain with leg weakness, needs urgent review and imaging and not reassurance (see Complications).' })), 3));
   root.append(s3);
 
   // ================================================================ 4. CSF and baricity
   const s4 = el('div', { class: 'an-sub', id: 'an-csf' });
   s4.append(el('h3', { text: 'CSF and baricity' }));
   s4.append(
-    el('p', { class: 'sp-prose', html: `An adult has about <span class="sp-num">150 mL</span> of CSF, about <span class="sp-num">125 mL</span> of it in the subarachnoid spaces. Most is made by the choroid plexus, at roughly <span class="sp-num">400–600 mL</span> a day.${cite('an-margetis-csf')} Its density at body temperature is about <span class="sp-num">1.0003 g/mL</span>.` }),
-    el('p', { class: 'sp-prose', html: `The volume of CSF in the lumbosacral sac varies a lot between people: <span class="sp-num">28–81 mL</span> in 25 volunteers, less in the more obese and less again with abdominal compression.${cite('an-hogan1996')} In a volunteer study it correlated with peak block height and duration, and was the most important single factor found for how far a spinal spreads.${cite('an-carpenter1998')} Less lumbosacral CSF means less dilution and a higher block. This is one reason the same dose behaves differently in different patients.` }),
+    tier(el('p', { class: 'sp-prose', html: `An adult has about <span class="sp-num">150 mL</span> of CSF, about <span class="sp-num">125 mL</span> of it in the subarachnoid spaces. Most is made by the choroid plexus, at roughly <span class="sp-num">400–600 mL</span> a day. Its density at body temperature is about <span class="sp-num">1.0003 g/mL</span>.` }), 2),
+    tier(el('p', { class: 'sp-prose', html: `The volume of CSF in the lumbosacral sac varies a lot between people: <span class="sp-num">28–81 mL</span> in 25 volunteers, less in the more obese and less again with abdominal compression. In a volunteer study it correlated with peak block height and duration, and was the most important single factor found for how far a spinal spreads. Less lumbosacral CSF means less dilution and a higher block. This is one reason the same dose behaves differently in different patients.` }), 2),
   );
 
   const sb = el('div', { id: 'an-baricity', class: 'an-baricity' });
-  sb.append(el('h4', { text: 'Baricity' }));
-  sb.append(el('p', { class: 'sp-prose', html: `<strong>Baricity</strong> is the density of the injected solution divided by the density of CSF, both at <span class="sp-num">37 °C</span>. A solution at <span class="sp-num">1.0</span> is isobaric; above it is hyperbaric and sinks; below it is hypobaric and floats. To behave predictably in everyone, a solution needs a baricity above about <span class="sp-num">1.0010</span> (hyperbaric) or below about <span class="sp-num">0.9990</span> (hypobaric). Glucose makes a solution hyperbaric. Baricity and the patient’s position after injection are the main determinants of spread; most other factors have small, unpredictable effects.${cite('an-hocking2006', 'hocking2004')}` }));
+  sb.append(tier(el('h4', { text: 'Baricity' }), 1));
+  sb.append(tier(el('p', { class: 'sp-prose', html: `<strong>Baricity</strong> is the density of the injected solution divided by the density of CSF, both at <span class="sp-num">37 °C</span>. A solution at <span class="sp-num">1.0</span> is isobaric; above it is hyperbaric and sinks; below it is hypobaric and floats. To behave predictably in everyone, a solution needs a baricity above about <span class="sp-num">1.0010</span> (hyperbaric) or below about <span class="sp-num">0.9990</span> (hypobaric). Glucose makes a solution hyperbaric. Baricity and the patient’s position after injection are the main determinants of spread; most other factors have small, unpredictable effects.` }), 2));
 
   const f3 = figure({ id: 'an-fig-baricity', num: '1.3', aspect: 'auto', caption: 'Supine patient, head to the left, curves exaggerated. Dots show where a solution injected at L3–4 tends to go. A teaching model, not a simulation of real CSF flow.' });
   const cvb = el('canvas', { role: 'img', 'aria-label': 'Supine spinal curves with a hyperbaric solution spreading from L3–4.' });
@@ -326,10 +337,13 @@ export function mount(root) {
   onResize(f3.stage, () => { const w = f3.stage.clientWidth; if (w) bar.resize(w); });
   whenVisible(f3.fig, () => { bar.visible(true); if (!barShown) { barShown = true; const w = f3.stage.clientWidth; if (w) bar.resize(w); bar.setMode('hyper', rm); } }, () => bar.visible(false));
   f3.describe(BTEXT.hyper);
+  tier(f3.fig, 2);
   sb.append(f3.fig);
   sb.append(
-    el('ul', { class: 'an-list', html: '<li>Lying supine, the highest point of the lumbar curve is around L3–4 and the lowest point of the thoracic curve is around T5–6.</li><li>Sitting for a few minutes after a hyperbaric injection keeps the block low, in the sacral roots (a saddle block).</li><li>Turning lateral for a few minutes after a hyperbaric injection favours the dependent side.</li><li>“Plain” bupivacaine is often described as isobaric but is slightly hypobaric at body temperature.</li>' }),
-    callout('pearl', { body: '<p>Two things you control most: baricity and posture. A slow injection of a small volume of a glucose-containing solution, then supine, gives the most predictable spread.' + cite('an-hocking2006') + '</p>' }),
+    tier(el('ul', { class: 'an-list', html: '<li>Lying supine, the highest point of the lumbar curve is around L3–4 and the lowest point of the thoracic curve is around T5–6.</li><li>Sitting for a few minutes after a hyperbaric injection keeps the block low, in the sacral roots (a saddle block).</li><li>Turning lateral for a few minutes after a hyperbaric injection favours the dependent side.</li>' }), 1),
+    tier(el('p', { class: 'sp-prose', html: '“Plain” bupivacaine is often described as isobaric but is slightly hypobaric at body temperature.' }), 2),
+    tier(callout('pearl', { body: '<p>Two things you control most: baricity and posture. A slow injection of a small volume of a glucose-containing solution, then supine, gives the most predictable spread.</p>' }), 1),
+    tier(callout('pearl', { title: 'Spinal curves differ from the textbook', body: '<p>The textbook pooling point (the trough of the thoracic kyphosis, around T5–6) assumes a typical spine. An exaggerated kyphosis or a scoliosis moves the lowest point of the curve, so a hyperbaric solution may settle at a different level and give a block higher or lower than expected. The same applies to table tilt: its effect depends on where the curves lie relative to the horizontal. In these patients give the dose in increments if the technique allows, and watch the level rise before the surgeon starts.</p>' }), 3),
   );
   s4.append(sb);
   root.append(s4);
@@ -337,7 +351,7 @@ export function mount(root) {
   // ================================================================ 5. Dermatomes
   const s5 = el('div', { class: 'an-sub', id: 'an-dermatomes' });
   s5.append(el('h3', { text: 'Dermatomes and block height' }));
-  s5.append(el('p', { class: 'sp-prose', text: 'Test the block in the same way each time and say which modality you used. Cold is lost at a higher level than pinprick, and pinprick higher than light touch, so a cold level usually reads a segment or two above a pinprick level.' }));
+  s5.append(tier(el('p', { class: 'sp-prose', text: 'Test the block in the same way each time and say which modality you used. Cold is lost at a higher level than pinprick, and pinprick higher than light touch, so a cold level usually reads a segment or two above a pinprick level.' }), 1));
   const f4 = figure({ id: 'an-fig-dermatomes', num: '1.4', aspect: 'auto', caption: 'Front view, schematic. Hatched area: sensory block for the chosen level. Dotted band above it: approximate extra sympathetic block.' });
   const derm = buildDermSVG();
   const dGrid = el('div', { class: 'an-derm-grid' });
@@ -367,16 +381,17 @@ export function mount(root) {
   }
   range.addEventListener('input', () => setStop(Number(range.value)));
   setStop(3);
+  tier(f4.fig, 1);
   s5.append(f4.fig);
   s5.append(
-    callout('key', { title: 'Block-height targets', body: '<p>These are approximate, commonly taught targets for non-obstetric surgery. Take particular care with knee arthroplasty with a tourniquet, hip surgery and TURP, and agree the level you need with the surgeon.</p>' }),
-    el('h4', { text: 'Differential block' }),
-    el('p', { class: 'sp-prose', text: 'Small and myelinated fibres block at lower concentrations, and the concentration falls with distance from the injection site. So the sympathetic block extends roughly two segments above the pinprick level, and the motor block sits roughly two segments below it. Recovery is broadly in the reverse order.' }),
-    callout('pearl', { body: '<p>Landmarks: T4 nipples, T6 xiphisternum, T10 umbilicus, L1 inguinal ligament, S2–S4 perineum. Sympathetic about 2 segments above sensory; motor about 2 below.</p>' }),
+    tier(callout('key', { title: 'Block-height targets', body: '<p>These are approximate, commonly taught targets for non-obstetric surgery. Take particular care with knee arthroplasty with a tourniquet, hip surgery and TURP, and agree the level you need with the surgeon.</p>' }), 1),
+    tier(el('div', {}, el('h4', { text: 'Differential block' }),
+    el('p', { class: 'sp-prose', text: 'Small and myelinated fibres block at lower concentrations, and the concentration falls with distance from the injection site. So the sympathetic block extends roughly two segments above the pinprick level, and the motor block sits roughly two segments below it. Recovery is broadly in the reverse order.' })), 2),
+    tier(callout('pearl', { body: '<p>Landmarks: T4 nipples, T6 xiphisternum, T10 umbilicus, L1 inguinal ligament, S2–S4 perineum. Sympathetic about 2 segments above sensory; motor about 2 below.</p>' }), 1),
+    tier(callout('pearl', { title: 'The sympathetic level is not the sensory level', body: '<p>The sympathetic block can run more than two segments above the level you test, and by an uncertain amount in the individual. A block that reaches T4 also involves the cardioaccelerator fibres (T1–T4), so bradycardia can appear with little warning, and the vagal reflex may add to it. Do not use the sensory level alone to predict how low the pressure will fall: watch the pressure and heart rate, and expect larger falls in the elderly, the hypovolaemic and those on vasoactive drugs.</p>' }), 3),
   );
   root.append(s5);
 
-  root.append(callout('key', { title: 'Summary', body: '<ul><li>Go in at L3–4 or below: the conus can be low, and the space you choose is often higher than you think.</li><li>The needle passes skin, fat, supraspinous and interspinous ligaments, ligamentum flavum, epidural space, dura and arachnoid. Paramedian skips the two midline ligaments.</li><li>Baricity and posture drive spread; lumbosacral CSF volume explains much of the variation between patients.</li><li>Check the level with cold or pinprick against dermatome landmarks and record the modality.</li></ul>' }));
 
   // ------------------------------------------------------------------ deep links
   api.reveal = (hashId) => {

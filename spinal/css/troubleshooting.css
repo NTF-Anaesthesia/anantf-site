@@ -122,6 +122,16 @@
 .spinal-app .ts-guide-row dt{font:600 12px/1.6 var(--sp-sans);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted)}
 .spinal-app .ts-guide-row dd{margin:0;font-size:15px;line-height:1.55;color:var(--sp-ink)}
 
+/* ---------------------------------------------------------------- tiers, checklist */
+.spinal-app main .ts-index [data-tier]::after{display:none}
+.spinal-app .ts-panel>[data-tier]:not(.ts-tree){margin-top:20px}
+.spinal-app .ts-back-out>[data-tier]{margin-top:18px}
+.spinal-app .ts-back-out>.sp-callout{margin-bottom:0}
+.spinal-app .ts-checklist{counter-reset:ts-step;list-style:none;margin:8px 0 20px;padding:18px 22px;max-width:820px;background:var(--sp-surface);border:1px solid var(--sp-line);border-top:3px solid var(--sp-ink)}
+.spinal-app .ts-checklist li{counter-increment:ts-step;position:relative;margin:0;padding:10px 0 10px 40px;border-bottom:1px solid var(--sp-line);font-size:15px;line-height:1.55}
+.spinal-app .ts-checklist li:last-child{border-bottom:0}
+.spinal-app .ts-checklist li::before{content:counter(ts-step);position:absolute;left:0;top:10px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:1px solid var(--sp-line-strong);font:500 13px/1 var(--sp-mono);color:var(--sp-ink)}
+
 @media (max-width:760px){
   .spinal-app .ts-tree{padding:14px 14px 16px}
   .spinal-app main .ts-prompt{font-size:20px}
