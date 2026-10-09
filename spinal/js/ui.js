@@ -66,7 +66,7 @@ export function tier(node, n) {
   return node;
 }
 
-/** keyPoints(['one line', …], {title}) → the section's Key points box (tier 1, kept in Quick read). */
+/** keyPoints(['one line', …], {title}) → the section's Key points box (tier 1). */
 export function keyPoints(items = [], { title = 'Key points' } = {}) {
   const ul = el('ul');
   for (const it of items) ul.append(fill(el('li'), it));
