@@ -1,0 +1,1795 @@
+<!doctype html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>eFAST — NTF Anaesthesia</title>
+<meta name="description" content="Masterclass: eFAST in trauma. RUQ, LUQ, pelvis, pericardium and anterior chest, with schematic probe-position and free-fluid simulations, a lung-sliding and M-mode simulation, mimics, the unstable-patient decision flow, three cases and a quiz.">
+<style>
+:root{
+  --bg:#F7F2EA; --panel:#FDFAF3; --line:#E0D6C2; --line2:#CFC2A8; --ink:#2A241D; --ink2:#5A4F42; --mute:#8A7E6D; --faint:#B3A795;
+  --accent:#A8541F; --accent-soft:rgba(168,84,31,.10); --red:#B85042; --blue:#2A5B8C; --green:#4C7A45; --amber:#B9852A;
+  --serif:Georgia,'Iowan Old Style','Times New Roman',serif; --mono:ui-monospace,Menlo,'SF Mono',Consolas,monospace;
+  --shadow:0 1px 0 rgba(42,36,29,.04),0 8px 24px -12px rgba(42,36,29,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
+    --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
+    --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
+  --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
+  --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased}
+body{overflow:hidden}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+.deck{position:fixed;inset:0 0 52px 0}
+.slide{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;visibility:hidden;transform:translateX(24px);transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
+.slide.active{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
+.slide.prev{transform:translateX(-24px)}
+.inner{max-width:1360px;margin:0 auto;padding:34px 40px 30px;min-height:100%;display:flex;flex-direction:column}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px;align-items:start}
+.two.even{grid-template-columns:1fr 1fr}
+.kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+h1,h2,h3{font-weight:400;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(40px,5.6vw,76px);line-height:1.02}
+h2{font-size:clamp(28px,3vw,42px);line-height:1.1;margin-bottom:12px}
+h3{font-size:19px;margin-bottom:4px}
+.lede{font-size:18px;line-height:1.5;color:var(--ink2);margin:0 0 20px;max-width:60ch}
+p{line-height:1.55}
+.cap{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 8px}
+.rule{height:1px;background:var(--line);margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow)}
+.card + .card{margin-top:12px}
+.card p{margin:4px 0 0;color:var(--ink2);font-size:15.5px}
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:4px;border:1px solid currentColor}
+.tag.avoid{color:var(--red)} .tag.def{color:var(--green)} .tag.deep{color:var(--blue)}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:16px;line-height:1.5;margin-top:16px}
+.demo{position:sticky;top:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+.panel + .panel{margin-top:12px}
+canvas{display:block;width:100%;height:auto}
+.us{background:#000;border-radius:8px;box-shadow:inset 0 0 0 1px #222}
+.scanner{background:#0d1013;border-radius:10px;padding:6px;border:1px solid #23292f}
+.side{border-radius:8px;border:1px solid var(--line)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.ctrls label{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.ctrls output{min-width:52px;color:var(--ink);font-weight:600}
+input[type=range]{accent-color:var(--accent);width:150px}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{background:transparent;border:0;padding:7px 12px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--ink2);border-right:1px solid var(--line2)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;letter-spacing:.04em}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2)}
+.btn:hover{filter:brightness(1.1)}
+.status{font-family:var(--mono);font-size:12.5px;padding:8px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--line);margin-top:10px;min-height:36px;line-height:1.45}
+.status b{color:var(--accent)}
+.ok{color:var(--green)!important} .bad{color:var(--red)!important} .warn{color:var(--amber)!important}
+table.t{width:100%;border-collapse:collapse;font-size:15.5px}
+table.t th{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);text-align:left;font-weight:400;padding:8px 10px;border-bottom:1px solid var(--line2)}
+table.t td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;color:var(--ink2)}
+table.t td:first-child{color:var(--ink);font-size:16.5px;white-space:nowrap}
+#r2Table td:first-child{white-space:normal;font-size:15px}
+#r2Table td:last-child{white-space:nowrap;font-family:var(--mono);font-size:13px}
+table.t tr.pick{cursor:pointer;transition:background .15s}
+table.t tr.pick:hover{background:var(--accent-soft)}
+table.t tr.pick.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.chip{display:inline-block;padding:3px 9px;margin:2px 4px 2px 0;border:1px solid var(--line2);border-radius:999px;font-size:14px;cursor:pointer;background:var(--panel);color:var(--ink2)}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.num{font-family:var(--mono);color:var(--accent);font-size:13px;letter-spacing:.06em}
+.plist{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.plist li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);cursor:pointer;transition:border-color .15s,transform .15s}
+.plist li:hover{border-color:var(--line2)}
+.plist li.on{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.plist li b{font-weight:400;font-size:16.5px;display:block}.plist li span b{display:inline;font-size:inherit}
+.plist li span{color:var(--ink2);font-size:14.5px;line-height:1.45}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button{background:transparent;border:1px solid var(--line2);border-radius:999px;padding:6px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--ink2)}
+.tabs button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabpanel[hidden]{display:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid-us{display:grid;grid-template-columns:1.15fr 1fr;gap:10px;align-items:start}
+.mini{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px;line-height:1.4}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.quote{font-style:italic;color:var(--mute)}
+.crit{display:grid;grid-template-columns:auto 1fr auto;gap:6px 12px;font-size:15px;align-items:center}
+.crit .ic{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;border:1px solid var(--line2);color:var(--mute)}
+.crit .ic.ok{border-color:var(--green);background:var(--green);color:#fff!important}
+.crit .ic.bad{border-color:var(--red);color:var(--red)}
+.crit .val{font-family:var(--mono);font-size:12.5px;color:var(--ink2);text-align:right}
+/* divider slides */
+.divider .inner{justify-content:center}
+.divider h1{font-size:clamp(56px,8vw,112px)}
+.big-quote{font-size:clamp(20px,2vw,26px);line-height:1.45;color:var(--ink2);max-width:46ch;font-style:italic;margin-top:30px}
+/* bottom bar */
+.bar{position:fixed;left:0;right:0;bottom:0;height:52px;border-top:1px solid var(--line);background:var(--panel);display:flex;align-items:center;gap:16px;padding:0 18px;font-family:var(--mono);font-size:12px;color:var(--ink2);z-index:20}
+.bar .q{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--serif);font-style:italic;color:var(--mute);font-size:13px}
+.bar .prog{position:absolute;left:0;top:-1px;height:2px;background:var(--accent);transition:width .3s}
+.bar .pace{position:absolute;left:0;top:-1px;height:2px;width:2px;background:var(--ink);opacity:.5}
+.bar button{background:transparent;border:1px solid var(--line2);border-radius:6px;padding:5px 9px;cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.timer{display:flex;gap:10px;align-items:center}
+.timer .el{font-weight:600;color:var(--ink);min-width:44px}
+.timer .sl{color:var(--mute)}
+.timer .over{color:var(--red)}
+#notes{position:fixed;right:16px;bottom:64px;max-width:440px;background:var(--ink);color:var(--bg);border-radius:12px;padding:12px 16px;z-index:18;box-shadow:var(--shadow);font-size:15px;line-height:1.45}
+#notes .cap{color:var(--faint)}#notes p{margin:4px 0 0}#notes kbd{background:transparent;color:var(--bg)}
+.pov{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:8px 0 4px}
+#overview{position:fixed;inset:0 0 52px 0;background:var(--bg);z-index:15;overflow:auto;padding:30px;display:none}
+#overview.show{display:block}
+#overview .og{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;max-width:1300px;margin:0 auto}
+#overview button{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;min-height:96px}
+#overview button.cur{border-color:var(--accent)}
+#overview .on{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.12em}
+#overview .ot{font-size:16px;margin-top:6px;display:block}
+#overview .om{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px;display:block}
+.agenda{list-style:none;padding:0;margin:20px 0 0;font-family:var(--mono);font-size:12.5px;color:var(--ink2)}
+.agenda li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line2);padding:6px 0}
+.hint{font-family:var(--mono);font-size:11.5px;color:var(--mute);margin-top:18px}
+kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:var(--panel)}
+.qz{display:grid;gap:12px}
+.qz .card h3{font-size:17px;line-height:1.35}
+.qz .opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.qz .opts button{border:1px solid var(--line2);background:var(--bg);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:14.5px;text-align:left}
+.qz .opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.qz .opts button.wrong{background:transparent;border-color:var(--red);color:var(--red);text-decoration:line-through}
+.qz .why{font-size:14.5px;color:var(--ink2);margin-top:8px;display:none}
+.qz .card.done .why{display:block}
+details.src{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--mute)}
+details.src img{max-width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--line);background:#fff}
+svg text{font-family:var(--mono)}
+.arm-vein{cursor:pointer;transition:stroke-width .15s}
+.arm-vein:hover{stroke-width:7}
+@media (max-width:1050px){
+  .two,.two.even{grid-template-columns:1fr;gap:22px}
+  .demo{position:static}
+  .inner{padding:22px 16px 28px}
+  .grid-us{grid-template-columns:1fr}
+  .bar .q{display:none}
+}
+@media (max-width:560px){ .grid2{grid-template-columns:1fr} table.t td:first-child{white-space:normal} input[type=range]{width:120px} }
+@media (prefers-reduced-motion: reduce){ .slide{transition:none} }
+
+/* ===== shared deck additions ===== */
+b.ink{font-weight:400;color:var(--ink)}
+.num.big{font-family:var(--serif);font-size:26px;letter-spacing:0;color:var(--accent);line-height:1}
+.plist li .tag{margin-left:6px;vertical-align:2px;font-size:9.5px;padding:2px 6px}
+.t2 td:first-child{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.t2 td{font-size:14.5px}
+.t2 tr.hl{background:var(--accent-soft)}
+.formula{font-family:var(--mono);font-size:14px;background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;margin:10px 0 4px;color:var(--ink)}
+.calc input[type=number]{width:74px;font-family:var(--mono);font-size:13px;padding:5px 7px;border:1px solid var(--line2);border-radius:6px;background:var(--bg);color:var(--ink)}
+.status.big{font-size:14px;line-height:1.6}
+.status.big .vv{font-size:22px;font-family:var(--serif);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips span{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;color:var(--ink2)}
+.chips span.okc{border-color:var(--green);color:var(--green)}
+.chips span.badc{border-color:var(--red);color:var(--red)}
+.clock{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.clock .trk{height:8px;border-radius:4px;background:var(--line);position:relative;overflow:hidden;margin-top:6px}
+.clock .trk i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:4px}
+/* media */
+.stage{background:#000;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px #222}
+.stage img,.stage video{max-width:100%;max-height:100%;display:block;object-fit:contain}
+.stage .zoom{position:absolute;right:8px;top:8px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;font-family:var(--mono);font-size:11px;padding:4px 8px;cursor:pointer}
+.stage .badge{position:absolute;left:8px;top:8px;background:rgba(0,0,0,.6);color:#ffd678;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:4px}
+.mcap{font-size:14.5px;line-height:1.45;color:var(--ink2);margin-top:8px;min-height:42px}
+.mcap .id{font-family:var(--mono);font-size:11px;color:var(--mute);margin-right:6px}
+.thumbs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:7px;overflow:hidden;width:92px;height:69px;background:#000;cursor:pointer;position:relative;flex:none}
+.thumbs button.on{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs .k{position:absolute;left:0;right:0;bottom:0;font-family:var(--mono);font-size:9.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75));padding:8px 4px 2px;text-align:left;letter-spacing:.04em}
+.thumbs .pl{position:absolute;right:4px;top:3px;color:#fff;font-size:11px;text-shadow:0 0 4px #000}
+/* cases */
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:15px;margin:10px 0 4px}
+.facts dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding-top:3px}
+.facts dd{margin:0;color:var(--ink2)}
+.steps{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.steps li{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 14px}
+.steps .sh{display:flex;align-items:center;gap:10px;cursor:pointer}
+.steps .sl{font-family:var(--serif);font-size:22px;color:var(--accent);width:22px;text-align:center}
+.steps .sq{flex:1;font-size:15.5px}
+.steps .sq small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.steps .sb{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:999px;padding:3px 10px;color:var(--ink2);background:transparent}
+.steps .sa{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line2);font-size:15px;line-height:1.5;color:var(--ink2)}
+.steps li.shown{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.steps li.shown .sa{display:block}
+.steps li.shown .sb{display:none}
+.pearl{margin-top:12px;font-style:italic;font-size:17px;color:var(--ink);border-left:3px solid var(--accent);padding:6px 0 6px 14px;display:none}
+.pearl.shown{display:block}
+.caseGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.caseGrid button{display:grid;grid-template-columns:84px 1fr;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:8px;cursor:pointer;box-shadow:var(--shadow)}
+.caseGrid button:hover{border-color:var(--accent)}
+.caseGrid img{width:84px;height:63px;object-fit:cover;border-radius:6px;background:#000;display:block}
+.caseGrid b{font-weight:400;font-size:15px;display:block;line-height:1.25}
+.caseGrid span{font-family:var(--mono);font-size:10.5px;color:var(--accent);letter-spacing:.1em}
+/* library */
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:12px;margin-top:12px}
+.lib button{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:0;overflow:hidden;cursor:pointer;text-align:left;box-shadow:var(--shadow)}
+.lib button:hover{border-color:var(--accent)}
+.lib .ph{aspect-ratio:4/3;background:#000;position:relative}
+.lib .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.lib .ph .pl{position:absolute;right:6px;top:4px;color:#fff;font-size:12px;text-shadow:0 0 4px #000}
+.lib .tx{padding:7px 9px 9px;font-size:13px;line-height:1.35;color:var(--ink2)}
+.lib .tx b{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--accent);letter-spacing:.08em;margin-bottom:2px}
+#lb{position:fixed;inset:0;background:rgba(10,8,6,.88);z-index:40;display:flex;align-items:center;justify-content:center;padding:20px}
+#lb[hidden]{display:none}
+.lbIn{width:min(1100px,100%);max-height:100%;display:flex;flex-direction:column;gap:10px;position:relative}
+.lbStage{background:#000;border-radius:10px;display:flex;align-items:center;justify-content:center;min-height:200px;max-height:calc(100vh - 150px);overflow:hidden}
+.lbStage img,.lbStage video{max-width:100%;max-height:calc(100vh - 150px);display:block;object-fit:contain}
+.lbBar{display:flex;gap:12px;align-items:center}
+.lbBar button,.lbX{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 14px;font-family:var(--mono);cursor:pointer}
+.lbX{position:absolute;right:0;top:-46px}
+.lbCap{flex:1;color:#eee;font-size:15px;line-height:1.45}
+.lbCap .id{font-family:var(--mono);font-size:11px;color:#bbb;margin-right:8px}
+/* flowchart */
+.flow svg{width:100%;height:auto;display:block}
+.flow .bx{fill:var(--panel);stroke:var(--line2)}
+.flow .bx.lo{stroke:var(--green);fill:color-mix(in srgb,var(--green) 10%,var(--panel))}
+.flow .bx.hi{stroke:var(--red);fill:color-mix(in srgb,var(--red) 9%,var(--panel))}
+.flow .bx.md{stroke:var(--blue);fill:color-mix(in srgb,var(--blue) 9%,var(--panel))}
+.flow .bx.q{stroke:var(--accent);fill:var(--accent-soft)}
+.flow text{font-family:var(--mono);font-size:12px;fill:var(--ink)}
+.flow text.s{font-size:10.5px;fill:var(--ink2)}
+.flow text.h{font-family:var(--serif);font-size:15px}
+.flow path{stroke:var(--line2);fill:none;stroke-width:1.4}
+.flow .ah{fill:var(--line2);stroke:none}
+.refs{font-family:var(--serif);font-size:13.5px;color:var(--ink2);padding-left:18px;line-height:1.45}
+.refs li{margin-bottom:4px}
+.stage.sm{aspect-ratio:4/3}
+@media (max-width:1050px){ .caseGrid{grid-template-columns:1fr} .thumbs button{width:76px;height:57px} }
+.card p.mini{font-size:11.5px;color:var(--mute);line-height:1.45}
+[hidden]{display:none!important}
+table.qt{font-size:12px}
+table.qt th,table.qt td{padding:4px 5px;font-family:var(--mono);font-size:11.5px;text-align:right}
+table.qt td:first-child{font-size:11.5px;color:var(--mute)}
+@media (max-width:1050px){ .two,.two.even{grid-template-columns:minmax(0,1fr)} .grid-us{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:560px){
+  .grid2{grid-template-columns:minmax(0,1fr)}
+  .bar{gap:8px;padding:0 8px} .timer .sl,#tmR,#ntB,#ovB{display:none}
+  .ctrls label{white-space:normal;flex-wrap:wrap} input[type=range]{width:110px}
+  table.t td:first-child,.t2 td:first-child{white-space:normal}
+  .facts{grid-template-columns:1fr} .facts dt{padding-top:6px}
+  .lib{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tabs{gap:4px} .tabs button{padding:5px 10px}
+}
+.jump{margin-top:16px;max-width:540px}
+#jumpChips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.jump .chip{font-family:var(--mono);font-size:11px;padding:3px 8px;margin:0}
+
+/* ===== eFAST deck additions ===== */
+.card ul,.card ol,.lst{margin:6px 0 0;padding-left:20px;color:var(--ink2);font-size:15.5px;line-height:1.5}
+.card li,.lst li{margin:3px 0}
+.lst.tight li{margin:1px 0}
+.links{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.links a{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line2);border-radius:999px;padding:4px 10px;text-decoration:none;color:var(--ink2)}
+.links a:hover{border-color:var(--accent);color:var(--accent)}
+.grid-us .scanner,.grid2 .scanner{min-width:0}
+.probe-grid{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.4fr);gap:12px;align-items:start}
+.torso svg,.xsec svg{width:100%;height:auto;display:block}
+.torso .body{fill:var(--accent-soft);stroke:var(--line2);stroke-width:1.5}
+.torso .lm{fill:none;stroke:var(--line2);stroke-width:1.2;stroke-dasharray:3 3}
+.torso text{font-size:10.5px;fill:var(--ink2)}
+.torso text.side{font-size:13px;fill:var(--mute)}
+.torso .fp{cursor:pointer;outline:none}
+.torso .fp rect{fill:var(--panel);stroke:var(--ink2);stroke-width:1.5}
+.torso .fp .mk{fill:var(--ink2)}
+.torso .fp .glow{fill:var(--accent);opacity:0;transition:opacity .2s}
+.torso .fp.on rect{fill:var(--accent);stroke:var(--accent)}
+.torso .fp.on .mk{fill:var(--accent)}
+.torso .fp.on .glow{opacity:.22}
+.torso .fp.on text{fill:var(--accent);font-weight:600}
+.torso .fp:focus-visible rect{stroke:var(--blue);stroke-width:3}
+.torso .ord{fill:var(--accent);font-size:13px;font-weight:700}
+.torso .ordc{fill:var(--panel);stroke:var(--accent);stroke-width:1.5}
+.rlist{list-style:none;padding:0;margin:6px 0 0;display:grid;gap:2px;font-family:var(--mono);font-size:12px}
+.rlist li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line2);padding:4px 0;flex-wrap:wrap}
+.pos{color:var(--red)} .neg{color:var(--green)} .fanc{color:var(--amber)} .ind{color:var(--blue)}
+.mimics{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:10px}
+.mimic{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px;box-shadow:var(--shadow);min-width:0}
+.mimic.right{border-color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.mimic.wrong{border-color:var(--red);box-shadow:inset 0 0 0 1px var(--red)}
+.mimic .mq{font-size:13.5px;margin:6px 0;line-height:1.35}
+.mimic .mb{display:flex;gap:6px;flex-wrap:wrap}
+.mimic .mb button{flex:1;border:1px solid var(--line2);background:var(--bg);border-radius:7px;padding:6px 8px;cursor:pointer;font-family:var(--mono);font-size:11.5px}
+.mimic .mb button.right{background:var(--green);border-color:var(--green);color:#fff}
+.mimic .mb button.wrong{border-color:var(--red);color:var(--red);text-decoration:line-through}
+.mimic .mf{font-size:13px;color:var(--ink2);margin-top:6px;line-height:1.42}
+.mimic .mf b{color:var(--ink);font-weight:600}
+.mimic .tg{margin-top:6px;width:100%}
+.winrow{display:grid;grid-template-columns:minmax(78px,96px) minmax(0,1fr);gap:6px 10px;align-items:center;font-family:var(--mono);font-size:12px;margin-top:6px;color:var(--ink2)}
+.seg.sm button{padding:5px 8px;font-size:11.5px}
+.winrow .seg{justify-self:start}
+.banner{border-left:3px solid var(--amber);background:color-mix(in srgb,var(--amber) 12%,var(--panel));padding:8px 12px;border-radius:0 8px 8px 0;font-size:14.5px;line-height:1.45;margin-top:8px;color:var(--ink)}
+.banner.red{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--panel))}
+.outc{margin-top:10px;display:grid;gap:8px}
+.outc .card{margin:0}
+.outc .card h3{font-size:17px}
+.outc .card.hi{border-color:var(--red);box-shadow:inset 3px 0 0 var(--red)}
+.outc .card.md{border-color:var(--blue);box-shadow:inset 3px 0 0 var(--blue)}
+.outc .card.lo{border-color:var(--green);box-shadow:inset 3px 0 0 var(--green)}
+.flow .node{transition:opacity .2s}
+.flow .node.dim{opacity:.33}
+.flow .node.on rect{stroke:var(--accent);stroke-width:2.6}
+.flow path.edge.on{stroke:var(--accent);stroke-width:2.4}
+.icons canvas{border-radius:8px;border:1px solid var(--line);background:var(--panel)}
+.xsec .bodyx{fill:var(--panel);stroke:var(--line2);stroke-width:1.5}
+.xsec .perit{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1;stroke-dasharray:4 3}
+.xsec .retro{fill:color-mix(in srgb,var(--blue) 10%,var(--panel));stroke:var(--blue);stroke-width:1;stroke-dasharray:4 3}
+.xsec .org{fill:color-mix(in srgb,var(--ink2) 16%,var(--panel));stroke:var(--line2)}
+.xsec .bone{fill:color-mix(in srgb,var(--ink) 24%,var(--panel));stroke:var(--ink2)}
+.xsec .ves{fill:color-mix(in srgb,var(--red) 30%,var(--panel));stroke:var(--red)}
+.xsec .blood{fill:var(--red);opacity:.75}
+.xsec text{font-size:10.5px;fill:var(--ink2)}
+.xsec text.h{font-size:11.5px;fill:var(--ink)}
+.caseGrid .cn{width:84px;height:63px;border-radius:6px;background:#0d1013;color:#ffd678;display:grid;place-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-align:center;line-height:1.3}
+.ansP{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.mm-wrap{margin-top:8px}
+.vtabs{margin-top:8px}
+.vtabs[hidden]{display:none}
+.us.pick{cursor:ew-resize;touch-action:pan-y}
+.tw{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+.doc-t td{font-size:14px}
+.doc-t td:first-child{font-family:var(--mono);font-size:12px}
+@media (max-width:560px){.doc-t td,.doc-t th{padding:6px 5px;font-size:12.5px}}
+.refs.long li{margin-bottom:7px}
+@media (max-width:1050px){ .probe-grid{grid-template-columns:minmax(0,1fr)} .torso{max-width:300px;margin:0 auto} }
+@media (max-width:560px){ .mimics{grid-template-columns:repeat(2,minmax(0,1fr))} .winrow{grid-template-columns:minmax(0,1fr)} .seg{max-width:100%} }
+</style>
+<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"></head>
+<body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../../department.html">About Us</a><a href="../../why-join-us.html">Why Join Us?</a><a href="../../clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../../mopex/">MO Handbook</a><a href="../../senior-resident.html">Senior Residency</a><a href="../../exams/">MMed Exam Prep</a></div></details><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<nav class="course-toolbar" aria-label="Tutorial navigation"><div class="course-toolbar-inner"><div class="course-breadcrumb"><a href="../">POCUS</a><span aria-hidden="true">/</span><span>eFAST</span></div><label class="course-section-picker"><span class="course-sr-only">Tutorial section</span><select id="course-section" aria-label="Tutorial section"></select></label></div></nav><main class="deck" id="deck" tabindex="-1">
+
+<!-- ============ 1 TITLE ============ -->
+<section class="slide course-intro" data-min="2" data-title="Start here" data-prompt="Ask: who has done a FAST in a real trauma call? Who has seen a FAST change the destination of a patient, and who has seen a negative FAST falsely reassure the team? Keep those stories for the cases.">
+  <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner ntf-illustrated-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS masterclass · Trauma</p><h1>eFAST.</h1><p class="course-hero-lead">Five windows, one question each: is there blood or air where it should not be, and does it change what happens in the next ten minutes?</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
+    <div>
+      <p style="margin:0 0 10px;color:var(--ink2)"><b class="ink">Extended Focused Assessment with Sonography in Trauma.</b> A bedside, binary, repeatable examination done during the primary survey. It answers four questions:</p>
+      <ul class="lst">
+        <li>Is there free fluid (presumed blood) in the peritoneum?</li>
+        <li>Is there fluid in the pericardium?</li>
+        <li>Is there fluid in either pleural space (haemothorax)?</li>
+        <li>Is there a pneumothorax?</li>
+      </ul>
+      <p class="mini" style="margin-top:10px">It does not grade organ injury, and it does not replace CT in the stable patient. Its power is in the <b>unstable</b> patient: it tells you which cavity is bleeding, so the team goes to the right place (theatre, angiography, chest drain, pericardiotomy) without leaving the resuscitation bay.</p>
+      <ul class="agenda" style="max-width:480px">
+        <li><span>01–03 · Role · limits · I-AIM</span><span>7 min</span></li>
+        <li><span>Part I · Acquisition · five windows · pneumothorax</span><span>14.5 min</span></li>
+        <li><span>Part II · Mimics · decision · serial scans</span><span>10.5 min</span></li>
+        <li><span>Part III · Three trauma patients</span><span>12.5 min</span></li>
+        <li><span>Quick check · references · close</span><span>7 min</span></li>
+      </ul>
+      <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
+      <div class="links"><a href="../cardiac/">Focused cardiac ultrasound</a><a href="../lung/">Lung ultrasound</a><a href="../shock/">RUSH: approach to shock</a><a href="../dvt/">DVT and vessels</a></div>
+    </div>
+    <div>
+      <div class="grid2"><div><div class="pov">Schematic · RUQ · haemoperitoneum</div><div class="scanner"><canvas id="heroR" class="us"></canvas></div></div><div><div class="pov">Schematic · anterior chest · sliding</div><div class="scanner"><canvas id="heroP" class="us"></canvas></div></div></div>
+      <div class="mini">All images on this page are drawn schematics and simulated sonograms, not real scans.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 ROLE ============ -->
+<section class="slide" data-min="3" data-title="Role in trauma" data-prompt="Put the Cochrane numbers up. Ask: in 1,000 blunt trauma patients, how many injured people does a 74% sensitive test miss? (Cochrane's own estimate: about 73.) What does that mean for the stable patient with a negative FAST and a seat-belt sign?">
+  <div class="inner two">
+    <div>
+      <div class="kicker">01 · Role in trauma</div>
+      <h2>FAST is a triage tool for the unstable patient.</h2>
+      <p class="lede">An ATLS adjunct to the primary survey, under circulation.</p>
+      <div class="card"><div class="cap">Where it earns its place</div>
+        <ul>
+          <li><b class="ink">Unstable blunt trauma:</b> a positive abdominal FAST in a patient who does not respond to resuscitation is an indication for laparotomy (or damage-control surgery) without CT. In a small subgroup of hypotensive blunt trauma patients scanned by experienced surgeons, sensitivity was 100% (Rozycki 1998): a best case, not a guarantee. Unstable here means a transient or non-responder to the initial fluid or blood bolus (ATLS).</li>
+          <li><b class="ink">Stable blunt trauma:</b> a positive FAST speeds CT and surgical review; a negative FAST does not end the work-up. CT remains the reference for the stable patient.</li>
+          <li><b class="ink">Penetrating thoracoabdominal trauma:</b> the pericardial view is the key window. Pericardial blood after a precordial or epigastric stab wound means surgical exploration (pericardial view sensitivity 100%, specificity 96.9% in 261 patients, Rozycki 1999; but see Ball 2009 on false negatives with a haemothorax). Abdominal FAST has low sensitivity here: a positive result is useful; a negative result rules out nothing.</li>
+          <li><b class="ink">Chest:</b> ultrasound of the anterior chest is more sensitive for pneumothorax than a supine chest X-ray (Alrajhi 2012: sensitivity 90.9% vs 50.2%, specificity 98.2% vs 99.4%).</li>
+          <li><b class="ink">Serial scanning:</b> repeat after any change in haemodynamics. An early negative scan may become positive as blood accumulates.</li>
+        </ul>
+      </div>
+      <div class="callout">Cochrane (Stengel 2018, blunt thoracoabdominal trauma, 34 studies): <b>sensitivity 74%, specificity 96%</b> against CT or surgery. High specificity: rule in. Moderate sensitivity: do not rule out. Abdomen alone: sensitivity 68%, specificity 95%; chest injuries: 96%/99%. Children: sensitivity 63% (118 missed per 1,000 at 31% prevalence).</div>
+    </div>
+    <div class="demo">
+      <div class="panel icons">
+        <div class="cap">1,000 blunt trauma patients · sensitivity 74% · specificity 96%</div>
+        <canvas id="icoCv" width="500" height="320" role="img" aria-label="Icon array of 1,000 patients showing true positives, missed injuries, false positives and true negatives"></canvas>
+        <div class="ctrls"><label>Injured (prevalence) <input type="range" id="icoPrev" min="5" max="60" step="1" value="28"><output id="icoPrevO">28%</output></label></div>
+        <div class="legend" id="icoLeg"></div>
+        <div class="status" id="icoStat"></div>
+        <div class="mini">Illustrative natural-frequency display using the pooled Cochrane estimates. At about 28% prevalence the test misses roughly 73 injured patients per 1,000.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 LIMITS ============ -->
+<section class="slide" data-min="2" data-title="Limits" data-prompt="Ask the room for the three places blood can hide in an unstable patient with a negative FAST and a clear chest (retroperitoneum and pelvis, long bones, the floor, which is external). Then ask: which of these does the FAST look at? (None.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">02 · Limits</div>
+      <h2>What eFAST cannot see.</h2>
+      <div class="card"><div class="cap">A negative eFAST does not exclude</div>
+        <ul>
+          <li><b class="ink">Retroperitoneal haemorrhage:</b> pelvic fracture bleeding, renal injury, major vessel injury. Blood stays behind the peritoneum and never reaches Morison's pouch.</li>
+          <li><b class="ink">Hollow viscus and mesenteric injury:</b> bowel perforation produces little free fluid early.</li>
+          <li><b class="ink">Solid organ injury without free fluid:</b> a contained subcapsular haematoma or parenchymal laceration. The FAST looks for fluid, not organs.</li>
+          <li><b class="ink">Diaphragmatic injury.</b></li>
+          <li><b class="ink">Small volumes of haemoperitoneum</b> below the detection threshold, especially early.</li>
+          <li><b class="ink">Clotted blood:</b> clot is echogenic and can look like tissue.</li>
+        </ul>
+      </div>
+      <div class="callout">And a positive scan does not tell you the fluid is blood: ascites, peritoneal dialysate, urine (bladder rupture), physiological pelvic fluid in women and pre-existing effusions all look anechoic.</div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="cap">Schematic axial section · supine · patient's right on the left</div>
+        <div class="seg" id="xsSeg" role="group" aria-label="Bleeding site"><button aria-pressed="true" data-v="ip">Intraperitoneal</button><button aria-pressed="false" data-v="rp">Retroperitoneal</button><button aria-pressed="false" data-v="so">Contained solid organ</button></div>
+        <div class="xsec" id="xsBox" style="margin-top:10px"></div>
+        <div class="status" id="xsStat"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 I-AIM ============ -->
+<section class="slide" data-min="2" data-title="I-AIM approach" data-prompt="Ask: why would you ever scan the heart first? (Precordial wound, PEA arrest, distended neck veins.) Stress that indeterminate is not negative: write it down as indeterminate.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">03 · The I-AIM approach</div>
+      <h2>Indication, Acquisition, Interpretation, Medical decision.</h2>
+      <ul class="plist" id="iaimList">
+        <li data-k="i" class="on" tabindex="0" role="button"><span class="num big">I</span><div><b>Indication</b><span>Suspected thoracoabdominal injury or unexplained hypotension. Will the answer change what I do now?</span></div></li>
+        <li data-k="a" tabindex="0" role="button"><span class="num big">A</span><div><b>Acquisition</b><span>Supine, curvilinear probe, five windows, fan through every view.</span></div></li>
+        <li data-k="n" tabindex="0" role="button"><span class="num big">I</span><div><b>Interpretation</b><span>Each window: positive, negative or indeterminate.</span></div></li>
+        <li data-k="m" tabindex="0" role="button"><span class="num big">M</span><div><b>Medical decision</b><span>Integrate with haemodynamics and mechanism.</span></div></li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="panel iaimP" data-k="i">
+        <div class="cap">Indication</div>
+        <table class="t"><tbody>
+          <tr><td>Scan</td><td>Trauma with suspected thoracoabdominal injury, unexplained hypotension, or a mechanism that could cause cavitary haemorrhage.</td></tr>
+          <tr><td>Ask</td><td>Will the answer change what I do now? In the unstable patient it usually will: it decides the destination.</td></tr>
+          <tr><td>Never</td><td>Delay haemorrhage control, airway management or a needed intervention to finish a scan.</td></tr>
+        </tbody></table>
+      </div>
+      <div class="panel iaimP" data-k="a" hidden>
+        <div class="cap">Acquisition · the minimum dataset</div>
+        <div class="crit">
+          <span class="ic ok">1</span><span>Supine (as the patient arrives)</span><span class="val">no delay</span>
+          <span class="ic ok">2</span><span>Curvilinear or phased array 2–5 MHz; linear or curvilinear for pleura</span><span class="val">abdominal preset</span>
+          <span class="ic ok">3</span><span>RUQ → subxiphoid → LUQ → pelvis → anterior chest both sides</span><span class="val">standard order</span>
+          <span class="ic ok">4</span><span>Scan the window most likely to change management first</span><span class="val">heart in a stab</span>
+          <span class="ic ok">5</span><span>Fan through every view: a single still is not a complete view</span><span class="val">fan</span>
+        </div>
+      </div>
+      <div class="panel iaimP" data-k="n" hidden>
+        <div class="cap">Interpretation</div>
+        <table class="t"><tbody>
+          <tr><td>Positive</td><td>Anechoic (black) stripe in a dependent potential space: free fluid until proven otherwise.</td></tr>
+          <tr><td>Negative</td><td>The whole space seen and fanned through, with no fluid.</td></tr>
+          <tr><td>Indeterminate</td><td>The space was not fully seen. <b class="ink">Indeterminate is not negative.</b></td></tr>
+        </tbody></table>
+      </div>
+      <div class="panel iaimP" data-k="m" hidden>
+        <div class="cap">Medical decision</div>
+        <table class="t"><tbody>
+          <tr><td><span class="tag avoid">Unstable +</span></td><td>Go to the cavity that is bleeding.</td></tr>
+          <tr><td><span class="tag deep">Unstable −</span></td><td>Look elsewhere and repeat the scan.</td></tr>
+          <tr><td><span class="tag def">Stable</span></td><td>CT, whatever the FAST shows.</td></tr>
+        </tbody></table>
+        <p class="mini">Full decision flow on slide 12.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 PART I ============ -->
+<section class="slide divider" data-min="0.5" data-title="Part I · Acquisition" data-prompt="Part I is hands-on. The goal: everyone can find the caudal tip of the liver and the splenorenal recess in under 30 seconds.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part I · Acquisition</div>
+      <h1>Five windows.</h1>
+      <p class="big-quote" style="font-style:normal">Probe position, the anatomy you should see, and where fluid collects first.</p>
+      <p class="cap" style="margin-top:22px;line-height:2">RUQ · Subxiphoid · LUQ · Pelvis · Anterior chest</p>
+    </div>
+    <div><div class="panel"><div class="torso" id="p1Torso" style="max-width:320px;margin:0 auto"></div><div class="mini">Schematic supine torso, front view. Patient's right is on your left. Arrowheads show the probe marker.</div></div></div>
+  </div>
+</section>
+
+<!-- ============ 6 PROBE MAP + FREE FLUID ============ -->
+<section class="slide" data-min="4" data-title="Where fluid goes" data-prompt="Set fluid to 150 mL supine. Click RUQ with the fan centred: negative. Ask: is this patient bleeding? Then fan, then click Pelvis. Then switch to Trendelenburg and watch RUQ. Ask: where in the LUQ is fluid missed by a probe placed too low and anterior? (The subphrenic space above the spleen.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">04 · Where fluid goes</div>
+      <h2>Blood runs downhill: dependent spaces and the probe map.</h2>
+      <div class="card"><div class="cap">Supine, the most dependent spaces</div>
+        <ul>
+          <li><b class="ink">Pelvis</b> (rectovesical pouch in males; pouch of Douglas in females): the most dependent part of the pelvic peritoneal cavity; with Morison's pouch, one of the two main sumps in the supine patient. It detects the smallest volumes in DPL-infusion studies (Von Kuenssberg Jehle 2003: median about 100 mL), but in real trauma the RUQ, especially the caudal liver tip, is the view most often positive (Lobo 2017).</li>
+          <li><b class="ink">Hepatorenal recess (Morison's pouch):</b> the most dependent upper abdominal space; the right paracolic gutter connects it to the pelvis.</li>
+          <li><b class="ink">Left upper quadrant:</b> fluid may appear first above the spleen (<b class="ink">subphrenic</b>) or around the inferior splenic tip and left paracolic gutter, and is less often isolated to the splenorenal recess (O'Brien 2015). The phrenicocolic ligament partly limits flow between the LUQ and the left paracolic gutter, so LUQ blood tends to pool around the spleen and to spill towards the right side. Clear all of these zones, not just between spleen and kidney.</li>
+        </ul>
+      </div>
+      <div class="card"><div class="cap">RUQ: find the liver tip</div><p>The <b class="ink">caudal tip of the liver</b> and the adjacent right paracolic gutter are the RUQ sub-zone most often positive, more than Morison's pouch proper (30 of 32 positive RUQ views; Lobo 2017). Always slide caudally to see the liver tip.</p></div>
+      <div class="card"><div class="cap">How much can you miss?</div><p>Detection thresholds vary by study and operator. For a supine Morison's pouch view the mean was about 600 mL in Branney 1995, though some patients were detected at much smaller volumes; the pelvic view detects smaller volumes. <b class="ink">A negative FAST can coexist with several hundred mL of blood.</b></p></div>
+      <div class="card"><div class="cap">Position</div><p>Trendelenburg (head-down) moves fluid towards the upper abdomen and improves detection in Morison's pouch (Abrams 1999); reverse Trendelenburg favours the pelvis. Reposition only if the patient and spinal precautions allow.</p></div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="probe-grid">
+          <div><div class="pov">Probe map · click a footprint</div><div class="torso" id="pmTorso"></div></div>
+          <div><div class="pov" id="pmPov">Schematic · RUQ</div><div class="scanner"><canvas id="pmUS" class="us" role="img" aria-label="Simulated sonogram of the selected window"></canvas></div>
+            <div class="seg sm" id="pmView" role="group" aria-label="Window" style="margin-top:8px"><button data-v="ruq" aria-pressed="true">RUQ</button><button data-v="subx" aria-pressed="false">Subxiphoid</button><button data-v="luq" aria-pressed="false">LUQ</button><button data-v="pelS" aria-pressed="false">Pelvis sag</button><button data-v="pelT" aria-pressed="false">Pelvis trans</button><button data-v="chR" aria-pressed="false">Chest R</button><button data-v="chL" aria-pressed="false">Chest L</button></div>
+          </div>
+        </div>
+        <div class="ctrls">
+          <label>Free fluid <input type="range" id="pmVol" min="0" max="1500" step="25" value="150"><output id="pmVolO">150 mL</output></label>
+          <label>Fan <input type="range" id="pmFan" min="-20" max="20" step="1" value="0"><output id="pmFanO">0°</output></label>
+        </div>
+        <div class="ctrls">
+          <div class="seg sm" id="pmPos" role="group" aria-label="Patient position"><button data-v="sup" aria-pressed="true">Supine</button><button data-v="tr" aria-pressed="false">Trendelenburg</button><button data-v="rt" aria-pressed="false">Reverse T</button></div>
+          <div class="seg sm" id="pmSex" role="group" aria-label="Sex"><button data-v="m" aria-pressed="true">Male</button><button data-v="f" aria-pressed="false">Female</button></div>
+          <label><input type="checkbox" id="pmLab" checked> Labels</label>
+        </div>
+        <div class="status" id="pmStat"></div>
+        <ul class="rlist" id="pmList" aria-live="polite"></ul>
+        <div class="mini">Fluid units are illustrative, not a validated threshold. Order and volumes are illustrative of published trends (Branney 1995; Abrams 1999; Lobo 2017), not cut-offs. Thresholds are deliberately lower than Branney's mean (about 600 mL for Morison's pouch) so that the order of filling is visible.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 RUQ ============ -->
+<section class="slide" data-min="3" data-title="Right upper quadrant" data-prompt="Ask: what makes the spine disappear above the diaphragm in a normal person? (Air in the lung.) So what does seeing the spine continue upwards mean? (Fluid, or consolidation, transmitting sound.) Ask someone to describe the four zones aloud while scanning a volunteer.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">05 · Right upper quadrant</div>
+      <h2>Diaphragm, Morison's pouch, liver tip, right chest.</h2>
+      <p class="lede"><b class="ink">Probe:</b> mid- to posterior axillary line, 8th–11th intercostal spaces, marker to the head. Rotate slightly oblique (marker posterior) to fit between the ribs.</p>
+      <div class="cap">Four zones to clear, top to bottom · tap one</div>
+      <ul class="plist" id="ruqZones">
+        <li data-z="1" tabindex="0" role="button"><span class="num big">1</span><div><b>Right hemithorax</b><span>Normal: mirror image, and the spine stops at the diaphragm. Haemothorax: anechoic fluid above the diaphragm, loss of mirror image, positive <b class="ink">spine sign</b>.</span></div></li>
+        <li data-z="2" tabindex="0" role="button"><span class="num big">2</span><div><b>Subphrenic space</b><span>Between liver and diaphragm.</span></div></li>
+        <li data-z="3" tabindex="0" role="button"><span class="num big">3</span><div><b>Morison's pouch</b><span>The hepatorenal interface. Positive = anechoic stripe.</span></div></li>
+        <li data-z="4" tabindex="0" role="button"><span class="num big">4</span><div><b>Caudal liver tip</b><span>And the right paracolic gutter. Slide caudally until you see it: the RUQ zone most often positive (Lobo 2017).</span></div></li>
+      </ul>
+      <p class="mini" style="margin-top:10px">Ultrasound detects much smaller pleural collections than a supine chest film, where several hundred mL can be missed.</p>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="seg" id="ruqSeg" role="group" aria-label="RUQ finding"><button aria-pressed="true" data-v="n">Normal</button><button aria-pressed="false" data-v="hp">Haemoperitoneum</button><button aria-pressed="false" data-v="ht">Haemothorax</button></div>
+        <div class="scanner" style="margin-top:10px"><canvas id="ruqUS" class="us" role="img" aria-label="Simulated right upper quadrant sonogram"></canvas></div>
+        <div class="status" id="ruqStat"></div>
+        <div class="mini">Schematic coronal view, marker to the head: cephalad is on the left of the screen.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8 LUQ, PELVIS, PERICARDIUM ============ -->
+<section class="slide" data-min="3" data-title="LUQ, pelvis, pericardium" data-prompt="Ask: why do so many LUQ views come back 'negative' but incomplete? (Probe too anterior and too low: you see colon gas.) Ask: the patient already has a catheter and the bladder is empty. What now?">
+  <div class="inner two">
+    <div>
+      <div class="kicker">06 · LUQ, pelvis, pericardium</div>
+      <h2>Higher and further back on the left; scan the bladder before the catheter.</h2>
+      <div class="card"><div class="cap">Left upper quadrant</div>
+        <ul>
+          <li>Probe more <b class="ink">posterior and superior</b> than on the right: posterior axillary line, about 6th–9th intercostal spaces, knuckles on the bed. The spleen is small and sits high and back; stomach and colon gas sit anteriorly.</li>
+          <li>Clear: left hemithorax (mirror image, spine sign), <b class="ink">subphrenic space</b> (missed by a probe too low and anterior), splenorenal recess, inferior tip of the spleen and left paracolic gutter (where isolated LUQ fluid is often found; O'Brien 2015).</li>
+        </ul>
+      </div>
+      <div class="card"><div class="cap">Pelvis</div>
+        <ul>
+          <li>Just above the pubic symphysis, angled caudally. <b class="ink">Transverse and sagittal</b>, fanning fully through the bladder.</li>
+          <li>Males: fluid in the <b class="ink">rectovesical pouch</b>, behind the bladder. Females: in the <b class="ink">pouch of Douglas</b>, behind the uterus (and it can lie between bladder and uterus).</li>
+          <li>A full bladder is the acoustic window: scan <b class="ink">before</b> urinary catheterisation, or clamp the catheter. Fill with saline only via an existing, correctly placed catheter, and not if bladder or urethral injury is suspected (pelvic fracture, haematuria, blood at the meatus): instilled fluid can leak through a ruptured bladder and mimic haemoperitoneum. Otherwise record the pelvis as indeterminate and move on; do not delay resuscitation.</li>
+          <li>A small amount of free pelvic fluid can be physiological in women of reproductive age; interpret in context.</li>
+        </ul>
+      </div>
+      <div class="card"><div class="cap">Pericardium</div>
+        <ul>
+          <li><b class="ink">Subxiphoid:</b> probe flat under the xiphisternum, aimed at the left shoulder, liver as the window; increase depth to see the posterior pericardium.</li>
+          <li>If subxiphoid is blocked (tenderness, gas, obesity, a wound) use the <b class="ink">parasternal long axis</b> (<a href="../cardiac/">focused cardiac</a>). There, pericardial fluid lies anterior to the descending aorta; pleural fluid lies posterior to it.</li>
+          <li>An isolated anterior echo-free space without posterior fluid is often <b class="ink">epicardial fat</b>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="tabs" id="lpTabs" role="tablist"><button role="tab" aria-selected="true" data-v="luq">LUQ</button><button role="tab" aria-selected="false" data-v="pelT">Pelvis transverse</button><button role="tab" aria-selected="false" data-v="pelS">Pelvis sagittal</button><button role="tab" aria-selected="false" data-v="subx">Subxiphoid</button></div>
+        <div class="scanner"><canvas id="lpUS" class="us" role="img" aria-label="Simulated sonogram"></canvas></div>
+        <div class="ctrls">
+          <div class="seg sm" id="lpFluid" role="group" aria-label="Fluid"><button data-v="0" aria-pressed="true">No fluid</button><button data-v="1" aria-pressed="false">Fluid</button></div>
+          <div class="seg sm" id="lpSex" role="group" aria-label="Sex"><button data-v="m" aria-pressed="true">Male</button><button data-v="f" aria-pressed="false">Female</button></div>
+          <div class="seg sm" id="lpBl" role="group" aria-label="Bladder"><button data-v="full" aria-pressed="true">Full bladder</button><button data-v="empty" aria-pressed="false">After catheter</button></div>
+        </div>
+        <div class="status" id="lpStat"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9 ANTERIOR CHEST ============ -->
+<section class="slide" id="chestSlide" data-min="4" data-title="Anterior chest" data-prompt="Click Normal, then Pneumothorax: ask the room to name the M-mode signs. Then click Apnoea and ask: pneumothorax or not? (Lung pulse: not.) Drag the cursor across the lung point. Ask: what if the lung is completely collapsed? (No lung point; diagnosis rests on absent sliding, B-lines and pulse, plus the clinical picture.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">07 · Anterior chest</div>
+      <h2>Pneumothorax: look for sliding, B-lines and the lung point.</h2>
+      <p class="lede">Supine, air rises to the <b class="ink">least dependent</b> areas: scan the anterior chest from the 2nd intercostal space down to the anterior costophrenic recess (lower parasternal and paracardiac), then lateral zones, using several spaces on each side. Linear (or curvilinear) probe, sagittal across two ribs: the "bat sign".</p>
+      <div class="card"><div class="cap">Pneumothorax is excluded at that point by any of</div>
+        <ul>
+          <li><b class="ink">Lung sliding:</b> shimmer of the pleural line with respiration.</li>
+          <li><b class="ink">B-lines:</b> they arise from the visceral pleura, so the lung is touching the chest wall.</li>
+          <li><b class="ink">Lung pulse:</b> the pleural line pulses with the heartbeat in an apnoeic or poorly ventilated lung.</li>
+        </ul>
+      </div>
+      <div class="card"><div class="cap">Pneumothorax is suggested by</div>
+        <p>Absent sliding, absent B-lines and absent lung pulse, with A-lines remaining. M-mode: <b class="ink">seashore</b> (granular below the pleural line) becomes <b class="ink">barcode</b> (horizontal lines throughout).</p>
+        <p><b class="ink">Lung point:</b> where sliding lung meets the non-sliding pneumothorax. Specificity close to 100%, but absent in a total collapse.</p>
+      </div>
+      <div class="callout">Absent sliding alone is not specific: apnoea, mainstem intubation, pleurodesis or adhesions, large bullae, ARDS, contusion with low compliance. Subcutaneous emphysema can make the pleura unviewable (indeterminate). More in <a href="../lung/">lung ultrasound</a>.</div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="seg sm" id="plSeg" role="group" aria-label="Pleural state"><button aria-pressed="true" data-v="normal">Normal</button><button aria-pressed="false" data-v="ptx">Pneumothorax</button><button aria-pressed="false" data-v="lp">Lung point</button><button aria-pressed="false" data-v="apnoea">Apnoea / mainstem</button><button aria-pressed="false" data-v="sce">Subcut. emphysema</button></div>
+        <div class="pov" style="margin-top:10px">Schematic · B-mode · linear probe, sagittal · drag to move the M-mode cursor</div>
+        <div class="scanner"><canvas id="plB" class="us pick" role="img" aria-label="Simulated pleural B-mode image"></canvas></div>
+        <div class="pov">Schematic · M-mode at the cursor</div>
+        <div class="scanner"><canvas id="plM" class="us" role="img" aria-label="Simulated M-mode trace"></canvas></div>
+        <div class="ctrls">
+          <label>Cursor <input type="range" id="plCur" min="-1.0" max="1.0" step="0.02" value="0.3"><output id="plCurO"></output></label>
+          <label>Resp. rate <input type="range" id="plRR" min="6" max="30" step="1" value="14"><output id="plRRO">14/min</output></label>
+          <button class="btn ghost" id="plPause">❚❚ Pause</button>
+        </div>
+        <div class="status" id="plStat"></div>
+        <div class="ansP"><span>Pneumothorax at this point?</span><div class="seg sm" id="plAns" role="group" aria-label="Your answer"><button data-v="yes" aria-pressed="false">Yes</button><button data-v="no" aria-pressed="false">No</button><button data-v="cannot" aria-pressed="false">Cannot tell</button></div></div>
+        <div class="status" id="plFb" aria-live="polite">Choose an answer for the current state.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 PART II ============ -->
+<section class="slide divider" data-min="0.5" data-title="Part II · Interpretation" data-prompt="Ask for the most embarrassing FAST mistake anyone has seen. There will be a gallbladder story.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part II · Interpretation</div>
+      <h1>Black is not always blood.</h1>
+      <p class="big-quote" style="font-style:normal">Pitfalls, mimics and the decision.</p>
+    </div>
+    <div><div class="panel"><div class="scanner"><canvas id="p2US" class="us" role="img" aria-label="Simulated pelvic transverse view showing seminal vesicles"></canvas></div><div class="mini">Schematic · pelvic transverse, male. Fluid, or seminal vesicles?</div></div></div>
+  </div>
+</section>
+
+<!-- ============ 11 PITFALLS ============ -->
+<section class="slide" data-min="4" data-title="Pitfalls and mimics" data-prompt="Run through the six tiles with the room voting. Spend time on tile 5. Ask: why is clot bright? (Fibrin and cells reflect sound.) Ask: how does clotted blood change your sensitivity in a patient who has been bleeding for an hour?">
+  <div class="inner two">
+    <div>
+      <div class="kicker">08 · Pitfalls and mimics</div>
+      <h2>False positives, false negatives.</h2>
+      <div class="card"><div class="cap">False positives · anechoic but not haemoperitoneum</div>
+        <ul class="tight">
+          <li><b class="ink">Perinephric fat:</b> hypoechoic rim around the kidney, usually bilateral and symmetrical, does not track into the recess, has internal echoes.</li>
+          <li><b class="ink">Seminal vesicles:</b> paired, symmetrical bow-tie structures behind the male bladder; confirm in sagittal. Fluid is angular and conforms to spaces.</li>
+          <li><b class="ink">Fluid-filled bowel:</b> has a wall, contains debris and shows <b class="ink">peristalsis</b>.</li>
+          <li><b class="ink">Gallbladder, IVC, stomach, renal pelvis, ovarian cyst:</b> contained structures with walls; fan to see they are round or tubular.</li>
+          <li><b class="ink">Ascites, dialysate, urine (bladder rupture):</b> genuine fluid, but not blood. History matters.</li>
+          <li><b class="ink">Epicardial fat pad:</b> anterior only, mildly echogenic, moves with the heart.</li>
+          <li>Stomach or pleural fluid confused with pericardial fluid.</li>
+        </ul>
+      </div>
+      <div class="card"><div class="cap">False negatives</div>
+        <ul class="tight">
+          <li>Too early, too little: scan again.</li>
+          <li><b class="ink">Clotted blood is echogenic</b> and can look like liver, spleen or bowel. Look for heterogeneous material in a dependent space.</li>
+          <li>Incomplete views: liver tip not seen, LUQ too low or anterior, empty bladder, no fanning.</li>
+          <li>Obesity, subcutaneous emphysema, bowel gas. Retroperitoneal bleeding (not visible by design).</li>
+          <li>Pericardial: a <b class="ink">haemothorax</b> may decompress a pericardial laceration into the pleura. A negative pericardial view with a large left haemothorax in penetrating chest trauma does not exclude cardiac injury.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="cap">Spot the mimic · free fluid or mimic? <span class="num" id="mmScore">0 / 6</span></div>
+        <div class="mimics" id="mimics"></div>
+        <div class="mini">All tiles are schematic simulations. The dashed ring marks the area in question.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 DECISION ============ -->
+<section class="slide" data-min="4" data-title="Medical decision" data-prompt="Ask a learner to drive: blunt, unstable, all negative. Ask the room: where is the blood? Then set Penetrating, pericardium negative, left haemothorax positive. Ask: are you reassured about the heart?">
+  <div class="inner two">
+    <div>
+      <div class="kicker">09 · Medical decision</div>
+      <h2>Haemodynamics decide what the scan means.</h2>
+      <div class="card"><span class="tag avoid">Unstable · FAST +</span><p>Haemorrhage control: laparotomy or damage-control surgery; activate massive transfusion; do not go to CT.</p></div>
+      <div class="card"><span class="tag deep">Unstable · FAST −</span><p>The bleeding is elsewhere or not yet visible: chest (haemothorax, tension pneumothorax); pericardium (tamponade); pelvis and retroperitoneum (binder, pelvic X-ray, angioembolisation or preperitoneal packing); long bones and external haemorrhage; non-haemorrhagic shock (tension, tamponade, spinal cord injury, cardiac contusion: <a href="../shock/">RUSH</a>). <b class="ink">Repeat the FAST</b>; consider diagnostic peritoneal aspirate or lavage if doubt remains and local practice supports it.</p></div>
+      <div class="card"><span class="tag def">Stable</span><p>FAST positive: CT with contrast (non-operative management of solid organ injury may be possible); early surgical review. FAST negative: CT according to mechanism and examination; serial examination and repeat FAST. A negative FAST does not clear the abdomen.</p></div>
+      <div class="card"><span class="tag avoid">Pericardial fluid</span><p>Assume haemopericardium: urgent surgical decompression. Pericardiocentesis is only a bridge where surgery is not immediately available.</p></div>
+      <div class="card"><span class="tag avoid">Pneumothorax</span><p>Tension features: immediate decompression. Otherwise drain according to size, ventilation (positive pressure, transfer, theatre) and local guidance.</p></div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="winrow"><span>Mechanism</span><div class="seg sm" id="dfMech" role="group" aria-label="Mechanism"><button data-v="blunt" aria-pressed="true">Blunt</button><button data-v="pen" aria-pressed="false">Penetrating</button></div></div>
+        <div class="winrow"><span title="Persistent hypotension or ongoing transfusion requirement despite initial resuscitation">Haemodynamics ⓘ</span><div class="seg sm" id="dfHaem" role="group" aria-label="Haemodynamics"><button data-v="unstable" aria-pressed="true">Unstable</button><button data-v="stable" aria-pressed="false">Stable</button></div></div>
+        <p class="mini" style="margin:4px 0 0">Unstable: persistent hypotension or ongoing transfusion requirement despite initial resuscitation (an ATLS transient or non-responder).</p>
+        <div id="dfWins"></div>
+        <div class="flow" id="dfFlow" style="margin-top:10px"></div>
+        <div id="dfBan" aria-live="polite"></div>
+        <div class="outc" id="dfOut" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 13 SERIAL ============ -->
+<section class="slide" data-min="2" data-title="Serial scans and documentation" data-prompt="Ask: when would you repeat a FAST in theatre? (After a sudden drop in BP during a long case on a trauma patient; after a central line; after intubation and positive pressure ventilation if SpO2 falls.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">10 · Serial scanning and documentation</div>
+      <h2>One scan is a snapshot. Bleeding is a film.</h2>
+      <ul class="lst">
+        <li>Repeat the eFAST after fluid or blood resuscitation, after any deterioration, after transfer, and before leaving the resuscitation bay if the first scan was early or negative.</li>
+        <li>Record each window as <b class="ink">positive, negative or indeterminate</b>, with time, operator and patient position.</li>
+        <li>Store clips, not stills, where possible.</li>
+        <li>Say what you did not see: "LUQ indeterminate: subphrenic space not visualised."</li>
+        <li>Know your limits: credentialed operators, and confirm with CT or surgery as indicated. The eFAST is a decision aid, not a diagnosis of organ injury.</li>
+      </ul>
+      <div class="callout">For anaesthesia, the same windows help in theatre and ICU: post-intubation pneumothorax, haemothorax after line insertion, unexplained intra-operative hypotension. Pair with <a href="../cardiac/">focused cardiac</a> and <a href="../shock/">RUSH</a>.</div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="cap">Example record · two scans, same patient</div>
+        <div class="tw"><table class="t doc-t"><thead><tr><th>Window</th><th>14:02 · supine</th><th>14:31 · supine</th></tr></thead><tbody>
+          <tr><td>RUQ</td><td><span class="neg">Negative</span> (liver tip seen)</td><td><span class="pos">Positive</span>: liver tip and Morison's</td></tr>
+          <tr><td>Subxiphoid</td><td><span class="neg">Negative</span></td><td><span class="neg">Negative</span></td></tr>
+          <tr><td>LUQ</td><td><span class="ind">Indeterminate</span>: subphrenic not seen</td><td><span class="neg">Negative</span> (posterior, superior)</td></tr>
+          <tr><td>Pelvis</td><td><span class="neg">Negative</span>, bladder full</td><td><span class="pos">Positive</span>: rectovesical</td></tr>
+          <tr><td>Chest R / L</td><td>Sliding both</td><td>Sliding both</td></tr>
+        </tbody></table></div>
+        <div class="ctrls"><label>Time since first scan <input type="range" id="srT" min="0" max="40" step="1" value="0"><output id="srTO">0 min</output></label></div>
+        <div class="grid2"><div><div class="pov">Schematic · RUQ</div><div class="scanner"><canvas id="srR" class="us" role="img" aria-label="Simulated RUQ over time"></canvas></div></div><div><div class="pov">Schematic · pelvis sagittal</div><div class="scanner"><canvas id="srP" class="us" role="img" aria-label="Simulated pelvic view over time"></canvas></div></div></div>
+        <div class="status" id="srStat"></div>
+        <div class="mini">Illustrative: steady intraperitoneal bleeding, supine. Volumes are not validated thresholds.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 14 PART III ============ -->
+<section class="slide divider" id="partIII" data-min="0.5" data-title="Part III · Trauma cases" data-prompt="Make the room commit before each reveal: indication, which window first, what you see, what you do.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part III · Trauma cases</div>
+      <h1>Three patients.</h1>
+      <p class="big-quote" style="font-style:normal">For each: read the vignette, then reveal one I-AIM step at a time (<kbd>R</kbd>).</p>
+      <p class="cap" style="margin-top:22px;line-height:2">Indication · Acquisition · Interpretation · Medical decision</p>
+      <p class="mini" style="max-width:56ch">Teaching vignettes. Images are schematic simulations matched to each finding.</p>
+    </div>
+    <div><div class="caseGrid" id="caseGrid"></div></div>
+  </div>
+</section>
+
+<!-- ============ 15–17 CASES ============ -->
+<section class="slide case" data-case="0" data-min="4" data-title="Case 1 · Unstable blunt, positive" data-prompt="Ask: which window would you scan first? Then: is that scan positive, negative or indeterminate? Then: where does the patient go?"></section>
+<section class="slide case" data-case="1" data-min="4" data-title="Case 2 · Unstable blunt, no free fluid" data-prompt="Ask: which window would you scan first? Then: is that scan positive, negative or indeterminate? Then: where does the patient go? Where is the blood?"></section>
+<section class="slide case" data-case="2" data-min="4" data-title="Case 3 · Precordial stab" data-prompt="Ask: which window would you scan first? Then: is that scan positive, negative or indeterminate? Then: where does the patient go? How will you induce?"></section>
+
+<!-- ============ 18 QUIZ ============ -->
+<section class="slide" data-min="5" data-title="Quick check" data-prompt="Use the quiz, then ask each learner for one trauma call where they will do the LUQ properly (posterior and superior) and the caudal liver tip.">
+  <div class="inner">
+    <div class="kicker">Quick check</div>
+    <h2>Eight questions before we finish.</h2>
+    <p class="lede">Tap an answer. <span id="qzScore" class="num"></span></p>
+    <div class="qz two even" id="quiz"></div>
+  </div>
+</section>
+
+<!-- ============ 19 REFERENCES ============ -->
+<section class="slide" data-min="1" data-title="References" data-prompt="Point to the ACEP guidelines and the local credentialing logbook.">
+  <div class="inner">
+    <div class="kicker">References</div>
+    <h2>Sources and further reading.</h2>
+    <ol class="refs long" id="refList"></ol>
+    <p class="mini">Simulations are purpose-built schematic teaching models, not diagnostic images. Anatomy, echogenicity, fluid volumes and fill order are simplified and illustrative.</p>
+  </div>
+</section>
+
+<!-- ============ 20 THANKS ============ -->
+<section class="slide divider" data-min="1" data-title="Thank you" data-prompt="Questions. Then hands-on: pairs, each person clears all five windows on a volunteer in under three minutes, calling out each zone.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Scan deliberately</div>
+      <p class="big-quote" style="font-style:normal;margin:0 0 30px">Five windows. Fan every one. Find the liver tip. Go high and back on the left. Scan the bladder before the catheter. Positive in the unstable patient: go. Negative: look elsewhere and scan again.</p>
+      <h1>Thank you.</h1>
+      <p class="lede" style="margin-top:16px;font-size:24px">Any questions?</p>
+      <div class="links"><a href="../shock/">Next: RUSH approach to shock</a><a href="../lung/">Lung ultrasound</a><a href="../cardiac/">Focused cardiac ultrasound</a><a href="../dvt/">DVT and vessels</a><a href="../">All POCUS tutorials</a></div>
+    </div>
+    <div>
+      <div class="grid2"><div><div class="pov">Schematic · LUQ · subphrenic fluid</div><div class="scanner"><canvas id="endL" class="us"></canvas></div></div><div><div class="pov">Schematic · subxiphoid</div><div class="scanner"><canvas id="endS" class="us"></canvas></div></div></div>
+      <div class="mini">Schematic teaching simulations, not real scans.</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<aside id="notes" hidden><div class="cap">Presenter prompt · <kbd>N</kbd> to hide</div><p id="notesTxt"></p></aside>
+<div id="overview"><div class="og" id="ovGrid"></div></div>
+<nav class="bar" aria-label="Slide controls"><div class="course-bar-inner">
+  <div class="prog" id="prog"></div><div class="pace" id="pace" title="Where you should be at this point"></div>
+  <button id="prevB" aria-label="Previous section">← Previous</button>
+  <span id="cnt">1 / 20</span>
+  <button id="nextB" aria-label="Next section">Next →</button>
+  <span class="q">Positive in the unstable patient: go. Negative: look elsewhere and scan again.</span>
+  <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 0:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
+  <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
+  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents ↗</button>
+  <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
+  <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
+</div></nav>
+<script>
+'use strict';
+/* =====================================================================
+   ENGINE: schematic sonogram renderer.
+   Each view is a function of position in cm (x lateral, y depth),
+   beam angle T and beam depth R. The canvas is scan-converted per pixel
+   into a curvilinear sector or a linear rectangle. All images are
+   drawn schematics, not real scans.
+   ===================================================================== */
+const TAU = Math.PI * 2, D2R = Math.PI / 180;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = t => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const GAIN = .62;
+const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- noise ---------- */
+const NT = 256, NTAB = new Float32Array(NT * NT);
+(function () { let s = 1234567; for (let i = 0; i < NTAB.length; i++) { s = (s * 1103515245 + 12345) & 0x7fffffff; NTAB[i] = s / 0x7fffffff; } })();
+function nz(x, y) {
+  const xi = Math.floor(x), yi = Math.floor(y), fx = x - xi, fy = y - yi;
+  const x0 = xi & 255, y0 = yi & 255, x1 = (x0 + 1) & 255, y1 = (y0 + 1) & 255;
+  const a = NTAB[y0 * NT + x0], b = NTAB[y0 * NT + x1], c = NTAB[y1 * NT + x0], d = NTAB[y1 * NT + x1];
+  const ux = fx * fx * (3 - 2 * fx), uy = fy * fy * (3 - 2 * fy);
+  return a + (b - a) * ux + (c - a) * uy + (a - b - c + d) * ux * uy;
+}
+/* speckle-textured echo: e = mean echogenicity */
+function tx(e, x, y) { const s = .62 * nz(x * 8.5, y * 19) + .38 * nz(x * 19 + 31, y * 43 + 17); return e * (.08 + 1.9 * s * s); }
+const fl = (x, y) => .02 + .035 * nz(x * 11, y * 23);
+function eq(x, y, cx, cy, rx, ry, rot) { const c = Math.cos(rot), s = Math.sin(rot), dx = x - cx, dy = y - cy, u = (dx * c + dy * s) / rx, v = (-dx * s + dy * c) / ry; return Math.sqrt(u * u + v * v); }
+
+/* ---------- physiology ---------- */
+const HRATE = 80 / 60;
+const brth = (t, rr = 14) => .5 - .5 * Math.cos(TAU * t * rr / 60);
+const sysPh = t => { const p = (t * HRATE) % 1; return p < .38 ? Math.sin(p / .38 * Math.PI) : 0; };
+const diaE = t => { const p = (t * HRATE) % 1; return p > .4 && p < .75 ? Math.sin((p - .4) / .35 * Math.PI) : 0; };
+const pulse = t => { const p = (t * HRATE) % 1; return p < .22 ? Math.sin(p / .22 * Math.PI) : 0; };
+
+/* ---------- shared tissues ---------- */
+function wall(R, x) {
+  if (R < .12) return tx(1.0, x, R);
+  if (R < 1.25) return tx(.5 + .28 * Math.sin(R * 17 + 2 * nz(x * 1.5, R * 2)), x * 1.4, R);
+  if (R < 1.4) return tx(1.35, x, R);
+  return -1;
+}
+const HV = [[-.6, 4.6, .42, 1], [1.6, 3.4, .26, 1], [-1.2, 7.4, .5, 0], [2.6, 5.6, .24, 1], [-3.2, 6.2, .3, 0]];
+function liver(x, y) {
+  for (const v of HV) { const dx = x - v[0], dy = y - v[1], d = dx * dx + dy * dy; if (d < v[2] * v[2]) return fl(x, y); if (v[3] && d < (v[2] + .14) * (v[2] + .14)) return tx(1.4, x, y); }
+  return tx(.8 + .12 * nz(x * .8, y * .8), x, y);
+}
+function spleen(x, y) { return tx(.86 + .06 * nz(x * .7, y * .7), x * 1.15, y * 1.1); }
+function kidney(q, x, y) {
+  if (q > .965) return tx(1.25, x, y);
+  if (q < .42) return tx(1.0 + .4 * nz(x * 3, y * 3), x, y);
+  if (q < .74 && q > .5 && nz(x * 3.4 + 5, y * 3.4) > .6) return tx(.16, x, y);
+  return tx(.5, x, y);
+}
+function spine(x, y) { const ys = 13.5 + .35 * Math.cos(x * 1.4); if (y < ys - .2) return -1; if (y < ys + .16) return tx(1.8, x, y); return .015; }
+function bowel(x, y, T) {
+  const g = nz(T * 14 + 3, 2.1);
+  if (g > .64) { const gy = 3 + 3 * nz(T * 4, 7.7); if (y > gy - .22 && y < gy + .08) return tx(1.7, x, y); if (y > gy) return .06 + .1 * nz(T * 40, y * 4); }
+  const h = nz(x * 1.6 + 9, y * 1.6); return tx(.42 + .75 * h * h, x * 1.3, y * 1.3);
+}
+
+/* ---------- views ---------- */
+const VIEWS = {};
+/* RUQ, coronal, marker to head (cephalad = screen left) */
+VIEWS.ruq = { kind: 'curv', depth: 16,
+  f(x, y, T, R, S, t) {
+    const w = wall(R, x); if (w >= 0) return w;
+    const xs = x - S.br * .7 - S.fan * .03;
+    if (T < -.47 && T > -.57) return R < 1.75 ? tx(1.5, x, y) : .02; // rib shadow
+    const dc = xs < 4.5 ? Math.hypot(xs - 5, y - 8) : 0, DR = 8;
+    if (Math.abs(dc - DR) < .18) return tx(1.7, xs, y);
+    if (dc > DR) {
+      if (S.htx) {
+        const sp = spine(xs, y); if (sp >= 0) return sp;
+        if (eq(xs, y, -3.6, 3.6, 1.6, .8, .7) < 1) return tx(.7, xs, y);
+        return fl(xs, y);
+      }
+      const k = (2 * DR - dc) / dc, mx = 5 + (xs - 5) * k, my = 8 + (y - 8) * k;
+      return liver(mx, my) * .72 * (y > 11.5 ? Math.max(0, 1 - (y - 11.5) / 2.5) : 1);
+    }
+    if (S.sub > 0 && dc > DR - S.sub && y < 12) return fl(xs, y);
+    if (S.ant > 0 && R < 1.4 + S.ant && xs < 5) return fl(xs, y);
+    const kq = eq(xs, y, 2.2, 9.5, 3.6, 1.9, .15);
+    if (kq < 1) return kidney(kq, xs, y);
+    const xe = y > 4.4 ? 4.2 - (y - 4.4) * .9 : 4.2 + (4.4 - y) * .3;
+    if (S.pnf && kq < 1.3) return tx(.26 + .3 * nz(xs * 6, y * 6), xs, y);
+    if (S.mor > 0 && kq < 1 + S.mor / 1.9 && y < 10 && xs < xe + .8) {
+      if (S.clot) return (kq < 1.05 || kq > 1 + S.mor / 1.9 - .05) ? fl(xs, y) : tx(.6 + .45 * nz(xs * 2.5, y * 2.5), xs * 1.3, y);
+      return fl(xs, y);
+    }
+    if (y > 12.2) { const sp = spine(xs, y); if (sp >= 0) return sp; return tx(.4 + .15 * Math.sin(y * 6), xs * 1.6, y); }
+    if (xs < xe) return liver(xs, y);
+    const tw = S.tip * (y < 5 ? 1 : Math.max(0, 1 - (y - 5) / 2.5));
+    if (tw > 0 && xs < xe + tw && y > 2) return fl(xs, y);
+    return bowel(xs, y, T);
+  },
+  labels(S) { return [['Liver', -.2, 5.8], ['Kidney', 2.2, 9.6], ['Diaphragm', -1.2, 2.2], ["Morison's", 1.2, 7.4], ['Liver tip', 4.6, 3.3], ['Spine', 2.4, 14.4], [S.htx ? 'Haemothorax' : 'Mirror image', -4.8, 9.2]]; },
+  zones: { 1: [-4.6, 8.2, 1.7], 2: [-2.3, 5.4, 1.1], 3: [1.4, 7.5, 1.3], 4: [4.6, 4.7, 1.3] }
+};
+/* LUQ, coronal, marker to head */
+VIEWS.luq = { kind: 'curv', depth: 16,
+  f(x, y, T, R, S, t) {
+    const w = wall(R, x); if (w >= 0) return w;
+    const xs = x - S.br * .6 + S.fan * .03;
+    if (T < -.5 && T > -.6) return R < 1.75 ? tx(1.5, x, y) : .02;
+    const dc = xs < 3.5 ? Math.hypot(xs - 4, y - 7) : 0, DR = 7.4;
+    if (Math.abs(dc - DR) < .18) return tx(1.7, xs, y);
+    if (dc > DR) {
+      if (S.htx) { const sp = spine(xs, y); if (sp >= 0) return sp; if (eq(xs, y, -3.4, 3.4, 1.5, .75, .7) < 1) return tx(.7, xs, y); return fl(xs, y); }
+      const k = (2 * DR - dc) / dc, mx = 4 + (xs - 4) * k, my = 7 + (y - 7) * k;
+      const q2 = eq(mx, my, .2, 5.2, 3.2, 2.1, -.45);
+      return (q2 < 1 ? spleen(mx, my) : tx(.45, mx, my)) * .7 * (y > 11.5 ? Math.max(0, 1 - (y - 11.5) / 2.5) : 1);
+    }
+    if (S.sub > 0 && dc > DR - S.sub && y < 9) return fl(xs, y);
+    const kq = eq(xs, y, 2.6, 9.7, 3.4, 1.8, .2);
+    if (kq < 1) return kidney(kq, xs, y);
+    const q = eq(xs, y, .2, 5.2, 3.2, 2.1, -.45);
+    if (S.sr > 0 && kq < 1 + S.sr / 1.8 && y < 9.8 && q < 1.45 + S.sr / 2.1) return fl(xs, y);
+    if (q < 1) return spleen(xs, y);
+    if (S.tip > 0 && q < 1 + S.tip / 2.1 && xs > .2 && y < 9) return fl(xs, y);
+    if (y > 12.4) { const sp = spine(xs, y); if (sp >= 0) return sp; return tx(.4 + .15 * Math.sin(y * 6), xs * 1.6, y); }
+    if (S.bowelLoop) {
+      const bq = eq(xs, y, S.bowelLoop[0], S.bowelLoop[1], 1.3, 1.0, .2);
+      if (bq < 1.14 && bq > .92) return tx(1.1, xs, y);
+      if (bq < .92) { const p = (t * .33) % 1, fx = xs - S.bowelLoop[0], fy = y - S.bowelLoop[1]; const fleck = nz(fx * 3 + p * 6, fy * 3 + p * 3); return fleck > .7 ? tx(1.2, xs, y) : fl(xs, y) + .04; }
+    }
+    if (xs > 1.8 && y < 5.5) return bowel(xs, y, T);
+    return tx(.46, xs, y);
+  },
+  labels(S) { return [['Spleen', -.2, 5.2], ['Kidney', 2.6, 9.8], ['Diaphragm', -1.6, 2.0], ['Subphrenic', -2.3, 3.7], ['Splenorenal', 1.3, 7.7], ['Colon gas', 3.4, 3.0], [S.htx ? 'Haemothorax' : 'Mirror image', -4.6, 9.4]]; }
+};
+/* Pelvis: S.plane 'trans'|'sag', S.sex 'm'|'f' */
+VIEWS.pel = { kind: 'curv', depth: 16,
+  f(x, y, T, R, S, t) {
+    const w = wall(R, x); if (w >= 0) return w;
+    const xs = x + S.fan * .04;
+    const sm = S.bsmall, ba = sm ? 1.7 : 4.4, bb = sm ? 1.1 : (S.plane === 'sag' ? 3.1 : 2.8), bcy = sm ? 3.4 : 5.8;
+    const ax = Math.abs(xs) / ba, ay = Math.abs(y - bcy) / bb, qb = Math.pow(ax * ax * ax * ax + ay * ay * ay * ay, .25);
+    if (qb < 1) return fl(xs, y) * .8;
+    if (qb < 1.07) return tx(1.15, xs, y);
+    const enh = (Math.abs(xs) < ba * .85 && y > bcy) ? 1.3 : 1;
+    const male = S.sex !== 'f', sag = S.plane === 'sag';
+    // fluid
+    if (S.pel > 0) {
+      if (male) {
+        if (qb < 1.07 + S.pel / bb && y > bcy + bb * .45 && (!sag || xs < 1.2)) return fl(xs, y);
+      } else {
+        const uq = sag ? eq(xs, y, -1.4, 9.6, 3.8, 1.9, -.35) : eq(xs, y, 0, 10, 3.2, 2.1, 0);
+        if (uq >= 1 && uq < 1 + S.pel / 2 && y > (sag ? 9.4 : 10.2)) return fl(xs, y);
+        if (S.pel > .9 && uq >= 1 && uq < 1 + (S.pel - .9) / 2 && qb < 1.07 + (S.pel - .9) / bb) return fl(xs, y);
+      }
+    }
+    if (male) {
+      if (sag) {
+        const pq = eq(xs, y, 3.2, 10.2, 1.8, 1.6, 0); if (pq < 1) return tx(.5 + .1 * nz(xs * 2, y * 2), xs, y) * enh;
+        const sv = eq(xs, y, -.6, 9.5, 1.0, .42, -.2); if (sv < 1) return tx(.18, xs * 1.6, y * 1.6) * enh;
+      } else {
+        const s1 = eq(xs, y, -2.1, 9.5, 1.9, .55, .3), s2 = eq(xs, y, 2.1, 9.5, 1.9, .55, -.3);
+        if (s1 < 1 || s2 < 1) return tx(.17, xs * 1.6, y * 1.6) * enh;
+      }
+      const rq = eq(xs, y, sag ? .6 : 0, 12, sag ? 3.2 : 2.2, 1.2, 0);
+      if (rq < 1) { if (y < 11.3 && rq > .7) return tx(1.6, xs, y); return y > 11.3 ? .03 : tx(.5, xs, y); }
+    } else {
+      const uq = sag ? eq(xs, y, -1.4, 9.6, 3.8, 1.9, -.35) : eq(xs, y, 0, 10, 3.2, 2.1, 0);
+      if (uq < 1) return (uq < .22 ? tx(1.0, xs, y) : tx(.55 + .08 * nz(xs, y), xs * 1.2, y)) * enh;
+      const rq = eq(xs, y, sag ? 1.5 : 0, 13, 2.2, 1, 0);
+      if (rq < 1) return y > 12.6 ? .03 : tx(1.4, xs, y);
+    }
+    if (y > 13.4 && Math.abs(xs) < 6) return tx(.35, xs, y);
+    return tx(.48 + .12 * Math.sin(xs * 1.3 + y), xs, y) * enh;
+  },
+  labels(S) {
+    const sag = S.plane === 'sag', m = S.sex !== 'f', L = [['Bladder', 0, S.bsmall ? 3.4 : 5.8]];
+    if (m) { if (sag) L.push(['Prostate', 3.2, 10.4], ['SV', -1.6, 9.2]); else L.push(['Seminal vesicles', 0, 8.7]); L.push(['Rectum', sag ? 1.8 : 0, 12.4]); }
+    else L.push(['Uterus', sag ? -1.4 : 0, sag ? 9.8 : 10.1], ['Rectum', sag ? 1.5 : 0, 13.5]);
+    if (S.pel > 0) L.push([m ? 'Rectovesical' : 'Douglas', m ? (sag ? -3.4 : 0) : (sag ? 1.6 : 0), m ? 9.6 : (sag ? 11.8 : 12.6)]);
+    return L;
+  }
+};
+/* Subxiphoid four-chamber */
+VIEWS.subx = { kind: 'curv', depth: 16,
+  f(x, y, T, R, S, t) {
+    const w = wall(R, x); if (w >= 0) return w;
+    const ph = S.still ? .0 : sysPh(t), de = S.still ? .6 : diaE(t);
+    if (S.ant > 0 && R < 1.4 + S.ant && x < 3) return fl(x, y);
+    const le = 5.8 - .55 * x;
+    if (Math.abs(y - le) < .14 && x < 6.5) return tx(1.5, x, y);
+    if (y < le && x < 6.5) return liver(x + 3, y + 1.4);
+    const cx = 1.4, cy = 10, rot = -.3, rx = 6, ry = 3.7;
+    const c = Math.cos(rot), s = Math.sin(rot), dx = x - cx, dy = y - cy, v = (-dx * s + dy * c) / ry;
+    const q = eq(x, y, cx, cy, rx, ry, rot);
+    const fat = S.fat ? Math.max(0, -v - .1) * .2 : 0;
+    const sac = 1 + fat + (S.peri || 0) / ry;
+    if (q < 1) {
+      const sc = 1 - .14 * ph;
+      const rvy = 1.05 * sc * (S.tamp ? 1 - .6 * de : 1);
+      if (eq(x, y, -.3, 8.2, 3.5 * sc, rvy, rot) < 1) return fl(x, y) + .03;
+      if (eq(x, y, 3.6, 10.6, 2.4 * sc, 1.5 * sc, rot) < 1) return fl(x, y) + .03;
+      if (eq(x, y, -3.2, 10.7, 1.5 * (1 + .1 * ph), 1.2 * (1 + .1 * ph), rot) < 1) return fl(x, y) + .03;
+      if (eq(x, y, .7, 12.2, 1.7 * (1 + .08 * ph), .85, rot) < 1) return fl(x, y) + .03;
+      return tx(.68, x, y);
+    }
+    if (q <= sac) { if (fat && q < 1 + fat) return tx(.36 + .3 * nz(x * 4, y * 4), x, y); return fl(x, y); }
+    if (q < sac + .06) return tx(1.6, x, y);
+    const ad = Math.hypot(x - 4.2, y - 14.9); if (ad < .75) return fl(x, y); if (ad < .92) return tx(1.3, x, y);
+    return tx(.34 + .2 * nz(x * .5, y * .5), x, y);
+  },
+  labels(S) { const L = [['Liver', -3.5, 3.6], ['RV', -.5, 8.0], ['LV', 3.7, 10.6], ['RA', -3.3, 10.8], ['LA', .8, 12.3]]; if (S.peri > 0) L.push(['Effusion', 4.6, 13.0]); if (S.fat) L.push(['Fat pad', -2.6, 6.6]); return L; }
+};
+/* Anterior chest, linear: S.st normal|ptx|lp|apnoea|sce */
+const PY = 1.55;
+function plEcho(x, y, t, S) {
+  const st = S.st;
+  if (y < .1) return tx(1, x, y);
+  if (st === 'sce' && y > .42) {
+    const n = nz(x * 2.5, y * 5); if (y < 1.1 && n > .57) return tx(1.8, x, y);
+    const col = nz(x * 6.3, 1.3); return .04 + (col > .64 ? .5 * (1 - y / 7) : 0) + .03 * nz(x * 9, y * 20);
+  }
+  for (const rx of [-2.05, 2.05]) {
+    const dx = x - rx; if (Math.abs(dx) < .55) { const ys = 1.6 - Math.sqrt(.3025 - dx * dx); if (y > ys + .12) return .015 + .01 * nz(x * 9, y * 9); if (y > ys) return tx(1.6, x, y); }
+  }
+  if (y < 1.0) return tx(.44 + .22 * Math.sin(y * 26 + 1.5 * nz(x * 1.2, y * 2)), x * 1.5, y);
+  const lungHere = st === 'normal' || st === 'apnoea' || (st === 'lp' && x < S.bnd);
+  const sl = lungHere && st !== 'apnoea' ? S.slide : 0;
+  const pdy = st === 'apnoea' ? .035 * pulse(t) : (lungHere ? .008 * pulse(t) : 0);
+  const py = PY + pdy;
+  if (y < py - .07) return tx(.4 + .1 * nz(x, y * 3), x * 1.3, y);
+  if (y < py + .07) return tx(1.6, x - sl, y);
+  if (st === 'normal' && S.bl) { const xb = .35 + sl; if (Math.abs(x - xb) < .06) return tx(1.25 - .12 * (y - py), x * .3, y); }
+  for (let k = 2; k <= 3; k++) { if (Math.abs(y - k * py) < .06) return tx(lungHere ? .85 / (k - 1) : 1.05 / (k - 1), x, y); }
+  if (lungHere) {
+    if (st === 'apnoea') return tx(.24 * (1 + .35 * pulse(t)), x * 1.3, y + pdy);
+    return tx(.4, (x - sl) * 4, y);
+  }
+  return .05 + .15 * nz(.2, y * 28);
+}
+VIEWS.pl = { kind: 'lin', depth: 4.6, lw: 5.6,
+  pre(S, t) { const rr = S.rr || 14; S.slide = .32 * brth(t, rr); S.bnd = -.45 + 1.4 * brth(t, rr); },
+  f(x, y, T, R, S, t) { return plEcho(x, y, t, S); },
+  labels(S) { return S.st === 'sce' ? [['Subcutaneous air', 0, .7]] : [['Rib', -2.05, .75], ['Rib', 2.05, .75], ['Pleural line', 0, 1.3], ['A-line', -.6, 2.85]]; }
+};
+
+/* ---------- renderer ---------- */
+class Sono {
+  constructor(cv, o) {
+    this.cv = cv; this.ctx = cv.getContext('2d');
+    this.o = Object.assign({ w: 400, h: 300, fov: 74, r0: 2.4, lw: 4.4, fps: 12 }, o);
+    this.view = o.view || 'ruq';
+    this.S = Object.assign({ labels: true, br: .5, fan: 0, sub: 0, ant: 0, mor: 0, tip: 0, sr: 0, pel: 0, peri: 0, plane: 'trans', sex: 'm', st: 'normal', rr: 14 }, o.S || {});
+    this.anim = o.anim !== false; this.dirty = true; this.lastT = -1;
+    this.over = o.over || null;
+    this.kind = null;
+  }
+  setup(kind, depth, lw) {
+    if (this.kind === kind && this.depth === depth && this.lwv === lw) return;
+    this.kind = kind; this.depth = depth; this.lwv = lw;
+    const o = this.o, W = o.w, H = o.h; this.cv.width = W; this.cv.height = H;
+    this.img = this.ctx.createImageData(W, H);
+    const N = W * H, X = this.X = new Float32Array(N), Y = this.Y = new Float32Array(N), T = this.T = new Float32Array(N), Rr = this.R = new Float32Array(N), M = this.M = new Uint8Array(N);
+    if (kind === 'curv') {
+      const half = o.fov / 2 * D2R, r0 = o.r0, rm = r0 + depth, ymin = r0 * (Math.cos(half) - 1) - .15;
+      const ppc = this.ppc = Math.min(W / (2 * rm * Math.sin(half) * 1.02), H / (depth - ymin + .1));
+      this.ox = W / 2; this.oy = -ymin * ppc;
+      for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) {
+        const k = j * W + i, x = (i + .5 - this.ox) / ppc, y = (j + .5 - this.oy) / ppc, r = Math.hypot(x, y + r0), th = Math.atan2(x, y + r0);
+        X[k] = x; Y[k] = y; T[k] = th; Rr[k] = r - r0; M[k] = (r >= r0 && r <= rm && Math.abs(th) <= half) ? 1 : 0;
+      }
+    } else {
+      const lwx = lw || o.lw, ppc = this.ppc = Math.min(W / lwx, H / depth);
+      this.ox = W / 2; this.oy = 0;
+      for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) {
+        const k = j * W + i, x = (i + .5 - this.ox) / ppc, y = (j + .5) / ppc;
+        X[k] = x; Y[k] = y; T[k] = 0; Rr[k] = y; M[k] = (Math.abs(x) <= lwx / 2 && y <= depth) ? 1 : 0;
+      }
+    }
+  }
+  px(x, y) { return [this.ox + x * this.ppc, this.oy + y * this.ppc]; }
+  set(o) { Object.assign(this.S, o); this.dirty = true; }
+  setView(v, o) { this.view = v; if (o) Object.assign(this.S, o); this.dirty = true; }
+  tick(t) {
+    const anim = this.anim && !RM && !this.paused;
+    if (!this.dirty && !(anim && t - this.lastT >= 1 / this.o.fps)) return;
+    this.lastT = t; this.dirty = false;
+    this.draw(anim ? t : (this.tFix || 0));
+  }
+  draw(t) {
+    const V = VIEWS[this.view], S = this.S; this.setup(V.kind, V.depth, V.lw);
+    S.br = (this.anim && !RM && !S.still) ? brth(t, S.rr || 14) : .5;
+    V.pre && V.pre(S, t);
+    const d = this.img.data, X = this.X, Y = this.Y, T = this.T, R = this.R, M = this.M, f = V.f;
+    for (let k = 0, n = M.length; k < n; k++) {
+      const q = k * 4;
+      if (!M[k]) { d[q] = d[q + 1] = d[q + 2] = 0; d[q + 3] = 255; continue; }
+      let v = f(X[k], Y[k], T[k], R[k], S, t) * GAIN; v = v < 0 ? 0 : v > 1 ? 1 : v;
+      const g = 255 * Math.pow(v, .85);
+      d[q] = g; d[q + 1] = g; d[q + 2] = g * .96; d[q + 3] = 255;
+    }
+    const c = this.ctx; c.putImageData(this.img, 0, 0);
+    const W = this.o.w, fs = Math.max(10, Math.round(W / 34));
+    c.font = `${fs}px ui-monospace,Menlo,Consolas,monospace`; c.textBaseline = 'middle';
+    if (S.labels && V.labels) {
+      c.textAlign = 'center';
+      for (const [s, x, y] of V.labels(S)) { const [px, py] = this.px(x, y); c.lineWidth = 3; c.strokeStyle = 'rgba(0,0,0,.75)'; c.strokeText(s, px, py); c.fillStyle = '#ffd678'; c.fillText(s, px, py); }
+    }
+    if (S.hl && V.zones && V.zones[S.hl]) { const [x, y, r] = V.zones[S.hl]; const [px, py] = this.px(x, y); c.setLineDash([5, 4]); c.lineWidth = 2; c.strokeStyle = '#7fd3ff'; c.beginPath(); c.arc(px, py, r * this.ppc, 0, TAU); c.stroke(); c.setLineDash([]); }
+    if (this.over) this.over(c, this);
+    c.textAlign = 'right'; c.font = `${Math.max(9, fs - 2)}px ui-monospace,Menlo,Consolas,monospace`; c.fillStyle = 'rgba(255,214,120,.8)';
+    c.fillText(this.o.wm || 'SCHEMATIC · not a real scan', W - 6, Math.max(9, fs - 2));
+    if (this.kind === 'curv') { c.textAlign = 'left'; c.fillStyle = 'rgba(127,211,255,.85)'; c.beginPath(); c.arc(10, 14, 4, 0, TAU); c.fill(); }
+  }
+}
+
+/* ---------- loop + scene registry ---------- */
+const REG = [];
+let CUR_SLIDE = null;
+function scene(el, def) { if (!el) return; REG.push({ slide: el.closest('.slide'), el, inited: false, ...def }); }
+let _last = performance.now();
+function tick(now) {
+  const t = now / 1000, dt = clamp((now - _last) / 1000, 0, .1); _last = now;
+  for (const s of REG) {
+    if (s.slide !== CUR_SLIDE) continue;
+    if (!s.el.getClientRects().length) continue;
+    try { if (!s.inited) { s.inited = true; s.init && s.init(t); } s.frame && s.frame(t, dt); }
+    catch (e) { console.error(e); s.frame = null; }
+  }
+  requestAnimationFrame(tick);
+}
+function sono(cv, o) { if (!cv) return null; const s = new Sono(cv, o); scene(cv, { frame(t) { s.tick(t); } }); return s; }
+
+/* =====================================================================
+   DECK: navigation, timer, overview, theme
+   ===================================================================== */
+const slides = $$('.slide');
+let cur = 0, running = false, elapsed = 0, slideStart = 0, lastNow = performance.now();
+const plan = slides.map(s => +s.dataset.min || 1);
+const TOTAL = plan.reduce((a, b) => a + b, 0) * 60;
+const cumStart = []; plan.reduce((acc, m, i) => { cumStart[i] = acc; return acc + m; }, 0);
+const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+$('#totT').textContent = '/ ' + fmt(TOTAL);
+$('#elT').title = 'Elapsed / ' + fmt(TOTAL);
+function go(i) {
+  i = clamp(i, 0, slides.length - 1);
+  if (i > 0 && !running && elapsed === 0) running = true;
+  slides.forEach((s, k) => { s.classList.toggle('active', k === i); s.classList.toggle('prev', k < i); });
+  cur = i; CUR_SLIDE = slides[i]; slides[i].scrollTop = 0;
+  $('#cnt').textContent = `${i + 1} / ${slides.length}`;
+  $('#notesTxt').textContent = slides[i].dataset.prompt || '';
+  $('#prog').style.width = ((i + 1) / slides.length * 100) + '%';
+  try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+  slideStart = elapsed; updTimer();
+  $$('#ovGrid button').forEach((b, k) => b.classList.toggle('cur', k === i));
+}
+function jumpToCases() { go(slides.indexOf($('#partIII'))); }
+function updTimer() {
+  const now = performance.now(); if (running) elapsed += (now - lastNow) / 1000; lastNow = now;
+  const se = elapsed - slideStart, sug = plan[cur] * 60;
+  $('#elT').textContent = fmt(elapsed); $('#elT').classList.toggle('over', elapsed > TOTAL);
+  const sl = $('#slT'); sl.textContent = `${fmt(se)} / ${fmt(sug)}`; sl.classList.toggle('over', se > sug * 1.25);
+  $('#tmB').textContent = running ? '❚❚' : '▶';
+  let k = 0, m = elapsed / 60; while (k < plan.length - 1 && cumStart[k + 1] <= m) k++;
+  const frac = clamp((m - cumStart[k]) / plan[k], 0, 1);
+  $('#pace').style.left = ((k + frac) / slides.length * 100) + '%';
+}
+setInterval(updTimer, 250);
+$('#prevB').onclick = () => go(cur - 1); $('#nextB').onclick = () => go(cur + 1);
+$('#tmB').onclick = () => { running = !running; updTimer(); };
+$('#tmR').onclick = () => { elapsed = 0; slideStart = 0; running = false; updTimer(); };
+$('#fsB').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+function toggleTheme() {
+  const r = document.documentElement, dark = getComputedStyle(r).getPropertyValue('--bg').trim().toLowerCase() === '#1b1814';
+  r.dataset.theme = dark ? 'light' : 'dark'; redrawThemed();
+}
+$('#thB').onclick = toggleTheme;
+$('#ntB').onclick = () => $('#notes').hidden = !$('#notes').hidden;
+const ov = $('#overview');
+$('#ovGrid').innerHTML = slides.map((s, i) => `<button data-i="${i}"><span class="on">${String(i + 1).padStart(2, '0')}</span><span class="ot">${s.dataset.title}</span><span class="om">${plan[i]} min</span></button>`).join('');
+$('#ovGrid').onclick = e => { const b = e.target.closest('button[data-i]'); if (b) { go(+b.dataset.i); ov.classList.remove('show'); } };
+$('#ovB').onclick = () => ov.classList.toggle('show');
+document.addEventListener('keydown', e => {
+  const tg = e.target, typing = tg.matches && tg.matches('input,textarea,select');
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (['ArrowRight', 'PageDown'].includes(e.key) && !typing) { e.preventDefault(); go(cur + 1); }
+  else if (['ArrowLeft', 'PageUp'].includes(e.key) && !typing) { e.preventDefault(); go(cur - 1); }
+  else if (e.key === ' ' && !typing && !tg.matches('button,[role=button]')) { e.preventDefault(); go(cur + (e.shiftKey ? -1 : 1)); }
+  else if (e.key === 'Home' && !typing) go(0); else if (e.key === 'End' && !typing) go(slides.length - 1);
+  else if (typing) return;
+  else if (e.key === 'o' || e.key === 'O') ov.classList.toggle('show');
+  else if (e.key === 'f' || e.key === 'F') $('#fsB').click();
+  else if (e.key === 't' || e.key === 'T') toggleTheme();
+  else if (e.key === 'p' || e.key === 'P') $('#tmB').click();
+  else if (e.key === 'n' || e.key === 'N') $('#notes').hidden = !$('#notes').hidden;
+  else if (e.key === 'c' || e.key === 'C') jumpToCases();
+  else if (e.key === 'r' || e.key === 'R') { const c = slides[cur].dataset.case; if (c !== undefined) CASE_ST[+c].revealNext(); }
+  else if (e.key === 'Escape') ov.classList.remove('show');
+});
+
+/* ---------- UI helpers ---------- */
+function rng(id, oid, f, cb) {
+  const el = $('#' + id), o = oid && $('#' + oid);
+  const up = () => { const v = +el.value; if (o) o.textContent = f ? f(v) : v; cb && cb(v); };
+  el.addEventListener('input', up); up(); return el;
+}
+function seg(id, cb, init = true) {
+  const el = typeof id === 'string' ? $('#' + id) : id;
+  el.addEventListener('click', e => { const b = e.target.closest('button'); if (!b || !el.contains(b)) return; $$('button', el).forEach(x => x.setAttribute('aria-pressed', x === b)); cb(b.dataset, b); });
+  const on = $('button[aria-pressed=true]', el); if (on && init) cb(on.dataset, on);
+}
+function segSet(id, v) { $$('#' + id + ' button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === v)); }
+function setStat(id, html) { const el = $('#' + id); if (el && el._h !== html) { el.innerHTML = html; el._h = html; } }
+function keyClick(el) { el.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('[role=button]')) { e.preventDefault(); e.stopPropagation(); e.target.click(); } }); }
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const THEMED = [];
+function redrawThemed() { requestAnimationFrame(() => THEMED.forEach(f => f())); }
+if (window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', redrawThemed);
+
+/* =====================================================================
+   TORSO PROBE MAP (SVG)
+   ===================================================================== */
+const FP = {
+  chR: { x: 104, y: 120, v: 1, mk: 'up', l: 'Chest R', lx: 104, ly: 98 },
+  chL: { x: 196, y: 120, v: 1, mk: 'up', l: 'Chest L', lx: 196, ly: 98 },
+  subx: { x: 150, y: 206, v: 0, mk: 'left', l: 'Subxiphoid', lx: 150, ly: 226 },
+  ruq: { x: 47, y: 236, v: 1, mk: 'up', l: 'RUQ', lx: 72, ly: 268 },
+  luq: { x: 254, y: 196, v: 1, mk: 'up', l: 'LUQ', lx: 230, ly: 230 },
+  pelS: { x: 132, y: 372, v: 1, mk: 'up', l: 'Sag', lx: 112, ly: 372 },
+  pelT: { x: 170, y: 388, v: 0, mk: 'left', l: 'Trans', lx: 196, ly: 404 }
+};
+function torsoSVG(opts = {}) {
+  const fp = Object.entries(FP).map(([k, p]) => {
+    const w = p.v ? 10 : 32, h = p.v ? 32 : 10;
+    const mk = p.mk === 'up' ? `<polygon class="mk" points="${p.x - 5},${p.y - h / 2 - 2} ${p.x + 5},${p.y - h / 2 - 2} ${p.x},${p.y - h / 2 - 10}"/>` : `<polygon class="mk" points="${p.x - w / 2 - 2},${p.y - 5} ${p.x - w / 2 - 2},${p.y + 5} ${p.x - w / 2 - 10},${p.y}"/>`;
+    const lab = opts.labels === false ? '' : `<text x="${p.lx}" y="${p.ly}" text-anchor="middle">${p.l}</text>`;
+    const ord = opts.order && opts.order.indexOf(k) >= 0 ? `<circle class="ordc" cx="${p.x + (p.v ? 14 : 0)}" cy="${p.y + (p.v ? 0 : -16)}" r="9"/><text class="ord" x="${p.x + (p.v ? 14 : 0)}" y="${p.y + (p.v ? 4.5 : -11.5)}" text-anchor="middle">${opts.order.indexOf(k) + 1}</text>` : '';
+    return `<g class="fp" data-v="${k}" ${opts.interactive ? `role="button" tabindex="0" aria-label="${p.l === 'Sag' ? 'Pelvis sagittal' : p.l === 'Trans' ? 'Pelvis transverse' : p.l} probe position"` : ''}><circle class="glow" cx="${p.x}" cy="${p.y}" r="22"/><rect x="${p.x - w / 2}" y="${p.y - h / 2}" width="${w}" height="${h}" rx="3"/>${mk}${lab}${ord}</g>`;
+  }).join('');
+  return `<svg viewBox="0 0 300 440" role="img" aria-label="Schematic supine torso with eFAST probe positions">
+  <circle class="body" cx="150" cy="30" r="24"/>
+  <path class="body" d="M126,52 Q150,60 174,52 L180,66 Q246,72 262,100 L264,240 Q260,300 252,360 Q242,404 214,424 L86,424 Q58,404 48,360 Q40,300 36,240 L38,100 Q54,72 120,66 Z"/>
+  <path class="lm" d="M96,92 L140,86 M160,86 L204,92"/>
+  <path class="lm" d="M70,206 Q110,214 150,192 Q190,214 230,206"/>
+  <path class="lm" d="M150,86 L150,192"/>
+  <circle class="lm" cx="150" cy="298" r="4"/>
+  <path class="lm" d="M120,404 Q150,396 180,404"/>
+  <text class="side" x="20" y="160">R</text><text class="side" x="272" y="160">L</text>
+  ${fp}</svg>`;
+}
+function bindTorso(box, cb) {
+  box.addEventListener('click', e => { const g = e.target.closest('.fp'); if (g) cb(g.dataset.v); });
+  box.addEventListener('keydown', e => { const g = e.target.closest('.fp'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); cb(g.dataset.v); } });
+}
+function torsoSel(box, v) { $$('.fp', box).forEach(g => g.classList.toggle('on', g.dataset.v === v)); }
+
+/* =====================================================================
+   FREE-FLUID MODEL (illustrative)
+   ===================================================================== */
+const SPACES = { pel: [100, 'lo'], tip: [200, 'up'], mor: [400, 'up'], lsub: [400, 'up'], sr: [600, 'up'], big: [1000, 'up'] };
+function thr(k, pos) { const [th, g] = SPACES[k]; const f = pos === 'tr' ? (g === 'up' ? .7 : 1.6) : pos === 'rt' ? (g === 'up' ? 1.4 : .6) : 1; return th * f; }
+function frac(k, V, pos) { const t = thr(k, pos); return V <= t ? 0 : Math.min(1, (V - t) / 600); }
+const thick = f => f > 0 ? .22 + 1.4 * f : 0;
+const FANOPT = { ruq: 8, luq: -8, pelS: 3, pelT: -3, subx: 0, chR: 0, chL: 0 };
+const WSP = { ruq: ['tip', 'mor', 'big'], luq: ['lsub', 'sr', 'big'], pelS: ['pel'], pelT: ['pel'], subx: ['big'] };
+function fluidState(win, V, pos, fan) {
+  const sp = WSP[win] || [];
+  let present = false, seen = false;
+  const amts = {};
+  for (const k of sp) {
+    const f = frac(k, V, pos); amts[k] = 0; if (f <= 0) continue; present = true;
+    const ok = V >= 2 * thr(k, pos) || Math.abs(fan - FANOPT[win]) <= 5;
+    if (ok) { amts[k] = thick(f); seen = true; }
+  }
+  return { present, seen, amts };
+}
+function applyFluid(S, win, amts, sex) {
+  const a = k => amts[k] || 0;
+  if (win === 'ruq') Object.assign(S, { tip: a('tip') * 1.1, mor: a('mor') * .7, sub: a('big') * .6, ant: a('big') * .5 });
+  else if (win === 'luq') Object.assign(S, { sub: a('lsub') * .8, sr: a('sr') * .7, tip: a('big') * .9 });
+  else if (win === 'pelS' || win === 'pelT') Object.assign(S, { pel: a('pel') * 1.1 });
+  else if (win === 'subx') Object.assign(S, { ant: a('big') * .6 });
+}
+const VKEY = { ruq: ['ruq', {}], luq: ['luq', {}], pelS: ['pel', { plane: 'sag' }], pelT: ['pel', { plane: 'trans' }], subx: ['subx', {}], chR: ['pl', { st: 'normal' }], chL: ['pl', { st: 'normal' }] };
+const WNAME = { ruq: 'RUQ', luq: 'LUQ', pelS: 'Pelvis (sagittal)', pelT: 'Pelvis (transverse)', subx: 'Subxiphoid', chR: 'Anterior chest R', chL: 'Anterior chest L' };
+
+/* =====================================================================
+   SLIDE 1: hero
+   ===================================================================== */
+sono($('#heroR'), { view: 'ruq', S: { mor: .45, tip: .8, labels: true } });
+sono($('#heroP'), { view: 'pl', w: 400, h: 300, fps: 20, S: { st: 'normal', bl: 1, labels: true } });
+
+/* =====================================================================
+   SLIDE 2: icon array
+   ===================================================================== */
+const ICO = { prev: 28 };
+function drawIcons() {
+  const cv = $('#icoCv'); if (!cv) return; const c = cv.getContext('2d'), W = cv.width, H = cv.height;
+  const inj = Math.round(ICO.prev * 10), TP = Math.round(inj * .74), FN = inj - TP, un = 1000 - inj, FP = Math.round(un * .04), TN = un - FP;
+  const col = { TP: cssv('--red'), FN: cssv('--amber'), FP: cssv('--blue'), TN: cssv('--line2') };
+  c.clearRect(0, 0, W, H);
+  const cols = 40, rows = 25, cw = W / cols, ch = H / rows, r = Math.min(cw, ch) * .36;
+  const seq = [];
+  for (let i = 0; i < TP; i++) seq.push('TP'); for (let i = 0; i < FN; i++) seq.push('FN'); for (let i = 0; i < FP; i++) seq.push('FP'); for (let i = 0; i < TN; i++) seq.push('TN');
+  seq.forEach((k, i) => { const cx = (Math.floor(i / rows) + .5) * cw, cy = (i % rows + .5) * ch; c.beginPath(); c.arc(cx, cy, r, 0, TAU); c.fillStyle = col[k]; c.fill(); });
+  $('#icoLeg').innerHTML = `<span><i style="background:${col.TP}"></i>Injured, FAST + (${TP})</span><span><i style="background:${col.FN}"></i>Injured, FAST − missed (${FN})</span><span><i style="background:${col.FP}"></i>Not injured, FAST + (${FP})</span><span><i style="background:${col.TN}"></i>Not injured, FAST − (${TN})</span>`;
+  setStat('icoStat', `Of <b>${TP + FP}</b> positive scans, <b>${TP}</b> are injured (PPV ${Math.round(TP / Math.max(1, TP + FP) * 100)}%). Of <b>${FN + TN}</b> negative scans, <b class="warn">${FN}</b> are injured and would be missed without CT or a repeat scan.`);
+}
+rng('icoPrev', 'icoPrevO', v => v + '%', v => { ICO.prev = v; drawIcons(); });
+THEMED.push(drawIcons);
+
+/* =====================================================================
+   SLIDE 3: axial cross-section
+   ===================================================================== */
+function xsSVG(mode) {
+  const ip = mode === 'ip', rp = mode === 'rp', so = mode === 'so';
+  return `<svg viewBox="0 0 360 250" role="img" aria-label="Schematic axial section of the abdomen showing ${ip ? 'intraperitoneal' : rp ? 'retroperitoneal' : 'contained solid organ'} bleeding">
+  <ellipse class="bodyx" cx="180" cy="125" rx="168" ry="108"/>
+  <path class="perit" d="M40,120 Q48,46 180,34 Q312,46 320,120 Q318,160 286,170 Q240,150 180,160 Q120,150 74,170 Q42,160 40,120 Z"/>
+  <path class="retro" d="M62,176 Q120,150 180,162 Q240,150 298,176 Q300,214 250,226 L110,226 Q60,214 62,176 Z"/>
+  <path class="org" d="M48,118 Q56,62 150,60 Q170,90 150,120 Q120,150 76,160 Q50,150 48,118 Z"/>
+  <ellipse class="org" cx="292" cy="126" rx="22" ry="30" transform="rotate(-20 292 126)"/>
+  <circle class="org" cx="190" cy="92" r="14"/><circle class="org" cx="224" cy="110" r="12"/><circle class="org" cx="206" cy="128" r="11"/><circle class="org" cx="168" cy="124" r="11"/>
+  <ellipse class="org" cx="114" cy="188" rx="24" ry="15" transform="rotate(25 114 188)"/>
+  <ellipse class="org" cx="248" cy="188" rx="24" ry="15" transform="rotate(-25 248 188)"/>
+  <circle class="ves" cx="196" cy="186" r="8"/><ellipse class="ves" cx="164" cy="186" rx="10" ry="6"/>
+  <circle class="bone" cx="180" cy="210" r="16"/>
+  ${ip ? '<path class="blood" d="M84,158 Q100,150 116,156 Q104,170 84,166 Z"/><path class="blood" d="M44,128 Q40,150 56,164 Q52,146 50,126 Z"/><path class="blood" d="M316,126 Q320,150 304,166 Q310,146 310,126 Z"/>' : ''}
+  ${rp ? '<path class="blood" d="M222,168 Q270,160 288,188 Q280,214 240,214 Q214,204 222,168 Z"/><path class="blood" d="M140,196 Q160,200 170,214 Q150,220 136,210 Z"/>' : ''}
+  ${so ? '<path class="blood" d="M92,86 Q112,80 120,96 Q108,108 92,100 Z"/>' : ''}
+  <text class="h" x="180" y="52" text-anchor="middle">Peritoneal cavity</text>
+  <text x="180" y="240" text-anchor="middle">Retroperitoneum</text>
+  <text x="96" y="100">Liver</text><text x="292" y="130" text-anchor="middle">Spleen</text>
+  <text x="114" y="191" text-anchor="middle">Kidney</text><text x="248" y="191" text-anchor="middle">Kidney</text>
+  ${ip ? '<text x="98" y="148" text-anchor="middle" class="h">Morison\'s</text>' : ''}
+  </svg>`;
+}
+const XS_TXT = {
+  ip: '<b>Intraperitoneal blood</b> runs to the dependent recesses (Morison\'s pouch, the paracolic gutters, the pelvis). <span class="ok">FAST can see it</span>, once there is enough.',
+  rp: '<b>Retroperitoneal blood</b> (pelvic fracture, kidney, great vessels) stays behind the peritoneum. <span class="bad">FAST is blind to it by design.</span>',
+  so: '<b>Contained solid organ injury</b> (subcapsular haematoma) with no free fluid. <span class="bad">FAST looks for fluid, not organs: negative.</span>'
+};
+seg('xsSeg', d => { $('#xsBox').innerHTML = xsSVG(d.v); setStat('xsStat', XS_TXT[d.v]); });
+
+/* =====================================================================
+   SLIDE 4: I-AIM
+   ===================================================================== */
+(function () {
+  const L = $('#iaimList');
+  L.addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; $$('li', L).forEach(x => x.classList.toggle('on', x === li)); $$('.iaimP').forEach(p => p.hidden = p.dataset.k !== li.dataset.k); });
+  keyClick(L);
+})();
+
+/* =====================================================================
+   SLIDE 5: Part I torso
+   ===================================================================== */
+$('#p1Torso').innerHTML = torsoSVG({ labels: true });
+
+/* =====================================================================
+   SLIDE 6: probe map + free fluid
+   ===================================================================== */
+const PM = { win: 'ruq', vol: 150, fan: 0, pos: 'sup', sex: 'm', labels: true };
+const pmBox = $('#pmTorso'); pmBox.innerHTML = torsoSVG({ interactive: true });
+const PMS = sono($('#pmUS'), { view: 'ruq' });
+function pmUpd() {
+  torsoSel(pmBox, PM.win); segSet('pmView', PM.win);
+  const [vk, extra] = VKEY[PM.win];
+  const S = { sub: 0, ant: 0, mor: 0, tip: 0, sr: 0, pel: 0, peri: 0, sex: PM.sex, fan: PM.fan, labels: PM.labels, st: 'normal', bl: 0 };
+  Object.assign(S, extra);
+  const fs = fluidState(PM.win, PM.vol, PM.pos, PM.fan);
+  applyFluid(S, PM.win, fs.amts, PM.sex);
+  PMS.setView(vk, S);
+  $('#pmPov').textContent = 'Schematic · ' + WNAME[PM.win];
+  let msg;
+  if (PM.win === 'chR' || PM.win === 'chL') msg = 'Anterior chest: rib shadows, pleural line, lung sliding. No pneumothorax. <a href="#" id="pmToChest">Open the pleural simulation →</a>';
+  else if (fs.seen) msg = `<b class="bad">Positive.</b> Anechoic stripe in a dependent space.`;
+  else if (fs.present) msg = `<b class="warn">Fluid is there, but not in this plane.</b> Fan through the window (try ${FANOPT[PM.win] > 0 ? '+' : ''}${FANOPT[PM.win]}°).`;
+  else msg = `<b class="ok">Negative</b> at this volume and position.`;
+  if (PM.win === 'subx') msg += ' This simulation models intraperitoneal blood only: the pericardium stays dry.';
+  setStat('pmStat', msg);
+  const a = $('#pmToChest'); if (a) a.onclick = e => { e.preventDefault(); go(slides.indexOf($('#chestSlide'))); };
+  const rows = ['ruq', 'subx', 'luq', 'pelS', 'chR'].map(w => {
+    if (w === 'chR') return `<li><span>Anterior chest</span><span class="neg">negative (sliding)</span></li>`;
+    if (w === 'subx') { const f = fluidState('subx', PM.vol, PM.pos, 0); return `<li><span>Subxiphoid</span><span class="neg">pericardium negative${f.present ? ' · perihepatic fluid' : ''}</span></li>`; }
+    const any = fluidState(w, PM.vol, PM.pos, FANOPT[w]).present;
+    const now = fluidState(w, PM.vol, PM.pos, PM.fan);
+    const nm = w === 'pelS' ? 'Pelvis' : WNAME[w];
+    if (!any) return `<li><span>${nm}</span><span class="neg">negative</span></li>`;
+    const big = (WSP[w] || []).some(k => PM.vol >= 2 * thr(k, PM.pos) && frac(k, PM.vol, PM.pos) > 0);
+    return `<li><span>${nm}</span><span class="${big || now.seen ? 'pos' : 'fanc'}">${big ? 'positive' : 'positive · needs fanning'}</span></li>`;
+  }).join('');
+  $('#pmList').innerHTML = rows;
+}
+bindTorso(pmBox, v => { PM.win = v; pmUpd(); });
+seg('pmView', d => { PM.win = d.v; pmUpd(); }, false);
+seg('pmPos', d => { PM.pos = d.v; pmUpd(); }, false);
+seg('pmSex', d => { PM.sex = d.v; pmUpd(); }, false);
+rng('pmVol', 'pmVolO', v => v + ' mL', v => { PM.vol = v; pmUpd(); });
+rng('pmFan', 'pmFanO', v => (v > 0 ? '+' : '') + v + '°', v => { PM.fan = v; pmUpd(); });
+$('#pmLab').addEventListener('change', e => { PM.labels = e.target.checked; pmUpd(); });
+
+/* =====================================================================
+   SLIDE 7: RUQ
+   ===================================================================== */
+const RUQ = sono($('#ruqUS'), { view: 'ruq' });
+const RUQ_TXT = {
+  n: 'Normal: mirror image above the diaphragm, spine stops at the diaphragm, no anechoic stripe at Morison\'s pouch or the liver tip. <b class="ok">Negative</b>.',
+  hp: 'Haemoperitoneum: anechoic stripe at the <b>caudal liver tip</b> and in <b>Morison\'s pouch</b>. <b class="bad">Positive</b>.',
+  ht: 'Haemothorax: anechoic fluid above the diaphragm, <b>loss of the mirror image</b>, compressed lung floating in it, and the <b>spine sign</b>: vertebral bodies seen continuing above the diaphragm.'
+};
+let ruqMode = 'n';
+seg('ruqSeg', d => { ruqMode = d.v; RUQ.set({ mor: d.v === 'hp' ? .5 : 0, tip: d.v === 'hp' ? .9 : 0, htx: d.v === 'ht' ? 1 : 0 }); setStat('ruqStat', RUQ_TXT[d.v]); });
+(function () {
+  const L = $('#ruqZones');
+  L.addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; const on = !li.classList.contains('on'); $$('li', L).forEach(x => x.classList.remove('on')); if (on) li.classList.add('on'); RUQ.set({ hl: on ? +li.dataset.z : 0 }); });
+  keyClick(L);
+})();
+
+/* =====================================================================
+   SLIDE 8: LUQ / pelvis / subxiphoid
+   ===================================================================== */
+const LP = { v: 'luq', fluid: 0, sex: 'm', bl: 'full' };
+const LPS = sono($('#lpUS'), { view: 'luq' });
+function lpUpd() {
+  $$('#lpTabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.v === LP.v));
+  const f = LP.fluid, S = { sub: 0, sr: 0, tip: 0, pel: 0, peri: 0, ant: 0, sex: LP.sex, bsmall: LP.bl === 'empty' ? 1 : 0, labels: true };
+  let msg = '';
+  if (LP.v === 'luq') { Object.assign(S, { sub: f ? .7 : 0, sr: f ? .35 : 0 }); LPS.setView('luq', S); msg = f ? 'Fluid in the <b>subphrenic space</b> above the spleen and in the splenorenal recess. <b class="bad">Positive</b>. Also clear the inferior splenic tip and left paracolic gutter.' : 'Spleen high and back; colon gas anteriorly. Clear all four zones, including <b>above the spleen</b>.'; }
+  else if (LP.v === 'subx') { Object.assign(S, { peri: f ? .9 : 0 }); LPS.setView('subx', S); msg = f ? 'Anechoic stripe all round the heart, <b>including posteriorly</b>: pericardial fluid. In trauma, assume blood.' : 'Liver as the window; RV nearest the probe. Increase depth to see the posterior pericardium.'; }
+  else { Object.assign(S, { pel: f ? 1.0 : 0, plane: LP.v === 'pelS' ? 'sag' : 'trans' }); LPS.setView('pel', S); msg = LP.bl === 'empty' ? '<b class="warn">Small, empty bladder:</b> no acoustic window and no landmark. Record as indeterminate and move on. Fill only via an existing catheter, and not if bladder or urethral injury is suspected (instilled fluid can leak and mimic haemoperitoneum).' : f ? (LP.sex === 'm' ? 'Angular anechoic fluid in the <b>rectovesical pouch</b>, behind the bladder. <b class="bad">Positive</b>.' : 'Fluid in the <b>pouch of Douglas</b>, behind the uterus. Small volumes can be physiological in women of reproductive age.') : 'Full bladder as the window. Fan right through it in both planes.'; }
+  $('#lpSex').hidden = LP.v === 'luq' || LP.v === 'subx';
+  $('#lpBl').hidden = LP.v === 'luq' || LP.v === 'subx';
+  setStat('lpStat', msg);
+}
+$('#lpTabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { LP.v = b.dataset.v; lpUpd(); } });
+seg('lpFluid', d => { LP.fluid = +d.v; lpUpd(); }, false);
+seg('lpSex', d => { LP.sex = d.v; lpUpd(); }, false);
+seg('lpBl', d => { LP.bl = d.v; lpUpd(); }, false);
+lpUpd();
+
+/* =====================================================================
+   SLIDE 9: pleural B-mode + M-mode
+   ===================================================================== */
+const PL = { st: 'normal', cx: .3, rr: 14, paused: RM, t: 0, acc: 0 };
+const PLB = sono($('#plB'), { view: 'pl', w: 400, h: 250, fps: 30, S: { st: 'normal', bl: 1, labels: true, rr: 14 },
+  over(c, s) { const [px] = s.px(PL.cx, 0); c.setLineDash([4, 4]); c.strokeStyle = '#7fd3ff'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(px, 0); c.lineTo(px, s.o.h); c.stroke(); c.setLineDash([]);
+    if (PL.st === 'lp') { const [bx] = s.px(s.S.bnd, 0); c.fillStyle = 'rgba(255,214,120,.9)'; c.beginPath(); c.moveTo(bx - 6, s.o.h - 2); c.lineTo(bx + 6, s.o.h - 2); c.lineTo(bx, s.o.h - 12); c.fill(); } } });
+const mVis = $('#plM'); mVis.width = 400; mVis.height = 170; const mVctx = mVis.getContext('2d');
+const mCv = document.createElement('canvas'); mCv.width = 400; mCv.height = 200; const mCtx = mCv.getContext('2d');
+const mImg = mCtx.createImageData(1, 200);
+const MDEPTH = 4.6, MSPD = 55;
+function mCol(t) {
+  const d = mImg.data, S = Object.assign({}, PLB.S); VIEWS.pl.pre(S, t);
+  for (let j = 0; j < 200; j++) { const y = (j + .5) / 200 * MDEPTH; let v = plEcho(PL.cx, y, t, S) * GAIN; v = clamp(v, 0, 1); const g = 255 * Math.pow(v, .85); const q = j * 4; d[q] = g; d[q + 1] = g; d[q + 2] = g * .96; d[q + 3] = 255; }
+  return mImg;
+}
+function mFill() { // render a whole strip ending at PL.t
+  for (let i = 0; i < 400; i++) mCtx.putImageData(mCol(PL.t - (399 - i) / MSPD), i, 0);
+  mLabel();
+}
+function mLabel() { mVctx.drawImage(mCv, 0, 0, 400, 170); mVctx.font = '11px ui-monospace,Menlo,Consolas,monospace'; mVctx.textAlign = 'right'; mVctx.fillStyle = 'rgba(255,214,120,.85)'; mVctx.fillText('SCHEMATIC · simulated M-mode', 394, 12); const [, py] = [0, PY / MDEPTH * 170]; mVctx.textAlign = 'left'; mVctx.fillText('pleura', 4, py - 7); }
+function plTruth() {
+  if (PL.st === 'normal') return 'no'; if (PL.st === 'ptx') return 'yes'; if (PL.st === 'lp') return 'yes'; if (PL.st === 'apnoea') return 'no'; return 'cannot';
+}
+const PL_TXT = {
+  normal: 'Normal: the pleural line shimmers with each breath (lung sliding), a single B-line moves with it, A-lines below. M-mode: <b>seashore</b>.',
+  ptx: 'Pneumothorax: no shimmer, no B-lines, prominent A-lines. M-mode: <b>barcode / stratosphere</b>.',
+  lp: 'Lung point: sliding lung moves in and out of view on the left; static pneumothorax on the right. With the cursor on the boundary, M-mode alternates seashore and barcode within each breath.',
+  apnoea: 'No sliding, but <b>lung pulse present</b>: the pleural line ripples with the heartbeat. The lung is touching the wall: not a pneumothorax.',
+  sce: 'Subcutaneous emphysema: bright streaks in the soft tissue hide the ribs and pleura. <b>Indeterminate</b>.'
+};
+const PL_ANS = {
+  normal: 'Correct answer: <b>No</b>. Sliding (and a B-line) prove the visceral pleura is against the chest wall here.',
+  ptx: 'Correct answer: <b>Yes, probable pneumothorax</b>: sliding, B-lines and lung pulse are all absent (A-lines, barcode). A lung point would confirm it; in shock, treat clinically.',
+  lp: 'Correct answer: <b>Yes</b>. A lung point is close to 100% specific for pneumothorax.',
+  apnoea: 'Correct answer: <b>No</b>. Absent sliding alone is not specific; the lung pulse shows the lung is touching the wall (think apnoea or mainstem intubation).',
+  sce: 'Correct answer: <b>Cannot tell</b>. Subcutaneous air hides the pleura. Try another space, or rely on other tests.'
+};
+function plUpd() {
+  PLB.set({ st: PL.st, rr: PL.rr, labels: true });
+  setStat('plStat', PL_TXT[PL.st]);
+  segSet('plAns', ''); setStat('plFb', 'Choose an answer for the current state.');
+  $('#plCurO').textContent = (PL.cx >= 0 ? '+' : '') + PL.cx.toFixed(1) + ' cm';
+  mFill();
+}
+seg('plSeg', d => { PL.st = d.v; plUpd(); }, false);
+seg('plAns', d => { const ok = d.v === plTruth(); setStat('plFb', (ok ? '<b class="ok">Right.</b> ' : '<b class="bad">Not quite.</b> ') + PL_ANS[PL.st]); }, false);
+rng('plCur', 'plCurO', v => (v >= 0 ? '+' : '') + v.toFixed(1) + ' cm', v => { PL.cx = v; PLB.dirty = true; if (PL.paused) mFill(); });
+rng('plRR', 'plRRO', v => v + '/min', v => { PL.rr = v; PLB.set({ rr: v }); if (PL.paused) mFill(); });
+function plPauseLbl() { $('#plPause').textContent = PL.paused ? '▶ Play' : '❚❚ Pause'; }
+$('#plPause').onclick = () => { PL.paused = !PL.paused; plPauseLbl(); PLB.dirty = true; };
+plPauseLbl();
+(function () { // drag on B-mode to move cursor
+  const cv = $('#plB'); let drag = false;
+  const mv = e => { const r = cv.getBoundingClientRect(), px = (e.clientX - r.left) / r.width * PLB.o.w; PL.cx = clamp((px - PLB.ox) / PLB.ppc, -2.7, 2.7); $('#plCur').value = clamp(PL.cx, -1, 1); $('#plCurO').textContent = (PL.cx >= 0 ? '+' : '') + PL.cx.toFixed(1) + ' cm'; PLB.dirty = true; if (PL.paused) mFill(); };
+  cv.addEventListener('pointerdown', e => { drag = true; cv.setPointerCapture(e.pointerId); mv(e); });
+  cv.addEventListener('pointermove', e => { if (drag) mv(e); });
+  cv.addEventListener('pointerup', () => drag = false); cv.addEventListener('pointercancel', () => drag = false);
+})();
+// custom ticking for the pleural sim: its own clock so pause works
+PLB.tick = function (tReal) {
+  if (!this._init) { this._init = true; PL.t = 30; mFill(); }
+};
+scene($('#plM'), {
+  frame(t, dt) {
+    if (!PL.paused) {
+      PL.t += dt; PL.acc += dt * MSPD;
+      const n = Math.floor(PL.acc); PL.acc -= n;
+      if (n > 0) { mCtx.drawImage(mCv, -n, 0); for (let i = 0; i < n; i++) mCtx.putImageData(mCol(PL.t - (n - 1 - i) / MSPD), 400 - n + i, 0); mLabel(); }
+      PLB.draw(PL.t);
+    } else if (PLB.dirty) { PLB.dirty = false; PLB.draw(PL.t); }
+  }
+});
+plUpd();
+
+/* =====================================================================
+   SLIDE 10: Part II divider
+   ===================================================================== */
+sono($('#p2US'), { view: 'pel', S: { plane: 'trans', sex: 'm', labels: false }, anim: false });
+
+/* =====================================================================
+   SLIDE 11: spot the mimic
+   ===================================================================== */
+const MIM = [
+  { view: 'ruq', S: { mor: .4, tip: 0 }, hl: [1.4, 7.5, 1.5], ans: 'fluid', name: 'Free fluid in Morison\'s pouch', why: 'Thin anechoic stripe with <b>angular edges tapering into the recess</b>, conforming to the space between liver and kidney.' },
+  { view: 'ruq', S: { pnf: 1 }, hl: [2.2, 9.5, 4.3], ans: 'mimic', name: 'Perinephric fat', why: 'Hypoechoic rim all round the kidney, <b>symmetrical, with internal echoes</b>; it does not track into the recess. Check the other side: usually bilateral.' },
+  { view: 'pel', S: { plane: 'trans', sex: 'm' }, hl: [0, 9.5, 4], ans: 'mimic', name: 'Seminal vesicles', why: '<b>Paired, symmetrical bow-tie</b> structures behind the bladder. In sagittal they are small, fixed ovals. Fluid is angular and conforms to the pouch. Use two planes.', toggle: true },
+  { view: 'luq', S: { bowelLoop: [3.5, 6.4] }, hl: [3.5, 6.4, 1.8], ans: 'mimic', name: 'Fluid-filled bowel', why: 'Round, <b>with a wall</b>, moving echogenic flecks and <b>peristalsis</b>. Free fluid has no wall and does not move on its own.', anim: true },
+  { view: 'ruq', S: { mor: .75, clot: 1 }, hl: [1.4, 7.5, 1.6], ans: 'fluid', name: 'Clotted blood: a true positive', why: '<b>Heterogeneous mid-grey material</b> in Morison\'s pouch with a thin black rim. Clot reflects sound and can look like liver. Easily missed.' },
+  { view: 'subx', S: { fat: 1 }, hl: [-1.6, 6.9, 2.4], ans: 'mimic', name: 'Epicardial fat pad', why: '<b>Anterior only</b>, mildly speckled, moves with the heart, and <b>no posterior fluid</b>. True effusion surrounds the heart, including posteriorly.', anim: true }
+];
+(function () {
+  const box = $('#mimics'); let score = 0, done = 0;
+  box.innerHTML = MIM.map((m, i) => `<div class="mimic" data-i="${i}"><div class="scanner"><canvas class="us" role="img" aria-label="Schematic tile ${i + 1}"></canvas></div><div class="mq"><span class="num">${i + 1}</span> Free fluid or mimic?</div><div class="mb"><button data-a="fluid">Fluid</button><button data-a="mimic">Mimic</button></div>${m.toggle ? '<button class="btn ghost tg" data-tg="1">Show sagittal</button>' : ''}<div class="mf" aria-live="polite"></div></div>`).join('');
+  $$('.mimic', box).forEach((el, i) => {
+    const m = MIM[i]; m.done = false;
+    m.s = sono($('canvas', el), { view: m.view, w: 280, h: 210, fps: 8, anim: !!m.anim, S: Object.assign({ labels: false, still: !m.anim }, m.S),
+      over(c, s) { const [x, y, r] = m.hl; const [px, py] = s.px(x, y); c.setLineDash([5, 4]); c.lineWidth = 2; c.strokeStyle = m.done ? (m.ans === 'fluid' ? '#ff8a7a' : '#8fe08a') : '#7fd3ff'; c.beginPath(); c.ellipse(px, py, r * s.ppc, r * s.ppc * .62, 0, 0, TAU); c.stroke(); c.setLineDash([]); if (m.done) { c.font = '12px ui-monospace,Menlo,monospace'; c.textAlign = 'center'; c.lineWidth = 3; c.strokeStyle = 'rgba(0,0,0,.8)'; const lb = m.name.split(':')[0]; c.strokeText(lb, px, py - r * s.ppc * .62 - 8); c.fillStyle = '#ffd678'; c.fillText(lb, px, py - r * s.ppc * .62 - 8); } } });
+  });
+  box.addEventListener('click', e => {
+    const tg = e.target.closest('button[data-tg]');
+    if (tg) { const i = +tg.closest('.mimic').dataset.i, m = MIM[i]; const sag = m.s.S.plane !== 'sag'; m.s.set({ plane: sag ? 'sag' : 'trans' }); m.hl = sag ? [-.6, 9.5, 1.6] : [0, 9.5, 4]; tg.textContent = sag ? 'Show transverse' : 'Show sagittal'; return; }
+    const b = e.target.closest('button[data-a]'); if (!b) return;
+    const card = b.closest('.mimic'), i = +card.dataset.i, m = MIM[i]; if (m.done) return;
+    m.done = true; const ok = b.dataset.a === m.ans; done++; if (ok) score++;
+    card.classList.add(ok ? 'right' : 'wrong');
+    $$('button[data-a]', card).forEach(x => { if (x.dataset.a === m.ans) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    $('.mf', card).innerHTML = `<b>${m.name}.</b> ${m.why}`;
+    m.s.dirty = true;
+    $('#mmScore').textContent = `${score} / ${done}${done === MIM.length ? ' · done' : ''}`;
+  });
+})();
+
+/* =====================================================================
+   SLIDE 12: decision flow
+   ===================================================================== */
+const DF = { mech: 'blunt', haem: 'unstable', ruq: 'neg', luq: 'neg', pel: 'neg', peri: 'neg', lch: 'neg', rch: 'neg' };
+const DFW = [['ruq', 'RUQ', 0], ['luq', 'LUQ', 0], ['pel', 'Pelvis', 0], ['peri', 'Pericardium', 0], ['lch', 'Left chest', 1], ['rch', 'Right chest', 1]];
+$('#dfWins').innerHTML = DFW.map(([k, l, ch]) => `<div class="winrow"><span>${l}</span><div class="seg sm" id="dfw_${k}" role="group" aria-label="${l} result">${(ch ? [['neg', 'Negative'], ['ptx', 'Pneumothorax'], ['htx', 'Haemothorax'], ['ind', 'Indet.']] : [['neg', 'Negative'], ['pos', 'Positive'], ['ind', 'Indet.']]).map(([v, t], i) => `<button data-v="${v}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div></div>`).join('');
+function dfFlowSVG() {
+  const nd = (id, x, y, w, h, cls, lines) => `<g class="node" data-n="${id}"><rect class="bx ${cls}" x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/>${lines.map((l, i) => `<text x="${x + w / 2}" y="${lines.length === 1 ? y + h / 2 + 4 : y + 17 + i * 14}" text-anchor="middle" class="${l[1] || ''}">${l[0]}</text>`).join('')}</g>`;
+  const ed = (id, d) => `<path class="edge" data-e="${id}" d="${d}"/>`;
+  return `<svg viewBox="0 0 560 380" role="img" aria-label="eFAST decision flowchart">
+  ${ed('U', 'M280 44 V58 H140 V72')}${ed('S', 'M280 44 V58 H420 V72')}
+  ${ed('UP', 'M140 108 V118 H70 V130')}${ed('UN', 'M140 108 V118 H210 V130')}${ed('SP', 'M420 108 V118 H350 V130')}${ed('SN', 'M420 108 V118 H490 V130')}
+  ${ed('UPo', 'M70 166 V184')}${ed('UNo', 'M210 166 V184')}${ed('SPo', 'M350 166 V184')}${ed('SNo', 'M490 166 V184')}
+  ${ed('Po', 'M140 310 H160')}${ed('Co', 'M410 310 H430')}
+  ${nd('root', 180, 6, 200, 38, 'q', [['eFAST + haemodynamics', 'h']])}
+  ${nd('U', 80, 72, 120, 36, '', [['Unstable']])}${nd('S', 360, 72, 120, 36, '', [['Stable']])}
+  ${nd('UP', 10, 130, 120, 36, '', [['Abdomen +']])}${nd('UN', 150, 130, 120, 36, '', [['Abdomen −']])}${nd('SP', 290, 130, 120, 36, '', [['Abdomen +']])}${nd('SN', 430, 130, 120, 36, '', [['Abdomen −']])}
+  ${nd('UPo', 10, 184, 120, 76, 'hi', [['Laparotomy /'], ['damage control'], ['MTP · no CT', 's']])}
+  ${nd('UNo', 150, 184, 120, 76, 'md', [['Look elsewhere'], ['chest · pelvis · RP', 's'], ['bones · floor', 's'], ['repeat FAST', 's']])}
+  ${nd('SPo', 290, 184, 120, 76, 'md', [['CT with contrast'], ['surgical review', 's']])}
+  ${nd('SNo', 430, 184, 120, 76, 'lo', [['CT per mechanism'], ['serial exam', 's'], ['repeat FAST', 's']])}
+  ${nd('P', 10, 288, 130, 44, '', [['Pericardium +']])}${nd('Po', 160, 280, 120, 60, 'hi', [['Surgical'], ['decompression', 's']])}
+  ${nd('C', 290, 288, 120, 44, '', [['Chest +'], ['PTX / HTX', 's']])}${nd('Co', 430, 280, 120, 60, 'hi', [['Decompress /'], ['chest drain', 's']])}
+  </svg>`;
+}
+$('#dfFlow').innerHTML = dfFlowSVG();
+function dfUpd() {
+  const abd = ['ruq', 'luq', 'pel'].map(k => DF[k]), abdPos = abd.includes('pos'), unst = DF.haem === 'unstable', pen = DF.mech === 'pen';
+  const chest = [DF.lch, DF.rch], ptx = chest.includes('ptx'), htx = chest.includes('htx'), peri = DF.peri === 'pos';
+  const anyInd = [...abd, DF.peri, ...chest].includes('ind');
+  const on = new Set(['root', unst ? 'U' : 'S']);
+  const br = (unst ? 'U' : 'S') + (abdPos ? 'P' : 'N'); on.add(br); on.add(br + 'o');
+  if (peri) { on.add('P'); on.add('Po'); } if (ptx || htx) { on.add('C'); on.add('Co'); }
+  $$('#dfFlow .node').forEach(g => { const a = on.has(g.dataset.n); g.classList.toggle('on', a); g.classList.toggle('dim', !a); });
+  $$('#dfFlow .edge').forEach(p => p.classList.toggle('on', on.has(p.dataset.e) || (p.dataset.e === 'U' && unst) || (p.dataset.e === 'S' && !unst)));
+  const out = [];
+  if (peri) out.push(['hi', 'Haemopericardium: surgical decompression', 'Pericardial fluid in trauma is blood until proven otherwise. Sternotomy or thoracotomy per local pathway; pericardiocentesis only as a bridge if surgery is not immediately available.']);
+  if (ptx) out.push(['hi', unst ? 'Consider tension: decompress' : 'Pneumothorax: drain per size and plan', unst ? 'Pneumothorax with shock: decompress now (finger or needle thoracostomy), then a chest drain.' : 'Drain according to size, positive pressure ventilation, transfer or theatre, and local guidance.']);
+  if (htx) out.push(['hi', 'Haemothorax: chest drain', 'The volume drained guides the thoracotomy decision. Commonly used triggers: ≥1,500 mL immediately, or >200 mL/h for 2–4 h, or an ongoing transfusion requirement (check the current ATLS edition and local pathway).']);
+  if (unst && abdPos) out.push(['hi', 'Laparotomy / damage control; MTP', 'Unstable with a positive abdominal FAST: operative haemorrhage control without CT. Activate the massive transfusion protocol.']);
+  else if (unst) out.push(['md', 'Look elsewhere and repeat the FAST', 'Chest, pelvis and retroperitoneum (binder, pelvic X-ray, angioembolisation or preperitoneal packing), long bones, external bleeding, and non-haemorrhagic shock: tension, tamponade, spinal cord injury, cardiac contusion. <a href="../shock/">RUSH approach</a>.']);
+  else if (abdPos) out.push(['md', 'CT and surgical review', 'Stable with free fluid: CT with contrast; non-operative management of solid organ injury may be possible.']);
+  else out.push(['lo', 'CT per mechanism; serial exam and repeat FAST', 'A negative FAST does not clear the abdomen.']);
+  $('#dfOut').innerHTML = out.map(([c, h, p]) => `<div class="card ${c}"><h3>${h}</h3><p>${p}</p></div>`).join('');
+  const ban = [];
+  if (pen && !abdPos) ban.push(['', 'Low sensitivity in penetrating trauma: a negative abdominal FAST does not exclude injury.']);
+  if (pen && DF.peri === 'neg' && DF.lch === 'htx') ban.push(['red', 'Pericardial blood may decompress into the pleura: a negative pericardial view does not exclude cardiac injury.']);
+  if (anyInd) ban.push(['', 'Indeterminate is not negative: repeat, change window, or rely on other tests.']);
+  $('#dfBan').innerHTML = ban.map(([c, t]) => `<div class="banner ${c}">${t}</div>`).join('');
+}
+seg('dfMech', d => { DF.mech = d.v; dfUpd(); }, false);
+seg('dfHaem', d => { DF.haem = d.v; dfUpd(); }, false);
+DFW.forEach(([k]) => seg('dfw_' + k, d => { DF[k] = d.v; dfUpd(); }, false));
+dfUpd();
+
+/* =====================================================================
+   SLIDE 13: serial scans
+   ===================================================================== */
+const SR_R = sono($('#srR'), { view: 'ruq', w: 320, h: 240, S: { labels: false } });
+const SR_P = sono($('#srP'), { view: 'pel', w: 320, h: 240, S: { plane: 'sag', sex: 'm', labels: false } });
+rng('srT', 'srTO', v => v + ' min', v => {
+  const V = 40 + v * 20; // illustrative steady bleed
+  const r = fluidState('ruq', V, 'sup', 8), p = fluidState('pelS', V, 'sup', 3);
+  const Sr = { sub: 0, ant: 0, mor: 0, tip: 0 }; applyFluid(Sr, 'ruq', r.amts); SR_R.set(Sr);
+  const Sp = { pel: 0 }; applyFluid(Sp, 'pelS', p.amts); SR_P.set(Sp);
+  setStat('srStat', `≈ ${V} mL intraperitoneal (illustrative). RUQ <b class="${r.seen ? 'bad' : 'ok'}">${r.seen ? 'positive' : 'negative'}</b> · pelvis <b class="${p.seen ? 'bad' : 'ok'}">${p.seen ? 'positive' : 'negative'}</b>${!r.seen && !p.seen ? '. A negative early scan is not the end.' : ''}`);
+});
+
+/* =====================================================================
+   CASES
+   ===================================================================== */
+const CASES = [
+  { tag: 'Unstable blunt · positive', short: 'Motorcyclist', title: 'Motorcyclist, RUQ tenderness',
+    vignette: 'A 34-year-old man, a motorcyclist, hit a car at speed. Abdomen tender in the right upper quadrant. Pelvic binder applied pre-hospital; pelvic X-ray pending.',
+    facts: [['Airway', 'Patent · GCS 14'], ['Breathing', 'RR 28 · SpO2 96% on oxygen'], ['Circulation', 'BP 78/45 · HR 132 · cool peripheries'], ['Response', 'Two units of blood via the rapid infuser: BP 84/50']],
+    order: ['ruq', 'subx', 'luq', 'pelS', 'chR', 'chL'],
+    views: [['ruq', 'RUQ', { mor: .45, tip: .85 }, "RUQ: anechoic stripe in Morison's pouch extending to the caudal liver tip; normal mirror image, no spine sign."], ['subx', 'Subxiphoid', {}, 'Subxiphoid: no pericardial fluid.'], ['pel', 'Pelvis', { plane: 'sag', sex: 'm', pel: .9 }, 'Pelvis: anechoic fluid behind the bladder.'], ['pl', 'Chest', { st: 'normal', bl: 0 }, 'Anterior chest: lung sliding present bilaterally.']],
+    steps: [
+      ['Is eFAST indicated?', 'Unstable blunt trauma not responding to resuscitation. The question is: <b>which cavity is bleeding?</b> eFAST during the primary survey, without interrupting resuscitation.'],
+      ['How will you scan?', '<b>RUQ first</b> (tender, most likely positive), then subxiphoid, LUQ, pelvis, anterior chest on both sides. Curvilinear probe, supine.'],
+      ['What do you see?', "RUQ: anechoic stripe in Morison's pouch extending to the caudal liver tip; normal mirror image and no spine sign. Pericardium: no fluid. Pelvis: anechoic fluid behind the bladder. Lung sliding present on both sides. <b class=\"bad\">FAST positive for haemoperitoneum.</b>"],
+      ['What will you do?', '<b>Unstable + positive abdominal FAST = haemorrhage control.</b> With a pelvic fracture, pelvic fluid could include urine from bladder rupture, but in an unstable patient with RUQ fluid it is treated as blood. Activate the massive transfusion protocol; straight to theatre for laparotomy or damage control; no CT. Anaesthetic plan: RSI with a haemodynamically stable induction, permissive hypotension until surgical control (no significant head injury), TXA within 3 hours if not already given, warm everything, give calcium.']
+    ], pearl: 'In the unstable patient, a positive abdominal FAST sends the patient to theatre. Its high specificity is what makes that safe.' },
+  { tag: 'Unstable blunt · no free fluid', short: 'Pedestrian', title: 'Pedestrian struck by a lorry',
+    vignette: 'A 68-year-old woman, pedestrian struck by a lorry. Pelvic fracture suspected from mechanism and examination (a single gentle examination only; do not repeat pelvic springing). Left femur deformed. Chest clinically clear. eFAST done 5 minutes after arrival.',
+    facts: [['Circulation', 'BP 82/50 · HR 118 (on bisoprolol)'], ['Disability', 'GCS 15'], ['Pelvis', 'Fracture suspected; binder on'], ['Limbs', 'Left femur deformed']],
+    order: ['ruq', 'subx', 'luq', 'pelS', 'chR', 'chL'],
+    views: [['ruq', 'RUQ', {}, 'RUQ: negative. Liver tip seen, normal mirror image.'], ['luq', 'LUQ', {}, 'LUQ, obtained posterior and superior: negative.'], ['pel', 'Pelvis', { plane: 'sag', sex: 'f', bsmall: 1 }, 'Pelvis: small bladder, limited view. Indeterminate.'], ['subx', 'Subxiphoid', {}, 'Subxiphoid: no pericardial fluid.']],
+    steps: [
+      ['Is eFAST indicated?', 'Unstable blunt trauma: look for intraperitoneal, pericardial and pleural blood, and pneumothorax.'],
+      ['How will you scan?', 'All five windows. Pelvic view limited: the bladder is small. LUQ obtained <b>posterior and superior</b>. Each window fanned fully.'],
+      ['What do you see?', 'RUQ and LUQ negative; pericardium negative; lung sliding on both sides, no pleural fluid. Pelvis <b>indeterminate</b> (small bladder). Overall: <b>no free fluid seen, but the examination is incomplete</b>.'],
+      ['What will you do?', 'A negative FAST does not mean she is not bleeding. Sources FAST cannot see: the <b>pelvic retroperitoneum</b> and the <b>femur</b>. Pelvic binder at the level of the greater trochanters, splint the femur (in-line or non-traction splint, or a device approved locally for use with pelvic injury; avoid ischial or perineal-post traction splints with a suspected pelvic fracture), massive transfusion, early activation of interventional radiology (angioembolisation) or preperitoneal packing per local pathway. Beta-blockade may blunt the tachycardic response: the true degree of shock may be worse than the heart rate suggests. Repeat the eFAST after resuscitation and on any deterioration; CT if she responds.']
+    ], pearl: 'No free fluid seen is not a negative FAST when a view is indeterminate. Unstable without free fluid: look for the blood elsewhere (chest, pelvis and retroperitoneum, long bones, the floor) and scan again. Retroperitoneal haemorrhage is invisible to FAST.' },
+  { tag: 'Penetrating · pericardium', short: 'Stab wound', title: 'Left parasternal stab wound',
+    vignette: 'A 25-year-old man with a single stab wound to the left parasternal 4th intercostal space. Reduced breath sounds on the left.',
+    facts: [['Circulation', 'BP 88/60 · HR 124 · distended neck veins'], ['Breathing', 'RR 30 · SpO2 92% on 15 L'], ['Chest', 'Reduced breath sounds on the left'], ['Wound', 'Left parasternal, 4th intercostal space']],
+    order: ['subx', 'chL', 'chR', 'luq', 'ruq', 'pelS'],
+    views: [['subx', 'Subxiphoid', { peri: 1.0, tamp: 1 }, 'Subxiphoid: anechoic stripe all round the heart, including posteriorly, with diastolic collapse of the RV free wall.'], ['luq', 'Left coronal', { htx: 1 }, 'Left coronal view: large anechoic collection above the diaphragm, loss of mirror image, spine sign positive (haemothorax).'], ['pl', 'Left anterior chest', { st: 'normal', bl: 0 }, 'Anterior left chest: lung sliding present (no anterior pneumothorax at that point).']],
+    steps: [
+      ['Is eFAST indicated?', 'Penetrating precordial wound with shock: tamponade, haemothorax and pneumothorax are all possible. The pericardium is the most important window: <b>scan it first</b>.'],
+      ['How will you scan?', 'Subxiphoid first (if blocked, parasternal long axis); then left and right chest (anterior for pneumothorax, coronal views at the bases for haemothorax); abdomen if time.'],
+      ['What do you see?', 'Subxiphoid: anechoic stripe surrounding the heart, including posteriorly, with <b>diastolic collapse of the RV free wall</b>. Left coronal: large anechoic collection above the diaphragm, loss of mirror image, <b>spine sign</b> positive (haemothorax). Anterior left chest: lung sliding present. Plethoric IVC.'],
+      ['What will you do?', '<b>Haemopericardium in penetrating trauma: immediate surgical decompression</b> (sternotomy or thoracotomy per local pathway); pericardiocentesis only as a bridge if surgery is not immediately possible. Chest drain for the haemothorax, prepared for a large initial drainage. Anaesthesia: induction can precipitate arrest in tamponade. Maintain spontaneous ventilation and preload until the surgeon is ready, with the chest prepped and draped before induction. Had the pericardial view been negative with a large left haemothorax, cardiac injury would still not be excluded: the pericardium can decompress into the pleura (Ball 2009).']
+    ], pearl: 'In precordial stab wounds scan the heart first. Pericardial fluid means surgery. A negative pericardial view with a large haemothorax does not clear the heart.' }
+];
+const CASE_ST = [];
+$$('.slide.case').forEach(sec => {
+  const n = +sec.dataset.case, C = CASES[n], L = ['I', 'A', 'I', 'M'], N = ['Indication', 'Acquisition', 'Interpretation', 'Medical decision'];
+  sec.innerHTML = `<div class="inner two"><div>
+    <div class="kicker">Case ${n + 1} · ${C.tag}</div><h2>${C.title}</h2>
+    <p class="lede" style="margin-bottom:6px">${C.vignette}</p>
+    <dl class="facts">${C.facts.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>
+    <ol class="steps">${C.steps.map((s, i) => `<li data-i="${i}"><div class="sh"><span class="sl">${L[i]}</span><span class="sq"><small>${N[i]}</small>${s[0]}</span><button class="sb">Reveal</button></div><div class="sa">${s[1]}</div></li>`).join('')}</ol>
+    <div class="pearl">${C.pearl}</div>
+  </div><div class="demo"><div class="panel">
+    <div class="probe-grid"><div><div class="pov">Scan order</div><div class="torso cTorso"></div></div>
+    <div><div class="pov cPov">Schematic · findings</div><div class="scanner"><canvas class="us cUS" role="img" aria-label="Schematic finding for this case"></canvas></div>
+    <div class="tabs vtabs" hidden>${C.views.map((v, i) => `<button data-i="${i}" aria-selected="${i === 0}">${v[1]}</button>`).join('')}</div>
+    <div class="mcap cCap">Reveal <b>Acquisition</b> for the scan order and <b>Interpretation</b> for the images.</div></div></div>
+  </div></div></div>`;
+  const tb = $('.cTorso', sec); tb.innerHTML = torsoSVG({ labels: false });
+  const s = sono($('.cUS', sec), { view: 'ruq', S: { labels: false } });
+  let hasImg = false;
+  s.over = (c, so) => { if (!hasImg) { c.fillStyle = 'rgba(0,0,0,.82)'; c.fillRect(0, 0, so.o.w, so.o.h); c.fillStyle = '#ffd678'; c.font = '14px ui-monospace,Menlo,monospace'; c.textAlign = 'center'; c.fillText('Commit to an answer first', so.o.w / 2, so.o.h / 2); } };
+  const showView = i => { const v = C.views[i]; s.setView(v[0], Object.assign({ mor: 0, tip: 0, sub: 0, ant: 0, sr: 0, pel: 0, peri: 0, htx: 0, tamp: 0, bsmall: 0, labels: true, st: 'normal', bl: 0 }, v[2])); $('.cPov', sec).textContent = 'Schematic · ' + v[1]; $('.cCap', sec).textContent = v[3]; $$('.vtabs button', sec).forEach((b, k) => b.setAttribute('aria-selected', k === i)); };
+  $('.vtabs', sec).addEventListener('click', e => { const b = e.target.closest('button'); if (b) showView(+b.dataset.i); });
+  const apply = () => {
+    const sh = $$('.steps li', sec).map(x => x.classList.contains('shown'));
+    tb.innerHTML = torsoSVG({ labels: false, order: sh[1] ? C.order : null });
+    if (sh[2] && !hasImg) { hasImg = true; $('.vtabs', sec).hidden = false; showView(0); }
+    if (!sh[2] && hasImg) { hasImg = false; $('.vtabs', sec).hidden = true; s.dirty = true; $('.cCap', sec).innerHTML = 'Reveal <b>Acquisition</b> for the scan order and <b>Interpretation</b> for the images.'; }
+  };
+  const reveal = li => { li.classList.add('shown'); const all = $$('.steps li', sec).every(x => x.classList.contains('shown')); if (all) $('.pearl', sec).classList.add('shown'); apply(); (all ? $('.pearl', sec) : li).scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' }); };
+  $('.steps', sec).addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; if (li.classList.contains('shown') && !e.target.closest('.sb')) { li.classList.remove('shown'); $('.pearl', sec).classList.remove('shown'); apply(); } else reveal(li); });
+  CASE_ST[n] = { revealNext: () => { const li = $$('.steps li', sec).find(x => !x.classList.contains('shown')); if (li) reveal(li); } };
+});
+$('#caseGrid').innerHTML = CASES.map((C, i) => `<button data-i="${i}"><span class="cn">CASE<br>${i + 1}</span><div><span>${C.tag.toUpperCase()}</span><b>${C.title}</b></div></button>`).join('');
+$('#caseGrid').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(slides.indexOf($(`.slide.case[data-case="${b.dataset.i}"]`))); });
+$('#jumpChips').innerHTML = CASES.map((C, i) => `<button class="chip" data-i="${i}" title="Case ${i + 1} · ${C.title}">${i + 1} · ${C.short}</button>`).join('');
+$('#jumpChips').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(slides.indexOf($(`.slide.case[data-case="${b.dataset.i}"]`))); });
+$('#jumpCases').onclick = jumpToCases;
+
+/* =====================================================================
+   QUIZ
+   ===================================================================== */
+const QZ = [
+  ['In the supine patient, which part of the right upper quadrant view is the most sensitive for free fluid?', ['The subphrenic space above the liver', 'The hepatorenal interface at the upper pole of the kidney', 'The caudal (inferior) tip of the liver / right paracolic gutter', 'The right hemithorax above the diaphragm'], 2, 'Among positive FASTs, the caudal liver edge/superior paracolic gutter was the RUQ sub-zone most often positive (30/32; Lobo 2017), more than Morison\'s pouch proper. Always slide down to see the liver tip.'],
+  ['Which LUQ zone is MOST often missed by a probe placed too low and anterior?', ['Splenorenal recess', 'Subphrenic space between spleen and diaphragm', 'Left paracolic gutter at the iliac crest', 'Lesser sac'], 1, 'Low and anterior, the view fills with colon and stomach gas and the space above the spleen is never seen. Go high and posterior, and clear the subphrenic space, splenorenal recess, inferior spleen tip and left paracolic gutter (isolated LUQ fluid is often around the spleen tip and gutter; O\'Brien 2015).'],
+  ['A haemodynamically unstable blunt trauma patient, not responding to transfusion, has fluid in Morison\'s pouch. What is the next step?', ['CT abdomen and pelvis with contrast', 'Repeat FAST in 15 minutes', 'Laparotomy / damage-control surgery with massive transfusion', 'Diagnostic peritoneal lavage to confirm blood'], 2, 'Unstable + positive abdominal FAST is an indication for operative haemorrhage control without CT (ATLS).'],
+  ['Which of the following is NOT reliably excluded by a negative FAST?', ['Large-volume haemoperitoneum in a hypotensive patient', 'Retroperitoneal haemorrhage from a pelvic fracture', 'Haemopericardium with tamponade physiology', 'Large haemothorax'], 1, 'Retroperitoneal blood does not reach the intraperitoneal dependent spaces. FAST is blind to it by design.'],
+  ['On the RUQ view, what does a positive "spine sign" above the diaphragm indicate?', ['Normal aerated lung', 'Pneumothorax', 'Pleural fluid (haemothorax) or consolidation transmitting sound', 'Subcutaneous emphysema'], 2, 'Aerated lung scatters the beam, so the spine normally stops at the diaphragm and the liver is mirrored above it. Fluid lets the beam through, so the spine is seen continuing upwards and the mirror image is lost.'],
+  ['Which finding is close to 100% specific for pneumothorax?', ['Absent lung sliding', 'A-lines', 'Lung point', 'Barcode sign on M-mode'], 2, 'Absent sliding and the barcode sign occur with apnoea, mainstem intubation, adhesions and bullae. The lung point (transition between sliding and non-sliding pleura) is highly specific, though absent in total collapse.'],
+  ['A transverse pelvic view in a man shows paired, symmetrical, bow-tie hypoechoic structures behind the bladder. The sagittal view shows small fixed ovals and no fluid tracking. Most likely?', ['Free fluid in the rectovesical pouch', 'Seminal vesicles', 'Bladder rupture', 'Clotted blood'], 1, 'Seminal vesicles are a classic mimic; they are paired, symmetrical and fixed. Free fluid is angular and conforms to the pouch. Always confirm in two planes.'],
+  ['According to the Cochrane review (Stengel 2018) of point-of-care ultrasound in blunt thoracoabdominal trauma, which statement is correct?', ['Sensitivity ~96%, specificity ~74%: a good rule-out test', 'Sensitivity ~74%, specificity ~96%: a negative scan does not exclude injury', 'Accuracy is higher in children than adults', 'FAST can replace CT in stable patients'], 1, 'Pooled sensitivity 74% and specificity 96%. High specificity supports ruling in; a negative scan needs CT or other confirmation. Accuracy was lower in children.']
+];
+(function buildQuiz() {
+  const q = $('#quiz'); let score = 0, done = 0;
+  q.innerHTML = QZ.map(([qq, o], i) => `<div class="card" data-i="${i}"><div class="num">Q${i + 1}</div><h3>${qq}</h3><div class="opts">${o.map((x, j) => `<button data-j="${j}">${x}</button>`).join('')}</div><div class="why">${QZ[i][3]}</div></div>`).join('');
+  q.addEventListener('click', e => {
+    const b = e.target.closest('button[data-j]'); if (!b) return; const card = b.closest('.card'); if (card.classList.contains('done')) return;
+    const i = +card.dataset.i, j = +b.dataset.j, ok = j === QZ[i][2];
+    card.classList.add('done'); $$('button', card).forEach((x, k) => { if (k === QZ[i][2]) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    done++; if (ok) score++; $('#qzScore').textContent = `${score} / ${done}${done === QZ.length ? ' · done' : ''}`;
+  });
+})();
+
+/* =====================================================================
+   REFERENCES
+   ===================================================================== */
+const REFS = [
+  'American College of Surgeons Committee on Trauma. <i>Advanced Trauma Life Support (ATLS) Student Course Manual</i>. 11th ed. Chicago: ACS; 2025.',
+  'Stengel D, Leisterer J, Ferrada P, Ekkernkamp A, Mutze S, Hoenning A. Point-of-care ultrasonography for diagnosing thoracoabdominal injuries in patients with blunt trauma. <i>Cochrane Database Syst Rev</i> 2018;12:CD012669. doi:10.1002/14651858.CD012669.pub2',
+  'Kirkpatrick AW, Sirois M, Laupland KB, et al. Hand-held thoracic sonography for detecting post-traumatic pneumothoraces: the Extended Focused Assessment with Sonography for Trauma (EFAST). <i>J Trauma</i> 2004;57(2):288–95.',
+  'Rozycki GS, Ballard RB, Feliciano DV, Schmidt JA, Pennington SD. Surgeon-performed ultrasound for the assessment of truncal injuries: lessons learned from 1540 patients. <i>Ann Surg</i> 1998;228(4):557–67.',
+  'Lobo V, Hunter-Behrend M, Cullnan E, et al. Caudal edge of the liver in the right upper quadrant (RUQ) view is the most sensitive area for free fluid on the FAST exam. <i>West J Emerg Med</i> 2017;18(2):270–80. doi:10.5811/westjem.2016.11.30435',
+  'Branney SW, Wolfe RE, Moore EE, et al. Quantitative sensitivity of ultrasound in detecting free intraperitoneal fluid. <i>J Trauma</i> 1995;39(2):375–80.',
+  'Abrams BJ, Sukumvanich P, Seibel R, Moscati R, Jehle D. Ultrasound for the detection of intraperitoneal fluid: the role of Trendelenburg positioning. <i>Am J Emerg Med</i> 1999;17(2):117–20.',
+  'Von Kuenssberg Jehle D, Stiller G, Wagner D. Sensitivity in detecting free intraperitoneal fluid with the pelvic views of the FAST exam. <i>Am J Emerg Med</i> 2003;21(6):476–8.',
+  'Alrajhi K, Woo MY, Vaillancourt C. Test characteristics of ultrasonography for the detection of pneumothorax: a systematic review and meta-analysis. <i>Chest</i> 2012;141(3):703–8. doi:10.1378/chest.11-0131',
+  'Lichtenstein D, Mezière G, Biderman P, Gepner A. The "lung point": an ultrasound sign specific to pneumothorax. <i>Intensive Care Med</i> 2000;26(10):1434–40.',
+  'Volpicelli G, Elbarbary M, Blaivas M, et al. International evidence-based recommendations for point-of-care lung ultrasound. <i>Intensive Care Med</i> 2012;38(4):577–91.',
+  'Via G, Hussain A, Wells M, et al. International evidence-based recommendations for focused cardiac ultrasound. <i>J Am Soc Echocardiogr</i> 2014;27(7):683.e1–683.e33.',
+  'American College of Emergency Physicians. Ultrasound guidelines: emergency, point-of-care and clinical ultrasound guidelines in medicine. <i>Ann Emerg Med</i> 2023;82(3):e115–e155.',
+  'Rozycki GS, Feliciano DV, Ochsner MG, et al. The role of ultrasound in patients with possible penetrating cardiac wounds: a prospective multicenter study. <i>J Trauma</i> 1999;46(4):543–51.',
+  'Ball CG, Williams BH, Wyrzykowski AD, Nicholas JM, Rozycki GS, Feliciano DV. A caveat to the performance of pericardial ultrasound in patients with penetrating cardiac wounds. <i>J Trauma</i> 2009;67(5):1123–4.',
+  'O\'Brien KM, Stolz LA, Amini R, Gross A, Stolz U, Adhikari S. Focused assessment with sonography for trauma examination: reexamining the importance of the left upper quadrant view. <i>J Ultrasound Med</i> 2015;34(8):1429–34.',
+  'Perera P, Mailhot T, Riley D, Mandavia D. The RUSH exam: Rapid Ultrasound in SHock in the evaluation of the critically ill. <i>Emerg Med Clin North Am</i> 2010;28(1):29–56.'
+];
+$('#refList').innerHTML = REFS.map(r => `<li>${r}</li>`).join('');
+
+/* ---------- end slide ---------- */
+sono($('#endL'), { view: 'luq', S: { sub: .7, labels: true } });
+sono($('#endS'), { view: 'subx', S: { labels: true } });
+
+/* ---------- boot ---------- */
+pmUpd();
+go(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
+requestAnimationFrame(tick);
+</script>
+<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer></body>
+</html>
