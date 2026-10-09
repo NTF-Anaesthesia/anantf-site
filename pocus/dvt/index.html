@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DVT compression ultrasound — NTF Anaesthesia</title>
+<meta name="description" content="Masterclass: linear-probe compression ultrasound for proximal DVT. Vein vs artery, 2-point vs 3-point vs whole-leg, landmarks from groin to trifurcation, pitfalls, and where it fits in the shocked or hypoxic perioperative patient. Interactive tutorial with schematic simulations.">
+<style>
+:root{
+  --bg:#F7F2EA; --panel:#FDFAF3; --line:#E0D6C2; --line2:#CFC2A8; --ink:#2A241D; --ink2:#5A4F42; --mute:#8A7E6D; --faint:#B3A795;
+  --accent:#A8541F; --accent-soft:rgba(168,84,31,.10); --red:#B85042; --blue:#2A5B8C; --green:#4C7A45; --amber:#B9852A;
+  --serif:Georgia,'Iowan Old Style','Times New Roman',serif; --mono:ui-monospace,Menlo,'SF Mono',Consolas,monospace;
+  --shadow:0 1px 0 rgba(42,36,29,.04),0 8px 24px -12px rgba(42,36,29,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
+    --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
+    --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
+  --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
+  --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased}
+body{overflow:hidden}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+.deck{position:fixed;inset:0 0 52px 0}
+.slide{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;opacity:0;visibility:hidden;transform:translateX(24px);transition:opacity .35s ease,transform .35s ease,visibility 0s .35s}
+.slide.active{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .35s ease}
+.slide.prev{transform:translateX(-24px)}
+.inner{max-width:1360px;margin:0 auto;padding:34px 40px 30px;min-height:100%;display:flex;flex-direction:column}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px;align-items:start}
+.two.even{grid-template-columns:1fr 1fr}
+.kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+h1,h2,h3{font-weight:400;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(40px,5.6vw,76px);line-height:1.02}
+h2{font-size:clamp(28px,3vw,42px);line-height:1.1;margin-bottom:12px}
+h3{font-size:19px;margin-bottom:4px}
+.lede{font-size:18px;line-height:1.5;color:var(--ink2);margin:0 0 20px;max-width:60ch}
+p{line-height:1.55}
+.cap{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:0 0 8px}
+.rule{height:1px;background:var(--line);margin:18px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;box-shadow:var(--shadow)}
+.card + .card{margin-top:12px}
+.card p{margin:4px 0 0;color:var(--ink2);font-size:15.5px}
+.tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;border-radius:4px;border:1px solid currentColor}
+.tag.avoid{color:var(--red)} .tag.def{color:var(--green)} .tag.deep{color:var(--blue)}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:16px;line-height:1.5;margin-top:16px}
+.demo{position:sticky;top:0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+.panel + .panel{margin-top:12px}
+canvas{display:block;width:100%;height:auto}
+.us{background:#000;border-radius:8px;box-shadow:inset 0 0 0 1px #222}
+.scanner{background:#0d1013;border-radius:10px;padding:6px;border:1px solid #23292f}
+.side{border-radius:8px;border:1px solid var(--line)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:12px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.ctrls label{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.ctrls output{min-width:52px;color:var(--ink);font-weight:600}
+input[type=range]{accent-color:var(--accent);width:150px}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{background:transparent;border:0;padding:7px 12px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--ink2);border-right:1px solid var(--line2)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed=true]{background:var(--accent);color:#fff}
+.btn{background:var(--ink);color:var(--bg);border:0;border-radius:8px;padding:8px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;letter-spacing:.04em}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line2)}
+.btn:hover{filter:brightness(1.1)}
+.status{font-family:var(--mono);font-size:12.5px;padding:8px 12px;border-radius:8px;background:var(--bg);border:1px solid var(--line);margin-top:10px;min-height:36px;line-height:1.45}
+.status b{color:var(--accent)}
+.ok{color:var(--green)!important} .bad{color:var(--red)!important} .warn{color:var(--amber)!important}
+table.t{width:100%;border-collapse:collapse;font-size:15.5px}
+table.t th{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);text-align:left;font-weight:400;padding:8px 10px;border-bottom:1px solid var(--line2)}
+table.t td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.45;color:var(--ink2)}
+table.t td:first-child{color:var(--ink);font-size:16.5px;white-space:nowrap}
+#r2Table td:first-child{white-space:normal;font-size:15px}
+#r2Table td:last-child{white-space:nowrap;font-family:var(--mono);font-size:13px}
+table.t tr.pick{cursor:pointer;transition:background .15s}
+table.t tr.pick:hover{background:var(--accent-soft)}
+table.t tr.pick.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.chip{display:inline-block;padding:3px 9px;margin:2px 4px 2px 0;border:1px solid var(--line2);border-radius:999px;font-size:14px;cursor:pointer;background:var(--panel);color:var(--ink2)}
+.chip:hover{border-color:var(--accent)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.num{font-family:var(--mono);color:var(--accent);font-size:13px;letter-spacing:.06em}
+.plist{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.plist li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);cursor:pointer;transition:border-color .15s,transform .15s}
+.plist li:hover{border-color:var(--line2)}
+.plist li.on{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.plist li b{font-weight:400;font-size:16.5px;display:block}
+.plist li span{color:var(--ink2);font-size:14.5px;line-height:1.45}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button{background:transparent;border:1px solid var(--line2);border-radius:999px;padding:6px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--ink2)}
+.tabs button[aria-selected=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tabpanel[hidden]{display:none}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid-us{display:grid;grid-template-columns:1.15fr 1fr;gap:10px;align-items:start}
+.mini{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px;line-height:1.4}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.quote{font-style:italic;color:var(--mute)}
+.crit{display:grid;grid-template-columns:auto 1fr auto;gap:6px 12px;font-size:15px;align-items:center}
+.crit .ic{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;border:1px solid var(--line2);color:var(--mute)}
+.crit .ic.ok{border-color:var(--green);background:var(--green);color:#fff!important}
+.crit .ic.bad{border-color:var(--red);color:var(--red)}
+.crit .val{font-family:var(--mono);font-size:12.5px;color:var(--ink2);text-align:right}
+/* divider slides */
+.divider .inner{justify-content:center}
+.divider h1{font-size:clamp(56px,8vw,112px)}
+.big-quote{font-size:clamp(20px,2vw,26px);line-height:1.45;color:var(--ink2);max-width:46ch;font-style:italic;margin-top:30px}
+/* bottom bar */
+.bar{position:fixed;left:0;right:0;bottom:0;height:52px;border-top:1px solid var(--line);background:var(--panel);display:flex;align-items:center;gap:16px;padding:0 18px;font-family:var(--mono);font-size:12px;color:var(--ink2);z-index:20}
+.bar .q{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--serif);font-style:italic;color:var(--mute);font-size:13px}
+.bar .prog{position:absolute;left:0;top:-1px;height:2px;background:var(--accent);transition:width .3s}
+.bar .pace{position:absolute;left:0;top:-1px;height:2px;width:2px;background:var(--ink);opacity:.5}
+.bar button{background:transparent;border:1px solid var(--line2);border-radius:6px;padding:5px 9px;cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.timer{display:flex;gap:10px;align-items:center}
+.timer .el{font-weight:600;color:var(--ink);min-width:44px}
+.timer .sl{color:var(--mute)}
+.timer .over{color:var(--red)}
+#notes{position:fixed;right:16px;bottom:64px;max-width:440px;background:var(--ink);color:var(--bg);border-radius:12px;padding:12px 16px;z-index:18;box-shadow:var(--shadow);font-size:15px;line-height:1.45}
+#notes .cap{color:var(--faint)}#notes p{margin:4px 0 0}#notes kbd{background:transparent;color:var(--bg)}
+.pov{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:8px 0 4px}
+#overview{position:fixed;inset:0 0 52px 0;background:var(--bg);z-index:15;overflow:auto;padding:30px;display:none}
+#overview.show{display:block}
+#overview .og{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;max-width:1300px;margin:0 auto}
+#overview button{text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;min-height:96px}
+#overview button.cur{border-color:var(--accent)}
+#overview .on{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.12em}
+#overview .ot{font-size:16px;margin-top:6px;display:block}
+#overview .om{font-family:var(--mono);font-size:11px;color:var(--mute);margin-top:6px;display:block}
+.agenda{list-style:none;padding:0;margin:20px 0 0;font-family:var(--mono);font-size:12.5px;color:var(--ink2)}
+.agenda li{display:flex;justify-content:space-between;border-bottom:1px dashed var(--line2);padding:6px 0}
+.hint{font-family:var(--mono);font-size:11.5px;color:var(--mute);margin-top:18px}
+kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:var(--panel)}
+.qz{display:grid;gap:12px}
+.qz .card h3{font-size:17px;line-height:1.35}
+.qz .opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.qz .opts button{border:1px solid var(--line2);background:var(--bg);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:14.5px;text-align:left}
+.qz .opts button.right{background:var(--green);border-color:var(--green);color:#fff}
+.qz .opts button.wrong{background:transparent;border-color:var(--red);color:var(--red);text-decoration:line-through}
+.qz .why{font-size:14.5px;color:var(--ink2);margin-top:8px;display:none}
+.qz .card.done .why{display:block}
+details.src{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--mute)}
+details.src img{max-width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--line);background:#fff}
+svg text{font-family:var(--mono)}
+.arm-vein{cursor:pointer;transition:stroke-width .15s}
+.arm-vein:hover{stroke-width:7}
+@media (max-width:1050px){
+  .two,.two.even{grid-template-columns:1fr;gap:22px}
+  .demo{position:static}
+  .inner{padding:22px 16px 28px}
+  .grid-us{grid-template-columns:1fr}
+  .bar .q{display:none}
+}
+@media (max-width:560px){ .grid2{grid-template-columns:1fr} table.t td:first-child{white-space:normal} input[type=range]{width:120px} }
+@media (prefers-reduced-motion: reduce){ .slide{transition:none} }
+
+/* ===== gastric deck additions ===== */
+b.ink{font-weight:400;color:var(--ink)}
+.num.big{font-family:var(--serif);font-size:26px;letter-spacing:0;color:var(--accent);line-height:1}
+.plist li .tag{margin-left:6px;vertical-align:2px;font-size:9.5px;padding:2px 6px}
+.t2 td:first-child{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);white-space:nowrap}
+.t2 td{font-size:14.5px}
+.t2 tr.hl{background:var(--accent-soft)}
+.formula{font-family:var(--mono);font-size:14px;background:var(--bg);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;margin:10px 0 4px;color:var(--ink)}
+.calc input[type=number]{width:74px;font-family:var(--mono);font-size:13px;padding:5px 7px;border:1px solid var(--line2);border-radius:6px;background:var(--bg);color:var(--ink)}
+.status.big{font-size:14px;line-height:1.6}
+.status.big .vv{font-size:22px;font-family:var(--serif);color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chips span{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;color:var(--ink2)}
+.chips span.okc{border-color:var(--green);color:var(--green)}
+.chips span.badc{border-color:var(--red);color:var(--red)}
+.clock{margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.clock .trk{height:8px;border-radius:4px;background:var(--line);position:relative;overflow:hidden;margin-top:6px}
+.clock .trk i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:4px}
+/* media */
+.stage{background:#000;border-radius:8px;overflow:hidden;position:relative;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px #222}
+.stage img,.stage video{max-width:100%;max-height:100%;display:block;object-fit:contain}
+.stage .zoom{position:absolute;right:8px;top:8px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;font-family:var(--mono);font-size:11px;padding:4px 8px;cursor:pointer}
+.stage .badge{position:absolute;left:8px;top:8px;background:rgba(0,0,0,.6);color:#ffd678;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:4px}
+.mcap{font-size:14.5px;line-height:1.45;color:var(--ink2);margin-top:8px;min-height:42px}
+.mcap .id{font-family:var(--mono);font-size:11px;color:var(--mute);margin-right:6px}
+.thumbs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.thumbs button{padding:0;border:2px solid transparent;border-radius:7px;overflow:hidden;width:92px;height:69px;background:#000;cursor:pointer;position:relative;flex:none}
+.thumbs button.on{border-color:var(--accent)}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs .k{position:absolute;left:0;right:0;bottom:0;font-family:var(--mono);font-size:9.5px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75));padding:8px 4px 2px;text-align:left;letter-spacing:.04em}
+.thumbs .pl{position:absolute;right:4px;top:3px;color:#fff;font-size:11px;text-shadow:0 0 4px #000}
+/* cases */
+.facts{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;font-size:15px;margin:10px 0 4px}
+.facts dt{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding-top:3px}
+.facts dd{margin:0;color:var(--ink2)}
+.steps{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:8px}
+.steps li{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 14px}
+.steps .sh{display:flex;align-items:center;gap:10px;cursor:pointer}
+.steps .sl{font-family:var(--serif);font-size:22px;color:var(--accent);width:22px;text-align:center}
+.steps .sq{flex:1;font-size:15.5px}
+.steps .sq small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.steps .sb{font-family:var(--mono);font-size:11px;border:1px solid var(--line2);border-radius:999px;padding:3px 10px;color:var(--ink2);background:transparent}
+.steps .sa{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line2);font-size:15px;line-height:1.5;color:var(--ink2)}
+.steps li.shown{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.steps li.shown .sa{display:block}
+.steps li.shown .sb{display:none}
+.pearl{margin-top:12px;font-style:italic;font-size:17px;color:var(--ink);border-left:3px solid var(--accent);padding:6px 0 6px 14px;display:none}
+.pearl.shown{display:block}
+.caseGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.caseGrid button{display:grid;grid-template-columns:84px 1fr;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:8px;cursor:pointer;box-shadow:var(--shadow)}
+.caseGrid button:hover{border-color:var(--accent)}
+.caseGrid img{width:84px;height:63px;object-fit:cover;border-radius:6px;background:#000;display:block}
+.caseGrid b{font-weight:400;font-size:15px;display:block;line-height:1.25}
+.caseGrid span{font-family:var(--mono);font-size:10.5px;color:var(--accent);letter-spacing:.1em}
+/* library */
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:12px;margin-top:12px}
+.lib button{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:0;overflow:hidden;cursor:pointer;text-align:left;box-shadow:var(--shadow)}
+.lib button:hover{border-color:var(--accent)}
+.lib .ph{aspect-ratio:4/3;background:#000;position:relative}
+.lib .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.lib .ph .pl{position:absolute;right:6px;top:4px;color:#fff;font-size:12px;text-shadow:0 0 4px #000}
+.lib .tx{padding:7px 9px 9px;font-size:13px;line-height:1.35;color:var(--ink2)}
+.lib .tx b{display:block;font-family:var(--mono);font-size:10.5px;font-weight:400;color:var(--accent);letter-spacing:.08em;margin-bottom:2px}
+#lb{position:fixed;inset:0;background:rgba(10,8,6,.88);z-index:40;display:flex;align-items:center;justify-content:center;padding:20px}
+#lb[hidden]{display:none}
+.lbIn{width:min(1100px,100%);max-height:100%;display:flex;flex-direction:column;gap:10px;position:relative}
+.lbStage{background:#000;border-radius:10px;display:flex;align-items:center;justify-content:center;min-height:200px;max-height:calc(100vh - 150px);overflow:hidden}
+.lbStage img,.lbStage video{max-width:100%;max-height:calc(100vh - 150px);display:block;object-fit:contain}
+.lbBar{display:flex;gap:12px;align-items:center}
+.lbBar button,.lbX{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:8px 14px;font-family:var(--mono);cursor:pointer}
+.lbX{position:absolute;right:0;top:-46px}
+.lbCap{flex:1;color:#eee;font-size:15px;line-height:1.45}
+.lbCap .id{font-family:var(--mono);font-size:11px;color:#bbb;margin-right:8px}
+/* flowchart */
+.flow svg{width:100%;height:auto;display:block}
+.flow .bx{fill:var(--panel);stroke:var(--line2)}
+.flow .bx.lo{stroke:var(--green);fill:color-mix(in srgb,var(--green) 10%,var(--panel))}
+.flow .bx.hi{stroke:var(--red);fill:color-mix(in srgb,var(--red) 9%,var(--panel))}
+.flow .bx.md{stroke:var(--blue);fill:color-mix(in srgb,var(--blue) 9%,var(--panel))}
+.flow .bx.q{stroke:var(--accent);fill:var(--accent-soft)}
+.flow text{font-family:var(--mono);font-size:12px;fill:var(--ink)}
+.flow text.s{font-size:10.5px;fill:var(--ink2)}
+.flow text.h{font-family:var(--serif);font-size:15px}
+.flow path{stroke:var(--line2);fill:none;stroke-width:1.4}
+.flow .ah{fill:var(--line2);stroke:none}
+.refs{font-family:var(--serif);font-size:13.5px;color:var(--ink2);padding-left:18px;line-height:1.45}
+.refs li{margin-bottom:4px;overflow-wrap:anywhere}
+.stage.sm{aspect-ratio:4/3}
+@media (max-width:1050px){ .caseGrid{grid-template-columns:1fr} .thumbs button{width:76px;height:57px} }
+.card p.mini{font-size:11.5px;color:var(--mute);line-height:1.45}
+[hidden]{display:none!important}
+table.qt{font-size:12px}
+table.qt th,table.qt td{padding:4px 5px;font-family:var(--mono);font-size:11.5px;text-align:right}
+table.qt td:first-child{font-size:11.5px;color:var(--mute)}
+@media (max-width:1050px){ .two,.two.even{grid-template-columns:minmax(0,1fr)} .grid-us{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:560px){
+  .grid2{grid-template-columns:minmax(0,1fr)}
+  .bar{gap:8px;padding:0 8px} .timer .sl,#tmR,#ntB,#ovB{display:none}
+  .ctrls label{white-space:normal;flex-wrap:wrap} input[type=range]{width:110px}
+  table.t td:first-child,.t2 td:first-child{white-space:normal}
+  .facts{grid-template-columns:1fr} .facts dt{padding-top:6px}
+  .lib{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tabs{gap:4px} .tabs button{padding:5px 10px}
+}
+.jump{margin-top:16px;max-width:540px}
+#jumpChips{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.jump .chip{font-family:var(--mono);font-size:11px;padding:3px 8px;margin:0}
+
+/* ===== DVT deck additions ===== */
+.us{width:100%;height:auto;aspect-ratio:640/420}
+.lst{margin:6px 0 0;padding-left:20px;color:var(--ink2);font-size:15.5px;line-height:1.5}
+.lst li{margin-bottom:4px}
+.lst.tight li{margin-bottom:2px}
+.gauge{display:inline-flex;gap:3px;align-items:center;font-family:var(--mono);font-size:11px}
+.gauge i{display:inline-block;width:16px;height:8px;border-radius:2px;background:var(--line)}
+.gauge i.on1{background:var(--green)}.gauge i.on2{background:var(--amber)}.gauge i.on3{background:var(--red)}
+.btn[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn:focus-visible,.seg button:focus-visible,.chip:focus-visible,.qz .opts button:focus-visible,.steps .sb:focus-visible,.legmap [role=button]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.legmap svg{width:100%;height:auto;display:block;max-height:560px}
+.legmap .outline{fill:var(--panel);stroke:var(--line2);stroke-width:1.4}
+.legmap .seg-v{fill:none;stroke-width:5;stroke-linecap:round;stroke:var(--blue);transition:stroke .2s,opacity .2s}
+.legmap .seg-v.cov{stroke:var(--green);filter:drop-shadow(0 0 3px color-mix(in srgb,var(--green) 70%,transparent))}
+.legmap .seg-v.unc{stroke:var(--faint);opacity:.7}
+.legmap .gsv{fill:none;stroke:var(--mute);stroke-width:2;stroke-dasharray:1 0;opacity:.7}
+.legmap .ili{fill:none;stroke:var(--mute);stroke-width:4;stroke-dasharray:4 4}
+.legmap .lig{stroke:var(--ink2);stroke-width:1;stroke-dasharray:3 3;fill:none}
+.legmap text{font-family:var(--mono);font-size:9px;fill:var(--ink2)}
+.legmap text.sm{font-size:8px;fill:var(--mute)}
+.legmap .pp{fill:var(--panel);stroke:var(--accent);stroke-width:2;cursor:pointer}
+.legmap [role=button]:hover .pp,.legmap .pp.on{fill:var(--accent)}
+.legmap .probe{fill:var(--ink);opacity:.85;transition:transform .45s ease}
+.legmap .clot{fill:var(--red);stroke:#fff;stroke-width:1}
+.legmap .art{fill:none;stroke:var(--red);stroke-width:2;opacity:.45}
+.leggrid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:14px;align-items:start}
+.tally{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:11.5px;margin-top:8px}
+.tally th,.tally td{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left}
+.tally th{font-weight:400;color:var(--mute);letter-spacing:.06em}
+.cov-t td,.cov-t th{text-align:center}
+.cov-t td:first-child,.cov-t th:first-child{text-align:left}
+.cov-t .y{color:var(--green);font-weight:600}.cov-t .n{color:var(--faint)}
+.dop{width:100%;height:auto;aspect-ratio:640/96;background:#000;border-radius:6px;margin-top:8px;display:block}
+.cardnav{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.dots{display:flex;gap:5px}
+.dots button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line2);background:var(--panel);font-family:var(--mono);font-size:11px;cursor:pointer;color:var(--ink2);padding:0}
+.dots button.cur{border-color:var(--accent);color:var(--accent);font-weight:600}
+.dots button.ok{background:var(--green);border-color:var(--green);color:#fff}
+.dots button.bad{background:var(--red);border-color:var(--red);color:#fff}
+.ans{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.ans button{border:1px solid var(--line2);background:var(--bg);border-radius:8px;padding:7px 12px;cursor:pointer;font-size:14.5px}
+.ans button.right{background:var(--green);border-color:var(--green);color:#fff}
+.ans button.wrong{border-color:var(--red);color:var(--red);text-decoration:line-through}
+.ans button:disabled{cursor:default}
+.reveal{margin-top:10px;font-size:15px;line-height:1.5;color:var(--ink2);border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.ctx{font-size:16px;line-height:1.5;color:var(--ink);margin:0 0 8px}
+.heart svg{width:100%;height:auto;display:block}
+.heart .fan{fill:#1d2024}
+.heart .myo{fill:#8d8d8d;opacity:.85}
+.heart .cav{fill:#030303}
+.heart text{fill:#ffd678;font-size:11px}
+.heart .wm{fill:#ffd678;font-size:9px;opacity:.75;letter-spacing:.08em}
+.casepanel .tabs{margin-bottom:8px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.report{font-family:var(--mono);font-size:12.5px}
+.report{table-layout:fixed}
+.report td{padding:5px 6px!important;white-space:normal!important;overflow-wrap:anywhere}
+.steps-flow{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:8px}
+.steps-flow li{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 14px;font-size:15px;line-height:1.45;color:var(--ink2)}
+.steps-flow li b{color:var(--ink);font-weight:400}
+.steps-flow li.hi{border-color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.sibs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.sibs a{font-family:var(--mono);font-size:11.5px;border:1px solid var(--line2);border-radius:999px;padding:4px 10px;text-decoration:none;color:var(--ink2)}
+.sibs a:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:1050px){ .leggrid{grid-template-columns:minmax(0,1fr)} .legmap svg{max-height:420px} }
+@media (max-width:560px){ .split{grid-template-columns:minmax(0,1fr)} .seg button{padding:6px 9px} .cov-t{font-size:12px} .cov-t td,.cov-t th{padding:6px 4px} }
+</style>
+<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"></head>
+<body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../../department.html">About Us</a><a href="../../why-join-us.html">Why Join Us?</a><a href="../../clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../../mopex/">MO Handbook</a><a href="../../senior-resident.html">Senior Residency</a><a href="../../exams/">MMed Exam Prep</a></div></details><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<nav class="course-toolbar" aria-label="Tutorial navigation"><div class="course-toolbar-inner"><div class="course-breadcrumb"><a href="../../draft.html">Drafts</a><span aria-hidden="true">/</span><span>DVT &amp; vascular · draft</span></div><label class="course-section-picker"><span class="course-sr-only">Tutorial section</span><select id="course-section" aria-label="Tutorial section"></select></label></div></nav><main class="deck" id="deck" tabindex="-1">
+
+
+<!-- ============ 1 TITLE ============ -->
+<section class="slide course-intro" data-min="1" data-title="Start here" data-prompt="Ask: who has scanned a leg for DVT? Who has been told 'formal scan tomorrow' for a patient who was hypoxic tonight? Today's aim: everyone leaves able to do a reliable 2-point scan and knows exactly what it does not cover.">
+  <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner ntf-illustrated-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS masterclass · DVT &amp; vascular</p><h1>Squeeze the vein.</h1><p class="course-hero-lead">If the walls do not meet, the leg has a clot until proven otherwise.</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
+    <div>
+      <p class="lede" style="margin-bottom:10px">Compression ultrasound (CUS) answers one binary question: <b class="ink">does this vein collapse completely under gentle probe pressure?</b></p>
+      <ul class="lst">
+        <li><b class="ink">Full coaptation</b> (the walls touch) = no thrombus at that point.</li>
+        <li><b class="ink">Non-compressible vein</b> = thrombus (acute or chronic) until proven otherwise. Echogenic material helps, but is not required.</li>
+      </ul>
+      <p style="color:var(--ink2);font-size:15.5px;margin:10px 0 0">Why it matters to us: postoperative and ICU patients are at high VTE risk. In the hypotensive or hypoxic patient, a non-compressible proximal vein plus a dilated RV changes the working diagnosis in minutes, at the bedside.</p>
+      <p class="course-eyebrow" style="margin-top:16px">In this tutorial</p><ul class="agenda" style="max-width:460px">
+        <li><span>01–02 · Framework · set-up</span><span>2.5 min</span></li>
+        <li><span>Part I · Vein vs artery · landmarks · protocols</span><span>12.5 min</span></li>
+        <li><span>Part II · Evidence · pitfalls · ICU and PE</span><span>9.5 min</span></li>
+        <li><span>Part III · Three patients</span><span>12.5 min</span></li>
+        <li><span>Quiz · references · close</span><span>5.5 min</span></li>
+      </ul>
+      <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
+      <p class="mini" style="margin-top:10px"><b>All images on this page are schematics and simulations, not real scans.</b></p>
+      <nav class="sibs" aria-label="Other POCUS stations"><a href="../cardiac/">Cardiac</a><a href="../lung/">Lung</a><a href="../shock/">Shock (RUSH)</a><a href="../efast/">eFAST</a><a href="../gastric/">Gastric</a><a href="../vascular-access/">Vascular access</a></nav>
+    </div>
+    <div>
+      <div class="pov">Schematic simulation · right groin · transverse</div>
+      <div class="scanner"><canvas id="heroUS" class="us" width="640" height="420" role="img" aria-label="Schematic sonogram of the right common femoral artery and vein, the vein repeatedly compressing to a line under probe pressure"></canvas></div>
+      <div class="status" id="heroStat" aria-live="off"></div>
+      <div class="mini">Live simulation, not a real scan. Linear probe across the right groin, marker to the patient's right. The artery (CFA) is round and pulsatile; the vein (CFV) is medial and closes completely with gentle pressure.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 I-AIM ============ -->
+<section class="slide" data-min="1" data-title="I-AIM framework" data-prompt="Ask: what is the difference between 'no DVT' and 'proximal veins compressible at the CFV and popliteal'? Make the room phrase a result properly.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">01 · Framework</div>
+      <h2>Four questions, always in this order.</h2>
+      <p class="lede">Use the same I-AIM framework as the other stations.</p>
+      <ul class="plist">
+        <li><span class="num big">I</span><div><b>Indication</b><span>What is the clinical question? Swollen leg? Unexplained hypoxia or shock with RV dilatation? A local protocol for high-risk delayed hip-fracture surgery? (Routine screening of asymptomatic patients is not recommended by CHEST, and sensitivity is lower without symptoms.) Would the answer change management? If not, do not scan.</span></div></li>
+        <li><span class="num big">A</span><div><b>Acquisition</b><span>Linear probe, correct position, transverse views, compress at every landmark (and every 1–2 cm between landmarks if doing a continuous scan).</span></div></li>
+        <li><span class="num big">I</span><div><b>Interpretation</b><span>Compressible, non-compressible or inconclusive at each segment. Report the segment, not just "DVT yes/no".</span></div></li>
+        <li><span class="num big">M</span><div><b>Medical decision-making</b><span>Combine with pre-test probability (Wells), D-dimer and the rest of the POCUS picture (RV, lungs). Treat, rescan in about 1 week, or refer for formal whole-leg duplex. Wells is validated in outpatients only: in inpatients and post-op/ICU patients use clinical gestalt, and a negative limited scan with ongoing suspicion needs an extended or whole-leg scan, or a repeat.</span></div></li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="cap">Report the segment · example</div>
+        <table class="t report"><thead><tr><th>Segment</th><th>Right</th><th>Left</th></tr></thead><tbody>
+          <tr><td>CFV at inguinal ligament</td><td class="ok">Compressible</td><td class="ok">Compressible</td></tr>
+          <tr><td>SFJ</td><td class="ok">Compressible</td><td class="ok">Compressible</td></tr>
+          <tr><td>CFV bifurcation</td><td class="ok">Compressible</td><td class="ok">Compressible</td></tr>
+          <tr><td>FV mid-thigh</td><td>Not scanned</td><td>Not scanned</td></tr>
+          <tr><td>Popliteal to trifurcation</td><td class="ok">Compressible</td><td class="warn">Inconclusive (positioning)</td></tr>
+          <tr><td>Calf veins</td><td>Not scanned</td><td>Not scanned</td></tr>
+        </tbody></table>
+        <div class="callout">A negative limited scan is <b>not</b> the same as "no DVT". Say what you covered.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 SET-UP ============ -->
+<section class="slide" data-min="1.5" data-title="Set-up" data-prompt="Ask: why do we tilt the patient head-up? (Distends the leg veins, makes them easier to find and to see collapse.) What do you do in the ventilated ICU patient who cannot be tilted? (Scan anyway; a well-filled patient usually has adequate veins.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">02 · Acquisition</div>
+      <h2>Set up for success before you touch the leg.</h2>
+      <div class="card"><div class="cap">Probe</div><p>High-frequency linear (roughly 5–12 MHz). Start depth about 4 cm; increase as needed. In obese or oedematous thighs, switch to a curvilinear (2–5 MHz) probe for the femoral vein, accepting lower resolution.</p></div>
+      <div class="card"><div class="cap">Preset</div><p>Venous or vascular preset if available. Set the gain so the normal lumen is black.</p></div>
+      <div class="card"><div class="cap">Orientation</div><p>Transverse (short-axis) for compression. Probe marker to the patient's right, as for other transverse views. Posterior views (popliteal fossa, calf) keep the same rule, so on the right leg lateral is on screen left and medial on screen right; on the left leg this flips. Longitudinal views are for Doppler and for following a thrombus tail, not for compression.</p></div>
+      <div class="card"><div class="cap">Operator</div><p>Screen in line with your eye and the leg. The non-scanning hand can provide counter-pressure behind the thigh at the adductor canal.</p></div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="cap">Patient position</div>
+        <div class="crit">
+          <span class="ic ok">1</span><span><b class="ink">Groin and thigh:</b> supine, head up / reverse Trendelenburg if haemodynamics allow, to distend the leg veins</span><span class="val">fills veins</span>
+          <span class="ic ok">2</span><span>Hip externally rotated, knee slightly flexed ("frog-leg")</span><span class="val">opens the thigh</span>
+          <span class="ic ok">3</span><span><b class="ink">Popliteal fossa:</b> knee flexed about 20–30°, leg externally rotated; or lateral decubitus; or prone with the ankle on a pillow</span><span class="val">knee bent</span>
+          <span class="ic bad">✕</span><span>Avoid a fully extended or hyperextended knee: the popliteal vein flattens and is easily missed. Flex the knee 20–30°</span><span class="val">pitfall</span>
+        </div>
+        <svg viewBox="0 0 520 170" style="width:100%;height:auto;margin-top:14px" role="img" aria-label="Schematic: patient supine and tilted head-up with the hip externally rotated and knee slightly flexed">
+          <rect x="0" y="0" width="520" height="170" rx="8" fill="var(--bg)" stroke="var(--line)"/>
+          <path d="M40 120 L470 70" stroke="var(--line2)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="440" cy="52" r="18" fill="var(--panel)" stroke="var(--ink2)" stroke-width="1.5"/>
+          <path d="M420 66 L290 84 Q270 86 262 92" fill="none" stroke="var(--ink2)" stroke-width="14" stroke-linecap="round" opacity=".5"/>
+          <path d="M262 92 L170 70 L80 108" fill="none" stroke="var(--ink2)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity=".5"/>
+          <circle cx="225" cy="83" r="9" fill="var(--accent)"/>
+          <text x="196" y="132" font-size="12" fill="var(--ink2)">probe at groin</text>
+          <text x="140" y="56" font-size="12" fill="var(--ink2)">knee slightly flexed</text>
+          <text x="330" y="40" font-size="12" fill="var(--ink2)">head up</text>
+          <path d="M470 100 L470 130 L440 130" fill="none" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="20" y="160" font-size="11" fill="var(--mute)">Schematic · reverse Trendelenburg distends the leg veins</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART I ============ -->
+<section class="slide divider" data-min="0.5" data-title="Part I · Acquisition" data-prompt="Part I: find the artery, find its vein, squeeze. Then the landmarks, then the protocols.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part I · Acquisition</div>
+      <h1>Find the pair.</h1>
+      <p class="big-quote" style="font-style:normal">At every level, identify the artery first, then its companion vein. Then squeeze until the walls meet, or the artery starts to give.</p>
+      <p class="cap" style="margin-top:22px;line-height:2">Linear probe · Transverse · Compress · Move 1–2 cm · Repeat</p>
+    </div>
+    <div><div class="panel"><div class="split">
+      <div><div class="pov">No compression</div><div class="scanner"><canvas id="p1A" class="us" width="640" height="420" role="img" aria-label="Schematic: femoral artery and vein, no compression"></canvas></div></div>
+      <div><div class="pov">Compression</div><div class="scanner"><canvas id="p1B" class="us" width="640" height="420" role="img" aria-label="Schematic: femoral vein fully compressed to a line, artery still round"></canvas></div></div>
+    </div><div class="mini">The documentation image: split screen, without and with compression, at each level. Schematic simulation.</div></div></div>
+  </div>
+</section>
+
+<!-- ============ 4 SIM 1 ============ -->
+<section class="slide" data-min="3" data-title="Vein or artery? Squeeze it" data-prompt="Start in Normal at 0%. Ask a learner to push until the vein closes. Then switch to Acute thrombus and ask: the lumen is black, is it patent? Push to 70%: the artery deforms, the vein does not. That is a positive scan. Finally show the lymph node and ask how you would tell it from a thrombosed vein (hilum, shape, not tubular, no companion artery).">
+  <div class="inner two">
+    <div>
+      <div class="kicker">03 · Vein or artery?</div>
+      <h2>Five tells. Then squeeze.</h2>
+      <table class="t t2">
+        <thead><tr><th>Feature</th><th>Vein</th><th>Artery</th></tr></thead>
+        <tbody>
+          <tr><td>Compress</td><td>Collapses fully with gentle pressure</td><td>Deforms only with much firmer pressure</td></tr>
+          <tr><td>Wall</td><td>Thin, barely visible</td><td>Thick, bright, three-layered</td></tr>
+          <tr><td>Shape</td><td>Oval, larger, changes with respiration or Valsalva</td><td>Round, constant</td></tr>
+          <tr><td>Pulse</td><td>Non-pulsatile (may transmit adjacent pulsation)</td><td>Pulsatile, expands with systole</td></tr>
+          <tr><td>Doppler</td><td>Low-velocity, phasic with respiration; augments with calf squeeze</td><td>Pulsatile, high-velocity; triphasic in a normal limb at rest</td></tr>
+          <tr><td>ICU caveat</td><td colspan="2">Pulsatile CFV flow suggests raised right-sided pressure or TR: do not mistake the vein for the artery, compress it. Compare CFV Doppler with the other side: unilateral loss of phasicity suggests proximal (iliac/IVC) obstruction; bilateral loss may be central or due to positive-pressure ventilation.</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:15.5px;color:var(--ink2)"><b class="ink">Groin, medial to lateral:</b> vein, artery, nerve (NAVEL from lateral: Nerve, Artery, Vein, Empty space, Lymphatics). The CFV lies <b class="ink">medial</b> to the CFA. <b class="ink">Popliteal fossa</b>, scanned from behind: the vein is <b class="ink">superficial</b> to the artery.</p>
+      <div class="callout">The artery should start to deform before you call a vein non-compressible. If the artery has not budged, you have not pushed hard enough.</div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="pov" id="s1Pov">Schematic simulation · right groin · CFV level</div>
+        <div class="scanner"><canvas id="s1US" class="us" width="640" height="420" role="img" aria-label="Schematic sonogram simulation: artery and vein in transverse section, responding to probe pressure"></canvas></div>
+        <div class="ctrls">
+          <label>Probe pressure <input type="range" id="s1P" min="0" max="100" value="0" step="1" aria-describedby="s1Stat"><output id="s1Po"></output></label>
+          <span class="gauge" id="s1G" aria-hidden="true"><i></i><i></i><i></i><span id="s1Gt"></span></span>
+        </div>
+        <div class="ctrls">
+          <span>Vein</span><div class="seg" id="s1State" role="group" aria-label="Vein state"><button data-v="normal" aria-pressed="true">Normal</button><button data-v="acute" aria-pressed="false">Acute thrombus</button><button data-v="subacute" aria-pressed="false">Subacute</button><button data-v="chronic" aria-pressed="false">Chronic</button></div>
+        </div>
+        <div class="ctrls">
+          <span>Scene</span><div class="seg" id="s1Scene" role="group" aria-label="Scene"><button data-v="groin" aria-pressed="true">Groin</button><button data-v="pop" aria-pressed="false">Popliteal fossa</button><button data-v="node" aria-pressed="false">Groin + lymph node</button></div>
+        </div>
+        <div class="ctrls">
+          <button class="btn ghost" id="s1Col" aria-pressed="false">Colour Doppler</button>
+          <button class="btn ghost" id="s1Sq">Calf squeeze</button>
+          <button class="btn ghost" id="s1Va">Valsalva</button>
+          <button class="btn ghost" id="s1Lb" aria-pressed="true">Labels</button>
+        </div>
+        <div class="status" id="s1Stat" aria-live="polite"></div>
+        <div class="mini" id="s1Tip">Schematic simulation, not a real scan. Thresholds are simplified for teaching.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 LANDMARKS ============ -->
+<section class="slide" data-min="2" data-title="Groin to knee: five places to squeeze" data-prompt="Point to each level on the leg map. Ask: why does the word 'superficial' in front of 'femoral vein' matter? (Clots in it are proximal DVT and need anticoagulation.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">04 · Landmarks</div>
+      <h2>Groin to knee: the five places to squeeze.</h2>
+      <p class="lede" style="margin-bottom:10px">Follow the vein from the inguinal ligament downwards, compressing at each level. Tap a level to see it.</p>
+      <ul class="plist" id="lmList">
+        <li data-k="groin" class="on" tabindex="0" role="button" aria-pressed="true"><span class="num big">1</span><div><b>Common femoral vein (CFV)</b><span>Just below the inguinal ligament, medial to the CFA.</span></div></li>
+        <li data-k="sfj" tabindex="0" role="button" aria-pressed="false"><span class="num big">2</span><div><b>Saphenofemoral junction (SFJ)</b><span>The great saphenous vein (GSV) joins the CFV anteromedially: the "Mickey Mouse" sign (CFV = face, CFA and GSV = ears). ESVS 2021 advises therapeutic anticoagulation for about 3 months, as for DVT, when GSV thrombus is within 3 cm of the SFJ; refer for formal duplex.</span></div></li>
+        <li data-k="bif" tabindex="0" role="button" aria-pressed="false"><span class="num big">3</span><div><b>CFV bifurcation</b><span>A few centimetres below: the femoral vein (FV) and the deep femoral (profunda) vein, which dives posterolaterally. Compress just above and just below.</span></div></li>
+        <li data-k="fvmid" tabindex="0" role="button" aria-pressed="false"><span class="num big">4</span><div><b>Femoral vein, mid-thigh to adductor canal</b><span>Deep to the femoral artery under sartorius. In the adductor (Hunter's) canal it is deep and hard to compress: use counter-pressure behind the thigh, or a curvilinear probe.</span></div></li>
+        <li data-k="pvup" tabindex="0" role="button" aria-pressed="false"><span class="num big">5</span><div><b>Popliteal vein (PV)</b><span>Superficial to the artery, from the top of the fossa down to the trifurcation (anterior tibial vein and tibioperoneal trunk; the trunk receives the posterior tibial and peroneal veins).</span></div></li>
+      </ul>
+      <div class="callout">Say <b>femoral vein</b>, not "superficial femoral vein". It is a deep vein, and the old name has led clinicians to withhold anticoagulation.</div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="pov" id="lmPov">Schematic simulation</div>
+        <div class="scanner"><canvas id="lmUS" class="us" width="640" height="420" role="img" aria-label="Schematic transverse sonogram at the selected landmark"></canvas></div>
+        <div class="ctrls"><label>Probe pressure <input type="range" id="lmP" min="0" max="100" value="0" step="1"><output id="lmPo"></output></label></div>
+        <div class="status" id="lmStat" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 PROTOCOLS ============ -->
+<section class="slide" data-min="2.5" data-title="2-point, 3-point, whole-leg" data-prompt="Ask: you did a 2-point scan and it was normal. Name three places a clot could still be. (Mid/distal femoral vein, calf veins, iliac veins.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">05 · Protocols</div>
+      <h2>2-point, 3-point, whole-leg: what each one actually covers.</h2>
+      <p class="lede">Definitions vary between papers. State the one you used.</p>
+      <div class="card"><div class="cap">2-point CUS · commonest POCUS protocol</div><p><b class="ink">Point 1:</b> CFV from the inguinal ligament through the SFJ to the femoral/deep femoral bifurcation. <b class="ink">Point 2:</b> popliteal vein from the popliteal crease (or upper fossa) to the trifurcation. <b class="ink">Misses:</b> femoral vein of the mid and distal thigh, iliac veins, calf veins.</p></div>
+      <div class="card"><div class="cap">3-point CUS</div><p>Adds the femoral vein in the mid-thigh (most commonly CFV/SFJ, FV mid-thigh, popliteal). Some authors use "3-point" to mean CFV + SFJ + popliteal: check the source. Pooled ED data show similar accuracy to 2-point (Lee 2019), but because isolated femoral-vein clots exist (Adhikari 2015), adding the mid-thigh FV costs little and closes a known gap.</p></div>
+      <div class="card"><div class="cap">Extended (full proximal) CUS</div><p>Continuous compression every 1–2 cm from the inguinal ligament to the trifurcation, including the first few cm of the deep femoral vein. The most complete proximal scan achievable at the bedside.</p></div>
+      <div class="card"><div class="cap">Whole-leg ultrasound (WLUS)</div><p>Proximal veins plus the calf veins (posterior tibial, peroneal, often muscular veins), usually with colour Doppler. Normally a formal vascular-lab study; detects isolated calf DVT.</p></div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="cap">Coverage at a glance</div>
+        <table class="t cov-t"><thead><tr><th>Segment</th><th>2-pt</th><th>3-pt</th><th>Ext.</th><th>WLUS</th></tr></thead><tbody>
+          <tr><td>CFV · SFJ · bifurcation</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>FV mid-thigh</td><td class="n">–</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>FV adductor canal</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Deep femoral vein (first few cm)</td><td class="n" style="font-size:12px">origin</td><td class="n" style="font-size:12px">origin</td><td class="y">✓</td><td class="y" style="font-size:12px;white-space:nowrap">✓ origin</td></tr>
+          <tr><td>Popliteal to trifurcation</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Calf veins</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td></tr>
+          <tr><td>Iliac veins · IVC</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="n">–</td></tr>
+        </tbody></table>
+        <div class="callout">Iliac veins and the IVC are not compressible. Suspect proximal obstruction if the CFV Doppler loses respiratory phasicity, or the whole leg is swollen with a normal CUS.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7 SIM 2 ============ -->
+<section class="slide" data-min="3" data-title="Walk the leg" data-prompt="Let three learners each 'hide a clot' and pick a protocol before scanning. Ask after each miss: what would you do next for this patient? Land on: repeat scan in about a week, or formal whole-leg duplex, guided by pre-test probability and D-dimer.">
+  <div class="inner">
+    <div class="kicker">06 · Protocols · simulation</div>
+    <h2>Walk the leg. Where does each protocol look?</h2>
+    <p class="lede" style="max-width:90ch">Most proximal DVTs involve the CFV or popliteal vein, which is why 2-point scanning works most of the time. A minority are isolated outside the two points (for example the mid-thigh femoral vein or the deep femoral vein): in one ED cohort, about 6% of DVTs were isolated to the femoral vein (5.5%) or deep femoral vein (0.8%), so 2-point scanning would have missed them (Adhikari 2015, single-centre, retrospective). Isolated calf DVT is not detected by any limited proximal protocol.</p>
+    <div class="leggrid">
+      <div class="panel legmap">
+        <div class="cap">Right leg · deep veins · tap a probe position</div>
+        <div id="legSvg"></div>
+        <div class="legend"><span><i style="background:var(--green)"></i>covered</span><span><i style="background:var(--faint)"></i>not covered</span><span><i style="background:var(--mute)"></i>GSV (superficial)</span></div>
+      </div>
+      <div class="panel">
+        <div class="ctrls" style="margin-top:0"><span>Protocol</span><div class="seg" id="s2Proto" role="group" aria-label="Protocol"><button data-v="p2" aria-pressed="true">2-point</button><button data-v="p3" aria-pressed="false">3-point</button><button data-v="ext" aria-pressed="false">Extended proximal</button><button data-v="whole" aria-pressed="false">Whole-leg</button></div></div>
+        <div class="pov" id="s2Pov" style="margin-top:10px">Schematic simulation</div>
+        <div class="scanner"><canvas id="s2US" class="us" width="640" height="420" role="img" aria-label="Schematic transverse sonogram at the selected leg level"></canvas></div>
+        <canvas id="s2Dop" class="dop" width="640" height="96" role="img" aria-label="Schematic spectral Doppler of the common femoral vein" hidden></canvas>
+        <div class="ctrls">
+          <button class="btn ghost" id="s2Comp">Compress</button>
+          <button class="btn ghost" id="s2DopB" aria-pressed="false">CFV Doppler strip</button>
+          <button class="btn" id="s2Hide">Hide a clot</button>
+          <button class="btn" id="s2Scan">Scan with this protocol</button>
+        </div>
+        <div class="status" id="s2Stat" aria-live="polite">Press <b>Hide a clot</b>, choose a protocol, then <b>Scan with this protocol</b>. Or tap any probe position on the leg and press Compress.</div>
+        <table class="tally" id="s2Tally" aria-label="Detection tally per protocol (illustrative)"></table>
+        <div class="mini">Clot locations are drawn at random with illustrative weights (CFV/SFJ 30%, popliteal 25%, FV mid-thigh 15%, FV adductor canal 8%, deep femoral 4%, calf 15%, iliac 3%): illustrative, not epidemiological.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8 HOW TO COMPRESS ============ -->
+<section class="slide" data-min="1.5" data-title="How to compress properly" data-prompt="Have each learner verbalise their compression report at one level on a model: 'Right CFV at SFJ, fully compressible.' Ask: what does partial compression mean? (Non-occlusive thrombus or chronic change; it is abnormal.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">07 · Technique</div>
+      <h2>How to compress properly.</h2>
+      <ul class="lst">
+        <li><b class="ink">Transverse only</b> for compression. In long axis the probe slides off the vein and it can look compressed when it is not.</li>
+        <li><b class="ink">Straight down</b>, perpendicular to the vessel, enough to collapse the vein and slightly deform the artery. Hold for a second, release, move 1–2 cm, repeat.</li>
+        <li><b class="ink">Full coaptation</b> means the anterior and posterior walls touch along their whole width. Partial collapse is abnormal.</li>
+        <li><b class="ink">Keep the vein centred.</b> If it slides sideways out of the beam as you push, it has not been tested. Angle slightly or reposition.</li>
+        <li><b class="ink">Freeze cines</b> or split-screen "no compression | compression" images at each level for documentation.</li>
+        <li><b class="ink">Free-floating thrombus</b> at the proximal tip: if you see a mobile clot, use gentle pressure only, document, and do not repeatedly compress.</li>
+        <li><b class="ink">Colour Doppler is an adjunct:</b> filling defects, absent flow, absent augmentation. Do not use it to override a clearly non-compressible vein, and do not call a vein patent on colour alone if it does not compress.</li>
+      </ul>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="tabs" id="cpTabs" role="group" aria-label="Compression example"><button aria-selected="true" data-v="full">Full coaptation</button><button aria-selected="false" data-v="partial">Partial: abnormal</button><button aria-selected="false" data-v="none">None: DVT</button></div>
+        <div class="split">
+          <div><div class="pov">No compression</div><div class="scanner"><canvas id="cpA" class="us" width="640" height="420" role="img" aria-label="Schematic: vein without compression"></canvas></div></div>
+          <div><div class="pov">Compression</div><div class="scanner"><canvas id="cpB" class="us" width="640" height="420" role="img" aria-label="Schematic: vein with compression"></canvas></div></div>
+        </div>
+        <div class="status" id="cpStat" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART II ============ -->
+<section class="slide divider" data-min="0.5" data-title="Part II · Evidence and pitfalls" data-prompt="Part II: how good is it, what fools you, and where does it fit when the patient is hypoxic or shocked.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part II · Interpretation and decision</div>
+      <h1>Know your gaps.</h1>
+      <p class="big-quote" style="font-style:normal">A non-compressible vein rules DVT in. A compressible vein rules out clot only where you put the probe.</p>
+    </div>
+    <div><div class="panel"><div class="pov">Schematic simulation · acute thrombus at maximal pressure</div><div class="scanner"><canvas id="p2US" class="us" width="640" height="420" role="img" aria-label="Schematic: distended vein that does not compress while the adjacent artery deforms"></canvas></div><div class="mini">The artery deforms. The vein does not. Lumen nearly black: acute clot can be as dark as blood.</div></div></div>
+  </div>
+</section>
+
+<!-- ============ 9 EVIDENCE ============ -->
+<section class="slide" data-min="2" data-title="Evidence and its limits" data-prompt="Ask: your 2-point scan is negative, D-dimer is raised and the Wells score is 'likely'. What now? (Repeat proximal CUS in about a week, or whole-leg duplex. Not 'no DVT'.) Then ask: what does D-dimer mean in a day-3 post-op patient? (Little; it is almost always raised.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">08 · Evidence</div>
+      <h2>What the evidence supports, and its limits.</h2>
+      <div class="card"><div class="cap">Accuracy of point-of-care CUS</div>
+        <p>Emergency-physician CUS, meta-analysis (Pomero 2013; 16 mostly small studies, variable training and quality): pooled sensitivity about 96% and specificity about 97% against formal duplex for proximal DVT. Intensivist-performed CUS is also accurate (Kory 2011). Lee 2019 meta-analysis: 2-point and 3-point performed similarly (pooled sensitivity about 90% for each, specificity 95–98%). Confidence intervals were wide, and sensitivity was higher when an attending performed the scan and with DVT-specific training.</p></div>
+      <div class="card"><div class="cap">Strategies proven safe · symptomatic outpatients</div>
+        <p>Serial 2-point CUS plus D-dimer was equivalent to a single whole-leg colour Doppler study for 3-month VTE (Bernardi, JAMA 2008: roughly 0.9% vs 1.2%). After a single negative whole-leg study, 3-month VTE risk is about 0.6% (Johnson, JAMA 2010). ACCP 2012 and ASH 2018 accept either serial proximal CUS (repeat at about 1 week) or a single whole-leg study, combined with pre-test probability and D-dimer. The SRU 2018 consensus favours complete duplex (whole-leg, with bilateral CFV Doppler) as the standard diagnostic test. If only a limited (proximal, compression-only) scan is done and is negative, SRU recommends a second study, ideally a complete duplex, in 5–7 days.</p></div>
+      <div class="card"><div class="cap">Isolated distal (calf) DVT</div>
+        <p>Not seen on proximal protocols. A minority propagate proximally (often quoted around 10–15%; estimates vary), mostly within 2 weeks. CHEST 2016, reaffirmed in the 2021 update: if not anticoagulated, serial imaging over 2 weeks; anticoagulate if severe symptoms or risk factors for extension, and anticoagulate if the thrombus extends (recommended if it extends proximally). CACTUS (Righini 2016): no significant benefit of LMWH in low-risk outpatients with calf DVT, but more bleeding.</p></div>
+      <p class="mini">Limits: evidence is mostly from symptomatic outpatients. Performance in ICU, post-op and asymptomatic screening populations is less well defined. Operator training matters.</p>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="cap">What a negative limited scan means</div>
+        <div class="tabs" id="evTabs" role="group" aria-label="Clinical scenario"><button aria-selected="true" data-v="lo">Low pre-test + D-dimer negative</button><button aria-selected="false" data-v="hi">Negative CUS, D-dimer positive or high pre-test</button><button aria-selected="false" data-v="po">Post-op day 3</button></div>
+        <ol class="steps-flow" id="evFlow"></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 PITFALLS ============ -->
+<section class="slide" data-min="2.5" data-title="Pitfalls" data-prompt="Go round the room: each person names one false positive and one false negative. Ask: if you cannot compress the femoral vein at the adductor canal in a 140 kg patient, what do you write? ('Inconclusive at FV distal thigh', not 'DVT'.)">
+  <div class="inner">
+    <div class="kicker">09 · Pitfalls</div>
+    <h2>Things that look like clot, and clot that looks like nothing.</h2>
+    <div class="two even" style="margin-top:8px">
+      <div>
+        <div class="cap" style="color:var(--red)">False positives · looks non-compressible, is not DVT</div>
+        <div class="card"><h3>Inadequate pressure</h3><p>The commonest cause. The artery has not deformed. Push more, use counter-pressure, re-centre.</p></div>
+        <div class="card"><h3>Lymph nodes in the groin</h3><p>Oval, hypoechoic cortex with a bright echogenic <b class="ink">hilum</b>. They do not continue as a tube when you slide the probe up and down; no paired artery; hilar flow only on colour.</p></div>
+        <div class="card"><h3>Baker (popliteal) cyst</h3><p>Anechoic, posteromedial, between the medial head of gastrocnemius and the semimembranosus tendon, often with a "neck" toward the joint; no Doppler flow. The popliteal vein is separate and compressible beside its artery. A ruptured cyst can mimic DVT clinically, and the two can coexist.</p></div>
+        <div class="card"><h3>Haematoma, abscess, muscle tear</h3><p>Not tubular, not paired with an artery.</p></div>
+        <div class="card"><h3>Chronic post-thrombotic change (not necessarily acute DVT)</h3><p>Real thrombus, but old: thick wall, bright synechiae, partial compressibility, often a small vein. Compare with any prior scan before calling it new.</p></div>
+      </div>
+      <div>
+        <div class="cap" style="color:var(--blue)">False negatives · clot present, scan called normal</div>
+        <div class="card"><h3>Acute anechoic thrombus</h3><p>Fresh clot can be as black as blood. Only compression reveals it. The vein is often distended.</p></div>
+        <div class="card"><h3>Duplicated femoral vein</h3><p>A common variant (estimates range widely, from about 1 in 10 to more than 1 in 3 limbs, depending on definition). One limb of the pair may be thrombosed while the other compresses. Look for two veins around the femoral artery.</p></div>
+        <div class="card"><h3>Obese or oedematous limb</h3><p>Inadequate penetration and compression at the adductor canal. Switch to curvilinear, use counter-pressure, or call it inconclusive.</p></div>
+        <div class="card"><h3>Wrong popliteal position</h3><p>A fully extended or hyperextended knee flattens the vein. Scan with the knee flexed 20–30°.</p></div>
+        <div class="card"><h3>Protocol gaps · iliac and IVC thrombus</h3><p>Mid-thigh FV, deep femoral, iliac and calf veins are outside limited protocols. With iliac or IVC clot the CFV compresses, but its Doppler loses respiratory phasicity and augmentation.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 11 SIM 3 ============ -->
+<section class="slide" data-min="2.5" data-title="Spot the impostor" data-prompt="Ask the room to vote on each card before revealing. On (d), ask who would have called a DVT. On (c), ask how many veins you expect to see around the femoral artery (usually one, sometimes two).">
+  <div class="inner two">
+    <div>
+      <div class="kicker">10 · Pitfalls · simulation</div>
+      <h2>Spot the impostor.</h2>
+      <p class="lede">Five deliberately tricky views, plus a bonus. For each, decide: normal vein, DVT, or mimic / inconclusive. Then compress and reveal.</p>
+      <div class="cardnav"><button class="btn ghost" id="s3Prev">← Card</button><div class="dots" id="s3Dots" role="group" aria-label="Cards"></div><button class="btn ghost" id="s3Next">Card →</button></div>
+      <div class="card">
+        <div class="num" id="s3Num"></div>
+        <p class="ctx" id="s3Ctx"></p>
+        <div class="ans" id="s3Ans" role="group" aria-label="Your answer"><button data-a="0">Normal vein</button><button data-a="1">DVT</button><button data-a="2">Mimic / inconclusive</button></div>
+        <div class="reveal" id="s3Rev" hidden></div>
+      </div>
+      <div class="status" id="s3Score" aria-live="polite"></div>
+    </div>
+    <div class="demo">
+      <div class="panel">
+        <div class="pov" id="s3Pov">Schematic simulation</div>
+        <div class="scanner"><canvas id="s3US" class="us" width="640" height="420" role="img" aria-label="Schematic sonogram for the current impostor card"></canvas></div>
+        <div class="ctrls"><label>Probe pressure <input type="range" id="s3P" min="0" max="100" value="0" step="1"><output id="s3Po"></output></label><button class="btn ghost" id="s3Col" aria-pressed="false">Colour Doppler</button></div>
+        <div class="ctrls" id="s3Extra"></div>
+        <div class="status" id="s3Stat" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 12 PERIOP / ICU ============ -->
+<section class="slide" data-min="2" data-title="The hypoxic, hypotensive patient" data-prompt="Ask: hypotensive patient, big RV, A-lines on lung scan, non-compressible right CFV. What is your next step, and what would change it? (Treat as high-risk PE: ESC 2019 &lsquo;high risk&rsquo;, AHA/ACC 2026 category E. Discuss systemic thrombolysis with the team unless contraindicated; confirm with CTPA only if stable enough to travel.)">
+  <div class="inner two">
+    <div>
+      <div class="kicker">11 · Perioperative &amp; ICU</div>
+      <h2>The leg in the hypoxic, hypotensive patient.</h2>
+      <div class="card"><div class="cap">Where CUS fits in suspected PE</div>
+        <p>ESC 2019: finding a proximal DVT on CUS in a patient with suspected PE is sufficient to justify anticoagulation without further imaging in many cases. A proximal DVT is found in roughly 30–50% of patients with PE, so a <b class="ink">negative</b> CUS does not exclude PE.</p>
+        <p>In <b class="ink">suspected high-risk PE with shock</b>, bedside echo is the key test: if CTPA is not immediately feasible, RV dysfunction on echo is enough to justify reperfusion therapy. A non-compressible proximal vein adds weight. Multiorgan POCUS (heart, lungs, leg veins) improved diagnostic accuracy for PE in an emergency department study (Nazerian 2014).</p>
+        <p>Terminology: the 2026 AHA/ACC guideline replaces "massive/submassive" with clinical categories A–E. Category E (cardiopulmonary failure) is PE with haemodynamic instability, from persistent hypotension or shock through to cardiac arrest. For category E the guideline treats systemic thrombolysis, catheter-based therapy and surgical embolectomy as reasonable options for selected patients, and it recommends PE response teams. This corresponds broadly to ESC 2019 "high risk" (cardiac arrest, obstructive shock or persistent hypotension).</p></div>
+      <div class="card"><div class="cap">RUSH "Pipes" · <a href="../shock/">shock station</a></div><p>Aorta plus leg veins. Aorta: an outer-wall-to-outer-wall diameter of 3 cm or more is an aneurysm; look for a dissection flap (covered at the shock station). A non-compressible CFV or popliteal vein in an undifferentiated shocked patient points toward obstructive shock from PE.</p></div>
+      <div class="card"><div class="cap">Perioperative scenarios</div>
+        <ul class="lst tight">
+          <li>Post-op day 2–10 sudden hypoxia or tachycardia, especially after major orthopaedic, pelvic, abdominal or cancer surgery.</li>
+          <li>Symptomatic leg, or a local protocol for high-risk delayed hip-fracture surgery (routine screening of asymptomatic patients is not recommended by CHEST): a pre-op DVT changes anticoagulation, regional anaesthesia timing and IVC filter discussions.</li>
+          <li>ICU patients with femoral CVCs: catheter-related thrombosis is common; scan around the catheter (compression may be limited by the line).</li>
+          <li>Upper limb (CVCs, PICCs): compress the internal jugular, axillary and brachial veins as for the leg. The subclavian vein cannot be compressed behind the clavicle, so use colour and Doppler there (loss of respiratory variation suggests central obstruction).</li>
+        </ul></div>
+      <p class="mini">The same vein–artery identification skills underpin US-guided femoral and peripheral access: <a href="../vascular-access/">vascular access</a>.</p>
+    </div>
+    <div class="demo">
+      <div class="panel heart">
+        <div class="cap">Echo signs of acute RV pressure overload · <a href="../cardiac/">cardiac station</a></div>
+        <div class="tabs" id="hTabs" role="group" aria-label="Heart schematic"><button aria-selected="false" data-v="0">Normal</button><button aria-selected="true" data-v="1">Acute RV pressure overload</button></div>
+        <div id="hSvg"></div>
+        <ul class="lst tight" style="margin-top:10px">
+          <li>RV dilated: basal RV/LV diameter ratio ≥ 1.0 in apical 4-chamber (ESC 2019).</li>
+          <li>Septal flattening, "D-shaped" LV in parasternal short axis.</li>
+          <li>McConnell sign (RV free-wall hypokinesis with apical sparing), TAPSE &lt; 17 mm (Lang 2015; ASE right heart guideline 2025; ESC 2019 uses &lt; 16 mm), plethoric IVC.</li>
+          <li>A mobile right-heart thrombus (clot in transit) is a high-risk finding: treat urgently.</li>
+          <li>Lungs (<a href="../lung/">lung station</a>): often an A-line pattern with sliding. Hypoxia + dry lungs + big RV: think PE. PE may also show small peripheral subpleural consolidations (infarcts), typically posterobasal: an A-line profile is supportive but not required.</li>
+          <li>RV free wall thin (&lt; 5 mm) in acute PE; a thick RV wall suggests chronic pulmonary hypertension.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PART III ============ -->
+<section class="slide divider" id="partCases" data-min="0.5" data-title="Part III · Cases" data-prompt="Five minutes per case. Use the reveal button (or key R) one step at a time. Do not let the room skip to the answer.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Part III · Cases</div>
+      <h1>Three patients.</h1>
+      <p class="big-quote" style="font-style:normal">Read the vignette, then reveal one I-AIM step at a time. Commit to an answer before each reveal.</p>
+      <p class="cap" style="margin-top:22px;line-height:2">Indication · Acquisition · Interpretation · Medical decision</p>
+      <p class="mini" style="max-width:56ch">Teaching vignettes. All images are schematic simulations, not real scans.</p>
+    </div>
+    <div><div class="caseGrid" id="caseGrid" style="grid-template-columns:1fr"></div></div>
+  </div>
+</section>
+
+<section class="slide case" data-case="0" data-min="4" data-title="Case 1 · Day-4 laparotomy, sudden collapse" data-prompt="Before revealing Acquisition, ask: which three organs do you scan first, and in what order? Before revealing the decision, ask: thrombolysis four days after a laparotomy, what are the trade-offs?"></section>
+<section class="slide case" data-case="1" data-min="4" data-title="Case 2 · Swollen calf, normal 2-point scan" data-prompt="Ask: is this patient cleared? Then ask what a negative 2-point scan covers and what it does not."></section>
+<section class="slide case" data-case="2" data-min="4" data-title="Case 3 · Hip fracture, 'mass behind the knee'" data-prompt="Ask: what are the two structures you must find in the popliteal fossa before calling anything else? (Popliteal artery and vein.) Then: does a Baker cyst exclude DVT?"></section>
+
+<!-- ============ QUIZ ============ -->
+<section class="slide" data-min="4" data-title="Quick check" data-prompt="Run the quiz. Then ask each learner to commit to scanning both legs (CFV and popliteal) on two patients this week and logging the images.">
+  <div class="inner">
+    <div class="kicker">Quick check</div>
+    <h2>Eight questions before we finish.</h2>
+    <p class="lede">Tap an answer. <span id="qzScore" class="num"></span></p>
+    <div class="qz two even" id="quiz"></div>
+  </div>
+</section>
+
+<!-- ============ REFERENCES ============ -->
+<section class="slide" data-min="0.5" data-title="References" data-prompt="Point to the SRU consensus (Needleman 2018) as the radiology standard for how to scan and report (it favours complete duplex), and to ESC 2019 and the 2026 AHA/ACC guideline for the PE pathway.">
+  <div class="inner">
+    <div class="kicker">References</div>
+    <h2>Where the numbers come from.</h2>
+    <ol class="refs" style="max-width:110ch">
+      <li>Needleman L, Cronan JJ, Lilly MP, Merli GJ, Adhikari S, Hertzberg BS, et al. Ultrasound for lower extremity deep venous thrombosis: multidisciplinary recommendations from the Society of Radiologists in Ultrasound Consensus Conference. Circulation. 2018;137(14):1505–15. <a href="https://doi.org/10.1161/CIRCULATIONAHA.117.030687" target="_blank" rel="noopener">doi:10.1161/CIRCULATIONAHA.117.030687</a></li>
+      <li>Bernardi E, Camporese G, Büller HR, Siragusa S, Imberti D, Berchio A, et al. Serial 2-point ultrasonography plus D-dimer vs whole-leg color-coded Doppler ultrasonography for diagnosing suspected symptomatic deep vein thrombosis: a randomized controlled trial. JAMA. 2008;300(14):1653–9. <a href="https://doi.org/10.1001/jama.300.14.1653" target="_blank" rel="noopener">doi:10.1001/jama.300.14.1653</a></li>
+      <li>Johnson SA, Stevens SM, Woller SC, Lake E, Donadini M, Cheng J, et al. Risk of deep vein thrombosis following a single negative whole-leg compression ultrasound: a systematic review and meta-analysis. JAMA. 2010;303(5):438–45. <a href="https://doi.org/10.1001/jama.2010.43" target="_blank" rel="noopener">doi:10.1001/jama.2010.43</a></li>
+      <li>Pomero F, Dentali F, Borretta V, Bonzini M, Melchio R, Douketis JD, et al. Accuracy of emergency physician-performed ultrasonography in the diagnosis of deep-vein thrombosis: a systematic review and meta-analysis. Thromb Haemost. 2013;109(1):137–45. <a href="https://doi.org/10.1160/TH12-07-0473" target="_blank" rel="noopener">doi:10.1160/TH12-07-0473</a></li>
+      <li>Lee JH, Lee SH, Yun SJ. Comparison of 2-point and 3-point point-of-care ultrasound techniques for deep vein thrombosis at the emergency department: a meta-analysis. Medicine (Baltimore). 2019;98(22):e15791. <a href="https://doi.org/10.1097/MD.0000000000015791" target="_blank" rel="noopener">doi:10.1097/MD.0000000000015791</a></li>
+      <li>Kory PD, Pellecchia CM, Shiloh AL, Mayo PH, DiBello C, Koenig S. Accuracy of ultrasonography performed by critical care physicians for the diagnosis of DVT. Chest. 2011;139(3):538–42. <a href="https://doi.org/10.1378/chest.10-1479" target="_blank" rel="noopener">doi:10.1378/chest.10-1479</a></li>
+      <li>Adhikari S, Zeger W, Thom C, Fields JM. Isolated deep venous thrombosis: implications for 2-point compression ultrasonography of the lower extremity. Ann Emerg Med. 2015;66(3):262–6. <a href="https://doi.org/10.1016/j.annemergmed.2014.10.032" target="_blank" rel="noopener">doi:10.1016/j.annemergmed.2014.10.032</a></li>
+      <li>Zitek T, Baydoun J, Yepez S, Forred W, Slattery DE. Mistakes and pitfalls associated with two-point compression ultrasound for deep vein thrombosis. West J Emerg Med. 2016;17(2):201–8. <a href="https://doi.org/10.5811/westjem.2016.1.29335" target="_blank" rel="noopener">doi:10.5811/westjem.2016.1.29335</a></li>
+      <li>Bates SM, Jaeschke R, Stevens SM, Goodacre S, Wells PS, Stevenson MD, et al. Diagnosis of DVT: Antithrombotic Therapy and Prevention of Thrombosis, 9th ed: American College of Chest Physicians evidence-based clinical practice guidelines. Chest. 2012;141(2 Suppl):e351S–e418S. <a href="https://doi.org/10.1378/chest.11-2299" target="_blank" rel="noopener">doi:10.1378/chest.11-2299</a></li>
+      <li>Lim W, Le Gal G, Bates SM, Righini M, Haramati LB, Lang E, et al. American Society of Hematology 2018 guidelines for management of venous thromboembolism: diagnosis of venous thromboembolism. Blood Adv. 2018;2(22):3226–56. <a href="https://doi.org/10.1182/bloodadvances.2018024828" target="_blank" rel="noopener">doi:10.1182/bloodadvances.2018024828</a></li>
+      <li>Kearon C, Akl EA, Ornelas J, Blaivas A, Jimenez D, Bounameaux H, et al. Antithrombotic therapy for VTE disease: CHEST guideline and expert panel report. Chest. 2016;149(2):315–52. <a href="https://doi.org/10.1016/j.chest.2015.11.026" target="_blank" rel="noopener">doi:10.1016/j.chest.2015.11.026</a></li>
+      <li>Stevens SM, Woller SC, Baumann Kreuziger L, Bounameaux H, Doerschug K, Geersing GJ, et al. Antithrombotic therapy for VTE disease: second update of the CHEST guideline and expert panel report. Chest. 2021;160(6):e545–e608. <a href="https://doi.org/10.1016/j.chest.2021.07.055" target="_blank" rel="noopener">doi:10.1016/j.chest.2021.07.055</a></li>
+      <li>Righini M, Galanaud JP, Guenneguez H, et al. Anticoagulant therapy for symptomatic calf deep vein thrombosis (CACTUS): a randomised, double-blind, placebo-controlled trial. Lancet Haematol. 2016;3(12):e556–62. <a href="https://doi.org/10.1016/S2352-3026(16)30131-4" target="_blank" rel="noopener">doi:10.1016/S2352-3026(16)30131-4</a></li>
+      <li>Wells PS, Anderson DR, Rodger M, Forgie M, Kearon C, Dreyer J, et al. Evaluation of D-dimer in the diagnosis of suspected deep-vein thrombosis. N Engl J Med. 2003;349(13):1227–35. <a href="https://doi.org/10.1056/NEJMoa023153" target="_blank" rel="noopener">doi:10.1056/NEJMoa023153</a></li>
+      <li>Kakkos SK, Gohel M, Baekgaard N, Bauersachs R, Bellmunt-Montoya S, Black SA, et al. European Society for Vascular Surgery (ESVS) 2021 clinical practice guidelines on the management of venous thrombosis. Eur J Vasc Endovasc Surg. 2021;61(1):9–82. <a href="https://doi.org/10.1016/j.ejvs.2020.09.023" target="_blank" rel="noopener">doi:10.1016/j.ejvs.2020.09.023</a></li>
+      <li>Konstantinides SV, Meyer G, Becattini C, Bueno H, Geersing GJ, Harjola VP, et al. 2019 ESC Guidelines for the diagnosis and management of acute pulmonary embolism developed in collaboration with the European Respiratory Society (ERS). Eur Heart J. 2020;41(4):543–603. <a href="https://doi.org/10.1093/eurheartj/ehz405" target="_blank" rel="noopener">doi:10.1093/eurheartj/ehz405</a></li>
+      <li>Creager MA, Barnes GD, Giri J, et al. 2026 AHA/ACC/ACCP/ACEP/CHEST/SCAI/SHM/SIR/SVM/SVN guideline for the evaluation and management of acute pulmonary embolism in adults: a report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines. Circulation. 2026;153:e977–e1051. <a href="https://doi.org/10.1161/CIR.0000000000001415" target="_blank" rel="noopener">doi:10.1161/CIR.0000000000001415</a></li>
+      <li>Nazerian P, Vanni S, Volpicelli G, Gigli C, Zanobetti M, Bartolucci M, et al. Accuracy of point-of-care multiorgan ultrasonography for the diagnosis of pulmonary embolism. Chest. 2014;145(5):950–7. <a href="https://doi.org/10.1378/chest.13-1087" target="_blank" rel="noopener">doi:10.1378/chest.13-1087</a></li>
+      <li>Perera P, Mailhot T, Riley D, Mandavia D. The RUSH exam: Rapid Ultrasound in SHock in the evaluation of the critically ill. Emerg Med Clin North Am. 2010;28(1):29–56. <a href="https://doi.org/10.1016/j.emc.2009.09.010" target="_blank" rel="noopener">doi:10.1016/j.emc.2009.09.010</a></li>
+      <li>Via G, Hussain A, Wells M, Reardon R, ElBarbary M, Noble VE, et al. International evidence-based recommendations for focused cardiac ultrasound. J Am Soc Echocardiogr. 2014;27(7):683.e1–683.e33. <a href="https://doi.org/10.1016/j.echo.2014.05.001" target="_blank" rel="noopener">doi:10.1016/j.echo.2014.05.001</a></li>
+      <li>American College of Emergency Physicians. Ultrasound guidelines: emergency, point-of-care, and clinical ultrasound guidelines in medicine [policy statement, revised April 2023]. Irving (TX): ACEP; 2023. <a href="https://www.acep.org/patient-care/policy-statements/ultrasound-guidelines-emergency-point-of--care-and-clinical-ultrasound-guidelines-in-medicine" target="_blank" rel="noopener">acep.org</a></li>
+    </ol>
+    <p class="mini" style="max-width:100ch">Simulations are purpose-built teaching schematics, not diagnostic images. Anatomy, echogenicity and compression thresholds are simplified. Clot-location weights in the "Walk the leg" simulation are illustrative, not epidemiological. Protocol definitions vary between studies.</p>
+  </div>
+</section>
+
+<!-- ============ CLOSE ============ -->
+<section class="slide divider" data-min="1" data-title="Close" data-prompt="Questions. Remind the room that limited CUS is a rule-in tool in the acutely unwell and that a formal duplex is still needed when the bedside scan is negative but suspicion remains.">
+  <div class="inner two" style="align-items:center;flex:1">
+    <div>
+      <div class="kicker">Close</div>
+      <h1>Squeeze, report the segment, know your gaps.</h1>
+      <ul class="lst" style="margin-top:20px;font-size:16.5px;max-width:62ch">
+        <li>Linear probe, transverse, compress until the walls meet. The artery deforms first if you are pushing hard enough.</li>
+        <li>Non-compressible = thrombus (acute or chronic); correlate with history and any prior scan. Echogenicity is a bonus, not a requirement.</li>
+        <li>2-point covers CFV/SFJ and popliteal; 3-point adds the mid-thigh femoral vein. Neither sees calf or iliac veins.</li>
+        <li>Negative limited scan plus a positive D-dimer or high pre-test probability: repeat in about a week or arrange a whole-leg study.</li>
+        <li>In the shocked or hypoxic patient, combine legs with heart and lungs: big RV + dry lungs + clot in the leg = PE until proven otherwise.</li>
+      </ul>
+      <nav class="sibs" aria-label="Next stations"><a href="../cardiac/">Cardiac (RV assessment)</a><a href="../shock/">Shock (RUSH)</a><a href="../lung/">Lung</a><a href="../vascular-access/">Vascular access</a><a href="../efast/">eFAST</a></nav>
+    </div>
+    <div><div class="panel"><div class="pov">Schematic simulation · popliteal fossa</div><div class="scanner"><canvas id="endUS" class="us" width="640" height="420" role="img" aria-label="Schematic: popliteal vein superficial to the artery, compressing rhythmically"></canvas></div><div class="mini">Popliteal fossa, knee slightly flexed: the vein is superficial to the artery. Schematic simulation.</div></div></div>
+  </div>
+</section>
+
+</main>
+
+<aside id="notes" hidden><div class="cap">Presenter prompt · <kbd>N</kbd> to hide</div><p id="notesTxt"></p></aside>
+<div id="overview"><div class="og" id="ovGrid"></div></div>
+<nav class="bar" aria-label="Slide controls"><div class="course-bar-inner">
+  <div class="prog" id="prog"></div><div class="pace" id="pace" title="Where you should be at this point"></div>
+  <button id="prevB" aria-label="Previous section">← Previous</button>
+  <span id="cnt">1 / 19</span>
+  <button id="nextB" aria-label="Next section">Next →</button>
+  <span class="q">Squeeze the vein. If the walls do not meet, the leg has a clot until proven otherwise.</span>
+  <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 0:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
+  <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
+  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents ↗</button>
+  <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
+  <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
+</div></nav>
+<script>
+/* =====================================================================
+   DVT compression ultrasound · schematic sonogram engine
+   All images are generated here: schematic simulations, not real scans.
+   ===================================================================== */
+const TAU = Math.PI * 2;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const lerp = (a, b, t) => a + (b - a) * t;
+const smooth = t => { t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- physiology ---------- */
+const BEAT = 60 / 75;
+function pulse(t) { const ph = ((t / BEAT) % 1 + 1) % 1; return ph < .12 ? Math.sin(ph / .12 * Math.PI / 2) : Math.exp(-(ph - .12) * 5.5); }
+const breath = t => .5 - .5 * Math.cos(TAU * t / 4.5);
+const bump = (dt, dur) => dt < 0 || dt > dur ? 0 : Math.sin(Math.PI * dt / dur);
+const hold = (dt, dur) => dt < 0 || dt > dur ? 0 : smooth(Math.min(dt / .4, (dur - dt) / .4));
+
+/* ---------- speckle field (seeded, tissue-locked) ---------- */
+const NW = 256, NZ = new Float32Array(NW * NW);
+(() => {
+  let s = 20261009; const r = () => (s = (Math.imul(s, 1664525) + 1013904223) >>> 0) / 4294967296;
+  const tmp = new Float32Array(NW * NW);
+  for (let i = 0; i < tmp.length; i++) tmp[i] = Math.sqrt(-2 * Math.log(1 - r() * .999));
+  for (let y = 0; y < NW; y++) for (let x = 0; x < NW; x++) {
+    const i = y * NW + x;
+    NZ[i] = (tmp[y * NW + ((x - 1) & 255)] + 2 * tmp[i] + tmp[y * NW + ((x + 1) & 255)] + tmp[(((y + 1) & 255) * NW) + x]) / 5 / 1.15;
+  }
+})();
+const spk = (x, z, c) => NZ[(Math.floor(x / c + 4096) & 255) + (Math.floor(z / c * 1.7 + 4096) & 255) * NW];
+const lf = (x, z) => .5 + .25 * Math.sin(x * 1.3 + z * .7) + .25 * Math.sin(x * .5 - z * 1.7 + 1.3);
+
+/* ---------- scene library (mm; x negative = screen left) ---------- */
+const V = (id, x, z, rx, rz, lab, o = {}) => Object.assign({ kind: 'vein', id, x, z, rx, rz, wt: .35, pc: .38, lab, clot: null }, o);
+const A = (id, x, z, r, lab, o = {}) => Object.assign({ kind: 'art', id, x, z, rx: r, rz: r, wt: .9, lab }, o);
+function mk(base, o = {}) {
+  const sc = Object.assign({ W: 38, D: 35, fat: 8, mus: [], bone: [], ves: [], target: null, name: '' }, base);
+  const cl = o.clot || {};
+  sc.ves = sc.ves.map(v => {
+    const w = Object.assign({}, v);
+    if (cl[v.id]) { w.clot = cl[v.id]; if (o.echo != null) w.echo = o.echo; }
+    if (o.iliac && v.kind === 'vein' && /^(cfv|fv)$/.test(v.id)) w.iliac = true;
+    return w;
+  });
+  if (o.mirror) { sc.ves.forEach(v => v.x = -v.x); sc.mus = sc.mus.map(m => Object.assign({}, m, { x: -m.x })); sc.bone = sc.bone.map(b => Object.assign({}, b, { x: -b.x })); }
+  if (o.name) sc.name = o.name;
+  return sc;
+}
+const SC = {
+  groin: (o = {}) => mk({ name: 'Right groin · CFV level', D: 36, fat: 8, bone: [{ x: 5, z: 60, r: 25 }],
+    ves: [A('cfa', -6, 15, 4, 'CFA'), V('cfv', 5, 16.5, 6.2, 4.6, 'CFV')], target: 'cfv' }, o),
+  node: (o = {}) => mk({ name: 'Right groin · CFV level + lymph node', D: 36, fat: 9, bone: [{ x: 5, z: 60, r: 25 }],
+    ves: [A('cfa', -6, 16, 4, 'CFA'), V('cfv', 5, 17.5, 6.2, 4.6, 'CFV'), { kind: 'node', id: 'node', x: 12.5, z: 7.5, rx: 5.6, rz: 3.1, wt: .4, lab: 'Node?', slideHide: true }], target: 'cfv' }, o),
+  sfj: (o = {}) => mk({ name: 'Right groin · saphenofemoral junction', D: 36, fat: 9, bone: [{ x: 4, z: 62, r: 25 }],
+    ves: [A('cfa', -6.5, 13, 4, 'CFA'), V('cfv', 4, 18, 6.4, 4.8, 'CFV'), V('gsv', 13, 11.5, 2.8, 2.3, 'GSV')], target: 'cfv' }, o),
+  bif: (o = {}) => mk({ name: 'Right groin · CFV bifurcation', D: 36, fat: 8, bone: [{ x: -2, z: 64, r: 26 }],
+    ves: [A('sfa', -3, 12.5, 3.2, 'SFA'), A('pfa', -10, 20, 2.8, 'PFA'), V('fv', 4, 16.5, 4.8, 3.7, 'FV'), V('dfv', -4, 25, 3.8, 2.9, 'DFV')], target: 'fv' }, o),
+  fvprox: (o = {}) => mk({ name: 'Right thigh · proximal femoral vein', D: 36, fat: 7, mus: [{ x: 3, z: 9.5, rx: 14, rz: 4.5 }], bone: [{ x: -12, z: 58, r: 15 }],
+    ves: [A('fa', -1, 17, 3.4, 'FA'), V('fv', 2, 23, 4.6, 3.6, 'FV')], target: 'fv' }, o),
+  fvmid: (o = {}) => mk({ name: 'Right thigh · mid-thigh femoral vein', D: 40, fat: 7, mus: [{ x: 1, z: 12, rx: 13, rz: 5.5 }], bone: [{ x: -12, z: 51, r: 13 }],
+    ves: [A('fa', 0, 22, 3.4, 'FA'), V('fv', 1.5, 28, 4.4, 3.4, 'FV')], target: 'fv' }, o),
+  fvadd: (o = {}) => mk({ name: 'Right thigh · adductor canal', D: 50, fat: 9, mus: [{ x: 2, z: 20, rx: 15, rz: 7 }], bone: [{ x: -10, z: 61, r: 13 }],
+    ves: [A('fa', 0, 33, 3.2, 'FA'), V('fv', 2, 38.5, 4.2, 3.2, 'FV')], target: 'fv' }, o),
+  pvup: (o = {}) => mk({ name: 'Right popliteal fossa · upper', D: 40, fat: 10, mus: [{ x: -16, z: 17, rx: 7, rz: 9 }, { x: 16, z: 17, rx: 7, rz: 9 }], bone: [{ x: 0, z: 72, r: 35 }],
+    ves: [V('pv', 0, 17, 5, 4, 'PV'), A('pa', .5, 25.5, 3.6, 'PA')], target: 'pv' }, o),
+  pvtri: (o = {}) => mk({ name: 'Right popliteal fossa · trifurcation', D: 40, fat: 8, mus: [{ x: -14, z: 13, rx: 9, rz: 7 }, { x: 14, z: 13, rx: 9, rz: 7 }], bone: [{ x: 0, z: 74, r: 36 }],
+    ves: [V('pv', -5.5, 20, 3.2, 2.5, 'ATV'), V('tpt', 4, 19.5, 3.8, 2.9, 'TPT'), A('pa', -.5, 25.5, 3.2, 'PA')], target: 'tpt' }, o),
+  calf: (o = {}) => mk({ name: 'Right calf · posterior', D: 40, fat: 5, mus: [{ x: 0, z: 11, rx: 22, rz: 6.5 }], bone: [{ x: 15, z: 50, r: 9 }, { x: -15, z: 47, r: 6 }],
+    ves: [V('sol', -2, 18, 2.6, 1.9, 'Soleal'), V('ptv', 3.1, 27, 2, 1.6, 'PTVs'), A('pta', 6.3, 27, 1.5, ''), V('ptv2', 9.5, 27, 2, 1.6, ''),
+      V('pev', -11, 31.5, 1.8, 1.5, 'Peroneal'), A('pea', -8, 31.5, 1.4, ''), V('pev2', -5, 31.5, 1.8, 1.5, '')], target: 'ptv' }, o),
+  baker: (o = {}) => mk({ name: 'Popliteal fossa · posteromedial', D: 40, fat: 9, mus: [{ x: 3, z: 30, rx: 5, rz: 7 }], bone: [{ x: 0, z: 72, r: 35 }],
+    ves: [V('pv', -5, 16, 4.6, 3.7, 'PV'), A('pa', -4.5, 24, 3.4, 'PA'), { kind: 'cyst', id: 'cyst', x: 10, z: 15, rx: 8.5, rz: 6, wt: .5, lab: 'Baker cyst?' }, { kind: 'cyst', id: 'neck', x: 7.5, z: 23, rx: 1.8, rz: 4, wt: .5, lab: '' }], target: 'pv' }, o),
+  dup: (o = {}) => mk({ name: 'Right thigh · mid-thigh, two veins', D: 40, fat: 7, mus: [{ x: 1, z: 11, rx: 13, rz: 5 }], bone: [{ x: -13, z: 52, r: 13 }],
+    ves: [A('fa', 0, 21, 3.2, 'FA'), V('fv1', -6, 26.5, 3.4, 2.8, 'FV 1'), V('fv2', 6.5, 26.5, 3.4, 2.8, 'FV 2', { clot: 'acute', echo: .16 })], target: 'fv2' }, o),
+  obese: (o = {}) => mk({ name: 'Distal thigh · 140 kg', D: 45, fat: 30, mus: [{ x: 2, z: 40, rx: 15, rz: 6 }], bone: [{ x: -12, z: 74, r: 14 }],
+    ves: [A('fa', 0, 49, 3.4, 'FA'), V('fv', 2, 55, 4.6, 3.6, 'FV')], target: 'fv' }, o)
+};
+
+/* ---------- the sonogram ---------- */
+class Sono {
+  constructor(cv, o = {}) {
+    this.cv = cv; this.ctx = cv.getContext('2d');
+    this.S = Object.assign({ p: 0, col: false, lab: true, depth: null, probe: 'lin', counter: false, slid: false, sq0: -99, va0: -99, iliac: false, follow: false }, o.S || {});
+    this.scene = o.scene; this.buf = document.createElement('canvas'); this.bctx = this.buf.getContext('2d');
+    this.dirty = true; this.busy = 0; this.onFrame = o.onFrame; this.onDraw = o.onDraw; this.now = 0;
+  }
+  set(k, v) { this.S[k] = v; this.dirty = true; }
+  setScene(sc) { this.scene = sc; this.dirty = true; }
+  event(k) { this.S[k] = this.now; this.busy = this.now + 2.6; this.dirty = true; }
+  geom(T, tm) {
+    const S = this.S, sc = this.scene, p = S.p, fatC = .22 * p, fat = sc.fat, shift = fat * fatC;
+    const sqE = bump(T - S.sq0, 1.2), vaE = hold(T - S.va0, 2.4);
+    const dv = [];
+    for (const v of sc.ves) {
+      if (v.slideHide && S.slid) continue;
+      const f = S.counter ? 1 : clamp(1.3 - v.z / 45, .18, 1), pe = p * f;
+      let k = 1, rz = v.rz, rx = v.rx, wt = v.wt, flow = 0;
+      if (v.kind === 'vein') {
+        const c = v.clot;
+        if (c === 'acute') { rz *= 1.3; rx *= 1.25; k = 1 - .17 * pe; }
+        else if (c === 'subacute') { rz *= 1.12; rx *= 1.1; k = Math.max(.5, 1 - pe / v.pc); }
+        else if (c === 'chronic') { rz *= .72; rx *= .75; wt = 1.3; k = Math.max(.45, 1 - pe / v.pc); }
+        else k = clamp(1 - pe / v.pc, 0, 1);
+        const br = breath(tm), dist = c === 'acute' ? 1 : (1 + .15 * sqE) * (1 + .3 * vaE);
+        rz *= (1 + .07 * br) * dist; rx *= Math.sqrt(dist) * (1 + .02 * br);
+        flow = c === 'acute' ? 0 : (S.iliac || v.iliac) ? .4 : (.32 + .28 * (1 - br) + (c ? 0 : .7 * sqE)) * (1 - .85 * vaE);
+      } else if (v.kind === 'art') {
+        k = 1 - Math.max(0, pe - .6) * 1.1; const pu = pulse(tm); rz *= 1 + .045 * pu; rx *= 1 + .045 * pu; flow = .2 + .8 * pu;
+      } else if (v.kind === 'node') { k = 1 - .1 * pe; flow = .3 + .7 * pulse(tm); }
+      else { k = 1 - .18 * pe; }
+      const rzD = Math.max(.07, rz * k), rxD = rx * (1 + (v.kind === 'vein' ? .32 : .12) * (1 - k));
+      let cz = v.z + (v.kind === 'vein' ? rz - rzD : 0);
+      cz = cz > fat ? cz - shift : cz * (1 - fatC);
+      dv.push(Object.assign({}, v, { cx: v.x, cz, rx: rxD, rz: rzD, wt, k, pe, flow, coapt: v.kind === 'vein' && rzD < .45, artDef: v.kind === 'art' && pe > .6 }));
+    }
+    return dv;
+  }
+  render(T) {
+    this.now = T;
+    const S = this.S, sc = this.scene, curv = S.probe === 'curv', tm = RM ? 0 : T;
+    const W = curv ? 60 : sc.W, D = S.depth || sc.D, cw = 640, ch = 420;
+    let ppm = ch / D; if (W * ppm > cw - 90) ppm = (cw - 90) / W;
+    const iw = W * ppm, ih = D * ppm, ox = Math.round((cw - iw) / 2);
+    const cell = Math.max(curv ? .3 : .19, D / 210), cols = Math.ceil(W / cell), rows = Math.ceil(D / cell);
+    if (!this.img || this.buf.width !== cols || this.buf.height !== rows) { this.buf.width = cols; this.buf.height = rows; this.img = this.bctx.createImageData(cols, rows); }
+    const dv = this.geom(T, tm); this.dv = dv;
+    const data = this.img.data, p = S.p, fatC = .22 * p, fat = sc.fat, shift = fat * fatC, fatD = fat * (1 - fatC);
+    const sc2 = curv ? .34 : .17, col = S.col, bx0 = -W * .36, bx1 = W * .36, bz0 = 3, bz1 = Math.min(D * .86, 60);
+    for (let r = 0; r < rows; r++) {
+      const z = (r + .5) * cell, z0 = z < fatD ? z / (1 - fatC) : z + shift;
+      let g = curv ? 1.12 * Math.exp(-z / 170) : 1.15 * Math.exp(-z / 95) * (z > 42 ? Math.exp(-(z - 42) / 7) : 1);
+      for (let c = 0; c < cols; c++) {
+        const x = -W / 2 + (c + .5) * cell, o = (r * cols + c) * 4;
+        if (curv && Math.abs(Math.atan2(x, z + 42)) > .6) { data[o] = data[o + 1] = data[o + 2] = 0; data[o + 3] = 255; continue; }
+        let e = tissue(sc, x, z0), enh = 1, cr = -1, cg = 0, cb = 0;
+        for (let i = 0; i < dv.length; i++) {
+          const v = dv[i], ax = Math.abs(x - v.cx);
+          if (z > v.cz + v.rz && ax < v.rx && v.rz > 1 && v.kind !== 'art' && v.kind !== 'node') { const q = ax / v.rx; enh *= 1 + (v.kind === 'cyst' ? .35 : .12) * (1 - q * q); }
+          if (ax > v.rx + 2.5 || Math.abs(z - v.cz) > v.rz + 2.5) continue;
+          const u = (x - v.cx) / v.rx, w = (z - v.cz) / v.rz, rr = Math.sqrt(u * u + w * w) + 1e-6;
+          const gl = Math.sqrt(u * u / (v.rx * v.rx) + w * w / (v.rz * v.rz)) / rr + 1e-6, d = (rr - 1) / gl;
+          if (d > .5) continue;
+          if (d >= 0) { if (v.kind !== 'node') e = Math.max(e, (v.kind === 'art' ? .55 : .42) * (1 - d * 1.2)); continue; }
+          if (-d <= v.wt) {
+            if (v.kind === 'art') { const tt = -d / v.wt; e = tt < .3 ? .95 : tt < .65 ? .28 : .85; }
+            else e = v.kind === 'node' ? .45 : v.kind === 'cyst' ? .62 : (v.clot === 'chronic' ? .82 : .6);
+            continue;
+          }
+          let flowing = false;
+          if (v.kind === 'vein') {
+            const cl = v.clot;
+            if (!cl) e = .012;
+            else if (cl === 'acute') e = (v.echo != null ? v.echo : .06) * (.5 + .9 * lf(x * 1.7, z * 1.7));
+            else if (cl === 'subacute') e = .34 * (.45 + lf(x * 1.3, z * 1.3));
+            else { e = .03; if ((-d < v.wt + 1.1 && spk(x * 3, z * 3, .5) > 1.05) || Math.abs(w + .25 * u) < .09) e = .78; }
+            flowing = v.flow > .1 && (cl === 'subacute' ? -d < v.wt + .8 : cl === 'chronic' ? w < -.3 : !cl);
+          } else if (v.kind === 'art') { e = .012; flowing = true; }
+          else if (v.kind === 'node') { e = -d < 1.6 ? .09 : .72 * (.7 + .5 * lf(x * 2, z * 2)); flowing = rr < .22; }
+          else e = .004;
+          if (col && flowing && x > bx0 && x < bx1 && z > bz0 && z < bz1 && v.flow > .12) {
+            const cv = v.flow * (.75 + .5 * spk(x, z, .5) * .5);
+            if (v.kind === 'vein') { cr = 25; cg = 90 + 110 * cv; cb = 160 + 95 * Math.min(1, cv); }
+            else { cr = 170 + 85 * Math.min(1, cv); cg = 40 + 120 * cv * cv; cb = 25; }
+          }
+        }
+        if (cr >= 0) { data[o] = cr; data[o + 1] = clamp(cg, 0, 255); data[o + 2] = cb; data[o + 3] = 255; continue; }
+        let val = e * (.18 + .95 * spk(x, z0, sc2)) * g * enh;
+        val = clamp(val, 0, 1); const gr = 255 * Math.pow(val, .85);
+        data[o] = gr; data[o + 1] = gr; data[o + 2] = gr * .97; data[o + 3] = 255;
+      }
+    }
+    this.bctx.putImageData(this.img, 0, 0);
+    const X = this.ctx; X.setTransform(1, 0, 0, 1, 0, 0); X.fillStyle = '#000'; X.fillRect(0, 0, cw, ch);
+    X.imageSmoothingEnabled = true; X.drawImage(this.buf, ox, 0, iw, ih);
+    const px = x => ox + (x + W / 2) * ppm, pz = z => z * ppm;
+    X.font = '600 12px ui-monospace,Menlo,Consolas,monospace'; X.textBaseline = 'alphabetic';
+    if (col) { X.strokeStyle = 'rgba(255,214,120,.55)'; X.lineWidth = 1; X.setLineDash([4, 3]); X.strokeRect(px(bx0), pz(bz0), (bx1 - bx0) * ppm, (bz1 - bz0) * ppm); X.setLineDash([]);
+      const gr = X.createLinearGradient(0, 40, 0, 120); gr.addColorStop(0, '#ffd23c'); gr.addColorStop(.45, '#c8281e'); gr.addColorStop(.5, '#000'); gr.addColorStop(.55, '#1e5ac8'); gr.addColorStop(1, '#5adcff');
+      X.fillStyle = gr; X.fillRect(cw - 16, 40, 8, 80); }
+    if (S.lab) {
+      for (const v of dv) {
+        if (!v.lab) continue;
+        const tx = px(v.cx), ty = pz(v.cz - v.rz - v.wt) - 7;
+        X.fillStyle = 'rgba(0,0,0,.55)'; const tw = X.measureText(v.lab).width; X.fillRect(tx - tw / 2 - 3, (ty < 16 ? pz(v.cz + v.rz) + 18 : ty) - 12, tw + 6, 16);
+        X.fillStyle = '#ffd678'; X.textAlign = 'center'; X.fillText(v.lab, tx, ty < 16 ? pz(v.cz + v.rz) + 18 : ty);
+      }
+      X.textAlign = 'left';
+    }
+    // depth scale
+    X.fillStyle = 'rgba(255,255,255,.55)'; X.font = '11px ui-monospace,Menlo,Consolas,monospace';
+    for (let d = 10; d < D; d += 10) { const y = pz(d); X.fillRect(ox + iw + 3, y, 6, 1); X.fillText((d / 10) + '', ox + iw + 12, y + 4); }
+    for (let d = 5; d < D; d += 10) X.fillRect(ox + iw + 3, pz(d), 3, 1);
+    // orientation marker
+    X.fillStyle = '#5adc8c'; X.beginPath(); X.arc(ox + 10, 12, 4, 0, TAU); X.fill();
+    // pressure bar
+    if (ox > 34) { const h = 260, y0 = 80; X.strokeStyle = 'rgba(255,255,255,.35)'; X.strokeRect(ox - 24, y0, 10, h); X.fillStyle = p > .8 ? '#e0624f' : p > .45 ? '#e3b04b' : '#76c26a'; X.fillRect(ox - 23, y0 + h * (1 - p) + 1, 8, h * p - 1 > 0 ? h * p - 1 : 0); X.fillStyle = 'rgba(255,255,255,.6)'; X.fillText('P', ox - 23, y0 - 6); }
+    X.fillStyle = 'rgba(255,214,120,.85)'; X.font = '600 10.5px ui-monospace,Menlo,Consolas,monospace';
+    X.fillText('SCHEMATIC SIMULATION · NOT A REAL SCAN', 8, ch - 10);
+    X.fillStyle = 'rgba(255,255,255,.6)'; X.textAlign = 'right'; X.fillText(curv ? 'CURVILINEAR 4 MHz' : 'LINEAR 10 MHz', cw - 8, 14); X.textAlign = 'left';
+    if (this.onDraw) this.onDraw(X, { px, pz, ppm, ox, iw, dv });
+  }
+  target() { return this.dv && this.dv.find(v => v.id === this.scene.target); }
+  artDef() { return this.dv && this.dv.some(v => v.kind === 'art' && v.artDef); }
+}
+function tissue(sc, x, z) {
+  if (z < .6) return .82;
+  const fat = sc.fat;
+  if (z < fat) { const s = Math.abs(Math.sin(z * .95 + 1.6 * Math.sin(x * .13 + z * .05) + .9 * Math.sin(x * .41 - z * .3))); return s < .1 ? .48 : .15 + .06 * lf(x * .5, z * .8); }
+  if (z < fat + .6) return .8;
+  let e = .31 + .12 * (lf(x * .33, z * .8) - .5) + (Math.abs(Math.sin(z * .55 + Math.sin(x * .2) * 1.4)) < .05 ? .25 : 0);
+  for (const m of sc.mus) {
+    const u = (x - m.x) / m.rx, w = (z - m.z) / m.rz, r = Math.sqrt(u * u + w * w);
+    if (Math.abs(r - 1) * Math.min(m.rx, m.rz) < .45) { e = .72; break; }
+    if (r < 1) e = .36 + .1 * (lf(x * .7, z * 1.1) - .5);
+  }
+  for (const b of sc.bone) {
+    const d = Math.hypot(x - b.x, z - b.z) - b.r;
+    if (Math.abs(x - b.x) < b.r && (d < 0 || z > b.z)) { if (d > -1 && z < b.z) return 1.05; return .025; }
+  }
+  return e;
+}
+
+/* ---------- verdict ---------- */
+function verdict(sim) {
+  const t = sim.target(); if (!t) return '';
+  const p = Math.round(sim.S.p * 100), ad = sim.dv.some(v => v.kind === 'art' && v.artDef);
+  const name = t.lab || 'Vein';
+  if (t.coapt) return `<b class="ok">${name}: fully compressed ✓</b> Walls meet at ${p}% pressure: no thrombus at this level.`;
+  if (ad) return t.k > .78 ? `<b class="bad">${name}: NON-COMPRESSIBLE – artery deforming.</b> DVT until proven otherwise.` : `<b class="bad">${name}: only PARTIALLY compressible – artery deforming.</b> Abnormal: non-occlusive or chronic thrombus.`;
+  if (sim.S.p < .35) return `<b class="warn">Not yet compressed – push more.</b> Pressure ${p}%; the artery has not started to deform.`;
+  return `<b class="warn">${name}: not compressed at this pressure.</b> The artery has not deformed yet, so the test is not finished: push more${sim.scene.ves.some(v => v.z > 30) ? ' or add counter-pressure' : ''}.`;
+}
+
+/* ---------- loop + registry ---------- */
+const REG = [];
+let CUR_SLIDE = null;
+function reg(sim) { if (!sim.cv) return sim; sim.slide = sim.cv.closest('.slide'); REG.push(sim); return sim; }
+function sono(id, o) { const cv = document.getElementById(id); if (!cv) return null; return reg(new Sono(cv, o)); }
+function tick(now) {
+  const t = now / 1000;
+  for (const s of REG) {
+    if (s.slide !== CUR_SLIDE) continue;
+    if (!s.cv.getClientRects().length) continue;
+    try {
+      s.onFrame && s.onFrame(t, s);
+      if (!RM || s.dirty || t < s.busy) { s.render(t); s.dirty = false; }
+    } catch (e) { console.error(e); s.onFrame = null; s.dirty = false; s.render = () => {}; }
+  }
+  requestAnimationFrame(tick);
+}
+</script>
+<script>
+/* =====================================================================
+   DECK: navigation, timer, overview, theme (shared pattern with gastric)
+   ===================================================================== */
+const slides = $$('.slide');
+let cur = 0, running = false, elapsed = 0, slideStart = 0, lastNow = performance.now();
+const plan = slides.map(s => +s.dataset.min || 1);
+const TOTAL = plan.reduce((a, b) => a + b, 0) * 60;
+const cumStart = []; plan.reduce((acc, m, i) => { cumStart[i] = acc; return acc + m; }, 0);
+const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+$('#totT').textContent = '/ ' + fmt(TOTAL);
+$('#elT').title = 'Elapsed / ' + fmt(TOTAL);
+function go(i) {
+  i = clamp(i, 0, slides.length - 1);
+  if (i > 0 && !running && elapsed === 0) running = true;
+  slides.forEach((s, k) => { s.classList.toggle('active', k === i); s.classList.toggle('prev', k < i); });
+  cur = i; CUR_SLIDE = slides[i]; slides[i].scrollTop = 0;
+  REG.forEach(s => { if (s.slide === slides[i]) s.dirty = true; });
+  $('#cnt').textContent = `${i + 1} / ${slides.length}`;
+  $('#notesTxt').textContent = slides[i].dataset.prompt || '';
+  $('#prog').style.width = ((i + 1) / slides.length * 100) + '%';
+  try { history.replaceState(null, '', '#' + (i + 1)); } catch (e) {}
+  slideStart = elapsed; updTimer();
+  $$('#ovGrid button').forEach((b, k) => b.classList.toggle('cur', k === i));
+}
+function jumpToCases() { go(slides.indexOf($('#partCases'))); }
+function updTimer() {
+  const now = performance.now(); if (running) elapsed += (now - lastNow) / 1000; lastNow = now;
+  const se = elapsed - slideStart, sug = plan[cur] * 60;
+  $('#elT').textContent = fmt(elapsed); $('#elT').classList.toggle('over', elapsed > TOTAL);
+  const sl = $('#slT'); sl.textContent = `${fmt(se)} / ${fmt(sug)}`; sl.classList.toggle('over', se > sug * 1.25);
+  $('#tmB').textContent = running ? '❚❚' : '▶';
+  let k = 0, m = elapsed / 60; while (k < plan.length - 1 && cumStart[k + 1] <= m) k++;
+  const frac = clamp((m - cumStart[k]) / plan[k], 0, 1);
+  $('#pace').style.left = ((k + frac) / slides.length * 100) + '%';
+}
+setInterval(updTimer, 250);
+$('#prevB').onclick = () => go(cur - 1); $('#nextB').onclick = () => go(cur + 1);
+$('#tmB').onclick = () => { running = !running; updTimer(); };
+$('#tmR').onclick = () => { elapsed = 0; slideStart = 0; running = false; updTimer(); };
+$('#fsB').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
+function toggleTheme() {
+  const r = document.documentElement, dark = getComputedStyle(r).getPropertyValue('--bg').trim().toLowerCase() === '#1b1814';
+  r.dataset.theme = dark ? 'light' : 'dark';
+}
+$('#thB').onclick = toggleTheme;
+$('#ntB').onclick = () => $('#notes').hidden = !$('#notes').hidden;
+const ov = $('#overview');
+$('#ovGrid').innerHTML = slides.map((s, i) => `<button data-i="${i}"><span class="on">${String(i + 1).padStart(2, '0')}</span><span class="ot">${s.dataset.title}</span><span class="om">${plan[i]} min</span></button>`).join('');
+$('#ovGrid').onclick = e => { const b = e.target.closest('button'); if (b) { go(+b.dataset.i); ov.classList.remove('show'); } };
+$('#ovB').onclick = () => ov.classList.toggle('show');
+document.addEventListener('keydown', e => {
+  const tg = e.target, typing = tg.matches && tg.matches('input,textarea,select');
+  const ctl = tg.closest && tg.closest('button,[role=button],[role=tab]');
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (['ArrowRight', 'PageDown'].includes(e.key) && !typing) { e.preventDefault(); go(cur + 1); }
+  else if (['ArrowLeft', 'PageUp'].includes(e.key) && !typing) { e.preventDefault(); go(cur - 1); }
+  else if (e.key === ' ' && !typing && !ctl) { e.preventDefault(); go(cur + (e.shiftKey ? -1 : 1)); }
+  else if (e.key === 'Home' && !typing) go(0); else if (e.key === 'End' && !typing) go(slides.length - 1);
+  else if (typing) return;
+  else if (e.key === 'o' || e.key === 'O') ov.classList.toggle('show');
+  else if (e.key === 'f' || e.key === 'F') $('#fsB').click();
+  else if (e.key === 't' || e.key === 'T') toggleTheme();
+  else if (e.key === 'p' || e.key === 'P') $('#tmB').click();
+  else if (e.key === 'n' || e.key === 'N') $('#notes').hidden = !$('#notes').hidden;
+  else if (e.key === 'c' || e.key === 'C') jumpToCases();
+  else if (e.key === 'r' || e.key === 'R') { const c = slides[cur].dataset.case; if (c !== undefined) CASE_ST[+c].revealNext(); }
+  else if (e.key === 'Escape') ov.classList.remove('show');
+});
+
+/* ---------- UI helpers ---------- */
+function rng(id, oid, f, cb) {
+  const el = $('#' + id), o = oid && $('#' + oid);
+  const up = () => { const v = +el.value; if (o) o.textContent = f ? f(v) : v; cb && cb(v); };
+  el.addEventListener('input', up); up(); return el;
+}
+function seg(id, cb, init = true) {
+  const el = $('#' + id);
+  el.addEventListener('click', e => { const b = e.target.closest('button'); if (!b || !el.contains(b)) return; $$('button', el).forEach(x => x.setAttribute('aria-pressed', x === b)); cb(b.dataset, b); });
+  const on = $('button[aria-pressed=true]', el); if (on && init) cb(on.dataset, on);
+}
+function tabs(id, cb) {
+  const el = $('#' + id); el.setAttribute('role', 'tablist');
+  $$('button', el).forEach(b => b.setAttribute('role', 'tab'));
+  const pick = b => { $$('button', el).forEach(x => x.setAttribute('aria-selected', x === b)); cb(b.dataset, b); };
+  el.addEventListener('click', e => { const b = e.target.closest('button'); if (b && el.contains(b)) pick(b); });
+  const on = $('button[aria-selected=true]', el) || $('button', el); pick(on);
+}
+function toggle(id, cb) { const b = $('#' + id); b.addEventListener('click', () => { const v = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', v); cb(v); }); return b; }
+function setStat(id, html) { const el = $('#' + id); if (el && el._h !== html) { el.innerHTML = html; el._h = html; } }
+function keyBtn(el, fn) { el.addEventListener('click', fn); el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); fn(e); } }); }
+const pct = v => v + '%';
+
+/* =====================================================================
+   HERO + dividers + end slide
+   ===================================================================== */
+function cycleP(t) { const ph = (t % 5); return ph < 1.2 ? 0 : ph < 2.3 ? smooth((ph - 1.2) / 1.1) * .55 : ph < 3.4 ? .55 : ph < 4.4 ? .55 * (1 - smooth((ph - 3.4) / 1)) : 0; }
+const HERO = sono('heroUS', { scene: SC.groin(), onFrame(t, s) {
+  if (!RM) s.S.p = cycleP(t);
+  const tv = s.target(); if (tv) setStat('heroStat', tv.coapt ? `<b class="ok">CFV compressed: walls meet ✓</b> No thrombus at this level.` : s.S.p > .02 ? `Pressure ${Math.round(s.S.p * 100)}% · vein closing…` : `No pressure · CFV open, CFA round and pulsatile`);
+} });
+sono('p1A', { scene: SC.groin(), S: { p: 0 } });
+sono('p1B', { scene: SC.groin(), S: { p: .5 } });
+sono('p2US', { scene: SC.groin({ clot: { cfv: 'acute' }, echo: .1 }), S: { p: .85 } });
+sono('endUS', { scene: SC.pvup(), onFrame(t, s) { if (!RM) s.S.p = cycleP(t + 1); } });
+
+/* =====================================================================
+   SIM 1 · Vein or artery? Squeeze it.
+   ===================================================================== */
+const S1 = { scene: 'groin', state: 'normal' };
+const s1 = sono('s1US', { scene: SC.groin(), onFrame() { setStat('s1Stat', verdict(s1)); } });
+function s1Build() {
+  const cl = S1.state === 'normal' ? null : S1.state;
+  const key = S1.scene === 'pop' ? 'pvup' : S1.scene === 'node' ? 'node' : 'groin', tgt = key === 'pvup' ? 'pv' : 'cfv';
+  s1.setScene(SC[key](cl ? { clot: { [tgt]: cl } } : {}));
+  $('#s1Pov').textContent = 'Schematic simulation · ' + s1.scene.name;
+  $('#s1Tip').innerHTML = S1.scene === 'node' ? 'The oval structure above the CFV has a dark cortex and a bright hilum. It does not compress, has no flow in its body (only a tiny hilar vessel on colour), and is not tubular: it is a lymph node, not a vein. Schematic simulation.'
+    : S1.scene === 'pop' ? 'Popliteal fossa scanned from behind, knee slightly flexed: the vein lies superficial to (closer to the probe than) the artery. Schematic simulation.'
+    : { normal: 'Normal vein: closes completely at about 35–40% pressure, long before the artery deforms. Schematic simulation, not a real scan.', acute: 'Acute thrombus: the vein is distended and its lumen can be nearly black. Push past 60%: the artery deforms, the vein does not.', subacute: 'Subacute thrombus: moderately echogenic material, partially compressible, a residual lumen persists. Colour flows only around the clot.', chronic: 'Chronic post-thrombotic vein: small, thick-walled, bright echoes adherent to the wall, only partially compressible. Compare with any prior scan.' }[S1.state];
+}
+rng('s1P', 's1Po', pct, v => { s1.set('p', v / 100); const g = v < 45 ? 1 : v < 80 ? 2 : 3; $$('#s1G i').forEach((el, i) => el.className = i < g ? 'on' + g : ''); $('#s1Gt').textContent = ['', 'gentle', 'firm', 'excessive'][g]; });
+seg('s1State', d => { S1.state = d.v; s1Build(); });
+seg('s1Scene', d => { S1.scene = d.v; s1Build(); });
+toggle('s1Col', v => s1.set('col', v));
+toggle('s1Lb', v => s1.set('lab', v));
+$('#s1Sq').onclick = () => s1.event('sq0');
+$('#s1Va').onclick = () => s1.event('va0');
+
+/* =====================================================================
+   LANDMARKS
+   ===================================================================== */
+const lm = sono('lmUS', { scene: SC.groin(), onFrame() { setStat('lmStat', verdict(lm)); } });
+function lmPick(li) {
+  $$('#lmList li').forEach(x => { x.classList.toggle('on', x === li); x.setAttribute('aria-pressed', x === li); });
+  lm.setScene(SC[li.dataset.k]()); $('#lmPov').textContent = 'Schematic simulation · ' + lm.scene.name;
+}
+$$('#lmList li').forEach(li => keyBtn(li, () => lmPick(li)));
+lmPick($('#lmList li'));
+rng('lmP', 'lmPo', pct, v => lm.set('p', v / 100));
+
+/* =====================================================================
+   COMPRESSION technique split screen
+   ===================================================================== */
+const cpA = sono('cpA', { scene: SC.groin(), S: { p: 0 } }), cpB = sono('cpB', { scene: SC.groin(), S: { p: .5 } });
+const CP = {
+  full: [null, .5, '<b class="ok">Full coaptation:</b> anterior and posterior walls meet along their whole width. Normal at this level.'],
+  partial: ['subacute', .8, '<b class="warn">Partial collapse:</b> the artery deforms but a residual lumen with echogenic material persists. Abnormal: non-occlusive or chronic thrombus.'],
+  none: ['acute', .85, '<b class="bad">No collapse:</b> distended vein, near-anechoic lumen, the artery deforms but the vein does not. DVT.']
+};
+tabs('cpTabs', d => { const c = CP[d.v], o = c[0] ? { clot: { cfv: c[0] } } : {}; cpA.setScene(SC.groin(o)); cpB.setScene(SC.groin(o)); cpB.set('p', c[1]); setStat('cpStat', c[2]); });
+
+/* =====================================================================
+   EVIDENCE flow
+   ===================================================================== */
+const EV = {
+  lo: [['Pre-test probability', 'Low (Wells "unlikely")'], ['D-dimer', 'Negative'], ['Decision', '<b>DVT excluded. No scan needed.</b>', 1]],
+  hi: [['Proximal CUS', 'Negative (veins compress at every point scanned)'], ['But', 'D-dimer positive, or Wells "likely"'], ['Decision', '<b>Repeat proximal CUS in about 1 week (5–7 days), or arrange a whole-leg study.</b> Not "no DVT".', 1]],
+  po: [['D-dimer', 'Day-3 post-op: almost always raised, so it tells you little'], ['Pre-test probability', 'Clinical gestalt carries the decision (Wells is validated in outpatients only)'], ['Decision', '<b>Positive CUS: treat. Negative limited CUS with ongoing suspicion: extend the scan, repeat in about 1 week, or whole-leg duplex.</b>', 1]]
+};
+tabs('evTabs', d => { $('#evFlow').innerHTML = EV[d.v].map(([a, b, h]) => `<li class="${h ? 'hi' : ''}"><span class="cap" style="display:block;margin:0 0 2px">${a}</span>${b}</li>`).join(''); });
+
+/* =====================================================================
+   HEART schematic (A4C + PSAX)
+   ===================================================================== */
+function heartSVG(dil) {
+  const fan = cx => `<path class="fan" d="M${cx} 14 L${cx - 112} 214 A 230 230 0 0 0 ${cx + 112} 214 Z"/>`;
+  const a4c = dil
+    ? `<path class="cav" stroke="#8d8d8d" stroke-width="5" d="M128 48 Q52 98 62 176 L126 178 Q140 112 128 48 Z"/><path class="cav" stroke="#8d8d8d" stroke-width="11" d="M146 66 Q190 90 186 170 L140 172 Q150 120 146 66 Z"/><circle class="cav" stroke="#8d8d8d" stroke-width="5" cx="96" cy="200" r="24"/><circle class="cav" stroke="#8d8d8d" stroke-width="5" cx="164" cy="200" r="20"/><text x="76" y="132">RV</text><text x="152" y="132">LV</text><text x="90" y="206">RA</text><text x="156" y="206">LA</text><text x="18" y="252">A4C · RV/LV ≈ 1.3</text>`
+    : `<path class="cav" stroke="#8d8d8d" stroke-width="6" d="M122 62 Q90 110 92 176 L124 178 Q128 118 122 62 Z"/><path class="cav" stroke="#8d8d8d" stroke-width="11" d="M138 40 Q200 70 196 172 L134 174 Q136 100 138 40 Z"/><circle class="cav" stroke="#8d8d8d" stroke-width="5" cx="106" cy="200" r="18"/><circle class="cav" stroke="#8d8d8d" stroke-width="5" cx="166" cy="200" r="22"/><text x="100" y="140">RV</text><text x="158" y="128">LV</text><text x="99" y="205">RA</text><text x="158" y="205">LA</text><text x="18" y="252">A4C · RV/LV ≈ 0.6</text>`;
+  const psax = dil
+    ? `<path class="cav" stroke="#8d8d8d" stroke-width="5" d="M336 196 Q296 124 332 80 Q372 50 430 64 Q404 76 384 96 L362 166 Q352 184 336 196 Z"/><path class="cav" stroke="#8d8d8d" stroke-width="11" d="M396 106 Q452 96 460 148 Q458 198 404 198 Q380 194 374 172 Z"/><text x="326" y="136">RV</text><text x="412" y="154">LV</text><text x="288" y="252">PSAX · D-shaped LV</text>`
+    : `<path class="cav" stroke="#8d8d8d" stroke-width="5" d="M348 176 Q310 100 372 76 Q402 64 432 76 Q400 86 380 102 Q358 128 360 176 Z"/><circle class="cav" stroke="#8d8d8d" stroke-width="12" cx="414" cy="146" r="40"/><text x="338" y="140">RV</text><text x="406" y="152">LV</text><text x="288" y="252">PSAX · round LV</text>`;
+  return `<svg viewBox="0 0 520 264" role="img" aria-label="${dil ? 'Schematic apical four-chamber and short-axis views with a dilated right ventricle larger than the left and a D-shaped left ventricle' : 'Schematic apical four-chamber and short-axis views with a normal-sized right ventricle and round left ventricle'}"><rect width="520" height="264" rx="8" fill="#000"/>${fan(130)}${fan(390)}${a4c}${psax}<text class="wm" x="300" y="18">SCHEMATIC · NOT A REAL SCAN</text></svg>`;
+}
+tabs('hTabs', d => { $('#hSvg').innerHTML = heartSVG(d.v === '1'); });
+</script>
+<script>
+/* =====================================================================
+   SIM 2 · Walk the leg
+   ===================================================================== */
+const PTS = {
+  iliac: { x: 140, y: 20, seg: 'iliac', scene: 'groin', lab: 'External iliac vein (above the inguinal ligament)' },
+  ingl: { x: 140, y: 58, seg: 'cfv', scene: 'groin', lab: 'CFV at the inguinal ligament' },
+  sfj: { x: 141, y: 77, seg: 'cfv', scene: 'sfj', lab: 'Saphenofemoral junction' },
+  bif: { x: 142, y: 97, seg: 'cfv', scene: 'bif', lab: 'CFV bifurcation' },
+  fvprox: { x: 145, y: 150, seg: 'fvmid', scene: 'fvprox', lab: 'Femoral vein, proximal thigh' },
+  fvmid: { x: 148, y: 205, seg: 'fvmid', scene: 'fvmid', lab: 'Femoral vein, mid-thigh' },
+  fvadd: { x: 147, y: 255, seg: 'fvadd', scene: 'fvadd', lab: 'Femoral vein, adductor canal' },
+  pvup: { x: 137, y: 296, seg: 'pv', scene: 'pvup', lab: 'Popliteal vein, upper fossa' },
+  pvtri: { x: 130, y: 340, seg: 'pv', scene: 'pvtri', lab: 'Popliteal vein at the trifurcation' },
+  calf: { x: 129, y: 430, seg: 'calf', scene: 'calf', lab: 'Calf: posterior tibial and peroneal veins' }
+};
+const PROTO = {
+  p2: { n: '2-point', pts: ['ingl', 'sfj', 'bif', 'pvup', 'pvtri'], segs: ['cfv', 'pv'] },
+  p3: { n: '3-point', pts: ['ingl', 'sfj', 'bif', 'fvmid', 'pvup', 'pvtri'], segs: ['cfv', 'fvmid', 'pv'] },
+  ext: { n: 'Extended proximal', pts: ['ingl', 'sfj', 'bif', 'fvprox', 'fvmid', 'fvadd', 'pvup', 'pvtri'], segs: ['cfv', 'dfv', 'fvmid', 'fvadd', 'pv'] },
+  whole: { n: 'Whole-leg', pts: ['ingl', 'sfj', 'bif', 'fvprox', 'fvmid', 'fvadd', 'pvup', 'pvtri', 'calf'], segs: ['cfv', 'dfv', 'fvmid', 'fvadd', 'pv', 'calf'] }
+};
+const SEGN = { cfv: 'the common femoral vein / SFJ', pv: 'the popliteal vein', fvmid: 'the mid-thigh femoral vein', fvadd: 'the femoral vein in the adductor canal', dfv: 'the deep femoral vein beyond its origin', calf: 'the calf veins', iliac: 'the iliac vein' };
+const HIT = { cfv: 'Proximal DVT (CFV/SFJ): anticoagulate unless contraindicated.', pv: 'Proximal DVT (popliteal): anticoagulate unless contraindicated.', fvmid: 'Isolated femoral-vein DVT: this is a proximal DVT, anticoagulate.', fvadd: 'Femoral-vein DVT in the adductor canal: proximal DVT, anticoagulate.', dfv: 'Deep femoral vein thrombus: seen only because the scan followed the deep femoral vein a few centimetres beyond its origin. Treat as proximal DVT.', calf: 'Isolated calf DVT: anticoagulate, or serial imaging over 2 weeks if low risk (CHEST 2016, reaffirmed 2021).' };
+const MISS = { fvmid: 'With high pre-test probability or a positive D-dimer: extend the scan, repeat proximal CUS in about 1 week, or arrange a whole-leg study.', fvadd: 'Extend the scan with counter-pressure at the adductor canal, or repeat in about 1 week, or whole-leg study.', dfv: 'Isolated deep femoral clots are easily missed. If suspicion persists: formal duplex.', calf: 'Calf clot: needs a whole-leg study or a repeat proximal scan in about 1 week.', iliac: 'Clue: the CFV compresses, but its Doppler is continuous and non-phasic (open the Doppler strip). Needs formal duplex of the iliac segment or CT/MR venography.' };
+const CLW = [['cfv', 30], ['pv', 25], ['fvmid', 15], ['fvadd', 8], ['dfv', 4], ['calf', 15], ['iliac', 3]];
+const CLPOS = { cfv: [141, 70], fvmid: [147, 182], fvadd: [148, 245], dfv: [117, 152], pv: [134, 318], calf: [136, 455], iliac: [140, 28] };
+const L2 = { proto: 'p2', pt: 'ingl', clot: null, shown: false, busy: false, dop: false, tally: { p2: [0, 0], p3: [0, 0], ext: [0, 0], whole: [0, 0] }, hop0: -9 };
+
+function legSVG() {
+  const segp = (s, d) => `<path class="seg-v" data-seg="${s}" d="${d}"/>`;
+  const pts = Object.entries(PTS).map(([k, p], i) => `<g role="button" tabindex="0" data-pt="${k}" aria-label="Probe position: ${p.lab}"><circle class="pp" cx="${p.x + 22}" cy="${p.y}" r="7"/><path d="M${p.x + 8} ${p.y} H${p.x + 15}" stroke="var(--accent)" stroke-width="1"/><text x="${p.x + 33}" y="${p.y + 3}" class="sm">${k === 'iliac' ? 'iliac' : k === 'calf' ? 'calf' : i}</text></g>`).join('');
+  return `<svg viewBox="0 0 260 580" aria-label="Schematic of the right leg deep veins, anterior view, with selectable probe positions">
+  <path class="outline" d="M38 36 Q26 170 70 292 Q62 330 74 362 Q66 460 98 566 L152 566 Q182 460 174 362 Q184 326 178 292 Q206 170 206 36 Z"/>
+  <path class="lig" d="M40 38 Q120 50 204 62"/><text x="40" y="30" class="sm">inguinal lig.</text>
+  <path class="art" d="M128 0 L131 60 L136 98 L141 226 Q143 256 134 282 L124 345"/>
+  <path class="ili" d="M140 0 V55"/>
+  <path class="gsv" d="M142 77 Q172 84 180 160 Q186 262 172 300 Q160 420 142 560"/><text x="186" y="182" class="sm">GSV</text>
+  ${segp('cfv', 'M140 55 L142 97')}${segp('dfv', 'M142 97 Q122 125 108 186')}${segp('fvmid', 'M142 97 L149 226')}${segp('fvadd', 'M149 226 Q151 256 140 282')}${segp('pv', 'M140 282 L129 345')}
+  ${segp('calf', 'M129 345 Q104 360 98 540')}${segp('calf', 'M129 345 L127 372 Q138 450 142 545')}${segp('calf', 'M127 372 Q112 450 114 535')}${segp('calf', 'M112 378 q-7 20 0 42')}${segp('calf', 'M146 382 q7 20 0 42')}
+  <text x="48" y="100" class="sm">← lateral</text><text x="170" y="120" class="sm">medial →</text>
+  <text x="2" y="318" class="sm">popliteal fossa</text><text x="2" y="328" class="sm">(behind knee)</text>
+  <text x="96" y="160" class="sm">DFV</text><text x="152" y="176" class="sm">FV</text><text x="100" y="510" class="sm">ATV</text>
+  <ellipse class="clot" id="legClot" rx="7" ry="9" cx="0" cy="0" style="display:none"/>
+  <g id="legProbe" class="probe"><rect x="-6" y="-14" width="12" height="20" rx="3"/></g>
+  ${pts}</svg>`;
+}
+$('#legSvg').innerHTML = legSVG();
+const s2 = sono('s2US', { scene: SC.groin(), onFrame(t, s) {
+  if (L2.hopP != null) { const dt = t - L2.hop0; s.S.p = RM ? .7 : .7 * Math.sin(Math.PI * clamp(dt / .55, 0, 1)); s.dirty = true; if (s.S.p > .6) L2.last = 'After compression: ' + verdict(s); }
+  if (!L2.busy) setStat('s2Stat', [L2.msg, L2.res ? '' : (s.S.p === 0 && L2.last ? L2.last : verdict(s))].filter(Boolean).join('<br>'));
+  if (L2.dop) drawDop(t);
+} });
+const dopCv = $('#s2Dop'), dopX = dopCv.getContext('2d');
+function drawDop(t) {
+  const tm = RM ? 0 : t, w = 640, h = 96, base = 84, il = L2.clot === 'iliac';
+  dopX.fillStyle = '#000'; dopX.fillRect(0, 0, w, h);
+  dopX.fillStyle = 'rgba(255,255,255,.25)'; dopX.fillRect(0, base, w, 1);
+  for (let i = 0; i < w; i += 2) {
+    const tt = tm - (w - i) / 110, sq = bump(tt - s2.S.sq0, 1.2);
+    let v = il ? 9 + .6 * Math.sin(tt * 9) : 3 + 16 * (1 - breath(tt)) + 30 * sq;
+    const top = base - v * 2.6;
+    for (let y = top; y < base; y += 2) { const a = .25 + .6 * NZ[((i * 7 + Math.floor(y) * 13) & 65535)] / 2; dopX.fillStyle = `rgba(230,240,255,${clamp(a, 0, .9)})`; dopX.fillRect(i, y, 2, 2); }
+  }
+  dopX.fillStyle = '#ffd678'; dopX.font = '600 11px ui-monospace,Menlo,Consolas,monospace';
+  dopX.fillText(il ? 'CFV PW Doppler · continuous, NON-PHASIC (proximal obstruction?)' : 'CFV PW Doppler · phasic with respiration (normal)', 8, 14);
+  dopX.fillStyle = 'rgba(255,214,120,.7)'; dopX.fillText('SCHEMATIC', w - 80, 14);
+}
+function ptClot(k) {
+  const c = L2.clot; if (!c) return {};
+  const p = PTS[k];
+  if (c === 'iliac') return ['ingl', 'sfj', 'bif'].includes(k) ? { iliac: true } : {};
+  if (c === 'dfv') return k === 'bif' && (L2.proto === 'ext' || L2.proto === 'whole') ? { clot: { dfv: 'subacute' } } : {};
+  if (p.seg !== c) return {};
+  const tg = SC[p.scene]().target, o = { clot: { [tg]: 'acute' }, echo: .14 };
+  if (k === 'calf') o.clot = { ptv: 'acute', ptv2: 'acute', pev: 'acute', pev2: 'acute' };
+  if (k === 'bif') o.clot = { fv: 'acute' };
+  return o;
+}
+function legShow(k) {
+  L2.pt = k; L2.last = ''; L2.res = false; const p = PTS[k];
+  $$('#legSvg [data-pt]').forEach(g => $('.pp', g).classList.toggle('on', g.dataset.pt === k));
+  $('#legProbe').setAttribute('transform', `translate(${p.x} ${p.y})`);
+  s2.setScene(SC[p.scene](ptClot(k))); s2.set('p', 0);
+  $('#s2Pov').textContent = 'Schematic simulation · ' + p.lab;
+  L2.msg = k === 'iliac' ? '<b class="warn">The iliac vein cannot be compressed with a probe</b> (deep in the pelvis). Assess it indirectly: CFV Doppler phasicity. View shown: CFV.' : '';
+  if (k === 'iliac') s2.setScene(SC.groin(ptClot('ingl')));
+  s2.set('iliac', L2.clot === 'iliac' && ['iliac', 'ingl', 'sfj', 'bif'].includes(k));
+}
+function legCover() {
+  const segs = PROTO[L2.proto].segs;
+  $$('#legSvg .seg-v').forEach(el => { const on = segs.includes(el.dataset.seg); el.classList.toggle('cov', on); el.classList.toggle('unc', !on); });
+}
+function tallyDraw() {
+  $('#s2Tally').innerHTML = `<thead><tr><th>Protocol</th><th>Runs</th><th>Detected</th><th>Rate (illustrative)</th></tr></thead><tbody>` +
+    Object.entries(PROTO).map(([k, p]) => { const [n, d] = L2.tally[k]; return `<tr><td>${p.n}</td><td>${n}</td><td>${d}</td><td>${n ? Math.round(d / n * 100) + '%' : '–'}</td></tr>`; }).join('') + '</tbody>';
+}
+$$('#legSvg [data-pt]').forEach(g => keyBtn(g, () => { if (!L2.busy) legShow(g.dataset.pt); }));
+seg('s2Proto', d => { L2.proto = d.v; legCover(); if (!L2.busy) legShow(L2.pt); });
+$('#s2Comp').onclick = () => { if (L2.busy) return; L2.res = false; L2.hop0 = s2.now; L2.hopP = 1; s2.busy = s2.now + 1; setTimeout(() => { L2.hopP = null; s2.set('p', 0); }, 650); };
+toggle('s2DopB', v => { L2.dop = v; dopCv.hidden = !v; if (v) drawDop(s2.now); });
+function placeClot() {
+  let r = Math.random() * 100; for (const [k, w] of CLW) { if ((r -= w) < 0) return k; } return 'cfv';
+}
+$('#s2Hide').onclick = () => {
+  if (L2.busy) return;
+  L2.clot = placeClot(); L2.shown = false; $('#legClot').style.display = 'none';
+  legShow(L2.pt); L2.msg = '<b>A clot is hidden somewhere in the right leg.</b> Choose a protocol and press <b>Scan with this protocol</b>.';
+};
+$('#s2Scan').onclick = () => {
+  if (L2.busy) return;
+  if (!L2.clot) { setStat('s2Stat', '<b class="warn">Hide a clot first.</b>'); return; }
+  const pr = PROTO[L2.proto], seq = pr.pts.slice(); L2.busy = true; let i = 0;
+  const step = () => {
+    if (i < seq.length) {
+      const k = seq[i++]; legShow(k); L2.hop0 = s2.now; L2.hopP = 1; s2.busy = s2.now + 1;
+      setStat('s2Stat', `Scanning (${pr.n}) · ${i}/${seq.length} · ${PTS[k].lab}…`);
+      setTimeout(() => { L2.hopP = null; step(); }, 650); return;
+    }
+    s2.set('p', 0);
+    const hit = pr.segs.includes(L2.clot), c = L2.clot;
+    L2.tally[L2.proto][0]++; if (hit) L2.tally[L2.proto][1]++; tallyDraw();
+    const [cx, cy] = CLPOS[c]; const el = $('#legClot'); el.setAttribute('cx', cx); el.setAttribute('cy', cy); el.style.display = '';
+    L2.msg = hit ? `<b class="bad">Detected in ${SEGN[c]}.</b> ${HIT[c]}` : `<b class="warn">Missed: the clot was in ${SEGN[c]}, which ${pr.n} does not cover.</b> ${MISS[c] || ''}`;
+    L2.res = true; setStat('s2Stat', L2.msg); L2.busy = false;
+  };
+  step();
+};
+legCover(); legShow('ingl'); tallyDraw();
+
+/* =====================================================================
+   SIM 3 · Spot the impostor
+   ===================================================================== */
+const S3C = [
+  { ctx: '(a) Right groin, routine scan. A dark oval sits superficial and medial to the CFV. Thrombosed vein?', scene: () => SC.node(), slideBtn: true, ans: 2,
+    rev: '<b>Mimic: inguinal lymph node.</b> Oval, hypoechoic cortex with a bright echogenic hilum; only a tiny hilar vessel on colour. Press "Slide probe 2 cm": the node disappears while the vein continues as a tube beside its artery. The CFV itself compresses fully.' },
+  { ctx: '(b) Popliteal fossa, knee pain and calf swelling. A large black structure sits posteromedially and barely changes with pressure.', scene: () => SC.baker(), ans: 2,
+    rev: '<b>Mimic: Baker cyst.</b> Anechoic, posteromedial, with a neck toward the joint and no colour flow. The popliteal vein, superficial to its artery, compresses fully. A Baker cyst does not exclude a coexisting DVT.' },
+  { ctx: '(c) Mid-thigh, swollen leg. Count the veins around the femoral artery, then compress.', scene: () => SC.dup(), ans: 1,
+    rev: '<b>DVT in one limb of a duplicated femoral vein.</b> FV 1 collapses; FV 2 is distended with faint echoes and does not compress while the artery deforms. Account for every vein.' },
+  { ctx: '(d) Right CFV. A colleague says "it doesn\'t compress, DVT". The pressure slider is limited to 30% until you answer.', scene: () => SC.groin(), lock: 30, ans: 0,
+    rev: '<b>Normal (operator pitfall).</b> At 30% the vein only half-collapses and the artery has not deformed. The slider is now unlocked: the vein coapts fully at about 40%. The artery must start to deform before you call a vein non-compressible.' },
+  { ctx: '(e) Popliteal fossa, day 5 after knee arthroplasty. The vein looks black and a little fat. Turn on colour, then compress.', scene: () => SC.pvup({ clot: { pv: 'acute' } }), ans: 1,
+    rev: '<b>DVT: acute anechoic thrombus.</b> Distended vein, no colour flow, does not compress while the artery deforms. Fresh clot can be as black as blood: only compression reveals it.' },
+  { bonus: true, ctx: '(f) Bonus · 140 kg patient, distal thigh. Find the femoral vein (you will need more depth) and decide.', scene: () => SC.obese(), obese: true, ans: 2,
+    rev: '<b>Inconclusive until counter-pressure is applied.</b> With the linear probe the femoral vein at about 5.5 cm is barely seen; the curvilinear probe shows it with coarser speckle. Without counter-pressure it never fully closes; with your free hand behind the thigh it compresses: normal. If you cannot get it to close, write "inconclusive at FV distal thigh", not "DVT".' }
+];
+const L3 = { i: 0, res: [] };
+const s3 = sono('s3US', { scene: SC.node(), onFrame() { setStat('s3Stat', verdict(s3)); } });
+$('#s3Dots').innerHTML = S3C.map((c, i) => `<button data-i="${i}" aria-label="Card ${'abcdef'[i]}">${'abcdef'[i]}</button>`).join('');
+function s3Show(i) {
+  L3.i = clamp(i, 0, S3C.length - 1); const C = S3C[L3.i], r = L3.res[L3.i];
+  s3.setScene(C.scene()); Object.assign(s3.S, { p: 0, slid: false, counter: false, probe: 'lin', depth: null }); s3.dirty = true;
+  const P = $('#s3P'); P.max = C.lock && r == null ? C.lock : 100; P.value = 0; P.dispatchEvent(new Event('input'));
+  $('#s3Num').textContent = `Card ${'abcdef'[L3.i]}${C.bonus ? ' · bonus, not scored' : ''}`;
+  $('#s3Ctx').textContent = C.ctx; $('#s3Pov').textContent = 'Schematic simulation · ' + s3.scene.name;
+  $$('#s3Ans button').forEach((b, k) => { b.disabled = r != null; b.className = r == null ? '' : k === C.ans ? 'right' : k === r ? 'wrong' : ''; });
+  $('#s3Rev').hidden = r == null; $('#s3Rev').innerHTML = C.rev;
+  $$('#s3Dots button').forEach((b, k) => { b.classList.toggle('cur', k === L3.i); b.classList.toggle('ok', L3.res[k] != null && L3.res[k] === S3C[k].ans); b.classList.toggle('bad', L3.res[k] != null && L3.res[k] !== S3C[k].ans); });
+  const ex = $('#s3Extra');
+  if (C.slideBtn) ex.innerHTML = '<button class="btn ghost" id="s3Slide" aria-pressed="false">Slide probe 2 cm distal</button>';
+  else if (C.obese) ex.innerHTML = '<label>Depth <input type="range" id="s3D" min="40" max="80" value="45" step="1"><output id="s3Do"></output></label><div class="seg" id="s3Pr" role="group" aria-label="Probe"><button data-v="lin" aria-pressed="true">Linear</button><button data-v="curv" aria-pressed="false">Curvilinear</button></div><button class="btn ghost" id="s3Cp" aria-pressed="false">Counter-pressure</button>';
+  else ex.innerHTML = '';
+  if (C.slideBtn) toggle('s3Slide', v => { s3.set('slid', v); $('#s3Pov').textContent = 'Schematic simulation · ' + s3.scene.name + (v ? ' · 2 cm distal' : ''); });
+  if (C.obese) { rng('s3D', 's3Do', v => (v / 10).toFixed(1) + ' cm', v => s3.set('depth', v)); seg('s3Pr', d => s3.set('probe', d.v)); toggle('s3Cp', v => s3.set('counter', v)); }
+  s3Score();
+}
+function s3Score() {
+  const sc = S3C.map((c, i) => [c, L3.res[i]]).filter(([c, r]) => !c.bonus && r != null);
+  const ok = sc.filter(([c, r]) => r === c.ans).length;
+  setStat('s3Score', sc.length === 5 ? `<b>Score: ${ok} / 5.</b> ${ok === 5 ? 'No impostor fooled you.' : 'Revisit the cards in red.'}` : sc.length ? `${ok} correct of ${sc.length} answered (scored out of 5).` : 'Answer each card, then compress and read the explanation.');
+}
+$('#s3Ans').addEventListener('click', e => { const b = e.target.closest('button[data-a]'); if (!b || b.disabled) return; L3.res[L3.i] = +b.dataset.a; const keepP = +$('#s3P').value; s3Show(L3.i); if (S3C[L3.i].lock) { $('#s3P').value = keepP; $('#s3P').dispatchEvent(new Event('input')); } });
+$('#s3Dots').addEventListener('click', e => { const b = e.target.closest('button'); if (b) s3Show(+b.dataset.i); });
+$('#s3Prev').onclick = () => s3Show(L3.i - 1); $('#s3Next').onclick = () => s3Show(L3.i + 1);
+rng('s3P', 's3Po', pct, v => s3.set('p', v / 100));
+toggle('s3Col', v => s3.set('col', v));
+s3Show(0);
+
+/* =====================================================================
+   CASES
+   ===================================================================== */
+const CASES = [
+  { tag: 'ICU / perioperative · obstructive shock', short: 'Day-4 laparotomy', title: 'Day-4 laparotomy, sudden collapse.',
+    vignette: 'A 68-year-old man is on day 4 after an open right hemicolectomy for cancer. Enoxaparin prophylaxis was held for 24 hours because of a falling haemoglobin, then restarted. On the ward he becomes suddenly breathless and dizzy. You are called as the MET/anaesthesia responder. CT is two floors away.',
+    facts: [['Patient', '68 M · day 4 open right hemicolectomy'], ['Obs', 'HR 128 · BP 78/50 · SpO₂ 86% on 15 L NRB · RR 32'], ['ECG', 'Sinus tachycardia'], ['VTE prophylaxis', 'Enoxaparin held 24 h, then restarted']],
+    views: [{ k: 'cfv', lab: 'Left CFV at SFJ', scene: () => SC.sfj({ clot: { cfv: 'acute' }, echo: .16, mirror: true, name: 'Left groin · SFJ' }) }, { k: 'pv', lab: 'Left popliteal', scene: () => SC.pvup({ clot: { pv: 'acute' }, echo: .12, mirror: true, name: 'Left popliteal fossa' }) }, { k: 'heart', lab: 'Heart (A4C · PSAX)', heart: true }],
+    steps: [
+      ['Is a scan indicated?', 'Undifferentiated shock with hypoxia. Is this obstructive (PE, tamponade, tension pneumothorax), hypovolaemic (bleeding), cardiogenic or distributive? The answer changes management immediately, so scan.'],
+      ['How will you scan?', 'RUSH order (Pump, Tank, Pipes): see <a href="../shock/">the shock station</a>. Cardiac: subcostal and apical 4-chamber. Lungs: anterior sliding and B-lines bilaterally. Legs: 2-point CUS on both sides (CFV/SFJ, popliteal). Abdomen: free fluid (FAST views) given recent surgery.', 'cfv'],
+      ['What do you find?', 'RV markedly dilated (RV larger than LV in A4C), D-shaped LV in short axis, no pericardial effusion, IVC plethoric with no respiratory variation. Lungs: bilateral sliding, A-line pattern. Left CFV at SFJ distended and <b>non-compressible</b> with faint intraluminal echoes while the artery deforms; left popliteal also non-compressible. No free fluid in Morison\'s pouch or the pelvis.', 'heart'],
+      ['What will you do?', '<b>High-risk PE (ESC 2019; AHA/ACC 2026 category E) is very likely:</b> shock + RV pressure overload + proximal DVT + no other cause found. ESC 2019 accepts echo evidence of RV dysfunction in an unstable patient as sufficient to treat as high-risk PE when CTPA is not immediately feasible. Start unfractionated heparin (LMWH is generally preferred over UFH in haemodynamically stable PE; UFH is preferred here because reperfusion or a procedure is likely and bleeding is possible); support the RV (cautious fluids only, noradrenaline; avoid intubation if possible, or prepare for haemodynamic collapse on induction). Major surgery in the previous 3 weeks is an <b>absolute</b> contraindication to systemic thrombolysis in ESC 2019, although ESC notes that absolute contraindications may become relative in immediately life-threatening high-risk PE. Here, with the recent falling Hb, prefer surgical embolectomy or catheter-directed therapy if available. Reserve systemic (consider reduced-dose) thrombolysis for peri-arrest or arrest with no alternative, and make the decision with surgeons and ICU. Check for intra-abdominal bleeding before UFH (the FAST views) and use UFH because it is titratable and reversible.']
+    ], pearl: 'In shock, the leg scan is part of the RUSH "Pipes". A non-compressible proximal vein with a dilated RV and dry lungs (or small subpleural infarcts) makes PE the working diagnosis at the bedside, but a negative leg scan would not exclude PE.' },
+  { tag: 'Protocol limits · isolated clot outside the two points', short: 'Normal 2-point', title: 'Swollen calf, normal 2-point scan.',
+    vignette: 'A 45-year-old woman, 3 weeks after a long-haul flight and on the combined oral contraceptive pill, comes to pre-assessment clinic before an elective laparoscopic cholecystectomy with a 5-day history of a painful, swollen left leg. A colleague did a 2-point CUS: left CFV and popliteal vein both fully compressible.',
+    facts: [['Patient', '45 F · combined OCP · long-haul flight 3 weeks ago'], ['Leg', 'Left calf +4 cm · pitting oedema to the knee · medial thigh tenderness'], ['Wells', '"Likely"'], ['2-point CUS', 'Left CFV and popliteal fully compressible']],
+    views: [{ k: 'cfv', lab: 'Left CFV', scene: () => SC.groin({ mirror: true, name: 'Left groin · CFV level' }) }, { k: 'dup', lab: 'Left mid-thigh', scene: () => SC.dup({ mirror: true, name: 'Left mid-thigh · two femoral veins' }) }],
+    steps: [
+      ['Is a scan indicated?', 'The question is whether she has a DVT, which would postpone elective surgery and require anticoagulation. Pre-test probability is high, so a single negative limited scan cannot exclude DVT.', 'cfv'],
+      ['How will you scan?', 'Extend the scan: continuous compression every 1–2 cm along the left femoral vein from the bifurcation to the adductor canal (3-point or extended proximal), with counter-pressure at the adductor canal. Look for a duplicated femoral vein. Check CFV Doppler for respiratory phasicity.'],
+      ['What do you find?', 'At mid-thigh, <b>two femoral veins</b> flank the femoral artery. One collapses fully; the other is distended and <b>does not compress</b> despite arterial deformation, with low-level echoes. An isolated femoral vein thrombus in one limb of a duplicated femoral vein: a proximal DVT missed by the 2-point protocol.', 'dup'],
+      ['What will you do?', '<b>Proximal DVT:</b> start anticoagulation, stop the oestrogen-containing pill and arrange effective non-oestrogen contraception (for example an IUD or progestogen-only method; warfarin is teratogenic and DOACs are avoided in pregnancy), refer for formal duplex to document the extent, and postpone the elective cholecystectomy (at least 3 months of anticoagulation before elective surgery is generally preferred). Had the extended scan been negative, the safe options would be a whole-leg duplex or a repeat proximal CUS in about one week, not discharge as "no DVT".']
+    ], pearl: '2-point CUS misses isolated mid-thigh femoral vein and duplicated-vein thrombi. With high pre-test probability, a negative limited scan means "extend, repeat or refer", never "excluded".' },
+  { tag: 'Pitfall · Baker cyst vs DVT', short: 'Hip fracture', title: 'Hip fracture, painful calf, "mass behind the knee".',
+    vignette: 'An 82-year-old woman with a right intertrochanteric hip fracture is listed for fixation tomorrow, 52 hours after admission (delayed for warfarin reversal). She complains of left calf pain. The orthopaedic house officer scanned the left popliteal fossa and saw "a big black thing behind the knee, it doesn\'t squash, so DVT?" You are asked whether surgery and your planned spinal can proceed.',
+    facts: [['Patient', '82 F · right intertrochanteric fracture'], ['Delay', '52 h (warfarin reversal)'], ['Symptom', 'Left calf pain'], ['Plan', 'Fixation tomorrow under spinal']],
+    views: [{ k: 'baker', lab: 'Left popliteal fossa', scene: () => SC.baker({ mirror: true, name: 'Left popliteal fossa' }) }, { k: 'fv', lab: 'Left mid-thigh FV', scene: () => SC.fvmid({ mirror: true, name: 'Left mid-thigh' }) }],
+    steps: [
+      ['Is a scan indicated?', 'Does she have a DVT? It would change anticoagulation, the timing of the neuraxial block relative to therapeutic anticoagulation, and possibly the urgency of surgery. Pre-test probability is moderate to high (immobility, fracture, delay).'],
+      ['How will you scan?', 'Left leg: 2-point plus mid-thigh femoral vein. In the popliteal fossa, knee slightly flexed and externally rotated (she cannot go prone). Find the popliteal artery first, then the vein superficial to it. Then examine the "black thing". Use colour Doppler. Scan the right CFV gently where possible.', 'baker'],
+      ['What do you find?', 'A 4 cm anechoic, non-vascular collection lies posteromedially between the medial head of gastrocnemius and the semimembranosus tendon, with a neck toward the joint and no colour flow: <b>a Baker cyst</b>. Separately, the popliteal vein lies superficial to the popliteal artery and compresses fully down to the trifurcation. The left CFV and mid-thigh femoral vein compress fully.', 'baker'],
+      ['What will you do?', 'The "non-compressible structure" is a Baker cyst, not a vein. The proximal deep veins are compressible, but calf veins were not imaged and pre-test probability is not low; D-dimer is uninformative after a fracture. <b>Proceed with surgery under spinal</b> (prophylactic, not therapeutic, LMWH timing per neuraxial guidelines); do not delay surgery for this. Calf pain is the presenting symptom, so request a whole-leg or calf-vein duplex (or scan the calf veins if competent) peri-operatively; continue thromboprophylaxis meanwhile. Isolated calf DVT would change post-op anticoagulation, and the timing of therapeutic doses must be coordinated with the neuraxial block. A ruptured Baker cyst and DVT can coexist.']
+    ], pearl: 'Identify the artery–vein pair before interpreting anything else. A Baker cyst is posteromedial, not tubular and has no flow; it does not exclude a coexisting DVT.' }
+];
+const CASE_ST = [];
+$$('.slide.case').forEach(sec => {
+  const n = +sec.dataset.case, C = CASES[n], L = ['I', 'A', 'I', 'M'], N = ['Indication', 'Acquisition', 'Interpretation', 'Medical decision'];
+  sec.innerHTML = `<div class="inner two"><div>
+    <div class="kicker">Case ${n + 1} · ${C.tag}</div><h2>${C.title}</h2>
+    <p class="lede" style="margin-bottom:6px">${C.vignette}</p>
+    <dl class="facts">${C.facts.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join('')}</dl>
+    <ol class="steps">${C.steps.map((s, i) => `<li data-i="${i}"><div class="sh"><span class="sl">${L[i]}</span><span class="sq"><small>${N[i]}</small>${s[0]}</span><button class="sb" aria-label="Reveal ${N[i]}">Reveal</button></div><div class="sa">${s[1]}</div></li>`).join('')}</ol>
+    <div class="pearl">${C.pearl}</div>
+  </div><div class="demo"><div class="panel casepanel">
+    <div class="tabs" id="cv${n}">${C.views.map((v, i) => `<button data-v="${v.k}" aria-selected="${i === 0}">${v.lab}</button>`).join('')}</div>
+    <div class="cvUS"><div class="scanner"><canvas id="cus${n}" class="us" width="640" height="420" role="img" aria-label="Schematic sonogram for case ${n + 1}"></canvas></div>
+      <div class="ctrls"><label>Probe pressure <input type="range" id="cp${n}" min="0" max="100" value="0" step="1"><output id="cp${n}o"></output></label><button class="btn ghost" id="cc${n}" aria-pressed="false">Colour Doppler</button></div>
+      <div class="status" id="cst${n}" aria-live="polite"></div></div>
+    <div class="cvH heart" hidden>${heartSVG(true)}</div>
+    <div class="mini">Schematic simulation, not a real scan. Compress to test each vein.</div>
+  </div></div></div>`;
+  const sim = sono('cus' + n, { scene: C.views[0].scene ? C.views[0].scene() : SC.groin(), onFrame() { setStat('cst' + n, verdict(sim)); } });
+  let picker;
+  tabs('cv' + n, d => { const v = C.views.find(x => x.k === d.v); $('.cvUS', sec).hidden = !!v.heart; $('.cvH', sec).hidden = !v.heart; if (!v.heart) { sim.setScene(v.scene()); } });
+  picker = k => { const b = $(`#cv${n} button[data-v="${k}"]`); if (b) b.click(); };
+  rng('cp' + n, 'cp' + n + 'o', pct, v => sim.set('p', v / 100));
+  toggle('cc' + n, v => sim.set('col', v));
+  const reveal = li => { li.classList.add('shown'); const s = C.steps[+li.dataset.i]; if (s[2]) picker(s[2]); const all = $$('.steps li', sec).every(x => x.classList.contains('shown')); if (all) $('.pearl', sec).classList.add('shown'); (all ? $('.pearl', sec) : li).scrollIntoView({ block: 'nearest', behavior: RM ? 'auto' : 'smooth' }); };
+  $('.steps', sec).addEventListener('click', e => { if (e.target.closest('a')) return; const li = e.target.closest('li'); if (!li) return; if (li.classList.contains('shown') && !e.target.closest('.sb')) { li.classList.remove('shown'); $('.pearl', sec).classList.remove('shown'); } else reveal(li); });
+  CASE_ST[n] = { revealNext: () => { const li = $$('.steps li', sec).find(x => !x.classList.contains('shown')); if (li) reveal(li); } };
+});
+$('#caseGrid').innerHTML = CASES.map((C, i) => `<button data-i="${i}" style="grid-template-columns:1fr"><div><span>CASE ${i + 1}</span><b>${C.title}</b></div></button>`).join('');
+$('#caseGrid').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(slides.indexOf($(`.slide.case[data-case="${b.dataset.i}"]`))); });
+$('#jumpChips').innerHTML = CASES.map((C, i) => `<button class="chip" data-i="${i}" title="Case ${i + 1} · ${C.title}">${i + 1} · ${C.short}</button>`).join('');
+$('#jumpChips').addEventListener('click', e => { const b = e.target.closest('button'); if (b) go(slides.indexOf($(`.slide.case[data-case="${b.dataset.i}"]`))); });
+$('#jumpCases').onclick = jumpToCases;
+
+/* =====================================================================
+   QUIZ
+   ===================================================================== */
+const QZ = [
+  ['During compression ultrasound of the common femoral vein, what is the single criterion for a normal (no DVT) result at that level?', ['Anechoic lumen with no visible echoes', 'Complete apposition of the anterior and posterior vein walls under probe pressure', 'Colour flow filling the lumen', 'Vein diameter smaller than the adjacent artery'], 1, 'Full compressibility (wall-to-wall coaptation) in transverse view is the diagnostic criterion. Acute thrombus can be anechoic, and colour flow alone can miss a non-occlusive clot.'],
+  ['You are compressing the popliteal vein. It has not collapsed, and the popliteal artery beside it shows no deformation at all. Best interpretation?', ['Popliteal DVT', 'Arterial occlusion', 'Compression is probably inadequate; push more (and check knee position) before calling it', 'Baker cyst'], 2, 'The artery should begin to deform before a vein is called non-compressible. Inadequate pressure is the commonest cause of a false-positive scan.'],
+  ['A standard 2-point compression ultrasound examines which segments?', ['External iliac vein and common femoral vein', 'CFV through the SFJ to the bifurcation, and the popliteal vein to the trifurcation', 'Femoral vein mid-thigh and posterior tibial veins', 'Great saphenous vein and popliteal vein'], 1, '2-point CUS covers the CFV (inguinal ligament, SFJ, to the femoral/deep femoral bifurcation) and the popliteal vein down to the trifurcation. It does not image the mid-thigh femoral vein, iliac veins or calf veins.'],
+  ['A patient with a "likely" Wells score has a normal 2-point CUS and a positive D-dimer. Next step?', ['DVT excluded; discharge', 'Start full anticoagulation for 3 months', 'Repeat proximal CUS in about 1 week, or perform a whole-leg ultrasound', 'Repeat D-dimer in 24 hours'], 2, 'Serial 2-point CUS plus D-dimer (Bernardi, JAMA 2008) and a single whole-leg study are both validated strategies. A single negative limited scan with a positive D-dimer does not exclude DVT.'],
+  ['Which feature most reliably distinguishes an inguinal lymph node from a thrombosed common femoral vein?', ['It is anechoic', 'It does not compress', 'An echogenic fatty hilum, and it is not tubular when the probe slides along the leg', 'It lies medial to the femoral artery'], 2, 'Nodes are oval with a bright hilum and disappear as you slide the probe proximally or distally; a vein continues as a tube alongside its artery. Both a node and a thrombosed vein may be non-compressible.'],
+  ['In a hypotensive patient with suspected PE, which combination most strongly supports high-risk PE at the bedside?', ['B-line pattern bilaterally, hyperdynamic small RV', 'Dilated RV (RV/LV ≥ 1) with septal flattening, A-line lung pattern, non-compressible femoral vein', 'Pericardial effusion with RA collapse', 'Small collapsing IVC with free fluid in Morison\'s pouch'], 1, 'RV pressure overload plus a dry (A-line) lung pattern plus proximal DVT points to obstructive shock from PE. B-lines suggest pulmonary oedema; effusion with collapse suggests tamponade; small IVC with free fluid suggests haemorrhage.'],
+  ['Why report the "femoral vein" rather than the "superficial femoral vein"?', ['The old term refers to a different vessel', 'The femoral vein is a deep vein; calling it superficial has led to untreated proximal DVT', 'The superficial femoral vein is never imaged in CUS', 'It has no clinical significance'], 1, 'The femoral vein is part of the deep system. Thrombus in it is proximal DVT requiring anticoagulation; the misleading "superficial" label has caused under-treatment, so consensus statements recommend "femoral vein".'],
+  ['Isolated calf DVT, not severely symptomatic, no risk factors for extension. What do current CHEST guidelines suggest as an acceptable alternative to immediate anticoagulation?', ['IVC filter', 'Serial imaging of the deep veins over 2 weeks, anticoagulating if the clot extends', 'No follow-up needed', 'Thrombolysis'], 1, 'CHEST 2016 (reaffirmed in the 2021 update) suggests serial imaging for 2 weeks rather than anticoagulation in this group, treating if the thrombus extends (or anticoagulating if symptoms are severe or risk factors for extension are present).']
+];
+(function buildQuiz() {
+  const q = $('#quiz'); let score = 0, done = 0;
+  q.innerHTML = QZ.map(([qq, o], i) => `<div class="card" data-i="${i}"><div class="num">Q${i + 1}</div><h3>${qq}</h3><div class="opts">${o.map((x, j) => `<button data-j="${j}">${x}</button>`).join('')}</div><div class="why" aria-live="polite">${QZ[i][3]}</div></div>`).join('');
+  q.addEventListener('click', e => {
+    const b = e.target.closest('button[data-j]'); if (!b) return; const card = b.closest('.card'); if (card.classList.contains('done')) return;
+    const i = +card.dataset.i, j = +b.dataset.j, ok = j === QZ[i][2];
+    card.classList.add('done'); $$('button', card).forEach((x, k) => { if (k === QZ[i][2]) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    done++; if (ok) score++; $('#qzScore').textContent = `${score} / ${done}${done === QZ.length ? ' · final score' : ''}`;
+  });
+})();
+
+/* ---------- boot ---------- */
+go(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
+requestAnimationFrame(tick);
+</script>
+<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer></body>
+</html>

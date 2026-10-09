@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Popliteal sciatic block — NTF Anaesthesia</title><meta name="robots" content="noindex,follow"><link rel="icon" href="ana-ntf-monogram.svg" type="image/svg+xml">
-<meta name="description" content="Ultrasound-guided popliteal sciatic block: animated anatomy, needle technique and the dose used.">
+<title>Lower-limb blocks (draft) — NTF Anaesthesia</title><meta name="robots" content="noindex,nofollow"><link rel="icon" href="ana-ntf-monogram.svg" type="image/svg+xml">
+<meta name="description" content="Ultrasound-guided lower-limb blocks grouped by region: hip, knee, foot and ankle. Animated anatomy and needle technique, with the dose used on each page.">
 
 
 
 
 
 <script>/* preload the routed block; the two upright fonts too (not on file://, where a crossorigin preload is refused) */
-(function(){var d=document,q=location.search.match(/[?&]b=([\w-]+)/),s=q?q[1]:location.hash.slice(1).split('/')[0]||'popliteal',p=function(h,a){var l=d.createElement('link');l.rel='preload';l.as=a;l.href=h;if(a==='font'){l.type='font/woff2';l.crossOrigin='anonymous'}d.head.appendChild(l)};
+(function(){var d=document,q=location.search.match(/[?&]b=([\w-]+)/),s=q?q[1]:location.hash.slice(1).split('/')[0]||'femoral',p=function(h,a){var l=d.createElement('link');l.rel='preload';l.as=a;l.href=h;if(a==='font'){l.type='font/woff2';l.crossOrigin='anonymous'}d.head.appendChild(l)};
 if(location.protocol!=='file:')['fraunces-roman','inter'].forEach(function(f){p('fonts/'+f+'.woff2','font')});
 if(/^(femoral|peng|lfcn|fib|adductor-canal|popliteal|ankle)$/.test(s))p('ra/'+s+'.js','script')})()</script>
 <script src="ra/engine.js?v=20261009-start" defer></script>
@@ -174,14 +174,36 @@ footer .foot{margin-top:10px;padding-top:12px;border-top:1px solid var(--line);f
 </style>
 <script>
 window.RA_INDEX = {
- start:'popliteal',
  regions: [
-  { key:'foot', label:'Foot and ankle', blocks:['popliteal'],
-    lead:'Block in the popliteal fossa for major foot and ankle surgery. Add a saphenous block for the medial leg and ankle.' } ],
+  { key:'hip',  label:'Hip',            blocks:['peng','lfcn','fib','femoral'],
+    lead:'Cover the capsule with a PENG or fascia iliaca block. Add the LFCN when the incision is lateral.' },
+  { key:'knee', label:'Knee',           blocks:['adductor-canal','femoral','popliteal'],
+    lead:'Start with the femoral triangle or adductor canal to keep the quadriceps working. Use the femoral block when weakness does not matter.' },
+  { key:'foot', label:'Foot and ankle', blocks:['popliteal','ankle'],
+    lead:'Block in the popliteal fossa for major foot and ankle surgery, or at the ankle for forefoot work. Add the saphenous nerve for the medial side.' } ],
  blocks: {
+  peng:   { name:'PENG block', short:'PENG', dose:[['Ropivacaine 0.2%','20 mL','40 mg']],
+    dnote:'With an LFCN block add 5 mL 0.2% (total 25 mL, 50 mg)',
+    ind:['Hip fracture analgesia before surgery, including pain on positioning for spinal anaesthesia','Bipolar hemiarthroplasty and total hip arthroplasty postoperative analgesia, combined with an LFCN block for the incision','Hip surgery where early mobilisation matters and quadriceps sparing is wanted'] },
+  lfcn:   { name:'Lateral femoral cutaneous nerve block', short:'LFCN', dose:[['Ropivacaine 0.2%','5 mL','10 mg']],
+    dnote:'1 mL test, then 2 mL aliquots into the tunnel',
+    ind:['Analgesia for the lateral or anterolateral hip incision in hip surgery, often added to a PENG block (NYSORA)','Meralgia paraesthetica, diagnostic or therapeutic (NYSORA)','Muscle biopsy of the proximal lateral thigh (NYSORA)','Split-skin graft harvest from the lateral thigh (Hofstra case series, title and abstract only)'] },
+  fib:    { name:'Supra-inguinal fascia iliaca block', short:'Fascia iliaca', dose:[['Ropivacaine 0.2%','40 mL','80 mg']],
+    dnote:'5 mL aliquots, a volume block spreading cephalad',
+    ind:['Hip fracture analgesia (neck of femur), in the emergency department or before surgery','Total hip arthroplasty, as an analgesic adjunct','Proximal and shaft femoral fractures','Hip and proximal thigh surgery where the femoral and lateral femoral cutaneous nerves need covering','Above-knee amputation, as part of a multimodal plan'] },
+  femoral:{ name:'Femoral nerve block', short:'Femoral', home:'hip', dose:[['Ropivacaine 0.4%','15 mL','60 mg']],
+    dnote:'5 mL aliquots beneath fascia iliaca',
+    ind:['Analgesia for hip fracture','Femoral shaft fracture, pre- and postoperative','Surgery on the femur, patella and quadriceps tendon','Knee surgery (anterior knee and thigh analgesia)','Anterior and medial thigh analgesia down to the knee, plus a variable saphenous strip on the medial leg'] },
+  'adductor-canal':{ name:'Adductor canal and femoral triangle block', short:'Adductor canal',
+    dose:[['Single shot: ropivacaine 0.4%','10 mL','40 mg'],['TKR, three targets: ropivacaine 0.2%','25 mL','50 mg']],
+    dnote:'TKR split: saphenous 10 mL, NVM 10 mL, AFCN 5 mL',
+    ind:['Analgesia after total knee arthroplasty as part of a multimodal regimen, sparing quadriceps strength compared with a femoral nerve block','Analgesia for other knee surgery (anteromedial knee) alongside multimodal analgesia','Medial leg, ankle and foot surgery, combined with a sciatic (popliteal) block for the saphenous territory','Saphenous vein stripping or harvesting'] },
   popliteal:{ name:'Popliteal sciatic block', short:'Popliteal', home:'foot', dose:[['Ropivacaine 0.4%','15 mL','60 mg']],
     dnote:'5 mL aliquots inside the paraneural sheath',
-    ind:['Foot and ankle surgery, combined with a saphenous block for the medial leg and ankle','Achilles tendon repair','Below-knee anaesthesia or analgesia of the calf, tibia and fibula; hamstring function is spared','Foot debridement and other distal procedures','Continuous catheter analgesia after major foot and ankle surgery'] } }
+    ind:['Foot and ankle surgery, combined with a saphenous block for the medial leg and ankle','Achilles tendon repair','Below-knee anaesthesia or analgesia of the calf, tibia and fibula; hamstring function is spared','Foot debridement and other distal procedures','Continuous catheter analgesia after major foot and ankle surgery'] },
+  ankle:  { name:'Ankle block', short:'Ankle', dose:[['Ropivacaine 0.5%','17 mL','85 mg']],
+    dnote:'Tibial 5 mL, then 3 mL each for the deep peroneal, superficial peroneal, sural and saphenous nerves',
+    ind:["Forefoot surgery, including hallux valgus (PROSPECT's preferred technique, per BJA Education 2022)",'Midfoot and toe surgery, and amputations below the ankle','Heel surgery, with the tibial nerve blocked 5 to 10 cm above the malleolus','Analgesia or anaesthesia when an ankle tourniquet is used','Analgesia only when a calf or thigh tourniquet is planned','Patients for whom keeping knee and ankle movement matters more than a popliteal block would allow'] } }
 };
 /* first paint: region tabs, block pills and block header straight from the URL, before the engine arrives; the engine reuses these */
 (function(I){const $=id=>document.getElementById(id);
@@ -193,23 +215,25 @@ I.paintNav=(r,cur)=>{document.querySelectorAll('#regions [role=tab]').forEach(b=
 I.paintHead=s=>{const b=I.blocks[s];$('block').setAttribute('aria-labelledby','b-'+s);$('bname').textContent=b.name;
   $('bdose').innerHTML=b.dose.map(d=>`<span class="dr"><span class="drug">${I.esc(d[0])}</span> <b>${I.esc(d[1])}</b> <span class="mg">${I.esc(d[2])}</span></span>`).join('');$('dnote').textContent=b.dnote||''};
 I.first=()=>{const q=location.search.match(/[?&]b=([\w-]+)/),h=q?q[1]:decodeURIComponent(location.hash.slice(1)),r=I.regions.find(x=>x.key===h);
-  let s=r?r.blocks[0]:h.split('/')[0];if(!I.blocks[s])s=I.start;I.paintNav(r||I.regionOf(s),s);I.paintHead(s)};
+  let s=r?r.blocks[0]:h.split('/')[0];if(!I.blocks[s])s='femoral';I.paintNav(r||I.regionOf(s),s);I.paintHead(s)};
 })(window.RA_INDEX);
 </script>
 <meta name="theme-color" content="#f7f5ef"><link rel="stylesheet" href="assets/navigation.css?v=20261008"><link rel="stylesheet" href="assets/site-shell.css?v=20261008"><link rel="stylesheet" href="assets/header-nav.css?v=20261008"><link rel="stylesheet" href="assets/lower-limb.css?v=20261008-near?v=20261008"><script defer src="assets/navigation.js?v=20261008"></script></head>
-<body class="lower-limb-app"><a class="ra-skip" href="#main">Skip to popliteal sciatic block</a><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="index.html" aria-label="NTF Anaesthesia home"><img src="ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="department.html">About Us</a><a href="why-join-us.html">Why Join Us?</a><a href="clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="mopex/">MO Handbook</a><a href="senior-resident.html">Senior Residency</a><a href="exams/">MMed Exam Prep</a></div></details><a href="airway.html">Airway</a><a href="regional.html" aria-current="page">Regional Anaesthesia</a><a href="pocus/">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<body class="lower-limb-app"><a class="ra-skip" href="#main">Skip to lower-limb blocks</a><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="index.html" aria-label="NTF Anaesthesia home"><img src="ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="department.html">About Us</a><a href="why-join-us.html">Why Join Us?</a><a href="clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="mopex/">MO Handbook</a><a href="senior-resident.html">Senior Residency</a><a href="exams/">MMed Exam Prep</a></div></details><a href="airway.html">Airway</a><a href="regional.html" aria-current="page">Regional Anaesthesia</a><a href="pocus/">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
 <main class="shell" id="main">
-  <header class="hd"><div><p class="ra-eyebrow">Regional anaesthesia</p><h1>Popliteal sciatic block</h1></div><a class="back" href="regional.html">Regional anaesthesia <span aria-hidden="true">↗</span></a></header>
+  <header class="hd"><div><p class="ra-eyebrow">Draft · not yet reviewed</p><h1>Lower-limb blocks</h1></div><a class="back" href="draft.html">All drafts <span aria-hidden="true">↗</span></a></header>
 
   <nav aria-label="Blocks">
     <div class="ptabs" role="tablist" aria-label="Region" id="regions">
-      <button type="button" role="tab" id="r-foot" data-r="foot" aria-controls="block" aria-selected="true" tabindex="0">Foot and ankle</button>
+      <button type="button" role="tab" id="r-hip" data-r="hip" aria-controls="block" aria-selected="true" tabindex="0">Hip</button>
+      <button type="button" role="tab" id="r-knee" data-r="knee" aria-controls="block" aria-selected="false" tabindex="-1">Knee</button>
+      <button type="button" role="tab" id="r-foot" data-r="foot" aria-controls="block" aria-selected="false" tabindex="-1">Foot and ankle</button>
     </div>
-    <p class="lead" id="rlead">Block in the popliteal fossa for major foot and ankle surgery. Add a saphenous block for the medial leg and ankle.</p>
-    <div class="stabs" role="tablist" aria-label="Block" id="blocks" aria-labelledby="r-foot"></div>
+    <p class="lead" id="rlead">Cover the capsule with a PENG or fascia iliaca block. Add the LFCN when the incision is lateral.</p>
+    <div class="stabs" role="tablist" aria-label="Block" id="blocks" aria-labelledby="r-hip"></div>
   </nav>
 
-  <section id="block" role="tabpanel" aria-labelledby="b-popliteal">
+  <section id="block" role="tabpanel" aria-labelledby="b-femoral">
     <div class="bh">
       <h2 id="bname"></h2>
       <div class="dose"><p id="bdose"></p><p class="dnote" id="dnote"></p></div>
@@ -240,6 +264,37 @@ I.first=()=>{const q=location.search.match(/[?&]b=([\w-]+)/),h=q?q[1]:decodeURIC
     </div>
   </section>
 
+  <details class="panel" id="combinations">
+    <summary>Example block combinations</summary>
+    <div class="pb" style="max-width:none">
+      <div class="combos">
+        <div class="cmb">
+          <div class="for">Bipolar hip hemiarthroplasty · THR</div>
+          <h3>PENG with an <em>LFCN</em> block</h3>
+          <p>PENG covers the anterior hip capsule and is motor sparing, but it does not cover the incision. The LFCN block covers the lateral incision.</p>
+          <ul class="split">
+            <li><span><b>PENG</b> beneath the psoas tendon</span><span class="v">20 mL</span></li>
+            <li><span><b>LFCN</b> in the sartorius and TFL tunnel</span><span class="v">5 mL</span></li>
+            <li class="tot"><span>Ropivacaine 0.2%</span><span class="v">25 mL · 50 mg</span></li>
+          </ul>
+          <div class="links"><a href="#peng">PENG block</a><a href="#lfcn">LFCN block</a></div>
+        </div>
+        <div class="cmb">
+          <div class="for">Total knee replacement</div>
+          <h3>Adductor canal, <em>three targets</em></h3>
+          <p>One lateral skin entry, three tip positions from deep to superficial. The saphenous nerve and the nerve to vastus medialis cover the joint; the anterior femoral cutaneous nerves cover the anterior incision.</p>
+          <ul class="split">
+            <li><span><b>Saphenous nerve</b> beside the artery, deep to sartorius</span><span class="v">10 mL</span></li>
+            <li><span><b>Nerve to vastus medialis</b> between sartorius and vastus medialis</span><span class="v">10 mL</span></li>
+            <li><span><b>Anterior femoral cutaneous nerves</b> beneath fascia lata, superficial to sartorius</span><span class="v">5 mL</span></li>
+            <li class="tot"><span>Ropivacaine 0.2%</span><span class="v">25 mL · 50 mg</span></li>
+          </ul>
+          <div class="links"><a href="#adductor-canal/tkr">TKR: three targets</a></div>
+        </div>
+      </div>
+      <p class="cnote">These examples are shown for reference rather than as a protocol. Confirm every volume against the patient's weight and the maximum safe dose of local anaesthetic.</p>
+    </div>
+  </details>
 
   <footer>
     <p>To record: turn the phone landscape, tap Full screen, then screen-record. Tap Close to leave full screen.</p>
