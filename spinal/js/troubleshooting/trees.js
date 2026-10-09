@@ -338,7 +338,7 @@ export const difficultBack = {
     xUs: {
       outcome: 'Pre-scan and mark the back',
       tone: 'ok',
-      body: `<p>Mark the midline and the chosen interspace, and measure the depth. A pre-procedure scan improves success when the surface landmarks are difficult.${cite('chin2011', 'perlas2016')} See ${go('ultrasound', 'Ultrasound-assisted neuraxial')}.</p>`,
+      body: `<p>Scan before you prepare the skin. Mark the midline and the spinous processes, choose an interlaminar space that is open, and measure the depth. A pre-procedure scan improves success when the surface landmarks are difficult.${cite('chin2011', 'perlas2016', 'ts-bjaed-challenging')} Scanning in real time during needle insertion is an advanced technique, not routine, and was harder than pre-scanning in one trial.${cite('ts-bjaed-challenging')} See ${go('ultrasound', 'Ultrasound-assisted neuraxial')}.</p>`,
     },
     xSenior: {
       outcome: 'Ask for senior help before you start',
