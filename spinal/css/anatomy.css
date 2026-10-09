@@ -1,0 +1,119 @@
+/* spinal/ — anatomy section styles. Every selector starts with .spinal-app .an- or #an-. */
+
+.spinal-app .an-sub{margin-top:8px}
+.spinal-app .an-sub+.an-sub{margin-top:48px}
+.spinal-app main .an-sub>h3{margin-top:12px}
+
+/* ---------------------------------------------------------------- Fig 1.1 sagittal + inset */
+.spinal-app .an-sag-grid{display:grid;grid-template-columns:minmax(0,1fr);background:var(--an-plate)}
+.spinal-app .an-sag-main,.spinal-app .an-sag-inset{min-width:0;line-height:0}
+.spinal-app .an-sag-main canvas,.spinal-app .an-sag-inset canvas{display:block;width:100%}
+.spinal-app .an-sag-inset{border-top:1px solid rgba(43,30,24,.25)}
+@media (min-width:900px){
+  .spinal-app .an-sag-grid{grid-template-columns:minmax(0,1fr) 250px}
+}
+@media (min-width:1100px){.spinal-app .an-sag-grid{grid-template-columns:minmax(0,1fr) 290px}}
+@media (min-width:900px){
+  .spinal-app .an-sag-inset{border-top:0;border-left:1px solid rgba(43,30,24,.25);align-self:stretch;display:flex;align-items:center}
+}
+@media (min-width:620px) and (max-width:899px){
+  .spinal-app .an-sag-inset{max-width:420px;margin-inline:auto;width:100%;border-top:1px solid rgba(43,30,24,.25)}
+}
+
+/* ---------------------------------------------------------------- layer stepper */
+.spinal-app .an-stepper{border:1px solid var(--sp-line);background:var(--sp-surface);margin:-8px 0 24px;padding:16px}
+.spinal-app .an-step-nav{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.spinal-app .an-count{font:500 14px/1 var(--sp-mono);font-variant-numeric:tabular-nums;color:var(--sp-muted);min-width:4.5ch;text-align:center}
+.spinal-app .an-step-next{margin-left:auto}
+.spinal-app .an-step-body{display:grid;gap:16px}
+@media (min-width:900px){.spinal-app .an-step-body{grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:28px}}
+.spinal-app .an-steplist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0}
+.spinal-app .an-steplist li{margin:0;max-width:none}
+.spinal-app .an-stepbtn{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:6px 10px;border:0;border-left:3px solid transparent;border-bottom:1px solid var(--sp-line);background:transparent;color:var(--sp-ink);font:15px/1.35 var(--sp-sans);text-align:left;cursor:pointer;transition:background-color .15s,border-color .15s}
+.spinal-app .an-stepbtn:hover{background:var(--sp-accent-soft)}
+.spinal-app .an-stepbtn[aria-current=step]{border-left-color:var(--sp-accent);background:var(--sp-accent-soft);font-weight:600}
+.spinal-app .an-stepbtn:focus-visible{outline-offset:-2px}
+.spinal-app .an-stepnum{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:24px;height:24px;border:1px solid var(--sp-line-strong);font:500 12px/1 var(--sp-mono);color:var(--sp-muted)}
+.spinal-app .an-stepbtn[aria-current=step] .an-stepnum{background:var(--sp-ink);border-color:var(--sp-ink);color:var(--sp-bg)}
+@media (max-width:899px){
+  .spinal-app .an-steplist{flex-direction:row;overflow-x:auto;scroll-snap-type:x proximity;gap:6px;padding-bottom:4px;scrollbar-width:thin}
+  .spinal-app .an-steplist li{flex-shrink:0;scroll-snap-align:start}
+  .spinal-app .an-stepbtn{width:auto;white-space:nowrap;border:1px solid var(--sp-line-strong);border-left-width:1px}
+  .spinal-app .an-stepbtn[aria-current=step]{border-color:var(--sp-accent)}
+}
+.spinal-app .an-steppanel{min-width:0}
+.spinal-app .an-stepkicker{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 4px}
+.spinal-app main .an-stepname{font:400 22px/1.25 var(--sp-serif);letter-spacing:-.02em;margin:0 0 10px;color:var(--sp-ink)}
+.spinal-app .an-stepdl{display:grid;grid-template-columns:minmax(0,1fr);gap:2px 16px;margin:0;font-size:15px;line-height:1.6}
+.spinal-app .an-stepdl dt{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);margin-top:8px}
+.spinal-app .an-stepdl dd{margin:0}
+@media (min-width:640px){
+  .spinal-app .an-stepdl{grid-template-columns:9.5em minmax(0,1fr)}
+  .spinal-app .an-stepdl dt{margin-top:3px}
+  .spinal-app .an-stepdl dd{padding-bottom:6px}
+}
+.spinal-app .an-stepcite{font-size:14px;color:var(--sp-muted);margin:10px 0 0}
+
+/* ---------------------------------------------------------------- Fig 1.2 landmarks */
+.spinal-app .an-land-grid{display:grid;grid-template-columns:minmax(0,1fr);background:var(--an-plate);color:var(--an-ink)}
+.spinal-app .an-land-art{padding:8px;display:flex;justify-content:center}
+.spinal-app .an-land-svg{display:block;width:100%;max-width:440px;height:auto}
+.spinal-app .an-land-band{cursor:pointer}
+.spinal-app .an-land-side{padding:14px 16px 16px;border-top:1px solid rgba(43,30,24,.2);min-width:0}
+@media (min-width:760px){
+  .spinal-app .an-land-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .spinal-app .an-land-side{border-top:0;border-left:1px solid rgba(43,30,24,.2)}
+}
+.spinal-app .an-land-label{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:#5b4a3e;margin:0 0 8px}
+.spinal-app .an-levels{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.spinal-app .an-levels li{margin:0}
+.spinal-app .an-level{min-width:44px;min-height:44px;padding:6px 10px;border:1px solid #8c8273;background:rgba(251,247,241,.7);color:#2b1e18;font:500 14px/1 var(--sp-mono);font-variant-numeric:tabular-nums;cursor:pointer;transition:background-color .15s,border-color .15s}
+.spinal-app .an-level--space{background:transparent;border-style:dashed}
+.spinal-app .an-level:hover{border-color:#633d3c}
+.spinal-app .an-level[aria-pressed=true]{background:#633d3c;border-color:#633d3c;border-style:solid;color:#fff}
+.spinal-app .an-level:focus-visible{outline:2px solid #633d3c;outline-offset:2px}
+.spinal-app .an-land-info{font-size:15px;line-height:1.6;color:#2b1e18}
+.spinal-app .an-land-info p{margin:0 0 6px}
+.spinal-app main .an-land-info .an-land-lvl{font:400 22px/1.2 var(--sp-serif);letter-spacing:-.02em;margin:0 0 4px}
+.spinal-app .an-land-info .sp-cite a{color:#633d3c}
+
+/* ---------------------------------------------------------------- Fig 1.3 baricity */
+.spinal-app .an-baricity{margin-top:28px}
+.spinal-app .an-bar-out{font-size:15px;line-height:1.6;margin:10px 0 0;padding:10px 14px;border-left:3px solid var(--sp-accent);background:var(--sp-surface);max-width:80ch}
+.spinal-app .an-replay{margin-left:auto}
+.spinal-app .an-list{padding-left:1.3em;max-width:68ch}
+.spinal-app .an-list li+li{margin-top:4px}
+
+/* ---------------------------------------------------------------- Fig 1.4 dermatomes */
+.spinal-app .an-derm-grid{display:grid;grid-template-columns:minmax(0,1fr);background:var(--an-plate);color:var(--an-ink)}
+.spinal-app .an-derm-art{padding:8px;display:flex;justify-content:center}
+.spinal-app .an-derm-svg{display:block;width:100%;max-width:520px;height:auto}
+.spinal-app .an-derm-svg .an-derm-mark text{transition:fill .15s}
+.spinal-app .an-derm-svg .an-derm-mark.is-on text{fill:#633d3c;font-weight:600}
+.spinal-app .an-derm-svg .an-derm-mark.is-on line{stroke:#633d3c;stroke-width:2}
+.spinal-app .an-derm-out{padding:14px 16px 16px;border-top:1px solid rgba(43,30,24,.2);font-size:15px;line-height:1.6;min-width:0}
+@media (min-width:760px){
+  .spinal-app .an-derm-grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+  .spinal-app .an-derm-out{border-top:0;border-left:1px solid rgba(43,30,24,.2);padding:20px}
+}
+.spinal-app .an-derm-out p{margin:0 0 6px}
+.spinal-app .an-derm-out ul{margin:0 0 8px;padding-left:1.2em}
+.spinal-app main .an-derm-out .an-derm-lvl{font:400 30px/1.1 var(--sp-serif);letter-spacing:-.02em;margin:0 0 2px}
+.spinal-app .an-derm-where{color:#5b4a3e}
+.spinal-app .an-derm-h{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.06em;color:#5b4a3e;margin-top:10px!important}
+.spinal-app .an-derm-note{border-left:3px solid #633d3c;padding-left:10px;margin-top:8px!important}
+.spinal-app .an-range-wrap{display:grid;gap:2px;width:100%;max-width:560px}
+.spinal-app .an-range-label{font-size:15px}
+.spinal-app .an-range{width:100%;min-height:44px;margin:0;accent-color:var(--sp-accent)}
+.spinal-app .an-range-ticks{display:flex;justify-content:space-between;font:400 11px/1.4 var(--sp-mono);color:var(--sp-muted);padding:0 4px}
+
+@media (prefers-reduced-motion:reduce){
+  .spinal-app .an-stepbtn,.spinal-app .an-level{transition:none}
+}
+
+/* overlay toggle + legends */
+.spinal-app .an-ov-btn[aria-pressed=true]{background:var(--sp-accent-soft);border-color:var(--sp-accent)}
+.spinal-app .an-ov-btn::before{content:'';display:inline-block;width:14px;height:14px;border:1px solid currentColor;margin-right:2px}
+.spinal-app .an-ov-btn[aria-pressed=true]::before{background:linear-gradient(currentColor,currentColor) center/8px 8px no-repeat}
+.spinal-app .an-derm-legend{font-size:14px;color:#5b4a3e;margin-top:10px!important}
+.spinal-app .an-derm-key{display:inline-block;width:22px;height:12px;margin-right:8px;vertical-align:-1px;border-top:1.6px dashed #34507a;background-image:radial-gradient(#34507a 1.1px,transparent 1.3px);background-size:6px 6px}

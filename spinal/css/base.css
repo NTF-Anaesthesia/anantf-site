@@ -1,0 +1,284 @@
+/* spinal/ — shared tokens, type, shell and every sp-* component.
+   Section styles live in css/<section>.css and must use their own prefix (an-, tq-, us-, ts-, cx-, pp-, qz-). */
+
+@font-face{font-family:'NTF Mono';src:url('../../fonts/jetbrains-mono.woff2') format('woff2');font-weight:400 500;font-display:swap}
+
+/* ------------------------------------------------------------------ tokens (light default) */
+body.spinal-app{
+  --sp-bg:#f7f5ef;--sp-surface:#fbfaf6;--sp-surface-2:#eeece5;
+  --sp-ink:#272722;--sp-muted:#625f58;--sp-line:#d7d2c8;--sp-line-strong:#8c8273;
+  --sp-accent:#633d3c;--sp-on-accent:#ffffff;--sp-accent-soft:#ebe3dc;--sp-focus:#633d3c;
+  --sp-danger:#9b2b1a;--sp-danger-bg:#f7e4de;
+  --sp-warn:#7a4f00;--sp-warn-bg:#f6ecd3;
+  --sp-ok:#356231;--sp-ok-bg:#e3ecdc;
+  --sp-pearl:#34507a;--sp-pearl-bg:#e4e8f0;
+  --sp-policy:#5a5650;--sp-policy-bg:#efede8;
+  --sp-serif:'NTF Serif','Fraunces',Georgia,serif;
+  --sp-sans:'NTF Sans',Inter,Arial,sans-serif;
+  --sp-mono:'NTF Mono','JetBrains Mono',ui-monospace,Menlo,monospace;
+  --sp-header-h:92px;--sp-nav-h:49px;
+  /* anatomy plate (same in both themes) */
+  --an-plate:#f4ece1;--an-ink:#2b1e18;--an-skin:#e7c0a3;--an-fat:#f2dcc8;--an-lig-supra:#d8c49b;--an-lig-inter:#e2d3b0;
+  --an-flavum:#e2b64a;--an-epifat:#f6e6b8;--an-vein:#5a2a3a;--an-dura:#b4a3c4;--an-arachnoid:#d9cfe3;--an-csf:#cfe4ea;
+  --an-bone:#ece2cc;--an-cortex:#b6a684;--an-cord:#efd2bb;--an-root:#e8c4a6;--an-root-line:#a85f37;
+  --an-needle:#a9adb6;--an-needle-edge:#2f3035;--an-warn:#9b2b1a;--an-cue:#8f431d;--an-pill:rgba(251,247,241,.93);
+  /* ultrasound (same in both themes) */
+  --us-bg:#000000;--us-bone:#e8e8e8;--us-dura:#d0d0d0;--us-csf:#050505;--us-needle:#f5f5f5;
+  --us-label:#ffffff;--us-label-bg:#1a1a1a;--us-hi:#ffd166;--us-scale:#9a9a9a;--us-warn:#ff8a7a;
+
+  background:var(--sp-bg);color:var(--sp-ink);font:16px/1.7 var(--sp-sans);
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
+}
+:root[data-theme=dark] body.spinal-app{
+  --sp-bg:#1c1917;--sp-surface:#24201d;--sp-surface-2:#2e2925;
+  --sp-ink:#f2eee6;--sp-muted:#bcb3a7;--sp-line:#463e38;--sp-line-strong:#857a6c;
+  --sp-accent:#e3a49d;--sp-on-accent:#1c1917;--sp-accent-soft:#3b2a28;--sp-focus:#f2c46d;
+  --sp-danger:#f08f7d;--sp-danger-bg:#3a201b;
+  --sp-warn:#e7b75a;--sp-warn-bg:#352a14;
+  --sp-ok:#93c487;--sp-ok-bg:#1f2d1d;
+  --sp-pearl:#9db8e6;--sp-pearl-bg:#1e2635;
+  --sp-policy:#c9c1b6;--sp-policy-bg:#2a2622;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme=light]) body.spinal-app{
+    --sp-bg:#1c1917;--sp-surface:#24201d;--sp-surface-2:#2e2925;
+    --sp-ink:#f2eee6;--sp-muted:#bcb3a7;--sp-line:#463e38;--sp-line-strong:#857a6c;
+    --sp-accent:#e3a49d;--sp-on-accent:#1c1917;--sp-accent-soft:#3b2a28;--sp-focus:#f2c46d;
+    --sp-danger:#f08f7d;--sp-danger-bg:#3a201b;
+    --sp-warn:#e7b75a;--sp-warn-bg:#352a14;
+    --sp-ok:#93c487;--sp-ok-bg:#1f2d1d;
+    --sp-pearl:#9db8e6;--sp-pearl-bg:#1e2635;
+    --sp-policy:#c9c1b6;--sp-policy-bg:#2a2622;
+  }
+  html:root:not([data-theme=light]){color-scheme:dark}
+}
+html:root[data-theme=dark]{color-scheme:dark}
+html:root[data-theme=light]{color-scheme:light}
+
+html{scroll-padding-top:160px}
+@media (max-width:900px){html{scroll-padding-top:144px}body.spinal-app{--sp-header-h:80px}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+/* ------------------------------------------------------------------ base type */
+body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--sp-focus);outline-offset:3px;border-radius:0}
+.spinal-app :is(.sp-hero,main,.sp-secnav,.sp-foot) a{color:var(--sp-accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+.spinal-app :is(.sp-hero,main,.sp-foot) a:hover{text-decoration-thickness:2px}
+.spinal-app main{display:block;padding-bottom:24px}
+.spinal-app main :is(h2,h3,h4){color:var(--sp-ink);margin:0}
+.spinal-app main h2{font:400 clamp(30px,3.4vw,40px)/1.15 var(--sp-serif);letter-spacing:-.035em;margin:0 0 16px;max-width:30ch;text-wrap:balance}
+.spinal-app main h3{font:400 24px/1.25 var(--sp-serif);letter-spacing:-.02em;margin:36px 0 12px;text-wrap:balance}
+.spinal-app main h4{font:600 13px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted);margin:24px 0 8px}
+.spinal-app main :is(p,ul,ol,dl){margin:0 0 16px}
+.spinal-app main :is(p,li,dd){max-width:68ch}
+.spinal-app main :is(ul,ol):not([class]){padding-left:1.3em}
+.spinal-app main li:not([class])+li{margin-top:4px}
+.spinal-app main strong{font-weight:600}
+.spinal-app :is(main,.sp-hero) em{font-family:inherit;font-style:italic}
+.spinal-app .sp-hero h1 em{font-family:var(--sp-serif)}
+.spinal-app :is(code,kbd,.sp-num,.sp-dose){font-family:var(--sp-mono);font-size:.92em;font-variant-numeric:tabular-nums}
+.spinal-app .sp-prose{max-width:68ch}
+.spinal-app .sp-lead{font-size:17px;line-height:1.7;color:var(--sp-muted);max-width:60ch;margin:0 0 20px}
+.spinal-app :is(.sp-kicker,.sp-eyebrow){font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 10px}
+.spinal-app ::selection{background:var(--sp-accent-soft);color:var(--sp-ink)}
+
+.sp-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.spinal-app .sp-skip{position:fixed;left:16px;top:-120px;z-index:100;padding:12px 16px;background:var(--sp-bg);color:var(--sp-ink);border:1px solid var(--sp-ink);font:500 14px/1.4 var(--sp-sans);text-decoration:none}
+.spinal-app .sp-skip:focus{top:12px}
+
+/* ------------------------------------------------------------------ hero */
+.spinal-app .sp-hero{padding-top:40px;padding-bottom:28px;/* hairline aligned to the content column, not the padded box */background:linear-gradient(var(--sp-line),var(--sp-line)) center bottom/calc(100% - 2*var(--site-gutter)) 1px no-repeat}
+.spinal-app .sp-hero-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.spinal-app .sp-hero-top .sp-eyebrow{margin:0}
+.spinal-app .sp-hero h1{font:400 clamp(40px,5vw,64px)/1.08 var(--sp-serif);letter-spacing:-.045em;color:var(--sp-ink);margin:0 0 18px;max-width:20ch;text-wrap:balance}
+.spinal-app .sp-hero h1 em{color:var(--sp-accent);font-style:italic}
+.spinal-app .sp-hero .sp-lead{margin:0 0 14px}
+.spinal-app .sp-credit{font-size:14px;line-height:1.6;color:var(--sp-muted);margin:0}
+.spinal-app .sp-tools{display:flex;gap:8px;flex-shrink:0}
+.spinal-app .sp-tool{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1 var(--sp-sans);cursor:pointer;transition:border-color .15s,background-color .15s}
+.spinal-app .sp-tool:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+.spinal-app .sp-tool svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.spinal-app .sp-tool svg .fill{fill:currentColor;stroke:none}
+.spinal-app .sp-tool[data-theme-state=light] svg .fill{fill:none}
+.spinal-app .sp-tool[data-theme-state=dark] svg circle{fill:currentColor}
+
+/* ------------------------------------------------------------------ sticky section nav */
+.spinal-app .sp-secnav{position:sticky;top:var(--sp-header-h);z-index:50;background:color-mix(in srgb,var(--sp-bg) 94%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--sp-line)}
+.spinal-app .sp-secnav ol{display:flex;gap:28px;margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.spinal-app .sp-secnav ol::-webkit-scrollbar{display:none}
+.spinal-app .sp-secnav.is-overflowing ol{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 18px,#000 calc(100% - 28px),transparent 100%)}
+.spinal-app .sp-secnav.is-overflowing.at-start ol{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(to right,#000 calc(100% - 28px),transparent 100%)}
+.spinal-app .sp-secnav.is-overflowing.at-end ol{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 18px);mask-image:linear-gradient(to right,transparent 0,#000 18px)}
+.spinal-app .sp-secnav li{flex-shrink:0}
+.spinal-app .sp-secnav a{display:flex;align-items:center;gap:7px;min-height:48px;font:14px/1.2 var(--sp-sans);color:var(--sp-muted);text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color .15s,border-color .15s}
+.spinal-app .sp-secnav a span{font:11px/1 var(--sp-mono);letter-spacing:.04em}
+.spinal-app .sp-secnav a:hover{color:var(--sp-ink)}
+.spinal-app .sp-secnav a[aria-current=true]{color:var(--sp-ink);border-bottom-color:var(--sp-accent)}
+.spinal-app .sp-secnav a:focus-visible{outline-offset:-2px}
+
+/* ------------------------------------------------------------------ sections */
+.spinal-app .sp-section{padding-block:56px;border-top:1px solid var(--sp-line)}
+.spinal-app .sp-section:first-child{border-top:0}
+.spinal-app .sp-mount{min-height:40px}
+.spinal-app .sp-mount-error{font-size:15px;color:var(--sp-danger);background:var(--sp-danger-bg);border-left:3px solid var(--sp-danger);padding:12px 16px;max-width:68ch}
+.spinal-app .sp-placeholder{color:var(--sp-muted);font-style:italic}
+.spinal-app .sp-jump{display:flex;flex-wrap:wrap;align-items:center;gap:0 2px;margin:0 0 24px;padding:0;list-style:none;font:13px/1.4 var(--sp-sans)}
+.spinal-app .sp-jump li{display:flex;align-items:center}
+.spinal-app .sp-jump li+li::before{content:'·';color:var(--sp-muted);padding:0 8px}
+.spinal-app .sp-jump a{display:inline-flex;align-items:center;min-height:44px}
+.spinal-app .sp-split{display:grid;gap:32px}
+@media (min-width:1100px){
+  .spinal-app .sp-split{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:start}
+  .spinal-app .sp-split>.sp-split-fig{position:sticky;top:168px}
+}
+.spinal-app .sp-noscript{padding-block:16px;color:var(--sp-muted)}
+
+/* ------------------------------------------------------------------ chips */
+.spinal-app .sp-chip{display:inline-block;vertical-align:.1em;font:400 11px/1.4 var(--sp-mono);letter-spacing:.02em;padding:1px 6px;border:1px solid var(--sp-line-strong);color:var(--sp-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* ------------------------------------------------------------------ buttons (generic) */
+.spinal-app .sp-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1.3 var(--sp-sans);cursor:pointer;transition:border-color .15s,background-color .15s}
+.spinal-app .sp-btn:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+.spinal-app .sp-btn--primary{background:var(--sp-accent);border-color:var(--sp-accent);color:var(--sp-on-accent)}
+.spinal-app .sp-btn--primary:hover{background:var(--sp-accent);color:var(--sp-on-accent);text-decoration:underline;text-underline-offset:3px}
+.spinal-app .sp-btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* ------------------------------------------------------------------ callouts */
+.spinal-app .sp-callout{--c:var(--sp-accent);--cb:var(--sp-accent-soft);margin:20px 0;padding:14px 18px;background:var(--cb);border-left:3px solid var(--c);max-width:72ch;color:var(--sp-ink)}
+.spinal-app .sp-callout--warn{--c:var(--sp-danger);--cb:var(--sp-danger-bg)}
+.spinal-app .sp-callout--pearl{--c:var(--sp-pearl);--cb:var(--sp-pearl-bg)}
+.spinal-app .sp-callout--policy{--c:var(--sp-policy);--cb:var(--sp-policy-bg);border:1px dashed var(--c);border-left:3px solid var(--c)}
+.spinal-app .sp-callout-label{display:flex;align-items:center;gap:7px;margin:0 0 4px;font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--c)}
+.spinal-app .sp-callout-label svg{width:16px;height:16px;flex-shrink:0}
+.spinal-app .sp-callout-title{font:600 16px/1.45 var(--sp-sans);margin:0 0 4px}
+.spinal-app .sp-callout-body{font-size:15px;line-height:1.65}
+.spinal-app .sp-callout-body>:last-child{margin-bottom:0}
+.spinal-app .sp-callout-body :is(p,ul,ol){margin:0 0 8px}
+.spinal-app .sp-callout-body :is(ul,ol){padding-left:1.2em}
+
+/* ------------------------------------------------------------------ tables */
+.spinal-app .sp-table-wrap{margin:24px 0;max-width:100%}
+.spinal-app .sp-table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.55;color:var(--sp-ink)}
+.spinal-app .sp-table caption{caption-side:top;text-align:left;font:400 18px/1.35 var(--sp-serif);letter-spacing:-.01em;padding:0 0 10px;color:var(--sp-ink)}
+.spinal-app .sp-table thead th{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);background:var(--sp-surface-2);text-align:left;padding:10px 12px;vertical-align:bottom;border-bottom:1px solid var(--sp-line-strong)}
+.spinal-app .sp-table :is(td,tbody th){padding:10px 12px;border-bottom:1px solid var(--sp-line);text-align:left;vertical-align:top}
+.spinal-app .sp-table tbody th{font-weight:600}
+.spinal-app .sp-table :is(td,th)>:last-child{margin-bottom:0}
+.spinal-app .sp-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.spinal-app .sp-table-wrap--scroll .sp-table{min-width:560px}
+.spinal-app .sp-scroll-hint{display:none;margin:6px 0 0;text-align:right;font:11px/1.4 var(--sp-mono);color:var(--sp-muted)}
+@media (max-width:640px){
+  .spinal-app .sp-scroll-hint{display:block}
+  .spinal-app .sp-table--stack,.spinal-app .sp-table--stack :is(tbody,tr,td,tbody th){display:block;width:100%;box-sizing:border-box}
+  .spinal-app .sp-table--stack caption{display:block}
+  .spinal-app .sp-table--stack thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .spinal-app .sp-table--stack tr{border:1px solid var(--sp-line);padding:12px;margin:0 0 10px;background:var(--sp-surface)}
+  .spinal-app .sp-table--stack :is(td,tbody th){border:0;padding:4px 0}
+  .spinal-app .sp-table--stack :is(td,tbody th)[data-label]::before{content:attr(data-label);display:block;font:400 11px/1.5 var(--sp-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);margin-bottom:1px}
+  .spinal-app .sp-table--stack tbody th{font:600 16px/1.4 var(--sp-sans);padding-bottom:6px}
+}
+
+/* ------------------------------------------------------------------ steps */
+.spinal-app .sp-steps{list-style:none;margin:20px 0;padding:0;max-width:72ch}
+.spinal-app .sp-step{display:grid;grid-template-columns:32px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid var(--sp-line)}
+.spinal-app .sp-step:last-child{border-bottom:1px solid var(--sp-line)}
+.spinal-app .sp-step-n{display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--sp-ink);color:var(--sp-bg);font:500 14px/1 var(--sp-mono);font-variant-numeric:tabular-nums}
+.spinal-app .sp-step-title{font:600 16px/1.45 var(--sp-sans);margin:4px 0 4px;color:var(--sp-ink)}
+.spinal-app .sp-step-title .sp-chip{margin-left:4px}
+.spinal-app .sp-step-body{font-size:15px;line-height:1.65;color:var(--sp-ink)}
+.spinal-app .sp-step-body>:last-child{margin-bottom:0}
+.spinal-app .sp-step-body :is(p,ul){margin:0 0 8px}
+.spinal-app .sp-step-body :is(p,li){color:color-mix(in srgb,var(--sp-ink) 82%,var(--sp-muted))}
+
+/* ------------------------------------------------------------------ tabs */
+.spinal-app .sp-tabs{display:grid;grid-template-columns:repeat(var(--sp-tab-count,2),minmax(0,1fr));border:1px solid var(--sp-line-strong);margin:20px 0 0}
+.spinal-app .sp-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;padding:8px 10px;margin:0;border:0;border-left:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:500 15px/1.3 var(--sp-sans);text-align:center;cursor:pointer;transition:background-color .15s,color .15s}
+.spinal-app .sp-tab:first-child{border-left:0}
+.spinal-app .sp-tab:hover{background:var(--sp-accent-soft)}
+.spinal-app .sp-tab-sub{font:400 12px/1.3 var(--sp-sans);color:var(--sp-muted)}
+.spinal-app .sp-tab[aria-selected=true]{background:var(--sp-accent);color:var(--sp-on-accent)}
+.spinal-app .sp-tab[aria-selected=true] .sp-tab-sub{color:var(--sp-on-accent)}
+.spinal-app .sp-tab:focus-visible{outline-offset:-4px;outline-color:var(--sp-focus)}
+.spinal-app .sp-tab[aria-selected=true]:focus-visible{outline-color:var(--sp-on-accent)}
+.spinal-app .sp-tabpanel{padding-top:20px}
+.spinal-app .sp-tabpanel:focus-visible{outline-offset:2px}
+@media (max-width:640px){
+  .spinal-app .sp-tab{font-size:14px;padding:8px 4px}
+  .spinal-app .sp-tab-sub{font-size:11px}
+}
+
+/* ------------------------------------------------------------------ segmented */
+.spinal-app .sp-seg{display:flex;flex-wrap:wrap;gap:8px}
+.spinal-app .sp-seg-btn{min-height:44px;padding:8px 16px;border:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1.3 var(--sp-sans);cursor:pointer;transition:border-color .15s,background-color .15s}
+.spinal-app .sp-seg-btn:hover{border-color:var(--sp-accent)}
+.spinal-app .sp-seg-btn[aria-pressed=true]{background:var(--sp-accent-soft);border-color:var(--sp-accent);color:var(--sp-ink);font-weight:500}
+
+/* ------------------------------------------------------------------ figure */
+.spinal-app .sp-fig{margin:24px 0;max-width:100%}
+.spinal-app .sp-fig-title{font:400 20px/1.3 var(--sp-serif);letter-spacing:-.015em;margin:0 0 10px}
+.spinal-app .sp-fig-stage{position:relative;width:100%;overflow:hidden;border:1px solid var(--sp-line);background:var(--an-plate);color:var(--an-ink)}
+.spinal-app .sp-fig-stage[data-plate=us]{background:var(--us-bg);color:var(--us-label)}
+.spinal-app .sp-fig-stage[data-plate=none]{background:var(--sp-surface);color:var(--sp-ink)}
+.spinal-app .sp-fig-stage>:is(canvas,svg,img){display:block;width:100%;height:100%}
+.spinal-app .sp-fig-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+.spinal-app .sp-fig-controls:empty{display:none}
+.spinal-app .sp-fig-controls input[type=range]{min-height:44px;accent-color:var(--sp-accent)}
+.spinal-app .sp-fig figcaption{margin-top:10px;font-size:14px;line-height:1.6;color:var(--sp-muted);max-width:80ch}
+.spinal-app .sp-fig-num{font:500 12px/1.4 var(--sp-mono);color:var(--sp-ink);letter-spacing:.02em;margin-right:4px}
+
+/* ------------------------------------------------------------------ details */
+.spinal-app .sp-details{border-top:1px solid var(--sp-line);max-width:72ch}
+.spinal-app .sp-details+.sp-details{border-top:1px solid var(--sp-line)}
+.spinal-app .sp-details:last-of-type{border-bottom:1px solid var(--sp-line)}
+.spinal-app .sp-details>summary{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:52px;padding:12px 0;cursor:pointer;list-style:none;font:500 16px/1.45 var(--sp-sans);color:var(--sp-ink)}
+.spinal-app .sp-details>summary::-webkit-details-marker{display:none}
+.spinal-app .sp-details>summary::after{content:'+';flex-shrink:0;width:20px;text-align:center;font:400 20px/1 var(--sp-mono);color:var(--sp-accent)}
+.spinal-app .sp-details[open]>summary::after{content:'−'}
+.spinal-app .sp-details>summary:hover{color:var(--sp-accent)}
+.spinal-app .sp-details-body{padding:0 0 18px;font-size:15px;line-height:1.7}
+.spinal-app .sp-details-body>:last-child{margin-bottom:0}
+
+/* ------------------------------------------------------------------ citations + references */
+.spinal-app .sp-cite{font:500 .72em/1 var(--sp-mono);vertical-align:super;line-height:0;margin-left:1px;white-space:nowrap}
+.spinal-app main .sp-cite a{color:var(--sp-accent);text-decoration:none;padding:0 1px}
+.spinal-app main .sp-cite a:is(:hover,:focus-visible){text-decoration:underline;text-underline-offset:2px}
+.spinal-app .sp-refs{list-style:none;margin:8px 0 0;padding:0;max-width:90ch;font-size:14px;line-height:1.65}
+.spinal-app .sp-refs li{display:grid;grid-template-columns:2.6em minmax(0,1fr);gap:4px;padding:8px 0;border-bottom:1px solid var(--sp-line);max-width:none}
+.spinal-app .sp-refs li:target{background:var(--sp-accent-soft)}
+.spinal-app .sp-ref-num{font:500 13px/1.65 var(--sp-mono);color:var(--sp-muted);font-variant-numeric:tabular-nums}
+.spinal-app .sp-ref-body{overflow-wrap:anywhere}
+.spinal-app .sp-ref-body b{font-weight:600}
+.spinal-app main .sp-ref-back{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-width:24px;min-height:24px}
+.spinal-app .sp-refs-empty{color:var(--sp-muted);display:block!important}
+
+/* ------------------------------------------------------------------ foot */
+.spinal-app .sp-foot{border-top:1px solid var(--sp-line);padding:32px 0 36px;background:var(--sp-bg);color:var(--sp-muted);font-size:14px;line-height:1.7}
+.spinal-app .sp-foot p{margin:0 0 10px;max-width:80ch}
+.spinal-app .sp-foot p:last-child{margin:0}
+.spinal-app .sp-disclaimer{color:var(--sp-ink)}
+.spinal-app .sp-disclaimer strong{font-weight:600}
+.spinal-app .ntf-footer{margin:0}
+
+/* ------------------------------------------------------------------ responsive */
+@media (max-width:760px){
+  .spinal-app .sp-hero{padding-top:28px;padding-bottom:24px}
+  .spinal-app .sp-hero h1{font-size:clamp(36px,10vw,40px);line-height:1.1}
+  .spinal-app .sp-tool{width:44px;padding:0;justify-content:center}
+  .spinal-app .sp-tool span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .spinal-app .sp-section{padding-block:40px}
+  .spinal-app main h3{font-size:22px;margin-top:28px}
+  .spinal-app .sp-secnav ol{gap:22px}
+  .spinal-app .sp-lead{font-size:16px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .spinal-app *,.spinal-app *::before,.spinal-app *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+}
+
+@media print{
+  .spinal-app :is(.sp-secnav,.sp-tools,.sp-skip,.sp-fig-controls){display:none!important}
+  .spinal-app .sp-section{break-inside:auto;padding-block:24px}
+  body.spinal-app{background:#fff;color:#000}
+}
+
+/* Programmatic focus targets (deep links, tree headings) need no ring; interactive controls keep theirs. */
+body.spinal-app [tabindex="-1"]:is(:focus,:focus-visible){outline:none}
