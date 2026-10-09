@@ -345,3 +345,23 @@ body.spinal-app[data-quick="on"] main .sp-section{padding-block:32px}
   .spinal-app .sp-level-btn{padding:0 12px}
   .spinal-app .sp-keypoints{padding:12px 14px 4px}
 }
+
+/* Reading dock: the level and Quick read controls float on screen so they can be changed anywhere. */
+.spinal-app .sp-controls-note{margin:16px 0 0;font-size:14px;line-height:1.55;color:var(--sp-muted);max-width:60ch}
+.spinal-app .sp-controls{position:fixed;z-index:55;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));margin:0;max-width:none;
+  background:var(--sp-surface);border:1px solid var(--sp-line-strong);border-top:3px solid var(--sp-accent);padding:8px 10px}
+.spinal-app .sp-controls-row{flex-wrap:nowrap;gap:8px 10px}
+.spinal-app .sp-controls .sp-level-btn,.spinal-app .sp-controls .sp-quick-btn{min-height:40px}
+.spinal-app .sp-controls-hint{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+body.spinal-app{padding-bottom:84px}
+@media (max-width:760px){
+  .spinal-app .sp-controls{left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));padding:6px 8px}
+  .spinal-app .sp-controls-row{justify-content:space-between;gap:6px}
+  .spinal-app .sp-controls-label{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .spinal-app .sp-controls .sp-level-btn{padding:0 10px;font-size:14px}
+  .spinal-app .sp-controls .sp-quick-btn{padding:0 10px;font-size:14px;gap:7px}
+  body.spinal-app{--sp-dock-h:72px}
+}
+@media print{.spinal-app .sp-controls,.spinal-app .sp-controls-note{display:none!important}body.spinal-app{padding-bottom:0}}
+html:has(body.spinal-app){scroll-padding-bottom:96px}
+.spinal-app main :is(p,ul,ol,h4)[data-tier]::after{top:-17px;right:0}

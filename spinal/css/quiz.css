@@ -42,8 +42,8 @@
 .spinal-app .qz-score-text{margin:0;font:500 15px/1.4 var(--sp-sans)}
 .spinal-app .qz-score-sub{color:var(--sp-muted);font-weight:400}
 @media (max-width:760px){
-  .spinal-app .qz-score{position:sticky;bottom:0;z-index:20;margin-inline:-1px;padding:6px 10px 6px 14px}
-  .spinal-app .qz-q :is(button,a,summary){scroll-margin-bottom:96px}
+  .spinal-app .qz-score{position:sticky;bottom:var(--sp-dock-h,0px);z-index:20;margin-inline:-1px;padding:6px 10px 6px 14px}
+  .spinal-app .qz-q :is(button,a,summary){scroll-margin-bottom:170px}
   .spinal-app .qz-q{padding:14px 14px 16px}
   .spinal-app .qz-stem{font-size:18px}
   .spinal-app .qz-opt{grid-template-columns:32px minmax(0,1fr);row-gap:4px}
