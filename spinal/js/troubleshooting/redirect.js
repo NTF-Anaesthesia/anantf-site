@@ -2,6 +2,7 @@
 // Two views side by side (side view and cross-section) for midline/paramedian × shallow/deep bone.
 // Uses the plate tokens (--an-*), which are the same in light and dark themes.
 import { el, figure, segmented, cite } from '../ui.js?v=1';
+import { numberCites } from './tree.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const W = 340;
@@ -159,7 +160,7 @@ export const STATES = {
     why: 'You are in the midline, but the angle misses the gap between the spinous processes.',
     fix: `Withdraw to the subcutaneous tissue, then angle slightly more cephalad: the commonest correction. If you were already angled steeply up, try slightly caudad.${cite('ts-nysora-failed')}`,
     more: 'Re-feel the interspace, improve flexion, or try the space above or below.',
-    side(g, m) { needle(g, 182, 6, 202, 66); contact(g, 202, 66); redirect(g, 182, 24, 167, 190, m); pill(g, 214, 64, 'Spinous process', 'warn', [204, 70]); pill(g, 20, 112, 'More cephalad', 'cue', [171, 150]); tissueLabel(g, 152, 132, 'flavum', 'end'); },
+    side(g, m) { needle(g, 182, 6, 202, 66); contact(g, 202, 66); redirect(g, 182, 24, 167, 190, m); pill(g, 214, 64, 'Spinous process', 'warn', [204, 70]); pill(g, 16, 76, 'More cephalad', 'cue', [176, 116]); tissueLabel(g, 152, 132, 'flavum', 'end'); },
     cross(g, m) { needle(g, 170, 6, 170, 60); contact(g, 170, 60); redirect(g, 170, 64, 170, 150, m); pill(g, 196, 56, 'Spinous process (above/below)', 'warn', [176, 64]); pill(g, 200, 90, 'Side-to-side line OK', 'cue', [172, 100]); },
     showSp: true,
   },
@@ -168,7 +169,7 @@ export const STATES = {
     why: 'Bone near the expected depth suggests the needle has drifted off the midline onto a lamina.',
     fix: `Withdraw to the subcutaneous tissue. Check the back is square and not rotated, re-feel the midline, ask which side the patient feels the needle, and aim back towards the midline.${cite('ts-nysora-failed')}`,
     more: 'Paramedian approach, ultrasound, or senior help.',
-    side(g, m) { needle(g, 172, 6, 170, 134); contact(g, 170, 134); redirect(g, 172, 24, 169, 190, m); pill(g, 196, 78, 'Bone at about flavum depth', 'warn', [176, 134]); pill(g, 16, 112, 'Same angle, on the midline', 'cue', [168, 168]); },
+    side(g, m) { needle(g, 172, 6, 170, 134); contact(g, 170, 134); redirect(g, 172, 24, 169, 190, m); pill(g, 196, 96, 'Bone at flavum depth', 'warn', [176, 134]); pill(g, 8, 112, 'Back on the midline', 'cue', [167, 176]); },
     cross(g, m) { needle(g, 174, 6, 211, 120); contact(g, 211, 120); redirect(g, 174, 24, 170, 150, m); pill(g, 222, 96, 'Lamina', 'warn', [214, 122]); pill(g, 18, 92, 'Back to the midline', 'cue', [171, 104]); },
     showSp: false,
   },
@@ -177,7 +178,7 @@ export const STATES = {
     why: 'Bone much earlier than expected means the needle isn’t where you think. A steep medial angle reaches the midline bone early.',
     fix: 'Withdraw to the subcutaneous tissue, re-check the entry point and reduce the medial angle, then advance until you meet the lamina at the expected depth.',
     more: 'Ultrasound pre-scan, or senior help.',
-    side(g, m) { needle(g, 262, 6, 242, 78); contact(g, 242, 78); g.append(s('rect', { x: 220, y: 50, width: 70, height: 56, fill: 'none', stroke: v('--an-ink'), 'stroke-width': 1.3, 'stroke-dasharray': '4 3' })); pill(g, 112, 52, 'Spinous process (medial)', 'warn', [238, 76]); pill(g, 26, 236, 'Fix: less medial (cross-section)', 'cue'); tissueLabel(g, 160, 146, 'flavum', 'end'); },
+    side(g, m) { needle(g, 262, 6, 242, 78); contact(g, 242, 78); g.append(s('rect', { x: 220, y: 50, width: 70, height: 56, fill: 'none', stroke: v('--an-ink'), 'stroke-width': 1.3, 'stroke-dasharray': '4 3' })); pill(g, 112, 52, 'Spinous process (medial)', 'warn', [238, 76]); pill(g, 196, 262, 'Fix: see cross-section', 'cue'); tissueLabel(g, 160, 146, 'flavum', 'end'); },
     cross(g, m) { needle(g, 232, 6, 183, 78); contact(g, 183, 78); redirect(g, 232, 24, 178, 154, m); pill(g, 196, 58, 'Spinous process', 'warn', [184, 74]); pill(g, 236, 96, 'Less medial', 'cue', [204, 104]); },
     showSp: true,
   },
@@ -239,6 +240,7 @@ export function redirectGuide({ id = 'ts-bone-guide', num = '4.1' } = {}) {
     row('Why', st.why);
     row('Redirect', st.fix);
     row('If it keeps happening', st.more);
+    numberCites(read);
     if (announceIt) f.describe(`${approach === 'mid' ? 'Midline' : 'Paramedian'}, ${depth} bone. Likely ${st.structure}. ${plain(st.fix)}`);
   }
 

@@ -12,7 +12,10 @@
 //   t.current();        // current node id
 //   t.path();           // array of node ids from start to current
 //
-//   treeOutline(data)   // <div class="ts-outline"> nested list of the whole tree (for print / revision / Ctrl-F)
+//   treeOutline(data)   // <div class="ts-outline"> nested list of the whole tree (for print / revision / Ctrl-F).
+//                       //   Render it (e.g. in a closed <details>) before app.js runs finalise(), so every ref the
+//                       //   tree cites is numbered and listed even if the user never reaches that node.
+//   numberCites(node)   // number citations rendered after finalise() (tree.js calls it on every node change)
 //   validateTree(data)  // array of problem strings (empty when the data is consistent); use in tests
 //
 // DATA (matches DESIGN.md §3 "Decision tree"):
@@ -41,6 +44,21 @@ export const TONES = {
 };
 
 const isOutcome = (n) => n && typeof n.outcome === 'string';
+
+/**
+ * Give citations added after refs.finalise() their numbers, read from the rendered reference list
+ * (#ref-<id> .sp-ref-num). Before finalise() this is a no-op and finalise() numbers them instead.
+ * A ref only gets a number if it is cited somewhere in the DOM when finalise() runs, which is why
+ * sections should also render treeOutline() (e.g. inside a closed <details>).
+ */
+export function numberCites(node) {
+  if (!node) return;
+  node.querySelectorAll('a[data-ref]').forEach((a) => {
+    const t = document.querySelector(`#ref-${CSS.escape(a.dataset.ref)} .sp-ref-num`);
+    const n = t && parseInt(t.textContent, 10);
+    if (n) { a.textContent = `[${n}]`; a.setAttribute('aria-label', `Reference ${n}`); }
+  });
+}
 
 function put(node, content) {
   if (content == null) return node;
@@ -155,6 +173,7 @@ export function createTree(data, { headingLevel = 4, kicker, onNode } = {}) {
       body.append(wrap);
     }
 
+    numberCites(body);
     backBtn.hidden = hist.length < 2;
     hint.hidden = hist.length < 2;
     resetBtn.hidden = hist.length < 2;

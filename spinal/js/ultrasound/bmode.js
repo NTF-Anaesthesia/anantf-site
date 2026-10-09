@@ -21,7 +21,7 @@ export const FRAME = Object.freeze({ x0: -82, x1: 88, z0: -12, z1: 92 });
 export const FRAME_W = FRAME.x1 - FRAME.x0;
 export const FRAME_H = FRAME.z1 - FRAME.z0;
 
-const PM = 4; // map resolution, px per mm
+const PM = 3; // map resolution, px per mm
 const MW = Math.round(FRAME_W * PM), MH = Math.round(FRAME_H * PM);
 const NA = 288, NR = 440;
 const DR = PROBE.depth / NR, DTH = (2 * PROBE.half) / NA;
@@ -202,7 +202,7 @@ const PAINT = {
   skin(C, st, sh) {
     const p = pathOf(sh.pts);
     C.e.fillStyle = gray(0.42); C.e.fill(p); C.sp.fillStyle = '#000'; C.sp.fill(p);
-    blobs(C, p, bboxOf(sh.pts), 1.2, [0.2, 0.6], 0.3, 0.6);
+    blobs(C, p, bboxOf(sh.pts), 0.55, [0.25, 0.7], 0.3, 0.6);
     if (sh.top) specLine(C, sh.top, 0.95, 0.35, { floor: 1, eAmp: 0.7, vary: 0.15 });
     if (sh.bottom) specLine(C, sh.bottom, 0.55, 0.3, { floor: 0.8, eAmp: 0.4, wav: 0.1 });
   },
@@ -267,7 +267,6 @@ function paintScene(scene) {
     hb.setTransform(1, 0, 0, 1, 0, 0); hb.filter = `blur(${0.45 * PM}px)`; hb.drawImage(C.hb.canvas, 0, 0);
     C.hb = hb;
   }
-  const tq = []; for (const k of ['e','sp','at','hb']) { const tp = performance.now(); C[k].getImageData(0,0,1,1); tq.push(Math.round(performance.now()-tp)); } TP.push(tq.join('/'));
   return C;
 }
 
@@ -418,7 +417,6 @@ function renderPolar(C, seed) {
 }
 
 // ------------------------------------------------------------------ public API (cached)
-export const TIMING = [], TP = [];
 const polarCache = new Map();
 const imgCache = new Map();
 
@@ -427,9 +425,7 @@ export function buildPolar(scene) {
   if (polarCache.has(scene.id)) return 0;
   const t0 = performance.now();
   const C = paintScene(scene);
-  const t1 = performance.now();
   polarCache.set(scene.id, renderPolar(C, scene.seed || scene.id));
-  TIMING.push([scene.id, Math.round(t1 - t0), Math.round(performance.now() - t1)]);
   return performance.now() - t0;
 }
 export const isBuilt = (scene) => polarCache.has(scene.id);

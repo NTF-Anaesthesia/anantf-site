@@ -5,7 +5,7 @@
 
 import { el, segmented, figure, setupCanvas, whenVisible, onResize, onThemeChange, reducedMotion } from '../ui.js?v=1';
 import * as K from '../anatomy/kit.js';
-import { FRAME, FRAME_W, FRAME_H, PROBE, skinZ, buildPolar, isBuilt, scanImage } from './bmode.js';
+import { FRAME, FRAME_W, FRAME_H, PROBE, skinZ, buildPolar, scanImage } from './bmode.js';
 import { getScene, STOPS } from './scenes.js';
 import { diagramImage } from './diagram.js';
 
@@ -347,7 +347,21 @@ export function createViewer({ num = '3.1', infos = {}, caption, calCite = '' })
   function prebuild() {
     const ids = ['sag-l34', 'tr-il', ...STOPS.map((s) => `sag-${s.key}`), 'tr-sp'];
     const idle = window.requestIdleCallback ? (fn) => window.requestIdleCallback(fn, { timeout: 2500 }) : (fn) => setTimeout(fn, 200);
-    const next = () => { const id = ids.find((i) => !isBuilt(getScene(i))); if (!id) return; idle(() => { buildPolar(getScene(id)); next(); }); };
+    // Build each scene's B-mode data, then its scan and diagram images at the current panel size,
+    // one small job per idle period, so switching views later only blits cached images.
+    const jobs = [];
+    for (const id of ids) {
+      jobs.push(() => buildPolar(getScene(id)));
+      for (const key of ['scan', 'diagram']) {
+        jobs.push(() => {
+          const p = P[key], w = p.cssW || P.scan.cssW || P.diagram.cssW, dpr = p.dpr || Math.min(window.devicePixelRatio || 1, 2.5);
+          if (!w) return;
+          const dw = Math.round(w * dpr), dh = Math.round(Math.round(w / ASPECT) * dpr), sc = getScene(id);
+          if (key === 'scan') scanImage(sc, dw, dh); else diagramImage(sc, dw, dh);
+        });
+      }
+    }
+    const next = () => { const job = jobs.shift(); if (!job) return; idle(() => { job(); next(); }); };
     next();
   }
 

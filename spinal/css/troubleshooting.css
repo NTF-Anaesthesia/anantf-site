@@ -11,9 +11,9 @@
 .spinal-app .ts-index-h:first-child{margin-top:0}
 .spinal-app .ts-index-list{list-style:none;margin:0;padding:0}
 .spinal-app .ts-index-list li{margin:0;padding:0;border-bottom:1px solid var(--sp-line)}
-.spinal-app .ts-index-link{display:flex;align-items:center;min-height:44px;padding:6px 10px 6px 12px;border-left:2px solid transparent;color:var(--sp-ink);text-decoration:none;font:15px/1.35 var(--sp-sans);transition:border-color .15s,background-color .15s}
-.spinal-app .ts-index-link:hover{background:var(--sp-surface-2);border-left-color:var(--sp-line-strong)}
-.spinal-app .ts-index-link[aria-current=true]{border-left-color:var(--sp-accent);background:var(--sp-accent-soft);color:var(--sp-ink);font-weight:500}
+.spinal-app main .ts-index-link{display:flex;align-items:center;min-height:44px;padding:4px 10px 4px 12px;border-left:2px solid transparent;color:var(--sp-ink);text-decoration:none;font:15px/1.35 var(--sp-sans);transition:border-color .15s,background-color .15s}
+.spinal-app main .ts-index-link:hover{background:var(--sp-surface-2);border-left-color:var(--sp-line-strong)}
+.spinal-app main .ts-index-link[aria-current=true]{border-left-color:var(--sp-accent);background:var(--sp-accent-soft);color:var(--sp-ink);font-weight:500}
 @media (min-width:640px) and (max-width:1099px){
   .spinal-app .ts-index{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px}
   .spinal-app .ts-index-h{grid-row:1;margin-top:0}

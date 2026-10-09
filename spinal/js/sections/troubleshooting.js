@@ -3,7 +3,7 @@
 // each holding a decision tree (js/troubleshooting/tree.js). Doses only from product labels (emc SmPC)
 // or the Association of Anaesthetists QRH; everything local is flagged with a policy callout.
 import { el, callout, table, segmented, cite, announce } from '../ui.js?v=1';
-import { createTree, treeOutline } from '../troubleshooting/tree.js';
+import { createTree, treeOutline, numberCites } from '../troubleshooting/tree.js';
 import { redirectGuide } from '../troubleshooting/redirect.js';
 import * as T from '../troubleshooting/trees.js';
 
@@ -114,6 +114,7 @@ function backSelector() {
     out.textContent = '';
     out.append(el('h4', { class: 'ts-back-h', text: b.label }));
     out.append(el('ul', { class: 'ts-back-list' }, ...b.points.map((p) => el('li', { html: p }))));
+    numberCites(out);
   };
   const seg = segmented(BACKS.map(({ value, label }) => ({ value, label })), { label: 'Patient type', value: 'obesity', onChange: draw });
   wrap.append(el('p', { class: 'ts-back-l', text: 'Choose a patient type' }), seg, out);
@@ -283,8 +284,8 @@ export function mount(root) {
 
     const outline = el('details', { class: 'sp-details ts-outline-d', id: `${p.id}-all` },
       el('summary', { text: p.scenario ? 'Show all choices and feedback' : 'Show the whole tree as a list' }));
-    let built = false;
-    outline.addEventListener('toggle', () => { if (outline.open && !built) { built = true; outline.append(treeOutline(p.tree)); } });
+    // Built now (not on open) so every ref the tree cites is in the DOM when app.js numbers the references.
+    outline.append(treeOutline(p.tree));
     art.append(outline);
 
     panels.set(p.id, art);
