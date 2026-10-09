@@ -1,6 +1,5 @@
 // Decision-tree content for 04 Troubleshooting.
 // Doses: only product-label (emc SmPC) or Association of Anaesthetists QRH values, each cited where it appears.
-// Anything that depends on local practice is flagged in the section's policy callouts.
 import { cite } from '../ui.js?v=1';
 
 const D = (s) => `<span class="sp-dose">${s}</span>`;
@@ -31,7 +30,7 @@ export const dryTap = {
     wait: {
       prompt: 'Wait and watch the hub for several seconds, then rotate the needle a quarter-turn at a time. What happens?',
       short: 'Wait and rotate',
-      detail: `<p>With a pencil-point needle the side hole sits just behind the tip, so the tip can be through the dura while the hole is still outside it. Rotation is often suggested, but its benefit is theoretical.${cite('ts-nysora-failed')}</p>`,
+      detail: `<p>With a pencil-point needle the side hole sits just behind the tip, so the tip can be through the dura while the hole is still outside it. Rotation is often suggested, but its benefit is theoretical.</p>`,
       choices: [
         { label: 'Clear CSF appears and keeps dripping', to: 'xGo' },
         { label: 'Still nothing', to: 'depth' },
@@ -40,7 +39,7 @@ export const dryTap = {
     rotate: {
       prompt: 'Rotate the needle a quarter-turn at a time and watch the hub again.',
       short: 'Rotate',
-      detail: `<p>With a pencil-point needle the side hole sits just behind the tip, so the tip can be through the dura while the hole is still outside it. Rotation is often suggested, but its benefit is theoretical.${cite('ts-nysora-failed')}</p>`,
+      detail: `<p>With a pencil-point needle the side hole sits just behind the tip, so the tip can be through the dura while the hole is still outside it. Rotation is often suggested, but its benefit is theoretical.</p>`,
       choices: [
         { label: 'CSF now flows freely', to: 'xGo' },
         { label: 'Nothing', to: 'depth' },
@@ -58,7 +57,7 @@ export const dryTap = {
     advance: {
       prompt: 'Replace the stylet. Advance 1–2 mm at a time, removing the stylet to check the hub after each step.',
       short: 'Advance',
-      detail: `<p>Keep the stylet in while you advance, so tissue doesn’t plug the lumen.${cite('ts-nysora-failed')}</p>`,
+      detail: `<p>Keep the stylet in while you advance, so tissue doesn’t plug the lumen.</p>`,
       choices: [
         { label: 'Clear CSF appears', to: 'xGo' },
         { label: 'Now well past the expected depth, still no CSF', to: 'deep' },
@@ -70,8 +69,8 @@ export const dryTap = {
       detail: `<ul>
         <li>Is the back square? Shoulders and hips vertical, no rotation, good flexion.</li>
         <li>Re-feel the midline. Ask the patient which side they feel the needle.</li>
-        <li>Is the needle blocked? Clot or tissue in the lumen can stop flow even when the tip is in the right place: check it, or use a new needle.${cite('ts-nysora-failed')}</li>
-        <li>Change one thing at a time. A slightly more cephalad angle is the commonest correction.${cite('ts-nysora-failed')}</li>
+        <li>Is the needle blocked? Clot or tissue in the lumen can stop flow even when the tip is in the right place: check it, or use a new needle.</li>
+        <li>Change one thing at a time. A slightly more cephalad angle is the commonest correction.</li>
       </ul>`,
       choices: [
         { label: 'Redirected: clear CSF flows', to: 'xGo' },
@@ -81,7 +80,7 @@ export const dryTap = {
     xGo: {
       outcome: 'Proceed only when clear CSF flows freely',
       tone: 'ok',
-      body: `<p>Steady the hub against the patient’s back so the needle can’t move. Attach the syringe firmly and confirm that CSF aspirates easily before you inject.${cite('ts-nysora-failed')}</p>`,
+      body: `<p>Steady the hub against the patient’s back so the needle can’t move. Attach the syringe firmly and confirm that CSF aspirates easily before you inject.</p>`,
     },
     xBone: {
       outcome: 'Work through the bone contact tree',
@@ -94,7 +93,7 @@ export const dryTap = {
       body: `<ul>
         <li>Ask a senior colleague to look or take over.</li>
         <li>Try another interspace, a paramedian approach or a better position (sitting, more flexion).</li>
-        <li>Use an ultrasound pre-scan to mark the midline, the interspace and the depth.${cite('chin2011', 'perlas2016')}</li>
+        <li>Use an ultrasound pre-scan to mark the midline, the interspace and the depth. For scoliosis, obesity, an elderly or a previously operated back, see ${go('sx-scoliosis', 'the difficult-back approaches')}.</li>
         <li>Repeated passes add trauma. If it isn’t working, an alternative anaesthetic is a reasonable plan. Tell the patient and document what happened.</li>
       </ul>`,
     },
@@ -144,12 +143,12 @@ export const bloodyTap = {
     xProceed: {
       outcome: 'Proceed, and record the bloody tap',
       tone: 'ok',
-      body: '<p>Write “bloody tap” in the anaesthetic record and tell recovery and the ward. Check that the block wears off as expected.</p><p>New back pain, new weakness or numbness, or a block that lasts much longer than expected needs urgent review for a spinal haematoma (urgent MRI and a neurosurgical opinion).</p>',
+      body: `<p>Write “bloody tap” in the anaesthetic record and tell recovery and the ward. Check that the block wears off as expected.</p><p>New back pain, new weakness or numbness, or a block that lasts much longer than expected needs urgent review for a spinal haematoma (urgent MRI and a neurosurgical opinion): see ${go('cx-haematoma', 'Haematoma')}.</p>`,
     },
     xAnticoag: {
       outcome: 'Proceed only with clear CSF; plan the next dose with the team',
       tone: 'warn',
-      body: `<p>A traumatic puncture matters more when clotting is affected. Record the bloody tap, tell the surgeons and the ward, and agree when the next anticoagulant dose can be given. ASRA advises delaying LMWH for ${N('24 h')} after a traumatic puncture; ESAIC/ESRA say a longer delay than usual may be justified.${cite('asra2025', 'esaic2022')} Agree the timing with the surgeons. Ask for regular neurological checks until the block has worn off. Follow the anticoagulation guideline your department uses.</p>`,
+      body: `<p>A traumatic puncture matters more when clotting is affected. Record the bloody tap, tell the surgeons and the ward, and agree when the next anticoagulant dose can be given. ASRA advises delaying LMWH for ${N('24 h')} after a traumatic puncture; ESAIC/ESRA say a longer delay than usual may be justified.${cite('asra2025', 'esaic2022')} Agree the timing with the surgeons. Ask for regular neurological checks until the block has worn off. Next-dose timing: ${go('tq-anticoag', 'Anticoagulant timing')}.</p>`,
     },
   },
 };
@@ -161,7 +160,7 @@ export const paraesthesia = {
     n1: {
       prompt: 'The patient feels a sudden electric shock down one leg. Stop advancing. Has it gone?',
       short: 'Shock down leg',
-      detail: `<p>Paraesthesia during spinal needle insertion is fairly common.${cite('ts-pong2009')}</p>`,
+      detail: `<p>Paraesthesia during spinal needle insertion is fairly common.</p>`,
       choices: [
         { label: 'It was brief and went as soon as I stopped', to: 'csf' },
         { label: 'It persists', to: 'xPersist' },
@@ -170,7 +169,7 @@ export const paraesthesia = {
     csf: {
       prompt: 'Hold the needle still and remove the stylet. Is there clear CSF?',
       short: 'CSF?',
-      detail: `<p>In one study, CSF was in the hub after 13 of 15 transient paraesthesias: most happen when the tip is already in the subarachnoid space and touches a nerve root. So stop and look for CSF before you withdraw.${cite('ts-pong2009')}</p>`,
+      detail: `<p>In one study, CSF was in the hub after 13 of 15 transient paraesthesias: most happen when the tip is already in the subarachnoid space and touches a nerve root. So stop and look for CSF before you withdraw.</p>`,
       choices: [
         { label: 'Yes, clear CSF', to: 'inject' },
         { label: 'No CSF', to: 'xNoCsf' },
@@ -187,12 +186,12 @@ export const paraesthesia = {
     xPersist: {
       outcome: 'Do not inject. Withdraw.',
       tone: 'danger',
-      body: `<p>Persistent paraesthesia suggests the needle is against or in a nerve. Withdraw, reassess, and re-site only if the patient is comfortable. In a large French survey, most nerve injuries after spinal followed paraesthesia during puncture or pain on injection.${cite('ts-auroy1997')}</p><p>Record the side and distribution. Examine the patient after the block wears off, and ask for a neurology opinion if there is a new deficit.</p>`,
+      body: `<p>Persistent paraesthesia suggests the needle is against or in a nerve. Withdraw, reassess, and re-site only if the patient is comfortable. In a large French survey, most nerve injuries after spinal followed paraesthesia during puncture or pain on injection.</p><p>Record the side and distribution. Examine the patient after the block wears off, and ask for a neurology opinion if there is a new deficit.</p>`,
     },
     xNoCsf: {
       outcome: 'Don’t inject; reassess before redirecting',
       tone: 'warn',
-      body: `<p>Without CSF the tip may be beside a root in the epidural space or, if far lateral, near the foramen.${cite('ts-pong2009')} Withdraw a little, re-check the midline and the patient’s position, then redirect. Stop if the paraesthesia comes back.</p>`,
+      body: `<p>Without CSF the tip may be beside a root in the epidural space or, if far lateral, near the foramen. Withdraw a little, re-check the midline and the patient’s position, then redirect. Stop if the paraesthesia comes back.</p>`,
     },
     xOk: {
       outcome: 'Complete the injection and document',
@@ -202,7 +201,7 @@ export const paraesthesia = {
     xStop: {
       outcome: 'Stop injecting now',
       tone: 'danger',
-      body: `<p>Pain or paraesthesia on injection is a warning of nerve injury.${cite('ts-auroy1997')} Stop, withdraw, and get senior help with the plan. Document, follow the patient up, and ask for a neurology opinion if a deficit appears.</p>`,
+      body: `<p>Pain or paraesthesia on injection is a warning of nerve injury. Stop, withdraw, and get senior help with the plan. Document, follow the patient up, and ask for a neurology opinion if a deficit appears. See ${go('cx-neuro', 'Nerve injury')}.</p>`,
     },
   },
 };
@@ -231,7 +230,7 @@ export const bone = {
     midShallow: {
       prompt: 'This is probably a spinous process. Withdraw to the subcutaneous tissue and angle slightly more cephalad.',
       short: 'Spinous process',
-      detail: `<p>Withdraw far enough that the ligaments stop holding the old line. A slightly more cephalad angle is the commonest correction; if you were already angled steeply up, try slightly caudad.${cite('ts-nysora-failed')}</p>`,
+      detail: `<p>Withdraw far enough that the ligaments stop holding the old line. A slightly more cephalad angle is the commonest correction; if you were already angled steeply up, try slightly caudad.</p>`,
       guide: 'mid-shallow',
       choices: [
         { label: 'Through to CSF', to: 'xOk' },
@@ -241,7 +240,7 @@ export const bone = {
     midDeep: {
       prompt: 'This is probably a lamina: the needle has drifted off the midline. Withdraw and aim back towards the midline.',
       short: 'Lamina',
-      detail: `<p>Bone beyond the depth of the spinous processes suggests the needle is on a lamina and the path needs adjusting from side to side.${cite('ts-nysora-failed')} Check the back isn’t rotated, re-feel the midline and ask which side the patient feels the needle.</p>`,
+      detail: `<p>Bone beyond the depth of the spinous processes suggests the needle is on a lamina and the path needs adjusting from side to side. Check the back isn’t rotated, re-feel the midline and ask which side the patient feels the needle.</p>`,
       guide: 'mid-deep',
       choices: [
         { label: 'Through to CSF', to: 'xOk' },
@@ -297,54 +296,7 @@ export const bone = {
     xEscalate: {
       outcome: 'Change the plan, or get help',
       tone: 'danger',
-      body: `<ul><li>Try a paramedian approach, or another interspace.</li><li>Use an ultrasound pre-scan to find the midline, the interspace and the depth.${cite('chin2011')}</li><li>Ask a senior colleague. Repeated passes add trauma and distress.</li></ul>`,
-    },
-  },
-};
-
-export const difficultBack = {
-  id: 'ts-difficult-back',
-  start: 'n1',
-  nodes: {
-    n1: {
-      prompt: 'Before you start: can you feel the midline and the interspaces?',
-      short: 'Landmarks?',
-      choices: [
-        { label: 'Yes, clearly', to: 'position' },
-        { label: 'Poorly, or not at all', to: 'us' },
-      ],
-    },
-    position: {
-      prompt: 'Is the patient in the best position you can achieve?',
-      short: 'Position',
-      detail: '<p>Sitting usually makes the midline easier to find. Ask the patient to curl forward, and have an assistant keep the shoulders and hips square.</p>',
-      choices: [
-        { label: 'Yes', to: 'xGo' },
-        { label: 'No: pain or stiffness limits it', to: 'us' },
-      ],
-    },
-    us: {
-      prompt: 'Is ultrasound available, and are you trained to use it for the spine?',
-      short: 'Ultrasound?',
-      choices: [
-        { label: 'Yes', to: 'xUs' },
-        { label: 'No', to: 'xSenior' },
-      ],
-    },
-    xGo: {
-      outcome: 'Go ahead, with a plan for when it doesn’t work',
-      tone: 'ok',
-      body: '<p>Decide in advance how many passes you will make before you change approach or call for help, and what the backup anaesthetic is.</p>',
-    },
-    xUs: {
-      outcome: 'Pre-scan and mark the back',
-      tone: 'ok',
-      body: `<p>Mark the midline and the chosen interspace, and measure the depth. A pre-procedure scan improves success when the surface landmarks are difficult.${cite('chin2011', 'perlas2016')} See ${go('ultrasound', 'Ultrasound-assisted neuraxial')}.</p>`,
-    },
-    xSenior: {
-      outcome: 'Ask for senior help before you start',
-      tone: 'warn',
-      body: '<p>A difficult back is a good reason to have an experienced colleague with you from the start, rather than after several failed passes. Agree the backup plan first.</p>',
+      body: `<ul><li>Try a paramedian approach, or another interspace.</li><li>Use an ultrasound pre-scan to find the midline, the interspace and the depth.</li><li>Ask a senior colleague. Repeated passes add trauma and distress.</li></ul>`,
     },
   },
 };
@@ -370,7 +322,7 @@ export const failed = {
         <li>Onset can be gradual. Testing too early can convince the patient it has failed.</li>
         <li>Look for leg weakness and a fall in blood pressure first.</li>
         <li>Test cold and pinprick from the lowest dermatomes upwards. Height alone doesn’t prove quality: before incision, a covert pinch with forceps tells you more.</li>
-        <li>If there’s no typical onset by about 15 minutes, the block is likely to be inadequate. Allow 20 minutes to be sure no block is coming.${cite('ts-nysora-failed')}</li>
+        <li>If there’s no typical onset by about 15 minutes, the block is likely to be inadequate. Allow 20 minutes to be sure no block is coming.</li>
       </ul>`,
       choices: [
         { label: 'The block is developing', to: 'xWait' },
@@ -380,13 +332,14 @@ export const failed = {
     pattern: {
       prompt: 'What pattern do you find?',
       short: 'Pattern',
-      detail: `<p>Failure can mean no block, or a block of the wrong height, density, duration or side.${cite('fettes2009', 'ts-nysora-failed')}</p>`,
+      detail: `<p>Failure can mean no block, or a block of the wrong height, density, duration or side.</p>`,
       choices: [
         { label: 'No block at all', to: 'none' },
         { label: 'Too low, or not dense enough', to: 'low' },
         { label: 'One side only', to: 'xUni' },
         { label: 'Patchy', to: 'xPatchy' },
         { label: 'Wearing off before surgery ends', to: 'xShort' },
+        { label: 'A CSE or epidural catheter is already in', to: 'xTopup' },
       ],
     },
     none: {
@@ -418,39 +371,44 @@ export const failed = {
         <li>Only when the first injection has failed completely and enough time (about 20 minutes) has passed.</li>
         <li>Don’t repeat after a slow but working block, or a patchy or low block: a second dose can give an unexpectedly high or total spinal.</li>
         <li>High intrathecal local anaesthetic concentrations can be neurotoxic, and if an anatomical barrier caused the failure, a repeat may fail too.</li>
-        <li>Discuss the dose with a senior colleague. Never give a large repeat dose “blind”.</li>
+        <li>Use a different level, and consider a different needle. Aspirate CSF before and after the injection.</li>
+        <li>Agree the dose with a senior colleague, usually a reduced dose if there is any doubt that the first dose went in. Never give a large repeat dose “blind”.</li>
       </ul>`,
-      refs: ['ts-nysora-failed', 'fettes2009'],
     },
     xGa: {
       outcome: 'Convert to general anaesthesia',
       tone: 'warn',
-      body: `<p>Tell the surgeon and the patient early, believe the patient’s pain, and don’t leave someone in distress. Afterwards, explain what happened, document it, and investigate if a drug fault is possible.${cite('fettes2009')}</p>`,
+      body: `<p>Tell the surgeon and the patient early, believe the patient’s pain, and don’t leave someone in distress. Afterwards, explain what happened, document it, and investigate if a drug fault is possible.</p>`,
     },
     xTilt: {
       outcome: 'Use posture to spread the block',
       tone: 'ok',
-      body: `<p>Tilt the patient head-down with the hips and knees flexed to flatten the lumbar lordosis, then re-test. Watch the blood pressure and stop the tilt once the block reaches the level you need.${cite('ts-nysora-failed')}</p>`,
+      body: `<p>Only if the blood pressure is stable: tilt the patient head-down with the hips and knees flexed to flatten the lumbar lordosis, then re-test. Stop the tilt as soon as the block reaches the level you need. This is a deliberate way to raise a block that is too low. Never use head-down tilt to treat low blood pressure (see ${go('ts-hypotension', 'Hypotension')}).</p>`,
     },
     xUni: {
       outcome: 'Turn the unblocked side down',
       tone: 'ok',
-      body: `<p>With a hyperbaric solution, turning the patient onto the unblocked side can spread the block. A one-sided block may be enough for surgery on that side, but warn the surgeon. Repositioning is less likely to help with a plain solution.${cite('ts-nysora-failed')}</p>`,
+      body: `<p>With a hyperbaric solution, turning the patient onto the unblocked side can spread the block. A one-sided block may be enough for surgery on that side, but warn the surgeon. Repositioning is less likely to help with a plain solution.</p>`,
     },
     xPatchy: {
-      outcome: 'Supplement, repeat with caution, or convert',
+      outcome: 'Supplement or convert; do not repeat the spinal',
       tone: 'warn',
-      body: `<p>Options are IV analgesia and sedation, local infiltration by the surgeon, a cautious repeat (see the warnings above), or general anaesthesia.${cite('fettes2009', 'ts-nysora-failed')}</p>`,
+      body: `<p>A patchy block means some drug is in the right place, so a second full dose risks a high block. Use IV analgesia and sedation, local infiltration by the surgeon, or general anaesthesia. A repeat spinal is a senior decision with a reduced dose.</p>`,
+    },
+    xTopup: {
+      outcome: 'Top up the epidural in small steps',
+      tone: 'warn',
+      body: `<p>Give small increments and test between each. Volume in the epidural space can push a spinal block higher, so watch the blood pressure, breathing and hands. If the top-up does not give a working block, convert to general anaesthesia.</p>`,
     },
     xSupplement: {
       outcome: 'Supplement or convert',
       tone: 'warn',
-      body: `<p>Changing posture rarely helps a plain solution. Supplement with IV analgesia or sedation, or local infiltration by the surgeon, or convert to general anaesthesia.${cite('fettes2009', 'ts-nysora-failed')}</p>`,
+      body: `<p>Changing posture rarely helps a plain solution. Supplement with IV analgesia or sedation, or local infiltration by the surgeon, or convert to general anaesthesia.</p>`,
     },
     xShort: {
       outcome: 'Supplement or convert to GA',
       tone: 'warn',
-      body: `<p>Use IV analgesia or sedation, local infiltration, or general anaesthesia. Agree the plan with the surgeon early.${cite('fettes2009', 'ts-nysora-failed')}</p>`,
+      body: `<p>This is the same problem as ${go('ts-wearing-off', 'a block wearing off during surgery')}: use IV analgesia or sedation, local infiltration, or general anaesthesia. Do not repeat the spinal. Agree the plan with the surgeon early.</p>`,
     },
   },
 };
@@ -507,19 +465,19 @@ export const highSpinal = {
     xAirway: {
       outcome: 'Follow your difficult airway algorithm',
       tone: 'danger',
-      body: '<p>Oxygenation comes first. Call for the most experienced help available and follow the department’s difficult airway guideline.</p>',
+      body: '<p>Oxygenation comes first. Call for the most experienced help available and follow a difficult airway algorithm.</p>',
     },
     xCirc: {
       outcome: 'Treat the circulation, then sedate and plan ongoing care',
       tone: 'danger',
-      body: `<p>Doses as printed in the Association of Anaesthetists QRH 3-11 for this emergency (they differ slightly from the product-label doses in the hypotension tree; follow your local protocol):${cite('ts-qrh2023')}</p>
+      body: `<p>Doses as printed in the Association of Anaesthetists QRH 3-11 for this emergency (they differ slightly from the product-label doses: both sets are side by side in ${go('ts-doses', 'the dose table at the top')}):${cite('ts-qrh2023')}</p>
         ${QRH_CIRC_DOSES}
         <p>Once the airway is secure, keep the patient asleep: the block can leave them paralysed but aware. Consider other causes (local anaesthetic toxicity, embolism, haemorrhage, a vasovagal event). Support until the block wears off, in a suitable place.</p>`,
     },
     xArrest: {
       outcome: 'Cardiac arrest: start CPR now',
       tone: 'danger',
-      body: '<p>Call the arrest team and follow the advanced life support algorithm. CPR may be needed just to circulate the drugs. Consider other causes, including local anaesthetic toxicity.</p>',
+      body: `<p>Call the arrest team and follow the advanced life support algorithm. CPR may be needed just to circulate the drugs. Consider other causes, including local anaesthetic toxicity (see ${go('cx-last', 'LAST')}).</p>`,
     },
   },
 };
@@ -539,7 +497,7 @@ export const hypotension = {
     cause: {
       prompt: 'Check the block height and look for other causes. Is the block higher than you planned?',
       short: 'Block height',
-      detail: `<p>Hypotension is more likely with a higher block (at or above T5) and in older patients.${cite('ts-carpenter1992')} Also think about bleeding, surgical compression of the vena cava, anaphylaxis and embolism.</p>`,
+      detail: `<p>Hypotension is more likely with a higher block (at or above T5) and in older patients. Also think about bleeding, surgical compression of the vena cava, anaphylaxis and embolism.</p>`,
       choices: [
         { label: 'Yes: weak hands, breathless or struggling to speak', to: 'xHigh' },
         { label: 'No: block about as planned', to: 'hr' },
@@ -592,7 +550,7 @@ export const hypotension = {
     xOk: {
       outcome: 'Keep treating early, and watch closely',
       tone: 'ok',
-      body: '<p>Set the blood pressure to cycle frequently until it is stable. Treat early rather than waiting for a big fall. Recheck the block height. Consider an infusion if repeated boluses are needed, and ask for help if they are.</p>',
+      body: `<p>Set the blood pressure to cycle frequently until it is stable. Treat early rather than waiting for a big fall. Recheck the block height. Consider a vasopressor infusion if repeated boluses are needed, and ask for help if they are. Doses: ${go('ts-doses', 'dose table')}. Which drug and why: ${go('ph-pressors', 'Vasopressors')}.</p>`,
     },
     xHigh: {
       outcome: 'Treat as a high spinal',
@@ -602,212 +560,229 @@ export const hypotension = {
     xAdrenaline: {
       outcome: 'Escalate to adrenaline; look for the cause',
       tone: 'danger',
-      body: `<p>The Association of Anaesthetists QRH lists adrenaline ${D('10–100 µg')} IV (adult) for emergency use in hypotension and bradycardia.${cite('ts-qrh2023')} Escalate early if the heart rate falls suddenly: cardiac arrest under spinal is rare but more common than with other regional techniques.${cite('ts-auroy1997')} Go back through airway, breathing and circulation, and think about bleeding, a high block, anaphylaxis and embolism.</p>`,
+      body: `<p>The Association of Anaesthetists QRH lists adrenaline ${D('1 µg/kg')} (adult ${D('10–100 µg')}) IV for emergency use in hypotension and bradycardia.${cite('ts-qrh2023')} Escalate early if the heart rate falls suddenly: cardiac arrest under spinal is rare but more common than with other regional techniques. Go back through airway, breathing and circulation, and think about bleeding, a high block, anaphylaxis and embolism.</p>`,
     },
     xArrest: {
       outcome: 'Cardiac arrest: start CPR now',
       tone: 'danger',
-      body: '<p>Call the arrest team and follow the advanced life support algorithm. Consider a high spinal and local anaesthetic toxicity among the causes.</p>',
+      body: `<p>Call the arrest team and follow the advanced life support algorithm. Consider a high spinal and local anaesthetic toxicity (see ${go('cx-last', 'LAST')}) among the causes.</p>`,
     },
   },
 };
 
-export const nausea = {
-  id: 'ts-nausea',
+export const bradycardia = {
+  id: 'ts-bradycardia',
   start: 'n1',
   nodes: {
     n1: {
-      prompt: 'The patient feels sick or vomits after the spinal. Check the blood pressure and heart rate now. Is the blood pressure low?',
-      short: 'Nausea',
-      detail: `<p>Low blood pressure is the first thing to look for. In one large series, nausea was linked with hypotension and with a block at or above T5.${cite('ts-carpenter1992')}</p>`,
+      prompt: 'The heart rate is falling after the spinal. Is there a pulse, and is the patient responsive?',
+      short: 'Slow heart',
+      detail: `<p>Look at the monitor trend as well as the number: a rate that has dropped quickly, or a new pause, is more dangerous than a steady slow rate.</p>`,
       choices: [
-        { label: 'Yes, low', to: 'xBp' },
-        { label: 'No, it’s normal', to: 'block' },
+        { label: 'Pulse present and responsive', to: 'cause' },
+        { label: 'No pulse, or unresponsive', to: 'xArrest' },
       ],
     },
-    block: {
-      prompt: 'Is the block high, or the heart rate slow?',
-      short: 'Block / rate',
+    cause: {
+      prompt: 'Stop what is slowing the heart, and call for help. Is the blood pressure adequate and is the rate stable?',
+      short: 'Pressure and trend',
+      detail: `<ul>
+        <li>Ask the surgeon to stop any traction or peritoneal stretch, and pause sedation.</li>
+        <li>Raise the legs. Give oxygen. Check the block height.</li>
+        <li>Think of a high block, bleeding, a vasovagal faint, a drug effect (for example a beta-blocker, dexmedetomidine, neostigmine) and local anaesthetic toxicity.</li>
+      </ul>`,
       choices: [
-        { label: 'The block is high: breathless, weak hands', to: 'xHigh' },
-        { label: 'The heart rate is slow', to: 'xVagal' },
-        { label: 'Neither', to: 'other' },
+        { label: 'Blood pressure adequate, rate slow but stable', to: 'xWatch' },
+        { label: 'Low blood pressure or symptoms, or the rate is still falling', to: 'treat' },
       ],
     },
-    other: {
-      prompt: 'Any other obvious trigger?',
-      short: 'Other causes',
+    treat: {
+      prompt: 'Give an antimuscarinic now, and treat the pressure. Is there a response?',
+      short: 'Treat rate and pressure',
+      detail: `<ul>
+        <li>Atropine ${D('0.5 mg')} IV (label), repeated every 2–5 minutes to effect, or glycopyrronium ${D('200–400 µg')} IV.${cite('ts-smpc-atr', 'ts-smpc-gly')} The QRH range is higher: ${D('0.6–1.2 mg')} atropine.${cite('ts-qrh2023')}</li>
+        <li>Ephedrine ${D('3–6 mg')} slow IV (label), as the vasopressor of choice when the heart is slow.${cite('ts-smpc-eph')}</li>
+        <li>Fluid, and legs up.</li>
+      </ul>`,
       choices: [
-        { label: 'Surgical traction on the bowel or peritoneum', to: 'xTraction' },
-        { label: 'Opioids given, or no obvious cause', to: 'xAntiemetic' },
+        { label: 'Yes, rate and pressure recovering', to: 'xOk' },
+        { label: 'No, or it is getting worse', to: 'refractory' },
       ],
     },
-    xBp: {
-      outcome: 'Treat the blood pressure first',
+    refractory: {
+      prompt: 'Not responding. Is there still a pulse?',
+      short: 'Not responding',
+      choices: [
+        { label: 'Yes, but very slow or very low pressure', to: 'xAdrenaline' },
+        { label: 'No pulse, or losing consciousness', to: 'xArrest' },
+      ],
+    },
+    xWatch: {
+      outcome: 'Watch closely and have the drugs drawn up',
       tone: 'warn',
-      body: `<p>An antiemetic won’t fix nausea caused by low blood pressure. Treat it with ${go('ts-hypotension', 'Hypotension and bradycardia')}, then reassess.</p>`,
-    },
-    xHigh: {
-      outcome: 'Treat as a high spinal',
-      tone: 'danger',
-      body: `<p>Call for help and go to ${go('ts-high-spinal', 'High or total spinal')}.</p>`,
-    },
-    xVagal: {
-      outcome: 'Treat the slow heart rate',
-      tone: 'warn',
-      body: `<p>Atropine ${D('0.5 mg')} IV${cite('ts-smpc-atr')} or glycopyrronium ${D('200–400 µg')} IV.${cite('ts-smpc-gly')} Recheck the blood pressure.</p>`,
-    },
-    xTraction: {
-      outcome: 'Ask the surgeon to ease off, and support',
-      tone: 'ok',
-      body: `<p>Tell the surgeon, give oxygen and reassurance, and give an antiemetic if it continues (ondansetron ${D('4 mg')} slow IV).${cite('ts-smpc-ond')}</p>`,
-    },
-    xAntiemetic: {
-      outcome: 'Give an antiemetic',
-      tone: 'ok',
-      body: `<p>Ondansetron ${D('4 mg')} by slow IV injection is the label dose for established postoperative nausea and vomiting.${cite('ts-smpc-ond')} Other antiemetics as per local protocol. Reassure, and keep checking the blood pressure.</p>`,
-    },
-  },
-};
-
-export const shivering = {
-  id: 'ts-shivering',
-  start: 'n1',
-  nodes: {
-    n1: {
-      prompt: 'The patient is shivering. Check temperature, SpO₂ and blood pressure. Is the patient cold?',
-      short: 'Shivering',
-      detail: `<p>Shivering is very common after neuraxial anaesthesia: a median of 55% in the control groups of 21 studies. It raises oxygen demand and makes monitoring harder.${cite('ts-crowley2008')}</p>`,
-      choices: [
-        { label: 'Yes, temperature is low', to: 'warm' },
-        { label: 'No, temperature is normal', to: 'other' },
-      ],
-    },
-    warm: {
-      prompt: 'Warm the patient actively: forced-air warming, warmed IV fluids, cover exposed skin. Does the shivering settle?',
-      short: 'Warm',
-      choices: [
-        { label: 'Yes', to: 'xOk' },
-        { label: 'No, and it is distressing or straining the heart or lungs', to: 'xDrug' },
-      ],
-    },
-    other: {
-      prompt: 'Think of other causes: fever or sepsis, a transfusion reaction, anxiety. Warm and reassure anyway. Does it settle?',
-      short: 'Other causes',
-      choices: [
-        { label: 'Yes', to: 'xOk' },
-        { label: 'No, and it is distressing or straining the heart or lungs', to: 'xDrug' },
-      ],
+      body: '<p>Cycle the blood pressure every minute. Have atropine or glycopyrronium and a vasopressor in your hand. A slow rate can fall further with no warning, especially in a young, fit patient or one on a beta-blocker.</p>',
     },
     xOk: {
-      outcome: 'Keep warming and monitoring',
+      outcome: 'Keep watching; find out why',
       tone: 'ok',
-      body: '<p>Continue active warming into recovery and recheck the temperature.</p>',
+      body: '<p>Keep the blood pressure cycling often until stable. Record the lowest rate, what you gave, and how quickly it responded. Think about why it happened (high block, traction, drugs) so it does not recur when the position changes.</p>',
     },
-    xDrug: {
-      outcome: 'Consider drug treatment, as per local protocol',
-      tone: 'warn',
-      body: `<p>Pethidine is the most studied drug for this; others are used too.${cite('ts-crowley2008')} Use the dose in your local protocol. It is an opioid, so watch sedation and breathing, and check for drug interactions before giving it. Keep warming.</p>`,
+    xAdrenaline: {
+      outcome: 'Escalate to adrenaline and call the team',
+      tone: 'danger',
+      body: `<p>The Association of Anaesthetists QRH lists adrenaline ${D('1 µg/kg')} (adult ${D('10–100 µg')}) IV for severe or refractory bradycardia or hypotension.${cite('ts-qrh2023')} Call for senior help now, because asystole can follow quickly. Prepare for CPR.</p>`,
+    },
+    xArrest: {
+      outcome: 'Cardiac arrest: start CPR now',
+      tone: 'danger',
+      body: `<ul>
+        <li>Start chest compressions and call the arrest team. Follow the advanced life support algorithm.</li>
+        <li>Give adrenaline as the algorithm directs; in a non-shockable rhythm that is straight away.</li>
+        <li>Raise the legs if you can. If the patient is pregnant, use manual uterine displacement.</li>
+        <li>Look for the cause: a high block, bleeding, anaphylaxis, embolism, and local anaesthetic toxicity (see ${go('cx-last', 'LAST')}).</li>
+      </ul>`,
     },
   },
 };
 
-export const pruritus = {
-  id: 'ts-pruritus',
+export const anxious = {
+  id: 'ts-anxious',
   start: 'n1',
   nodes: {
     n1: {
-      prompt: 'The patient is itching after an intrathecal opioid. Is there a rash, wheeze, swelling or low blood pressure?',
-      short: 'Itch',
-      detail: '<p>Itch after intrathecal opioid is common and often affects the face, neck and upper chest. It comes from the opioid’s action in the spinal cord, not histamine release, which is why antihistamines mainly just sedate.</p>',
+      prompt: 'The awake patient is anxious, restless or tearful. Could something physical be causing it?',
+      short: 'Anxious patient',
+      detail: `<p>Restlessness, a feeling of doom and sudden anxiety can be the first sign of low blood pressure, low oxygen, a rising block, a full bladder, pain or cold. Look before you sedate.</p>`,
       choices: [
-        { label: 'Yes', to: 'xAllergy' },
-        { label: 'No, itch only', to: 'resp' },
+        { label: 'Possibly: breathless, sweaty, pale, feeling sick, or the pressure is low', to: 'xPhysical' },
+        { label: 'No: vital signs and the block are fine', to: 'talk' },
       ],
     },
-    resp: {
-      prompt: 'It’s an opioid: check sedation and breathing. Is the patient drowsy, or breathing slowly?',
-      short: 'Sedation?',
+    talk: {
+      prompt: 'Talk to them. Ask what worries them, explain what they will feel, and offer a hand, music or a quiet voice. Does that settle them?',
+      short: 'Reassure',
+      detail: `<ul>
+        <li>Tell them what is normal: warm, heavy legs, pressure and tugging, and noise from the theatre.</li>
+        <li>Tell them what you are doing as you do it. Ask them to tell you at once about pain, breathlessness or a change in their hands.</li>
+        <li>Check the practical things: warm blanket, a comfortable position, a screen between them and the surgery.</li>
+      </ul>`,
       choices: [
-        { label: 'Yes', to: 'xResp' },
-        { label: 'No, alert and breathing normally', to: 'severity' },
+        { label: 'Yes, calmer', to: 'xGood' },
+        { label: 'No, still distressed', to: 'safe' },
       ],
     },
-    severity: {
-      prompt: 'How much is it bothering the patient?',
-      short: 'Severity',
+    safe: {
+      prompt: 'Is it safe to give sedation? Stable pressure, a block no higher than planned, normal breathing and an alert patient?',
+      short: 'Safe to sedate?',
+      detail: `<p>Sedation on top of a high block, in a frail patient, or with intrathecal opioid on board can slow breathing and hide the warning signs of a rising block.</p>`,
       choices: [
-        { label: 'Mild, tolerable', to: 'xReassure' },
-        { label: 'Distressing', to: 'xNaloxone' },
+        { label: 'Yes, all stable', to: 'xSedate' },
+        { label: 'No, or unsure', to: 'xGa' },
       ],
     },
-    xAllergy: {
-      outcome: 'Think allergy or anaphylaxis',
+    xPhysical: {
+      outcome: 'Treat the cause first',
       tone: 'danger',
-      body: '<p>Call for help. Assess airway, breathing and circulation, and follow your anaphylaxis guideline if the signs fit.</p>',
+      body: `<p>Check airway, breathing and circulation, the blood pressure and the block height. Go to ${go('ts-hypotension', 'Hypotension')} or ${go('ts-high-spinal', 'High or total spinal')} if they fit. Do not sedate a patient whose anxiety may be a symptom.</p>`,
     },
-    xResp: {
-      outcome: 'Treat as opioid-related respiratory depression',
-      tone: 'danger',
-      body: `<p>Stimulate the patient, give oxygen, support the airway and call for help. Naloxone, as per local protocol: the product label gives ${D('100–200 µg')} IV, titrated in ${D('100 µg')} steps every 2 minutes. It may need repeating, or an infusion, because morphine outlasts it.${cite('ts-smpc-nal')} See ${go('tq-adjuncts', 'Intrathecal opioid monitoring')}.</p>`,
+    xGood: {
+      outcome: 'Carry on, and keep talking',
+      tone: 'ok',
+      body: '<p>Stay by the head of the bed. Keep telling the patient what is happening, and check back at intervals.</p>',
+    },
+    xSedate: {
+      outcome: 'Small doses, one drug you know, keep talking',
+      tone: 'warn',
+      body: '<p>Give a small amount of a drug you know well, wait for its effect, and repeat only if needed. Aim for a calm patient who answers when spoken to, not a deeply sedated one. Keep oxygen on, watch breathing and saturation after every dose, and keep the surgeon informed.</p>',
+    },
+    xGa: {
+      outcome: 'Tell the surgeon, and consider general anaesthesia',
+      tone: 'warn',
+      body: '<p>A patient who cannot tolerate being awake, and who cannot be sedated safely, may be better served by general anaesthesia. Pause the surgery, get senior help, and agree the plan with the patient and the surgeon rather than pressing on.</p>',
+    },
+  },
+};
+
+export const wearingOff = {
+  id: 'ts-wearing-off',
+  start: 'n1',
+  nodes: {
+    n1: {
+      prompt: 'During surgery the patient says they can feel something. What are they feeling?',
+      short: 'Feeling something',
+      detail: `<ul>
+        <li>Touch and pressure are blocked last and often stay. Pressure, pulling and movement without pain are normal under a good spinal.</li>
+        <li>Sharp pain, or touch that is clearly increasing, means the block is not doing its job.</li>
+        <li>Anxiety, a cold theatre and a full bladder can make a working block feel worse. Ask what the sensation is, and where.</li>
+      </ul>`,
+      choices: [
+        { label: 'Pressure or pulling, not painful', to: 'xReassure' },
+        { label: 'Real pain, or sharp touch', to: 'test' },
+      ],
+    },
+    test: {
+      prompt: 'Test the block now with cold or pinprick, on both sides. What do you find?',
+      short: 'Test the block',
+      detail: '<p>Compare with the level you recorded earlier. Sensory block regresses from the top down, and the sacral segments clear last.</p>',
+      choices: [
+        { label: 'The level has dropped, or sensation has returned in the operative area', to: 'time' },
+        { label: 'The block is still high, and the pain is deep or comes with a pull on the bowel or peritoneum', to: 'xVisceral' },
+        { label: 'The leg is blocked, but the pain is under a tourniquet', to: 'xTourniquet' },
+      ],
+    },
+    time: {
+      prompt: 'Ask the surgeon how much longer they need. Can they finish soon?',
+      short: 'Time left',
+      detail: '<p>Say what you are doing in front of the patient. Do not carry on while the patient is in pain.</p>',
+      choices: [
+        { label: 'Only a short time left', to: 'xSupplement' },
+        { label: 'Long, or the surgeon can’t say', to: 'fit' },
+      ],
+    },
+    fit: {
+      prompt: 'Is the patient stable, calm and able to protect the airway, so that sedation and analgesia are safe?',
+      short: 'Safe to supplement?',
+      detail: '<p>Think about the airway, breathing and blood pressure first. Sedation on top of a high block, in a frail patient, or with intrathecal opioid on board can cause problems with breathing.</p>',
+      choices: [
+        { label: 'Yes, stable and cooperative', to: 'xSupplement' },
+        { label: 'No: unstable, distressed, airway concerns, or the pain is not controlled', to: 'xGa' },
+      ],
     },
     xReassure: {
-      outcome: 'Reassure and observe',
+      outcome: 'Reassure and carry on',
       tone: 'ok',
-      body: '<p>It usually settles as the opioid wears off. Keep monitoring sedation and breathing as per your intrathecal opioid protocol.</p>',
+      body: '<p>Explain that touch and pressure are normal. Tell the surgeon, keep talking to the patient, and re-test if the patient’s worry continues.</p>',
     },
-    xNaloxone: {
-      outcome: 'Low-dose naloxone, as per local protocol',
+    xVisceral: {
+      outcome: 'Ask the surgeon to ease off, then supplement',
       tone: 'warn',
-      body: '<p>Small, titrated doses of naloxone can relieve the itch but may also reduce the pain relief, so start low. Use the regimen in your local protocol. Keep monitoring sedation and breathing.</p>',
+      body: '<p>Traction on the peritoneum or bowel can cause pain or nausea even with a good block. Ask the surgeon to pause or release the traction, treat the blood pressure and nausea, and give small doses of IV analgesia. If it keeps coming back, plan for general anaesthesia.</p>',
     },
-  },
-};
-
-export const retention = {
-  id: 'ts-retention',
-  start: 'n1',
-  nodes: {
-    n1: {
-      prompt: 'The patient hasn’t passed urine since the spinal. Are they uncomfortable, or has it been longer than your unit allows?',
-      short: 'No urine',
-      detail: `<p>Retention after surgery is common: reported rates range from 5% to 70%, depending on how it is defined and who is studied.${cite('ts-baldini2009')}</p>`,
-      choices: [
-        { label: 'Yes', to: 'scan' },
-        { label: 'No: comfortable, and the block is still wearing off', to: 'xWait' },
-      ],
-    },
-    scan: {
-      prompt: 'Scan the bladder. What is the volume?',
-      short: 'Bladder scan',
-      detail: `<p>A bladder ultrasound scan measures the volume accurately and guides what to do.${cite('ts-baldini2009')}</p>`,
-      choices: [
-        { label: 'Above the local threshold for catheterisation', to: 'xCath' },
-        { label: 'Small', to: 'low' },
-      ],
-    },
-    low: {
-      prompt: 'Small bladder volume and no urine. Is the patient making enough urine?',
-      short: 'Low volume',
-      choices: [
-        { label: 'Maybe not: low fluid intake, low blood pressure, bleeding', to: 'xOutput' },
-        { label: 'Yes, probably fine', to: 'xWait' },
-      ],
-    },
-    xWait: {
-      outcome: 'Encourage voiding and reassess',
-      tone: 'ok',
-      body: '<p>Help the patient to a normal position to void, keep track of fluids, and re-scan if they still haven’t passed urine within the time your unit uses.</p>',
-    },
-    xCath: {
-      outcome: 'Catheterise, as per local policy',
+    xTourniquet: {
+      outcome: 'Expect this: treat it, or ask for the tourniquet to come down',
       tone: 'warn',
-      body: `<p>Don’t let the bladder overdistend: it can damage the detrusor and lead to infection and catheter problems.${cite('ts-baldini2009')} Use the in–out or indwelling catheter policy your unit follows.</p>`,
+      body: '<p>Tourniquet pain commonly appears after a long inflation time, even with a good block. Ask the surgeon how long it has been up and whether it can be released. IV analgesia and light sedation may help. Do not mistake it for a failing block.</p>',
     },
-    xOutput: {
-      outcome: 'Assess for low urine output',
+    xSupplement: {
+      outcome: 'Supplement, in small steps',
       tone: 'warn',
-      body: '<p>Check the blood pressure, fluid balance and bleeding. Treat the cause and tell the team.</p>',
+      body: `<ul>
+        <li>Ask the surgeon to infiltrate local anaesthetic.</li>
+        <li>Give IV analgesia, or light sedation, in small increments. Use drugs and doses you know, and give them slowly.</li>
+        <li>Watch breathing, oxygen saturation and blood pressure after every dose, and keep talking to the patient.</li>
+        <li>Do not repeat the spinal. A second dose into a regressing block can behave unpredictably.</li>
+        <li>If the pain is not controlled within a few minutes, convert to general anaesthesia.</li>
+      </ul>`,
+    },
+    xGa: {
+      outcome: 'Convert to general anaesthesia',
+      tone: 'danger',
+      body: `<ul>
+        <li>Tell the surgeon and the patient. Ask the surgeon to pause, and to cover the wound.</li>
+        <li>Get a senior colleague and a second pair of hands. Plan the airway and the induction as you would for any general anaesthetic.</li>
+        <li>The spinal can still lower blood pressure. Use a reduced induction dose, and have a vasopressor ready.</li>
+        <li>Tell the patient afterwards what happened, and write it in the record.</li>
+      </ul>`,
     },
   },
 };
@@ -841,7 +816,7 @@ export const caseHip = {
     xGood: {
       outcome: 'Treat early and keep close watch',
       tone: 'ok',
-      body: `<p>Older age and a higher block both raise the risk of hypotension.${cite('ts-carpenter1992')} Check the block height, look for blood loss, and keep the surgeon informed. See ${go('ts-hypotension', 'Hypotension and bradycardia')}.</p>`,
+      body: `<p>Older age and a higher block both raise the risk of hypotension. Check the block height, look for blood loss, and keep the surgeon informed. See ${go('ts-hypotension', 'Hypotension and bradycardia')}.</p>`,
     },
     xWait: {
       outcome: 'Don’t wait: recheck at short intervals',
@@ -865,7 +840,7 @@ export const caseParaesthesia = {
       short: 'Scenario',
       detail: '<p class="ts-vignette">You are inserting a 25G pencil-point needle at L3–4 in a 55-year-old man for knee surgery. He suddenly says, “Electric shock down my right leg!” It stops as soon as you stop.</p>',
       choices: [
-        { label: 'Withdraw fully and redirect to the left', to: 'n2', note: `<p>Some people teach this, but a study found CSF in the hub after most brief paraesthesias, so you may already be in the right place.${cite('ts-pong2009')} Look first.</p>` },
+        { label: 'Withdraw fully and redirect to the left', to: 'n2', note: `<p>Some people teach this, but a study found CSF in the hub after most brief paraesthesias, so you may already be in the right place. Look first.</p>` },
         { label: 'Hold still, remove the stylet and look for CSF', to: 'n2', note: '<p>Good. A brief paraesthesia often means the tip is in the subarachnoid space touching a root.</p>' },
         { label: 'Inject quickly before he moves', to: 'n2', note: '<p>No. Never inject without confirming free-flowing CSF, and never through ongoing paraesthesia.</p>' },
       ],
@@ -875,7 +850,7 @@ export const caseParaesthesia = {
       short: 'Pain on injection',
       choices: [
         { label: 'Stop injecting and withdraw', to: 'xStop', note: '<p>Correct. Pain on injection is a warning of nerve injury.</p>' },
-        { label: 'Carry on slowly; it’ll pass', to: 'xStop', note: `<p>No. Most nerve injuries after spinal in a large French survey followed paraesthesia during puncture or pain on injection.${cite('ts-auroy1997')}</p>` },
+        { label: 'Carry on slowly; it’ll pass', to: 'xStop', note: `<p>No. Most nerve injuries after spinal in a large French survey followed paraesthesia during puncture or pain on injection.</p>` },
         { label: 'Ask him to keep still and inject faster', to: 'xStop', note: '<p>No. Stop as soon as there is pain on injection.</p>' },
       ],
     },
@@ -896,8 +871,8 @@ export const caseUnilateral = {
       short: 'Scenario',
       detail: '<p class="ts-vignette">A 60-year-old woman is listed for a right knee arthroscopy. You gave hyperbaric bupivacaine with her sitting, then laid her supine. Fifteen minutes later the left leg is dense and heavy; the right leg has only patchy cold loss and she can lift it.</p>',
       choices: [
-        { label: 'Give a second spinal now', to: 'n2', note: `<p>Risky. There is a working block, so a second dose could spread unpredictably and give a high or total spinal.${cite('ts-nysora-failed')}</p>` },
-        { label: 'Turn her right side down, wait and re-test', to: 'n2', note: `<p>Good. With a hyperbaric solution, turning the unblocked side down can spread the block.${cite('ts-nysora-failed')}</p>` },
+        { label: 'Give a second spinal now', to: 'n2', note: `<p>Risky. There is a working block, so a second dose could spread unpredictably and give a high or total spinal.</p>` },
+        { label: 'Turn her right side down, wait and re-test', to: 'n2', note: `<p>Good. With a hyperbaric solution, turning the unblocked side down can spread the block.</p>` },
         { label: 'Tell the surgeon to start; it’ll come up', to: 'n2', note: '<p>No. Test properly first. Starting on an unblocked side leaves the patient in pain and loses her trust.</p>' },
       ],
     },

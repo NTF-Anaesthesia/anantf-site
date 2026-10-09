@@ -2,57 +2,104 @@
 import { el, esc, cite, announce, segmented, table } from '../ui.js?v=1';
 import { GROUPS, DRUGS } from './anticoag-data.js';
 
-// ------------------------------------------------------------------ anticoagulant lookup
+// ------------------------------------------------------------------ anticoagulant finder
+// Always-visible, filterable list: type a drug, a brand name or a dose, or tap a group. One or two taps to the answer.
+const BRANDS = {
+  'aspirin-low': 'aspirin', 'aspirin-high': 'aspirin',
+  clopidogrel: 'plavix', prasugrel: 'effient', ticagrelor: 'brilinta brilique', cilostazol: 'pletal',
+  'ufh-sc-low': 'heparin ufh unfractionated subcutaneous', 'ufh-sc-high': 'heparin ufh unfractionated subcutaneous', 'ufh-iv': 'heparin ufh unfractionated infusion',
+  'lmwh-low': 'enoxaparin clexane lovenox dalteparin fragmin tinzaparin', 'lmwh-high': 'enoxaparin clexane lovenox dalteparin fragmin tinzaparin',
+  'fondaparinux-low': 'arixtra', 'fondaparinux-high': 'arixtra', warfarin: 'coumadin vitamin k antagonist inr',
+  'dabigatran-low': 'pradaxa doac noac', 'dabigatran-high': 'pradaxa doac noac',
+  'rivaroxaban-low': 'xarelto doac noac', 'rivaroxaban-high': 'xarelto doac noac',
+  'apixaban-low': 'eliquis doac noac', 'apixaban-high': 'eliquis doac noac',
+  'edoxaban-low': 'lixiana savaysa doac noac', 'edoxaban-high': 'lixiana savaysa doac noac',
+  thrombolytics: 'alteplase tenecteplase streptokinase', herbal: 'ginkgo garlic ginseng supplements',
+};
+const SHORT = {
+  'Antiplatelet drugs': 'Antiplatelets', Heparins: 'Heparins', Fondaparinux: 'Fondaparinux',
+  'Vitamin K antagonist': 'Warfarin', 'Direct oral anticoagulants (DOACs)': 'DOACs', Other: 'Other',
+};
+
 export function anticoagLookup() {
   const wrap = el('div', { class: 'tq-ac', id: 'tq-ac-lookup' });
-  const selId = 'tq-ac-select';
-  const select = el('select', { id: selId, class: 'tq-select' });
-  select.append(el('option', { value: '', text: 'Choose a drug…' }));
-  for (const g of GROUPS) {
-    const og = el('optgroup', { label: g });
-    DRUGS.filter((d) => d.group === g).forEach((d) => og.append(el('option', { value: d.id, text: d.name })));
-    select.append(og);
-  }
+  const inId = 'tq-ac-search';
+  const input = el('input', { type: 'search', id: inId, class: 'tq-search', autocomplete: 'off', placeholder: 'e.g. apixaban, 5 mg, clopidogrel, enoxaparin', 'aria-controls': 'tq-ac-full' });
   const field = el('div', { class: 'tq-field' },
-    el('label', { for: selId, class: 'tq-label', text: 'Drug the patient takes' }),
-    select);
-  const out = el('div', { class: 'tq-ac-out', 'aria-live': 'polite' });
+    el('label', { for: inId, class: 'tq-label', text: 'Which drug does the patient take?' }), input);
+  let group = 'all';
+  const seg = segmented([{ value: 'all', label: 'All' }, ...GROUPS.map((g) => ({ value: g, label: SHORT[g] || g }))],
+    { label: 'Drug group', value: 'all', onChange: (v) => { group = v; paint(); } });
+  seg.classList.add('tq-ac-seg');
+  const count = el('p', { class: 'tq-hint tq-ac-count', 'aria-live': 'polite' });
+  const list = el('div', { class: 'tq-acl', id: 'tq-ac-full' });
+  list.id = 'tq-ac-full';
 
-  function col(title, sub, d, cls) {
-    return el('div', { class: `tq-ac-col ${cls}` },
-      el('p', { class: 'tq-ac-src', html: title }),
-      sub ? el('p', { class: 'tq-ac-srcsub', text: sub }) : null,
-      el('dl', { class: 'tq-ac-dl' },
-        el('dt', { text: 'Last dose → spinal' }), el('dd', { class: 'tq-ac-val', text: d.stop }),
-        el('dt', { text: 'Spinal → next dose' }), el('dd', { text: d.next })));
-  }
+  const cells = (title, d) => el('div', { class: 'tq-acd-col' },
+    el('p', { class: 'tq-acd-src', html: title }),
+    el('dl', { class: 'tq-ac-dl' },
+      el('dt', { text: 'Last dose → spinal' }), el('dd', { class: 'tq-ac-val', text: d.stop }),
+      el('dt', { text: 'Spinal → next dose' }), el('dd', { text: d.next })));
 
-  function render(id) {
-    out.textContent = '';
-    const d = DRUGS.find((x) => x.id === id);
-    if (!d) {
-      out.append(el('p', { class: 'tq-ac-empty', text: 'Pick a drug to see the minimum intervals from both guidelines side by side.' }));
-      return;
-    }
-    const head = el('div', { class: 'tq-ac-head' },
-      el('p', { class: 'tq-ac-name', text: d.name }),
-      d.dose ? el('p', { class: 'tq-ac-dose', text: d.dose }) : null);
-    const grid = el('div', { class: 'tq-ac-grid' },
-      col(`ASRA 2025${cite('asra2025')}`, 'From published summary — verify against full text', d.asra, 'tq-ac-col--asra'),
-      col(`ESAIC/ESRA 2022${cite('esaic2022')}`, 'Full text', d.esaic, 'tq-ac-col--esaic'));
-    out.append(head, grid);
-    const notes = [];
-    if (d.renal) notes.push('<strong>Renal function matters here.</strong> Check creatinine clearance (CrCl); the interval gets longer when it is low.');
-    if (d.note) notes.push(esc(d.note));
-    if (notes.length) out.append(el('ul', { class: 'tq-ac-notes' }, ...notes.map((n) => el('li', { html: n }))));
-    announce(`${d.name}. ASRA 2025: last dose to spinal ${d.asra.stop}. ESAIC/ESRA 2022: ${d.esaic.stop}.`);
-    // citations added after finalise() need numbering: copy numbers from existing links if present
-    renumber(out);
+  const rows = [];
+  for (const g of GROUPS) {
+    const ds = DRUGS.filter((d) => d.group === g);
+    if (!ds.length) continue;
+    const gh = el('h4', { class: 'tq-acl-h', text: g });
+    const items0 = [];
+    ds.forEach((d) => {
+      const art = el('details', { class: 'tq-acd', id: `tq-ac-d-${d.id}` });
+      art.append(el('summary', { class: 'tq-acd-sum' },
+        el('span', { class: 'tq-acd-name', text: d.name }),
+        d.dose ? el('span', { class: 'tq-acd-dose', text: d.dose }) : null,
+        el('span', { class: 'tq-acd-quick' },
+          el('span', { html: `<b>ASRA</b> ${esc(d.asra.stop)}` }),
+          el('span', { html: `<b>ESAIC</b> ${esc(d.esaic.stop)}` }))));
+      art.append(el('div', { class: 'tq-acd-grid' }, cells(`ASRA 2025${cite('asra2025')}`, d.asra), cells(`ESAIC/ESRA 2022${cite('esaic2022')}`, d.esaic)));
+      const notes = [];
+      if (d.renal) notes.push('<strong>Renal function matters here.</strong> Check creatinine clearance (CrCl); the interval gets longer when it is low.');
+      if (d.note) notes.push(esc(d.note));
+      if (notes.length) art.append(el('ul', { class: 'tq-ac-notes' }, ...notes.map((n) => el('li', { html: n }))));
+      items0.push(art);
+      const hay = `${d.name} ${d.dose || ''} ${d.group} ${BRANDS[d.id] || ''}`.toLowerCase();
+      rows.push({ d, art, hay, gh });
+    });
+    const items = items0;
+    list.append(el('section', { class: 'tq-acl-g', dataset: { group: g } }, gh, ...items));
   }
-  select.addEventListener('change', () => render(select.value));
-  wrap.append(field, out);
-  render('');
-  return { node: wrap, select: (id) => { select.value = id; render(id); } };
+  const empty = el('p', { class: 'tq-ac-empty', hidden: true, text: 'Nothing matches. Try the generic name, or clear the box.' });
+  list.append(empty);
+
+  function paint() {
+    const q = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    let n = 0;
+    rows.forEach((r) => {
+      const ok = (group === 'all' || r.d.group === group) && q.every((w) => r.hay.includes(w));
+      r.art.hidden = !ok;
+      if (ok) n += 1;
+    });
+    if (q.length) rows.forEach((r) => { if (!r.art.hidden) r.art.open = n <= 2; });
+    list.querySelectorAll('.tq-acl-g').forEach((g) => { g.hidden = !g.querySelector('.tq-acd:not([hidden])'); });
+    empty.hidden = n > 0;
+    count.textContent = n === rows.length ? `${n} drugs and groups` : `${n} of ${rows.length} shown`;
+  }
+  input.addEventListener('input', paint);
+  wrap.append(field, seg, count, list);
+  paint();
+  // renumber citations created after refs.finalise()
+  renumber(wrap);
+  const searchItems = rows.map(({ d }) => ({
+    title: `${d.name}: interval before a spinal`,
+    text: `${d.dose || ''} ${BRANDS[d.id] || ''} ASRA 2025 ${d.asra.stop} then ${d.asra.next}. ESAIC/ESRA 2022 ${d.esaic.stop} then ${d.esaic.next}`,
+    id: `tq-ac-d-${d.id}`,
+  }));
+  return {
+    node: wrap,
+    searchItems,
+    select: (id) => { input.value = ''; group = 'all'; seg.set('all'); paint(); document.getElementById(`tq-ac-d-${id}`)?.scrollIntoView({ block: 'center' }); },
+    open: (id) => { const d = document.getElementById(id); if (d && d.tagName === 'DETAILS') d.open = true; },
+    show: () => { input.value = ''; group = 'all'; seg.set('all'); paint(); },
+  };
 }
 
 // Citations created after refs.finalise() still show "[?]": copy the number from an already-numbered link.
@@ -73,7 +120,7 @@ export function anticoagTable() {
     esc(d.esaic.next),
   ]);
   return table({
-    caption: `Minimum intervals around a spinal: ASRA 2025 (from published summary — verify against full text)${cite('asra2025')} and ESAIC/ESRA 2022${cite('esaic2022')}`,
+    caption: `Minimum intervals around a spinal: ASRA 2025${cite('asra2025')} and ESAIC/ESRA 2022${cite('esaic2022')}`,
     head: ['Drug', 'ASRA: last dose → spinal', 'ASRA: spinal → next dose', 'ESAIC/ESRA: last dose → spinal', 'ESAIC/ESRA: spinal → next dose'],
     rows,
     id: 'tq-ac-table',

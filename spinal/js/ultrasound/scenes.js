@@ -144,7 +144,7 @@ export function sagittal(uc, id, { title, stopName } = {}) {
   const showSacrum = X(0) < 66;
   structs.push({
     key: 'lamina', name: 'Laminae', short: 'Lam',
-    desc: 'Bright sloping lines, each with a black shadow under it: the sawtooth or “horse head” pattern.',
+    desc: 'Bright sloping lines, each with a black shadow under it: the “horse head” pattern of the paramedian oblique view.',
     shapes: lamShapes,
   });
   if (showSacrum) {
@@ -268,7 +268,7 @@ export function transverse(mode, id, { title } = {}) {
     const tpPoly = [...tpTop, [47.4, 56.6], [40, 55.6], [31, 55.1], [25.4, 55.2]];
     structs.push({
       key: 'ap', name: 'Articular processes', short: 'AP',
-      desc: 'Bright humps either side of the canal, with shadows: the ears of the “cat’s head” or the bat.',
+      desc: 'Bright humps either side of the canal, with shadows: the ears of the “flying bat”.',
       shapes: [-1, 1].map((s) => {
         const surf = smooth((s < 0 ? mirror(apTop) : apTop), false, 6);
         return { paint: 'bone', draw: 'bone', pts: smooth(s < 0 ? mirror(apPoly) : apPoly, true, 5), surface: surf, hl: true };
@@ -286,7 +286,7 @@ export function transverse(mode, id, { title } = {}) {
     });
     structs.push({
       key: 'its', name: 'Intrathecal space', short: 'ITS',
-      desc: 'The black thecal sac (the head of the cat or the body of the bat).',
+      desc: 'The black thecal sac (the middle of the “flying bat”).',
       shapes: [{ paint: 'csf', draw: 'csf', pts: sac, hl: true }],
     });
     structs.push({

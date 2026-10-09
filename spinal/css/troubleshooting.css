@@ -14,12 +14,15 @@
 .spinal-app main .ts-index-link{display:flex;align-items:center;min-height:44px;padding:4px 10px 4px 12px;border-left:2px solid transparent;color:var(--sp-ink);text-decoration:none;font:15px/1.35 var(--sp-sans);transition:border-color .15s,background-color .15s}
 .spinal-app main .ts-index-link:hover{background:var(--sp-surface-2);border-left-color:var(--sp-line-strong)}
 .spinal-app main .ts-index-link[aria-current=true]{border-left-color:var(--sp-accent);background:var(--sp-accent-soft);color:var(--sp-ink);font-weight:500}
-@media (min-width:640px) and (max-width:1099px){
-  .spinal-app .ts-index{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:24px}
-  .spinal-app .ts-index-h{grid-row:1;margin-top:0}
-  .spinal-app .ts-index-list{grid-row:2}
+@media (max-width:1099px){
+  .spinal-app .ts-index{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:4px 24px}
+  .spinal-app .ts-index-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .spinal-app .ts-index-list li{border:1px solid var(--sp-line)}
+  .spinal-app main .ts-index-link{min-height:48px;padding:6px 10px;font-size:14.5px;border-left-width:3px}
 }
-
+@media (max-width:420px){
+  .spinal-app .ts-index{grid-template-columns:1fr}
+}
 .spinal-app .ts-panel[hidden]{display:none}
 .spinal-app .ts-panel{min-width:0}
 .spinal-app .ts-panel-kicker{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 4px}
@@ -100,14 +103,6 @@
 .spinal-app .ts-ol-body ul{padding-left:18px!important;list-style:disc!important}
 .spinal-app .ts-ol-repeat{color:var(--sp-muted);font-style:italic;margin:0}
 
-/* ---------------------------------------------------------------- difficult back selector */
-.spinal-app .ts-back{margin:8px 0 20px;max-width:820px}
-.spinal-app .ts-back-l{font:600 13px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted);margin:0 0 8px}
-.spinal-app .ts-back-out{border:1px solid var(--sp-line);background:var(--sp-surface);padding:14px 18px;margin-top:12px}
-.spinal-app main .ts-back-h{font:400 20px/1.3 var(--sp-serif);letter-spacing:-.01em;text-transform:none;color:var(--sp-ink);margin:0 0 8px}
-.spinal-app .ts-back-list{margin:0;padding-left:20px;font-size:15px;line-height:1.6}
-.spinal-app .ts-back-list li{margin:0 0 6px}
-
 /* ---------------------------------------------------------------- bone redirect guide */
 .spinal-app .ts-guide-views{display:grid;grid-template-columns:1fr;gap:1px;background:var(--sp-line)}
 @media (min-width:700px){.spinal-app .ts-guide-views{grid-template-columns:1fr 1fr}}
@@ -122,6 +117,14 @@
 .spinal-app .ts-guide-row dt{font:600 12px/1.6 var(--sp-sans);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted)}
 .spinal-app .ts-guide-row dd{margin:0;font-size:15px;line-height:1.55;color:var(--sp-ink)}
 
+/* ---------------------------------------------------------------- tiers, checklist */
+.spinal-app main .ts-index [data-tier]::after{display:none}
+.spinal-app .ts-panel>[data-tier]:not(.ts-tree){margin-top:20px}
+.spinal-app .ts-checklist{counter-reset:ts-step;list-style:none;margin:8px 0 20px;padding:18px 22px;max-width:820px;background:var(--sp-surface);border:1px solid var(--sp-line);border-top:3px solid var(--sp-ink)}
+.spinal-app .ts-checklist li{counter-increment:ts-step;position:relative;margin:0;padding:10px 0 10px 40px;border-bottom:1px solid var(--sp-line);font-size:15px;line-height:1.55}
+.spinal-app .ts-checklist li:last-child{border-bottom:0}
+.spinal-app .ts-checklist li::before{content:counter(ts-step);position:absolute;left:0;top:10px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:1px solid var(--sp-line-strong);font:500 13px/1 var(--sp-mono);color:var(--sp-ink)}
+
 @media (max-width:760px){
   .spinal-app .ts-tree{padding:14px 14px 16px}
   .spinal-app main .ts-prompt{font-size:20px}
@@ -130,3 +133,27 @@
   .spinal-app .ts-index{display:none}
   .spinal-app .ts-panel[hidden]{display:block}
 }
+
+/* ---------------------------------------------------------------- emergency card */
+.spinal-app .ts-first{background:var(--sp-danger-bg);border:1px solid var(--sp-danger);border-top:4px solid var(--sp-danger);padding:18px 22px 20px;margin:8px 0 28px;max-width:960px}
+.spinal-app .ts-first-kicker{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-danger);margin:0 0 2px}
+.spinal-app main .ts-first-h{font:400 clamp(26px,3vw,32px)/1.15 var(--sp-serif);letter-spacing:-.03em;margin:0 0 12px;color:var(--sp-ink)}
+.spinal-app .ts-first-steps{margin:0 0 16px;padding-left:22px;font-size:16px;line-height:1.5}
+.spinal-app .ts-first-steps li{margin:0 0 4px}
+.spinal-app .ts-first-grid{display:grid;grid-template-columns:1fr;gap:10px;margin:0 0 18px}
+@media (min-width:640px){.spinal-app .ts-first-grid{grid-template-columns:1fr 1fr}}
+.spinal-app .ts-mini{background:var(--sp-bg);border:1px solid var(--sp-line-strong);padding:12px 14px;min-width:0}
+.spinal-app main .ts-mini-h{font:600 14px/1.35 var(--sp-sans);text-transform:none;letter-spacing:0;margin:0 0 4px;color:var(--sp-ink)}
+.spinal-app .ts-mini-b{font-size:15px;line-height:1.5;margin:0 0 6px}
+.spinal-app main .ts-mini-a{display:inline-flex;align-items:center;min-height:44px;font-size:14px}
+.spinal-app .ts-first>.sp-table-wrap{margin:8px 0 16px;background:var(--sp-bg)}
+.spinal-app .ts-first .sp-callout{margin:0}
+.spinal-app main .ts-first[data-tier]::after{display:none}
+.spinal-app .ts-linklist{margin:0;padding-left:20px}
+.spinal-app .ts-linklist li{margin:0 0 6px}
+.spinal-app .ts-linklist a{display:inline-block;min-height:32px}
+.spinal-app .ts-all-h{font:600 15px/1.4 var(--sp-sans);margin:18px 0 6px}
+.spinal-app .ts-panel>.sp-table-wrap{max-width:960px}
+.spinal-app .ts-index-group{min-width:0}
+body.spinal-app main .ts-index li[data-tier]{margin-top:0!important}
+body.spinal-app main .ts-index-h{margin-top:12px}

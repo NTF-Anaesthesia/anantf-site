@@ -1,0 +1,99 @@
+/* Ward card (prefix cd-). One-screen checklist; prints on A4 in at most two pages. */
+
+.spinal-app .cd-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;margin:0 0 20px}
+.spinal-app .cd-lead{margin:0;flex:1 1 360px}
+.spinal-app .cd-actions{display:flex;flex-wrap:wrap;gap:8px}
+
+.spinal-app .cd-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;align-items:start}
+@media (min-width:1000px){.spinal-app .cd-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 28px}}
+/* The tier badge sits above the grid; the blocks inside carry none of their own. */
+.spinal-app main .cd-grid>.cd-block{margin-top:0}
+
+.spinal-app .cd-block{padding:16px 18px 14px;border:1px solid var(--sp-line);border-top:3px solid var(--sp-accent);background:var(--sp-surface);min-width:0}
+.spinal-app main .cd-h{font:600 18px/1.3 var(--sp-sans);letter-spacing:0;margin:0 0 10px;text-wrap:balance}
+.spinal-app main .cd-h::before{content:none}
+.spinal-app .cd-sub{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted);margin:12px 0 4px}
+.spinal-app main .cd-block :is(p,ul,dl){max-width:none}
+.spinal-app main .cd-block p{margin:0 0 8px;font-size:15px;line-height:1.55}
+.spinal-app .cd-lead-line{margin-top:8px}
+.spinal-app main .cd-list{margin:0 0 8px;padding-left:1.2em}
+.spinal-app main .cd-list li{font-size:15px;line-height:1.5;margin:0 0 4px;max-width:none}
+.spinal-app main .cd-more{margin:10px 0 0;font-size:14px}
+.spinal-app main .cd-note{margin-top:26px;padding:8px 12px;background:var(--sp-t2-bg);border-left:3px solid var(--sp-t2);font-size:14px;line-height:1.55}
+
+/* tickable list */
+.spinal-app main .cd-ticks{list-style:none;margin:0;padding:0}
+.spinal-app main .cd-tick{display:flex;align-items:flex-start;gap:4px;margin:0;border-top:1px solid var(--sp-line);max-width:none}
+.spinal-app main .cd-tick:first-child{border-top:0}
+.spinal-app .cd-tick input{flex:0 0 auto;width:22px;height:22px;margin:11px 0 0 0;accent-color:var(--sp-accent)}
+.spinal-app .cd-tick label{flex:1;min-width:0;padding:10px 4px 10px 8px;font-size:15px;line-height:1.5;cursor:pointer}
+.spinal-app .cd-tick input:checked+label{color:var(--sp-muted)}
+.spinal-app .cd-tick input:checked+label strong{font-weight:500}
+
+/* drug table */
+.spinal-app .cd-block .sp-table-wrap{margin:0 0 10px}
+.spinal-app .cd-block .sp-table{font-size:14px;line-height:1.45}
+.spinal-app .cd-block .sp-table :is(td,th){padding:8px 10px}
+.spinal-app .cd-block .sp-table caption{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted);padding-bottom:6px}
+.spinal-app .cd-block .sp-table-wrap--scroll .sp-table{min-width:0}
+.spinal-app .cd-block .sp-scroll-hint{display:none}
+
+/* steps and stop box inside the card */
+.spinal-app .cd-block .sp-steps{margin:0 0 14px;max-width:none}
+.spinal-app .cd-block .sp-step{grid-template-columns:28px minmax(0,1fr);gap:12px;padding:10px 0}
+.spinal-app .cd-block .sp-step-n{width:28px;height:28px;font-size:13px}
+.spinal-app .cd-block .sp-step-title{margin:2px 0 2px}
+.spinal-app .cd-block .sp-step-body{font-size:14.5px;line-height:1.55}
+.spinal-app .cd-stop{max-width:none;margin:0}
+.spinal-app .cd-block .sp-callout{margin:14px 0 10px;max-width:none}
+
+/* ward orders */
+.spinal-app main .cd-orders{margin:0 0 10px}
+.spinal-app main .cd-orders dt{font:600 13px/1.4 var(--sp-sans);color:var(--sp-ink);margin:10px 0 2px}
+.spinal-app main .cd-orders dd{margin:0;font-size:15px;line-height:1.5;max-width:none}
+
+.spinal-app .cd-print-foot{display:none}
+
+@media (max-width:480px){
+  .spinal-app .cd-block{padding:14px 12px 12px}
+  .spinal-app .cd-actions .sp-btn{flex:1}
+}
+
+/* ------------------------------------------------------------------ print: A4, two pages at most */
+@media print{
+  @page{size:A4;margin:8mm}
+  body.spinal-app{font-size:9pt;line-height:1.35;background:#fff;color:#000}
+  .spinal-app .cd-actions{display:none!important}
+  .spinal-app #card>.sp-kicker{display:none}
+  .spinal-app .sp-chapter>.sp-section{padding-block:0}
+  .spinal-app main #card-h{font-size:18pt;margin:0 0 4pt}
+  .spinal-app .cd-top{margin:0 0 4pt}
+  .spinal-app .cd-lead{font-size:9pt;line-height:1.35;margin:0}
+  .spinal-app main [data-tier]::after{display:none!important}
+  .spinal-app main .cd-grid[data-tier],.spinal-app main .cd-top[data-tier]{margin-top:0!important}
+  .spinal-app .cd-grid{display:block;column-count:2;column-gap:8mm}
+  .spinal-app .cd-block{break-inside:auto;margin:0 0 5pt;padding:5pt 7pt;border:1px solid #888;border-top:2pt solid #000;background:#fff}
+  .spinal-app main .cd-h{font-size:10.5pt;margin:0 0 3pt}
+  .spinal-app .cd-sub{font-size:7.5pt;margin:4pt 0 1pt;color:#000}
+  .spinal-app main .cd-block p,.spinal-app main .cd-list li,.spinal-app .cd-tick label,.spinal-app main .cd-orders dd,.spinal-app .cd-block .sp-step-body{font-size:8pt;line-height:1.28}
+  .spinal-app main .cd-list li{margin:0 0 1pt}
+  .spinal-app main .cd-block p{margin:0 0 3pt}
+  .spinal-app .cd-tick input{width:11pt;height:11pt;margin:3pt 0 0}
+  .spinal-app .cd-tick label{padding:2pt 3pt 2pt 5pt}
+  .spinal-app main .cd-more,.spinal-app main .cd-note{display:none!important}
+  .spinal-app .cd-block .sp-table{font-size:8pt;line-height:1.3}
+  .spinal-app .cd-block .sp-table :is(td,th){padding:2pt 4pt}
+  .spinal-app .cd-block .sp-table thead th{background:#eee;color:#000}
+  .spinal-app .cd-block .sp-step{padding:3pt 0;gap:6pt;grid-template-columns:16pt minmax(0,1fr)}
+  .spinal-app .cd-block .sp-step-n{width:16pt;height:16pt;font-size:8pt;background:#000;color:#fff}
+  .spinal-app .cd-block .sp-step-title{font-size:9pt;margin:0}
+  .spinal-app .cd-stop,.spinal-app .cd-block .sp-callout{padding:4pt 7pt 2pt;margin:4pt 0;background:#fff;border:1px solid #000;border-left:3pt solid #000}
+  .spinal-app main .cd-orders dt{font-size:8.5pt;margin:3pt 0 0}
+  .spinal-app .cd-block :is(.sp-step,.cd-tick,.sp-stop,.sp-callout,tr){break-inside:avoid}
+  .spinal-app main .cd-stop li,.spinal-app main .cd-block .sp-callout li{font-size:8.5pt;line-height:1.3;margin:0 0 2pt}
+  .spinal-app .cd-stop-title,.spinal-app .sp-stop-title{font-size:8pt;margin:0 0 3pt}
+  .spinal-app .cd-block .sp-callout-body{font-size:8pt;line-height:1.28}
+  .spinal-app main .cd-block a{color:#000;text-decoration:none}
+  .spinal-app main{padding-bottom:0!important}
+  .spinal-app .cd-print-foot{display:none;margin:0;font-size:7.5pt;color:#444}
+}

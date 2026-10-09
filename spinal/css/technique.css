@@ -3,14 +3,13 @@
 /* ------------------------------------------------------------------ jump row + parts */
 .spinal-app .tq-jump{counter-reset:none}
 .spinal-app .tq-jump-n{font:400 11px/1 var(--sp-mono);color:var(--sp-muted);margin-right:6px;letter-spacing:.04em}
-.spinal-app .tq-part{padding-top:8px;margin-top:40px;border-top:1px solid var(--sp-line)}
-.spinal-app .tq-part:first-of-type{margin-top:8px}
-.spinal-app main .tq-h{margin:20px 0 14px;max-width:none}
-.spinal-app .tq-num{display:inline-block;min-width:3.2em;font:400 13px/1 var(--sp-mono);letter-spacing:.04em;color:var(--sp-muted);vertical-align:.32em}
+.spinal-app .tq-part{padding-top:0;margin-top:0}
+.spinal-app main .tq-h{margin:56px 0 14px;max-width:none}
+.spinal-app .tq-num{display:inline-block;min-width:3.2em;font:400 13px/1 var(--sp-mono);letter-spacing:.04em;color:var(--sp-muted);vertical-align:.22em}
 .spinal-app .tq-part:target>.tq-h{color:var(--sp-accent)}
 .spinal-app main .tq-list{padding-left:1.2em;margin:0 0 16px}
 .spinal-app main .tq-list li{margin:0 0 8px}
-.spinal-app main .tq-list li::marker{color:var(--sp-line-strong)}
+.spinal-app main .tq-list li::marker{color:var(--sp-muted)}
 .spinal-app .tq-two{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;margin:8px 0 8px}
 @media (min-width:900px){.spinal-app .tq-two{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px}}
 .spinal-app .tq-two>*>:first-child{margin-top:0}
@@ -172,3 +171,37 @@
   .spinal-app .tq-check-reset{display:none}
   .spinal-app .tq-spread-body[hidden]{display:block!important}
 }
+
+/* ------------------------------------------------------------------ v3: anticoagulant finder */
+.spinal-app .tq-search{min-height:48px;width:100%;max-width:460px;padding:8px 12px;border:1px solid var(--sp-line-strong);border-radius:0;background:var(--sp-surface);color:var(--sp-ink);font:400 16px/1.4 var(--sp-sans)}
+.spinal-app .tq-search:focus{outline:2px solid var(--sp-accent);outline-offset:1px}
+.spinal-app .tq-ac-seg{flex-wrap:wrap;margin:0 0 8px}
+.spinal-app .tq-ac-seg .sp-seg-btn{min-height:44px}
+.spinal-app .tq-acl{margin-top:8px}
+.spinal-app .tq-acl [hidden]{display:none!important}
+.spinal-app main .tq-acl-h{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted);margin:18px 0 6px}
+.spinal-app .tq-acd{border:1px solid var(--sp-line);border-left:3px solid var(--sp-ink);background:var(--sp-bg);padding:10px 14px;margin:0 0 8px;scroll-margin-top:90px}
+.spinal-app .tq-acd:target{border-left-color:var(--sp-accent);outline:1px solid var(--sp-accent)}
+.spinal-app .tq-acd-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;margin:0 0 6px}
+.spinal-app main .tq-acd-name{font:400 19px/1.25 var(--sp-serif);margin:0}
+.spinal-app main .tq-acd-dose{font-size:13px;color:var(--sp-muted);margin:0;max-width:none}
+.spinal-app .tq-acd-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+@media (min-width:640px){.spinal-app .tq-acd-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}}
+.spinal-app main .tq-acd-src{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.06em;margin:0 0 2px}
+.spinal-app .tq-acd-col{min-width:0}
+.spinal-app main .tq-ac-count{margin:0 0 4px}
+.spinal-app .tq-pop-sum{font-weight:600}
+.spinal-app .tq-pop details{margin:0 0 8px}
+.spinal-app .tq-rule{border:1px solid var(--sp-line-strong);border-left:4px solid var(--sp-accent);background:var(--sp-surface);padding:10px 16px;margin:12px 0}
+.spinal-app main .tq-rule p{margin:0 0 6px}
+.spinal-app .tq-answer{border:1px solid var(--sp-line);border-top:3px solid var(--sp-accent);background:var(--sp-surface);padding:12px 18px 4px;margin:12px 0}
+.spinal-app main .tq-answer-h{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;margin:0 0 6px}
+.spinal-app .tq-jumpd>summary{min-height:44px;display:flex;align-items:center}
+.spinal-app .tq-acd{padding:0}
+.spinal-app .tq-acd>.tq-acd-grid,.spinal-app .tq-acd>.tq-ac-notes{margin:0;padding:8px 14px 12px}
+.spinal-app .tq-acd>.tq-ac-notes{padding-left:2.2em}
+.spinal-app .tq-acd-sum{display:flex;flex-direction:column;gap:2px;padding:10px 14px;min-height:44px;cursor:pointer}
+.spinal-app .tq-acd-sum .tq-acd-name{font:400 18px/1.25 var(--sp-serif)}
+.spinal-app .tq-acd-sum .tq-acd-dose{font-size:12.5px;color:var(--sp-muted)}
+.spinal-app .tq-acd-quick{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:14.5px;line-height:1.4}
+.spinal-app .tq-acd-quick b{font:600 11px/1 var(--sp-mono);letter-spacing:.06em;margin-right:4px;color:var(--sp-muted)}

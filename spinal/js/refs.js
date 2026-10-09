@@ -19,56 +19,17 @@ export const REFS = {
     text: 'Working Party: Harrop-Griffiths W, Cook T, Gill H, Hill D, Ingram M, Makris M, et al. Regional anaesthesia and patients with abnormalities of coagulation: the Association of Anaesthetists of Great Britain &amp; Ireland, the Obstetric Anaesthetists’ Association, Regional Anaesthesia UK. <i>Anaesthesia</i> 2013;68:966–72.',
     url: 'https://doi.org/10.1111/anae.12359',
   },
-  nap3: {
-    label: 'Cook 2009',
-    text: 'Cook TM, Counsell D, Wildsmith JA; Royal College of Anaesthetists Third National Audit Project. Major complications of central neuraxial block: report on the Third National Audit Project of the Royal College of Anaesthetists. <i>Br J Anaesth</i> 2009;102:179–90.',
-    url: 'https://doi.org/10.1093/bja/aen360',
-  },
-  fettes2009: {
-    label: 'Fettes 2009',
-    text: 'Fettes PD, Jansson JR, Wildsmith JA. Failed spinal anaesthesia: mechanisms, management, and prevention. <i>Br J Anaesth</i> 2009;102:739–48.',
-    url: 'https://doi.org/10.1093/bja/aep096',
-  },
-  hocking2004: {
-    label: 'Hocking 2004',
-    text: 'Hocking G, Wildsmith JA. Intrathecal drug spread. <i>Br J Anaesth</i> 2004;93:568–78.',
-    url: 'https://doi.org/10.1093/bja/aeh204',
-  },
-  broadbent2000: {
-    label: 'Broadbent 2000',
-    text: 'Broadbent CR, Maxwell WB, Ferrie R, Wilson DJ, Gawne-Cain M, Russell R. Ability of anaesthetists to identify a marked lumbar interspace. <i>Anaesthesia</i> 2000;55:1122–6.',
-    url: 'https://doi.org/10.1046/j.1365-2044.2000.01547-4.x',
-  },
-  reynolds2001: {
-    label: 'Reynolds 2001',
-    text: 'Reynolds F. Damage to the conus medullaris following spinal anaesthesia. <i>Anaesthesia</i> 2001;56:238–47.',
-    url: 'https://doi.org/10.1046/j.1365-2044.2001.01422-2.x',
-  },
-  perlas2016: {
-    label: 'Perlas 2016',
-    text: 'Perlas A, Chaparro LE, Chin KJ. Lumbar neuraxial ultrasound for spinal and epidural anesthesia: a systematic review and meta-analysis. <i>Reg Anesth Pain Med</i> 2016;41:251–60.',
-    url: 'https://doi.org/10.1097/AAP.0000000000000184',
-  },
-  chin2011: {
-    label: 'Chin 2011',
-    text: 'Chin KJ, Perlas A, Chan V, Brown-Shreves D, Koshkin A, Vaishnav V. Ultrasound imaging facilitates spinal anesthesia in adults with difficult surface anatomic landmarks. <i>Anesthesiology</i> 2011;115:94–101.',
-    url: 'https://doi.org/10.1097/ALN.0b013e31821a8ad4',
-  },
   uppal2023: {
     label: 'Uppal 2023',
     text: 'Uppal V, Russell R, Sondekoppam R, Ansari J, Baber Z, Chen Y, et al. Consensus practice guidelines on postdural puncture headache from a multisociety, international working group: a summary report. <i>JAMA Netw Open</i> 2023;6:e2325387.',
     url: 'https://doi.org/10.1001/jamanetworkopen.2023.25387',
   },
-  zaric2009: {
-    label: 'Zaric 2009',
-    text: 'Zaric D, Pace NL. Transient neurologic symptoms (TNS) following spinal anaesthesia with lidocaine versus other local anaesthetics. <i>Cochrane Database Syst Rev</i> 2009;(2):CD003006. (Updated as Forget P, et al. 2019;12:CD003006.)',
-    url: 'https://doi.org/10.1002/14651858.CD003006.pub3',
-  },
   'iso80369-6': {
-    label: 'ISO 2016',
-    text: 'International Organization for Standardization. ISO 80369-6:2016. Small-bore connectors for liquids and gases in healthcare applications — Part 6: Connectors for neuraxial applications. Geneva: ISO; 2016. (Withdrawn in 2025 and replaced by ISO 80369-6:2025.)',
-    url: 'https://www.iso.org/standard/50734.html',
+    label: 'ISO 2025',
+    text: 'International Organization for Standardization. ISO 80369-6:2025. Small-bore connectors for liquids and gases in healthcare applications — Part 6: Connectors for neural applications. 2nd ed. Geneva: ISO; 2025. (Replaces ISO 80369-6:2016, which was titled “Connectors for neuraxial applications”.)',
+    url: 'https://www.iso.org/standard/85462.html',
   },
+
 };
 
 const registry = { ...REFS };
@@ -101,19 +62,21 @@ export function citeEl(...ids) {
 
 /** Number refs by first appearance in DOM order, fill the citations, render #sp-refs. Safe to call again. */
 export function finalise() {
+  // Unknown or retired ids render nothing (silently), so sections can drop citations at their own pace.
+  for (const sup of document.querySelectorAll('sup.sp-cite')) {
+    const anchors = Array.from(sup.querySelectorAll('a[data-ref]'));
+    const keep = anchors.filter((a) => registry[a.dataset.ref]);
+    if (keep.length === anchors.length) continue;
+    if (!keep.length) { sup.remove(); continue; }
+    sup.textContent = '\u2060';
+    keep.forEach((a, i) => { if (i) sup.append(',\u2060'); sup.append(a); });
+  }
   const order = [];
   const num = new Map();
   const seen = new Map();
-  const warned = new Set();
   for (const a of document.querySelectorAll('a[data-ref]')) {
     const id = a.dataset.ref;
-    if (!registry[id]) {
-      a.textContent = '[?]';
-      a.setAttribute('aria-label', 'Reference missing');
-      a.removeAttribute('href');
-      if (!warned.has(id)) { console.warn(`[refs] unknown reference id "${id}"`); warned.add(id); }
-      continue;
-    }
+    if (!registry[id]) { a.remove(); continue; } // normally already dropped above
     if (!num.has(id)) { order.push(id); num.set(id, order.length); }
     const n = num.get(id);
     const k = (seen.get(id) || 0) + 1;

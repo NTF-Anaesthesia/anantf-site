@@ -1,0 +1,46 @@
+/* spinal/ — 03 Challenging spines. Every selector starts with .spinal-app .sx- or #sx-. */
+
+/* ------------------------------------------------------------------ parts */
+.spinal-app .sx-part{padding-top:8px;margin-top:40px;border-top:1px solid var(--sp-line)}
+.spinal-app main .sx-h{margin:20px 0 14px;max-width:none}
+.spinal-app .sx-part:target>.sx-h{color:var(--sp-accent)}
+.spinal-app main .sx-list{padding-left:1.2em;margin:0 0 16px}
+.spinal-app main .sx-list li{margin:0 0 8px}
+.spinal-app main .sx-list li::marker{color:var(--sp-line-strong)}
+.spinal-app main .sx-sub{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.08em;margin:18px 0 8px;color:var(--sp-ink)}
+.spinal-app .sx-grp{max-width:72ch}
+.spinal-app .sx-grp+.sx-grp{margin-top:6px}
+
+/* ------------------------------------------------------------------ patient picker + panels */
+.spinal-app .sx-picker{margin:4px 0 20px}
+.spinal-app main .sx-picker-label{font:600 13px/1.4 var(--sp-sans);margin:0 0 8px;color:var(--sp-ink)}
+.spinal-app main .sx-picker-hint{font-size:13px;color:var(--sp-muted);margin:8px 0 0}
+.spinal-app .sx-panel{border:1px solid var(--sp-line);border-top:3px solid var(--sp-ink);background:var(--sp-surface);padding:6px 20px 14px;min-width:0}
+.spinal-app .sx-panel[hidden]{display:none}
+.spinal-app main .sx-panel-h{font:400 24px/1.25 var(--sp-serif);letter-spacing:-.02em;margin:14px 0 10px;max-width:none}
+.spinal-app .sx-panel .sp-steps{margin:12px 0}
+.spinal-app .sx-panel .sp-fig{margin:20px 0}
+.spinal-app .sx-panel>.sp-callout,.spinal-app .sx-part>.sp-callout{max-width:72ch}
+@media (max-width:640px){.spinal-app .sx-panel{padding:4px 14px 10px}}
+
+/* ------------------------------------------------------------------ figures and keys */
+.spinal-app .sx-svg{display:block;width:100%;height:auto}
+.spinal-app .sx-svg-pill{font:500 13px/1 var(--sp-sans)}
+.spinal-app .sx-svg-small{font:400 12px/1 var(--sp-mono);letter-spacing:.05em;text-transform:uppercase}
+.spinal-app .sx-svg-badge{font:600 15px/1 var(--sp-sans)}
+.spinal-app .sx-key{display:block;margin-top:6px;color:var(--sp-muted)}
+.spinal-app .sx-key b{display:inline-block;min-width:1.5em;height:1.5em;line-height:1.5em;text-align:center;background:var(--sp-ink);color:var(--sp-bg);font:600 12px/1.5em var(--sp-sans);margin-right:3px;border-radius:50%}
+
+/* ------------------------------------------------------------------ paramedian controls and status */
+.spinal-app .sx-slider{display:grid;grid-template-columns:minmax(0,auto) minmax(110px,1fr) 3em;align-items:center;gap:10px;min-height:44px;padding:0 4px;flex:1 1 280px;max-width:420px}
+.spinal-app .sx-slider-l{font:500 14px/1.3 var(--sp-sans);color:var(--sp-ink)}
+.spinal-app .sx-slider input[type=range]{width:100%;accent-color:var(--sp-accent)}
+.spinal-app .sx-slider-o{font:500 14px/1 var(--sp-mono);color:var(--sp-ink);text-align:right}
+.spinal-app .sx-btn{min-height:44px;padding:8px 16px;border:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1.3 var(--sp-sans);cursor:pointer}
+.spinal-app .sx-btn:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+.spinal-app main .sx-pm-status{margin:10px 0 0;padding:10px 14px;border-left:4px solid var(--sp-line-strong);background:var(--sp-surface-2);font-size:15px;line-height:1.55;max-width:72ch}
+.spinal-app .sx-pm-status[data-kind=ok]{border-left-color:var(--sp-ok);background:var(--sp-ok-bg)}
+.spinal-app .sx-pm-status[data-kind=warn]{border-left-color:var(--sp-warn);background:var(--sp-warn-bg)}
+.spinal-app .sx-pm-status[data-kind=bone],.spinal-app .sx-pm-status[data-kind=bad]{border-left-color:var(--sp-danger);background:var(--sp-danger-bg)}
+@media (max-width:640px){.spinal-app .sx-slider{grid-template-columns:minmax(0,1fr) 3em;grid-template-areas:'l o' 'i i'}
+  .spinal-app .sx-slider-l{grid-area:l}.spinal-app .sx-slider-o{grid-area:o}.spinal-app .sx-slider input{grid-area:i}}
