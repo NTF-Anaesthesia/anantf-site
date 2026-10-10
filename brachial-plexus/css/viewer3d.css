@@ -54,14 +54,14 @@
   flex: 1 1 auto;
   min-height: 280px;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 0;
   background: radial-gradient(120% 90% at 50% 35%, var(--v3d-bg-2), var(--v3d-bg));
   border: 1px solid var(--v3d-border);
   touch-action: none;
 }
 .v3d-canvas, .v3d-canvas canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .v3d-canvas canvas { outline: none; }
-.v3d-canvas canvas:focus-visible { box-shadow: inset 0 0 0 3px var(--v3d-focus); border-radius: 12px; }
+.v3d-canvas canvas:focus-visible { box-shadow: inset 0 0 0 3px var(--v3d-focus); border-radius: 0; }
 .v3d-labels { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
 
 /* Labels */
@@ -69,7 +69,7 @@
   font-size: 12px;
   line-height: 1.2;
   padding: 2px 6px;
-  border-radius: 6px;
+  border-radius: 0;
   background: var(--v3d-label-bg);
   color: var(--v3d-label-fg);
   white-space: nowrap;
@@ -115,7 +115,7 @@
   min-width: 40px;
   height: 40px;
   padding: 0 8px;
-  border-radius: 10px;
+  border-radius: 0;
   border: 1px solid var(--v3d-border);
   background: var(--v3d-panel);
   color: var(--v3d-fg);
@@ -143,7 +143,7 @@
   z-index: 2;
   max-width: calc(100% - 72px);
   padding: 6px 8px;
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--v3d-panel);
   box-shadow: var(--v3d-shadow);
   font-size: 12px;
@@ -151,7 +151,7 @@
 }
 .v3d-legend-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 10px; }
 .v3d-legend-list li { display: inline-flex; align-items: center; gap: 5px; }
-.v3d-swatch { width: 12px; height: 12px; border-radius: 3px; flex: none; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2); }
+.v3d-swatch { width: 12px; height: 12px; border-radius: 0; flex: none; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2); }
 
 .v3d-chip {
   position: absolute;
@@ -163,14 +163,14 @@
   gap: 6px;
   max-width: calc(100% - 16px);
   padding: 4px 4px 4px 10px;
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--v3d-panel);
   box-shadow: var(--v3d-shadow);
   font-weight: 600;
 }
 .v3d-chip[hidden] { display: none; }
 .v3d-chip-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.v3d-chip-status { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 999px; font-size: 12px; color: #fff; background: #475569; }
+.v3d-chip-status { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 0; font-size: 12px; color: #fff; background: #475569; }
 .v3d-chip-status--target { background: #be185d; }
 .v3d-chip-status--covers { background: #15803d; }
 .v3d-chip-status--variable { background: #b45309; }
@@ -187,7 +187,7 @@
   z-index: 2;
   width: min(560px, calc(100% - 24px));
   padding: 8px 12px;
-  border-radius: 10px;
+  border-radius: 0;
   background: var(--v3d-panel);
   box-shadow: var(--v3d-shadow);
   font-size: 13px;
@@ -204,7 +204,7 @@
   z-index: 4;
   max-width: calc(100% - 120px);
   padding: 8px 12px;
-  border-radius: 10px;
+  border-radius: 0;
   background: #0f172a;
   color: #fff;
   font-size: 13px;
@@ -220,7 +220,7 @@
   top: 0;
   z-index: 3;
   padding: 3px 8px;
-  border-radius: 6px;
+  border-radius: 0;
   background: #0f172a;
   color: #fff;
   font-size: 12px;
@@ -250,7 +250,7 @@
   max-height: calc(100% - 16px);
   overflow: auto;
   padding: 8px 12px 12px;
-  border-radius: 12px;
+  border-radius: 0;
   background: var(--v3d-panel);
   border: 1px solid var(--v3d-border);
   box-shadow: var(--v3d-shadow);
@@ -287,5 +287,5 @@
 .v3d-det { margin-top: 8px; }
 .v3d-det > summary { cursor: pointer; font-weight: 700; font-size: 13px; padding: 4px 0; display: flex; align-items: center; gap: 6px; }
 .v3d-det > summary input { width: 18px; height: 18px; margin: 0; accent-color: var(--v3d-accent); }
-.v3d-det > summary:focus-visible { outline: 3px solid var(--v3d-focus); outline-offset: 2px; border-radius: 4px; }
+.v3d-det > summary:focus-visible { outline: 3px solid var(--v3d-focus); outline-offset: 2px; border-radius: 0; }
 .v3d-subhead { margin: 6px 0 2px; font-size: 12px; font-weight: 700; color: var(--v3d-muted); }

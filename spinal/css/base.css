@@ -5,16 +5,16 @@
 
 /* ------------------------------------------------------------------ tokens (NTF Anaesthesia design system, light only) */
 body.spinal-app{
-  --sp-bg:#f7f5ef;--sp-surface:#fffaf0;--sp-surface-2:#eeece5;
+  --sp-bg:#f7f5ef;--sp-surface:#f7f5ef;--sp-surface-2:#eee9df;
   --sp-ink:#272722;--sp-ink-2:#504e47;--sp-muted:#55534d;--sp-line:#d7d2c8;--sp-line-strong:#8f8574;
-  --sp-accent:#633d3c;--sp-on-accent:#fffaf0;--sp-accent-soft:#ebe6e1;--sp-focus:#633d3c;
-  --sp-key:#0f5f63;--sp-key-bg:#e7f3f2;
+  --sp-accent:#633d3c;--sp-on-accent:#fffaf0;--sp-accent-soft:#e8ded7;--sp-focus:#633d3c;
+  --sp-key:#633d3c;--sp-key-bg:#eee9df;
   --sp-danger:#a12a1c;--sp-danger-bg:#fbebe7;
   --sp-warn:#7a4f00;--sp-warn-bg:#fbf1db;
   --sp-ok:#2f6b34;--sp-ok-bg:#e7f2e5;
-  --sp-pearl:#4338a0;--sp-pearl-bg:#eeedfa;
+  --sp-pearl:#7c4640;--sp-pearl-bg:#efe6e0;
   --sp-policy:#5a5650;--sp-policy-bg:#efede8;
-  --sp-t1:#2f6b34;--sp-t1-bg:#e7f2e5;--sp-t2:#1f5a96;--sp-t2-bg:#e6eff9;--sp-t3:#4338a0;--sp-t3-bg:#eeedfa;
+  --sp-t1:#55534d;--sp-t1-bg:#eee9df;--sp-t2:#633d3c;--sp-t2-bg:#efe6e0;--sp-t3:#4b2e2d;--sp-t3-bg:#e8ded7;
   --sp-serif:'NTF Serif','Fraunces',Georgia,serif;
   --sp-sans:'NTF Sans',Inter,Arial,sans-serif;
   --sp-mono:'NTF Mono','JetBrains Mono',ui-monospace,Menlo,monospace;

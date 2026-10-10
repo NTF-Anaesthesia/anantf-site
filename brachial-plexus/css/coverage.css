@@ -98,11 +98,11 @@
 .cv-head { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
 .cv-title { font-size: 1.15rem; margin: 0; flex: 1 0 100%; }
 .cv-tabs, .cv-seg {
-  display: inline-flex; padding: 3px; gap: 2px; border-radius: 10px;
+  display: inline-flex; padding: 3px; gap: 2px; border-radius: 0;
   background: var(--cv-surface); border: 1px solid var(--cv-border);
 }
 .cv-tab, .cv-segbtn {
-  border: 0; background: transparent; padding: 6px 12px; border-radius: 7px;
+  border: 0; background: transparent; padding: 6px 12px; border-radius: 0;
   cursor: pointer; min-height: 36px; font-size: 0.95rem;
 }
 .cv-tab[aria-selected="true"], .cv-segbtn[aria-pressed="true"] {
@@ -110,7 +110,7 @@
 }
 .cv-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .cv-chip {
-  border: 1px solid var(--cv-border); background: var(--cv-bg); border-radius: 999px;
+  border: 1px solid var(--cv-border); background: var(--cv-bg); border-radius: 0;
   padding: 5px 12px; min-height: 36px; cursor: pointer; font-size: 0.9rem;
 }
 .cv-chip:hover { border-color: var(--cv-accent); }
@@ -159,7 +159,7 @@
 /* ---- tooltip ---- */
 .cv-tip {
   position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none;
-  max-width: min(280px, 80%); padding: 8px 10px; border-radius: 8px;
+  max-width: min(280px, 80%); padding: 8px 10px; border-radius: 0;
   background: var(--cv-tip-bg); color: var(--cv-tip-fg); font-size: 0.85rem; line-height: 1.35;
   box-shadow: 0 6px 20px rgba(0,0,0,.25);
 }
@@ -172,13 +172,13 @@
 .cv-hint { margin: 0; color: var(--cv-muted); font-size: 0.95rem; }
 .cv-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.9rem; }
 .cv-legend li { display: inline-flex; align-items: center; gap: 6px; }
-.cv-sw { display: inline-block; width: 18px; height: 14px; border-radius: 3px; flex: none; border: 1px solid var(--cv-border); }
+.cv-sw { display: inline-block; width: 18px; height: 14px; border-radius: 0; flex: none; border: 1px solid var(--cv-border); }
 .cv-sw.st-nerve { background: var(--cv-nerve); border-color: transparent; opacity: var(--cv-nerve-alpha); }
 .cv-sw.st-covers { background: var(--cv-cov); border-color: var(--cv-cov-line); }
 .cv-sw.st-variable { background: repeating-linear-gradient(45deg, var(--cv-var-fg) 0 2.5px, var(--cv-var-bg) 2.5px 5.5px); border-color: var(--cv-var-fg); }
 .cv-sw.st-spares { background: var(--cv-spare); border: 1.5px dashed var(--cv-spare-line); }
 
-.cv-info { background: var(--cv-surface); border: 1px solid var(--cv-border); border-radius: 10px; padding: 10px 12px; font-size: 0.92rem; }
+.cv-info { background: var(--cv-surface); border: 1px solid var(--cv-border); border-radius: 0; padding: 10px 12px; font-size: 0.92rem; }
 .cv-info[hidden] { display: none; }
 .cv-i-name { font-weight: 650; }
 .cv-i-nerve { }
@@ -187,7 +187,7 @@
 .cv-i-row { margin-top: 4px; }
 .cv-muted { color: var(--cv-muted); }
 
-.cv-pill { display: inline-block; font-size: 0.8rem; font-weight: 600; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.cv-pill { display: inline-block; font-size: 0.8rem; font-weight: 600; padding: 1px 8px; border-radius: 0; white-space: nowrap; }
 .cv-pill.st-covers { background: var(--cv-cov); color: #fff; }
 .cv-pill.st-variable { background: var(--cv-var-bg); color: var(--cv-var-ink); box-shadow: inset 0 0 0 1px var(--cv-var-fg); }
 .cv-pill.st-spares { background: transparent; color: var(--cv-muted); box-shadow: inset 0 0 0 1px var(--cv-spare-line); }
@@ -197,7 +197,7 @@
 .cv-sum h3 { font-size: 1.05rem; margin: 0 0 4px; }
 .cv-sum h4, .cv-listsec h4 { font-size: 0.95rem; margin: 12px 0 4px; }
 .cv-covtext { margin: 0 0 8px; }
-.cv-phren { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; padding: 8px 10px; border-radius: 8px; font-size: 0.92rem; background: var(--cv-surface); border: 1px solid var(--cv-border); }
+.cv-phren { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; padding: 8px 10px; border-radius: 0; font-size: 0.92rem; background: var(--cv-surface); border: 1px solid var(--cv-border); }
 .cv-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; margin-top: .4em; background: var(--cv-ok); }
 .cv-phren--covers { border-color: var(--cv-danger); }
 .cv-phren--covers .cv-dot { background: var(--cv-danger); }
@@ -214,7 +214,7 @@
 .cv-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
 .cv-row {
   width: 100%; display: flex; align-items: center; gap: 10px; text-align: left;
-  background: transparent; border: 1px solid transparent; border-radius: 8px; padding: 6px 8px; cursor: pointer; min-height: 44px;
+  background: transparent; border: 1px solid transparent; border-radius: 0; padding: 6px 8px; cursor: pointer; min-height: 44px;
 }
 .cv-row:hover, .cv-row.is-hl { background: var(--cv-surface); border-color: var(--cv-border); }
 .cv-rowtext { display: flex; flex-direction: column; flex: 1; min-width: 0; }
@@ -225,9 +225,9 @@
 .cv-seg { margin-bottom: 10px; }
 .cv-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .cv[data-size="wide"] .cv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.cv-card { border: 1px solid var(--cv-border); border-radius: 12px; padding: 8px; background: var(--cv-bg); min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.cv-card { border: 1px solid var(--cv-border); border-radius: 0; padding: 8px; background: var(--cv-bg); min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .cv-card.is-active { border-color: var(--cv-accent); box-shadow: 0 0 0 2px var(--cv-accent) inset; }
-.cv-cardbtn { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px; width: 100%; border: 0; background: none; padding: 4px; cursor: pointer; text-align: left; border-radius: 6px; min-height: 36px; }
+.cv-cardbtn { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px; width: 100%; border: 0; background: none; padding: 4px; cursor: pointer; text-align: left; border-radius: 0; min-height: 36px; }
 .cv-cardbtn:hover .cv-cardname { color: var(--cv-accent); }
 .cv-cardname { font-weight: 650; }
 .cv-cardlevel { font-size: 0.8rem; color: var(--cv-muted); }
