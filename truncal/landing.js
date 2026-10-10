@@ -418,6 +418,8 @@ function render(op, announce) {
 }
 
 function init() {
+  // Static source tags in the page (e.g. the epidural section): <span data-src="notes rib">
+  document.querySelectorAll('[data-src]').forEach(el => { el.outerHTML = srcTags(el.dataset.src.split(/\s+/)); });
   const list = $('#tb-ops');
   if (!list) return;
   list.innerHTML = OPS.map((op, i) => `
