@@ -41,7 +41,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
 | `popliteal/index.html` | Popliteal sciatic block animation by Dr Chew Shi Hao | No (unlisted) |
 | `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app | No (unlisted) |
-| `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting, ultrasound and quiz (Dr Koh Wenjun and Dr Chew Shi Hao) | No (unlisted) |
+| `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting and ultrasound (Dr Koh Wenjun and Dr Chew Shi Hao) | No (unlisted) |
 | `ra.html` | Popliteal sciatic block (the only lower-limb block on the main site; linked from `regional.html`) | Via Regional |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
 | `draft-ra.html` | Draft copy of the full lower-limb block app (all 7 blocks, combinations) | No (draft) |
