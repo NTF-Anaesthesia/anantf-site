@@ -1,0 +1,54 @@
+/* Back page: anatomy figures, A–E exercise and landmark stepper (prefix bk-). Shared styles: ../shared/css/truncal.css */
+.tb-app .bk-fig{margin:24px 0 8px}
+.tb-app main .bk-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
+.tb-app .bk-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
+.tb-app .bk-fig-stage--wide{overflow-x:auto}
+.tb-app .bk-fig-svg{display:block;width:100%;height:auto}
+.tb-app .bk-fig-stage--wide .bk-fig-svg{min-width:560px}
+.tb-app .bk-fig figcaption,.tb-app .bk-fig-note{margin-top:10px;font-size:15px;color:var(--tb-ink-soft)}
+.tb-app .bk-fig--split{display:grid;gap:16px 32px;align-items:start}
+@media (min-width:900px){.tb-app .bk-fig--split{grid-template-columns:minmax(360px,460px) minmax(0,1fr)}}
+.tb-app .bk-fig--split figcaption{margin-top:0;font-size:17px;color:var(--tb-ink)}
+.tb-app main .bk-list{padding-left:1.2em;max-width:68ch}
+.tb-app main .bk-list li{margin:0 0 8px}
+.tb-app main .bk-note{font-size:15px;color:var(--tb-muted);max-width:68ch}
+.tb-app main .tb-chapter>h3{margin-top:48px}
+/* A–E exercise */
+.tb-app .bk-exam-q{padding-bottom:16px}
+.tb-app .bk-quiz{display:grid;gap:16px;margin-top:8px}
+.tb-app .bk-quiz-form{display:grid;gap:10px}
+.tb-app .bk-quiz-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:6px 12px;align-items:center}
+.tb-app .bk-quiz-letter{display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--tb-wine);color:var(--tb-ivory);align-items:center;justify-content:center;font:600 15px/1 var(--tb-sans)}
+.tb-app .bk-quiz-sel{min-height:44px;width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--tb-control);border-radius:0;background:var(--tb-paper);color:var(--tb-ink);font:15px/1.3 var(--tb-sans)}
+.tb-app .bk-quiz-res{grid-column:2;font-size:15px;min-height:0}
+.tb-app .bk-quiz-res:empty{display:none}
+.tb-app .bk-quiz-res.is-ok{color:#1f6a3a}
+.tb-app .bk-quiz-res.is-ok::before{content:"✓ ";font-weight:700}
+.tb-app .bk-quiz-res.is-no{color:var(--tb-danger)}
+.tb-app .bk-quiz-res.is-no::before{content:"✗ ";font-weight:700}
+.tb-app .bk-quiz-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.tb-app main .bk-quiz-score{font-weight:600;margin:4px 0 0}
+@media (min-width:700px){.tb-app .bk-quiz-row{grid-template-columns:44px minmax(0,360px) minmax(0,1fr)}.tb-app .bk-quiz-res{grid-column:3}}
+/* Landmark stepper */
+.tb-app .bk-lm{margin:24px 0 8px}
+.tb-app .bk-lm-grid{display:grid;gap:16px 28px;align-items:start}
+@media (min-width:1000px){.tb-app .bk-lm-grid{grid-template-columns:minmax(0,1.6fr) minmax(280px,1fr)}}
+
+.tb-app .bk-lm-text{min-height:120px;font-size:16px}
+
+@media (prefers-reduced-motion:reduce){.tb-app .bk-lm *{transition:none!important}}
+.tb-app main .bk-lm-steps{margin:0 0 12px}
+.tb-app .bk-lm-panel{display:grid;gap:12px}
+.tb-app .bk-lm-nav{grid-template-columns:1fr 1fr}
+.tb-app .bk-fig-stage--wide .bk-fig-svg--xs{min-width:760px}
+/* Sideways-scrolling figures: hint and edge fades (anatomy.js scrollWrap) */
+.tb-app .bk-scroll-wrap{min-width:0}
+.tb-app main .bk-scroll-hint{margin:0 0 6px;font-size:14px;color:var(--tb-muted)}
+.tb-app .bk-scroll{position:relative}
+.tb-app .bk-scroll::before,.tb-app .bk-scroll::after{content:"";position:absolute;top:1px;bottom:1px;width:40px;pointer-events:none;opacity:0;transition:opacity .2s}
+.tb-app .bk-scroll::before{left:1px;background:linear-gradient(to right,#fbf9f4,rgba(251,249,244,0))}
+.tb-app .bk-scroll::after{right:1px;background:linear-gradient(to left,#fbf9f4,rgba(251,249,244,0))}
+.tb-app .bk-scroll.is-left::before,.tb-app .bk-scroll.is-right::after{opacity:1}
+@media (prefers-reduced-motion:reduce){.tb-app .bk-scroll::before,.tb-app .bk-scroll::after{transition:none}}
+/* Wording corrected from the teaching slides, awaiting the owner's confirmation */
+.tb-app main .bk-flag{display:block;margin-top:8px;padding-left:12px;border-left:2px solid var(--tb-wine);font-size:15px;color:var(--tb-ink-soft)}
