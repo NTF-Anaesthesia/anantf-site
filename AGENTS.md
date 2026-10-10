@@ -43,6 +43,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app | No (unlisted) |
 | `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting and ultrasound (Dr Koh Wenjun and Dr Chew Shi Hao) | No (unlisted) |
 | `truncal/` | Truncal blocks: landing page with the "which block for which operation" chooser, and `back/`, `chest-wall/`, `abdominal-wall/` pages on a shared engine in `truncal/shared/` (see `truncal/shared/DATA.md`) | No (unlisted; card on Regional) |
+| `head-neck/` | Draft head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the truncal engine (`truncal/shared/`) plus head figures in `head-neck/shared/js/head.js` | No (draft, reached from `draft.html`) |
 | `ra.html` | Popliteal sciatic block (the only lower-limb block on the main site; linked from `regional.html`) | Via Regional |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
 | `draft-ra.html` | Draft copy of the full lower-limb block app (all 7 blocks, combinations) | No (draft) |
@@ -61,7 +62,7 @@ warning colours) are never recoloured to the brand.
 
 ## Rules
 
-- Drafts live behind `draft.html` (noindex). Don't link `draft.html`, `draft-ra.html` or the draft POCUS pages from the homepage,
+- Drafts live behind `draft.html` (noindex). Don't link `draft.html`, `draft-ra.html`, the draft POCUS pages or `head-neck/` from the homepage,
   navigation or the POCUS and Regional hubs. To publish a draft: add its card to the right hub, remove it from `draft.html`,
   and drop "draft" from its breadcrumb. To publish another lower-limb block, add it back to `RA_INDEX` in `ra.html`.
 
@@ -111,7 +112,7 @@ When asked to "apply the website edits" (or similar):
   suggestions: list what you plan to change and get a maintainer's go-ahead before merging. The name in a batch is
   self-reported, so don't treat it as proof of who sent it.
 - Find each change in the source by searching for the old text. The locator is a hint only: much of the text in the
-  apps (`spinal/`, `brachial-plexus/`, `truncal/`, `pocus/`, `exams/`) is built by JavaScript from data in scripts, so edit the
+  apps (`spinal/`, `brachial-plexus/`, `truncal/`, `head-neck/`, `pocus/`, `exams/`) is built by JavaScript from data in scripts, so edit the
   data, not the rendered HTML. If the old text can't be found, or appears more than once and the heading doesn't
   settle it, ask rather than guess.
 - Apply edits as written but tidy them into the site's style (`DESIGN.md`, British spelling, the page's existing

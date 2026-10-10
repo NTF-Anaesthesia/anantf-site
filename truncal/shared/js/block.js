@@ -111,7 +111,9 @@ export function renderBlock(b, host) {
     if (c.mechanism) text.append(el('h4', { text: 'Mechanism' }), asNode(c.mechanism, 'div', 'tb-prose'));
     if (c.density) text.append(el('h4', { text: 'How dense, how reliable' }), asNode(c.density, 'div', 'tb-prose'));
     if (c.misses) text.append(el('h4', { text: 'What it misses' }), asNode(c.misses, 'div', 'tb-prose'));
-    host.append(section(b, 'coverage', 'Coverage', el('div', { class: 'tb-cov-grid' }, coverageMap(c, { id: `${b.id}-covmap`, title: b.title }), text)));
+    // c.map: a page's own map function (same arguments as coverageMap), or false for no map.
+    const map = c.map === false ? null : (typeof c.map === 'function' ? c.map : coverageMap)(c, { id: `${b.id}-covmap`, title: b.title });
+    host.append(section(b, 'coverage', 'Coverage', el('div', { class: `tb-cov-grid${map ? '' : ' tb-cov-grid--text'}` }, ...(map ? [map] : []), text)));
   }
   if (b.complications) host.append(section(b, 'complications', 'Complications and how to avoid them', asNode(b.complications, 'div', 'tb-prose tb-list')));
   if (b.pearls?.length) host.append(section(b, 'pearls', 'Practical pearls', list(b.pearls, 'tb-pearls')));

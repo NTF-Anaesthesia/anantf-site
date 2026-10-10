@@ -1,0 +1,22 @@
+/* head-neck/ landing page: additions to ../truncal/landing.css (cards for five pages, the head coverage map). */
+.hn-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tb-res-grid--text{grid-template-columns:minmax(0,1fr)}
+/* Coverage map from shared/js/head.js (the truncal shell styles are not loaded here). */
+.tb-app .tb-cov{margin:0;max-width:440px}
+.tb-app .tb-cov-stage{border:1px solid var(--line);background:#fbf9f4;padding:8px}
+.tb-app .hn-cov-views{display:grid;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.tb-app .hn-cov-views--1{grid-template-columns:minmax(0,240px)}
+.tb-app .hn-cov-views--3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tb-app .hn-cov-svg{display:block;width:100%;height:auto}
+.tb-app .hn-cov-vname{margin:2px 0 0!important;font-size:14px;line-height:1.4;color:var(--muted);text-align:center}
+.tb-app .tb-cov-legend{list-style:none;margin:10px 0 0;padding:0}
+.tb-app .tb-cov-legend li{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:15px;line-height:1.4}
+.tb-app .tb-cov-sw{flex:none;width:28px;height:18px;border:1px solid #1d4f7c}
+.tb-app .tb-cov-sw--dense{background:rgba(44,116,179,.78)}
+.tb-app .tb-cov-sw--moderate{background:repeating-linear-gradient(45deg,#1d4f7c 0 2px,rgba(44,116,179,.32) 2px 6px)}
+.tb-app .tb-cov-sw--patchy{background:radial-gradient(circle,#1d4f7c 1.1px,transparent 1.4px) 0 0/6px 6px,rgba(44,116,179,.12)}
+.tb-app .tb-cov-note{color:var(--muted);font-size:14px}
+.tb-app .hn-cov-zones{list-style:none;margin:8px 0 0;padding:8px 0 0;border-top:1px solid var(--line)}
+.tb-app .hn-cov-zones li{font-size:15px;line-height:1.5;margin:0 0 4px;color:var(--ink-soft)}
+.tb-app .hn-cov-zones strong{font-weight:600;color:var(--ink)}
+@media (max-width:900px){.hn-cards{grid-template-columns:1fr}}
