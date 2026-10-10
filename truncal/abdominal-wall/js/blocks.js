@@ -103,7 +103,7 @@ export const BLOCKS = [
         ],
       },
       {
-        source: 'MMed 2014 written paper, question 9 (department teaching notes)',
+        source: 'MMed 2014 written paper, question 9',
         q: '<p>Describe the anatomy relevant to performing a transversus abdominis plane (TAP) block. Discuss the role of TAP block in postoperative pain control for abdominal surgery.</p>',
         points: [
           'Draw it: skin, subcutaneous fat, EO, IO, TA, transversalis fascia, extraperitoneal fat, peritoneum; mark the IO–TA plane and the injection sites.',
