@@ -518,3 +518,4 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
   .spinal-app :is(.ntf-header,.ntf-footer,.sp-bar,.sp-sheet,.sp-pager,.sp-foot,.sp-controls,.sp-skip,.sp-ch-kicker){display:none!important}
   body.spinal-app .sp-chapter:not(.is-current){display:none!important}
 }
+.spinal-app .sp-label-range{display:inline-block;margin-top:4px;font-size:.875em;color:var(--sp-muted)}
