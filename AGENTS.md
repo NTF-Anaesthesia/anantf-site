@@ -49,6 +49,14 @@ belongs instead. Many of the people editing here are not technical, so explain t
 
 The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
 
+## Design language
+
+`DESIGN.md` is the default design language for every page you create or edit here: warm paper, ink,
+one wine accent, square edges, hairline rules, light only, readable sizes (body 17px, nothing below
+12px). Read it before styling anything. Interactive teaching apps follow the popliteal block page
+(`ra.html`). Anatomy and clinical colour codes (yellow nerves, red arteries, blue veins, danger and
+warning colours) are never recoloured to the brand.
+
 ## Rules
 
 - Drafts live behind `draft.html` (noindex). Don't link `draft.html`, `draft-ra.html` or the draft POCUS pages from the homepage,
