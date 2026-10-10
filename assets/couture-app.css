@@ -25,3 +25,11 @@
 
 /* Keep the app on its own palette variables (the shared site stylesheet sets body colours too). */
 body.plexus-app{background:var(--bg);color:var(--text)}
+
+/* Interface colours from the popliteal block page (ra.html): warm paper, ink, wine, square corners.
+   Anatomy, block-status and level colours are teaching codes and stay as the modules set them. */
+body.plexus-app{--surface:#f7f5ef;--surface-2:#eee9df;--primary-soft:#e8ded7;--warn-bg:#f0e9df;--warn-border:#97735e;--adv-bg:#e8ded7;--adv-text:#633d3c;--adv-soft:#f0e9df;--adv-border:#b8ad9e;--shadow:none;--radius:0}
+.plexus-app .cv{--cv-text:#272722;--cv-muted:#55534d;--cv-bg:#f7f5ef;--cv-surface:#eee9df;--cv-border:#d7d2c8;--cv-accent:#633d3c;--cv-accent-ink:#fffaf0;--cv-hl:#272722;--cv-focus:#633d3c;--cv-tip-bg:#272722;--cv-tip-fg:#fffaf0;font-family:var(--font)}
+.plexus-app .bpd{--bpd-text:#272722;--bpd-muted:#55534d;--bpd-bg:#f7f5ef;--bpd-surface:#eee9df;--bpd-border:#d7d2c8;--bpd-header:#eee9df;--bpd-band:rgba(99,61,60,.08);--bpd-band-edge:rgba(99,61,60,.45);--bpd-band-ink:#633d3c;--bpd-focus:#633d3c;--bpd-tip-bg:#272722;--bpd-tip-fg:#fffaf0;font-family:var(--font)}
+.plexus-app .bpus{--us-text:#272722;--us-muted:#55534d;--us-bg:#f7f5ef;--us-surface:#eee9df;--us-border:#d7d2c8;--us-accent:#633d3c;--us-accent-ink:#fffaf0;--us-focus:#633d3c;--st-covers-bg:#e8ded7;font-family:var(--font)}
+.plexus-app .v3d{--v3d-bg:#eee9df;--v3d-bg-2:#f7f5ef;--v3d-fg:#272722;--v3d-muted:#55534d;--v3d-border:#d7d2c8;--v3d-accent:#633d3c;--v3d-focus:#633d3c;--v3d-panel:rgba(247,245,239,.94);--v3d-label-bg:rgba(247,245,239,.92);--v3d-label-fg:#272722;--v3d-shadow:none}

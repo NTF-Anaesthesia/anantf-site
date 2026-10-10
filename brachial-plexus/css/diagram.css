@@ -108,7 +108,7 @@
   color: var(--bpd-text);
   background: var(--bpd-surface);
   border: 1px solid var(--bpd-border);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 6px 12px;
   min-height: 36px;
   cursor: pointer;
@@ -128,7 +128,7 @@
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   border: 1px solid var(--bpd-border);
-  border-radius: 12px;
+  border-radius: 0;
   background: var(--bpd-bg);
   touch-action: pan-x pan-y;
 }
@@ -230,7 +230,7 @@
   pointer-events: none;
   max-width: 260px;
   padding: 7px 10px;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--bpd-tip-bg);
   color: var(--bpd-tip-fg);
   font-size: 14px;
@@ -266,7 +266,7 @@
 .bpd-card {
   background: var(--bpd-surface);
   border: 1px solid var(--bpd-border);
-  border-radius: 12px;
+  border-radius: 0;
   padding: 14px 16px;
   font-size: 15px;
   min-width: 0;
@@ -277,8 +277,8 @@
 .bpd-card dt { font-size: 13px; font-weight: 700; color: var(--bpd-muted); margin-top: 8px; }
 .bpd-card dd { margin: 2px 0 0; }
 .bpd-card .chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 0; padding: 0; list-style: none; }
-.bpd-card .chips li { font-size: 13px; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--bpd-header); border: 1px solid var(--bpd-border); }
-.bpd-card .status { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--bpd-border); }
+.bpd-card .chips li { font-size: 13px; font-weight: 700; padding: 1px 8px; border-radius: 0; background: var(--bpd-header); border: 1px solid var(--bpd-border); }
+.bpd-card .status { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 0; border: 1px solid var(--bpd-border); }
 .bpd-card .status.s-target, .bpd-card .status.s-covers { background: var(--bpd-band); border-color: var(--bpd-band-edge); color: var(--bpd-band-ink); }
 .bpd-card .status.s-variable { background: var(--bpd-variable-bg); color: var(--bpd-text); border-color: var(--bpd-variable); }
 .bpd-card .status.s-spares { color: var(--bpd-muted); text-decoration: line-through; }
