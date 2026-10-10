@@ -340,7 +340,7 @@ function high() {
 // ---------------------------------------------------------------- LAST
 function last() {
   return block('cx-last', 'Local anaesthetic systemic toxicity (LAST)',
-    T(P(`A spinal alone rarely causes LAST. The label dose range for hyperbaric bupivacaine is ${D('7.5–20 mg')}${cite('tq-hpra-heavy')}, a small fraction of the systemic limit: single doses up to ${D('150 mg')}, and no more than ${D('2 mg/kg')} in any 4-hour period. If bupivacaine is given by more than one technique, the overall limit is ${D('150 mg')}.${cite('cx-marcain-smpc')}`), 2),
+    T(P(`A spinal alone rarely causes LAST. A typical spinal dose of bupivacaine is ${D('10–15 mg')}, a small fraction of the systemic limit: single doses up to ${D('150 mg')}, and no more than ${D('2 mg/kg')} in any 4-hour period. If bupivacaine is given by more than one technique, the overall limit is ${D('150 mg')}.${cite('cx-marcain-smpc')}`), 2),
     grp(1, H4('When it matters around a spinal'),
       UL([
         'A failed spinal followed by a large-volume block, or an epidural top-up.',

@@ -68,12 +68,12 @@ function agents() {
     head: ['Drug', 'Dose', 'Onset and duration', 'Character', 'Watch for'],
     rows: [
       [{ th: true, html: 'Hyperbaric bupivacaine 0.5%' },
-        `<strong>Typical:</strong> knee replacement ${D('2.5 mL')} (${D('12.5 mg')}); shorter lower-limb surgery about ${D('2 mL')} (${D('10 mg')}); caesarean ${D('2.2–2.3 mL')} (${D('11–11.5 mg')}).<br><span class="sp-label-range">Label range: hip and lower limb ${D('2–4 mL')} (${D('10–20 mg')}); urological ${D('1.5–3 mL')} (${D('7.5–15 mg')}).${cite('tq-hpra-heavy', 'tq-sg-heavy')}</span>`,
+        `<strong>Typical:</strong> knee replacement ${D('2.5 mL')} (${D('12.5 mg')}); shorter lower-limb surgery about ${D('2 mL')} (${D('10 mg')}); caesarean ${D('2.2–2.3 mL')} (${D('11–11.5 mg')}).`,
         `Onset ${D('5–8 min')}; ${D('1.5–3 h')}. Intermediate to long.`,
         'The usual choice. Predictable spread with glucose. Reduce the dose in older patients.',
         'High block from too much dose; hypotension.'],
       [{ th: true, html: 'Plain (isobaric) bupivacaine 0.5%' },
-        `<strong>Typical:</strong> hip surgery that needs a long block, ${D('3 mL')} (${D('15 mg')}) at most.<br><span class="sp-label-range">Label range ${D('3–4 mL')} (${D('15–20 mg')})${cite('tq-sg-plain')}</span>`,
+        `<strong>Typical:</strong> hip surgery, including frail hip fracture, ${D('2.5–3 mL')} (${D('12.5–15 mg')}). ${D('3 mL')} is the most, for an operation that needs a long block.`,
         `Onset slower than hyperbaric; ${D('3–4 h')} for lower-limb surgery.`,
         'Slightly hypobaric at body temperature, so spread is less predictable. Block stays more at the injection level.',
         'Longer block and slower regression; spread varies with posture.'],
@@ -107,7 +107,7 @@ function agents() {
   return sub('ph-agents', 'Intrathecal agents at a glance',
     T(P('<strong>Answer first:</strong> for most lower-limb and hip surgery use hyperbaric bupivacaine 0.5%. For brief day-case surgery use hyperbaric prilocaine or chloroprocaine. Do not use lidocaine if an alternative exists.'), 1),
     T(t, 1),
-    T(P('Bupivacaine doses are this department’s typical doses, with the product-label range below them; other drugs show the label dose only. Details in <a href="#tq-drugs">Drugs and doses</a>. Position, dose and patient factors change spread: see <a href="#tq-spread-h">what decides spread</a>.', 'sp-prose ph-note'), 1),
+    T(P('Bupivacaine doses are this department’s typical doses; prilocaine and chloroprocaine show the label dose. Details in <a href="#tq-drugs">Drugs and doses</a>. Position, dose and patient factors change spread: see <a href="#tq-spread-h">what decides spread</a>.', 'sp-prose ph-note'), 1),
     T(callout('pearl', { title: 'Compare bupivacaine and ropivacaine', body: '<ul><li>Same long-acting amide family; ropivacaine is the S enantiomer with a shorter side chain.</li><li>Ropivacaine: less lipid soluble, less potent, less cardiotoxic, relatively less motor block and a shorter block.</li><li>Bupivacaine is the standard spinal drug because its dose-response and hyperbaric preparation are well established.</li></ul>' }), 2));
 }
 
