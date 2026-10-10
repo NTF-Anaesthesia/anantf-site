@@ -1,0 +1,17 @@
+/* Abdominal wall page: anatomy chapter figures (prefix aw-). Shared styles: ../shared/css/truncal.css */
+.tb-app .aw-fig{margin:24px 0 8px}
+.tb-app main .aw-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
+.tb-app .aw-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
+.tb-app .aw-fig-stage--wide{overflow-x:auto}
+.tb-app .aw-fig-svg{display:block;width:100%;height:auto}
+.tb-app .aw-fig-stage--wide .aw-fig-svg{min-width:560px}
+.tb-app .aw-fig figcaption{margin-top:10px;font-size:15px;color:var(--tb-ink-soft)}
+.tb-app main .aw-legend{margin:6px 0 0;padding-left:1.4em}
+.tb-app main .aw-legend li{margin:0 0 4px}
+.tb-app main .aw-legend li::marker{color:#2c74b3;font-weight:600}
+.tb-app .aw-fig--split{display:grid;gap:16px 32px;align-items:start}
+@media (min-width:900px){.tb-app .aw-fig--split{grid-template-columns:minmax(280px,400px) minmax(0,1fr)}}
+.tb-app .aw-fig--split figcaption{margin-top:0}
+.tb-app .aw-fig--split .tb-table-wrap{margin-top:0}
+.tb-app main .aw-note{font-size:15px;color:var(--tb-muted)}
+.tb-app main .tb-chapter>h3{margin-top:48px}
