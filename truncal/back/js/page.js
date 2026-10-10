@@ -1,7 +1,7 @@
 // Back page: wires the shared shell to this page's chapters and data.
 import { bootPage } from '../../shared/js/shell.js';
 import { BLOCKS, REFS } from './blocks.js';
-import { renderAnatomy, renderLandmark, renderLevels } from './anatomy.js';
+import { renderAnatomy, renderLandmark, renderLevels, renderRelated } from './anatomy.js';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
@@ -27,7 +27,8 @@ bootPage({
     { id: 'ch-pvbt', title: 'Paravertebral block: transverse in-plane', short: 'PVB transverse', desc: 'Under the internal intercostal membrane.', block: byId.pvbt },
     { id: 'ch-pvblm', title: 'Paravertebral block: landmark technique', short: 'PVB landmark', desc: 'Tuohy, transverse process at about 4 cm, pop and loss of resistance.', render: renderLandmark },
     { id: 'ch-levels', title: 'Which level for which operation', short: 'Levels', desc: 'The teaching slides’ level table for blocks done from the back.', render: renderLevels },
+    { id: 'ch-related', title: 'Related blocks and alternatives', short: 'Related', desc: 'Thoracic epidural, intercostal, intertransverse process (MTP, retrolaminar, TLIP) and interpleural blocks, in brief.', render: renderRelated },
   ],
   refs: REFS,
-  refsIntro: 'Most values come from the department’s teaching slides (reference 1). Values the teaching slides do not give are taken from the sources below and cited where they are used.',
+  refsIntro: 'Most values come from the department’s teaching slides (reference 1) and teaching notes (reference 2). Values the teaching slides do not give are taken from the sources below and cited where they are used.',
 });

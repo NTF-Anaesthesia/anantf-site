@@ -27,7 +27,7 @@ bootPage({
     { id: 'ch-parasternal', title: 'Parasternal intercostal plane blocks', short: 'Parasternal', desc: 'Superficial and deep (transversus thoracis plane), in brief. Sternotomy.', block: byId.parasternal },
   ],
   refs: REFS,
-  refsIntro: 'The teaching slides have few chest wall values (slides 127 and 147). Everything else is taken from the sources below and cited where it is used. Exam questions on this page are practice questions, not from the teaching slides.',
+  refsIntro: 'The teaching slides have few chest wall values (slides 127 and 147). The department teaching notes add ropivacaine regimens, technique tips and exam points; they are internal and not peer reviewed. Everything else is taken from the sources below and cited where it is used. Exam questions on this page are practice or past-paper questions, not from the teaching slides.',
   synonyms: [
     ['interpectoral', 'pecs i', 'pecs 1', 'pecs1'],
     ['pectoserratus', 'pecs ii', 'pecs 2', 'pecs2'],
@@ -35,6 +35,8 @@ bootPage({
     ['internal thoracic', 'internal mammary', 'ita', 'ima'],
     ['clavipectoral', 'clavicle', 'clavicle fracture'],
     ['thoracodorsal', 'latissimus dorsi', 'ld'],
+    ['intercostobrachial', 'icbn'],
+    ['intercostal nerve block', 'icnb', 'costal groove'],
     ['breast', 'mastectomy', 'axillary clearance', 'sentinel node'],
   ],
 });

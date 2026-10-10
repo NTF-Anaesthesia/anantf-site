@@ -38,7 +38,7 @@ export const SCENES = {
         spread: { along: [[0, 28.75], [55, 28.75]], from: 27.5, x0: 3, x1: 52, thick: 3.4, up: 1, above: 10, shape: 0.7 },
         steps: {
           needle: '<p>In-plane, here <strong>cranial to caudal</strong> (caudal to cranial works too). Keep the whole shaft in view through trapezius, rhomboid major and erector spinae, and advance until the tip <strong>touches the T5 transverse process</strong>.</p>',
-          inject: '<p>Inject 1–2 ml to check: the fluid <strong>lifts erector spinae off the transverse process</strong> (hydrodissection) and then spreads <strong>cranially and caudally</strong> along the plane, over the neighbouring transverse processes. If the muscle swells instead, the tip is in the muscle: move it back onto bone.</p>',
+          inject: '<p>Inject 1–3 ml to check: the fluid <strong>lifts erector spinae off the transverse process</strong> (hydrodissection) and then spreads <strong>cranially and caudally</strong> along the plane, over the neighbouring transverse processes. If the muscle swells instead, the tip is in the muscle: move it back onto bone.</p>',
         },
       },
       {
