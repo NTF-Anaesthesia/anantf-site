@@ -1,13 +1,10 @@
 // Airway: anatomy and topical anaesthesia chapters.
 import { el, fill, table, callout, keyPoints, registerSearch } from '../../../truncal/shared/js/ui.js';
-import { cite } from '../../../truncal/shared/js/refs.js';
 import { headCoverageMap } from '../../shared/js/head.js';
-
-const N = cite('notes');
 
 export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'aw-anat-h', text: 'Anatomy: sensory supply of the airway' }));
-  sec.append(fill(el('div', { class: 'tb-prose' }), `<p>Three cranial nerves supply the airway: the <strong>trigeminal (V)</strong>, the <strong>glossopharyngeal (IX)</strong> and the <strong>vagus (X)</strong>.${N}</p>`));
+  sec.append(fill(el('div', { class: 'tb-prose' }), `<p>Three cranial nerves supply the airway: the <strong>trigeminal (V)</strong>, the <strong>glossopharyngeal (IX)</strong> and the <strong>vagus (X)</strong>.</p>`));
   const fig = headCoverageMap({
     side: 'midline', views: ['airway'],
     areas: [{ zones: ['nose', 'oropharynx', 'subglottis'], density: 'dense' }, { zones: ['tongue', 'supraglottis'], density: 'moderate' }],
@@ -26,18 +23,17 @@ export function renderAnatomy(sec) {
       [{ th: true, html: 'Cords and trachea' }, 'Recurrent laryngeal (X)', 'Spray-as-you-go; <a href="#ch-ttb">transtracheal block</a>'],
     ],
   })));
-  sec.append(fill(el('p', { class: 'hn-note' }), `From the teaching notes.${N}`));
   registerSearch([{ title: 'Airway innervation map', text: 'trigeminal glossopharyngeal vagus superior laryngeal recurrent laryngeal lingual ethmoidal palatine', id: 'aw-anat-map' }]);
 }
 
 export function renderTopical(sec) {
   sec.append(el('h2', { id: 'aw-top-h', text: 'Topical anaesthesia for awake intubation' }));
-  sec.append(fill(el('p', { class: 'tb-lead' }), `Topical anaesthesia is the mainstay of awake tracheal intubation; nerve blocks are added when it is not enough.${cite('das2020')}`));
+  sec.append(fill(el('p', { class: 'tb-lead' }), `Topical anaesthesia is the mainstay of awake tracheal intubation; nerve blocks are added when it is not enough.`));
   sec.append(keyPoints([
-    `<strong>Maximum topical lidocaine: 9 mg/kg</strong> in adults (4.5 mg/kg in children). About 25% is absorbed from the upper airway, which is why this is higher than the dose for infiltration.${N}${cite('das2020')}`,
-    `Clear blood, secretions and vomit first: the drug has to touch the mucosa.${N}`,
-    `<strong>Trismus:</strong> sprays and blocks inside the mouth may be impossible. Use nebulised lidocaine or a transtracheal injection.${N}`,
-    `Check the topical anaesthesia works before you start (for example, a gentle suction catheter or oral airway is tolerated).${cite('das2020')}`,
+    `<strong>Maximum topical lidocaine: 9 mg/kg</strong> in adults (4.5 mg/kg in children). About 25% is absorbed from the upper airway, which is why this is higher than the dose for infiltration.`,
+    `Clear blood, secretions and vomit first: the drug has to touch the mucosa.`,
+    `<strong>Trismus:</strong> sprays and blocks inside the mouth may be impossible. Use nebulised lidocaine or a transtracheal injection.`,
+    `Check the topical anaesthesia works before you start (for example, a gentle suction catheter or oral airway is tolerated).`,
   ], { title: 'Before you start' }));
   sec.append(el('h3', { id: 'aw-top-drugs', text: 'Drugs' }));
   sec.append(table({
@@ -51,7 +47,6 @@ export function renderTopical(sec) {
       [{ th: true, html: 'Vasoconstrictor' }, 'Xylometazoline or phenylephrine', 'Essential in the nose: less bleeding and more room. Allow time to work.'],
     ],
   }));
-  sec.append(fill(el('p', { class: 'hn-note' }), `From the teaching notes.${N}`));
   sec.append(el('h3', { id: 'aw-top-ways', text: 'Ways to apply it' }));
   sec.append(table({
     head: ['Method', 'How', 'Good for'],
@@ -64,7 +59,6 @@ export function renderTopical(sec) {
       [{ th: true, html: 'Direct contact' }, 'Ribbon gauze or cotton applicators soaked in local anaesthetic or paste', 'Targeted: nose, tonsillar pillars, piriform fossae'],
     ],
   }));
-  sec.append(fill(el('p', { class: 'hn-note' }), `From the teaching notes.${N}`));
-  sec.append(callout('warn', { title: 'Topical anaesthesia removes protective reflexes', body: `<p>Cough and swallow are blunted, so the patient can aspirate. Topical anaesthesia of the pharynx can also cause brief airway obstruction, from loss of the reflexes that keep the glottis open.${N}</p>` }));
+  sec.append(callout('warn', { title: 'Topical anaesthesia removes protective reflexes', body: `<p>Cough and swallow are blunted, so the patient can aspirate. Topical anaesthesia of the pharynx can also cause brief airway obstruction, from loss of the reflexes that keep the glottis open.</p>` }));
   registerSearch([{ title: 'Topical lidocaine maximum dose', text: 'lidocaine 9 mg/kg topical maximum co-phenylcaine nebuliser 4% spray as you go McKenzie atomiser cocaine', id: 'aw-top-h' }]);
 }

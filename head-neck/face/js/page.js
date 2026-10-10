@@ -1,6 +1,6 @@
 // Face page: wires the shared truncal shell to this page's chapters and data.
 import { bootPage } from '../../../truncal/shared/js/shell.js';
-import { BLOCKS, REFS } from './blocks.js';
+import { BLOCKS } from './blocks.js';
 import { renderAnatomy, renderDeep } from './anatomy.js';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
@@ -25,7 +25,5 @@ bootPage({
     { id: 'ch-me', title: 'Mental nerve block', short: 'Mental', desc: 'Lower lip and chin.', block: byId.me },
     { id: 'ch-deep', title: 'Maxillary and mandibular nerve blocks', short: 'V2 and V3', desc: 'Deep blocks near the skull base. For experienced hands.', render: renderDeep },
   ],
-  refs: REFS,
-  refsIntro: 'Anatomy and technique follow the department’s teaching notes. Where the notes do not give a value, it comes from the sources below and is cited where it is used.',
   synonyms: [['ion', 'infraorbital'], ['son', 'supraorbital'], ['v2', 'maxillary'], ['v3', 'mandibular'], ['cleft', 'cleft lip palate']],
 });

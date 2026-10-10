@@ -1,13 +1,10 @@
 // Scalp and occipital: anatomy chapter.
 import { el, fill, table, callout, registerSearch } from '../../../truncal/shared/js/ui.js';
-import { cite } from '../../../truncal/shared/js/refs.js';
 import { viewsFigure } from '../../shared/js/head.js';
-
-const N = cite('notes');
 
 export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'sc-anat-h', text: 'Anatomy: the nerves of the scalp' }));
-  sec.append(fill(el('div', { class: 'tb-prose' }), `<p>The scalp has five layers (<strong>SCALP</strong>): skin, connective tissue (carrying the vessels and nerves), aponeurosis, loose areolar tissue and pericranium.${N} The nerves run in the connective tissue layer, so they can all be reached with a shallow injection once they have come through the deep fascia.</p>`));
+  sec.append(fill(el('div', { class: 'tb-prose' }), `<p>The scalp has five layers (<strong>SCALP</strong>): skin, connective tissue (carrying the vessels and nerves), aponeurosis, loose areolar tissue and pericranium. The nerves run in the connective tissue layer, so they can all be reached with a shallow injection once they have come through the deep fascia.</p>`));
   sec.append(viewsFigure({
     id: 'sc-fig-territories',
     title: 'Who supplies what',
@@ -31,7 +28,6 @@ export function renderAnatomy(sec) {
       [{ th: true, html: 'Great auricular (optional)' }, 'C2–C3 (cervical plexus)', 'Over the parotid, the mastoid and most of the ear'],
     ],
   }));
-  sec.append(fill(el('p', { class: 'hn-note' }), `From the teaching notes.${N}`));
   sec.append(callout('pearl', { title: 'Mnemonic', body: '<p><strong>GLASS Z</strong>: greater occipital, lesser occipital, auriculotemporal, supraorbital, supratrochlear, zygomaticotemporal.</p>' }));
   registerSearch([{ title: 'Scalp nerve territories', text: 'supraorbital supratrochlear zygomaticotemporal auriculotemporal lesser occipital greater occipital great auricular GLASS Z', id: 'sc-fig-territories' }]);
 }

@@ -1,6 +1,6 @@
 // Scalp and occipital page: wires the shared truncal shell to this page's chapters and data.
 import { bootPage } from '../../../truncal/shared/js/shell.js';
-import { BLOCKS, REFS } from './blocks.js';
+import { BLOCKS } from './blocks.js';
 import { renderAnatomy } from './anatomy.js';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
@@ -21,7 +21,5 @@ bootPage({
     { id: 'ch-scalp', title: 'Scalp block', short: 'Scalp block', desc: 'Craniotomy and head pins. Landmarks.', block: byId.scalp },
     { id: 'ch-gon', title: 'Greater occipital nerve block', short: 'Occipital', desc: 'Landmarks, or ultrasound at C2.', block: byId.gon },
   ],
-  refs: REFS,
-  refsIntro: 'Technique and doses follow the department’s teaching notes. Where the notes do not give a value, it comes from the sources below and is cited where it is used.',
   synonyms: [['gon', 'greater occipital'], ['lon', 'lesser occipital'], ['oci', 'obliquus capitis inferior']],
 });

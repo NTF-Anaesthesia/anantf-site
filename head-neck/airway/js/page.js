@@ -1,6 +1,6 @@
 // Airway page: wires the shared truncal shell to this page's chapters and data.
 import { bootPage } from '../../../truncal/shared/js/shell.js';
-import { BLOCKS, REFS } from './blocks.js';
+import { BLOCKS } from './blocks.js';
 import { renderAnatomy, renderTopical } from './topical.js';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
@@ -25,7 +25,5 @@ bootPage({
     { id: 'ch-ttb', title: 'Transtracheal block', short: 'Transtracheal', desc: 'The cords and trachea.', block: byId.ttb },
     { id: 'ch-gpn', title: 'Glossopharyngeal nerve block', short: 'Glossopharyngeal', desc: 'The gag reflex.', block: byId.gpn },
   ],
-  refs: REFS,
-  refsIntro: 'Technique and doses follow the department’s teaching notes. Where the notes do not give a value, it comes from the sources below and is cited where it is used.',
   synonyms: [['sln', 'superior laryngeal'], ['ctm', 'cricothyroid membrane'], ['ati', 'awake tracheal intubation'], ['afoi', 'awake fibreoptic intubation'], ['saygo', 'spray as you go'], ['lignocaine', 'lidocaine']],
 });

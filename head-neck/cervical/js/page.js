@@ -1,6 +1,6 @@
 // Cervical plexus page: wires the shared truncal shell to this page's chapters and data.
 import { bootPage } from '../../../truncal/shared/js/shell.js';
-import { BLOCKS, REFS } from './blocks.js';
+import { BLOCKS } from './blocks.js';
 import { renderAnatomy } from './anatomy.js';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
@@ -23,7 +23,5 @@ bootPage({
     { id: 'ch-scp', title: 'Superficial and intermediate cervical plexus block', short: 'Superficial', desc: 'Carotid, thyroid and neck surgery.', block: byId.scp },
     { id: 'ch-dcp', title: 'Deep cervical plexus block', short: 'Deep', desc: 'C2–C4 roots. Rarely needed; know the risks.', block: byId.dcp },
   ],
-  refs: REFS,
-  refsIntro: 'Technique and doses follow the department’s teaching notes. Where the notes do not give a value, it comes from the sources below and is cited where it is used.',
   synonyms: [['scm', 'sternocleidomastoid'], ['cea', 'carotid endarterectomy'], ['erb', 'erbs']],
 });

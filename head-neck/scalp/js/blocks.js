@@ -1,16 +1,6 @@
 // Scalp and occipital: block data (schema: ../../../truncal/shared/DATA.md, "Block schema").
-// Technique and doses follow the department's teaching notes; values the notes do not give carry a citation.
-import { cite } from '../../../truncal/shared/js/refs.js';
 import { headCoverageMap, viewsFigure } from '../../shared/js/head.js';
 import { SCENES } from './scenes.js';
-
-export const REFS = [
-  { id: 'notes', text: 'NTF Anaesthesia. Head and neck regional anaesthesia: teaching notes (internal teaching material).' },
-  { id: 'osborn2010', text: 'Osborn I, Sebeo J. “Scalp block” during craniotomy: a classic technique revisited. <i>J Neurosurg Anesthesiol</i> 2010;22(3):187–194.', url: 'https://doi.org/10.1097/ANA.0b013e3181d48846', label: 'doi:10.1097/ANA.0b013e3181d48846' },
-  { id: 'greher2010', text: 'Greher M, Moriggl B, Curatolo M, Kirchmair L, Eichenberger U. Sonographic visualization and ultrasound-guided blockade of the greater occipital nerve: a comparison of two selective techniques confirmed by anatomical dissection. <i>Br J Anaesth</i> 2010;104(5):637–642.', url: 'https://doi.org/10.1093/bja/aeq052', label: 'doi:10.1093/bja/aeq052' },
-];
-
-const N = cite('notes');
 
 /** The seven injection sites, numbered to match the key. */
 export function scalpPointsFigure() {
@@ -32,7 +22,7 @@ export function scalpPointsFigure() {
       '<strong>Lesser occipital</strong> (C2): a third of the way along the superior nuchal line from the mastoid to the occipital protuberance; infiltrate up behind the ear.',
       '<strong>Greater occipital</strong> (C2): two-thirds of the way from the mastoid to the occipital protuberance, just medial to the occipital artery.',
     ],
-    caption: `Sites as in the teaching notes.${N}${cite('osborn2010')} Schematic, not to scale.`,
+    caption: 'Schematic, not to scale.',
   });
 }
 
@@ -42,7 +32,7 @@ export const BLOCKS = [
     id: 'scalp',
     kicker: 'Scalp · Landmark',
     title: 'Scalp block',
-    summary: `Small volumes of local anaesthetic at the <strong>six or seven nerves that supply the scalp</strong>, where each one becomes superficial: three branches of the trigeminal nerve in front and two (or three) branches of C2–C3 behind.${N} An anatomical block, not a ring of infiltration.`,
+    summary: `Small volumes of local anaesthetic at the <strong>six or seven nerves that supply the scalp</strong>, where each one becomes superficial: three branches of the trigeminal nerve in front and two (or three) branches of C2–C3 behind. An anatomical block, not a ring of infiltration.`,
     indications: ['Awake craniotomy', 'Head pins (Mayfield) and skin incision under general anaesthesia: blunts the blood pressure surge', 'Analgesia after craniotomy', 'Scalp lacerations and lesions'],
     glance: {
       position: 'Supine, head turned or in pins; all sites reachable',
@@ -55,14 +45,14 @@ export const BLOCKS = [
     position: '<p>Supine, before the head is fixed in pins, or with the head turned to reach the back. Block both sides for a bifrontal or midline incision.</p>',
     equipment: [
       'Fine needle (25–27G), long enough to fan along the superior nuchal line',
-      `Local anaesthetic with adrenaline, for example lidocaine 0.75% with bupivacaine 0.25% and adrenaline 1:200 000.${N}`,
+      `Local anaesthetic with adrenaline, for example lidocaine 0.75% with bupivacaine 0.25% and adrenaline 1:200 000.`,
       'Monitoring: injections around the face and occiput are close to vessels',
     ],
     landmarksTitle: 'Landmarks and injections',
-    landmarks: `<ol><li><strong>Supraorbital</strong>: feel the supraorbital notch and inject just above it, perpendicular to the eyebrow.${N}</li><li><strong>Supratrochlear</strong>: just medial to the supraorbital injection, at the bridge of the nose.${N}</li><li><strong>Zygomaticotemporal</strong>: infiltrate from the lateral orbital rim back along the top of the zygomatic arch. The nerve runs through temporalis, so inject both <strong>deep and superficial</strong> to the temporalis fascia: the hardest nerve to block.${N}</li><li><strong>Auriculotemporal</strong>: 1 cm in front of and 1 cm above the tragus, feel the superficial temporal artery and inject <strong>just behind it</strong>. Stay above the tragus: the facial nerve is close below.${N}</li><li><strong>Great auricular</strong> (optional): usually covered by the lesser occipital injection, 1.5–2 cm behind the ear at the level of the tragus.${N}</li><li><strong>Lesser occipital</strong>: infiltrate behind the ear from the top of the ear to the lobule, then back along the superior nuchal line.${N}</li><li><strong>Greater occipital</strong>: feel the occipital artery about two-thirds of the way from the mastoid to the external occipital protuberance, on the superior nuchal line, and inject <strong>just medial to it</strong>.${N}</li></ol>`,
-    approach: `<p>Aspirate before each injection: the scalp is very vascular. Press on each site for a minute afterwards to spread the local anaesthetic and stop bruising.${N}</p>`,
-    target: `<p>Each nerve where it becomes subcutaneous. The alternative is a <strong>ring block</strong>: infiltrate all the way round the head above a line from the occipital protuberance to the eyebrows, along the top of the ears. That takes about 30 ml.${N}</p>`,
-    dose: { html: '<span class="tb-dose-v">2–5 ml</span> per site; <span class="tb-dose-v">20–30 ml</span> in total for one or both sides', source: `Teaching notes; ring block about 30 ml.${N}`, note: 'With adrenaline 1:200 000. Absorption from the scalp is fast, so add up the total for both sides and any surgical infiltration.' },
+    landmarks: `<ol><li><strong>Supraorbital</strong>: feel the supraorbital notch and inject just above it, perpendicular to the eyebrow.</li><li><strong>Supratrochlear</strong>: just medial to the supraorbital injection, at the bridge of the nose.</li><li><strong>Zygomaticotemporal</strong>: infiltrate from the lateral orbital rim back along the top of the zygomatic arch. The nerve runs through temporalis, so inject both <strong>deep and superficial</strong> to the temporalis fascia: the hardest nerve to block.</li><li><strong>Auriculotemporal</strong>: 1 cm in front of and 1 cm above the tragus, feel the superficial temporal artery and inject <strong>just behind it</strong>. Stay above the tragus: the facial nerve is close below.</li><li><strong>Great auricular</strong> (optional): usually covered by the lesser occipital injection, 1.5–2 cm behind the ear at the level of the tragus.</li><li><strong>Lesser occipital</strong>: infiltrate behind the ear from the top of the ear to the lobule, then back along the superior nuchal line.</li><li><strong>Greater occipital</strong>: feel the occipital artery about two-thirds of the way from the mastoid to the external occipital protuberance, on the superior nuchal line, and inject <strong>just medial to it</strong>.</li></ol>`,
+    approach: `<p>Aspirate before each injection: the scalp is very vascular. Press on each site for a minute afterwards to spread the local anaesthetic and stop bruising.</p>`,
+    target: `<p>Each nerve where it becomes subcutaneous. The alternative is a <strong>ring block</strong>: infiltrate all the way round the head above a line from the occipital protuberance to the eyebrows, along the top of the ears. That takes about 30 ml.</p>`,
+    dose: { html: '<span class="tb-dose-v">2–5 ml</span> per site; <span class="tb-dose-v">20–30 ml</span> in total for one or both sides', note: 'With adrenaline 1:200 000. Absorption from the scalp is fast, so add up the total for both sides and any surgical infiltration.' },
     coverage: {
       map: headCoverageMap,
       side: 'unilateral',
@@ -73,11 +63,11 @@ export const BLOCKS = [
         { zones: ['gan'], density: 'patchy' },
       ],
       summary: 'The scalp on one side: forehead to vertex (V1), temple (V2, V3) and the back of the head (C2).',
-      mechanism: `<p>Every nerve to the scalp becomes superficial on a line around the head, so each can be reached with a few millilitres.${N} The trigeminal branches supply the front and sides; the occipital nerves (C2–C3) the back.</p>`,
-      density: `<p>Dense skin and pericranial analgesia when all sites are injected; enough for an awake craniotomy with sedation.${cite('osborn2010')} The dura and brain are not covered: the surgeon infiltrates the dura near the middle meningeal artery if needed.</p>`,
+      mechanism: `<p>Every nerve to the scalp becomes superficial on a line around the head, so each can be reached with a few millilitres. The trigeminal branches supply the front and sides; the occipital nerves (C2–C3) the back.</p>`,
+      density: `<p>Dense skin and pericranial analgesia when all sites are injected; enough for an awake craniotomy with sedation. The dura and brain are not covered: the surgeon infiltrates the dura near the middle meningeal artery if needed.</p>`,
       misses: '<ul><li>The dura and temporalis muscle (deep), unless the zygomaticotemporal injection goes deep to the temporalis fascia.</li><li>The other side, for a midline or bifrontal incision.</li></ul>',
     },
-    complications: `<ul><li><strong>Bruising and haematoma</strong> are the commonest problems; press after each injection.${N}</li><li><strong>Intravascular injection and local anaesthetic toxicity</strong>: the scalp is very vascular; aspirate, use adrenaline, and keep within the maximum dose.${N}</li><li><strong>Facial nerve block</strong> (temporary facial weakness) from an auriculotemporal injection that is too low or deep.${N}</li><li>A transient rise in heart rate and blood pressure from the adrenaline.</li></ul>`,
+    complications: `<ul><li><strong>Bruising and haematoma</strong> are the commonest problems; press after each injection.</li><li><strong>Intravascular injection and local anaesthetic toxicity</strong>: the scalp is very vascular; aspirate, use adrenaline, and keep within the maximum dose.</li><li><strong>Facial nerve block</strong> (temporary facial weakness) from an auriculotemporal injection that is too low or deep.</li><li>A transient rise in heart rate and blood pressure from the adrenaline.</li></ul>`,
     pearls: [
       'The mnemonic GLASS Z: greater occipital, lesser occipital, auriculotemporal, supraorbital, supratrochlear and zygomaticotemporal.',
       'Do the block before the pins go in: it blunts the haemodynamic response to pinning and incision.',
@@ -86,7 +76,7 @@ export const BLOCKS = [
     sections: [
       {
         id: 'awake', title: 'Awake craniotomy',
-        html: `<p>Used when the patient has to talk or move during the operation: tumours near the speech or motor cortex, epilepsy surgery and deep brain stimulation.${N} The scalp block makes pinning, incision and the craniotomy bearable with light sedation, and gives analgesia afterwards.${cite('osborn2010')}</p>`,
+        html: `<p>Used when the patient has to talk or move during the operation: tumours near the speech or motor cortex, epilepsy surgery and deep brain stimulation. The scalp block makes pinning, incision and the craniotomy bearable with light sedation, and gives analgesia afterwards.</p>`,
       },
     ],
     exam: [
@@ -101,7 +91,6 @@ export const BLOCKS = [
         ],
       },
     ],
-    sources: `Teaching notes${N}; review${cite('osborn2010')}.`,
   },
 
   // ------------------------------------------------------------------ greater (and lesser) occipital
@@ -109,7 +98,7 @@ export const BLOCKS = [
     id: 'gon',
     kicker: 'Scalp · Occipital',
     title: 'Greater occipital nerve block',
-    summary: `The greater occipital nerve (C2) supplies the back of the scalp up to the vertex.${N} Block it on the <strong>superior nuchal line</strong> with landmarks, or more proximally at <strong>C2</strong> with ultrasound, where it crosses obliquus capitis inferior.${N}${cite('greher2010')}`,
+    summary: `The greater occipital nerve (C2) supplies the back of the scalp up to the vertex. Block it on the <strong>superior nuchal line</strong> with landmarks, or more proximally at <strong>C2</strong> with ultrasound, where it crosses obliquus capitis inferior.`,
     indications: ['Posterior craniotomy and VP shunt insertion or revision', 'Headache: occipital neuralgia, cervicogenic headache, migraine (pain clinic)', 'Part of a scalp block'],
     glance: {
       position: 'Sitting with the neck flexed, or prone or lateral',
@@ -120,23 +109,23 @@ export const BLOCKS = [
     },
     scene: SCENES.gon,
     position: '<p>Sitting with the neck flexed and the forehead resting on a table, or prone, or lateral with the side to be blocked uppermost.</p>',
-    equipment: ['25–27G needle for the landmark technique; a 50 mm needle and a linear probe for the ultrasound technique', `1–3 ml of local anaesthetic per side.${N}`],
-    landmarks: `<p><strong>Landmark (distal).</strong> The nerve lies about <strong>two-thirds of the way along a line from the mastoid to the external occipital protuberance</strong>, on the superior nuchal line, <strong>just medial to the occipital artery</strong> (easy to feel). Insert the needle at 90° to the occiput, aspirate and inject 1–3 ml; press on the site afterwards. Numbness over the top of the head shows success.${N} The nerve’s position varies widely between people (1.5–7.5 cm from the midline), which is why blind blocks sometimes fail.${N}</p>
-<p><strong>Ultrasound (proximal, at C2).</strong> Find the bifid C2 spinous process, then move laterally along obliquus capitis inferior. Here the nerve’s relation to the muscle is constant: it crosses the <strong>superficial surface of obliquus capitis inferior</strong>.${N}${cite('greher2010')}</p>`,
+    equipment: ['25–27G needle for the landmark technique; a 50 mm needle and a linear probe for the ultrasound technique', `1–3 ml of local anaesthetic per side.`],
+    landmarks: `<p><strong>Landmark (distal).</strong> The nerve lies about <strong>two-thirds of the way along a line from the mastoid to the external occipital protuberance</strong>, on the superior nuchal line, <strong>just medial to the occipital artery</strong> (easy to feel). Insert the needle at 90° to the occiput, aspirate and inject 1–3 ml; press on the site afterwards. Numbness over the top of the head shows success. The nerve’s position varies widely between people (1.5–7.5 cm from the midline), which is why blind blocks sometimes fail.</p>
+<p><strong>Ultrasound (proximal, at C2).</strong> Find the bifid C2 spinous process, then move laterally along obliquus capitis inferior. Here the nerve’s relation to the muscle is constant: it crosses the <strong>superficial surface of obliquus capitis inferior</strong>.</p>`,
     approach: '<p>Ultrasound: in-plane, lateral to medial, to the plane between semispinalis capitis and obliquus capitis inferior.</p>',
-    target: `<p>Distal: medial to the occipital artery at the superior nuchal line. Proximal: the nerve on top of obliquus capitis inferior, beneath semispinalis capitis.${cite('greher2010')}</p>`,
-    dose: { volume: '1–3 ml', conc: '', drug: 'local anaesthetic', per: 'per side', source: `Teaching notes.${N}` },
+    target: `<p>Distal: medial to the occipital artery at the superior nuchal line. Proximal: the nerve on top of obliquus capitis inferior, beneath semispinalis capitis.</p>`,
+    dose: { volume: '1–3 ml', conc: '', drug: 'local anaesthetic', per: 'per side' },
     coverage: {
       map: headCoverageMap,
       side: 'unilateral',
       views: ['side', 'back'],
       areas: [{ zones: ['gon'], density: 'dense' }, { zones: ['lon'], density: 'patchy' }],
       summary: 'The back of the scalp from the occipital protuberance to the vertex.',
-      mechanism: `<p>The nerve leaves between C1 and C2, curves round obliquus capitis inferior, runs up through semispinalis capitis and trapezius, and becomes subcutaneous just below the superior nuchal line, medial to the occipital artery.${N}</p>`,
+      mechanism: `<p>The nerve leaves between C1 and C2, curves round obliquus capitis inferior, runs up through semispinalis capitis and trapezius, and becomes subcutaneous just below the superior nuchal line, medial to the occipital artery.</p>`,
       density: '<p>Dense in the nerve’s territory when the injection is right. The proximal (C2) ultrasound approach is more reliable because the nerve is in the same place in most people.</p>',
-      misses: `<ul><li><strong>Behind the ear</strong>: the lesser occipital nerve. Block it a third of the way along the same line from the mastoid, or infiltrate behind the ear.${N}</li><li>The upper neck (C3 and below).</li></ul>`,
+      misses: `<ul><li><strong>Behind the ear</strong>: the lesser occipital nerve. Block it a third of the way along the same line from the mastoid, or infiltrate behind the ear.</li><li>The upper neck (C3 and below).</li></ul>`,
     },
-    complications: `<ul><li>Few, because the nerve is superficial. <strong>Intravascular injection</strong> (occipital artery): aspirate.${N}</li><li>At C2: the <strong>vertebral artery</strong> lies deep to obliquus capitis inferior laterally, and the <strong>spinal cord</strong> deep and medially. Keep the tip superficial to the muscle.${N}</li></ul>`,
+    complications: `<ul><li>Few, because the nerve is superficial. <strong>Intravascular injection</strong> (occipital artery): aspirate.</li><li>At C2: the <strong>vertebral artery</strong> lies deep to obliquus capitis inferior laterally, and the <strong>spinal cord</strong> deep and medially. Keep the tip superficial to the muscle.</li></ul>`,
     pearls: [
       'Feel for the occipital artery first: the nerve is just medial to it.',
       'The lesser occipital nerve is a third of the way from the mastoid; the greater occipital two-thirds.',
@@ -153,6 +142,5 @@ export const BLOCKS = [
         ],
       },
     ],
-    sources: `Teaching notes${N}; proximal technique${cite('greher2010')}.`,
   },
 ];
