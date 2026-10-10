@@ -11,12 +11,12 @@ truncal/shared/
   js/block.js         renderBlock(block, host): one block chapter from a data object (called by the shell)
   js/scan.js          mountScan(host, scene, {blockId}): the interactive scan viewer (called by block.js)
   js/scene.js         scene geometry, shape constructors E/P/PS/L, LA spread and tissue warp
-  js/bmode.js         simulated B-mode ultrasound from a scene (cached per scene id)
+  js/bmode.js         simulated B-mode ultrasound from a scene (cached per scene id; built in phases off idle time)
   js/diagram.js       idealised labelled diagram from the same scene
   js/dermatomes.js    coverageMap(coverage), probeInset(probe), OUTLINE (torso outlines) — original drawings
   js/refs.js          registerRefs, cite('id'), citeEl, renderRefs
   js/search.js        page search + synonyms (addSynonyms via config.synonyms)
-  js/ui.js            el, sv, fill, callout, keyPoints, steps, table, details, registerSearch, …
+  js/ui.js            el, sv, fill, callout, keyPoints, steps, stepper, table, details, registerSearch, …
 ```
 
 Static ES modules, no build step, no CDN. Import with relative paths, e.g. `../../shared/js/shell.js`.
@@ -62,6 +62,18 @@ bootPage({
 ```
 
 - A chapter has either `block` (rendered by `renderBlock`) or `render(sec)` (your own content; you add the `h2`), or both.
+- **Headings.** Author every chapter as **h2 title > h3 > h4** (as now). After it renders, the shell gives the chapter
+  one visible `h1`: with a single `h2`, every heading moves up one level (h2 → h1, h3 → h2, h4 → h3) and keeps its look
+  through the classes `tb-ch-title`, `tb-hv3`, `tb-hv4` (the authored level); with several `h2`s only the first becomes
+  the `h1`. Ids and attributes are kept, so `aria-labelledby` and deep links still work. In page CSS, style headings by
+  class or id rather than by tag (`.tb-chapter>h3` in page CSS no longer matches; the shared CSS now covers the 48px
+  top margin those rules gave).
+- **Kickers.** A `.tb-eyebrow` that starts a chapter (a block's `kicker`, or one you add before your `h2`) is merged into
+  the "Chapter n of m" line, so there is one kicker: "Chapter 2 of 7 · Back · Paraspinal fascial plane".
+- Reader-facing wording: say "teaching slides" (prose) or "Slides" (tags), not "deck".
+- Sticky bar: Hub link and chapters are one `nav`; on screens under 1240 px the chapters are a disclosure menu
+  (`#tb-chmenu-btn`), not a `<select>`. Search opens with Ctrl+K / Cmd+K (no single-key shortcut). The hub shows the
+  disclaimer under the credit.
 - `ch-refs` (References) is appended automatically when `refs` is non-empty.
 - Chapter ids must start `ch-`. A block chapter should be `ch-<blockId>`.
 
@@ -130,7 +142,8 @@ import { E, P, PS, L } from '../../shared/js/scene.js';
   target: { at: [x, y], r: 2 },    // dashed ring shown from step 2 (per-injection `target` overrides)
   injections: [ … ],               // one or more needle paths; >1 shows a chooser (`injectionLabel` = chooser title)
   steps: { scan, identify, needle, inject },   // HTML for the four steps (per-injection `steps` override per key)
-  probe: { view: 'front'|'back', x, y, angle, label },  // probe inset on the torso (see §5 coordinates)
+  probe: { view: 'front'|'back', x, y, angle, label },  // probe inset on the torso (see §5 coordinates); the marker dot
+                                                       // sits on the probe end matching orient.marker (override: probe.marker 'left'|'right')
 }
 ```
 
@@ -151,7 +164,8 @@ zero** (aponeuroses meeting at the linea semilunaris, a muscle that only exists 
 ```
 Layer kinds: `fat` (subcutaneous: dark lobules, bright septa), `muscle`, `aponeurosis` (bright fibrillar band, also
 `tendon`/`ligament` as bands), `fat-deep` / `connective` (mid-grey mottled), `bowel`, `liver` / `organ`, `kidney`,
-`fluid`, `lung` (as a band), `none` (not painted).
+`fluid`, `lung` (as a band), `cartilage` (hypoechoic, mild attenuation), `none` (not painted), `label` (not painted and
+no border line; just a label).
 
 ### `lines` — interfaces drawn as bright reflectors (x-sorted polylines)
 ```js
@@ -172,19 +186,31 @@ polygon (square-shouldered transverse process, rib cortex); `L(w, ...pts)` open 
 
 | kind | ultrasound | diagram |
 |---|---|---|
-| `bone` (P/PS) | bright upper surface only + **black acoustic shadow** below the whole shape | ivory, outlined |
-| `bone` (L) | bright line + shadow (thin cortex, rib or vertebral body surface) | ivory line |
+| `bone` (P/PS/E) | bright **probe-facing (upper) surface only** (flat tops bright, steep flanks dim) + **black acoustic shadow** from the surface down to the bottom of the image, across the shape's width | near-white with stipple and a dark outline |
+| `bone` (L) | bright line + the same full shadow (thin cortex, rib or vertebral body surface) | near-white line, dark edges |
+| `cartilage` (P/E) | hypoechoic, fine speckle, thin bright upper surface, **no full shadow** (mild attenuation only): costal cartilage | pale grey-green, outlined |
+| `label` | **not painted**. Its label is drawn (italic, dashed chip); a closed `shape` is outlined with a dashed line in both views (an `L(...)` shape as a dashed line) while labels are on. `outline: false` = label only. Use for "ESP plane", "Paravertebral space" | dashed outline |
 | `muscle`, `aponeurosis`, `fat-deep`, `connective`, `bowel`, `liver`, `organ`, `fluid`, `lung` | as layers | as layers |
 | `kidney` | hypoechoic with bright capsule | organ colour |
 | `artery` / `vein` | anechoic lumen, bright wall, posterior enhancement | red / blue (clinical code) |
 | `nerve` | hypoechoic with bright rim | yellow (clinical code) |
 | `fascia`, `ligament`, `membrane` with `L(...)` | bright oblique/vertical reflector (e.g. **SCTL**, **IIM**, TLF) | brown line |
 
-Paint order: layers → non-bony shapes → layer borders → lines → bones, vessels, nerves (on top).
+Paint order: layers → non-bony shapes → layer borders → lines → bones, cartilage, vessels, nerves (on top).
 `noShadow` is ignored (shadows are only in the ultrasound view).
 
+**Acoustic shadow rule (ultrasound view).** Everything deeper than a bone's upper surface, within the bone's horizontal
+extent, is black (faint noise only): pleura, lung artefact, other lines and shapes, LA. You don't need to stop the
+pleura line at the ribs; draw it continuous and the shadow hides it. The pleural-sliding shimmer is limited to the
+pleura line's own x-range and skips shadowed columns; it runs for about 5 s after a step change or while playing,
+stops on Pause, and never runs with reduced motion.
+
+`kind: 'none'` still works as before (not painted in ultrasound; outlined thinly in the diagram); prefer `kind: 'label'`
+for label-only regions.
+
 ### Labels
-Every layer/line/shape with `label` is labelled unless `nolabel: true`. `short` is used when the image is narrower
+Every layer/line/shape with `label` is labelled unless `nolabel: true`. Overlay text is 12 px; SVG figures you draw
+should render text at 12 px or more at 390 px (in a ~360-unit-wide viewBox use about 13–14 units). `short` is used when the image is narrower
 than 520 px (and in the key under the viewer). `at` = the point the label refers to (default: middle of a layer at
 `labelX` or 80% width; a point on a line; the centroid of a shape). `lab` = where the text sits; if it differs from
 `at` a leader line is drawn. Keep `lab` inside the image and away from other labels; check at 390 px.
@@ -208,6 +234,13 @@ than 520 px (and in the key under the viewer). `at` = the point the label refers
     shape: 0.9 },         // lens profile exponent
   steps: { needle: '…', inject: '…' } }   // optional per-injection step text
 ```
+**Several spreads at once (optional fields on an injection):**
+- `spreads: [spread, …]`: extra spreads (same fields as `spread`) that open together with `spread` on Inject, e.g. one
+  needle pass that fills two planes.
+- `keep: ['otherInjectionId', …]`: the spreads of those injections are shown **already open** (full size) from the
+  Needle step of this injection, e.g. PECS II stage 2 `keep: ['pecs1']` keeps the interpectoral pool visible while the
+  pectoserratus injection is done. Their warps add up (labels, target ring and pleura follow all of them).
+
 The viewer animates the needle in-plane from `entry` to `tip` (bright shaft with reverberation lines in ultrasound,
 steel needle with bevel in the diagram). On **Inject**, the LA opens along the plane over ~2.8 s: tissue above the
 plane is compressed upward by `up × thickness`, everything below is shifted down by the rest, and the gap is drawn
@@ -247,7 +280,12 @@ front, viewer-right on the back. Band centres at the midline: T2 62, T4 96 (nipp
 tip on the back), T10 188 (umbilicus), T12 220, L1 240. Flank edge ≈ x 40/130 at the waist; ASIS (50, 236).
 `angle` 0 = transverse probe, 90 = parasagittal; negative angles rotate anticlockwise.
 
-## 6. Other helpers (`shared/js/ui.js`)
+## 6. Other helpers (`shared/js/ui.js`, `bmode.js`)
+`stepper({steps:[{short, title, body}], idPrefix, scrollTo, onStep(i), label})` → `{el, go(i), keys(el), current}`: the
+scan viewer's step-through look for your own figures (step buttons `#<idPrefix>-step-<n>` are deep links, Back / Next,
+`onStep` redraws your figure, `keys(fig)` adds left/right arrow keys). Optional; local steppers keep working.
+`bmode.js` also exports `buildBModeAsync(scene)` (phased build, yields to the browser), `isBuilt(scene)` and
+`shadowDepthAt(scene, xMm)`; `scene.js` `warpY(prof, x, y)` accepts an array of profiles.
 `el(tag, attrs, …children)`, `sv(tag, attrs, parent)`, `fill(node, html)`, `callout('key'|'warn'|'pearl'|'note',
 {title, body})`, `keyPoints([…])`, `steps([{title, body}])`, `table({head, rows, caption, stack})` (cells: HTML or
 `{th:true, html}`), `details({summary, body})`, `registerSearch([{title, text, id}])` for text inside SVG/canvas.

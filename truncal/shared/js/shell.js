@@ -98,7 +98,7 @@ export async function bootPage(cfg) {
   chs.forEach((c) => hubCh.append(el('li', {}, el('a', { href: `#${c.id}` }, el('span', { class: 'tb-hubch-t', text: c.title }), c.desc ? el('span', { class: 'tb-hubch-d', text: c.desc }) : null))));
   hubIn.append(hubCh);
   if (cfg.hubExtra) { const x = el('div', { class: 'tb-hub-extra' }); fill(x, typeof cfg.hubExtra === 'function' ? cfg.hubExtra() : cfg.hubExtra); hubIn.append(x); }
-  hubIn.append(el('p', { class: 'tb-hub-back' }, el('a', { href: '../', text: 'All truncal blocks' })));
+  hubIn.append(el('p', { class: 'tb-hub-back' }, el('a', { href: '../' }, 'See all truncal blocks and the block chooser ', el('span', { 'aria-hidden': 'true', text: '↗' }))));
   hub.append(hubIn);
   main.textContent = '';
   main.append(hub);
