@@ -46,7 +46,9 @@ export function mountScan(host, scene, { blockId } = {}) {
   const g = prepare(scene);
   const bid = blockId || scene.id;
   const injections = scene.injections || [];
-  const st = { step: 0, t: 0, view: 'us', labels: true, inj: 0, playing: false, visible: false, raf: 0, last: 0, built: false, size: null, shimmer: 0, shimmerUntil: 0 };
+  const diagramOnly = scene.image === 'diagram'; // landmark blocks: a schematic section, no simulated ultrasound
+  const stepTitles = STEPS.map((s, i) => scene.stepTitles?.[i] || s.title);
+  const st = { step: 0, t: 0, view: diagramOnly ? 'dia' : 'us', labels: true, inj: 0, playing: false, visible: false, raf: 0, last: 0, built: false, size: null, shimmer: 0, shimmerUntil: 0 };
 
   let bmodeImg = isBuilt(scene) ? buildBMode(scene) : null; // cache hit only
   st.built = !!bmodeImg;
@@ -54,13 +56,13 @@ export function mountScan(host, scene, { blockId } = {}) {
   // ---------------------------------------------------------------- DOM
   const fig = el('figure', { class: 'tb-scan', id: `${bid}-scan` });
   const head = el('div', { class: 'tb-scan-head' });
-  const titleEl = el('p', { class: 'tb-scan-title', text: scene.title || 'Ultrasound' });
+  const titleEl = el('p', { class: 'tb-scan-title', text: scene.title || (scene.image === 'diagram' ? 'Diagram' : 'Ultrasound') });
   const viewSeg = el('div', { class: 'tb-seg', role: 'group', 'aria-label': 'Image type' });
   const vBtn = (v, label) => el('button', { type: 'button', class: 'tb-seg-btn', dataset: { v }, 'aria-pressed': 'false', text: label, on: { click: () => setView(v) } });
   const vUs = vBtn('us', 'Ultrasound'), vDia = vBtn('dia', 'Diagram');
   viewSeg.append(vUs, vDia);
   const labBtn = el('button', { type: 'button', class: 'tb-seg-btn tb-scan-labbtn', 'aria-pressed': 'true', text: 'Labels', on: { click: () => { st.labels = !st.labels; labBtn.setAttribute('aria-pressed', String(st.labels)); paintOverlay(); draw(); } } });
-  const ctrls = el('div', { class: 'tb-scan-ctrls' }, viewSeg, labBtn);
+  const ctrls = el('div', { class: 'tb-scan-ctrls' }, ...(diagramOnly ? [] : [viewSeg]), labBtn);
   head.append(titleEl, ctrls);
   let injSeg = null;
   if (injections.length > 1) {
@@ -80,7 +82,7 @@ export function mountScan(host, scene, { blockId } = {}) {
   const stepList = el('ol', { class: 'tb-scan-steps', 'aria-label': 'Steps' });
   const stepBtns = STEPS.map((s, i) => {
     const b = el('button', { type: 'button', class: 'tb-scan-step', id: `${bid}-step-${s.key}`, dataset: { activate: '1', scrollTo: `${bid}-scan` }, on: { click: () => setStep(i, true) } },
-      el('span', { class: 'tb-scan-step-n', 'aria-hidden': 'true', text: String(i + 1) }), el('span', { text: s.title }));
+      el('span', { class: 'tb-scan-step-n', 'aria-hidden': 'true', text: String(i + 1) }), el('span', { text: stepTitles[i] }));
     stepList.append(el('li', {}, b));
     return b;
   });
@@ -91,7 +93,8 @@ export function mountScan(host, scene, { blockId } = {}) {
   const nav = el('div', { class: 'tb-scan-nav' }, prevBtn, playBtn, nextBtn);
   panel.append(stepList, stepText, nav);
   if (scene.probe) {
-    const pf = el('figure', { class: 'tb-scan-probe' }, probeInset(scene.probe, { marker: scene.orient?.marker }), el('figcaption', {}, el('span', { class: 'tb-scan-probe-k', text: 'Probe' }), ` ${scene.probe.label || ''}`));
+    const inset = scene.probeInset || probeInset; // a page can draw its own body outline (e.g. the head and neck)
+    const pf = el('figure', { class: 'tb-scan-probe' }, inset(scene.probe, { marker: scene.orient?.marker }), el('figcaption', {}, el('span', { class: 'tb-scan-probe-k', text: scene.probe.key || 'Probe' }), ` ${scene.probe.label || ''}`));
     panel.append(pf);
   }
   if (injSeg) panel.prepend(el('div', { class: 'tb-scan-injwrap' }, el('p', { class: 'tb-scan-injlab', text: scene.injectionLabel || 'Injection point' }), injSeg));
@@ -107,7 +110,7 @@ export function mountScan(host, scene, { blockId } = {}) {
     keyItems.forEach((it) => dl.append(el('div', {}, el('dt', { text: it.short }), el('dd', { text: it.label }))));
     cap.append(dl);
   }
-  cap.append(el('p', { class: 'tb-scan-note', text: 'Simulated image drawn by this page, not a patient scan. Use the arrow keys on the image to step through.' }));
+  cap.append(el('p', { class: 'tb-scan-note', text: diagramOnly ? 'Schematic section drawn by this page, not to scale. Use the arrow keys on the image to step through.' : 'Simulated image drawn by this page, not a patient scan. Use the arrow keys on the image to step through.' }));
   fig.append(head, grid, cap);
   host.append(fig);
 
@@ -424,7 +427,7 @@ export function mountScan(host, scene, { blockId } = {}) {
   function paintPanel() {
     stepBtns.forEach((b, i) => { b.setAttribute('aria-current', i === st.step ? 'step' : 'false'); b.classList.toggle('is-done', i < st.step); });
     stepText.innerHTML = '';
-    stepText.append(el('p', { class: 'tb-scan-text-k', text: `Step ${st.step + 1} of 4 · ${STEPS[st.step].title}` }));
+    stepText.append(el('p', { class: 'tb-scan-text-k', text: `Step ${st.step + 1} of 4 · ${stepTitles[st.step]}` }));
     const body = el('div', { class: 'tb-scan-text-b' }); body.insertAdjacentHTML('beforeend', stepHtml());
     stepText.append(body);
     prevBtn.disabled = st.step === 0; nextBtn.disabled = st.step === 3;
@@ -497,7 +500,7 @@ export function mountScan(host, scene, { blockId } = {}) {
       busy.textContent = 'The ultrasound image could not be drawn. Choose Diagram.';
     }).finally(() => { building = false; });
   }
-  prebuildSoon(scene, fig);
+  if (!diagramOnly) prebuildSoon(scene, fig);
 
   stage.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') { e.preventDefault(); setStep(Math.min(3, st.step + 1), true); }

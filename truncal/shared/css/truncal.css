@@ -245,6 +245,7 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app main .tb-dose-last{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--tb-line);font-size:15px}
 .tb-app .tb-cov-grid{display:grid;gap:20px 40px;align-items:start}
 @media (min-width:900px){.tb-app .tb-cov-grid{grid-template-columns:minmax(300px,440px) minmax(0,1fr)}}
+@media (min-width:900px){.tb-app .tb-cov-grid--text{grid-template-columns:minmax(0,1fr)}}
 .tb-app .tb-cov{margin:0;max-width:440px}
 .tb-app .tb-cov-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
 .tb-app .tb-cov-svg{display:block;width:100%;height:auto}

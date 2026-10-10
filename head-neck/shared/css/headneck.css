@@ -1,0 +1,27 @@
+/* Head and neck blocks: styles on top of the truncal shell (../../truncal/shared/css/truncal.css). Prefix hn-. */
+/* Coverage map: one small figure per view, names in HTML (not in the SVG) so they stay at 14px on a phone. */
+.tb-app .hn-cov-views{display:grid;gap:8px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.tb-app .hn-cov-views--1{grid-template-columns:minmax(0,220px)}
+.tb-app .hn-cov-views--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tb-app .hn-cov-views--4{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tb-app .hn-cov-svg{display:block;width:100%;height:auto}
+.tb-app main .hn-cov-vname{margin:2px 0 0;font-size:14px;line-height:1.4;color:var(--tb-muted);text-align:center}
+.tb-app main .hn-cov-zones{list-style:none;margin:8px 0 0;padding:8px 0 0;border-top:1px solid var(--tb-line)}
+.tb-app main .hn-cov-zones li{font-size:15px;line-height:1.5;margin:0 0 4px;color:var(--tb-ink-soft)}
+.tb-app main .hn-cov-zones strong{font-weight:600;color:var(--tb-ink)}
+.tb-app .hn-probe-svg{width:96px}
+@media (max-width:999px){.tb-app .hn-probe-svg{width:80px}}
+
+/* Figures in anatomy chapters: views side by side with numbered injection points and a key. */
+.tb-app .hn-fig{margin:24px 0 8px}
+.tb-app main .hn-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
+.tb-app .hn-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px;display:grid;gap:8px;grid-template-columns:repeat(var(--hn-cols,3),minmax(0,1fr));max-width:720px}
+.tb-app .hn-fig-stage figure{margin:0}
+.tb-app .hn-fig-svg{display:block;width:100%;height:auto}
+.tb-app main .hn-fig-stage figcaption{font-size:14px;color:var(--tb-muted);text-align:center;margin-top:2px}
+@media (max-width:560px){.tb-app .hn-fig-stage{grid-template-columns:repeat(min(var(--hn-cols,3),2),minmax(0,1fr))}}
+.tb-app .hn-fig>figcaption{margin-top:10px;font-size:15px;color:var(--tb-ink-soft);max-width:68ch}
+.tb-app main .hn-key{margin:10px 0 0;padding:0;list-style:none;counter-reset:hn;max-width:68ch}
+.tb-app main .hn-key li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:baseline;margin:0 0 8px;font-size:15px;line-height:1.55}
+.tb-app main .hn-key li::before{counter-increment:hn;content:counter(hn);display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--tb-wine);color:var(--tb-ivory);font:600 13px/1 var(--tb-sans)}
+.tb-app main .hn-note{font-size:15px;color:var(--tb-muted);max-width:68ch}
