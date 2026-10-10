@@ -2,8 +2,6 @@
 // The deck has few chest wall values (slide 127: PECS 2 interpectoral / pectoserratus, clavipectoral block for
 // clavicle fracture; slide 147: levels). Every other value is a gap-fill from the sources below, cited where used.
 import { cite } from '../../shared/js/refs.js';
-import { mountScan } from '../../shared/js/scan.js';
-import { el } from '../../shared/js/ui.js';
 import { SCENES } from './scenes.js';
 
 export const REFS = [
@@ -26,13 +24,8 @@ export const REFS = [
 
 const D = cite('deck');
 
-/** The second scan viewer in the PECS chapter: PECS II stage 2 with the stage 1 local anaesthetic already in place. */
-function renderTwoStage(sec) {
-  sec.append(el('p', { class: 'cw-note', text: 'PECS II is one skin puncture and two injections. The first viewer above shows each plane on its own; this one shows the second injection with the first already given, so you can see both pools.' }));
-  const wrap = el('div', { class: 'tb-scan-wrap' });
-  sec.append(wrap);
-  mountScan(wrap, SCENES.pecs2, { blockId: 'pecs2' });
-}
+/** PECS II, two stages: the viewer's pectoserratus injection keeps the interpectoral spread in place. */
+const TWO_STAGE = '<p>PECS II is one skin puncture and two injections. In the viewer above, choose <a href="#pecs-inj-ps">Pectoserratus (PECS II, stage 2)</a>: the 10 ml already given between the pectoral muscles stays in place, so from the needle step you see the second injection open the plane one layer deeper, and both pools together.</p>';
 
 export const BLOCKS = [
   // ------------------------------------------------------------------ serratus anterior plane
@@ -153,7 +146,7 @@ export const BLOCKS = [
     },
     complications: `<ul><li><strong>Vessel puncture</strong>: the thoracoacromial artery and many small vessels run in the interpectoral plane. Colour Doppler and aspirate.${cite('atotw346')}</li><li><strong>Pneumothorax</strong>: aim the needle at the top of the 4th rib (the rib beyond the tip) and not at the intercostal space; know where the pleura is before you start.${cite('atotw346')}</li><li><strong>Local anaesthetic toxicity</strong> with bilateral blocks: calculate the maximum dose.${cite('atotw346')}</li><li><strong>Intramuscular injection</strong> (the muscle swells instead of the plane opening) and failed block.</li></ul>`,
     sections: [
-      { id: 'twostage', title: 'PECS II: the two-stage injection', render: renderTwoStage },
+      { id: 'twostage', title: 'PECS II: the two-stage injection', html: TWO_STAGE },
     ],
     exam: [
       {

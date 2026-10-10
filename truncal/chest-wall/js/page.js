@@ -12,7 +12,7 @@ bootPage({
   searchPlaceholder: 'Search, e.g. serratus, PECS, sternum, dose',
   tiles: [
     { title: 'Cover a mastectomy', desc: 'PECS II: interpectoral and pectoserratus', href: '#ch-pecs' },
-    { title: 'See the two-stage PECS II', desc: 'Second injection with the first already in', href: '#pecs-twostage' },
+    { title: 'See the two-stage PECS II', desc: 'Second injection with the first already in', href: '#pecs-inj-ps' },
     { title: 'Cover anterolateral rib fractures', desc: 'Serratus anterior plane catheter', href: '#sap-ribs' },
     { title: 'Practise the serratus needle path', desc: 'Scan viewer, superficial or deep', href: '#sap-step-needle' },
     { title: 'Cover the sternum or medial breast', desc: 'Parasternal blocks, in brief', href: '#ch-parasternal' },

@@ -90,24 +90,8 @@ const PE_PMAJ = [[0, 14.8], [15, 14.4], [30, 13.6], [45, 12.6]];
 const PE_PMIN = [[0, 21.0], [12, 20.6], [24, 19.6], [34, 17.6], [41, 14.6], [45, 13.0]];
 const PE_SA = [[0, 25.0], [8, 25.0], [14, 26.0], [21, 26.6], [28, 25.8], [34, 24.0], [40, 25.0], [45, 25.6]];
 
-function pecsScene(twoStage) {
+const pecs = (() => {
   const pmajC = curve(PE_PMAJ);
-  // Stage 2 viewer: the interpectoral plane is already open with the stage 1 local anaesthetic (a static lens).
-  const lens = (x) => { const c = 21, h = x < c ? 15 : 17; const u = (x - c) / h; return Math.abs(u) >= 1 ? 0 : 3.4 * Math.pow(1 - u * u, 0.9); };
-  const xs = []; for (let x = 0; x <= 45; x += 1.5) xs.push(x);
-  const pmajBottom = twoStage ? xs.map((x) => [x, r1(at(pmajC, x) - 0.5 * lens(x))]) : PE_PMAJ;
-  const poolBottom = xs.map((x) => [x, r1(at(pmajC, x) + 0.5 * lens(x))]);
-  const layers = [
-    { id: 'sc', kind: 'fat', label: 'Fat and breast tissue', short: 'Fat', bottom: [[0, 6.2], [45, 5.4]], labelX: 34 },
-    { id: 'pmaj', kind: 'muscle', label: 'Pectoralis major', short: 'PMaj', stri: 8, echo: 0.15, bottom: pmajBottom, labelX: 34 },
-  ];
-  if (twoStage) layers.push({ id: 'pool', kind: 'fluid', label: 'Stage 1 local anaesthetic', short: 'LA 1', color: '#cfe6f2', edge: 0.2, bottom: poolBottom, at: [21, at(pmajC, 21)], lab: [24, 9.8] });
-  layers.push(
-    { id: 'pmin', kind: 'muscle', label: 'Pectoralis minor', short: 'PMin', stri: 14, echo: 0.12, color: '#c98a79', bottom: PE_PMIN, labelX: 18 },
-    { id: 'sa', kind: 'muscle', label: 'Serratus anterior', short: 'SA', stri: -6, echo: 0.13, color: '#d9a595', bottom: PE_SA, at: [36, 21.2], lab: [38.5, 21.4] },
-    { id: 'icm', kind: 'muscle', label: 'Intercostal muscles', short: 'ICM', stri: 28, echo: 0.12, dens: 0.35, color: '#bf7f70', smooth: false, bottom: PE_PL, nolabel: true },
-    { id: 'lung', kind: 'lung', label: 'Lung', nolabel: true, edge: 0, bottom: 80 },
-  );
   const ipTip = [23, r1(at(pmajC, 23) + 0.1)];
   const psTip = [30.5, r1(at(curve(PE_PMIN), 30.5) + 0.1)];
   const ip = {
@@ -118,41 +102,42 @@ function pecsScene(twoStage) {
       inject: '<p>Hydrolocate with saline or local anaesthetic, aspirate, then inject about <strong>10 ml</strong>: the plane opens between the two pectoral muscles. For PECS II, this is the first stage.</p>',
     },
   };
+  // Stage 2 keeps the stage 1 spread in place (engine field `keep`), so both pools are seen together.
   const ps = {
-    id: 'ps', label: twoStage ? 'Stage 2: pectoserratus' : 'Pectoserratus (PECS II, stage 2)', entry: [-13, -2], tip: psTip, target: { at: psTip, r: 2 },
+    id: 'ps', label: 'Pectoserratus (PECS II, stage 2)', entry: [-13, -2], tip: psTip, target: { at: psTip, r: 2 },
+    keep: ['ip'],
     spread: { along: 'pmin', x0: 16, x1: 40, thick: 3.8, up: 1, above: 6 },
     steps: {
-      needle: `<p><strong>Pectoserratus${twoStage ? '' : ' (PECS II, stage 2)'}:</strong> through the same skin puncture, advance through pectoralis minor towards the <strong>top of the 4th rib</strong> (the rib lies beyond the tip, so the needle points at bone, not the intercostal space).</p>`,
-      inject: '<p>Inject <strong>15–20 ml</strong> in the plane <strong>between pectoralis minor and serratus anterior</strong>. It spreads laterally towards the axilla, where the lateral cutaneous branches and the intercostobrachial nerve run.</p>',
+      needle: '<p><strong>Pectoserratus (PECS II, stage 2):</strong> stage 1 is done, so about 10 ml already lies between the pectoral muscles. Through the same skin puncture, advance through pectoralis minor towards the <strong>top of the 4th rib</strong> (the rib lies beyond the tip, so the needle points at bone, not the intercostal space).</p>',
+      inject: '<p>Inject <strong>15–20 ml</strong> in the plane <strong>between pectoralis minor and serratus anterior</strong>. It spreads laterally towards the axilla, where the lateral cutaneous branches and the intercostobrachial nerve run. Both pools are now visible, one above the other.</p>',
     },
   };
   return {
-    id: twoStage ? 'cw-pecs2' : 'cw-pecs',
-    title: twoStage ? 'PECS II, stage 2: the interpectoral plane is already open' : 'PECS: oblique view at the 3rd and 4th ribs',
+    id: 'cw-pecs', title: 'PECS: oblique view at the 3rd and 4th ribs',
     width: 45, depth: 40, focus: 20, skin: 1.2,
-    view: twoStage
-      ? 'Same view as above, after stage 1: about 10 ml already lies between pectoralis major and minor. The needle now goes one plane deeper.'
-      : 'Right anterior chest wall, probe oblique with its medial end towards the coracoid, near the anterior axillary line. Superomedial on the left. Ribs 3 and 4 in cross-section.',
+    view: 'Right anterior chest wall, probe oblique with its medial end towards the coracoid, near the anterior axillary line. Superomedial on the left. Ribs 3 and 4 in cross-section.',
     orient: { left: 'Superomedial', right: 'Inferolateral', marker: 'left' },
-    injectionLabel: twoStage ? 'PECS II' : 'Injection plane',
-    layers,
+    injectionLabel: 'Injection plane',
+    layers: [
+      { id: 'sc', kind: 'fat', label: 'Fat and breast tissue', short: 'Fat', bottom: [[0, 6.2], [45, 5.4]], labelX: 34 },
+      { id: 'pmaj', kind: 'muscle', label: 'Pectoralis major', short: 'PMaj', stri: 8, echo: 0.15, bottom: PE_PMAJ, labelX: 34 },
+      { id: 'pmin', kind: 'muscle', label: 'Pectoralis minor', short: 'PMin', stri: 14, echo: 0.12, color: '#c98a79', bottom: PE_PMIN, labelX: 18 },
+      { id: 'sa', kind: 'muscle', label: 'Serratus anterior', short: 'SA', stri: -6, echo: 0.13, color: '#d9a595', bottom: PE_SA, at: [36, 21.2], lab: [38.5, 21.4] },
+      { id: 'icm', kind: 'muscle', label: 'Intercostal muscles', short: 'ICM', stri: 28, echo: 0.12, dens: 0.35, color: '#bf7f70', smooth: false, bottom: PE_PL, nolabel: true },
+      { id: 'lung', kind: 'lung', label: 'Lung', nolabel: true, edge: 0, bottom: 80 },
+    ],
     lines: [
-        { id: 'pleura', kind: 'pleura', label: 'Pleura', short: 'Pl', smooth: false, pts: PE_PL, at: [21, at(PE_PL, 21)], lab: [19, 36.6] },
+      { id: 'pleura', kind: 'pleura', label: 'Pleura', short: 'Pl', smooth: false, pts: PE_PL, at: [21, at(PE_PL, 21)], lab: [19, 36.6] },
     ],
     shapes: [
-      { id: 'taa', kind: 'artery', label: 'Thoracoacromial artery, pectoral branch', short: 'TAA', shape: E(12.5, r1(at(pmajC, 12.5) + (twoStage ? 0.9 : 0)), 1.0, 0.85), lab: [10, twoStage ? 30 : 9.4] },
-      { id: 'lpn', kind: 'nerve', label: 'Lateral pectoral nerve', short: 'LPN', shape: E(15.2, r1(at(pmajC, 15.2) + (twoStage ? 1.1 : 0.15)), 0.75, 0.5), lab: [6, twoStage ? 36.6 : 4], nolabel: twoStage },
+      { id: 'taa', kind: 'artery', label: 'Thoracoacromial artery, pectoral branch', short: 'TAA', shape: E(12.5, r1(at(pmajC, 12.5) - 0.9), 1.0, 0.85), lab: [10, 9.4] },
+      { id: 'lpn', kind: 'nerve', label: 'Lateral pectoral nerve', short: 'LPN', shape: E(15.2, r1(at(pmajC, 15.2) - 0.55), 0.75, 0.5), lab: [6, 4] },
       rib(PE_R3, { id: 'r3', label: '3rd rib', short: 'R3', at: [8, 25.4], lab: [8, 36.6] }),
       rib(PE_R4, { id: 'r4', label: '4th rib', short: 'R4', at: [34, 24.4], lab: [36, 36.6] }),
     ],
-    target: { at: twoStage ? psTip : ipTip, r: 2 },
-    injections: twoStage ? [ps] : [ip, ps],
-    steps: twoStage ? {
-      scan: '<p>Stage 1 is done: about 10 ml lies <strong>between pectoralis major and minor</strong>, seen as the dark (ultrasound) or blue (diagram) lens.</p>',
-      identify: '<p>Look deeper: <strong>pectoralis minor</strong>, then <strong>serratus anterior</strong> lying on the <strong>4th rib</strong>. The target is the plane between pectoralis minor and serratus anterior.</p>',
-      needle: ps.steps.needle,
-      inject: ps.steps.inject,
-    } : {
+    target: { at: ipTip, r: 2 },
+    injections: [ip, ps],
+    steps: {
       scan: '<p>Start in a parasagittal plane <strong>below the lateral third of the clavicle</strong> and find the axillary artery and vein, with the 2nd rib under them. Turn the probe obliquely (medial end towards the coracoid) and move it <strong>inferolaterally</strong>, counting the 3rd and then the <strong>4th rib</strong>.</p>',
       identify: '<p><strong>Pectoralis major</strong> (superficial), <strong>pectoralis minor</strong> under it, then <strong>serratus anterior</strong> on the ribs. Look for the <strong>pectoral branch of the thoracoacromial artery</strong> running between the two pectoral muscles (colour Doppler): it marks the interpectoral plane.</p>',
       needle: '<p>Choose the injection plane above. Both are in-plane from superomedial, through one skin puncture.</p>',
@@ -160,7 +145,7 @@ function pecsScene(twoStage) {
     },
     probe: { view: 'front', x: 50, y: 82, angle: 140, label: 'right anterior chest, oblique, medial end towards the coracoid, at the 3rd–4th ribs near the anterior axillary line.' },
   };
-}
+})();
 
 // ================================================================ parasternal intercostal plane
 // Right parasternal, transverse in the 4th intercostal space (He et al. 2026 describe transverse imaging at the
@@ -222,4 +207,4 @@ const parasternal = {
   probe: { view: 'front', x: 72, y: 90, angle: 180, label: 'right parasternal, transverse in the 4th intercostal space (medial end on the sternal edge). Repeat on the left for a sternotomy.' },
 };
 
-export const SCENES = { sap, pecs: pecsScene(false), pecs2: pecsScene(true), parasternal };
+export const SCENES = { sap, pecs, parasternal };
