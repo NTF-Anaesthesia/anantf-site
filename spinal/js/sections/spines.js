@@ -150,7 +150,7 @@ export function mount(root) {
     ]), 1),
     T(tf.fig, 2),
     G(2, 'Detail', [
-      'Teaching texts quote about 55° towards the head and about 45° towards the midline, but the quoted angles vary between sources. Treat them as a rough guide and take the line from the scan.',
+      'Teaching texts quote about 45–55° towards the head; the angle towards the midline is whatever brings the needle to the midline at L5–S1, which depends on the width of the sacrum. The quoted angles vary between sources. Treat them as a rough guide and take the line from the scan.',
       'L5–S1 lies below the end of the spinal cord, so the level itself is safe. Make sure you are really at L5–S1, because the sacrum can have extra or missing segments. Count up from the sacrum on the scan.',
       'The path is long and oblique. Use an introducer and a needle of enough length, and watch for bending.',
       'The cauda equina fills the canal at this level, so the usual rule applies: if the patient reports pain or tingling in a leg, stop and do not inject.',

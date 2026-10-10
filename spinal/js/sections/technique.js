@@ -127,6 +127,7 @@ export function mount(root) {
           '<strong>IV access</strong> in place before the block, in an area equipped for resuscitation, with the anaesthetist in constant attendance.',
           '<strong>Vasopressor drawn up.</strong> Treat hypotension promptly: see <a href="#ts-hypotension">Hypotension and bradycardia</a>. Have atropine, oxygen, airway equipment and general anaesthetic drugs ready in case the block is high or fails.',
           '<strong>Fasting</strong> as for a general anaesthetic, because you may need to convert.',
+          '<strong>Antibiotics:</strong> if the operation needs prophylactic antibiotics, give them before the spinal needle goes in.',
         ])),
       checklist([
         'Consent recorded; site and side confirmed at sign-in',
@@ -206,6 +207,18 @@ export function mount(root) {
       freq),
     T(P(`<strong>NAP3 numbers.</strong> Permanent harm was ${N('4.2 per 100,000')} on pessimistic counting and ${N('2.0 per 100,000')} on optimistic counting. Paraplegia or death was ${N('1.8')} and ${N('0.7 per 100,000')}. Spinals were among the lower-risk blocks; most harm followed perioperative epidurals. The data are from 2006–07.`), 2),
     T(callout('key', { title: 'Consent figures', body: '<p>The RCoA published updated spinal risk infographics in 2025. Use them when quoting numbers to patients.</p>' }), 2),
+    G(2,
+      el('h4', { text: 'When a spinal is especially useful' }),
+      UL([
+        '<strong>Severe lung disease:</strong> no airway instrumentation and no ventilation, provided the block stays low.',
+        '<strong>Malignant hyperthermia risk:</strong> avoids the trigger agents.',
+        '<strong>Autonomic dysreflexia</strong> (spinal cord injury above T6): a spinal blocks the reflex more completely than an epidural.',
+      ]),
+      el('h4', { text: 'High-risk patients: agree the rescue plan first' }),
+      P('Before the day, tell the surgeon the patient is high risk and agree that the benefit is worth it. Agree what you will do if the patient cannot cooperate or the block fails. Explain a rescue general anaesthetic to the patient and family, record their decision, and plan for extra help.')),
+    G(2,
+      el('h4', { id: 'tq-cse', text: 'Combined spinal–epidural (CSE)' }),
+      P('A spinal plus an epidural catheter, placed at the same time. It suits surgery that may outlast a single shot, because you can top up through the catheter. It also allows a smaller spinal dose, which can mean less hypotension, with the epidural used to extend the block. The costs: it takes longer, the catheter is untested until the spinal wears off, and paraesthesia can be harder to judge. After a failed spinal, a CSE lets you add drug in small steps instead of repeating a full dose.')),
   ));
 
   // ---------------------------------------------------------------- 3 contraindications
@@ -303,7 +316,7 @@ export function mount(root) {
   root.append(part('tq-position', 'Position: sitting or lateral',
     T(posHost, 1),
     T(callout('pearl', { title: 'Position changes spread', body: `<p>With hyperbaric bupivacaine at L3–4, sitting for 2 minutes and then lying flat keeps the block lower, because the drug pools in the sacral curve. The same dose given lying on the side and then turned flat rises a few segments higher, towards the thoracic curve.</p>` }), 2),
-    PEARL('tilting after the injection', 'Until the level fixes (about 20 minutes), a small head-down tilt moves hyperbaric drug upwards and a head-up tilt keeps it lower. Tilt only on purpose and with the blood pressure watched, because the sympathetic block rises with the sensory level. Unplanned tilts, such as the surgeon asking for a lithotomy or Trendelenburg position early, are a common reason for a block that goes higher than expected.'),
+    PEARL('tilting after the injection', 'Until the level fixes (about 20 minutes), a small head-down tilt moves hyperbaric drug upwards and a head-up tilt keeps it lower. A head-up tilt also pools blood in the legs, so avoid it when the blood pressure is low. Tilt only on purpose and with the blood pressure watched, because the sympathetic block rises with the sensory level. Unplanned tilts, such as the surgeon asking for a lithotomy or Trendelenburg position early, are a common reason for a block that goes higher than expected.'),
   ));
 
   // ---------------------------------------------------------------- 6 asepsis
@@ -339,7 +352,8 @@ export function mount(root) {
           ],
         }), 1),
         T(UL([
-          '<strong>Introducer:</strong> fine needles bend easily. The introducer guides them through skin and ligament and keeps them on line.',
+          '<strong>Introducer:</strong> fine needles bend easily. The introducer guides them through skin and ligament and keeps them on line. It also stops a plug of skin being carried into the CSF.',
+          '<strong>Cutting needle bevel:</strong> if you must use one, turn the bevel parallel to the long axis of the spine (facing up or down with the patient on their side), so it parts the dural fibres instead of cutting across them.',
           '<strong>Length:</strong> a standard-length needle suits most adults; have a longer one ready for obesity or the Taylor approach.',
         ]), 1),
         T(UL([
@@ -404,13 +418,13 @@ export function mount(root) {
   // ---------------------------------------------------------------- 9 CSF and injection
   root.append(part('tq-csf', 'Confirming CSF and injecting',
     T(steps([
-      { title: 'Wait for free flow of clear CSF', body: 'Remove the stylet. Fine pencil-point needles can take several seconds to fill. If flow is slow, rotate the needle in quarter turns: part of the side opening may still be in the dura.' },
+      { title: 'Wait for free flow of clear CSF', body: 'Remove the stylet. Fine pencil-point needles can take several seconds to fill. If flow is slow, rotate the needle in quarter turns: part of the side opening may still be in the dura. Gentle suction with a small syringe can also help. If CSF flows well in only one position, the opening is probably not fully inside: advance a millimetre or two and check again.' },
       { title: 'Stabilise the needle', body: 'Hold the hub between finger and thumb, with the back of that hand resting on the patient’s back, so the needle cannot move while you attach the syringe.' },
       { title: 'Aspirate before you inject', body: 'Draw back a little CSF to confirm the needle is still in the subarachnoid space. With hyperbaric drug you will see the glucose “swirl”.' },
       { title: 'Inject slowly', body: 'Many anaesthetists aspirate again midway or at the end to confirm the tip has not moved. Avoid vigorous barbotage.' },
-      { title: 'Remove the needle and lay the patient as planned', body: 'Then check blood pressure and heart rate straight away, every 1 to 2 minutes at first.' },
+      { title: 'Remove the needle and lay the patient as planned', body: 'Take the needle and introducer out together. Then check blood pressure and heart rate straight away, every 1 to 2 minutes at first.' },
     ]), 1),
-    T(callout('warn', { title: 'Never inject if…', body: '<ul><li>the patient has pain or paraesthesia, on needle placement or on injection: stop, withdraw and redirect;</li><li>the CSF is not clearly flowing, or is still bloody;</li><li>you are unsure where the tip is.</li></ul>' }), 1),
+    T(callout('warn', { title: 'Never inject if…', body: '<ul><li>the patient has pain on injection, or paraesthesia that persists: stop, withdraw and redirect (a brief shock that has gone, with free CSF, is common: see <a href=\"#ts-paraesthesia\">paraesthesia</a>);</li><li>the CSF is not clearly flowing, or is still bloody;</li><li>you are unsure where the tip is.</li></ul>' }), 1),
     T(P('What to do next: <a href="#ts-dry-tap">dry tap</a> · <a href="#ts-bloody-tap">bloody tap</a> · <a href="#ts-paraesthesia">paraesthesia</a>.', 'tq-links'), 1),
   ));
 
@@ -567,7 +581,8 @@ export function mount(root) {
         { id: 'knee', label: 'Knee', target: 10, why: 'Knee surgery: T10 is commonly quoted, and also covers a thigh tourniquet more reliably.' },
         { id: 'hernia', label: 'Inguinal hernia', target: 8, why: 'Inguinal hernia: the incision is at T12–L1, but traction on the sac and peritoneum needs at least T10, and many aim for T8. T8 is used here.' },
       ])),
-    T(callout('key', { title: 'Target levels', body: '<p>These targets are commonly quoted teaching figures, not taken from a guideline. Agree the level you need with the surgeon.</p>' }), 2),
+    T(callout('key', { title: 'Target levels', body: '<p>These targets are commonly quoted teaching figures, not taken from a guideline. Agree the level you need with the surgeon. Organs are supplied from higher segments than the skin over them (the peritoneum from about T4, the bladder from about T10), so choose the level for the deepest structure handled, not the incision.</p>' }), 2),
+    T(callout('warn', { title: 'Is the block rising too high?', body: '<p>Check early (at about a minute) and keep checking over the first 10 minutes, while you can still change position. Tingling or numbness in the hands, or weak hand grip, means the block is nearing the nerves to the diaphragm (C3–C5): lie the patient flat, not head-down, and get help. A patient who can talk in a normal voice is usually breathing adequately. Feeling breathless because the chest wall is numb is common: reassure, and keep watching.</p>' }), 1),
     el('div', { id: 'tq-timecourse', class: 'tq-grp' },
       T(el('h4', { text: 'Time course' }), 1),
       T(UL([
@@ -609,7 +624,7 @@ export function mount(root) {
       { title: 'Before you move the patient', body: 'Check anticoagulant and antiplatelet timing with the <a href="#tq-ac-lookup">finder</a>, the platelet count, haemoglobin, electrolytes and the ECG. Correct hypovolaemia first. Assess cognition and capacity, and talk to the family if the patient cannot consent.' },
       { title: 'Give the analgesic block first', body: `A fascia iliaca, femoral or PENG block before positioning makes the move kinder and is often what lets the patient stay still. The Association of Anaesthetists’ hip fracture guideline supports routine nerve blocks alongside spinal or general anaesthesia.${cite('pp-griffiths2021')} Use ultrasound, and keep a running total of the local anaesthetic you have given.` },
       { title: 'Set up as for any spinal', body: 'IV access, monitors, oxygen, airway kit and a vasopressor drawn up. Have the blood pressure cycling every minute or two while you position and inject.' },
-      { title: 'Choose the position', body: 'Lateral is usual. Operative side down gives the densest block on the fractured side with hyperbaric drug, but it hurts: use it only if the nerve block has worked. Operative side up is more comfortable, but gravity favours the good leg, so the block may be more bilateral.' },
+      { title: 'Choose the position', body: 'Lateral is usual, and the best side depends on the drug. Plain bupivacaine is slightly lighter than CSF at body temperature, so it drifts upwards: lying operative side up is more comfortable and lets the drug float towards the fractured side. Hyperbaric drug sinks, so it needs operative side down, which hurts: use that only if the nerve block has worked.' },
       { title: 'Choose a dose at the cautious end', body: `The usual dose is ${D('2.5–3 mL')} (${D('12.5–15 mg')}) of plain bupivacaine 0.5%. ${D('3 mL')} is the most we give, for an operation that needs a long block. Inject slowly.` },
       { title: 'Be ready for low blood pressure', body: 'Expect it, and treat it early with a vasopressor: <a href="#ts-hypotension">Hypotension and bradycardia</a>. Look for a cause too: hypovolaemia, bleeding or a high block. Lie the patient flat as soon as it is safe, and give oxygen.' },
       { title: 'Keep the sedation light', body: 'Heavy sedation adds hypotension, hypoxia and delirium. Explain what is happening, keep the patient warm, and pad pressure points before the move to the operating table.' },
@@ -629,13 +644,14 @@ export function mount(root) {
       el('h4', { text: 'In recovery and on the ward' }),
       UL([
         '<strong>Regression:</strong> feeling and movement come back in the reverse of the order they went. Check that the patient can feel and move both legs before they stand.',
-        '<strong>Protect the numb leg:</strong> support heels and pressure points, and keep the patient from putting weight on a leg they cannot feel.',
+        '<strong>Protect the numb leg:</strong> support heels and pressure points, keep it away from heat, and keep the patient from putting weight on a leg they cannot feel. Use falls precautions until power and feeling are fully back.',
+        '<strong>After a hip replacement:</strong> a numb leg cannot warn of a position that dislocates the new joint. Follow the surgeon’s hip precautions when turning or lifting the patient.',
         '<strong>Mobilising:</strong> the first time, stand the patient with help, sitting up first and standing slowly, because of low blood pressure and falls.',
         '<strong>Passing urine:</strong> retention is common until the block has gone. Ask the patient to pass urine, scan the bladder if needed, and catheterise if the patient cannot pass urine.',
-        '<strong>Blood pressure, nausea, pain:</strong> treat each. Give analgesia before the block wears off.',
+        '<strong>Blood pressure, nausea, pain:</strong> treat each. Give regular analgesia before the block wears off, because pain can arrive suddenly, often at night. Pain as the block fades is expected; new pain that keeps getting worse is not.',
         `<strong>If intrathecal morphine was given:</strong> monitor as in <a href="#tq-adjuncts">Opioid adjuncts</a> (at least ${N('24 h')}).${cite('tq-asa2016')} Day-case discharge criteria: <a href="#pp-day-case">Day-case spinal</a>.`,
       ])),
-    T(callout('warn', { title: 'Tell the ward to call you urgently for…', body: '<ul><li>back pain that is new, severe or getting worse;</li><li>leg weakness or numbness that is new, or lasts longer than expected, or returns after it had worn off;</li><li>new loss of bladder or bowel control, or numbness around the bottom;</li><li>fever, or redness and tenderness at the puncture site;</li><li>a headache that is worse sitting or standing and eases on lying flat;</li><li>drowsiness or slow breathing after intrathecal morphine.</li></ul><p>Do not wait for the morning round. A senior should be told straight away. See <a href="#ch-complications">Complications</a>.</p>' }), 1),
+    T(callout('warn', { title: 'Tell the ward to call you urgently for…', body: '<ul><li>back pain that is new, severe or getting worse;</li><li>leg weakness or numbness that is new, or returns after it had worn off, or lasts longer than expected (a single-shot spinal block still present 8 hours after injection is not normal);</li><li>new loss of bladder or bowel control, or numbness around the bottom;</li><li>fever, or redness and tenderness at the puncture site;</li><li>a headache that is worse sitting or standing and eases on lying flat;</li><li>drowsiness or slow breathing after intrathecal morphine.</li></ul><p>Do not wait for the morning round. A senior should be told straight away. See <a href="#ch-complications">Complications</a>.</p>' }), 1),
     T(P('Give these red flags to the ward in writing and in words. Day-case patients should go home with the same list and a contact number.'), 1),
     el('div', { id: 'tq-documentation', class: 'tq-grp' },
       T(el('h4', { text: 'Documentation' }), 1),
