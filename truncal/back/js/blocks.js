@@ -5,6 +5,7 @@ import { SCENES } from './scenes.js';
 
 export const REFS = [
   { id: 'deck', text: 'NTF Anaesthesia. Truncal blocks: teaching slides 106–148 (internal teaching material).' },
+  { id: 'notes', text: 'NTF Anaesthesia. Regional anaesthesia: department teaching notes (internal teaching material).' },
   { id: 'williams2020', text: 'Williams A, Bigham C, Marchbank A. Anaesthetic and surgical management of rib fractures. <i>BJA Educ</i> 2020;20(10):332–340.', url: 'https://doi.org/10.1016/j.bjae.2020.06.001', label: 'doi:10.1016/j.bjae.2020.06.001' },
   { id: 'forero2016', text: 'Forero M, Adhikary SD, Lopez H, Tsui C, Chin KJ. The erector spinae plane block: a novel analgesic technique in thoracic neuropathic pain. <i>Reg Anesth Pain Med</i> 2016;41(5):621–627.', url: 'https://doi.org/10.1097/AAP.0000000000000451', label: 'doi:10.1097/AAP.0000000000000451' },
   { id: 'chin2021', text: 'Chin KJ, El-Boghdadly K. Mechanisms of action of the erector spinae plane (ESP) block: a narrative review. <i>Can J Anaesth</i> 2021;68(3):387–408.', url: 'https://doi.org/10.1007/s12630-020-01875-2', label: 'doi:10.1007/s12630-020-01875-2' },
@@ -15,17 +16,20 @@ export const REFS = [
   { id: 'batra2011', text: 'Batra RK, Krishnan K, Agarwal A. Paravertebral block. <i>J Anaesthesiol Clin Pharmacol</i> 2011;27(1):5–11.', url: 'https://doi.org/10.4103/0970-9185.76608', label: 'doi:10.4103/0970-9185.76608' },
   { id: 'lonnqvist1995', text: 'Lönnqvist PA, MacKenzie J, Soni AK, Conacher ID. Paravertebral blockade: failure rate and complications. <i>Anaesthesia</i> 1995;50(9):813–815.', url: 'https://doi.org/10.1111/j.1365-2044.1995.tb06148.x', label: 'doi:10.1111/j.1365-2044.1995.tb06148.x' },
   { id: 'karmakar2001', text: 'Karmakar MK. Thoracic paravertebral block. <i>Anesthesiology</i> 2001;95(3):771–780.', url: 'https://doi.org/10.1097/00000542-200109000-00033', label: 'doi:10.1097/00000542-200109000-00033' },
+  { id: 'horlocker2018', text: 'Horlocker TT, Vandermeuelen E, Kopp SL, Gogarten W, Leffert LR, Benzon HT. Regional anesthesia in the patient receiving antithrombotic or thrombolytic therapy: American Society of Regional Anesthesia and Pain Medicine evidence-based guidelines (fourth edition). <i>Reg Anesth Pain Med</i> 2018;43(3):263–309.', url: 'https://doi.org/10.1097/AAP.0000000000000763', label: 'doi:10.1097/AAP.0000000000000763' },
+  { id: 'feray2022', text: 'Feray S, Lubach J, Joshi GP, Bonnet F, Van de Velde M; PROSPECT Working Group of the European Society of Regional Anaesthesia and Pain Therapy. PROSPECT guidelines for video-assisted thoracoscopic surgery: a systematic review and procedure-specific postoperative pain management recommendations. <i>Anaesthesia</i> 2022;77(3):311–325.', url: 'https://doi.org/10.1111/anae.15609', label: 'doi:10.1111/anae.15609' },
   { id: 'krediet2015', text: 'Further reading. Krediet AC, Moayeri N, van Geffen GJ, Bruhn J, Renes S, Bigeleisen PE, Groen GJ. Different approaches to ultrasound-guided thoracic paravertebral block: an illustrated review. <i>Anesthesiology</i> 2015;123(2):459–474.', url: 'https://doi.org/10.1097/ALN.0000000000000747', label: 'doi:10.1097/ALN.0000000000000747' },
   { id: 'elboghdadly2021', text: 'Further reading. El-Boghdadly K, Wolmarans M, Stengel AD, et al. Standardizing nomenclature in regional anesthesia: an ASRA-ESRA Delphi consensus study of abdominal wall, paraspinal, and chest wall blocks. <i>Reg Anesth Pain Med</i> 2021;46(7):571–580.', url: 'https://doi.org/10.1136/rapm-2020-102451', label: 'doi:10.1136/rapm-2020-102451' },
 ];
 
 const D = cite('deck');
+const N = cite('notes');
 const BILATERAL_LAST = 'Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks (for example bilateral ESP or paravertebral blocks for a sternotomy or an upper abdominal incision) or when combining blocks.';
 
 const PVB_DOSE = {
   volume: '20 ml', conc: '0.3–0.5%', drug: 'ropivacaine',
   source: `Teaching slide 138.${D}`,
-  note: '<strong>Check:</strong> the teaching slide reads “0.3–5%”. We have assumed this is a typo for 0.3–0.5% and are waiting for the slides’ owner to confirm.',
+  note: `<strong>Check:</strong> the teaching slide reads “0.3–5%”. We have assumed this is a typo for 0.3–0.5%: the department teaching notes give 15–20 ml of 0.5% ropivacaine for a single-level paravertebral injection, which fits.${N} Waiting for the slides’ owner to confirm.`,
 };
 
 const PVB_COMPLICATIONS = `<ul>
@@ -35,6 +39,7 @@ const PVB_COMPLICATIONS = `<ul>
 <li><strong>Epidural or intrathecal spread</strong> (about 1% in a larger series), because the space is continuous medially with the epidural space through the intervertebral foramen.${cite('batra2011')} Keep the needle tip away from the foramen.</li>
 <li><strong>Horner’s syndrome</strong>, from spread up to the stellate ganglion.${cite('batra2011')}</li>
 <li><strong>Bilateral (contralateral) spread</strong>, through the epidural space or in front of the vertebral bodies.${cite('batra2011')} Bilateral blocks have a higher rate of vascular puncture and pneumothorax.${cite('batra2011')}</li>
+<li><strong>Local anaesthetic systemic toxicity:</strong> absorption from the paravertebral and intercostal spaces is fast, faster than from the epidural space.${N} Aspirate, inject in increments and keep within the maximum dose.</li>
 <li><strong>Failed block:</strong> about 1 in 10 with the landmark technique.${cite('lonnqvist1995')}</li>
 </ul>`;
 
@@ -48,7 +53,7 @@ export const BLOCKS = [
     indications: ['Thoracotomy and VATS (teaching slides: VATS decortication, thoracotomy)', 'Rib fractures', 'Breast and chest wall surgery', 'Bilateral for midline incisions (watch the total dose)'],
     glance: {
       position: 'Lateral or sitting',
-      probe: 'Linear, parasagittal, about 3 cm lateral to the midline',
+      probe: 'Linear, parasagittal, about 2–3 cm lateral to the midline',
       needle: '80 mm echogenic, in-plane, cranial to caudal or caudal to cranial',
       dose: '30 ml of dilute 0.3% ropivacaine',
     },
@@ -59,10 +64,10 @@ export const BLOCKS = [
       '30 ml of dilute 0.3% ropivacaine',
       'Sterile probe cover, skin preparation, monitoring and the local anaesthetic toxicity kit within reach',
     ],
-    landmarks: `<p><strong>Count the ribs</strong>, by landmarks (C7 vertebra prominens; the inferior angle of the scapula is T7) or by ultrasound from the first rib.${D} See <a href="#anat-count">counting levels</a>.</p><p>Probe <strong>parasagittal</strong>. Start over the spinous processes and slide laterally, about 3 cm,${cite('kot2019')} past the laminae until the <strong>transverse process</strong> appears: it has <strong>squared-off borders</strong>, with a flat black shadow under it.${D} Further laterally the ribs are rounder, with the pleura clearly visible between them: if you see that, slide back medially.</p>`,
+    landmarks: `<p><strong>Count the ribs</strong>, by landmarks (C7 vertebra prominens; the inferior angle of the scapula is T7) or by ultrasound from the first rib.${D} See <a href="#anat-count">counting levels</a>.</p><p>Probe <strong>parasagittal</strong>. Start over the spinous processes and slide laterally, about 2–3 cm,${cite('notes', 'kot2019')} until the <strong>transverse process</strong> appears: it has <strong>squared-off borders</strong>, with a flat black shadow under it.${D}</p><p>Sliding out from the midline you pass, in order:${N}</p><ul><li><strong>Laminae</strong>: flat, overlapping bright lines (“horse heads”). Too medial: slide laterally.</li><li><strong>Articular (facet) processes</strong>: rounded humps (“camel humps”).</li><li><strong>Transverse processes</strong>: square, with a flat shadow. This is the ESP view.</li><li><strong>Ribs</strong>: rounder and deeper, with the bright pleural line between them. Too lateral: slide back medially.</li></ul>`,
     approach: `<p><strong>In-plane, cranial to caudal or caudal to cranial.</strong>${D} Aim for the <strong>T5 transverse process</strong> for thoracic surgery.${D}</p>`,
-    sonoanatomy: `<p>Labels to know: <strong>trapezius</strong>, <strong>rhomboid major</strong> (upper thoracic levels), <strong>erector spinae</strong>, the <strong>T4, T5 and T6 transverse processes</strong>, the <strong>intertransverse tissue complex</strong>, and the <strong>ESP plane</strong>.${D}</p>`,
-    target: `<p><strong>Advance to contact the transverse process, lift the erector spinae and hydrodissect.</strong>${D} The fluid should separate erector spinae from the bone and run up and down the plane over the next transverse processes.</p>`,
+    sonoanatomy: `<p>Labels to know: <strong>trapezius</strong>, <strong>rhomboid major</strong> (upper thoracic levels), <strong>erector spinae</strong>, the <strong>T4, T5 and T6 transverse processes</strong>, the <strong>intertransverse tissue complex</strong>, and the <strong>ESP plane</strong>.${D}</p><p>At about T5 and above you see <strong>three muscle layers</strong> over the transverse processes (trapezius, rhomboid major, erector spinae); in the mid and lower thoracic spine, only <strong>two</strong> (trapezius and erector spinae).${N}</p><p>Erector spinae is three columns, lateral to medial <strong>iliocostalis, longissimus and spinalis</strong> (“I Like Standing”). It lies between the spinous processes and the angles of the ribs and is supplied by the dorsal rami.${N}</p>`,
+    target: `<p><strong>Advance to contact the transverse process, lift the erector spinae and hydrodissect.</strong>${D} Inject 1–3 ml first to confirm the plane: the fluid should lie deep to erector spinae and on the transverse process, then run up and down the plane over the next transverse processes. Then give the rest.${N}</p>`,
     dose: { volume: '30 ml', conc: 'dilute 0.3%', drug: 'ropivacaine', source: `Teaching slide 130.${D}` },
     last: BILATERAL_LAST,
     coverage: {
@@ -86,7 +91,7 @@ export const BLOCKS = [
     sections: [
       {
         id: 'mtp', title: 'Variant: mid-point transverse process to pleura (MTP) block',
-        html: `<p>The teaching slides give the <strong>MTP block</strong> as the alternative when ESP is not dense enough.${D} It uses the same parasagittal view, but the needle tip stops <strong>halfway between the posterior border of the transverse process and the pleura</strong>, just beside the transverse process, without going through the superior costotransverse ligament.${cite('costache2017')}</p><p>In cadavers, dye injected at this point consistently reached the paravertebral space at the level of injection and often the adjacent levels.${cite('costache2017')} It sits between ESP and a classic paravertebral block: closer to the pleura than ESP, so take the same care with the needle tip as for a paravertebral block.</p><p><a href="#esp-inj-mtp">See the MTP needle path in the scan viewer</a>. The teaching slides give no MTP dose: use your department’s paravertebral dose.</p>`,
+        html: `<p>The teaching slides give the <strong>MTP block</strong> as the alternative when ESP is not dense enough.${D} It uses the same parasagittal view, but the needle tip stops <strong>halfway between the posterior border of the transverse process and the pleura</strong>, just beside the transverse process, without going through the superior costotransverse ligament.${cite('costache2017')}</p><p>In cadavers, dye injected at this point consistently reached the paravertebral space at the level of injection and often the adjacent levels.${cite('costache2017')} It sits between ESP and a classic paravertebral block: closer to the pleura than ESP, so take the same care with the needle tip as for a paravertebral block.</p><p>Because the local anaesthetic is placed just behind the SCTL and reaches the paravertebral space, MTP may also block the sympathetic chain, which the other “paravertebral by proxy” blocks do less reliably. The teaching notes group MTP and its successors under the umbrella term <strong>intertransverse process (ITP) block</strong>.${N}</p><p><a href="#esp-inj-mtp">See the MTP needle path in the scan viewer</a>. The teaching slides give no MTP dose: use your department’s paravertebral dose.</p>`,
       },
     ],
     exam: [
@@ -98,7 +103,7 @@ export const BLOCKS = [
           'Count to T5 (vertebra prominens C7; inferior angle of the scapula T7; or count ribs from the first rib on ultrasound).',
           'Probe parasagittal about 3 cm lateral; identify the squared-off transverse processes; trapezius, rhomboid major and erector spinae above.',
           'In-plane, cranial to caudal or caudal to cranial; contact the T5 transverse process; lift erector spinae and hydrodissect; watch cranio-caudal spread.',
-          'Other blocks: thoracic paravertebral, serratus anterior plane, thoracic epidural, intercostal blocks.',
+          `Other blocks: thoracic paravertebral, serratus anterior plane, thoracic epidural, intercostal blocks (often by the surgeon). For VATS, the PROSPECT guideline recommends a paravertebral or ESP block as first choice and serratus anterior as second choice; it does not recommend thoracic epidural.${cite('feray2022')} See <a href="#ch-related">related blocks</a>.`,
           `Pros of ESP: easy sonoanatomy with a bony backstop; far from the pleura and the neuraxis; lower risk of complications in a patient on anticoagulants than paravertebral or epidural (the target is a bony backstop away from major vessels and the neuraxis; follow local guidance)${cite('williams2020')}; a catheter can be placed.`,
           'Cons: typically not very dense; variable anterior spread.',
         ],
@@ -116,7 +121,7 @@ export const BLOCKS = [
         ],
       },
     ],
-    sources: `Teaching slides 129–136.${D} Probe position: Kot et al. 2019.${cite('kot2019')} Mechanism: Chin and El-Boghdadly 2021.${cite('chin2021')} Complications: De Cassai et al. 2019; Bailey et al. 2025. Anticoagulated patients: Williams et al. 2020.${cite('decassai2019', 'bailey2025', 'williams2020')} MTP: Costache et al. 2017.${cite('costache2017')}`,
+    sources: `Teaching slides 129–136.${D} Department teaching notes.${N} Probe position: Kot et al. 2019.${cite('kot2019')} Mechanism: Chin and El-Boghdadly 2021.${cite('chin2021')} Complications: De Cassai et al. 2019; Bailey et al. 2025. Anticoagulated patients: Williams et al. 2020.${cite('decassai2019', 'bailey2025', 'williams2020')} MTP: Costache et al. 2017.${cite('costache2017')} VATS: Feray et al. 2022.${cite('feray2022')}`,
   },
 
   // ------------------------------------------------------------------ paravertebral, parasagittal in-plane
@@ -138,8 +143,8 @@ export const BLOCKS = [
       '20 ml of 0.3–0.5% ropivacaine (see the note in the dose box)',
       'Sterile probe cover, skin preparation, monitoring and the local anaesthetic toxicity kit within reach',
     ],
-    landmarks: `<p><strong>Count the ribs</strong> (<a href="#anat-count">counting levels</a>). Probe <strong>parasagittal</strong>; identify the <strong>transverse process</strong>. Then <strong>tilt laterally</strong> towards the costotransverse joint, where the transverse process (square, shallower) and the rib (rounder, deeper) both show, with the <strong>SCTL</strong> between them.${D}</p>`,
-    approach: `<p><strong>In-plane, caudal to cranial</strong>, because of the way the SCTL slopes.${D} Advance under the transverse process towards the SCTL.</p><p>Two other approaches on this page: <a href="#ch-pvbt">transverse in-plane</a> and the <a href="#ch-pvblm">landmark technique</a>.</p>`,
+    landmarks: `<p><strong>Count the ribs</strong> (<a href="#anat-count">counting levels</a>). Probe <strong>parasagittal</strong>; identify the <strong>transverse process</strong>. Then <strong>tilt laterally</strong> towards the costotransverse joint, where the transverse process (square, shallower) and the rib (rounder, deeper) both show, with the <strong>SCTL</strong> between them.${D}</p><p>Another way in: start <strong>5–10 cm lateral</strong>, where the round ribs and the pleura are easy to see, then slide medially until the square transverse processes appear, usually <strong>2–3 cm from the midline</strong>. If you see flat laminae, you have gone too far medially.${N} You need both the pleura and the SCTL in view.</p>`,
+    approach: `<p><strong>In-plane, caudal to cranial</strong>, because of the way the SCTL slopes.${D} Advance under the transverse process towards the SCTL.</p><p><strong>Out-of-plane alternative:</strong> from the same view, contact the transverse process out-of-plane, then walk off it and advance <strong>1–1.5 cm deeper</strong>. You may not see the tip, but the pleura should be pushed down as you inject. The needle is not aimed at the neuraxis, and it mirrors the landmark technique.${N}</p><p>Two other approaches on this page: <a href="#ch-pvbt">transverse in-plane</a> and the <a href="#ch-pvblm">landmark technique</a>.</p>`,
     sonoanatomy: `<p>Labels to know: <strong>trapezius</strong>, <strong>erector spinae</strong>, the <strong>transverse process</strong>, the <strong>SCTL</strong> and the <strong>pleura</strong>.${D}</p>`,
     target: `<p><strong>Feel the pop</strong> through the SCTL and <strong>deposit below it</strong>. The <strong>pleura should be pushed down</strong>.${D} If the pleura does not move, the tip is probably still above the ligament.</p>`,
     dose: PVB_DOSE,
@@ -153,7 +158,7 @@ export const BLOCKS = [
       ],
       summary: 'One side of the chest wall, front and back, over several levels around the injection. The map shows a single shot at T5 and is illustrative. For thoracotomy or VATS the teaching slides’ target is T2–T9.',
       mechanism: `<p>The space contains the spinal nerve as it divides into dorsal and ventral rami, and the sympathetic chain with its rami communicantes. Local anaesthetic here gives unilateral sensory, motor and sympathetic block.${cite('batra2011')} The space communicates with the levels above and below, laterally with the intercostal space and medially with the epidural space.${cite('batra2011')}</p>`,
-      density: `<p>Dense and one-sided when the injection is under the SCTL. Spread between levels varies, so for a long incision use more than one level or a catheter (see the <a href="#ch-levels">level table</a>).${D} The sympathetic block can cause hypotension.</p>`,
+      density: `<p>Dense and one-sided when the injection is under the SCTL. A single injection usually blocks <strong>4–6 dermatomes</strong>.${N} Spread between levels varies, so for a long incision use more than one level or a catheter (see the <a href="#ch-levels">level table</a>).${D} The sympathetic block can cause hypotension.</p>`,
       misses: '<p>The other side (block both sides for a midline incision). Spread to distant levels is unpredictable from a single injection.</p>',
     },
     complications: PVB_COMPLICATIONS,
@@ -161,6 +166,13 @@ export const BLOCKS = [
       'Tilt until you see both the square transverse process and the round rib: the SCTL runs between them.',
       'Pleura pushed down = correct. Fluid above the SCTL lifting muscle = too shallow (an ESP-like injection).',
       'Caudal to cranial crosses the sloping SCTL more steeply, so the pop is easier to feel.',
+      `A paravertebral catheter is an option for rib fractures: one-sided, with less hypotension and urinary retention than a thoracic epidural.${cite('notes', 'feray2022')}`,
+    ],
+    sections: [
+      {
+        id: 'ci', title: 'Contraindications and cautions',
+        html: `<ul><li><strong>As for any block:</strong> patient refusal, infection at the site, allergy to local anaesthetic.${N}</li><li><strong>Specific:</strong> tumour in the paravertebral space, empyema.${N}</li><li><strong>Caution:</strong> previous thoracotomy (scarring) and chest wall deformity, including kyphoscoliosis.${N}</li><li><strong>Anticoagulants:</strong> a paravertebral block is a deep, non-compressible block, so follow the neuraxial timings for stopping and restarting anticoagulants (ASRA guidance).${cite('horlocker2018')} The same timings apply to removing a catheter.${N}</li><li><strong>Positioning:</strong> a trauma patient on spinal precautions may not be able to sit or turn for a back block; plan an alternative.${N}</li></ul>`,
+      },
     ],
     exam: [
       {
@@ -175,8 +187,19 @@ export const BLOCKS = [
           'Try it: in the scan viewer, turn the labels off and point each one out.',
         ],
       },
+      {
+        source: 'Practice question (from the department teaching notes)',
+        q: '<p>A woman is having a paravertebral block for a <strong>radical mastectomy</strong>. List the advantages of the block and its complications.</p>',
+        points: [
+          'Advantages: one injection spreads up and down the space, into the intercostal spaces and along the spinal nerves, so several dermatomes are blocked.',
+          'Dense somatic and sympathetic block on one side; analgesia comparable to an epidural, with less hypotension because the other side is spared.',
+          'May reduce chronic post-surgical pain after breast and thoracic surgery.',
+          'Complications: failure (about 1 in 10), pleural puncture and pneumothorax, vascular puncture and haematoma, hypotension, epidural or intrathecal spread, Horner’s syndrome, nerve injury, local anaesthetic systemic toxicity.',
+          'Contraindications: as in the section above.',
+        ],
+      },
     ],
-    sources: `Teaching slides 138–147.${D} Anatomy and complications: Batra et al. 2011; Lönnqvist et al. 1995.${cite('batra2011', 'lonnqvist1995')}`,
+    sources: `Teaching slides 138–147.${D} Department teaching notes.${N} Anatomy and complications: Batra et al. 2011; Lönnqvist et al. 1995.${cite('batra2011', 'lonnqvist1995')} Anticoagulants: Horlocker et al. 2018.${cite('horlocker2018')} VATS: Feray et al. 2022.${cite('feray2022')}`,
   },
 
   // ------------------------------------------------------------------ paravertebral, transverse in-plane
@@ -188,17 +211,17 @@ export const BLOCKS = [
     glance: {
       position: 'Lateral or sitting',
       probe: 'Linear, transverse, just caudal to the transverse process',
-      needle: 'In-plane (shown lateral to medial)',
+      needle: 'In-plane, lateral to medial',
     },
     position: '<p>Lateral (side to be blocked uppermost) or sitting, as for the sagittal approach.</p>',
     equipment: ['High-frequency linear probe', '80 mm echogenic needle', '20 ml of 0.3–0.5% ropivacaine (see the note in the dose box)'],
-    landmarks: '<p>Count the level. Probe <strong>transverse</strong> over the transverse process, then slide slightly caudally into the intercostal space, so that the tip of the transverse process is medial and the intercostal muscles lateral.</p>',
-    approach: '<p>In-plane. The scan viewer shows a lateral-to-medial path, towards the tip of the transverse process. A medially directed needle points towards the intervertebral foramen: keep the tip in view and do not advance past the tip of the transverse process.</p>',
+    landmarks: `<p>Count the level. Set the depth to about 3 cm to start. Probe <strong>transverse</strong> over the transverse process and rib, then slide slightly caudally into the intercostal space, so that the tip of the transverse process is medial and the intercostal muscles lateral.${N}</p><p>The paravertebral space is a <strong>hypoechoic wedge</strong> between the internal intercostal membrane above and the bright pleura below, which moves with breathing.${N}</p>`,
+    approach: `<p><strong>In-plane, lateral to medial</strong>, from the lateral end of the probe towards the tip of the transverse process.${N} A medially directed needle points towards the intervertebral foramen: keep the tip in view and do not advance past the tip of the transverse process.</p>`,
     sonoanatomy: `<p>Labels to know: <strong>transverse process</strong>, <strong>internal intercostal membrane (IIM)</strong>, <strong>pleura</strong>, <strong>external intercostal muscle</strong>, <strong>erector spinae</strong>, <strong>trapezius</strong> and the <strong>paravertebral space</strong>.${D}</p>`,
     target: `<p><strong>Deposit below the IIM</strong>, which is continuous with the SCTL.${D} The pleura is pushed down and the fluid spreads medially into the wedge of the paravertebral space.</p>`,
     dose: PVB_DOSE,
     last: BILATERAL_LAST,
     complications: `<p>As for the <a href="#pvb-complications">sagittal approach</a>: pleural puncture and pneumothorax, vascular puncture, hypotension, epidural or intrathecal spread, Horner’s syndrome and bilateral spread.${cite('lonnqvist1995', 'batra2011')}</p>`,
-    sources: `Teaching slide 143.${D}`,
+    sources: `Teaching slide 143.${D} Department teaching notes.${N}`,
   },
 ].map((b) => ({ ...b, scene: SCENES[b.id] }));

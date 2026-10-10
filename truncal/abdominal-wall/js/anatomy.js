@@ -109,6 +109,7 @@ export function renderAnatomy(sec) {
   sec.append(keyPoints([
     `The anterior abdominal wall is supplied by the anterior rami of T6–T12 and L1. T7–T12 run between internal oblique and transversus abdominis.${cite('tsai2017')}`,
     'Each nerve gives a lateral cutaneous branch near the mid-axillary line, then continues forward to pierce the rectus sheath and supply the midline skin.',
+    `Surface levels: T7–T9 above the umbilicus, <strong>T10 at the umbilicus</strong>, T11, T12 and L1 below it.${cite('notes')}`,
     `T6–T9 enter the plane medially, under the costal margin: a <strong>subcostal TAP</strong> catches them.${cite('tsai2017', 'fernandez2025')}`,
     `A <strong>lateral TAP</strong> catches T10–T12${cite('tsai2017', 'fernandez2025')} and only covers to T10.${cite('deck')}`,
     `L1 (iliohypogastric and ilioinguinal) generally only enters the plane medial to the ASIS, so the lateral TAP misses the groin.${cite('deck')}`,
@@ -138,6 +139,19 @@ export function renderAnatomy(sec) {
   })));
   sec.append(f2);
 
+  sec.append(el('h3', { id: 'anat-sheath', text: 'The rectus sheath and the arcuate line' }));
+  sec.append(fill(el('p'), `The aponeuroses of EO, IO and TA meet at the lateral edge of rectus, the <strong>linea semilunaris</strong> (9th costal cartilage to the pubic tubercle), split around rectus to form the sheath, and join in the midline as the <strong>linea alba</strong> (xiphoid to pubic symphysis).${cite('notes')} What lies behind rectus changes with level, which matters for the rectus sheath block:`));
+  sec.append(table({
+    head: ['Level', 'Anterior sheath', 'Behind rectus'],
+    rows: [
+      [{ th: true, html: 'Above the costal margin' }, 'EO aponeurosis', 'Costal cartilages (no posterior sheath)'],
+      [{ th: true, html: 'Costal margin to arcuate line' }, 'EO aponeurosis + anterior layer of IO', '<strong>Posterior sheath</strong>: posterior layer of IO + TA aponeurosis. The rectus sheath block target.'],
+      [{ th: true, html: 'Below the arcuate line' }, 'All three aponeuroses', 'Transversalis fascia and peritoneum only'],
+    ],
+    caption: 'Composition of the rectus sheath (department teaching notes)',
+  }));
+  sec.append(fill(el('p', { class: 'aw-note' }), `The arcuate line lies between the umbilicus and the pubis (a third to halfway down) and is where the inferior epigastric vessels enter the sheath to run behind rectus.${cite('notes')} The superior epigastric vessels run behind rectus above the umbilicus. <a href="#ch-rsb">Rectus sheath block</a>`));
+
   sec.append(el('h3', { id: 'anat-groin', text: 'Why a lateral TAP misses the groin and the upper abdomen' }));
   sec.append(callout('pearl', {
     title: 'Two sentences for the viva',
@@ -157,6 +171,7 @@ export function renderAnatomy(sec) {
   sec.append(fill(el('p', { class: 'aw-note' }), `Levels are from the paravertebral table in the teaching slides (slide 147).${cite('deck')} Abdominal wall blocks treat somatic pain only; for visceral pain consider neuraxial or paravertebral techniques.`));
 
   registerSearch([
+    { title: 'Rectus sheath composition', text: 'arcuate line linea alba linea semilunaris posterior rectus sheath inferior epigastric', id: 'anat-sheath' },
     { title: 'Nerve course diagram', text: 'lateral cutaneous branch anterior cutaneous branch dorsal ramus spinal nerve between internal oblique and transversus abdominis', id: 'anat-course' },
   ]);
 }

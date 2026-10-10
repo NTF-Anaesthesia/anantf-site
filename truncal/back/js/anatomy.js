@@ -8,6 +8,7 @@ const NERVE = '#f2c230', NERVE_EDGE = '#8a6a00', ART = '#c0392b', VEIN = '#2f63b
 const BONE = '#ece2cc', BONE_EDGE = '#9c8a64', MUSCLE = '#d49a88', MUSCLE_EDGE = '#a8695a', PLEURA = '#5b6f99', LIG = '#7c6845';
 const SANS = 'NTF Sans, Inter, sans-serif', MONO = 'NTF Mono, JetBrains Mono, monospace';
 const D = cite('deck');
+const N = cite('notes');
 
 // ---------------------------------------------------------------- paravertebral space, transverse (axial) section
 // Right side, posterior at the top (as on a transverse ultrasound image), midline on the left.
@@ -180,8 +181,9 @@ export function renderAnatomy(sec) {
   sec.append(fill(el('p', { class: 'tb-lead' }), 'Both back blocks aim at the same nerves. The paravertebral block puts the local anaesthetic in the space where they leave the spine; the erector spinae plane block puts it behind the transverse process and relies on it spreading forwards.'));
   sec.append(keyPoints([
     `A <strong>triangular wedge</strong> on either side of the vertebral column.${D}`,
-    `<strong>Anterolateral border:</strong> the parietal pleura. <strong>Posterior border:</strong> the superior costotransverse ligament (SCTL) medially and the internal intercostal membrane (IIM) laterally. <strong>Medial border:</strong> the vertebral body, disc and intervertebral foramen.${D}`,
-    `<strong>Contents:</strong> the spinal nerves (ventral rami, which become the intercostal nerves, and dorsal rami), the sympathetic chain with its grey and white rami communicantes, the intercostal vessels, fat and lymphatics.${cite('deck', 'batra2011', 'karmakar2001')} <span class="bk-flag"><strong>Wording corrected, for confirmation:</strong> teaching slide 144 lists “dorsal rami of intercostal nerves”. Intercostal nerves are the continuation of the ventral rami and have no dorsal rami, so we have written the contents as above.</span>`,
+    `<strong>Anterolateral border:</strong> the parietal pleura (with the endothoracic fascia). <strong>Posterior border:</strong> the superior costotransverse ligament (SCTL) medially and the internal intercostal membrane (IIM) laterally. <strong>Medial border:</strong> the vertebral body, disc and intervertebral foramen.${D}`,
+    `<strong>Contents:</strong> the spinal nerves (ventral rami, which become the intercostal nerves, and dorsal rami), the sympathetic chain with its grey and white rami communicantes, the intercostal vessels, fat and lymphatics.${cite('deck', 'batra2011', 'karmakar2001')} <span class="bk-flag"><strong>Wording corrected, for confirmation:</strong> teaching slide 144 lists “dorsal rami of intercostal nerves”. The department teaching notes list the contents as the spinal (intercostal) nerves with their anterior and posterior rami, and describe the intercostal nerves as the anterior (ventral) primary rami,${N} so we have written the contents as above.</span>`,
+    `The <strong>SCTL</strong> runs from the upper border of the neck of each rib up to the transverse process of the vertebra above,${N} so it slopes: this is why the sagittal in-plane needle goes caudal to cranial.${D}`,
     `It communicates with the spaces above and below, with the intercostal space laterally and with the epidural space medially, which explains multi-level, intercostal and epidural spread.${cite('batra2011')}`,
   ]));
 
@@ -204,7 +206,7 @@ export function renderAnatomy(sec) {
   const f2 = el('figure', { class: 'bk-fig bk-fig--split' });
   f2.append(el('div', { class: 'bk-fig-stage' }, countingFigure()));
   const cap = el('figcaption');
-  cap.append(fill(el('ul', { class: 'bk-list' }), `<li><strong>C7, the vertebra prominens</strong>: the most prominent spinous process at the base of the neck. Count down from it.${D}</li><li><strong>The inferior angle (tip) of the scapula is T7</strong>, with the arms by the side.${D}</li><li><strong>Ultrasound from the first rib:</strong> start parasagittal high in the back, beside the C7 spinous process, to find the first rib, then slide caudally and count each rib down to the level you want.${D}</li><li>Confirm the level on ultrasound by counting ribs before you mark the skin.</li>`));
+  cap.append(fill(el('ul', { class: 'bk-list' }), `<li><strong>C7, the vertebra prominens</strong>: the most prominent spinous process at the base of the neck. Count down from it.${D}</li><li><strong>The inferior angle (tip) of the scapula is T7</strong>, with the arms by the side.${D}</li><li><strong>Ultrasound from the first rib:</strong> start parasagittal high in the back, beside the C7 spinous process, to find the first rib, then slide caudally and count each rib down to the level you want.${D}</li><li><strong>The root (medial end) of the spine of the scapula is at about T3.</strong>${N}</li><li>On ultrasound you can also count up from the <strong>12th rib</strong>.${N}</li><li>Confirm the level on ultrasound by counting ribs before you mark the skin.</li>`));
   f2.append(cap);
   sec.append(f2);
 
@@ -226,6 +228,7 @@ export function renderAnatomy(sec) {
   sec.append(ex);
 
   registerSearch([
+    { title: 'Counting levels: scapula', text: 'spine of scapula T3 twelfth rib 12th rib count up', id: 'anat-count' },
     { title: 'Paravertebral space diagram', text: 'dorsal ramus ventral ramus intercostal nerve sympathetic chain rami communicantes intercostal artery vein parietal pleura superior costotransverse ligament internal intercostal membrane external intercostal muscle transverse process vertebral body', id: 'anat-section' },
     { title: 'Counting levels', text: 'vertebra prominens C7 inferior angle of scapula T7 tip of scapula first rib count ribs', id: 'anat-count' },
     { title: 'Name A to E (exam)', text: 'label exercise dorsal ramus internal intercostal membrane external intercostal muscle parietal pleura transverse process', id: 'anat-exam' },
@@ -393,8 +396,8 @@ export function renderLandmark(sec) {
   go(0);
   // the teaching slides' values and the cited variation
   sec.append(el('h3', { id: 'pvblm-notes', text: 'Notes' }));
-  sec.append(fill(el('ul', { class: 'bk-list' }), `<li>Dose as for the ultrasound approaches: <strong>20 ml of 0.3–0.5% ropivacaine</strong>.${D} (The teaching slide reads “0.3–5%”; we have assumed 0.3–0.5% pending the slides’ owner’s confirmation.)</li><li>Some descriptions mark 2.5–3 cm lateral to the spinous process and walk off caudally, also stopping within 1.5 cm.${cite('batra2011')}</li><li>Failed block was about 1 in 10, and pneumothorax 0.5%, in a prospective series of landmark blocks.${cite('lonnqvist1995')} See the <a href="#pvb-complications">complications list</a>.</li><li>Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks.</li>`));
-  registerSearch([{ title: 'Landmark paravertebral technique', text: 'tuohy loss of resistance 2 cm lateral spinous process 4 cm transverse process walk off 1.5 cm pop sctl', id: 'pvblm-fig' }]);
+  sec.append(fill(el('ul', { class: 'bk-list' }), `<li>Dose as for the ultrasound approaches: <strong>20 ml of 0.3–0.5% ropivacaine</strong>.${D} (The teaching slide reads “0.3–5%”; we have assumed 0.3–0.5% pending the slides’ owner’s confirmation.)</li><li>Some descriptions mark 2.5–3 cm lateral to the spinous process and walk off caudally, also stopping within 1.5 cm.${cite('batra2011')}</li><li><strong>Finding the mark by feel:</strong> put your middle finger on the tip of the spinous process; the finger beside it, on the side to be blocked, marks the entry point about 2 cm lateral. The transverse process is usually 3–4 cm deep and the space about 1 cm beyond it.${N} Measure the depth on ultrasound first if you can.</li><li><strong>Note the depth of the transverse process</strong> before you walk off: it tells you where to stop.${N}</li><li>A sudden, <strong>complete</strong> loss of resistance, rather than a subtle give, suggests the needle has entered the pleura.${N}</li><li>Failed block was about 1 in 10, and pneumothorax 0.5%, in a prospective series of landmark blocks.${cite('lonnqvist1995')} See the <a href="#pvb-complications">complications list</a>.</li><li>Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks.</li>`));
+  registerSearch([{ title: 'Landmark paravertebral technique', text: 'tuohy loss of resistance 2 cm lateral spinous process 4 cm transverse process walk off 1.5 cm pop sctl finger', id: 'pvblm-fig' }]);
 }
 
 // ---------------------------------------------------------------- levels (teaching slide 147)
@@ -418,4 +421,30 @@ export function renderLevels(sec) {
   }));
   sec.append(callout('warn', { title: 'Bilateral blocks', body: '<p>“Bilaterally” means two injections and twice the dose. Keep the total dose within the maximum for the patient’s weight. Bilateral paravertebral blocks block the sympathetic chain on both sides: watch the blood pressure.</p>' }));
   sec.append(fill(el('p', { class: 'bk-note' }), 'For abdominal wall alternatives see the <a href="../abdominal-wall/">abdominal wall page</a>; for chest wall alternatives (serratus, PECS) see the <a href="../chest-wall/">chest wall page</a>. The <a href="../">truncal blocks landing page</a> has a chooser across all three pages.'));
+}
+
+// ---------------------------------------------------------------- related blocks (brief; department teaching notes)
+export function renderRelated(sec) {
+  sec.append(el('h2', { id: 'related-h', text: 'Related blocks and alternatives' }));
+  sec.append(fill(el('p', { class: 'tb-lead' }), `Other ways to cover the chest wall from the back or the side, in brief. These blocks have no scan viewer on this page.${N}`));
+
+  sec.append(el('h3', { id: 'related-tea', text: 'Thoracic epidural' }));
+  sec.append(fill(el('ul', { class: 'bk-list' }), `<li>The traditional gold standard for open thoracotomy, and the regional technique with the longest evidence for rib fractures.${N}</li><li>Blocks both sides, so hypotension is more common; it needs high-dependency monitoring.${N} Compared with a thoracic epidural, a paravertebral block causes less hypotension and urinary retention.${cite('feray2022')}</li><li>For VATS, the PROSPECT guideline recommends a paravertebral or erector spinae plane block as first choice and a serratus anterior plane block as second choice; it does not recommend a thoracic epidural.${cite('feray2022')}</li><li>For rib fractures, paravertebral, erector spinae plane, intercostal and serratus anterior blocks or catheters may work as well as an epidural in suitable patients, with fewer and less serious complications.${N}</li>`));
+
+  sec.append(el('h3', { id: 'related-icnb', text: 'Intercostal nerve block' }));
+  sec.append(fill(el('ul', { class: 'bk-list' }), `<li>The intercostal nerve runs under its rib with the vein and artery: <strong>vein, artery, nerve</strong> from top to bottom, so the nerve is lowest. Lateral to the angle of the rib it lies between the internal and innermost intercostal muscles.${N}</li><li><strong>Where:</strong> lateral to the angle of the rib (about 7 cm from the midline), where the groove is deepest, and proximal to the mid-axillary line, before the lateral cutaneous branch leaves. Medial to the angle there is only the internal intercostal membrane, with no internal intercostal muscle.${N}</li><li><strong>How:</strong> linear probe parasagittal over the ribs; in-plane, caudal to cranial; tip in the internal intercostal muscle, above the pleura. Each level needs its own injection (the teaching notes give 2–5 ml per level).${N}</li><li><strong>Watch:</strong> systemic absorption is high, so add up the dose across levels; pneumothorax (under 1%). Surgeons often do it under direct vision during VATS.${N}</li>`));
+
+  sec.append(el('h3', { id: 'related-itp', text: 'Intertransverse process and other “paravertebral by proxy” blocks' }));
+  sec.append(fill(el('ul', { class: 'bk-list' }), `<li>These put the local anaesthetic <strong>behind</strong> the SCTL and rely on it reaching the paravertebral space: away from the pleura, so felt to be safer than a paravertebral block.${N}</li><li><strong>MTP (intertransverse process) block:</strong> see the <a href="#esp-mtp">MTP variant</a>.</li><li><strong>Retrolaminar block</strong> belongs to the same group.${N}</li><li><strong>Thoracolumbar interfascial plane (TLIP) block:</strong> a more targeted block than ESP for lumbar spine surgery. Classic (medial) approach: between multifidus and longissimus. Modified (lateral) approach: between longissimus and iliocostalis.${N}</li>`));
+
+  sec.append(el('h3', { id: 'related-ipb', text: 'Interpleural block' }));
+  sec.append(fill(el('ul', { class: 'bk-list' }), `<li>Local anaesthetic between the parietal and visceral pleura, giving a one-sided block over several thoracic dermatomes.${N}</li><li>The space is found by its <strong>negative pressure</strong>: for example a hanging drop drawn in, a falling column of fluid, or an air-filled syringe plunger drawn in.${N}</li>`));
+
+  sec.append(fill(el('p', { class: 'bk-note' }), 'Serratus anterior and PECS blocks are on the <a href="../chest-wall/">chest wall page</a>.'));
+  registerSearch([
+    { title: 'Thoracic epidural vs back blocks', text: 'epidural TEA PROSPECT VATS rib fractures hypotension urinary retention', id: 'related-tea' },
+    { title: 'Intercostal nerve block', text: 'intercostal ICNB angle of rib vein artery nerve VAN costal groove innermost', id: 'related-icnb' },
+    { title: 'Intertransverse process blocks', text: 'ITP MTP retrolaminar TLIP thoracolumbar interfascial multifidus longissimus iliocostalis paravertebral by proxy', id: 'related-itp' },
+    { title: 'Interpleural block', text: 'interpleural intrapleural negative pressure hanging drop', id: 'related-ipb' },
+  ]);
 }

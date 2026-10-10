@@ -1,7 +1,7 @@
 /* Truncal blocks landing page: "Which block for which operation" chooser.
    Levels are from the department's teaching slides (slide 147) unless tagged otherwise.
-   Sources: 'deck:<slide>' = teaching slides, 'derived' = worked out from the slides,
-   any other key = a reference in the page's References list (<li id="ref-KEY">). */
+   Sources: 'deck:<slide>' = teaching slides, 'notes' = the department's teaching notes (ref-notes),
+   'derived' = worked out from the slides, any other key = a reference in the References list (<li id="ref-KEY">). */
 
 /* Where each block lives: page + chapter (or element) anchor. The shell opens the chapter that holds the id. */
 export const BLOCK_LINKS = {
@@ -46,14 +46,19 @@ const OPS = [
       ]},
       { label: 'Alternatives', items: [
         { name: 'Serratus anterior plane', blocks: ['sap'], why: 'Second choice for VATS.', src: ['vats'] },
-        { name: 'Mid-point transverse process to pleura (MTP)', blocks: ['mtp'], why: 'An option when an ESP is unlikely to be dense enough.', src: ['deck:136'] }
+        { name: 'Mid-point transverse process to pleura (MTP)', blocks: ['mtp'], why: 'An option when an ESP is unlikely to be dense enough.', src: ['deck:136'] },
+        { name: 'Intercostal blocks by the surgeon', blocks: [], why: 'Commonly done under direct vision at the end of surgery, but PROSPECT doesn’t recommend them for lack of procedure-specific evidence.', src: ['notes', 'vats'] }
       ]}
     ],
     notes: [
       { text: 'Block at a thoracic level that matches the port sites or the incision.', src: ['vats'] },
       { text: 'A catheter with a continuous infusion gives longer pain relief than a single shot.', src: ['vats'] },
-      { text: 'Thoracic epidural is not recommended for VATS: paravertebral and ESP work as well with fewer side effects.', src: ['vats'] },
-      { text: 'Thoracotomy is a bigger wound, so plan a catheter. The 2025 MMed OSCE asked for an ESP for right thoracotomy, the other blocks you could use, and the pros of ESP over them.', src: ['deck:135'] }
+      { text: 'Thoracic epidural is not recommended for VATS: paravertebral and ESP work as well with fewer side effects. It still has a place for open thoracotomy, for example when poor lung function makes the best possible analgesia important.', src: ['vats', 'notes'] },
+      { text: 'Thoracotomy is a bigger wound and very painful, especially a posterior incision, so plan a catheter. The 2025 MMed OSCE asked for an ESP for right thoracotomy, the other blocks you could use, and the pros of ESP over them.', src: ['deck:135', 'notes'] },
+      { text: 'Pleurodesis is the most painful VATS: plan a block plus PCA, and avoid NSAIDs, which may make the pleurodesis less effective.', src: ['notes'] },
+      { text: 'If the surgeon freezes the intercostal nerves (cryoablation), it takes time to work, so you still need analgesia for the first days.', src: ['notes'] },
+      { text: 'Non-intubated VATS: a block covers the skin and parietal pleura, but not the visceral pleura or the cough reflex. Add IV opioid; the surgeon can block the vagus nerve to stop coughing.', src: ['notes'] },
+      { text: 'Multimodal: paracetamol and an NSAID or COX-2 inhibitor, IV dexmedetomidine, and opioids as rescue.', src: ['vats'] }
     ]
   },
   {
@@ -73,8 +78,10 @@ const OPS = [
     ],
     notes: [
       { text: 'The 2026 PROSPECT update found no single-shot technique better than the others, including the surgeon’s local infiltration. Choose by your skills, the patient and the operation.', src: ['breast'] },
-      { text: 'A single shot is recommended; a catheter is not usually needed.', src: ['breast'] },
-      { text: 'Local infiltration can be added where the block doesn’t reach, but keep the combined dose within the maximum.', src: ['breast'] }
+      { text: 'A single shot is recommended; a catheter is not usually needed. If a paravertebral catheter is sited, continue the infusion after surgery.', src: ['breast', 'notes'] },
+      { text: 'Local infiltration can be added where the block doesn’t reach, but keep the combined dose within the maximum.', src: ['breast'] },
+      { text: 'Exam point, paravertebral for mastectomy. Pros: dense one-sided somatic and sympathetic block from one injection, less hypotension than an epidural, and possibly less chronic pain. Cons: failure in about 1 in 10, pneumothorax, epidural spread, hypotension, Horner’s syndrome, toxicity.', src: ['notes'] },
+      { text: 'Multimodal: paracetamol and an NSAID, and dexamethasone, which also helps with the high risk of nausea and vomiting after breast surgery.', src: ['notes'] }
     ]
   },
   {
@@ -89,15 +96,19 @@ const OPS = [
         { name: 'Paravertebral catheter', blocks: ['pvb'], why: 'About as good as an epidural for breathing complications, and safer than an epidural if the patient is on anticoagulants.', src: ['rib'] }
       ]},
       { label: 'Alternatives', items: [
-        { name: 'Serratus anterior plane', blocks: ['sap'], why: 'Only for fractures in the front two-thirds of the chest wall.', src: ['rib'] },
+        { name: 'Serratus anterior plane', blocks: ['sap'], why: 'Only for fractures in the front two-thirds of the chest wall. Done supine or with a small tilt, so it suits a patient who can’t sit up or turn.', src: ['rib', 'notes'] },
+        { name: 'Intercostal blocks', blocks: [], why: 'Effective, but one injection for each broken rib, and each lasts only hours.', src: ['rib', 'notes'] },
         { name: 'Thoracic epidural', blocks: [], why: 'Historically the best evidence, but used less because of neurological and blood pressure concerns. Not covered on these pages.', src: ['rib'] }
       ]}
     ],
     notes: [
       { text: 'Block at the level of the fractures: count the broken ribs on imaging and centre the block on them.', src: ['deck:147'] },
+      { text: 'The aim is to let the patient breathe deeply and cough: poor analgesia leads to atelectasis, retained secretions and pneumonia.', src: ['notes'] },
       { text: 'Catheter techniques give better pain relief than systemic opioids, and the pain lasts days, so a single shot is rarely enough.', src: ['rib'] },
+      { text: 'Trauma patients may be on spinal precautions or unable to turn for a back block. Plan the position before you choose the block.', src: ['notes'] },
       { text: 'Fractures on both sides need a catheter on each side. That doubles the local anaesthetic, so check the total dose.', src: ['rib'] },
-      { text: 'Check anticoagulants and clotting first. An epidural is contraindicated with abnormal clotting or sepsis.', src: ['rib'] }
+      { text: 'Check anticoagulants and clotting first. An epidural is contraindicated with abnormal clotting or sepsis.', src: ['rib'] },
+      { text: 'Multimodal: paracetamol, NSAIDs if the kidneys allow, opioids, chest physiotherapy and incentive spirometry. Surgical fixation is an option for a flail segment or uncontrolled pain.', src: ['notes'] }
     ]
   },
   {
@@ -113,7 +124,7 @@ const OPS = [
     ],
     notes: [
       { text: 'NTF has no cardiac surgery, so this is mainly for the exam.', src: [] },
-      { text: 'The wound is in the midline, so block both sides and keep the total dose within the maximum.', src: ['deck:147'] }
+      { text: 'The incision runs in the midline from the suprasternal notch to the xiphoid, so block both sides and keep the total dose within the maximum.', src: ['deck:147', 'notes'] }
     ]
   },
   {
@@ -125,37 +136,45 @@ const OPS = [
     groups: [
       { label: 'First choice (open liver resection)', items: [
         { name: 'Bilateral oblique subcostal TAP (single shot or catheter)', blocks: ['stap'], src: ['liver'] },
-        { name: 'Thoracic epidural', blocks: [], why: 'An equal first choice in PROSPECT. Not covered on these pages.', src: ['liver'] }
+        { name: 'Thoracic epidural', blocks: [], why: 'An equal first choice in PROSPECT. Clotting can worsen after a big resection, which may delay removing the catheter. Not covered on these pages.', src: ['liver'] }
       ]},
       { label: 'Alternative', items: [
         { name: 'Paravertebral or ESP at T8, both sides', blocks: ['pvb', 'esp'], why: 'At the slides’ single-shot level.', src: ['deck:147', 'derived'] }
+      ]},
+      { label: 'Other options in the teaching notes', items: [
+        { name: 'Wound catheter placed by the surgeon, with PCA', blocks: [], why: 'The teaching notes cite trials where wound catheters did about as well as an epidural, with a shorter stay. PROSPECT keeps them second line, for when an epidural or subcostal TAP isn’t possible.', src: ['notes', 'liver'] },
+        { name: 'Intrathecal morphine', blocks: [], why: 'Used by some teams; PROSPECT doesn’t recommend it (limited evidence, more itch and breathing depression at the doses studied).', src: ['notes', 'liver'] }
       ]}
     ],
     notes: [
       { text: 'After open liver resection, PROSPECT recommends a catheter-based technique for the postoperative period.', src: ['liver'] },
       { text: 'A lateral TAP only reaches T10, so it misses the upper abdomen. Use the subcostal approach.', src: ['deck:127'] },
-      { text: 'Abdominal wall blocks treat wound pain, not visceral pain. Give multimodal analgesia as well.', src: ['chin'] }
+      { text: 'Abdominal wall blocks treat wound pain, not visceral pain. Give multimodal analgesia as well.', src: ['chin'] },
+      { text: 'Paracetamol is usually still given; think about a lower dose with liver disease, malnutrition or a large resection. A dexmedetomidine infusion is a local option.', src: ['liver', 'notes'] }
     ]
   },
   {
     id: 'laparotomy', name: 'Midline laparotomy',
-    cover: { from: 'T6', to: 'T12', text: 'T6–T12 on both sides (xiphoid to pubis)', src: ['derived'], derivedNote: 'The slides give upper abdominal T6–T10 and lower midline T8–T12; a full-length incision needs both.' },
+    cover: { from: 'T6', to: 'T12', text: 'T6–T12 on both sides (xiphoid to pubis)', src: ['derived', 'notes'], derivedNote: 'The slides give upper abdominal T6–T10 and lower midline T8–T12; a full-length incision needs both. The teaching notes agree: T7–T9 above the umbilicus, T10 around it, T11–T12 and L1 below.' },
     single: { levels: ['T8','T10'], text: 'No single level covers it. The slides’ levels are T8 (upper) and T10 (lower).', src: ['derived'] },
     side: 'both',
     marks: [{ type: 'line', x: 100, from: 'T6', to: 'T12' }],
     groups: [
       { label: 'First choice', items: [
         { name: 'Rectus sheath catheters, both sides', blocks: ['rsb'], why: 'Covers the midline wound; abdominal wall catheters should be considered to reduce opioids.', src: ['el', 'chin'] },
-        { name: 'Thoracic epidural', blocks: [], why: 'Only after checking for sepsis and abnormal clotting. Not covered on these pages.', src: ['el'] }
+        { name: 'Thoracic epidural', blocks: [], why: 'Only after checking for sepsis and abnormal clotting. Mid-thoracic, about T7–T9. Not covered on these pages.', src: ['el', 'notes'] }
       ]},
-      { label: 'Alternative', items: [
-        { name: 'Subcostal plus lateral TAP, both sides', blocks: ['stap', 'tap'], why: 'Four injections to cover the upper and lower wall, so the volumes add up.', src: ['derived', 'deck:127'] }
+      { label: 'Alternatives', items: [
+        { name: 'Subcostal plus lateral TAP, both sides', blocks: ['stap', 'tap'], why: 'Four injections to cover the upper and lower wall, so the volumes add up.', src: ['derived', 'deck:127'] },
+        { name: 'Wound (preperitoneal) catheter by the surgeon, with PCA', blocks: [], why: 'Surgeons may not want a wound catheter in a contaminated abdomen.', src: ['notes'] }
       ]}
     ],
     notes: [
       { text: 'Emergency laparotomy guidance: wound catheters and abdominal wall blocks should be considered to reduce opioid use, but how well they work varies (weak recommendation, low-quality evidence).', src: ['el'] },
       { text: 'Fascial plane blocks treat wound (somatic) pain only. Visceral pain needs multimodal systemic analgesia or an epidural.', src: ['chin', 'upper'] },
-      { text: 'Emergency patients are often septic or have abnormal clotting, which rules out an epidural more often than a plane block.', src: ['el'] },
+      { text: 'Emergency patients are often septic, unstable or have abnormal clotting, which rules out an epidural more often than a plane block.', src: ['el', 'notes'] },
+      { text: 'Emergency: if the abdomen is left open (temporary closure) and the patient goes to ICU ventilated, a block can wait until the definitive closure.', src: ['derived', 'notes'] },
+      { text: 'Intraoperative adjuncts in the teaching notes: remifentanil for titratability, or a lidocaine infusion; low-dose ketamine at some centres.', src: ['notes'] },
       { text: 'Catheters on both sides: plan the infusion and top-ups so the total stays within the maximum.', src: [] }
     ]
   },
@@ -167,17 +186,37 @@ const OPS = [
     marks: [{ type: 'ports', side: 'right', at: ['T6','T8','T10'] }],
     groups: [
       { label: 'First choice', items: [
-        { name: 'Port-site infiltration or intraperitoneal local anaesthetic, by the surgeon', blocks: [], why: 'Use one or the other, not both: together the total dose gets too high.', src: ['chole'] }
+        { name: 'Port-site infiltration or intraperitoneal local anaesthetic (on the gallbladder bed), by the surgeon', blocks: [], why: 'Use one or the other, not both: together the total dose gets too high.', src: ['chole', 'notes'] }
       ]},
       { label: 'Second line', items: [
         { name: 'Erector spinae plane (ESP)', blocks: ['esp'], src: ['chole'] },
-        { name: 'TAP', blocks: ['tap', 'stap'], src: ['chole'] }
+        { name: 'TAP', blocks: ['tap', 'stap'], why: 'The teaching notes use a subcostal TAP, with local anaesthetic to the umbilical port, in obese patients.', src: ['chole', 'notes'] }
       ]}
     ],
     notes: [
       { text: 'PROSPECT puts ESP and TAP second because simpler infiltration works as well, the blocks carry more risk of toxicity, and they need more expertise.', src: ['chole'] },
-      { text: 'After laparoscopy much of the pain is visceral, which abdominal wall blocks don’t treat.', src: ['upper'] },
-      { text: 'Often day surgery: the choice depends on your experience, the patient and whether they go home the same day.', src: ['chole'] }
+      { text: 'After laparoscopy much of the pain is visceral, which abdominal wall blocks don’t treat. Shoulder-tip pain comes from the pneumoperitoneum: ask the surgeon to let out all the gas, and give an NSAID if there’s no contraindication.', src: ['upper', 'notes'] },
+      { text: 'Often day surgery or a 23-hour stay: the choice depends on your experience, the patient and whether they go home the same day. Give dual antiemetics.', src: ['chole', 'notes'] },
+      { text: 'Converted to open (right subcostal incision): pain is much worse. Plan a PCA and ask for infiltration or a wound catheter; a subcostal TAP on that side fits the incision.', src: ['notes', 'derived'] }
+    ]
+  },
+  {
+    id: 'bariatric', name: 'Laparoscopic bariatric surgery',
+    cover: { from: 'T6', to: 'T10', text: 'The port sites, about T6–T10', src: ['derived'], derivedNote: 'Upper abdominal ports, as for a laparoscopic cholecystectomy. Not in the slides.' },
+    single: { levels: [], text: 'Not given in the slides', src: [] },
+    side: 'both',
+    marks: [{ type: 'ports', side: 'both', pts: [[100, 'T10'], [74, 'T8'], [126, 'T8'], [62, 'T9'], [138, 'T9']] }],
+    groups: [
+      { label: 'First choice', items: [
+        { name: 'Bilateral TAP plus port-site infiltration by the surgeon', blocks: ['tap', 'stap'], why: 'The 2025 PROSPECT update for sleeve gastrectomy recommends both. The TAP can be ultrasound-guided or placed by the surgeon under laparoscopic view.', src: ['sleeve'] }
+      ]}
+    ],
+    notes: [
+      { text: 'The point is to spare opioids: many patients have obstructive sleep apnoea.', src: ['notes'] },
+      { text: 'The combination of TAP and port-site infiltration adds up: keep the total local anaesthetic dose within the maximum.', src: ['sleeve'] },
+      { text: 'Blocks are harder in obese patients: a curvilinear probe may be needed to see the layers.', src: ['notes'] },
+      { text: 'Multimodal: paracetamol and an NSAID or COX-2 inhibitor, a single dose of IV dexamethasone, and opioids only as rescue.', src: ['sleeve'] },
+      { text: 'New tachycardia, abdominal pain or fever after surgery may be an anastomotic leak, not just poor analgesia.', src: ['notes'] }
     ]
   },
   {
@@ -190,11 +229,13 @@ const OPS = [
       { label: 'Options', items: [
         { name: 'Paravertebral at T10', blocks: ['pvb'], why: 'At the slides’ single-shot level.', src: ['deck:147', 'derived'] },
         { name: 'Erector spinae plane (ESP) at T10', blocks: ['esp'], why: 'Easier, but often less dense.', src: ['deck:147', 'deck:136', 'derived'] },
-        { name: 'Quadratus lumborum', blocks: ['ql'], why: 'One trial in open nephrectomy found it better than subcostal TAP; evidence is limited.', src: ['upper'] }
+        { name: 'Quadratus lumborum', blocks: ['ql'], why: 'One trial in open nephrectomy found it better than subcostal TAP; evidence is limited.', src: ['upper'] },
+        { name: 'Thoracic epidural, rectus sheath catheter or wound catheter', blocks: ['rsb'], why: 'Options for an open operation. An epidural needs to reach T7–T8; use it cautiously until bleeding is controlled.', src: ['notes'] }
       ]}
     ],
     notes: [
-      { text: 'Open flank incision: consider a catheter.', src: ['derived'] },
+      { text: 'Open nephrectomy is very painful: plan a catheter. The incision varies: a loin incision for donor surgery, a paramedian or transverse laparotomy for a tumour (a transverse incision crosses the midline, so cover both sides).', src: ['notes'] },
+      { text: 'Laparoscopic or robotic: the ports and the extraction wound set the levels you need. After a left nephrectomy, left testicular pain can come from tying the gonadal vein.', src: ['notes', 'derived'] },
       { text: 'Plane blocks don’t treat visceral pain; give multimodal analgesia as well.', src: ['chin'] }
     ]
   },
@@ -206,9 +247,10 @@ const OPS = [
     marks: [{ type: 'line', x: 100, from: 'T8', to: 'T12' }],
     groups: [
       { label: 'Options', items: [
-        { name: 'Rectus sheath, both sides (catheters for an open midline wound)', blocks: ['rsb'], src: ['derived', 'chin'] },
-        { name: 'Lateral TAP, both sides', blocks: ['tap'], why: 'Covers the lower abdominal wall but nothing above T10.', src: ['deck:127'] },
-        { name: 'Paravertebral or ESP at T10, both sides', blocks: ['pvb', 'esp'], why: 'At the slides’ single-shot level.', src: ['deck:147', 'derived'] }
+        { name: 'Rectus sheath, both sides (catheters for an open midline wound)', blocks: ['rsb'], src: ['notes', 'chin'] },
+        { name: 'Lateral TAP, both sides', blocks: ['tap'], why: 'Covers incisions below the umbilicus; spread above it is unreliable and it misses everything above T10.', src: ['deck:127', 'notes'] },
+        { name: 'Paravertebral or ESP at T10, both sides', blocks: ['pvb', 'esp'], why: 'At the slides’ single-shot level.', src: ['deck:147', 'derived'] },
+        { name: 'Thoracic epidural', blocks: [], why: 'Low thoracic, about T9–T11. Watch for hypotension. Not covered on these pages.', src: ['notes'] }
       ]}
     ],
     notes: [
@@ -225,8 +267,8 @@ const OPS = [
     marks: [{ type: 'groin' }],
     groups: [
       { label: 'First choice', items: [
-        { name: 'Ilioinguinal and iliohypogastric', blocks: ['ilioinguinal'], src: ['hernia'] },
-        { name: 'Local infiltration by the surgeon', blocks: [], src: ['hernia'] }
+        { name: 'Ilioinguinal and iliohypogastric', blocks: ['ilioinguinal'], why: 'Misses the genitofemoral nerve (the cord and sac): the surgeon can infiltrate there.', src: ['hernia', 'notes'] },
+        { name: 'Local infiltration by the surgeon', blocks: [], why: 'An inguinal field block can be the only anaesthetic in a high-risk patient if the operator is experienced; spinal is another option.', src: ['hernia', 'notes'] }
       ]},
       { label: 'Alternative', items: [
         { name: 'TAP', blocks: ['tap'], why: 'Recommended by PROSPECT, but a lateral TAP often misses the groin: L1 joins the plane only medial to the ASIS.', src: ['hernia', 'deck:116'] }
@@ -234,6 +276,8 @@ const OPS = [
     ],
     notes: [
       { text: 'PROSPECT recommends an ilioinguinal and iliohypogastric block or a TAP block, plus local infiltration.', src: ['hernia'] },
+      { text: 'Add paracetamol and an NSAID, and a single dose of IV dexamethasone, which makes the block last longer and reduces nausea.', src: ['hernia'] },
+      { text: 'Usually day surgery: prescribe simple take-home analgesia.', src: ['notes'] },
       { text: 'The slides’ single-shot level, T11–L1, is the paravertebral level for teaching and the exam.', src: ['deck:147'] }
     ]
   }
@@ -251,8 +295,9 @@ function srcTags(list) {
   const out = [];
   // Plain text tags (not links): small links here were tiny tab stops. The numbers match the References list.
   if (deckSlides.length) out.push(`<span class="tb-src tb-src--deck">Slide${deckSlides.length > 1 ? 's' : ''} ${deckSlides.join(', ')}</span>`);
+  if (list.includes('notes')) out.push('<span class="tb-src tb-src--notes">Notes</span>');
   if (list.includes('derived')) out.push('<span class="tb-src tb-src--derived">Derived</span>');
-  list.filter(s => !s.startsWith('deck:') && s !== 'derived').forEach(k => {
+  list.filter(s => !s.startsWith('deck:') && s !== 'derived' && s !== 'notes').forEach(k => {
     if (refNum[k]) out.push(`<span class="tb-src tb-src--ref"><span class="tb-sr">Reference </span><span aria-hidden="true">Ref </span>${refNum[k]}</span>`);
   });
   return `<span class="tb-srcs">${out.join('')}</span>`;
@@ -295,7 +340,7 @@ function figure(op) {
   (op.marks || []).forEach(m => {
     if (m.type === 'line') marks += `<path d="M${m.x},${yMid(m.from) - 6} L${m.x},${yMid(m.to) + 6}" class="f-cut"/>`;
     if (m.type === 'ports') {
-      const pts = m.side === 'right'
+      const pts = m.pts ? m.pts.map(([x, s]) => [x, yMid(s)]) : m.side === 'right'
         ? [[100, yMid(m.at[0])], [74, yMid(m.at[1])], [100, yMid(m.at[2]) + 3]]
         : m.at.map((s, i) => [46 + i * 7, yMid(s)]);
       marks += pts.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" class="f-port"/>`).join('');

@@ -61,6 +61,7 @@ html{scroll-padding-top:24px}
 .tb-src{display:inline-block;font:500 12px/1.4 var(--mono);padding:1px 6px;border:1px solid var(--line-strong);color:var(--ink-soft);white-space:nowrap;background:var(--paper)}
 .tb-src--deck{border-color:var(--wine)}
 .tb-src--derived{border-style:dashed}
+.tb-src--notes{border-color:var(--wine);background:var(--blush);color:var(--ink)}
 
 /* chooser */
 .tb-chooser{display:grid;grid-template-columns:270px minmax(0,1fr);gap:40px;align-items:start}
@@ -136,6 +137,12 @@ html{scroll-padding-top:24px}
 .tb-table tbody th{font-weight:600}
 .tb-table td:nth-child(2),.tb-table td:nth-child(3){font-size:15px}
 
+.tb-epi{max-width:72ch}
+.tb-epi>p{color:var(--ink-soft);margin-bottom:12px!important}
+.tb-epi-list{padding-left:1.2em;margin:0 0 20px!important}
+.tb-epi-list li{font-size:15px;line-height:1.65;padding:3px 0}
+.tb-epi-list li::marker{color:var(--muted)}
+.tb-epi .tb-table{max-width:60ch}
 .tb-last{margin-top:36px;padding:14px 18px;background:var(--inset);border-left:3px solid #a12a1c;max-width:72ch;font-size:15px;line-height:1.65}
 
 /* references */
@@ -176,6 +183,7 @@ html{scroll-padding-top:24px}
   .tb-table td:nth-child(2)::before{content:'Cover'}
   .tb-table td:nth-child(3)::before{content:'Single shot'}
   .tb-table td:nth-child(4)::before{content:'Source'}
+  .tb-table--epi td:nth-child(2)::before{content:'Use for'}
 }
 @media (prefers-reduced-motion:reduce){.tb-app *{transition:none!important;animation:none!important}}
 @media print{.ntf-header,.ntf-crumbs,.tb-ops,.ntf-footer{display:none}}
