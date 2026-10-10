@@ -43,7 +43,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app | No (unlisted) |
 | `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting and ultrasound (Dr Koh Wenjun and Dr Chew Shi Hao) | No (unlisted) |
 | `truncal/` | Truncal blocks: landing page with the "which block for which operation" chooser, and `back/`, `chest-wall/`, `abdominal-wall/` pages on a shared engine in `truncal/shared/` (see `truncal/shared/DATA.md`) | No (unlisted; card on Regional) |
-| `head-neck/` | Draft head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the truncal engine (`truncal/shared/`) plus head figures in `head-neck/shared/js/head.js` | No (draft, reached from `draft.html`) |
+| `head-neck/` | Head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the truncal engine (`truncal/shared/`) plus head figures in `head-neck/shared/js/head.js` | No (unlisted; card on Regional, link from Airway) |
 | `ra.html` | Popliteal sciatic block (the only lower-limb block on the main site; linked from `regional.html`) | Via Regional |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
 | `draft-ra.html` | Draft copy of the full lower-limb block app (all 7 blocks, combinations) | No (draft) |
@@ -62,11 +62,11 @@ warning colours) are never recoloured to the brand.
 
 ## Rules
 
-- Drafts live behind `draft.html` (noindex). Don't link `draft.html`, `draft-ra.html`, the draft POCUS pages or `head-neck/` from the homepage,
+- Drafts live behind `draft.html` (noindex). Don't link `draft.html`, `draft-ra.html` or the draft POCUS pages from the homepage,
   navigation or the POCUS and Regional hubs. To publish a draft: add its card to the right hub, remove it from `draft.html`,
   and drop "draft" from its breadcrumb. To publish another lower-limb block, add it back to `RA_INDEX` in `ra.html`.
 
-- Don't add links to `exams/`, `popliteal/`, `brachial-plexus/`, `spinal/` or `truncal/` from the homepage, and keep their
+- Don't add links to `exams/`, `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/` or `head-neck/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
