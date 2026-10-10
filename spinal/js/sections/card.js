@@ -141,7 +141,7 @@ export function mount(root) {
   // ------------------------------------------------------------ 5 steps
   const S = steps([
     { id: 'cd-s-position', title: 'Position', body: 'Sitting or lateral, back arched, assistant supporting. For a hip fracture, give a nerve block first so moving hurts less. <a href="#tq-position">Position</a>' },
-    { id: 'cd-s-asepsis', title: 'Asepsis', body: `Hand hygiene, hat, mask, sterile gloves, 0.5% chlorhexidine in alcohol dried fully, sterile drape.${cite('tq-campbell2014')} <a href="#tq-asepsis">Asepsis</a>` },
+    { id: 'cd-s-asepsis', title: 'Asepsis', body: `Hand hygiene, hat, mask, sterile gloves, 2% chlorhexidine in 70% alcohol dried fully, sterile drape. <a href="#tq-asepsis">Asepsis</a>` },
     { id: 'cd-s-level', title: 'Level', body: 'Palpate the iliac crests, count, then choose a gap at L3–4 or below. If unsure, go lower: the cord must be well above you. <a href="#an-tuffier">Choosing the level</a>' },
     { id: 'cd-s-needle', title: 'Needle', body: 'Skin local anaesthetic. Use the finest pencil-point needle you can handle through an introducer. Advance in small steps. If it hits bone or deviates, withdraw fully and reinsert. <a href="#tq-needles">Needles</a>' },
     { id: 'cd-s-csf', title: 'CSF', body: 'Remove the stylet and wait for free flow of clear CSF. If slow, rotate in quarter turns. No CSF: <a href="#ts-dry-tap">dry tap</a>. Blood that does not clear: <a href="#ts-bloody-tap">bloody tap</a>.' },

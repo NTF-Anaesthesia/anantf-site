@@ -105,7 +105,7 @@ export function mount(root) {
     keyPoints([
       'Do the gate checks first: consent, site and side, platelets and clotting, and when the last anticoagulant dose was.',
       'Monitoring, IV access, a drawn-up vasopressor and airway and resuscitation kit come before the needle.',
-      'Pencil-point needle, L3–4 or below, 0.5% chlorhexidine in alcohol dried before puncture.',
+      'Pencil-point needle, L3–4 or below, 2% chlorhexidine in alcohol dried before puncture.',
       'Never inject through pain or paraesthesia, or without clear free-flowing CSF.',
       'Use the lowest dose that works. Go lower in older patients, and test both sides before incision.',
     ]),
@@ -323,7 +323,7 @@ export function mount(root) {
   root.append(part('tq-asepsis', 'Asepsis',
     T(steps([
       { title: 'Scrub and dress', body: 'Wash your hands thoroughly with a surgical scrub. Wear a cap, a mask and sterile gloves; the guideline also recommends a sterile gown. Use a large sterile drape.' },
-      { title: 'Use 0.5% chlorhexidine in alcohol', body: `${D('0.5%')} rather than ${D('2%')}: there is no convincing evidence that 2% works better against bacteria, but chlorhexidine is toxic to nerves.${cite('tq-campbell2014')}` },
+      { title: 'Use 2% chlorhexidine in 70% alcohol', body: `Chlorhexidine is toxic to nerves, so the steps below (keep it away from the kit, let it dry fully) matter. The Association of Anaesthetists guideline suggests ${D('0.5%')}, as there is no convincing evidence that ${D('2%')} works better against bacteria.${cite('tq-campbell2014')}` },
       { title: 'Keep chlorhexidine away from drugs and needles', body: 'Don’t pour it into pots on the same trolley as your spinal kit. Cover the kit while you apply it, whether by swab, applicator or spray.' },
       { title: 'Let it dry', body: 'Wait until the skin is dry before you feel for landmarks or puncture it.' },
       { title: 'Check your gloves', body: 'If chlorhexidine may have got onto your gloves, change them.' },
