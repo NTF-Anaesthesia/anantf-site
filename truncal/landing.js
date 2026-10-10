@@ -11,7 +11,7 @@ export const BLOCK_LINKS = {
   sap: 'chest-wall/#ch-sap',
   pecs: 'chest-wall/#ch-pecs',
   parasternal: 'chest-wall/#ch-parasternal',
-  clavipectoral: 'chest-wall/#cw-others', // the chest wall page's "Others" heading (switch to #clavipectoral once that id exists)
+  clavipectoral: 'chest-wall/#clavipectoral',
   tap: 'abdominal-wall/#ch-tap',
   stap: 'abdominal-wall/#ch-subcostal',
   rsb: 'abdominal-wall/#ch-rsb',
