@@ -4,7 +4,10 @@
 .tb-app .cw-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
 .tb-app .cw-fig-stage--wide{overflow-x:auto}
 .tb-app .cw-fig-svg{display:block;width:100%;height:auto}
-.tb-app .cw-fig-stage--wide .cw-fig-svg{min-width:600px}
+.tb-app .cw-fig-stage--wide .cw-fig-svg{min-width:780px} /* drawn at its intrinsic size or larger, so its 12–13 unit text renders at 12px or more */
+.tb-app main .cw-scroll-hint{display:none;margin:0 0 6px;font-size:14px;color:var(--tb-muted)}
+@media (max-width:860px){.tb-app main .cw-scroll-hint{display:block}
+  .tb-app .cw-fig-stage--wide{background:linear-gradient(to right,#fbf9f4 30%,rgba(251,249,244,0)) left/24px 100% no-repeat local,linear-gradient(to left,#fbf9f4 30%,rgba(251,249,244,0)) right/24px 100% no-repeat local,linear-gradient(to right,rgba(39,39,34,.12),rgba(39,39,34,0)) left/10px 100% no-repeat scroll,linear-gradient(to left,rgba(39,39,34,.12),rgba(39,39,34,0)) right/10px 100% no-repeat scroll,#fbf9f4}}
 .tb-app .cw-fig figcaption{margin-top:10px;font-size:15px;color:var(--tb-ink-soft)}
 .tb-app main .cw-legend{margin:6px 0 0;padding-left:1.4em}
 .tb-app main .cw-legend li{margin:0 0 4px}

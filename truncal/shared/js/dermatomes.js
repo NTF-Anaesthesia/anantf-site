@@ -126,16 +126,17 @@ function figureSvg(view, cov, fills, { labels = true } = {}) {
   sv('path', { d: OUTLINE[view], fill: 'none', stroke: '#55534d', 'stroke-width': 1.3 }, g);
   if (labels) {
     // Level labels on the left margin (every level, small) for the front; key landmarks for the back.
-    const lab = sv('g', { 'font-family': 'NTF Mono, JetBrains Mono, monospace', 'font-size': 9, fill: '#55534d' }, g);
+    // Sizes are in viewBox units; the map is drawn at >= 0.9 px per unit, so 14 units renders at >= 12 px.
+    const lab = sv('g', { 'font-family': 'NTF Mono, JetBrains Mono, monospace', 'font-size': 14, fill: '#55534d' }, g);
     if (view === 'front') {
-      LEVELS.forEach((lv, i) => { if (i % 2 === 0 || lv === 'L1' || lv === 'T10') sv('text', { x: 2, y: CENTRE[i] + 3, text: lv }, lab); });
+      LEVELS.forEach((lv, i) => { if (i % 2 === 0 || lv === 'L1') sv('text', { x: 19, y: CENTRE[i] + 5, 'text-anchor': 'end', text: lv }, lab); });
     } else {
-      sv('text', { x: 140, y: 21, text: 'C7' }, lab);
-      sv('text', { x: 140, y: 144, text: 'T7' }, lab);
+      sv('text', { x: 142, y: 23, text: 'C7' }, lab);
+      sv('text', { x: 140, y: 146, text: 'T7' }, lab);
     }
-    const side = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 10, fill: '#55534d' }, g);
+    const side = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 14, fill: '#55534d' }, g);
     const [l, r] = view === 'front' ? ['R', 'L'] : ['L', 'R'];
-    sv('text', { x: 18, y: 296, text: l }, side); sv('text', { x: 146, y: 296, text: r }, side);
+    sv('text', { x: 16, y: 298, text: l }, side); sv('text', { x: 146, y: 298, text: r }, side);
   }
   return g;
 }
@@ -149,12 +150,12 @@ const LANDMARK_KEY = 'Landmarks: nipple T4, xiphoid T6, umbilicus T10, inguinal 
  */
 export function coverageMap(cov, { id, title } = {}) {
   const fig = el('figure', { class: 'tb-cov', id });
-  const svg = sv('svg', { viewBox: '0 0 360 330', class: 'tb-cov-svg', role: 'img' });
+  const svg = sv('svg', { viewBox: '0 0 370 330', class: 'tb-cov-svg', role: 'img' });
   const fills = defs(svg);
-  const front = figureSvg('front', cov, fills); front.setAttribute('transform', 'translate(0 24)'); svg.append(front);
-  const back = figureSvg('back', cov, fills); back.setAttribute('transform', 'translate(185 24)'); svg.append(back);
-  const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 11, fill: '#272722', 'text-anchor': 'middle' }, svg);
-  sv('text', { x: 85, y: 14, text: 'Front' }, t); sv('text', { x: 270, y: 14, text: 'Back' }, t);
+  const front = figureSvg('front', cov, fills); front.setAttribute('transform', 'translate(10 24)'); svg.append(front);
+  const back = figureSvg('back', cov, fills); back.setAttribute('transform', 'translate(195 24)'); svg.append(back);
+  const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 14, fill: '#272722', 'text-anchor': 'middle' }, svg);
+  sv('text', { x: 95, y: 16, text: 'Front' }, t); sv('text', { x: 280, y: 16, text: 'Back' }, t);
   const words = (cov.areas || []).map((a) => `${levelRange(a.levels).join(', ').replace(/^(\w+),.*, (\w+)$/, '$1 to $2')} ${expandZones(a.zones).map((z) => z.replace('front-', 'front ').replace('back-', 'back ')).join(', ')}: ${DENSITY[a.density]?.label || a.density}, ${DENSITY[a.density]?.text || ''}`);
   svg.setAttribute('aria-label', `Dermatome coverage map${title ? ` for ${title}` : ''}. ${cov.summary || ''} ${words.join('. ')}.`);
   fig.append(el('div', { class: 'tb-cov-stage' }, svg));
@@ -171,8 +172,13 @@ export function coverageMap(cov, { id, title } = {}) {
   return fig;
 }
 
-/** Small torso with the probe drawn on it. probe = {view:'front'|'back', x, y, angle (deg, 0 = transverse), label}. */
-export function probeInset(probe) {
+/**
+ * Small torso with the probe drawn on it. probe = {view:'front'|'back', x, y, angle (deg, 0 = transverse), label,
+ * marker?: 'left'|'right'}. The dot (the probe's orientation marker) sits on the probe's left end (in the inset's
+ * own frame before rotation) when the image marker is screen-left, on its right end when it is screen-right.
+ * `opts.marker` is the scene's orient.marker; probe.marker overrides it.
+ */
+export function probeInset(probe, opts = {}) {
   const view = probe.view === 'back' ? 'back' : 'front';
   const svg = sv('svg', { viewBox: '0 0 170 300', class: 'tb-probe-svg', role: 'img', 'aria-label': `Probe position: ${probe.label || ''}` });
   const g = sv('g', {}, svg);
@@ -180,13 +186,15 @@ export function probeInset(probe) {
   landmarks(g, view);
   const pr = sv('g', { transform: `translate(${probe.x} ${probe.y}) rotate(${probe.angle || 0})` }, g);
   sv('rect', { x: -15, y: -4.5, width: 30, height: 9, fill: '#272722', stroke: '#fffaf0', 'stroke-width': 1.2 }, pr);
-  sv('circle', { cx: -11, cy: 0, r: 1.8, fill: '#fffaf0' }, pr);
+  const mk = probe.marker || opts.marker || 'left';
+  sv('circle', { cx: mk === 'right' ? 11 : -11, cy: 0, r: 2.2, fill: '#fffaf0' }, pr);
   if (probe.needle) {
     const [nx, ny] = probe.needle;
     sv('line', { x1: probe.x + nx, y1: probe.y + ny, x2: probe.x, y2: probe.y, stroke: '#633d3c', 'stroke-width': 2, 'stroke-dasharray': '4 2' }, g);
   }
-  const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 11, fill: '#55534d' }, svg);
+  // The inset is drawn about 80–96 px wide (0.47–0.56 px per unit), so 26 units renders at >= 12 px.
+  const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 26, 'font-weight': 500, fill: '#55534d' }, svg);
   const [l, r] = view === 'front' ? ['R', 'L'] : ['L', 'R'];
-  sv('text', { x: 14, y: 296, text: l }, t); sv('text', { x: 150, y: 296, text: r }, t);
+  sv('text', { x: 2, y: 296, text: l }, t); sv('text', { x: 168, y: 296, 'text-anchor': 'end', text: r }, t);
   return svg;
 }

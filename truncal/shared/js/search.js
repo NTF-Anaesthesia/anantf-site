@@ -54,8 +54,8 @@ function parse(q) {
 
 let entries = [];
 let builtAt = 0;
-const HEAD = 'h2,h3,h4,summary';
-const TEXT = 'h2,h3,h4,p,li,td,th,summary,figcaption,dt,dd';
+const HEAD = 'h1,h2,h3,h4,summary';
+const TEXT = 'h1,h2,h3,h4,p,li,td,th,summary,figcaption,dt,dd';
 
 export function buildIndex() {
   const out = [];
@@ -135,13 +135,19 @@ export function runSearch(q) {
 /** Wire an input + results list. */
 export function attachSearch(input, list, { onPick, onEscape } = {}) {
   let timer = 0;
+  // One polite status line ("12 results") instead of a live region on the whole list.
+  const status = el('p', { class: 'tb-sr', role: 'status', 'aria-live': 'polite', 'aria-atomic': 'true' });
+  list.after(status);
+  let lastMsg = '';
+  const say = (msg) => { if (msg === lastMsg) return; lastMsg = msg; status.textContent = msg; };
   const render = () => {
     const q = input.value.trim();
     list.textContent = '';
-    if (!q) return;
+    if (!q) { say(''); return; }
     if (Date.now() - builtAt > 4000) buildIndex();
     const res = runSearch(q);
-    if (!res.length) { list.append(el('li', { class: 'tb-sres-none', text: 'No results. Try another word, for example a block, a muscle or an operation.' })); return; }
+    if (!res.length) { list.append(el('li', { class: 'tb-sres-none', text: 'No results. Try another word, for example a block, a muscle or an operation.' })); say('No results'); return; }
+    say(`${res.length} result${res.length === 1 ? '' : 's'}`);
     for (const r of res) {
       const a = el('a', { class: 'tb-sres', href: `#${r.id}` },
         el('span', { class: 'tb-sres-t', text: r.title }),
@@ -156,15 +162,16 @@ export function attachSearch(input, list, { onPick, onEscape } = {}) {
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { e.preventDefault(); clearTimeout(timer); render(); $('a', list)?.click(); }
     else if (e.key === 'ArrowDown') { const f = $('a', list); if (f) { e.preventDefault(); f.focus(); } }
-    else if (e.key === 'Escape') { input.value = ''; list.textContent = ''; onEscape?.(); }
+    else if (e.key === 'Escape') { input.value = ''; list.textContent = ''; say(''); onEscape?.(); }
   });
+  input.addEventListener('search', () => { if (!input.value) { list.textContent = ''; say(''); } });
   list.addEventListener('keydown', (e) => {
     const links = $$('a', list);
     const i = links.indexOf(document.activeElement);
     if (i < 0) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); links[Math.min(i + 1, links.length - 1)].focus(); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); (i ? links[i - 1] : input).focus(); }
-    else if (e.key === 'Escape') { input.focus(); input.value = ''; list.textContent = ''; onEscape?.(); }
+    else if (e.key === 'Escape') { input.focus(); input.value = ''; list.textContent = ''; say(''); onEscape?.(); }
   });
   return { render };
 }

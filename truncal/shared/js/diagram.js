@@ -1,5 +1,6 @@
 // Truncal blocks: the idealised, labelled diagram of a scene (same geometry as the simulated ultrasound).
-// Clinical colour codes: nerves yellow, arteries red, veins blue; bone ivory; pleura blue-grey; LA (drawn by scan.js) blue.
+// Clinical colour codes: nerves yellow, arteries red, veins blue; bone near-white with a dark cortex outline (clearly
+// apart from the beige connective tissue); cartilage pale grey-green; pleura blue-grey; LA (drawn by scan.js) blue.
 // API: buildDiagram(scene, pxPerMm) -> canvas (cached per scene and size).
 import { prepare, shapePath, shapePoints, linePath } from './scene.js';
 
@@ -9,7 +10,8 @@ export const COL = {
   muscle: '#d49a88', muscleLine: '#a8695a', muscleStri: 'rgba(120,55,42,.28)',
   apo: '#efe5cf', apoLine: '#9d8c6a',
   connective: '#eadcc6',
-  bone: '#ece2cc', boneEdge: '#9c8a64', shadow: 'rgba(60,45,30,.10)',
+  bone: '#fdfbf6', boneEdge: '#3f3220', boneDot: 'rgba(63,50,32,.22)', shadow: 'rgba(60,45,30,.10)',
+  cartilage: '#dfe8e2', cartilageEdge: '#5f7a6c',
   pleura: '#5b6f99', lung: '#e3dce6', lungDot: 'rgba(91,111,153,.22)',
   peritoneum: '#6f6a3a', bowel: '#e9c9b6', bowelLine: '#b48a74',
   liver: '#a95c4d', kidney: '#b46a5b',
@@ -61,6 +63,7 @@ function fillKind(ctx, kind, path, box, o, r, px) {
     case 'liver': case 'organ': ctx.fillStyle = o.color || COL.liver; ctx.fill(path); break;
     case 'kidney': ctx.fillStyle = COL.kidney; ctx.fill(path); break;
     case 'fluid': ctx.fillStyle = COL.fluid; ctx.fill(path); break;
+    case 'cartilage': ctx.fillStyle = COL.cartilage; ctx.fill(path); break;
     case 'lung': {
       ctx.fillStyle = COL.lung; ctx.fill(path); ctx.fillStyle = COL.lungDot;
       const n = Math.round((box[2] - box[0]) * (box[3] - box[1]) / 3);
@@ -86,20 +89,29 @@ export function buildDiagram(scene, px, dpr = 1) {
   const lw = 1 / px;
   ctx.fillStyle = COL.connective; ctx.fillRect(0, 0, g.W, g.H);
   for (const ly of g.layers) {
-    if (ly.kind === 'none') continue;
+    if (ly.kind === 'none' || ly.kind === 'label') continue;
     fillKind(ctx, ly.kind, polyPath(ly.poly), boxOf(ly.poly), ly, r, px);
   }
-  const late = new Set(['bone', 'artery', 'vein', 'nerve']);
+  const late = new Set(['bone', 'cartilage', 'artery', 'vein', 'nerve']);
   const drawShape = (st) => {
+    if (st.kind === 'label') return; // label-only item: outlined by the scan viewer, not painted
     for (const sh of st.shapes) {
       const p = shapePath(sh), pts = shapePoints(sh, 72), box = boxOf(pts);
       if (st.kind === 'bone') {
         if (sh.t === 'l') {
-          ctx.strokeStyle = COL.boneEdge; ctx.lineWidth = sh.w + 2 * lw; ctx.stroke(p);
-          ctx.strokeStyle = COL.bone; ctx.lineWidth = sh.w; ctx.stroke(p);
+          ctx.strokeStyle = COL.boneEdge; ctx.lineWidth = sh.w + 3 * lw; ctx.stroke(p);
+          ctx.strokeStyle = COL.bone; ctx.lineWidth = Math.max(lw, sh.w - lw); ctx.stroke(p);
         } else {
-          ctx.fillStyle = COL.bone; ctx.fill(p); ctx.strokeStyle = COL.boneEdge; ctx.lineWidth = 1.6 * lw; ctx.stroke(p);
+          ctx.fillStyle = COL.bone; ctx.fill(p);
+          // cancellous stipple so bone reads as bone even where it touches pale tissue
+          ctx.save(); ctx.clip(p); ctx.fillStyle = COL.boneDot;
+          const n = Math.round((box[2] - box[0]) * (box[3] - box[1]) * 1.4);
+          for (let i = 0; i < n; i++) { ctx.beginPath(); ctx.arc(box[0] + r() * (box[2] - box[0]), box[1] + r() * (box[3] - box[1]), 0.6 * lw + r() * 0.6 * lw, 0, 7); ctx.fill(); }
+          ctx.restore();
+          ctx.strokeStyle = COL.boneEdge; ctx.lineWidth = 2.2 * lw; ctx.stroke(p);
         }
+      } else if (st.kind === 'cartilage') {
+        ctx.fillStyle = COL.cartilage; ctx.fill(p); ctx.strokeStyle = COL.cartilageEdge; ctx.lineWidth = 1.6 * lw; ctx.stroke(p);
       } else if (st.kind === 'nerve' || st.kind === 'artery' || st.kind === 'vein') {
         ctx.fillStyle = COL[st.kind]; ctx.fill(p); ctx.strokeStyle = COL[`${st.kind}Edge`]; ctx.lineWidth = 1.2 * lw; ctx.stroke(p);
       } else if ((st.kind === 'fascia' || st.kind === 'ligament' || st.kind === 'membrane') && sh.t === 'l') {
@@ -113,6 +125,7 @@ export function buildDiagram(scene, px, dpr = 1) {
   for (const st of g.shapes) if (!late.has(st.kind)) drawShape(st);
   // Layer borders
   for (const [i, ly] of g.layers.entries()) {
+    if (ly.kind === 'label') continue;
     const next = g.layers[i + 1];
     ctx.strokeStyle = ly.kind === 'muscle' || next?.kind === 'muscle' ? COL.muscleLine : COL.apoLine;
     ctx.lineWidth = 1.2 * lw;
@@ -124,6 +137,7 @@ export function buildDiagram(scene, px, dpr = 1) {
     ctx.stroke();
   }
   for (const ln of g.lines) {
+    if (ln.kind === 'label') continue;
     const path = linePath(ln.pts);
     if (ln.kind === 'pleura' || ln.lung) {
       const lp = polyPath([...ln.pts, [ln.pts[ln.pts.length - 1][0], g.H + 2], [ln.pts[0][0], g.H + 2]]);
@@ -134,8 +148,8 @@ export function buildDiagram(scene, px, dpr = 1) {
     } else if (ln.kind === 'ligament') {
       ctx.strokeStyle = COL.ligament; ctx.lineWidth = Math.max(2.4 * lw, (ln.w ?? 0.7)); ctx.stroke(path);
     } else if (ln.kind === 'bone') {
-      ctx.strokeStyle = COL.boneEdge; ctx.lineWidth = (ln.w ?? 1) + 2 * lw; ctx.stroke(path);
-      ctx.strokeStyle = COL.bone; ctx.lineWidth = ln.w ?? 1; ctx.stroke(path);
+      ctx.strokeStyle = COL.boneEdge; ctx.lineWidth = (ln.w ?? 1) + 3 * lw; ctx.stroke(path);
+      ctx.strokeStyle = COL.bone; ctx.lineWidth = Math.max(lw, (ln.w ?? 1) - lw); ctx.stroke(path);
     } else {
       ctx.strokeStyle = COL.fascia; ctx.lineWidth = Math.max(1.6 * lw, (ln.w ?? 0.3)); ctx.stroke(path);
     }

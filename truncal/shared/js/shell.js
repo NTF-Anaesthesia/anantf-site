@@ -12,6 +12,47 @@ const ICON = {
   link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>',
 };
 
+const clampI = (v, a, b) => Math.max(a, Math.min(b, v));
+
+/** Replace a heading element with another level, keeping attributes, children and listeners on children. */
+function retag(node, tag, cls) {
+  const n = document.createElement(tag);
+  for (const a of node.attributes) n.setAttribute(a.name, a.value);
+  if (cls) n.classList.add(cls);
+  while (node.firstChild) n.append(node.firstChild);
+  node.replaceWith(n);
+  return n;
+}
+
+/**
+ * After a chapter renders: give it one visible h1 (its title) and merge stacked kickers.
+ * Chapters are authored with an h2 title and h3/h4 sub-headings. With one h2, every heading moves up a level
+ * (h2 -> h1, h3 -> h2, h4 -> h3) and keeps its look through a tb-hv<n> class (n = the authored level).
+ * With several h2s, only the first becomes the h1.
+ */
+function tidyChapter(sec) {
+  if (!sec.querySelector('h1')) {
+    const h2s = [...sec.querySelectorAll('h2')];
+    if (h2s.length) {
+      if (h2s.length === 1) {
+        for (const h of [...sec.querySelectorAll('h3,h4,h5')]) {
+          const lv = +h.tagName[1];
+          retag(h, `h${lv - 1}`, `tb-hv${lv}`);
+        }
+      }
+      retag(h2s[0], 'h1', 'tb-ch-title');
+    }
+  }
+  // "Chapter n of m · Page" and a block's own kicker straight after it: show one line.
+  const k = sec.querySelector(':scope > .tb-ch-kicker');
+  const next = sec.querySelector(':scope > .tb-bhead > .tb-eyebrow:first-child') || (k?.nextElementSibling?.matches('.tb-eyebrow') ? k.nextElementSibling : null);
+  if (k && next && !k.dataset.merged) {
+    k.textContent = `${k.textContent.split(' · ')[0]} · ${next.textContent}`;
+    k.dataset.merged = '1';
+    next.remove();
+  }
+}
+
 const decode = (h) => { try { return decodeURIComponent((h || '').replace(/^#/, '')); } catch { return (h || '').replace(/^#/, ''); } };
 
 /**
@@ -42,8 +83,9 @@ export async function bootPage(cfg) {
   hubIn.append(el('h1', { id: 'tb-home-h', text: cfg.title || BASE_TITLE }));
   if (cfg.lead) hubIn.append(fill(el('p', { class: 'tb-lead' }), cfg.lead));
   hubIn.append(fill(el('p', { class: 'tb-credit' }), 'Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia'));
+  hubIn.append(fill(el('p', { class: 'tb-hub-disclaimer' }), '<strong>For education only.</strong> Follow local guidelines and senior advice; check doses for each patient.'));
   const hubQ = el('input', { type: 'search', class: 'tb-search-input', id: 'tb-hub-q', placeholder, autocomplete: 'off', spellcheck: 'false', 'aria-label': 'Search this page' });
-  const hubRes = el('ul', { class: 'tb-sresults', id: 'tb-hub-res', 'aria-live': 'polite' });
+  const hubRes = el('ul', { class: 'tb-sresults', id: 'tb-hub-res' });
   hubIn.append(el('div', { class: 'tb-search-row tb-hub-search', role: 'search' }, hubQ), hubRes);
   if ((cfg.tiles || []).length) {
     hubIn.append(el('h2', { class: 'tb-hub-h', id: 'hub-need', text: 'I need to…' }));
@@ -71,12 +113,36 @@ export async function bootPage(cfg) {
   });
 
   // ------------------------------------------------------------ sticky bar + search sheet
+  // Wide screens: an inline list of chapter links. Narrow screens: a disclosure button that opens the same
+  // links as a menu (a <select> would jump chapters on every arrow key press).
   const chlist = el('ol', { class: 'tb-chlist', id: 'tb-chlist' });
-  const sel = el('select', { id: 'tb-chselect' }, el('option', { value: 'ch-home', text: 'Hub (start here)' }));
+  const menuList = el('ol', { class: 'tb-chmenu-list' }, el('li', {}, el('a', { href: '#ch-home', dataset: { ch: 'ch-home' }, text: 'Hub (start here)' })));
   chs.forEach((c) => {
     chlist.append(el('li', {}, el('a', { href: `#${c.id}`, dataset: { ch: c.id }, text: c.short || c.title })));
-    sel.append(el('option', { value: c.id, text: c.title }));
+    menuList.append(el('li', {}, el('a', { href: `#${c.id}`, dataset: { ch: c.id }, text: c.title })));
   });
+  const menuLabel = el('span', { class: 'tb-chmenu-cur', text: 'Hub' });
+  const menuBtn = el('button', { type: 'button', class: 'tb-chmenu-btn', id: 'tb-chmenu-btn', 'aria-expanded': 'false', 'aria-controls': 'tb-chmenu' },
+    el('span', { class: 'tb-chmenu-k', text: 'Chapter' }), menuLabel, el('span', { class: 'tb-chmenu-caret', 'aria-hidden': 'true' }));
+  const menu = el('div', { class: 'tb-chmenu-panel', id: 'tb-chmenu', hidden: true }, menuList);
+  const chmenu = el('div', { class: 'tb-chmenu' }, menuBtn, menu);
+  const closeMenu = (refocus = false) => { if (menu.hidden) return; menu.hidden = true; menuBtn.setAttribute('aria-expanded', 'false'); if (refocus) menuBtn.focus(); };
+  menuBtn.addEventListener('click', () => {
+    if (!menu.hidden) { closeMenu(); return; }
+    menu.hidden = false; menuBtn.setAttribute('aria-expanded', 'true');
+    (menuList.querySelector('a[aria-current]') || menuList.querySelector('a')).focus();
+  });
+  menu.addEventListener('click', (e) => { if (e.target.closest('a')) closeMenu(); });
+  chmenu.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) { e.preventDefault(); closeMenu(true); return; }
+    if (menu.hidden || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+    const links = $$('a', menuList); const i = links.indexOf(document.activeElement);
+    e.preventDefault();
+    const n = e.key === 'Home' ? 0 : e.key === 'End' ? links.length - 1 : clampI(i + (e.key === 'ArrowDown' ? 1 : -1), 0, links.length - 1);
+    links[n].focus();
+  });
+  chmenu.addEventListener('focusout', (e) => { if (!chmenu.contains(e.relatedTarget)) closeMenu(); });
+  document.addEventListener('pointerdown', (e) => { if (!chmenu.contains(e.target)) closeMenu(); });
   const homeLink = el('a', { class: 'tb-bar-home', id: 'tb-home-link', href: '#ch-home', 'aria-label': 'Back to the hub', html: `${ICON.home}<span>Hub</span>` });
   const searchBtn = el('button', { type: 'button', class: 'tb-tool tb-bar-btn', id: 'tb-search-open', 'aria-expanded': 'false', 'aria-controls': 'tb-sheet', html: `${ICON.search}<span>Search</span>` });
   const shareStatus = el('span', { id: 'tb-share-status', class: 'tb-sr', role: 'status', 'aria-live': 'polite' });
@@ -84,12 +150,12 @@ export async function bootPage(cfg) {
   const bar = barHost || el('div', { id: 'tb-bar' });
   bar.className = 'tb-bar';
   bar.textContent = '';
-  bar.append(el('div', { class: 'tb-bar-inner site-container' }, homeLink,
-    el('nav', { class: 'tb-chnav', 'aria-label': 'Chapters' }, chlist, el('label', { class: 'tb-chsel' }, el('span', { class: 'tb-sr', text: 'Go to chapter' }), sel)),
+  bar.append(el('div', { class: 'tb-bar-inner site-container' },
+    el('nav', { class: 'tb-chnav', 'aria-label': 'Chapters' }, homeLink, chlist, chmenu),
     searchBtn, shareBtn, shareStatus));
   if (!barHost) main.before(bar);
   const sheetQ = el('input', { type: 'search', class: 'tb-search-input', id: 'tb-sheet-q', placeholder, autocomplete: 'off', spellcheck: 'false', 'aria-label': 'Search this page' });
-  const sheetRes = el('ul', { class: 'tb-sresults', id: 'tb-sheet-res', 'aria-live': 'polite' });
+  const sheetRes = el('ul', { class: 'tb-sresults', id: 'tb-sheet-res' });
   const sheetClose = el('button', { type: 'button', class: 'tb-tool', text: 'Close' });
   const sheet = el('div', { class: 'tb-sheet', id: 'tb-sheet', role: 'dialog', 'aria-label': 'Search this page', hidden: true },
     el('div', { class: 'tb-sheet-inner site-container' }, el('div', { class: 'tb-search-row' }, sheetQ, sheetClose), sheetRes));
@@ -114,8 +180,8 @@ export async function bootPage(cfg) {
   const byId = new Map(chapters.map((c) => [c.id, c]));
   let current = null;
   const paintNav = () => {
-    $$('a', chlist).forEach((a) => { if (a.dataset.ch === current?.id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
-    sel.value = current?.id || 'ch-home';
+    $$('a', chlist).concat($$('a', menuList)).forEach((a) => { if (a.dataset.ch === current?.id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    menuLabel.textContent = current?.id === 'ch-home' || !current ? 'Hub' : (chs.find((c) => c.id === current.id)?.short || current.dataset.title);
     homeLink.hidden = current?.id === 'ch-home';
   };
   const kickResize = () => { requestAnimationFrame(() => window.dispatchEvent(new Event('resize'))); setTimeout(() => window.dispatchEvent(new Event('resize')), 150); };
@@ -130,7 +196,6 @@ export async function bootPage(cfg) {
     kickResize();
     return true;
   }
-  sel.addEventListener('change', () => { location.hash = sel.value; });
 
   const shown = (n) => !!n && n.getClientRects().length > 0 && !n.closest('[hidden]');
   const openAncestors = (n) => { for (let p = n.parentElement; p; p = p.parentElement) if (p.tagName === 'DETAILS' && !p.open) p.open = true; };
@@ -142,7 +207,7 @@ export async function bootPage(cfg) {
       const ch = byId.get(id);
       showChapter(ch);
       window.scrollTo({ top: 0, behavior: 'instant' });
-      if (!initial) { const h = ch.querySelector('h1,h2'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } announce(`${ch.dataset.title}`); }
+      if (!initial) { const h = ch.querySelector('h1') || ch.querySelector('h2'); if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); } announce(`${ch.dataset.title}`); }
       return;
     }
     let target = document.getElementById(id);
@@ -193,10 +258,11 @@ export async function bootPage(cfg) {
     sheet.hidden = false; searchBtn.setAttribute('aria-expanded', 'true'); sheetQ.focus();
   };
   searchBtn.addEventListener('click', () => { if (!sheet.hidden) closeSheet(); else openSearch(); });
+  // Ctrl+K / Cmd+K opens search (no single-character shortcuts: WCAG 2.1.4).
   document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && !e.target.closest?.('input,textarea,select,[contenteditable]')) { e.preventDefault(); openSearch(); }
+    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); openSearch(); }
   });
-  window.addEventListener('hashchange', () => closeSheet());
+  window.addEventListener('hashchange', () => { closeSheet(); closeMenu(); });
 
   // ------------------------------------------------------------ render chapters
   {
@@ -215,6 +281,7 @@ export async function bootPage(cfg) {
         renderRefs(sec);
       }
       if (typeof c.render === 'function') await c.render(sec);
+      tidyChapter(sec);
     } catch (err) {
       console.error(`[truncal] chapter ${c.id} failed`, err);
       sec.append(el('p', { class: 'tb-mount-error', text: 'This part didn’t load. Reload the page.' }));

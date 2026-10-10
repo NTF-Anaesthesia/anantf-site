@@ -3,25 +3,30 @@
    Sources: 'deck:<slide>' = teaching slides, 'derived' = worked out from the slides,
    any other key = a reference in the page's References list (<li id="ref-KEY">). */
 
-/* Where each block lives. Pages are linked at page level for now;
-   add block anchors here when the pages exist, e.g. esp: 'back/#esp'. */
+/* Where each block lives: page + chapter (or element) anchor. The shell opens the chapter that holds the id. */
 export const BLOCK_LINKS = {
-  esp: 'back/',
-  mtp: 'back/',
-  pvb: 'back/',
-  sap: 'chest-wall/',
-  pecs: 'chest-wall/',
-  parasternal: 'chest-wall/',
-  clavipectoral: 'chest-wall/',
-  tap: 'abdominal-wall/',
-  stap: 'abdominal-wall/',
-  rsb: 'abdominal-wall/',
-  ql: 'abdominal-wall/',
-  ilioinguinal: 'abdominal-wall/'
+  esp: 'back/#ch-esp',
+  mtp: 'back/#esp-mtp',
+  pvb: 'back/#ch-pvb',
+  sap: 'chest-wall/#ch-sap',
+  pecs: 'chest-wall/#ch-pecs',
+  parasternal: 'chest-wall/#ch-parasternal',
+  clavipectoral: 'chest-wall/#cw-others', // the chest wall page's "Others" heading (switch to #clavipectoral once that id exists)
+  tap: 'abdominal-wall/#ch-tap',
+  stap: 'abdominal-wall/#ch-subcostal',
+  rsb: 'abdominal-wall/#ch-rsb',
+  ql: 'abdominal-wall/#ch-ql',
+  ilioinguinal: 'abdominal-wall/#ch-iih'
 };
 window.BLOCK_LINKS = BLOCK_LINKS;
 
-const PAGE_NAMES = { 'back/': 'Back', 'chest-wall/': 'Chest wall', 'abdominal-wall/': 'Abdominal wall' };
+/* Short names for the "Open … ↗" links */
+const BLOCK_NAMES = {
+  esp: 'ESP', mtp: 'MTP', pvb: 'paravertebral', sap: 'serratus anterior', pecs: 'PECS', parasternal: 'parasternal',
+  clavipectoral: 'clavipectoral', tap: 'lateral TAP', stap: 'subcostal TAP', rsb: 'rectus sheath', ql: 'quadratus lumborum',
+  ilioinguinal: 'ilioinguinal'
+};
+const PAGE_NAMES = { 'back/': 'back', 'chest-wall/': 'chest wall', 'abdominal-wall/': 'abdominal wall' };
 
 const SEGS = ['T1','T2','T3','T4','T5','T6','T7','T8','T9','T10','T11','T12','L1','L2'];
 /* y edges of each dermatome band on the schematic torso (14 bands, 15 edges) */
@@ -103,7 +108,7 @@ const OPS = [
     marks: [{ type: 'line', x: 100, from: 'T2', to: 'T6' }],
     groups: [
       { label: 'Usual choice', items: [
-        { name: 'Parasternal (transversus thoracis) plane, both sides', blocks: ['parasternal'], why: 'Covered briefly on the chest wall page.', src: ['derived', 'names'] }
+        { name: 'Parasternal intercostal plane, superficial or deep (deep = transversus thoracis plane), both sides', blocks: ['parasternal'], why: 'Covered briefly on the chest wall page.', src: ['derived', 'names'] }
       ]}
     ],
     notes: [
@@ -119,7 +124,7 @@ const OPS = [
     marks: [{ type: 'subcostal' }],
     groups: [
       { label: 'First choice (open liver resection)', items: [
-        { name: 'Subcostal TAP, both sides, single shot or catheter', blocks: ['stap'], src: ['liver'] },
+        { name: 'Bilateral oblique subcostal TAP (single shot or catheter)', blocks: ['stap'], src: ['liver'] },
         { name: 'Thoracic epidural', blocks: [], why: 'An equal first choice in PROSPECT. Not covered on these pages.', src: ['liver'] }
       ]},
       { label: 'Alternative', items: [
@@ -198,7 +203,7 @@ const OPS = [
     cover: { from: 'T8', to: 'T12', text: 'T8–T12 on both sides', src: ['deck:147'] },
     single: { levels: ['T10'], text: 'T10', src: ['deck:147'] },
     side: 'both',
-    marks: [{ type: 'line', x: 100, from: 'T10', to: 'T12' }],
+    marks: [{ type: 'line', x: 100, from: 'T8', to: 'T12' }],
     groups: [
       { label: 'Options', items: [
         { name: 'Rectus sheath, both sides (catheters for an open midline wound)', blocks: ['rsb'], src: ['derived', 'chin'] },
@@ -228,7 +233,7 @@ const OPS = [
       ]}
     ],
     notes: [
-      { text: 'PROSPECT does not recommend paravertebral or epidural for open hernia repair: they work, but are too invasive for this operation.', src: ['hernia'] },
+      { text: 'PROSPECT recommends an ilioinguinal and iliohypogastric block or a TAP block, plus local infiltration.', src: ['hernia'] },
       { text: 'The slides’ single-shot level, T11–L1, is the paravertebral level for teaching and the exam.', src: ['deck:147'] }
     ]
   }
@@ -244,18 +249,23 @@ function srcTags(list) {
   if (!list || !list.length) return '';
   const deckSlides = list.filter(s => s.startsWith('deck:')).map(s => s.slice(5));
   const out = [];
-  if (deckSlides.length) out.push(`<a class="tb-src tb-src--deck" href="#ref-deck" title="Department teaching slides">Slide${deckSlides.length > 1 ? 's' : ''} ${deckSlides.join(', ')}</a>`);
-  if (list.includes('derived')) out.push('<span class="tb-src tb-src--derived" title="Worked out from the slides, not stated in them">Derived</span>');
+  // Plain text tags (not links): small links here were tiny tab stops. The numbers match the References list.
+  if (deckSlides.length) out.push(`<span class="tb-src tb-src--deck">Slide${deckSlides.length > 1 ? 's' : ''} ${deckSlides.join(', ')}</span>`);
+  if (list.includes('derived')) out.push('<span class="tb-src tb-src--derived">Derived</span>');
   list.filter(s => !s.startsWith('deck:') && s !== 'derived').forEach(k => {
-    if (refNum[k]) out.push(`<a class="tb-src tb-src--ref" href="#ref-${k}" aria-label="Reference ${refNum[k]}">Ref ${refNum[k]}</a>`);
+    if (refNum[k]) out.push(`<span class="tb-src tb-src--ref"><span class="tb-sr">Reference </span><span aria-hidden="true">Ref </span>${refNum[k]}</span>`);
   });
   return `<span class="tb-srcs">${out.join('')}</span>`;
 }
 
 function blockLinks(keys) {
-  const pages = [...new Set(keys.map(k => BLOCK_LINKS[k]).filter(Boolean))];
-  if (!pages.length) return '<span class="tb-opt-page tb-opt-page--none">Not on these pages</span>';
-  return pages.map(p => `<a class="tb-opt-page" href="${p}">${PAGE_NAMES[p] || p} page <span aria-hidden="true">→</span></a>`).join('');
+  const seen = new Set();
+  const links = keys.filter(k => BLOCK_LINKS[k] && !seen.has(BLOCK_LINKS[k]) && seen.add(BLOCK_LINKS[k]));
+  if (!links.length) return '<span class="tb-opt-page tb-opt-page--none">Not on these pages</span>';
+  return links.map(k => {
+    const href = BLOCK_LINKS[k], page = PAGE_NAMES[href.split('#')[0]] || href;
+    return `<a class="tb-opt-page" href="${href}">Open ${esc(BLOCK_NAMES[k] || k)} on the ${esc(page)} page <span aria-hidden="true">↗</span></a>`;
+  }).join('');
 }
 
 /* ------------------------------------------------------------------ figure */

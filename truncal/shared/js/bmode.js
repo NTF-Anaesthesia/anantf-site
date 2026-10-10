@@ -188,6 +188,12 @@ function paintRegion(C, kind, path, box, o = {}) {
       C.at.fillStyle = gray(0.85); C.at.fill(path); // posterior enhancement
       break;
     }
+    case 'cartilage': { // hypoechoic, homogeneous, mild attenuation (no full shadow)
+      C.e.fillStyle = gray(o.echo ?? 0.05); C.e.fill(path); C.sp.fillStyle = '#000'; C.sp.fill(path);
+      speckleFill(C, path, box, 0.8, [0.05, 0.14], 0.04, 0.16);
+      C.at.fillStyle = gray(104 / 255); C.at.fill(path);
+      break;
+    }
     case 'lung': {
       C.e.fillStyle = gray(0.2); C.e.fill(path); C.sp.fillStyle = '#000'; C.sp.fill(path);
       speckleFill(C, path, box, 0.5, [0.5, 1.6], 0.1, 0.36);
@@ -207,7 +213,6 @@ function paintLine(C, ln, H) {
     const box = [pts[0][0], Math.min(...pts.map((p) => p[1])), pts[pts.length - 1][0], H];
     C.e.save(); C.e.clip(lp); C.e.fillStyle = gray(0.2); C.e.fillRect(box[0], box[1], box[2] - box[0], H); C.e.restore();
     C.sp.save(); C.sp.clip(lp); C.sp.fillStyle = '#000'; C.sp.fillRect(box[0], box[1], box[2] - box[0], H); C.sp.restore();
-    C.hb.save(); C.hb.clip(lp); C.hb.fillStyle = '#fff'; C.hb.fillRect(box[0], box[1], box[2] - box[0], H); C.hb.restore();
     speckleFill(C, lp, box, 0.5, [0.5, 1.6], 0.1, 0.36);
     strands(C, lp, box, 1.2, 0, 4, [1, 4], 0.22, 0.45, 0, [0.15, 0.35]);
     const dpl = pts.reduce((a, q) => a + q[1], 0) / pts.length;
@@ -228,24 +233,46 @@ function paintLine(C, ln, H) {
   specStroke(C, pts, amp, w, { floor: ln.floor ?? 0.35, wav: ln.wav ?? 0.05, eAmp: 0.5, vary: ln.vary || 0, gaps: ln.gaps || 0 });
 }
 
+/** Upper (probe-facing) envelope of a closed outline: for each x, the shallowest point of the outline. */
+function upperEnvelope(pts, box) {
+  const out = [];
+  const step = Math.max(0.08, (box[2] - box[0]) / 160);
+  for (let x = box[0] + step * 0.5; x <= box[2] - step * 0.5 + 1e-6; x += step) {
+    let best = Infinity;
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1], b = pts[i];
+      if ((a[0] - x) * (b[0] - x) > 0 || a[0] === b[0]) continue;
+      const y = a[1] + (b[1] - a[1]) * (x - a[0]) / (b[0] - a[0]);
+      if (y < best) best = y;
+    }
+    if (best < Infinity) out.push([x, best]);
+  }
+  return out;
+}
+
 function paintShape(C, st) {
   for (const sh of st.shapes) {
     const p = shapePath(sh), box = shapeBox(sh), pts = shapePoints(sh, 72);
     switch (st.kind) {
       case 'bone': {
         if (sh.t === 'l') { paintLine(C, { kind: 'bone', pts, w: sh.w }, C.H); break; }
-        // Solid bone: bright cortex facing the probe, black acoustic shadow underneath.
-        C.e.fillStyle = gray(0.1); C.e.fill(p); C.sp.fillStyle = '#000'; C.sp.fill(p);
+        // Solid bone: bright cortex on the probe-facing (upper) surface only, black acoustic shadow underneath.
+        C.e.fillStyle = gray(0.04); C.e.fill(p); C.sp.fillStyle = '#000'; C.sp.fill(p);
         C.hb.save(); C.hb.fillStyle = '#000'; C.hb.fill(p); C.hb.restore();
-        // Upper surface only (points whose outward normal faces up).
-        const top = []; const [cx, cy] = [(box[0] + box[2]) / 2, (box[1] + box[3]) / 2];
-        for (const q of pts) if (q[1] <= cy + (box[3] - box[1]) * 0.15) top.push(q);
-        top.sort((a, b) => a[0] - b[0]);
-        void cx;
+        const top = upperEnvelope(pts, box);
         if (top.length > 1) {
-          C.e.strokeStyle = gray(0.85); C.e.lineWidth = st.cortex ?? 0.9; C.e.stroke(linePath(top));
-          specStroke(C, top, 1, (st.cortex ?? 0.9) * 0.8, { floor: 0.55, eAmp: 0 });
+          // Brightness follows how squarely the surface faces the beam: flat tops bright, steep flanks dim.
+          specStroke(C, top, 1, st.cortex ?? 0.9, { floor: 0.06, eAmp: 0.55 });
         }
+        break;
+      }
+      case 'cartilage': {
+        // Costal cartilage: hypoechoic, fairly homogeneous, a thin bright anterior surface, no full shadow.
+        C.e.fillStyle = gray(st.echo ?? 0.05); C.e.fill(p); C.sp.fillStyle = '#000'; C.sp.fill(p);
+        speckleFill(C, p, box, 0.8, [0.05, 0.14], 0.04, 0.16);
+        C.at.fillStyle = gray(104 / 255); C.at.fill(p); // mild attenuation only
+        const top = upperEnvelope(pts, box);
+        if (top.length > 1) specStroke(C, top, st.edge ?? 0.7, 0.3, { floor: 0.1, eAmp: 0.45 });
         break;
       }
       case 'artery': case 'vein': {
@@ -283,7 +310,9 @@ function paintShape(C, st) {
 }
 
 // ---------------------------------------------------------------- compose
-function renderBMode(C, W, H, scene, PX) {
+// The image is built in phases (a generator) so the async builder can yield to the browser between them
+// instead of blocking the main thread for a few hundred milliseconds.
+function* renderBMode(C, W, H, scene, PX, res) {
   const N = W * H;
   const eD = C.e.getImageData(0, 0, W, H).data, sD = C.sp.getImageData(0, 0, W, H).data;
   const aD = C.at.getImageData(0, 0, W, H).data, bD = C.hb.getImageData(0, 0, W, H).data;
@@ -298,27 +327,37 @@ function renderBMode(C, W, H, scene, PX) {
     if (!kc.has(key)) { const radii = boxRadii(key / 4); kc.set(key, { radii, l2: 1 / Math.sqrt(boxSumSq(radii)) }); }
     rowKernels.push(kc.get(key));
   }
+  // Where each column first meets bone (image px); everything below is in the acoustic shadow.
+  const shadowTop = new Float32Array(W).fill(Infinity);
+  for (let x = 0; x < W; x++) for (let y = 0; y < H; y++) if (bD[(y * W + x) * 4] < 128) { shadowTop[x] = y; break; }
+  res.shadowTop = shadowTop;
+  yield;
   const tmpRow = new Float32Array(N);
   let sp = new Float32Array(N); for (let i = 0; i < N; i++) sp[i] = sD[i * 4] / 255;
   sp = convV(sp, W, H, ky1);
   const sp2 = new Float32Array(N);
   for (let y = 0; y < H; y++) blurRow(sp, sp2, tmpRow, y * W, W, rowKernels[y].radii, 1);
+  yield;
   const CS = 2.4, LOOKS = 2, ampOut = new Float32Array(N), rIm = new Float32Array(N), rRe = new Float32Array(N);
   for (let look = 0; look < LOOKS; look++) {
     let re = new Float32Array(N), im = new Float32Array(N);
     let sd = (hashStr(scene.id + look) | 1) >>> 0;
     for (let i = 0; i < N; i++) { const a = eD[i * 4] * (1 / 255); sd ^= sd << 13; sd ^= sd >>> 17; sd ^= sd << 5; re[i] = a * GAUSS[sd & 0xffff]; im[i] = a * GAUSS[sd >>> 16]; }
     re = convV(re, W, H, ky2); im = convV(im, W, H, ky2);
+    yield;
     for (let y = 0; y < H; y++) { const rk = rowKernels[y], o = y * W; blurRow(re, rRe, tmpRow, o, W, rk.radii, rk.l2); blurRow(im, rIm, tmpRow, o, W, rk.radii, rk.l2); }
     for (let i = 0; i < N; i++) { const r = rRe[i] + sp2[i] * CS, q = rIm[i]; ampOut[i] += Math.sqrt(r * r + q * q) / LOOKS; }
+    yield;
   }
-  // Attenuation walk down each column.
+  // Attenuation walk down each column. Bone (hb channel) blocks the beam: within a fraction of a millimetre of
+  // its surface the column goes black, and once shadowed it stays shadowed to the bottom of the image, so
+  // nothing deeper (pleura, lung, other lines) shows through.
   const G = new Float32Array(N);
-  const dz = 1 / PX, kE = scene.enh ?? 0.1, kS = 0.55, relax = Math.exp(-dz / 6), HFLOOR = 0.12;
+  const dz = 1 / PX, kE = scene.enh ?? 0.1, kS = 0.55, relax = Math.exp(-dz / 6), HFLOOR = 0.006;
   const soft = new Float32Array(W).fill(1), hard = new Float32Array(W).fill(1);
   const eTab = new Float32Array(256);
   for (let a = 0; a < 256; a++) eTab[a] = a > 140 ? Math.exp(kE * ((a - 128) / 127) * dz) : a < 116 ? Math.exp(-kS * ((128 - a) / 128) * dz * 4) : 0;
-  const hardK = Math.min(0.5, 3.2 / PX);
+  const hardK = Math.min(0.5, 3.2 / PX), latchK = Math.min(0.5, 4 / PX);
   for (let y = 0; y < H; y++) {
     const o = y * W;
     for (let x = 0; x < W; x++) {
@@ -328,10 +367,12 @@ function renderBMode(C, W, H, scene, PX) {
       soft[x] = f ? soft[x] * f : 1 + (soft[x] - 1) * relax;
       const b = bD[i * 4];
       if (b < 250) hard[x] *= 1 - (1 - b / 255) * hardK;
+      else if (hard[x] < 0.6) hard[x] *= 1 - latchK;
     }
   }
-  const gr = boxRadii(0.5 * PX), G2 = new Float32Array(N);
+  const gr = boxRadii(0.35 * PX), G2 = new Float32Array(N);
   for (let y = 0; y < H; y++) blurRow(G, G2, tmpRow, y * W, W, gr, 1);
+  yield;
   const out = new ImageData(W, H), o = out.data;
   const IW = 2.5, DR = scene.dr ?? 40, GAM = 2.2, LUTN = 6144, LSs = LUTN / 6, lut = new Uint8ClampedArray(LUTN);
   for (let j = 0; j < LUTN; j++) { const v = 1 + (20 * Math.log10(Math.max(1e-6, (j + 0.5) / LSs) / IW)) / DR; lut[j] = v <= 0 ? 0 : v >= 1 ? 255 : Math.round(Math.pow(v, GAM) * 255); }
@@ -348,12 +389,11 @@ function renderBMode(C, W, H, scene, PX) {
       o[i * 4] = c; o[i * 4 + 1] = c; o[i * 4 + 2] = Math.min(255, c * 1.02 + 1); o[i * 4 + 3] = 255;
     }
   }
-  return out;
+  res.img = out;
 }
 
-/** Build (once) the simulated B-mode image for a scene. Returns a canvas W x H px. */
-export function buildBMode(scene) {
-  if (cache.has(scene.id)) return cache.get(scene.id);
+/** Paint the tissue maps for a scene (phase 1 of the build). */
+function* buildSteps(scene) {
   const g = prepare(scene);
   const PX = scene.pxmm || Math.max(6, Math.min(16, 720 / scene.width));
   const W = Math.round(scene.width * PX), H = Math.round(scene.depth * PX);
@@ -364,14 +404,15 @@ export function buildBMode(scene) {
   paintRegion(C, 'connective', all, [0, 0, g.W, g.H], { echo: 0.26 });
   // Layers, superficial to deep, then their deep borders (fascia).
   for (const ly of g.layers) {
-    if (ly.kind === 'none') continue;
+    if (ly.kind === 'none' || ly.kind === 'label') continue;
     const path = polyPath(ly.poly); paintRegion(C, ly.kind, path, boxOf(ly.poly), ly);
   }
-  // Shapes drawn under lines except bones/vessels/nerves (drawn after).
-  const late = new Set(['bone', 'artery', 'vein', 'nerve']);
-  for (const st of g.shapes) if (!late.has(st.kind)) paintShape(C, st);
+  yield;
+  // Shapes drawn under lines except bones/cartilage/vessels/nerves (drawn after). Label-only items are not painted.
+  const late = new Set(['bone', 'cartilage', 'artery', 'vein', 'nerve']);
+  for (const st of g.shapes) if (!late.has(st.kind) && st.kind !== 'label') paintShape(C, st);
   for (const ly of g.layers) {
-    if (!ly.edge) continue;
+    if (!ly.edge || ly.kind === 'label') continue;
     // Draw the border only where this layer (or the one below) has real thickness.
     let run = [];
     const next = g.layers[g.layers.indexOf(ly) + 1];
@@ -381,7 +422,7 @@ export function buildBMode(scene) {
     });
     if (run.length > 1) specStroke(C, run, ly.edge, ly.edgeW ?? 0.4, { floor: 0.35, wav: 0.05, eAmp: 0.55, vary: 0.2 });
   }
-  for (const ln of g.lines) paintLine(C, ln, g.H);
+  for (const ln of g.lines) if (ln.kind !== 'label') paintLine(C, ln, g.H);
   for (const st of g.shapes) if (late.has(st.kind)) paintShape(C, st);
   // Skin: bright entry echo, thin dark dermis band.
   C.e.fillStyle = gray(0.5); C.e.fillRect(0, 0, g.W, g.skin);
@@ -389,11 +430,67 @@ export function buildBMode(scene) {
   C.sp.fillStyle = '#000'; C.sp.fillRect(0, 0, g.W, g.skin);
   specStroke(C, [[0, 0.08], [g.W, 0.08]], 0.9, 0.14, { floor: 1, eAmp: 0.6 });
   specStroke(C, [[0, g.skin], [g.W * 0.5, g.skin + 0.05], [g.W, g.skin]], 0.6, 0.15, { floor: 1, wav: 0.03, eAmp: 0.5 });
-  const img = renderBMode(C, W, H, scene, PX);
+  yield;
+  const res = {};
+  yield* renderBMode(C, W, H, scene, PX, res);
   const base = makeCanvas(W, H);
-  base.getContext('2d').putImageData(img, 0, 0);
+  base.getContext('2d').putImageData(res.img, 0, 0);
+  shadows.set(scene.id, { PX, top: res.shadowTop });
   cache.set(scene.id, base);
   return base;
+}
+
+const shadows = new Map();
+const pending = new Map();
+
+/** Build (once, synchronously) the simulated B-mode image for a scene. Returns a canvas W x H px. */
+export function buildBMode(scene) {
+  if (cache.has(scene.id)) return cache.get(scene.id);
+  const it = buildSteps(scene);
+  let r = it.next();
+  while (!r.done) r = it.next();
+  return r.value;
+}
+
+/** Is the image for this scene already built? */
+export function isBuilt(scene) { return cache.has(scene.id); }
+
+const yieldToBrowser = () => new Promise((resolve) => {
+  if (globalThis.scheduler?.yield) globalThis.scheduler.yield().then(resolve); else setTimeout(resolve, 0);
+});
+
+/** Build the image in phases, yielding to the browser between them. Resolves to the same cached canvas. */
+export function buildBModeAsync(scene) {
+  if (cache.has(scene.id)) return Promise.resolve(cache.get(scene.id));
+  if (pending.has(scene.id)) return pending.get(scene.id);
+  const p = (async () => {
+    const it = buildSteps(scene);
+    let r = it.next();
+    while (!r.done) {
+      if (cache.has(scene.id)) return cache.get(scene.id); // a synchronous build finished first
+      await yieldToBrowser();
+      r = it.next();
+    }
+    return r.value;
+  })().finally(() => pending.delete(scene.id));
+  pending.set(scene.id, p);
+  return p;
+}
+
+/**
+ * Depth (mm) at which bone first blocks the beam at screen position x (mm), or Infinity when the column is clear.
+ * Only known once the image is built. Used to keep the pleural-sliding shimmer out of acoustic shadows.
+ */
+export function shadowDepthAt(scene, xMm) {
+  const s = shadows.get(scene.id);
+  if (!s) return Infinity;
+  const i = Math.round(xMm * s.PX);
+  if (i < 0 || i >= s.top.length) return Infinity;
+  // a little margin either side so the edge of a shadow stays dark too
+  const r = Math.max(1, Math.round(0.4 * s.PX));
+  let m = Infinity;
+  for (let k = Math.max(0, i - r); k <= Math.min(s.top.length - 1, i + r); k++) m = Math.min(m, s.top[k]);
+  return m / s.PX;
 }
 
 export { yAt };

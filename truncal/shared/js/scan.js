@@ -5,8 +5,8 @@
 // API: mountScan(host, scene, {blockId}) -> {setStep(n), setView('us'|'dia'), setInjection(id), destroy()}
 // Deep links: buttons #<blockId>-step-<scan|identify|needle|inject> and #<blockId>-inj-<injectionId>.
 import { el, sv, setupCanvas, whenVisible, onResize, reducedMotion, announce } from './ui.js';
-import { prepare, anchorOf, spreadProfile, tentProfile, warpY, yAt, clamp, lerp, easeInOut, easeOut } from './scene.js';
-import { buildBMode } from './bmode.js';
+import { prepare, anchorOf, spreadProfile, tentProfile, warpY, planeDelta, yAt, shapePoints, clamp, lerp, easeInOut, easeOut } from './scene.js';
+import { buildBMode, buildBModeAsync, isBuilt, shadowDepthAt } from './bmode.js';
 import { buildDiagram, COL } from './diagram.js';
 import { probeInset } from './dermatomes.js';
 
@@ -18,12 +18,38 @@ const STEPS = [
 ];
 const LA_FILL = 'rgba(64,158,222,0.78)';
 const LA_EDGE = '#1d5f96';
+const SHIMMER_MS = 5000; // pleural sliding runs this long after a step change (or while playing)
+
+// Build the ultrasound images of the scans in the open chapter while the browser is idle, one at a time,
+// so they are usually ready before the reader scrolls to them.
+const idleQueue = [];
+let idleBusy = false;
+const idle = (fn) => (window.requestIdleCallback ? window.requestIdleCallback(fn, { timeout: 2500 }) : setTimeout(fn, 400));
+function prebuildSoon(scene, host) {
+  idleQueue.push({ scene, host });
+  pumpIdle();
+}
+function pumpIdle() {
+  if (idleBusy || !idleQueue.length) return;
+  idleBusy = true;
+  idle(() => {
+    const i = idleQueue.findIndex((q) => q.host.closest('.tb-chapter.is-current'));
+    const job = i >= 0 ? idleQueue.splice(i, 1)[0] : null;
+    const done = () => { idleBusy = false; if (job) pumpIdle(); };
+    if (!job || isBuilt(job.scene)) { done(); return; }
+    buildBModeAsync(job.scene).then(done, done);
+  });
+}
+document.addEventListener('tb-chapter', () => pumpIdle());
 
 export function mountScan(host, scene, { blockId } = {}) {
   const g = prepare(scene);
   const bid = blockId || scene.id;
   const injections = scene.injections || [];
-  const st = { step: 0, t: 0, view: 'us', labels: true, inj: 0, playing: false, visible: false, raf: 0, last: 0, built: false, size: null, shimmer: 0 };
+  const st = { step: 0, t: 0, view: 'us', labels: true, inj: 0, playing: false, visible: false, raf: 0, last: 0, built: false, size: null, shimmer: 0, shimmerUntil: 0 };
+
+  let bmodeImg = isBuilt(scene) ? buildBMode(scene) : null; // cache hit only
+  st.built = !!bmodeImg;
 
   // ---------------------------------------------------------------- DOM
   const fig = el('figure', { class: 'tb-scan', id: `${bid}-scan` });
@@ -65,7 +91,7 @@ export function mountScan(host, scene, { blockId } = {}) {
   const nav = el('div', { class: 'tb-scan-nav' }, prevBtn, playBtn, nextBtn);
   panel.append(stepList, stepText, nav);
   if (scene.probe) {
-    const pf = el('figure', { class: 'tb-scan-probe' }, probeInset(scene.probe), el('figcaption', {}, el('span', { class: 'tb-scan-probe-k', text: 'Probe' }), ` ${scene.probe.label || ''}`));
+    const pf = el('figure', { class: 'tb-scan-probe' }, probeInset(scene.probe, { marker: scene.orient?.marker }), el('figcaption', {}, el('span', { class: 'tb-scan-probe-k', text: 'Probe' }), ` ${scene.probe.label || ''}`));
     panel.append(pf);
   }
   if (injSeg) panel.prepend(el('div', { class: 'tb-scan-injwrap' }, el('p', { class: 'tb-scan-injlab', text: scene.injectionLabel || 'Injection point' }), injSeg));
@@ -74,6 +100,8 @@ export function mountScan(host, scene, { blockId } = {}) {
   const cap = el('figcaption', { class: 'tb-scan-cap' });
   if (scene.view) cap.append(el('p', { class: 'tb-scan-view' }, el('strong', { text: 'View. ' }), scene.view));
   const keyItems = [...g.layers, ...g.lines, ...g.shapes].filter((it) => it.label && it.short && it.short !== it.label);
+  const regions = g.shapes.filter((it) => it.kind === 'label' && it.outline !== false && it.shapes.length)
+    .map((it) => it.shapes.map((sh) => ({ pts: shapePoints(sh, 48), open: sh.t === 'l' })));
   if (keyItems.length) {
     const dl = el('dl', { class: 'tb-scan-key' });
     keyItems.forEach((it) => dl.append(el('div', {}, el('dt', { text: it.short }), el('dd', { text: it.label }))));
@@ -83,7 +111,7 @@ export function mountScan(host, scene, { blockId } = {}) {
   fig.append(head, grid, cap);
   host.append(fig);
 
-  const order = [...g.layers].filter((l) => l.label).map((l) => l.label);
+  const order = [...g.layers].filter((l) => l.label && l.kind !== 'label').map((l) => l.label);
   stage.setAttribute('aria-label', `${scene.title || 'Ultrasound'}. ${scene.view || ''} Screen left is ${scene.orient?.left || 'left'}, screen right is ${scene.orient?.right || 'right'}. From superficial to deep: ${order.join(', ')}.${scene.alt ? ` ${scene.alt}` : ''}`);
 
   // ---------------------------------------------------------------- sizing
@@ -191,6 +219,24 @@ export function mountScan(host, scene, { blockId } = {}) {
     return { p: easeInOut(clamp(tt / d)), inj };
   }
 
+  /** Spreads already in place for this injection (inj.keep: ids of other injections in the scene). */
+  function keptProfiles(inj) {
+    if (!inj?.keep?.length || st.step < 2) return [];
+    return inj.keep.map((id) => injections.find((x) => x.id === id)).filter((x) => x && x !== inj)
+      .flatMap((k) => [k.spread, ...(k.spreads || [])].filter(Boolean).map((sp) => spreadProfile(scene, { ...k, spread: sp }, 1)))
+      .filter(Boolean);
+  }
+  /** Every warp acting now: kept spreads, the needle tent, or this injection's spread(s) opening. */
+  function profilesNow(inj, ns, g01) {
+    const out = keptProfiles(inj);
+    if (st.step === 3 && inj) {
+      for (const sp of [inj.spread, ...(inj.spreads || [])]) { if (sp) { const p = spreadProfile(scene, { ...inj, spread: sp }, g01); if (p) out.push(p); } }
+    } else if (ns?.tent > 0) { const p = tentProfile(scene, inj, ns.tent); if (p) out.push(p); }
+    return out.length ? out : null;
+  }
+  const shimmerActive = () => st.playing || performance.now() < st.shimmerUntil;
+  const startShimmer = () => { st.shimmerUntil = performance.now() + SHIMMER_MS; };
+
   function draw() {
     if (!ctx || !st.size) return;
     const { cssW, cssH, px, dpr } = st.size;
@@ -200,16 +246,14 @@ export function mountScan(host, scene, { blockId } = {}) {
     const dur = stepDur(step);
     const tt = rm ? dur : Math.min(st.t, dur);
     const inj = injections[st.inj];
-    // Warp profile (tent while the needle presses, spread while injecting)
-    let prof = null;
+    // Warp profiles (kept spreads, tent while the needle presses, spread while injecting)
     const ns = needleState();
-    if (step === 3 && inj) prof = spreadProfile(scene, inj, rm ? 1 : clamp(tt / dur));
-    else if (ns?.tent > 0) prof = tentProfile(scene, inj, ns.tent);
+    const prof = profilesNow(inj, ns, rm ? 1 : clamp(tt / dur));
 
     ctx.save();
     ctx.fillStyle = us ? '#000' : COL.plate; ctx.fillRect(0, 0, cssW, cssH);
     let img = null;
-    if (us) img = st.built ? buildBMode(scene) : null;
+    if (us) img = bmodeImg;
     else img = buildDiagram(scene, px, dpr);
     if (img) {
       let slide = 0, alpha = 1;
@@ -219,17 +263,36 @@ export function mountScan(host, scene, { blockId } = {}) {
       ctx.globalAlpha = 1;
       if (prof) drawWarped(img, prof, us);
     }
-    // pleura sliding (shimmer along the pleural line)
-    if (us && img && !rm) {
+    // Pleural sliding: a shimmer along the pleural line, only along the line's own extent and never inside
+    // a bone's acoustic shadow. Runs for a few seconds after a step change or while playing.
+    if (us && img && !rm && shimmerActive()) {
+      ctx.fillStyle = 'rgba(255,255,255,0.55)';
       for (const ln of g.lines) {
-        if (!ln.sliding) continue;
-        ctx.fillStyle = 'rgba(255,255,255,0.55)';
-        for (let k = 0; k < 14; k++) {
-          const xm = ((k * 7.31 + st.shimmer * 2.2 * (k % 2 ? 1 : -1)) % g.W + g.W) % g.W;
-          const ym = warpY(prof, xm, yAt(ln.pts, xm));
+        if (!ln.sliding || !ln.pts.length) continue;
+        const x0 = Math.max(0, ln.pts[0][0]), x1 = Math.min(g.W, ln.pts[ln.pts.length - 1][0]), span = x1 - x0;
+        if (span <= 0.5) continue;
+        const n = Math.max(4, Math.round(14 * span / g.W));
+        for (let k = 0; k < n; k++) {
+          const xm = x0 + ((k * 7.31 + st.shimmer * 2.2 * (k % 2 ? 1 : -1)) % span + span) % span;
+          const y = yAt(ln.pts, xm);
+          if (y >= shadowDepthAt(scene, xm) - 0.3) continue;
+          const ym = warpY(prof, xm, y);
           ctx.beginPath(); ctx.arc(xm * px, ym * px, 1.1, 0, 7); ctx.fill();
         }
       }
+    }
+    // Label-only regions (kind 'label'): a dashed outline, shown with the labels.
+    if (regions.length && st.labels && step >= 1) {
+      ctx.save();
+      ctx.setLineDash([5, 4]); ctx.lineWidth = 1.4;
+      ctx.strokeStyle = us ? 'rgba(255,255,255,0.75)' : 'rgba(99,61,60,0.9)';
+      for (const parts of regions) for (const r of parts) {
+        ctx.beginPath();
+        r.pts.forEach(([x, y], i) => { const X = x * px, Y = warpY(prof, x, y) * px; if (i) ctx.lineTo(X, Y); else ctx.moveTo(X, Y); });
+        if (!r.open) ctx.closePath();
+        ctx.stroke();
+      }
+      ctx.restore();
     }
     if (ns) drawNeedle(ns, us);
     ctx.restore();
@@ -257,39 +320,60 @@ export function mountScan(host, scene, { blockId } = {}) {
     }
   }
 
-  function drawWarped(img, prof, us) {
+  // Redraw the image column by column with every warp applied. Each profile contributes one plane per column:
+  // tissue above it is compressed upwards (lift), tissue below pushed down (dip); the gap is the LA pool.
+  function drawWarped(img, profs, us) {
     const { cssW, cssH, px } = st.size;
     const sx = img.width / cssW, sy = img.height / cssH;
     const stripW = 2;
-    const x0 = Math.max(0, Math.floor(prof.x0 * px) - 2), x1 = Math.min(cssW, Math.ceil(prof.x1 * px) + 2);
-    const gaps = [];
-    for (let x = x0; x < x1; x += stripW) {
-      const c = prof.cols((x + stripW / 2) / px);
-      if (!c) continue;
-      const y0 = c.y0 * px, A = c.A * px, lift = c.lift * px, dip = c.dip * px, top = Math.max(0, y0 - A);
-      ctx.fillStyle = us ? '#000' : COL.plate; ctx.fillRect(x, top, stripW, cssH - top);
-      // compressed (or stretched) band above the plane
-      if (y0 - top > 0.5) ctx.drawImage(img, x * sx, top * sy, stripW * sx, (y0 - top) * sy, x, top, stripW, Math.max(0.5, y0 - lift - top));
-      // everything below the plane, pushed down
-      if (cssH - y0 > 0.5) ctx.drawImage(img, x * sx, y0 * sy, stripW * sx, (cssH - y0) * sy, x, y0 + dip, stripW, cssH - y0);
-      if (!prof.tent && lift + dip > 0.3) gaps.push([x, y0 - lift, y0 + dip]);
+    const H = g.H;
+    let x0 = Infinity, x1 = -Infinity;
+    for (const p of profs) { x0 = Math.min(x0, p.x0); x1 = Math.max(x1, p.x1); }
+    const X0 = Math.max(0, Math.floor(x0 * px) - 2), X1 = Math.min(cssW, Math.ceil(x1 * px) + 2);
+    const gaps = profs.map(() => []);
+    for (let x = X0; x < X1; x += stripW) {
+      const xm = (x + stripW / 2) / px;
+      const planes = [];
+      profs.forEach((p, k) => { const c = p.cols(xm); if (c) planes.push({ c, k, tent: p.tent }); });
+      if (!planes.length) continue;
+      const D = (y, side, self) => planes.reduce((a, q) => a + planeDelta(q.c, y, q === self ? side : 0), 0);
+      const cuts = [0, H];
+      for (const q of planes) { cuts.push(clamp(q.c.y0 - q.c.A, 0, H), clamp(q.c.y0, 0, H)); }
+      const ys = cuts.sort((a, b) => a - b).filter((v, i, arr) => !i || v - arr[i - 1] > 1e-6);
+      const top = Math.max(0, Math.min(...planes.map((q) => q.c.y0 - q.c.A)));
+      ctx.fillStyle = us ? '#000' : COL.plate; ctx.fillRect(x, top * px, stripW, cssH - top * px);
+      for (let i = 1; i < ys.length; i++) {
+        const a = ys[i - 1], b = ys[i];
+        if (b - a < 1e-3 || b <= top) continue;
+        const selfA = planes.find((q) => q.c.y0 === a), selfB = planes.find((q) => q.c.y0 === b);
+        const ta = (a + D(a, 1, selfA)) * px, tb = (b + D(b, -1, selfB)) * px;
+        if (tb - ta < 0.05) continue;
+        ctx.drawImage(img, x * sx, a * px * sy, stripW * sx, (b - a) * px * sy, x, ta, stripW, tb - ta);
+      }
+      for (const q of planes) {
+        if (q.tent) continue;
+        const ga = (q.c.y0 + D(q.c.y0, -1, q)) * px, gb = (q.c.y0 + D(q.c.y0, 1, q)) * px;
+        if (gb - ga > 0.3) gaps[q.k].push([x, ga, gb]);
+      }
     }
-    if (!gaps.length) return;
-    // LA pool
-    const path = new Path2D();
-    path.moveTo(gaps[0][0], gaps[0][1]);
-    gaps.forEach(([x, a]) => path.lineTo(x + stripW / 2, a));
-    path.lineTo(gaps[gaps.length - 1][0] + stripW, gaps[gaps.length - 1][1]);
-    for (let i = gaps.length - 1; i >= 0; i--) path.lineTo(gaps[i][0] + stripW / 2, gaps[i][2]);
-    path.closePath();
-    if (us) {
-      ctx.fillStyle = '#060606'; ctx.fill(path);
-      ctx.save(); ctx.clip(path); ctx.fillStyle = 'rgba(120,120,120,0.25)';
-      for (let i = 0; i < gaps.length; i += 3) { const [x, a, b] = gaps[i]; ctx.fillRect(x + ((i * 37) % 5) * 0.4, a + ((i * 53) % 97) / 97 * (b - a), 1.2, 1); }
-      ctx.restore();
-    } else {
-      ctx.fillStyle = LA_FILL; ctx.fill(path);
-      ctx.strokeStyle = LA_EDGE; ctx.lineWidth = 1.4; ctx.stroke(path);
+    for (const gp of gaps) {
+      if (!gp.length) continue;
+      // LA pool
+      const path = new Path2D();
+      path.moveTo(gp[0][0], gp[0][1]);
+      gp.forEach(([x, a]) => path.lineTo(x + stripW / 2, a));
+      path.lineTo(gp[gp.length - 1][0] + stripW, gp[gp.length - 1][1]);
+      for (let i = gp.length - 1; i >= 0; i--) path.lineTo(gp[i][0] + stripW / 2, gp[i][2]);
+      path.closePath();
+      if (us) {
+        ctx.fillStyle = '#060606'; ctx.fill(path);
+        ctx.save(); ctx.clip(path); ctx.fillStyle = 'rgba(120,120,120,0.25)';
+        for (let i = 0; i < gp.length; i += 3) { const [x, a, b] = gp[i]; ctx.fillRect(x + ((i * 37) % 5) * 0.4, a + ((i * 53) % 97) / 97 * (b - a), 1.2, 1); }
+        ctx.restore();
+      } else {
+        ctx.fillStyle = LA_FILL; ctx.fill(path);
+        ctx.strokeStyle = LA_EDGE; ctx.lineWidth = 1.4; ctx.stroke(path);
+      }
     }
   }
 
@@ -353,27 +437,27 @@ export function mountScan(host, scene, { blockId } = {}) {
 
   function setStep(n, user = false) {
     if (user) st.playing = false;
-    st.step = clamp(n, 0, 3); st.t = 0;
+    st.step = clamp(n, 0, 3); st.t = 0; startShimmer();
     paintPanel(); kick(); draw();
   }
   function setView(v) {
-    st.view = v; paintPanel(); buildOverlay(); ensureBuilt(); draw();
+    st.view = v; startShimmer(); paintPanel(); buildOverlay(); ensureBuilt(); draw(); kick();
   }
   function setInjection(i) {
     st.inj = clamp(i, 0, injections.length - 1);
     if (st.step < 2) st.step = 2;
-    st.t = 0; buildOverlay(); paintPanel(); kick(); draw();
+    st.t = 0; startShimmer(); buildOverlay(); paintPanel(); kick(); draw();
     announce(`${injections[st.inj].label || ''} selected`);
   }
   function togglePlay() {
-    if (st.playing) { st.playing = false; paintPanel(); return; }
+    if (st.playing) { st.playing = false; st.shimmerUntil = 0; paintPanel(); draw(); return; }
     if (st.step === 3 && st.t >= stepDur(3)) { st.step = 0; st.t = 0; }
     st.playing = true; st.t = 0; paintPanel(); kick();
   }
 
   // ---------------------------------------------------------------- loop
   function animating() {
-    const pleura = st.view === 'us' && g.lines.some((l) => l.sliding) && !reducedMotion();
+    const pleura = st.view === 'us' && g.lines.some((l) => l.sliding) && !reducedMotion() && shimmerActive();
     return st.visible && (st.playing || st.t < stepDur(st.step) || pleura);
   }
   function kick() {
@@ -391,22 +475,29 @@ export function mountScan(host, scene, { blockId } = {}) {
       if (!holdUntil) holdUntil = now + (reducedMotion() ? 2600 : 1100);
       if (now >= holdUntil) {
         holdUntil = 0;
-        if (st.step < 3) { st.step += 1; st.t = 0; paintPanel(); } else { st.playing = false; paintPanel(); }
+        if (st.step < 3) { st.step += 1; st.t = 0; paintPanel(); } else { st.playing = false; startShimmer(); paintPanel(); }
       }
     }
     if (!st.playing && st.t >= d && st.t - dt < d) paintPanel();
     draw();
     if (animating()) st.raf = requestAnimationFrame(tick);
+    else draw(); // settle on a still frame (no shimmer once its time is up)
   }
 
+  let building = false;
   function ensureBuilt() {
     if (st.built || st.view !== 'us' || !st.visible) { busy.hidden = st.built || st.view !== 'us'; return; }
     busy.hidden = false;
-    setTimeout(() => {
-      try { buildBMode(scene); st.built = true; } catch (err) { console.error('[truncal] ultrasound build failed', err); busy.textContent = 'The ultrasound image could not be drawn. Choose Diagram.'; return; }
-      busy.hidden = true; draw(); kick();
-    }, 30);
+    if (building) return;
+    building = true;
+    buildBModeAsync(scene).then((c) => {
+      bmodeImg = c; st.built = true; busy.hidden = true; startShimmer(); draw(); kick();
+    }, (err) => {
+      console.error('[truncal] ultrasound build failed', err);
+      busy.textContent = 'The ultrasound image could not be drawn. Choose Diagram.';
+    }).finally(() => { building = false; });
   }
+  prebuildSoon(scene, fig);
 
   stage.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') { e.preventDefault(); setStep(Math.min(3, st.step + 1), true); }

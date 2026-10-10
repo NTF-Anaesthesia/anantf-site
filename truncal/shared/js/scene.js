@@ -196,13 +196,27 @@ export function tentProfile(scene, inj, depth01) {
   };
 }
 
-/** Where a point (mm) is drawn once the warp is applied. */
+/** Displacement (mm) that one plane of a warp profile adds at depth y. side: 0 normal, -1/+1 = limit from above/below the plane. */
+export function planeDelta(c, y, side = 0) {
+  const { y0, lift, dip, A } = c;
+  if (side && Math.abs(y - y0) < 1e-9) return side > 0 ? dip : -lift;
+  if (y >= y0) return dip;
+  if (y <= y0 - A) return 0;
+  return -lift * (y - (y0 - A)) / A;
+}
+
+/**
+ * Where a point (mm) is drawn once the warp is applied. `prof` is one profile (spreadProfile / tentProfile),
+ * null, or an array of profiles (several local anaesthetic spreads at once): their displacements add up.
+ */
 export function warpY(prof, x, y) {
   if (!prof) return y;
+  if (Array.isArray(prof)) {
+    let d = 0;
+    for (const p of prof) { const c = p && p.cols(x); if (c) d += planeDelta(c, y); }
+    return y + d;
+  }
   const c = prof.cols(x);
   if (!c) return y;
-  const { y0, lift, dip, A } = c;
-  if (y >= y0) return y + dip;
-  if (y <= y0 - A) return y;
-  return y0 - A + (y - (y0 - A)) * (A - lift) / A;
+  return y + planeDelta(c, y);
 }

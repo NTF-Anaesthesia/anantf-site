@@ -191,3 +191,46 @@ export function onResize(target, fn) {
 
 const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 export const reducedMotion = () => mqReduce.matches;
+
+/**
+ * stepper({steps:[{short, title, body}], idPrefix, scrollTo, onStep, label}) → {el, go, keys, current}
+ * A numbered step-through (the same look as the scan viewer's steps): step buttons, a text panel and Back / Next.
+ * - `idPrefix`: each step button gets id `${idPrefix}-step-${n}` (n from 1) and is a deep link (#id clicks it).
+ * - `scrollTo`: id of the element a deep link should scroll to (e.g. the figure).
+ * - `onStep(i)`: called with the 0-based step whenever it changes (draw your figure here).
+ * - `keys(el)`: make el (e.g. a focusable figure) step with the left / right arrow keys.
+ * `body` is trusted HTML.
+ */
+export function stepper({ steps: items = [], idPrefix, scrollTo, onStep, label = 'Steps' } = {}) {
+  let cur = 0;
+  const list = el('ol', { class: 'tb-scan-steps tb-stepper-steps', 'aria-label': label });
+  const text = el('div', { class: 'tb-scan-text tb-stepper-text', 'aria-live': 'polite' });
+  const btns = items.map((s, i) => {
+    const b = el('button', { type: 'button', class: 'tb-scan-step', id: idPrefix ? `${idPrefix}-step-${i + 1}` : null, dataset: idPrefix ? { activate: '1', ...(scrollTo ? { scrollTo } : {}) } : null, on: { click: () => go(i) } },
+      el('span', { class: 'tb-scan-step-n', 'aria-hidden': 'true', text: String(i + 1) }), el('span', { text: s.short || s.title }));
+    list.append(el('li', {}, b));
+    return b;
+  });
+  if (items.length > 4) list.style.gridTemplateColumns = `repeat(${items.length}, minmax(0, 1fr))`;
+  const prev = el('button', { type: 'button', class: 'tb-btn', text: 'Back', on: { click: () => go(Math.max(0, cur - 1)) } });
+  const next = el('button', { type: 'button', class: 'tb-btn tb-btn--primary', text: 'Next', on: { click: () => go(Math.min(items.length - 1, cur + 1)) } });
+  const nav = el('div', { class: 'tb-scan-nav tb-stepper-nav' }, prev, next);
+  const root = el('div', { class: 'tb-stepper' }, list, text, nav);
+  function go(i) {
+    cur = Math.max(0, Math.min(items.length - 1, i));
+    btns.forEach((b, k) => { b.setAttribute('aria-current', k === cur ? 'step' : 'false'); b.classList.toggle('is-done', k < cur); });
+    text.textContent = '';
+    text.append(el('p', { class: 'tb-scan-text-k', text: `Step ${cur + 1} of ${items.length} · ${items[cur]?.title || ''}` }));
+    text.append(fill(el('div', { class: 'tb-scan-text-b' }), items[cur]?.body || ''));
+    prev.disabled = cur === 0; next.disabled = cur === items.length - 1;
+    onStep?.(cur);
+  }
+  function keys(target) {
+    target.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+    });
+  }
+  if (items.length) go(0);
+  return { el: root, go, keys, get current() { return cur; } };
+}

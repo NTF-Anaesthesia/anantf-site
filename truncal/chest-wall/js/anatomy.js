@@ -35,22 +35,22 @@ function crossSection() {
   path('M250 150 Q252 120 280 101 H560 Q600 112 610 150 Z', MUS_D);
   // pectoralis minor and major
   path('M470 124 Q480 104 500 98 H590 Q612 104 616 124 Z', MUS);
-  path('M450 82 H740 V150 H640 Q625 112 600 98 H500 Q470 92 450 82 Z', MUS);
+  path('M472 82 H740 V150 H640 Q625 112 600 98 H510 Q488 92 472 82 Z', MUS);
   // sternum
   sv('rect', { x: 736, y: 82, width: 24, height: 112, fill: BONE, stroke: BONE_E }, g);
-  // internal thoracic artery, on transversus thoracis
-  sv('circle', { cx: 712, cy: 189, r: 4.5, fill: ART, stroke: '#7d1d14' }, g);
+  // internal thoracic artery, between the internal intercostal muscle and transversus thoracis
+  sv('circle', { cx: 728, cy: 179, r: 4.5, fill: ART, stroke: '#7d1d14' }, g);
   // nerves
   const nerve = (d, w = 4) => { sv('path', { d, fill: 'none', stroke: NERVE_EDGE, 'stroke-width': w + 2, 'stroke-linecap': 'round' }, g); sv('path', { d, fill: 'none', stroke: NERVE, 'stroke-width': w, 'stroke-linecap': 'round' }, g); };
   nerve('M74 222 C100 220 106 190 130 184 H700 Q716 184 718 170 Q720 120 716 46');   // intercostal nerve + anterior cutaneous branch
   nerve('M70 214 Q60 160 56 120 Q54 80 52 46', 3);                                 // dorsal ramus
-  nerve('M400 184 Q402 130 404 80 Q404 66 406 60', 3);                             // lateral cutaneous branch
-  nerve('M406 62 Q380 54 344 50', 2.6); nerve('M406 62 Q432 54 468 50', 2.6);       // its posterior and anterior divisions
+  nerve('M455 184 Q457 130 459 80 Q459 66 461 60', 3);                             // lateral cutaneous branch
+  nerve('M461 62 Q435 54 399 50', 2.6); nerve('M461 62 Q487 54 523 50', 2.6);       // its posterior and anterior divisions
   nerve('M548 99 H596', 2.4);                                                       // pectoral nerves (interpectoral plane)
   nerve('M300 100.5 H330', 2.4); nerve('M346 100.5 H376', 2.4);                     // thoracodorsal, long thoracic
   // injection points
   const inj = (n, x, y) => { sv('circle', { cx: x, cy: y, r: 10.5, fill: LA, stroke: '#fff', 'stroke-width': 2 }, g); sv('text', { x, y: y + 4.5, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 600, fill: '#fff', text: n }, g); };
-  inj('1', 498, 97); inj('2', 592, 124); inj('3', 428, 100); inj('4', 452, 150); inj('5', 676, 150); inj('6', 668, 188);
+  inj('1', 506, 97); inj('2', 592, 124); inj('3', 418, 100); inj('4', 420, 150); inj('5', 676, 150); inj('6', 668, 188);
   // labels
   const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 13, fill: '#272722' }, svg);
   const lab = (x, y, s, anchor = 'start') => sv('text', { x, y, 'text-anchor': anchor, text: s }, t);
@@ -58,16 +58,16 @@ function crossSection() {
   lab(168, 95, 'Latissimus dorsi'); lab(262, 132, 'Serratus anterior');
   lab(516, 119, 'Pec minor'); lab(650, 112, 'Pec major'); lab(110, 175, 'Intercostal muscles');
   lab(110, 222, 'Pleura and lung'); lab(80, 262, 'Spinal nerve and dorsal ramus');
-  lab(410, 36, 'Lateral cutaneous branch'); lab(758, 34, 'Anterior cutaneous branch', 'end');
-  lab(704, 258, 'Internal thoracic artery', 'end'); sv('path', { d: 'M706 252 L712 196', stroke: '#55534d', 'stroke-width': 0.8 }, svg);
+  lab(465, 36, 'Lateral cutaneous branch'); lab(758, 34, 'Anterior cutaneous branch', 'end');
+  lab(704, 258, 'Internal thoracic artery', 'end'); sv('path', { d: 'M712 250 L727 185', stroke: '#55534d', 'stroke-width': 0.8 }, svg);
   lab(640, 210, 'Transversus thoracis', 'end'); sv('path', { d: 'M642 206 L668 192', stroke: '#55534d', 'stroke-width': 0.8 }, svg);
   const small = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 12, fill: '#55534d' }, svg);
   sv('text', { x: 548, y: 92, text: 'Pectoral nerves' }, small);
   sv('text', { x: 286, y: 116, text: 'TD' }, small); sv('text', { x: 350, y: 116, text: 'LT' }, small);
   const s = sv('g', { 'font-family': 'NTF Mono, JetBrains Mono, monospace', 'font-size': 12, fill: '#55534d' }, svg);
-  sv('text', { x: 24, y: 300, text: 'SPINE' }, s); sv('text', { x: 404, y: 300, 'text-anchor': 'middle', text: 'MID-AXILLARY LINE' }, s);
+  sv('text', { x: 24, y: 300, text: 'SPINE' }, s); sv('text', { x: 457, y: 300, 'text-anchor': 'middle', text: 'MID-AXILLARY LINE' }, s);
   sv('text', { x: 756, y: 300, 'text-anchor': 'end', text: 'STERNUM' }, s);
-  sv('line', { x1: 404, x2: 404, y1: 278, y2: 288, stroke: '#55534d' }, svg);
+  sv('line', { x1: 457, x2: 457, y1: 278, y2: 288, stroke: '#55534d' }, svg);
   return svg;
 }
 
@@ -75,13 +75,19 @@ function crossSection() {
 function frontView() {
   const svg = sv('svg', { viewBox: '0 0 340 310', class: 'cw-fig-svg', role: 'img', 'aria-labelledby': 'cw-fv-t cw-fv-d' });
   sv('title', { id: 'cw-fv-t', text: 'Where the cutaneous branches surface on the front of the chest' }, svg);
-  sv('desc', { id: 'cw-fv-d', text: 'Front view of the trunk, patient’s right side drawn. Lateral cutaneous branches of T2 to T6 surface along the mid-axillary line, where serratus and PECS II act. Anterior cutaneous branches surface beside the sternum, where the parasternal blocks act. The skin between them, the medial breast, is partly supplied by the anterior cutaneous branches.' }, svg);
+  sv('desc', { id: 'cw-fv-d', text: 'Front view of the right half of the trunk. Lateral cutaneous branches of T2 to T6 surface along the mid-axillary line, where serratus and PECS II act. Anterior cutaneous branches surface beside the sternum, where the parasternal blocks act. The skin between them, the medial breast, is partly supplied by the anterior cutaneous branches.' }, svg);
+  // Only the patient's right half is drawn (clipped at the midline), leaving room for labels at a readable size.
+  const clipId = 'cw-fv-clip';
+  const cp = sv('clipPath', { id: clipId }, sv('defs', {}, svg));
+  sv('rect', { x: 0, y: 0, width: 97, height: 310 }, cp);
   const g = sv('g', { transform: 'translate(0 4)' }, svg);
-  sv('path', { d: OUTLINE.front, fill: '#f1e7d8', stroke: '#55534d', 'stroke-width': 1.3 }, g);
+  const half = sv('g', { 'clip-path': `url(#${clipId})` }, g);
+  sv('path', { d: OUTLINE.front, fill: '#f1e7d8', stroke: '#55534d', 'stroke-width': 1.3 }, half);
+  sv('path', { d: 'M85 18 V290', fill: 'none', stroke: '#8f8574', 'stroke-width': 1, 'stroke-dasharray': '1 3' }, g); // midline
   const line = { fill: 'none', stroke: '#8f8574', 'stroke-width': 1 };
   sv('path', { d: 'M82 31 Q62 30 42 37', ...line }, g);                                   // right clavicle
   sv('path', { d: 'M85 128 Q66 140 52 158 Q47 166 46 174', ...line, 'stroke-dasharray': '3 2' }, g);
-  sv('rect', { x: 80, y: 36, width: 10, height: 92, fill: 'none', stroke: '#8f8574', 'stroke-dasharray': '2 2' }, g); // sternum
+  sv('rect', { x: 80, y: 36, width: 10, height: 92, fill: 'none', stroke: '#8f8574', 'stroke-dasharray': '2 2' }, half); // sternum
   sv('circle', { cx: 60, cy: 96, r: 2.2, fill: '#8f8574' }, g);                           // nipple
   // zones
   sv('rect', { x: 36, y: 52, width: 18, height: 84, fill: 'rgba(44,116,179,.25)', stroke: LA, 'stroke-width': 1.2 }, g);
@@ -95,18 +101,20 @@ function frontView() {
     sv('circle', { cx: 44, cy: y - 10, r: 2.6, fill: '#272722' }, g);
     sv('circle', { cx: 78, cy: y - 0.3, r: 2.6, fill: '#272722' }, g);
   }
-  const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 12, fill: '#272722' }, svg);
-  const lab = (y, s, x = 166) => sv('text', { x, y, text: s }, t);
+  // Text is 13 units so it renders at 12px or more on a 390px-wide phone.
+  const X = 112;
+  const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 13, fill: '#272722' }, svg);
+  const lab = (y, s) => sv('text', { x: X, y, text: s }, t);
   const lead = (x1, y1, x2, y2) => sv('line', { x1, y1, x2, y2, stroke: '#55534d', 'stroke-width': 0.8 }, svg);
-  lab(84, 'Lateral cutaneous branches'); lab(99, 'surface at the mid-axillary'); lab(114, 'line: serratus, PECS II'); lead(162, 92, 54, 92);
-  lab(156, 'Anterior cutaneous branches'); lab(171, 'surface beside the sternum:'); lab(186, 'parasternal blocks'); lead(162, 160, 80, 118);
-  lab(222, 'Between the two (the medial'); lab(237, 'breast): partly anterior'); lab(252, 'cutaneous, so PECS and'); lab(267, 'serratus may miss it');
-  lead(162, 226, 66, 104);
-  const k = sv('g', { 'font-family': 'NTF Mono, JetBrains Mono, monospace', 'font-size': 11, fill: '#55534d' }, svg);
-  sv('text', { x: 166, y: 34, text: 'T2–T6, right side.' }, k);
-  sv('text', { x: 166, y: 49, text: 'Dots: branches surface.' }, k);
-  sv('text', { x: 166, y: 64, text: 'Blue: block zones.' }, k);
-  sv('text', { x: 20, y: 304, text: 'R' }, k);
+  lab(88, 'Lateral cutaneous branches'); lab(104, 'surface at the mid-axillary'); lab(120, 'line: serratus, PECS II'); lead(X - 4, 96, 54, 96);
+  lab(156, 'Anterior cutaneous branches'); lab(172, 'surface beside the sternum:'); lab(188, 'parasternal blocks'); lead(X - 4, 160, 82, 124);
+  lab(222, 'Between the two (the medial'); lab(238, 'breast): partly anterior'); lab(254, 'cutaneous, so PECS and'); lab(270, 'serratus may miss it');
+  lead(X - 4, 226, 66, 108);
+  const k = sv('g', { 'font-family': 'NTF Mono, JetBrains Mono, monospace', 'font-size': 13, fill: '#55534d' }, svg);
+  sv('text', { x: X, y: 22, text: 'T2–T6, right side' }, k);
+  sv('text', { x: X, y: 39, text: 'Dots: branches surface' }, k);
+  sv('text', { x: X, y: 56, text: 'Blue: block zones' }, k);
+  sv('text', { x: 14, y: 304, text: 'R' }, k);
   return svg;
 }
 
@@ -115,7 +123,7 @@ export function renderAnatomy(sec) {
   sec.append(fill(el('p', { class: 'tb-lead' }), 'Every chest wall block catches the nerves at one point on their way round the chest. Know where each branch leaves the intercostal nerve, and you know what each block can and cannot cover.'));
   sec.append(keyPoints([
     `The chest wall skin is supplied by the <strong>intercostal nerves</strong> (the breast mainly by T4–T6, the axilla by T2 through the intercostobrachial nerve).${cite('atotw346')}`,
-    `Each intercostal nerve gives a <strong>lateral cutaneous branch</strong> near the mid-axillary line, which pierces the intercostal muscles and serratus anterior and divides into anterior and posterior branches.${cite('atotw427', 'mehta2023')}`,
+    `Each intercostal nerve gives a <strong>lateral cutaneous branch</strong>, which pierces the intercostal muscles and serratus anterior at about the mid-axillary line and divides into anterior and posterior branches.${cite('atotw427', 'mehta2023')}`,
     `It then continues forward and ends as an <strong>anterior cutaneous branch</strong> beside the sternum.${cite('atotw427')} Serratus and PECS II act on the lateral branches, so the <strong>sternum and medial chest need a parasternal block</strong>.`,
     `The muscles have their own nerves: <strong>lateral pectoral (C5–C7) and medial pectoral (C8–T1)</strong> to the pectoral muscles, <strong>long thoracic (C5–C7)</strong> to serratus anterior, <strong>thoracodorsal (C6–C8)</strong> to latissimus dorsi.${cite('atotw346')}`,
     `The upper chest just below the clavicle is supplied by the <strong>supraclavicular nerves</strong> (C3–C4), which none of these blocks reach.${cite('atotw346')}`,
@@ -124,6 +132,7 @@ export function renderAnatomy(sec) {
 
   const f1 = el('figure', { class: 'cw-fig', id: 'anat-course' });
   f1.append(el('p', { class: 'cw-fig-title', text: 'The course of an intercostal nerve, and where each block injects' }),
+    el('p', { class: 'cw-scroll-hint', 'aria-hidden': 'true', text: 'Scroll sideways to see the whole diagram →' }),
     el('div', { class: 'cw-fig-stage cw-fig-stage--wide', tabindex: '0', role: 'region', 'aria-label': 'Nerve course diagram (scrolls sideways on small screens)' }, crossSection()));
   const legend = el('ol', { class: 'cw-legend' });
   legend.append(fill(el('li'), '<strong>Interpectoral</strong> (PECS I): pectoral nerves. <a href="#ch-pecs">PECS</a>'));
@@ -145,7 +154,7 @@ export function renderAnatomy(sec) {
       [{ th: true, html: 'Intercostobrachial (T2)' }, `The axilla${cite('atotw346')}`, `PECS II, superficial serratus${cite('atotw427', 'blanco2012')}`],
       [{ th: true, html: 'Anterior cutaneous branches, T2–T6' }, `Skin beside the sternum, medial breast, sternum${cite('atotw427', 'he2026')}`, '<a href="#ch-parasternal">Parasternal</a> (superficial or deep)'],
       [{ th: true, html: 'Lateral and medial pectoral' }, `Pectoralis major and minor (no skin)${cite('atotw346')}`, `<a href="#ch-pecs">PECS I</a> (interpectoral)${cite('atotw346')}`],
-      [{ th: true, html: 'Long thoracic and thoracodorsal' }, `Serratus anterior; latissimus dorsi${cite('atotw346')}`, `Superficial serratus${cite('atotw427', 'atotw346')}`],
+      [{ th: true, html: 'Long thoracic and thoracodorsal' }, `Serratus anterior; latissimus dorsi${cite('atotw346')}`, `Superficial serratus (both); PECS II (long thoracic, inconsistently)${cite('atotw427', 'atotw346')}`],
       [{ th: true, html: 'Supraclavicular (C3–C4)' }, `Upper chest below the clavicle${cite('atotw346')}`, 'None of these: not a chest wall plane block'],
       [{ th: true, html: 'Dorsal rami' }, 'The back', '<a href="../back/#ch-esp">ESP</a>, <a href="../back/#ch-pvb">paravertebral</a>'],
     ],
@@ -158,7 +167,7 @@ export function renderAnatomy(sec) {
 
   sec.append(el('h3', { id: 'anat-choose', text: 'Which block for which chest operation' }));
   sec.append(table({
-    head: ['Operation', 'Levels to cover; single-shot level (deck slide 147)', 'Chest wall options on this page'],
+    head: ['Operation', 'Levels to cover; single-shot level (teaching slide 147)', 'Chest wall options on this page'],
     rows: [
       [{ th: true, html: 'Mastectomy' }, 'T2–T6; T4', `<a href="#ch-pecs">PECS II</a> or <a href="#ch-sap">serratus</a> (superficial or deep): equal single-shot options with ESP, paravertebral and infiltration${cite('desai2026')}`],
       [{ th: true, html: 'Thoracotomy, VATS' }, 'T2–T9; T5–T6', `<a href="#ch-sap">Serratus</a> as a second choice for VATS; first choice is paravertebral or ESP (<a href="../back/">back page</a>)${cite('feray2022')}`],
@@ -166,13 +175,13 @@ export function renderAnatomy(sec) {
       [{ th: true, html: 'Sternotomy (brief: no cardiac surgery at NTF)' }, 'T2–T6 on both sides; T4', '<a href="#ch-parasternal">Parasternal</a>, both sides'],
     ],
   }));
-  sec.append(fill(el('p', { class: 'cw-note' }), `Levels are from the deck’s level table (slide 147).${cite('deck')} The <a href="../">truncal blocks landing page</a> has a chooser across all three pages.`));
+  sec.append(fill(el('p', { class: 'cw-note' }), `Levels are from the level table in the teaching slides (slide 147).${cite('deck')} The <a href="../">truncal blocks landing page</a> has a chooser across all three pages.`));
 
   sec.append(el('h3', { id: 'cw-others', text: 'Others' }));
-  sec.append(fill(el('p', {}), `<strong>Clavipectoral block</strong> for clavicle fracture (deck slide 127).${cite('deck')} Not covered further here.`));
+  sec.append(fill(el('p', { id: 'clavipectoral' }), `<strong>Clavipectoral block</strong> for clavicle fracture (teaching slide 127).${cite('deck')} Not covered further here.`));
 
   registerSearch([
     { title: 'Intercostal nerve course diagram', text: 'lateral cutaneous branch anterior cutaneous branch dorsal ramus pectoral nerves long thoracic thoracodorsal internal thoracic artery transversus thoracis injection points', id: 'anat-course' },
-    { title: 'Clavipectoral block', text: 'clavipectoral block clavicle fracture', id: 'cw-others' },
+    { title: 'Clavipectoral block', text: 'clavipectoral block clavicle fracture', id: 'clavipectoral' },
   ]);
 }
