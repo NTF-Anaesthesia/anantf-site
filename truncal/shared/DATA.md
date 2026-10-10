@@ -7,14 +7,14 @@ reference implementation: copy its structure.
 ```
 truncal/shared/
   css/truncal.css     all shared styles (prefix tb-). Page-only styles go in <page>/page.css with a page prefix.
-  js/shell.js         bootPage(config): hub, chapters, hash routing, sticky bar, search, copy link, pager, references
+  js/shell.js         bootPage(config): hub, chapters, hash routing, sticky bar, search, copy link, pager
   js/block.js         renderBlock(block, host): one block chapter from a data object (called by the shell)
   js/scan.js          mountScan(host, scene, {blockId}): the interactive scan viewer (called by block.js)
   js/scene.js         scene geometry, shape constructors E/P/PS/L, LA spread and tissue warp
   js/bmode.js         simulated B-mode ultrasound from a scene (cached per scene id; built in phases off idle time)
   js/diagram.js       idealised labelled diagram from the same scene
   js/dermatomes.js    coverageMap(coverage), probeInset(probe), OUTLINE (torso outlines) — original drawings
-  js/refs.js          registerRefs, cite('id'), citeEl, renderRefs
+  js/refs.js          cite() / citeEl(): kept for old data, render nothing (no sources or references on these pages)
   js/search.js        page search + synonyms (addSynonyms via config.synonyms)
   js/ui.js            el, sv, fill, callout, keyPoints, steps, stepper, table, details, registerSearch, …
 ```
@@ -43,7 +43,7 @@ breadcrumb (`<span aria-current="page">Chest wall</span>`), and `page.css` if yo
 
 ```js
 import { bootPage } from '../../shared/js/shell.js';
-import { BLOCKS, REFS } from './blocks.js';
+import { BLOCKS } from './blocks.js';
 bootPage({
   title: 'Chest wall blocks',                       // hub h1 and chapter kickers
   eyebrow: 'Regional anaesthesia · Truncal blocks',
@@ -54,8 +54,6 @@ bootPage({
     { id: 'ch-anatomy', title: 'Anatomy', short: 'Anatomy', desc: 'Hub list text', render: (sec) => { … } },
     { id: 'ch-sap', title: 'Serratus anterior plane block', short: 'Serratus', desc: '…', block: BLOCKS[0] },
   ],
-  refs: REFS,                                       // [{id, text (HTML), url, label}] — numbered in this order
-  refsIntro: 'Optional sentence above the reference list.',
   synonyms: [['sap', 'serratus']],                 // optional extra search synonym rows
   hubExtra: '<p>optional HTML appended to the hub</p>',
 });
@@ -70,11 +68,14 @@ bootPage({
   top margin those rules gave).
 - **Kickers.** A `.tb-eyebrow` that starts a chapter (a block's `kicker`, or one you add before your `h2`) is merged into
   the "Chapter n of m" line, so there is one kicker: "Chapter 2 of 7 · Back · Paraspinal fascial plane".
-- Reader-facing wording: say "teaching slides" (prose) or "Slides" (tags), not "deck".
+- **No sources or references.** The owner asked for these pages to carry no citation numbers, source tags,
+  "Sources." lines or References chapter, and no attribution in the prose ("the teaching slides give…",
+  "(teaching slide 147)", "et al."). Write the content plainly. Named guidelines may appear as content
+  ("PROSPECT recommends…"). `refs` / `refsIntro` in the config are ignored.
 - Sticky bar: Hub link and chapters are one `nav`; on screens under 1240 px the chapters are a disclosure menu
   (`#tb-chmenu-btn`), not a `<select>`. Search opens with Ctrl+K / Cmd+K (no single-key shortcut). The hub shows the
   disclaimer under the credit.
-- `ch-refs` (References) is appended automatically when `refs` is non-empty.
+- Old deep links to the removed References chapter (`#ch-refs`, `#ref-…`) land on the hub.
 - Chapter ids must start `ch-`. A block chapter should be `ch-<blockId>`.
 
 ### Routing and deep links
@@ -92,8 +93,8 @@ bootPage({
 
 ## 3. Block schema (`renderBlock`)
 
-All text fields are **trusted HTML strings** (or arrays of HTML strings rendered as a list). Use `cite('id')` inside
-strings (from `shared/js/refs.js`): it renders `[n]` linked to the reference list. Unknown ids render nothing.
+All text fields are **trusted HTML strings** (or arrays of HTML strings rendered as a list). Don't add citations:
+`cite()` from `shared/js/refs.js` still exists but renders nothing.
 
 | Field | Type | Rendered as |
 |---|---|---|
@@ -106,17 +107,15 @@ strings (from `shared/js/refs.js`): it renders `[n]` linked to the reference lis
 | `intro` | HTML | optional prose before the viewer |
 | `scene` | Scene (§4) | the scan viewer |
 | `position`, `equipment`, `landmarks`, `approach`, `sonoanatomy`, `target` | HTML or HTML[] | sections in this order; `landmarksTitle` renames "Landmarks and scanning" |
-| `dose` | `{volume, conc, drug, per, source, note}` or `{html, source, note}` | dose box: "20–30 ml of dilute 0.3% ropivacaine per side" + source line + LAST reminder |
+| `dose` | `{volume, conc, drug, per, note}` or `{html, note}` | dose box: "20–30 ml of dilute 0.3% ropivacaine per side" + note + LAST reminder (a `source` field is ignored) |
 | `last` | string | override the LAST line (default: "Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks or when combining blocks.") |
 | `coverage` | Coverage (§5) | map + "Covers" + Mechanism + "How dense, how reliable" + "What it misses" |
 | `complications` | HTML or HTML[] | section |
 | `pearls` | HTML[] | "Practical pearls" list |
 | `sections` | `[{id, title, html, render(sec)}]` | extra sections, inserted before the exam corner |
-| `exam` | `[{source, q, points[], id?}]` | Exam corner; `points` sit in a "Model answer points" disclosure |
-| `sources` | HTML | "Sources." line at the end |
+| `exam` | `[{source, q, points[], id?}]` | Exam corner; `source` is the exam name only ("MMed OSCE 2025", "Practice question"), no provenance in brackets; `points` sit in a "Model answer points" disclosure |
 
-Doses: use the deck value exactly; mark gap-fill values with `cite()` to a real reference in `source`.
-Paravertebral: write **0.3–0.5%** ropivacaine (deck typo "0.3–5%").
+Doses: keep the values as they are. Paravertebral: **0.3–0.5%** ropivacaine.
 
 ## 4. Scene schema (scan viewer)
 
