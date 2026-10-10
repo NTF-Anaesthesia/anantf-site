@@ -1,5 +1,5 @@
 // Back: anatomy chapter (paravertebral space, counting levels, A–E label exercise), the landmark paravertebral
-// stepper, and the level table (deck slide 147). All figures are original schematic drawings (SVG).
+// stepper, and the level table (teaching slide 147). All figures are original schematic drawings (SVG).
 import { el, sv, fill, keyPoints, callout, table, registerSearch, announce, reducedMotion } from '../../shared/js/ui.js';
 import { cite } from '../../shared/js/refs.js';
 import { OUTLINE } from '../../shared/js/dermatomes.js';
@@ -21,7 +21,7 @@ const ANSWERS = {
 
 function paraSection(mode, idp) {
   const letters = mode === 'letters';
-  const svg = sv('svg', { viewBox: '0 0 1090 460', class: 'bk-fig-svg bk-fig-svg--xs', role: 'img', 'aria-labelledby': `${idp}-t ${idp}-d` });
+  const svg = sv('svg', { viewBox: '0 -10 1090 470', class: 'bk-fig-svg bk-fig-svg--xs', role: 'img', 'aria-labelledby': `${idp}-t ${idp}-d` });
   sv('title', { id: `${idp}-t`, text: letters ? 'Exam diagram: name the structures marked A to E' : 'The thoracic paravertebral space in cross-section' }, svg);
   sv('desc', { id: `${idp}-d`, text: letters
     ? 'Transverse section of the right side of a thoracic vertebra, posterior at the top. Letter A is on the nerve branch running backwards towards the erector spinae; B on the thin membrane running laterally from the tip of the transverse process; C on the muscle layer just superficial to it; D on the membrane lining the chest wall in front of the space; E on the bony bar projecting laterally from the vertebra.'
@@ -65,19 +65,19 @@ function paraSection(mode, idp) {
   sv('circle', { cx: 300, cy: 254, r: 6, fill: ART, stroke: '#7d1d14' }, g);
   sv('circle', { cx: 318, cy: 258, r: 6, fill: VEIN, stroke: '#163f7a' }, g);
 
-  const t = sv('g', { 'font-family': SANS, 'font-size': 17, fill: '#272722' }, svg);
+  const t = sv('g', { 'font-family': SANS, 'font-size': 18, fill: '#272722' }, svg);
   const lines = sv('g', { stroke: '#55534d', 'stroke-width': 1 }, svg);
   const lead = (x1, y1, x2, y2) => { sv('line', { x1, y1, x2, y2 }, lines); sv('circle', { cx: x2, cy: y2, r: 2.4, fill: '#272722', stroke: 'none' }, lines); };
   const lab = (x, y, s, anchor = 'start') => sv('text', { x, y, 'text-anchor': anchor, text: s }, t);
-  const k = sv('g', { 'font-family': MONO, 'font-size': 12, fill: '#55534d' }, svg);
-  sv('text', { x: 10, y: 12, text: 'POSTERIOR (SKIN)' }, k);
-  sv('text', { x: 10, y: 452, text: 'ANTERIOR' }, k);
-  lab(300, 112, 'Erector spinae'); lab(300, 72, 'Trapezius'); lab(80, 330, 'Vertebral body'); lab(600, 400, 'Lung');
+  const k = sv('g', { 'font-family': MONO, 'font-size': 18, fill: '#55534d' }, svg);
+  sv('text', { x: 10, y: 10, text: 'POSTERIOR (SKIN)' }, k);
+  sv('text', { x: 10, y: 454, text: 'ANTERIOR' }, k);
+  lab(300, 106, 'Erector spinae'); lab(300, 72, 'Trapezius'); lab(80, 330, 'Vertebral body'); lab(660, 320, 'Lung');
   if (letters) {
     for (const [L, a] of Object.entries(ANSWERS)) {
       sv('line', { x1: a.m[0], y1: a.m[1], x2: a.at[0], y2: a.at[1], stroke: '#633d3c', 'stroke-width': 1.4 }, svg);
-      sv('circle', { cx: a.m[0], cy: a.m[1], r: 13, fill: '#633d3c', stroke: '#fffaf0', 'stroke-width': 2 }, svg);
-      sv('text', { x: a.m[0], y: a.m[1] + 5, 'text-anchor': 'middle', 'font-family': SANS, 'font-size': 14, 'font-weight': 600, fill: '#fffaf0', text: L }, svg);
+      sv('circle', { cx: a.m[0], cy: a.m[1], r: 16, fill: '#633d3c', stroke: '#fffaf0', 'stroke-width': 2 }, svg);
+      sv('text', { x: a.m[0], y: a.m[1] + 6, 'text-anchor': 'middle', 'font-family': SANS, 'font-size': 18, 'font-weight': 600, fill: '#fffaf0', text: L }, svg);
     }
   } else {
     lab(790, 172, 'External intercostal muscle'); lead(786, 168, 762, 182);
@@ -94,9 +94,26 @@ function paraSection(mode, idp) {
   return svg;
 }
 
+// Wide figures keep a minimum width (so their text stays at least 12px) and scroll sideways on small screens.
+// This adds a visible hint and edge fades whenever there is more to see.
+function scrollWrap(stage) {
+  const hint = el('p', { class: 'bk-scroll-hint', 'aria-hidden': 'true', text: 'Scroll sideways to see the whole diagram →' });
+  const box = el('div', { class: 'bk-scroll' }, stage);
+  const update = () => {
+    const over = stage.scrollWidth > stage.clientWidth + 2;
+    hint.hidden = !over;
+    box.classList.toggle('is-left', over && stage.scrollLeft > 2);
+    box.classList.toggle('is-right', over && stage.scrollLeft + stage.clientWidth < stage.scrollWidth - 2);
+  };
+  stage.addEventListener('scroll', update, { passive: true });
+  if ('ResizeObserver' in window) new ResizeObserver(update).observe(stage);
+  requestAnimationFrame(update);
+  return el('div', { class: 'bk-scroll-wrap' }, hint, box);
+}
+
 // ---------------------------------------------------------------- counting levels on the back
 function countingFigure() {
-  const svg = sv('svg', { viewBox: '0 0 440 310', class: 'bk-fig-svg', role: 'img', 'aria-labelledby': 'bk-cnt-t bk-cnt-d' });
+  const svg = sv('svg', { viewBox: '0 0 390 310', class: 'bk-fig-svg', role: 'img', 'aria-labelledby': 'bk-cnt-t bk-cnt-d' });
   sv('title', { id: 'bk-cnt-t', text: 'Surface landmarks for counting thoracic levels' }, svg);
   sv('desc', { id: 'bk-cnt-d', text: 'Back view of the trunk. The most prominent spinous process at the base of the neck is C7, the vertebra prominens. A line joining the inferior angles of the scapulae crosses the T7 spinous process. Probe positions for the erector spinae and paravertebral blocks are about 2 to 3 cm lateral to the spinous processes at T5.' }, svg);
   const g = sv('g', {}, svg);
@@ -111,22 +128,22 @@ function countingFigure() {
   // probe positions (right side = viewer right on the back)
   sv('rect', { x: 95, y: 99, width: 7, height: 24, fill: '#272722' }, g);
   sv('rect', { x: 110, y: 99, width: 7, height: 24, fill: 'none', stroke: '#272722', 'stroke-width': 1.4 }, g);
-  const t = sv('g', { 'font-family': SANS, 'font-size': 13, fill: '#272722' }, svg);
+  const t = sv('g', { 'font-family': SANS, 'font-size': 15, fill: '#272722' }, svg);
   const lab = (x, y, s) => sv('text', { x, y, text: s }, t);
   const lead = (x1, y1, x2, y2) => sv('line', { x1, y1, x2, y2, stroke: '#55534d', 'stroke-width': 0.9 }, svg);
-  lab(190, 22, 'C7: vertebra prominens'); lead(186, 18, 90, 18);
-  lab(190, 112, 'T5: probe about 2–3 cm lateral'); lab(190, 128, '(filled: paravertebral; outline: ESP)'); lead(186, 110, 118, 110);
-  lab(190, 146, 'Inferior angle of scapula = T7'); lead(186, 142, 110, 141);
-  const k = sv('g', { 'font-family': MONO, 'font-size': 11, fill: '#55534d' }, svg);
+  lab(180, 23, 'C7: vertebra prominens'); lead(176, 18, 90, 18);
+  lab(180, 96, 'T5: probe 2–3 cm lateral'); lab(180, 114, 'Filled: paravertebral'); lab(180, 132, 'Outline: ESP'); lead(176, 100, 118, 108);
+  lab(180, 164, 'Inferior angle of'); lab(180, 182, 'scapula = T7'); lead(176, 160, 110, 141);
+  const k = sv('g', { 'font-family': MONO, 'font-size': 15, fill: '#55534d' }, svg);
   sv('text', { x: 10, y: 304, text: 'L' }, k); sv('text', { x: 150, y: 304, text: 'R' }, k);
-  sv('text', { x: 190, y: 200, text: 'Back view. Not to scale.' }, k);
+  sv('text', { x: 180, y: 236, text: 'Back view.' }, k); sv('text', { x: 180, y: 256, text: 'Not to scale.' }, k);
   return svg;
 }
 
-// ---------------------------------------------------------------- A–E label exercise (deck slide 145)
+// ---------------------------------------------------------------- A–E label exercise (teaching slide 145)
 function labelExercise() {
   const wrap = el('div', { class: 'bk-quiz' });
-  wrap.append(el('div', { class: 'bk-fig-stage bk-fig-stage--wide', tabindex: '0', role: 'region', 'aria-label': 'Exam diagram A to E (scrolls sideways on small screens)' }, paraSection('letters', 'bk-ex')));
+  wrap.append(scrollWrap(el('div', { class: 'bk-fig-stage bk-fig-stage--wide', tabindex: '0', role: 'region', 'aria-label': 'Exam diagram A to E (scrolls sideways on small screens)' }, paraSection('letters', 'bk-ex'))));
   const options = Object.values(ANSWERS).map((a) => a.label).sort();
   const form = el('form', { class: 'bk-quiz-form', 'aria-label': 'Name the structures A to E', on: { submit: (e) => { e.preventDefault(); check(); } } });
   const rows = Object.entries(ANSWERS).map(([L, a]) => {
@@ -164,12 +181,12 @@ export function renderAnatomy(sec) {
   sec.append(keyPoints([
     `A <strong>triangular wedge</strong> on either side of the vertebral column.${D}`,
     `<strong>Anterolateral border:</strong> the parietal pleura. <strong>Posterior border:</strong> the superior costotransverse ligament (SCTL) medially and the internal intercostal membrane (IIM) laterally. <strong>Medial border:</strong> the vertebral body, disc and intervertebral foramen.${D}`,
-    `<strong>Contents:</strong> the spinal nerves (ventral and dorsal rami), the dorsal rami of the intercostal nerves, the sympathetic chain with its grey and white rami communicantes, the intercostal vessels, fat and lymphatics.${D}`,
+    `<strong>Contents:</strong> the spinal nerves (ventral rami, which become the intercostal nerves, and dorsal rami), the sympathetic chain with its grey and white rami communicantes, the intercostal vessels, fat and lymphatics.${cite('deck', 'batra2011', 'karmakar2001')} <span class="bk-flag"><strong>Wording corrected, for confirmation:</strong> teaching slide 144 lists “dorsal rami of intercostal nerves”. Intercostal nerves are the continuation of the ventral rami and have no dorsal rami, so we have written the contents as above.</span>`,
     `It communicates with the spaces above and below, with the intercostal space laterally and with the epidural space medially, which explains multi-level, intercostal and epidural spread.${cite('batra2011')}`,
   ]));
 
   const f1 = el('figure', { class: 'bk-fig', id: 'anat-section' });
-  f1.append(el('p', { class: 'bk-fig-title', text: 'Cross-section: the right paravertebral space' }), el('div', { class: 'bk-fig-stage bk-fig-stage--wide', tabindex: '0', role: 'region', 'aria-label': 'Paravertebral space diagram (scrolls sideways on small screens)' }, paraSection('labels', 'bk-xs')));
+  f1.append(el('p', { class: 'bk-fig-title', text: 'Cross-section: the right paravertebral space' }), scrollWrap(el('div', { class: 'bk-fig-stage bk-fig-stage--wide', tabindex: '0', role: 'region', 'aria-label': 'Paravertebral space diagram (scrolls sideways on small screens)' }, paraSection('labels', 'bk-xs'))));
   f1.append(fill(el('figcaption'), 'Posterior at the top, as on a transverse ultrasound image; the vertebra is on the left. The dashed wedge is the paravertebral space. The SCTL (medially) and the IIM (laterally) form one continuous posterior wall. The rib neck (dotted) lies just above this plane, and the dorsal ramus is dashed where it passes just below the transverse process. Not to scale.'));
   sec.append(f1);
 
@@ -187,7 +204,7 @@ export function renderAnatomy(sec) {
   const f2 = el('figure', { class: 'bk-fig bk-fig--split' });
   f2.append(el('div', { class: 'bk-fig-stage' }, countingFigure()));
   const cap = el('figcaption');
-  cap.append(fill(el('ul', { class: 'bk-list' }), `<li><strong>C7, the vertebra prominens</strong>: the most prominent spinous process at the base of the neck. Count down from it.${D}</li><li><strong>The inferior angle (tip) of the scapula is T7</strong>, with the arms by the side.${D}</li><li><strong>Ultrasound from the first rib:</strong> start parasagittal high in the back (or under the clavicle) to find the first rib, then slide caudally and count each rib down to the level you want.${D}</li><li>Confirm the level on ultrasound by counting ribs before you mark the skin.</li>`));
+  cap.append(fill(el('ul', { class: 'bk-list' }), `<li><strong>C7, the vertebra prominens</strong>: the most prominent spinous process at the base of the neck. Count down from it.${D}</li><li><strong>The inferior angle (tip) of the scapula is T7</strong>, with the arms by the side.${D}</li><li><strong>Ultrasound from the first rib:</strong> start parasagittal high in the back, beside the C7 spinous process, to find the first rib, then slide caudally and count each rib down to the level you want.${D}</li><li>Confirm the level on ultrasound by counting ribs before you mark the skin.</li>`));
   f2.append(cap);
   sec.append(f2);
 
@@ -195,15 +212,15 @@ export function renderAnatomy(sec) {
   const ex = el('section', { class: 'tb-bsec tb-bsec--examcorner', id: 'anat-exam', 'aria-labelledby': 'anat-exam-h' });
   ex.append(el('h3', { id: 'anat-exam-h', text: 'Exam corner' }));
   const q = el('article', { class: 'tb-exam-q bk-exam-q' });
-  q.append(el('p', { class: 'tb-exam-src', text: 'Exam question (deck slide 145)' }));
+  q.append(el('p', { class: 'tb-exam-src', text: 'Exam question (teaching slide 145)' }));
   q.append(fill(el('div', { class: 'tb-exam-text' }), '<p>Name the structures marked <strong>A to E</strong> on this diagram of the paravertebral region.</p>'));
   q.append(labelExercise());
   ex.append(q);
   const q2 = el('article', { class: 'tb-exam-q' });
-  q2.append(el('p', { class: 'tb-exam-src', text: 'Practice question (deck slide 144)' }));
+  q2.append(el('p', { class: 'tb-exam-src', text: 'Practice question (based on teaching slide 144)' }));
   q2.append(fill(el('div', { class: 'tb-exam-text' }), '<p>Describe the boundaries and contents of the thoracic paravertebral space.</p>'));
   const d = el('details', { class: 'tb-details tb-exam-ans' });
-  d.append(el('summary', { text: 'Model answer points' }), fill(el('ul', { class: 'tb-exam-pts' }), '<li>A triangular wedge on either side of the vertebral column.</li><li>Anterolateral: parietal pleura.</li><li>Posterior: SCTL medially, IIM laterally (continuous with each other).</li><li>Medial: vertebral body, disc and intervertebral foramen.</li><li>Contents: spinal nerves (ventral and dorsal rami), dorsal rami of the intercostal nerves, sympathetic chain with grey and white rami communicantes, intercostal vessels, fat, lymphatics.</li>'));
+  d.append(el('summary', { text: 'Model answer points' }), fill(el('ul', { class: 'tb-exam-pts' }), '<li>A triangular wedge on either side of the vertebral column.</li><li>Anterolateral: parietal pleura.</li><li>Posterior: SCTL medially, IIM laterally (continuous with each other).</li><li>Medial: vertebral body, disc and intervertebral foramen.</li><li>Contents: spinal nerves (ventral rami, which become the intercostal nerves, and dorsal rami), sympathetic chain with grey and white rami communicantes, intercostal vessels, fat, lymphatics.</li>'));
   q2.append(d);
   ex.append(el('div', { class: 'tb-exam' }, q, q2));
   sec.append(ex);
@@ -215,7 +232,7 @@ export function renderAnatomy(sec) {
   ]);
 }
 
-// ---------------------------------------------------------------- landmark paravertebral technique (deck slide 148)
+// ---------------------------------------------------------------- landmark paravertebral technique (teaching slide 148)
 const LM_STEPS = [
   { title: 'Mark the skin', short: 'Mark', body: `At the level you want, mark a point <strong>2 cm lateral to the spinous process</strong>.${D}` },
   { title: 'Contact the transverse process', short: 'Bone', body: `Insert a <strong>Tuohy needle perpendicular</strong> to the skin until it <strong>contacts the transverse process at about 4 cm</strong>.${D} If there is no bone by then, stop and reassess: you may be between transverse processes.` },
@@ -224,7 +241,7 @@ const LM_STEPS = [
 ];
 
 function landmarkFigure() {
-  const svg = sv('svg', { viewBox: '0 -24 720 404', class: 'bk-fig-svg', role: 'img', 'aria-labelledby': 'bk-lm-t bk-lm-d' });
+  const svg = sv('svg', { viewBox: '0 -24 720 412', class: 'bk-fig-svg', role: 'img', 'aria-labelledby': 'bk-lm-t bk-lm-d' });
   sv('title', { id: 'bk-lm-t', text: 'Landmark paravertebral technique' }, svg);
   const desc = sv('desc', { id: 'bk-lm-d', text: '' }, svg);
   const S = 40; // px per cm
@@ -239,8 +256,8 @@ function landmarkFigure() {
   sv('path', { d: 'M131 102 l8 8 M139 102 l-8 8', stroke: '#633d3c', 'stroke-width': 2.2 }, mark);
   sv('path', { d: 'M59 126 H135', stroke: '#272722', 'stroke-width': 1 }, mark);
   sv('path', { d: 'M59 121 V131 M135 121 V131', stroke: '#272722', 'stroke-width': 1 }, mark);
-  sv('text', { x: 97, y: 146, 'text-anchor': 'middle', 'font-family': SANS, 'font-size': 13, fill: '#272722', text: '2 cm' }, mark);
-  sv('text', { x: 75, y: 228, 'text-anchor': 'middle', 'font-family': MONO, 'font-size': 11, fill: '#55534d', text: 'FROM BEHIND' }, ins);
+  sv('text', { x: 97, y: 150, 'text-anchor': 'middle', 'font-family': SANS, 'font-size': 17, fill: '#272722', text: '2 cm' }, mark);
+  sv('text', { x: 75, y: 232, 'text-anchor': 'middle', 'font-family': MONO, 'font-size': 16, fill: '#55534d', text: 'FROM BEHIND' }, ins);
 
   // section: parasagittal through the mark, cranial on the left
   const X0 = 200, X1 = 704;
@@ -249,13 +266,16 @@ function landmarkFigure() {
   sv('rect', { x: X0, y: skin, width: X1 - X0, height: tpTop - skin - 4, fill: MUSCLE, opacity: 0.55 }, sec);
   sv('rect', { x: X0, y: tpTop - 4, width: X1 - X0, height: 300 - tpTop + 4, fill: '#eadcc6' }, sec);
   // transverse processes: upper (cranial, left) and lower (caudal, right), SCTL between
+  // the neck of the rib below lies just deep to its transverse process; the SCTL runs from the lower border of
+  // the transverse process above down to the neck of that rib
+  sv('ellipse', { cx: 500, cy: tpBot + 10, rx: 38, ry: 14, fill: BONE, stroke: BONE_EDGE, 'stroke-width': 1.4, 'stroke-dasharray': '4 3' }, sec);
   sv('rect', { x: 236, y: tpTop, width: 104, height: 28, fill: BONE, stroke: BONE_EDGE, 'stroke-width': 1.6 }, sec);
   sv('rect', { x: 470, y: tpTop, width: 104, height: 28, fill: BONE, stroke: BONE_EDGE, 'stroke-width': 1.6 }, sec);
-  sv('path', { d: `M340 ${tpBot - 6} Q400 ${tpBot + 14} 470 ${tpBot + 28}`, fill: 'none', stroke: LIG, 'stroke-width': 3.4 }, sec);
+  sv('path', { d: `M338 ${tpBot - 1} Q404 ${tpBot - 1} 464 ${tpBot + 5}`, fill: 'none', stroke: LIG, 'stroke-width': 3.4 }, sec);
   sv('path', { d: `M${X0} 312 Q360 300 520 306 T${X1} 304`, fill: 'none', stroke: PLEURA, 'stroke-width': 3 }, sec);
   sv('rect', { x: X0, y: 314, width: X1 - X0, height: 52, fill: '#e3dce6' }, sec);
   // depth guides
-  const guide = sv('g', { 'font-family': SANS, 'font-size': 13, fill: '#272722' }, sec);
+  const guide = sv('g', { 'font-family': SANS, 'font-size': 17, fill: '#272722' }, sec);
   const brk = (x, y1, y2, text, cls) => {
     const b = sv('g', { class: cls }, guide);
     sv('path', { d: `M${x - 6} ${y1} H${x + 6} M${x} ${y1} V${y2} M${x - 6} ${y2} H${x + 6}`, stroke: '#272722', 'stroke-width': 1.2, fill: 'none' }, b);
@@ -265,14 +285,15 @@ function landmarkFigure() {
   brk(600, skin, tpTop, 'about 4 cm', 'bk-lm-d4');
   brk(600, tpTop, maxD, '1.5 cm max', 'bk-lm-d15');
   sv('line', { x1: X0, y1: maxD, x2: X1, y2: maxD, stroke: '#a12a1c', 'stroke-width': 1.2, 'stroke-dasharray': '5 4', class: 'bk-lm-d15' }, guide);
-  const L = sv('g', { 'font-family': SANS, 'font-size': 13, fill: '#272722' }, svg);
-  sv('text', { x: 250, y: tpTop + 19, text: 'TP (level above)' }, L);
-  sv('text', { x: 484, y: tpTop + 19, text: 'TP' }, L);
-  sv('text', { x: 360, y: tpBot + 44, text: 'SCTL' }, L);
-  sv('text', { x: 214, y: 344, text: 'Pleura and lung' }, L);
-  sv('text', { x: 214, y: skin + 26, text: 'Erector spinae' }, L);
-  const k = sv('g', { 'font-family': MONO, 'font-size': 11, fill: '#55534d' }, svg);
-  sv('text', { x: X0, y: 20, text: 'SECTION THROUGH THE MARK · CRANIAL ←' }, k);
+  const L = sv('g', { 'font-family': SANS, 'font-size': 17, fill: '#272722' }, svg);
+  sv('text', { x: 288, y: tpTop + 20, 'text-anchor': 'middle', text: 'TP above' }, L);
+  sv('text', { x: 522, y: tpTop + 20, 'text-anchor': 'middle', text: 'TP' }, L);
+  sv('text', { x: 206, y: tpBot + 23, text: 'SCTL (to the rib below)' }, L);
+  sv('text', { x: 470, y: tpBot + 56, text: 'Neck of rib below' }, L);
+  sv('text', { x: 214, y: 346, text: 'Pleura and lung' }, L);
+  sv('text', { x: 214, y: skin + 28, text: 'Erector spinae' }, L);
+  const k = sv('g', { 'font-family': MONO, 'font-size': 16, fill: '#55534d' }, svg);
+  sv('text', { x: X0, y: 380, text: 'SECTION THROUGH THE MARK · CRANIAL ←' }, k);
   // needle
   const needle = sv('g', { class: 'bk-lm-needle' }, svg);
   const ghost = sv('line', { stroke: '#8f8574', 'stroke-width': 3, 'stroke-dasharray': '6 5', opacity: 0 }, svg);
@@ -281,9 +302,9 @@ function landmarkFigure() {
   const hub = sv('rect', { width: 16, height: 22, fill: '#633d3c' }, needle);
   const tipDot = sv('circle', { r: 4.5, fill: '#272722' }, needle);
   const pool = sv('ellipse', { rx: 30, ry: 6, fill: 'rgba(64,158,222,0.7)', stroke: '#1d5f96', opacity: 0 }, svg);
-  const pop = sv('text', { 'font-family': SANS, 'font-size': 14, 'font-weight': 600, fill: '#1d4f7c', text: 'Pop + loss of resistance', opacity: 0 }, svg);
+  const pop = sv('text', { 'font-family': SANS, 'font-size': 17, 'font-weight': 600, fill: '#1d4f7c', text: 'Pop + loss of resistance', opacity: 0 }, svg);
   const entry = [522, skin];
-  const tips = [null, [522, tpTop], [462, tpTop + 6], [448, tpTop + 57]];
+  const tips = [null, [522, tpTop], [462, tpTop + 6], [450, tpTop + 38]];  // step 4: about 1 cm past the TP, well short of the 1.5 cm limit
   let cur = null;
   function place(tip, t = 1) {
     const from = cur || tip;
@@ -326,8 +347,8 @@ function landmarkFigure() {
   }
   function finish(i) {
     if (i === 3) {
-      pool.setAttribute('cx', tips[3][0] + 6); pool.setAttribute('cy', tips[3][1] + 3); pool.setAttribute('opacity', '1');
-      pop.setAttribute('x', 476); pop.setAttribute('y', tpTop + 92); pop.setAttribute('opacity', '1');
+      pool.setAttribute('cx', tips[3][0] + 4); pool.setAttribute('cy', tips[3][1] + 5); pool.setAttribute('opacity', '1');
+      pop.setAttribute('x', 214); pop.setAttribute('y', tpTop + 92); pop.setAttribute('opacity', '1');
     }
   }
   return { svg, show };
@@ -336,7 +357,7 @@ function landmarkFigure() {
 export function renderLandmark(sec) {
   sec.append(el('p', { class: 'tb-eyebrow', text: 'Back · Thoracic paravertebral' }));
   sec.append(el('h2', { id: 'pvblm-h', text: 'Thoracic paravertebral block: landmark technique' }));
-  sec.append(fill(el('p', { class: 'tb-lead' }), `The classic technique without ultrasound, from the deck.${D} Step through it below. The ultrasound approaches (<a href="#ch-pvb">sagittal</a> and <a href="#ch-pvbt">transverse</a>) let you see the pleura move; this one relies on depth and feel.`));
+  sec.append(fill(el('p', { class: 'tb-lead' }), `The classic technique without ultrasound, from the teaching slides.${D} Step through it below. The ultrasound approaches (<a href="#ch-pvb">sagittal</a> and <a href="#ch-pvbt">transverse</a>) let you see the pleura move; this one relies on depth and feel.`));
   const fig = landmarkFigure();
   const wrap = el('figure', { class: 'bk-lm', id: 'pvblm-fig' });
   const stage = el('div', { class: 'bk-fig-stage bk-fig-stage--wide', tabindex: '0', role: 'region', 'aria-label': 'Landmark technique diagram (scrolls sideways on small screens)' }, fig.svg);
@@ -367,22 +388,22 @@ export function renderLandmark(sec) {
     else if (e.key === 'ArrowLeft') { e.preventDefault(); go(Math.max(0, cur - 1)); }
   });
   const panel = el('div', { class: 'bk-lm-panel' }, list, text, el('div', { class: 'tb-scan-nav bk-lm-nav' }, prev, next));
-  wrap.append(el('div', { class: 'bk-lm-grid' }, stage, panel), el('figcaption', { class: 'bk-fig-note', text: 'Schematic parasagittal section through the skin mark, cranial on the left. Not to scale.' }));
+  wrap.append(el('div', { class: 'bk-lm-grid' }, scrollWrap(stage), panel), el('figcaption', { class: 'bk-fig-note', text: 'Schematic parasagittal section through the skin mark, cranial on the left. Not to scale.' }));
   sec.append(wrap);
   go(0);
-  // the deck's values and the cited variation
+  // the teaching slides' values and the cited variation
   sec.append(el('h3', { id: 'pvblm-notes', text: 'Notes' }));
-  sec.append(fill(el('ul', { class: 'bk-list' }), `<li>Dose as for the ultrasound approaches: <strong>20 ml of 0.3–0.5% ropivacaine</strong>.${D} (The deck reads “0.3–5%”; we have assumed 0.3–0.5% pending the deck owner’s confirmation.)</li><li>Some descriptions mark 2.5–3 cm lateral to the spinous process and walk off caudally, also stopping within 1.5 cm.${cite('batra2011')}</li><li>Failed block was about 1 in 10, and pneumothorax 0.5%, in a prospective series of landmark blocks.${cite('lonnqvist1995')} See the <a href="#pvb-complications">complications list</a>.</li><li>Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks.</li>`));
+  sec.append(fill(el('ul', { class: 'bk-list' }), `<li>Dose as for the ultrasound approaches: <strong>20 ml of 0.3–0.5% ropivacaine</strong>.${D} (The teaching slide reads “0.3–5%”; we have assumed 0.3–0.5% pending the slides’ owner’s confirmation.)</li><li>Some descriptions mark 2.5–3 cm lateral to the spinous process and walk off caudally, also stopping within 1.5 cm.${cite('batra2011')}</li><li>Failed block was about 1 in 10, and pneumothorax 0.5%, in a prospective series of landmark blocks.${cite('lonnqvist1995')} See the <a href="#pvb-complications">complications list</a>.</li><li>Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks.</li>`));
   registerSearch([{ title: 'Landmark paravertebral technique', text: 'tuohy loss of resistance 2 cm lateral spinous process 4 cm transverse process walk off 1.5 cm pop sctl', id: 'pvblm-fig' }]);
 }
 
-// ---------------------------------------------------------------- levels (deck slide 147)
+// ---------------------------------------------------------------- levels (teaching slide 147)
 export function renderLevels(sec) {
   sec.append(el('h2', { id: 'levels-h', text: 'Which level for which operation' }));
-  sec.append(fill(el('p', { class: 'tb-lead' }), `The deck’s table of levels to block from the back, with the level for a single shot.${D} Use it for paravertebral blocks, and as a guide to where to aim an erector spinae plane block.`));
+  sec.append(fill(el('p', { class: 'tb-lead' }), `The teaching slides’ table of levels to block from the back, with the level for a single shot.${D} Use it for paravertebral blocks, and as a guide to where to aim an erector spinae plane block.`));
   sec.append(table({
     id: 'levels-table',
-    caption: 'Levels to block and single-shot level (deck slide 147)',
+    caption: 'Levels to block and single-shot level (teaching slide 147)',
     head: ['Operation', 'Levels to block', 'Single-shot level'],
     rows: [
       [{ th: true, html: 'Sternotomy' }, 'T2–T6 bilaterally', 'T4'],

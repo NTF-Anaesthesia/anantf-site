@@ -59,7 +59,7 @@ export const SCENES = {
     probe: { view: 'back', x: 100, y: 111, angle: 90, label: 'parasagittal, about 3 cm lateral to the T5 spinous process (right side shown), marker cranial.' },
   },
 
-  // Right side, parasagittal about 2.5 cm lateral, tilted laterally to the costotransverse junction.
+  // Right side, parasagittal (position illustrative), tilted laterally to the costotransverse junction.
   pvb: {
     id: 'bk-pvb-sag', title: 'Paravertebral: parasagittal view tilted laterally (TP and rib)', width: 45, depth: 45, focus: 28, skin: 1.4,
     view: 'Parasagittal view on the right, tilted laterally from the transverse process view to the costotransverse junction: the transverse process (square, shallower) cranially and the rib (rounder, deeper) caudally. Cranial on the left.',
@@ -94,7 +94,7 @@ export const SCENES = {
       needle: '<p>In-plane, <strong>caudal to cranial</strong>: this crosses the SCTL at a steeper angle, because of the way it slopes. Advance under the transverse process and through the SCTL: feel the <strong>pop</strong>. Stop just under the ligament.</p>',
       inject: '<p>Deposit <strong>below the SCTL</strong>. A correct injection <strong>pushes the pleura down</strong> (anterior displacement), and the fluid spreads under the ligament. Aspirate first and inject in small increments.</p>',
     },
-    probe: { view: 'back', x: 98, y: 111, angle: 90, label: 'parasagittal, about 2.5 cm lateral to the spinous process (right side shown), tilted laterally to the costotransverse junction.' },
+    probe: { view: 'back', x: 98, y: 111, angle: 90, label: 'parasagittal, a little lateral to the spinous process (right side shown; position illustrative), tilted laterally to the costotransverse junction.' },
   },
 
   // Right side, transverse (axial) at the level of a transverse process, beam in the intercostal space just caudal to it.
