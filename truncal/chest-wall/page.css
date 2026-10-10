@@ -1,0 +1,18 @@
+/* Chest wall page: anatomy chapter figures and notes (prefix cw-). Shared styles: ../shared/css/truncal.css */
+.tb-app .cw-fig{margin:24px 0 8px}
+.tb-app main .cw-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
+.tb-app .cw-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
+.tb-app .cw-fig-stage--wide{overflow-x:auto}
+.tb-app .cw-fig-svg{display:block;width:100%;height:auto}
+.tb-app .cw-fig-stage--wide .cw-fig-svg{min-width:600px}
+.tb-app .cw-fig figcaption{margin-top:10px;font-size:15px;color:var(--tb-ink-soft)}
+.tb-app main .cw-legend{margin:6px 0 0;padding-left:1.4em}
+.tb-app main .cw-legend li{margin:0 0 4px}
+.tb-app main .cw-legend li::marker{color:#2c74b3;font-weight:600}
+.tb-app .cw-fig--split{display:grid;gap:16px 32px;align-items:start}
+@media (min-width:900px){.tb-app .cw-fig--split{grid-template-columns:minmax(280px,400px) minmax(0,1fr)}}
+.tb-app .cw-fig--split figcaption{margin-top:0}
+.tb-app .cw-fig--split .tb-table-wrap{margin-top:0}
+.tb-app main .cw-note{font-size:15px;color:var(--tb-muted)}
+.tb-app main .tb-chapter>h3{margin-top:48px}
+.tb-app .tb-bsec--twostage .tb-scan-wrap{margin-top:16px}
