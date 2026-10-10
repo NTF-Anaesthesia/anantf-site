@@ -108,7 +108,7 @@ function agents() {
     T(P('<strong>Answer first:</strong> for most lower-limb and hip surgery use hyperbaric bupivacaine 0.5%. For brief day-case surgery use hyperbaric prilocaine or chloroprocaine. Do not use lidocaine if an alternative exists.'), 1),
     T(t, 1),
     T(P('Bupivacaine doses are this department’s typical doses; prilocaine and chloroprocaine show the label dose. Details in <a href="#tq-drugs">Drugs and doses</a>. Position, dose and patient factors change spread: see <a href="#tq-spread-h">what decides spread</a>.', 'sp-prose ph-note'), 1),
-    T(callout('pearl', { title: 'Compare bupivacaine and ropivacaine', body: '<ul><li>Same long-acting amide family; ropivacaine is the S enantiomer with a shorter side chain.</li><li>Ropivacaine: less lipid soluble, less potent, less cardiotoxic, relatively less motor block and a shorter block.</li><li>Bupivacaine is the standard spinal drug because its dose-response and hyperbaric preparation are well established.</li></ul>' }), 2));
+    T(callout('pearl', { title: 'Compare bupivacaine and ropivacaine', body: '<ul><li>Same long-acting amide family; ropivacaine is the S enantiomer with a shorter side chain.</li><li>Ropivacaine: less lipid soluble, less potent, less cardiotoxic, relatively less motor block and a shorter block.</li><li>Bupivacaine is the standard spinal drug because its dose-response and hyperbaric preparation are well established.</li><li>Cardiac toxicity: bupivacaine binds cardiac sodium channels much longer than lidocaine, and the gap between the dose that causes seizures and the dose that causes cardiovascular collapse is narrower (a ratio of about 3, against about 7 for lidocaine). The R enantiomer carries most of the cardiotoxicity, which is why the pure S drugs were developed. With ropivacaine, CNS signs more often come first.</li></ul>' }), 2));
 }
 
 // ---------------------------------------------------------------- 3. baricity
@@ -162,8 +162,8 @@ function opioids() {
     T(t, 2),
     T(mon, 1),
     T(UL([
-      '<strong>Why morphine is dangerous late.</strong> Being hydrophilic, it stays in the CSF, which carries it up to the brainstem respiratory centres hours later. Fentanyl leaves the CSF in minutes, so its risk is early.',
-      '<strong>Itch</strong> is mediated by mu receptors, not histamine; antihistamines mainly sedate. <strong>Retention</strong> comes from detrusor suppression at the sacral cord.',
+      '<strong>Why morphine is dangerous late.</strong> Being hydrophilic, it stays in the CSF, which carries it up to the brainstem respiratory centres hours later. It is not broken down in the CNS and leaves mainly by slow absorption through the arachnoid granulations into the venous sinuses, which is why one intrathecal dose can act for up to a day. Fentanyl leaves the CSF in minutes, so its risk is early.',
+      '<strong>Itch</strong> is mediated by mu receptors, not histamine; antihistamines mainly sedate. It is much commoner after spinal than epidural opioid, often felt around the face and nose, and worse with larger morphine doses. A small, titrated naloxone dose can ease it without bringing back the pain. <strong>Retention</strong> comes from detrusor suppression at the sacral cord.',
       `<strong>Dose.</strong> PROSPECT says low-dose intrathecal morphine ${D('100 microgram')} (${D('0.1 mg')}) may be considered with a spinal for hip replacement, but stresses its side-effects and that good analgesia is possible without it. No other opioid doses are given here.`,
     ]), 2),
   ];
@@ -174,7 +174,7 @@ function otherAdjuvants() {
     caption: 'Other intrathecal additives',
     head: ['Additive', 'Mechanism', 'Effect', 'Problems', 'Status'],
     rows: [
-      [{ th: true, html: 'Clonidine' }, 'Alpha-2 agonist. Acts on the dorsal horn; also slows nerve conduction by blocking the hyperpolarisation-activated current in the axon.', 'Longer sensory and motor block and more analgesia.', 'Hypotension, bradycardia, sedation.', 'Used in some centres; no dose given here.'],
+      [{ th: true, html: 'Clonidine' }, 'Alpha-2 agonist. Acts on the dorsal horn; also slows nerve conduction by blocking the hyperpolarisation-activated current in the axon.', 'Longer sensory and motor block and more analgesia.', 'Hypotension, bradycardia, sedation (which can last several hours: warn recovery).', 'Used in some centres; no dose given here.'],
       [{ th: true, html: 'Dexmedetomidine' }, 'More selective alpha-2 agonist than clonidine (about 8 times).', 'Longer block and analgesia; sedation without respiratory depression.', 'Bradycardia and hypotension.', 'Off-label; no dose given here.'],
       [{ th: true, html: 'Adrenaline' }, 'Alpha-agonist vasoconstrictor slows the drug leaving the CSF and cord; also adds a spinal alpha-2 effect.', 'Prolongs the block a little, mainly with tetracaine or lidocaine.', 'Theoretical spinal cord ischaemia, preservatives in the ampoule, little effect with bupivacaine.', 'Rarely used.'],
       [{ th: true, html: 'Neostigmine' }, 'Blocks acetylcholinesterase and raises spinal acetylcholine, a source of analgesia.', 'Analgesia in studies.', 'Severe nausea and vomiting, bradycardia.', 'Historical; not used.'],
@@ -182,7 +182,7 @@ function otherAdjuvants() {
   });
   return [
     T(t, 3),
-    T(callout('warn', { title: 'Preservative-free only', body: '<p>Only drugs made for intrathecal use, without preservatives or antioxidants, go into the CSF. Ketamine and midazolam have neurotoxicity concerns and are not recommended intrathecally.</p>' }), 2),
+    T(callout('warn', { title: 'Preservative-free only', body: '<p>Only drugs made for intrathecal use, without preservatives or antioxidants, go into the CSF. Multi-dose vials contain preservatives (such as parabens or metabisulphite) that can cause arachnoiditis, so use single-use ampoules labelled for spinal use. Ketamine and midazolam have neurotoxicity concerns and are not recommended intrathecally.</p>' }), 2),
   ];
 }
 
@@ -196,7 +196,7 @@ function vasopressors() {
     caption: 'Vasopressors and vagolytics used with a spinal',
     head: ['Drug', 'Receptors', 'HR and CO', 'Adult IV dose (label)', 'Notes'],
     rows: [
-      [{ th: true, html: 'Phenylephrine' }, 'Pure alpha-1 agonist', 'Raises SVR and venous tone; HR falls (reflex), CO may fall with larger doses', `${D('50–100 µg')} bolus, repeated; no single bolus over ${D('100 µg')}${cite('ts-smpc-phe')}`, 'First choice for obstetric spinals. Avoid when the heart rate is already low.'],
+      [{ th: true, html: 'Phenylephrine' }, 'Pure alpha-1 agonist', 'Raises SVR and venous tone; HR falls (reflex), CO may fall with larger doses', `${D('50–100 µg')} bolus, repeated; no single bolus over ${D('100 µg')}${cite('ts-smpc-phe')}`, 'Acts within a minute; a bolus lasts about 15–20 minutes, so it suits repeated boluses or an infusion. First choice for obstetric spinals. Avoid when the heart rate is already low; take care in ischaemic heart disease, where a slower rate and higher afterload can lower cardiac output.'],
       [{ th: true, html: 'Ephedrine' }, 'Indirect (releases noradrenaline) plus direct alpha and beta', 'HR and CO rise; SVR rises a little', `${D('3–6 mg')} slow IV (maximum ${D('9 mg')} per dose), repeated every 3–4 min up to ${D('30 mg')}${cite('ts-smpc-eph')}`, 'Treats low pressure with a slow heart. Tachyphylaxis with repeats. Crosses the placenta: more fetal acidosis than phenylephrine.'],
       [{ th: true, html: 'Metaraminol' }, 'Mainly alpha-1, some indirect action', 'Raises SVR; HR falls or stays; CO may fall', `One bolus should usually not exceed ${D('1 mg')}; label maximum by repeated bolus ${D('5 mg')}${cite('ts-smpc-met')}`, 'Like phenylephrine but lasts longer.'],
       [{ th: true, html: 'Noradrenaline' }, 'Alpha-1 with some beta-1', 'Raises SVR and keeps HR and CO better than phenylephrine', 'Usually an infusion; no dose given here.', 'Alternative to phenylephrine in the obstetric consensus. Low-dose peripheral infusion is used in some centres.'],

@@ -55,13 +55,14 @@ export function mount(root) {
       caption: 'Scanning views and their nicknames (nicknames vary between texts)',
       head: ['View', 'Probe', 'You see', 'Nickname', 'Use'],
       rows: [
-        [{ html: 'Transverse over the spinous process (midline)', th: true }, 'Across the back, over a spinous process', 'Bright tip, solid shadow, no canal', '–', 'Find the midline'],
-        [{ html: 'Transverse interlaminar (interspinous)', th: true }, 'Across the back, slid into the gap, slight cephalad tilt', 'Posterior complex, black thecal sac, anterior complex, articular and transverse processes either side', '“Flying bat” (transverse processes are the wings, articular processes the ears)', 'Window, depth, midline, rotation'],
-        [{ html: 'Paramedian sagittal lamina (PSL)', th: true }, 'About 2–3 cm from the midline, long axis along the spine', 'Laminae as bright slopes with shadows between; flat bright sacrum', '“Sawtooth”', 'Counting levels'],
+        [{ html: 'Transverse over the spinous process (midline)', th: true }, 'Across the back, over a spinous process', 'Bright tip, solid shadow, no canal', '–', 'Find the midline when you cannot feel the spinous processes, for example in obesity'],
+        [{ html: 'Transverse interlaminar (interspinous)', th: true }, 'Across the back, slid into the gap, slight cephalad tilt', 'Posterior complex, black thecal sac, anterior complex, articular and transverse processes either side', '“Flying bat” (transverse processes are the wings, articular processes the ears); also called the “cat’s head”', 'Window, depth, midline, rotation. The two sides should look alike: if they do not, suspect rotation and angle the needle to match'],
+        [{ html: 'Paramedian sagittal lamina (PSL)', th: true }, 'About 2–3 cm from the midline, long axis along the spine', 'Laminae as bright slopes with shadows between; flat bright sacrum', '“Sawtooth”; some texts call this the “horse head” too', 'Counting levels'],
         [{ html: 'Paramedian sagittal oblique (PSO)', th: true }, 'Same, tilted towards the midline', 'Laminae with a gap between them showing posterior complex, black thecal sac, anterior complex', '“Horse head”', 'Depth, angle, real-time guidance'],
       ],
     }), 1),
-    tier(el('p', { html: 'Moving the probe further out shows the articular processes as a series of humps (the “camel hump”), which tells you that you are too lateral to see the canal.' }), 3),
+    tier(el('p', { html: 'Slide the probe further out from the laminae and the articular processes form one continuous wavy line with no gaps (the “camel hump”): there is no window into the canal here. Further out again, the transverse processes appear as short bright lines with finger-like shadows (the “trident”), with psoas between them. Either view tells you that you are too lateral; move back towards the midline.' }), 2),
+    tier(el('p', { html: 'In the transverse interlaminar view the ligamentum flavum and epidural space are often hard to see, because the beam meets them at an awkward angle. Use the transverse view for the midline and rotation, and the paramedian oblique view for depth.' }), 3),
   );
   root.append(views);
 

@@ -225,7 +225,7 @@ function hypotensionWhy() {
 function sideEffects() {
   const rows = [
     ['ts-nausea', 'Nausea and vomiting',
-      'Low blood pressure (the commonest cause), unopposed vagal tone with a high block, traction on the bowel or peritoneum, opioids.',
+      'Low blood pressure (the commonest cause: it reduces brainstem blood flow), unopposed vagal tone with a high block (above about T6), traction on the bowel or peritoneum, a block that is not quite good enough, spinal opioids or other additives, and a history of motion sickness.',
       'Prevent and treat hypotension early. Avoid opioids that are not needed.',
       `<strong>Treat the pressure first</strong> (<a href="#ts-hypotension">Hypotension</a>). Slow heart: atropine ${D('0.5 mg')}${cite('ts-smpc-atr')} or glycopyrronium ${D('200–400 µg')}.${cite('ts-smpc-gly')} Then ondansetron ${D('4 mg')} slow IV (label dose for established PONV).${cite('ts-smpc-ond')} Ask the surgeon to ease traction.`],
     ['ts-shivering', 'Shivering',
@@ -326,7 +326,7 @@ const PANELS = [
     after: () => [
       failedCauses(),
       t2note('key', 'Repeating a spinal', '<p>Repeat only after a complete failure with enough time passed (about 20 minutes) and a cause you can correct. A working, patchy or low block is not a failure: more drug can give a high or total spinal. High intrathecal local anaesthetic concentrations are neurotoxic, and if anatomy caused the failure, a repeat may fail too. Change level, and consider a different needle.</p>'),
-      pearl('the subdural block', 'A needle tip or drug that ends up in the subdural space (between the dura and the arachnoid) can give a block that is patchy, slow, higher than expected, or spares some segments. It cannot be reliably told from other causes at the bedside, so treat any odd block as unpredictable, and avoid adding more drug on top of it.'),
+      pearl('the subdural block', 'A needle tip or drug that ends up in the subdural space (between the dura and the arachnoid) can give a block that is patchy, slow, higher than expected, or spares some segments. Clues: a high, even cervical, level (sometimes with Horner’s syndrome) but relatively little motor block or fall in blood pressure, and an onset slower than a spinal but faster than an epidural. It usually fades within a couple of hours. It cannot be reliably told from other causes at the bedside, so treat any odd block as unpredictable, and avoid adding more drug on top of it.'),
     ],
   },
   {

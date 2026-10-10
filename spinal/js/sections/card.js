@@ -186,13 +186,13 @@ export function mount(root) {
       el('dt', { text: 'Nausea' }), el('dd', { html: 'Nausea soon after a spinal is low blood pressure until proved otherwise. Treat the pressure first. <a href="#ts-nausea">Nausea</a>' }),
       el('dt', { text: 'Analgesia' }), el('dd', { text: 'Give it before the block wears off.' }),
       el('dt', { text: 'Passing urine' }), el('dd', { html: 'Retention is common until the block has gone. Ask the patient to pass urine, scan the bladder if needed, catheterise if they cannot. <a href="#ts-retention">Retention</a>' }),
-      el('dt', { text: 'Getting up' }), el('dd', { text: 'Only when both legs can feel and move. Sit up first, stand slowly with help. Protect heels and pressure points of a numb leg.' }),
+      el('dt', { text: 'Getting up' }), el('dd', { text: 'Only when both legs can feel and move. Sit up first, stand slowly with help. Falls precautions until then. Protect heels and pressure points of a numb leg.' }),
       el('dt', { text: 'Shivering, itch' }), el('dd', { html: '<a href="#ts-shivering">Shivering</a> · <a href="#ts-pruritus">Itching</a>' })),
     callout('warn', {
       title: 'Ward: call the anaesthetic senior now for',
       body: `<ul>
         <li><strong>Back pain</strong> that is new, severe or getting worse. <a href="#cx-haematoma">Haematoma</a></li>
-        <li><strong>New or worsening leg weakness or numbness</strong>, or a block that is not wearing off as expected. <a href="#cx-neuro-check">Neuro check</a></li>
+        <li><strong>New or worsening leg weakness or numbness</strong>, or a block that is not wearing off as expected (a single-shot spinal still present at 8 hours is not normal). <a href="#cx-neuro-check">Neuro check</a></li>
         <li><strong>Bladder or bowel change</strong>: new retention, incontinence, numbness around the bottom.</li>
         <li><strong>Fever</strong>, or redness and tenderness at the puncture site. <a href="#cx-infection">Infection</a></li>
         <li><strong>Headache</strong> worse sitting or standing and eased lying flat, or any headache with fever, confusion or visual change. <a href="#cx-pdph">PDPH</a></li>
