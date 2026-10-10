@@ -29,7 +29,7 @@ shareBtn?.addEventListener('click', async () => {
 // ---------------------------------------------------------------- chapters
 const chapters = $$('main .sp-chapter');
 const chapterById = new Map(chapters.map((c) => [c.id, c]));
-const ALIAS = { sixty: 'ch-card', populations: 'ch-technique' }; // retired ids that still route somewhere sensible
+const ALIAS = { sixty: 'ch-card', populations: 'ch-technique', quiz: 'ch-exam' }; // retired ids that still route somewhere sensible
 const prefixChapter = new Map(); // module prefix -> chapter element
 const BASE_TITLE = 'Spinal anaesthesia — NTF Anaesthesia';
 let current = null;
@@ -120,7 +120,7 @@ function contextFor(node, section) {
 /** Build (or rebuild) the Advanced digest: every tier-3 block in a section, copied into one list. */
 function buildDigests() {
   $$('main .sp-section').forEach((sec) => {
-    if (sec.id === 'references' || sec.id === 'quiz' || sec.id === 'card') return;
+    if (sec.id === 'references' || sec.id === 'card') return;
     sec.querySelector(':scope > .sp-adv-digest')?.remove();
     const items = $$('[data-tier="3"]', sec).filter((n) => !n.parentElement.closest('[data-tier="3"]'));
     const box = el('div', { class: 'sp-adv-digest' });
@@ -190,7 +190,7 @@ function relaxFor(target) {
   let need = 1;
   for (let p = target; p; p = p.parentElement) if (p.dataset?.tier) need = Math.max(need, Number(p.dataset.tier) || 1);
   let lv = level();
-  if (lv === 'adv') { if (!target.closest('.sp-adv-digest,#quiz,#references,#card,.sp-hub') && !target.matches('.sp-chapter,.sp-section,h2,.sp-kicker')) lv = 'all'; }
+  if (lv === 'adv') { if (!target.closest('.sp-adv-digest,#references,#card,.sp-hub') && !target.matches('.sp-chapter,.sp-section,h2,.sp-kicker')) lv = 'all'; }
   else if (need > tierMax()) lv = need === 2 ? '2' : 'all';
   if (lv === level()) return false;
   applyFilters({ lv }, { keepView: false, save: false }); // a deep link never overwrites the saved level
@@ -199,7 +199,7 @@ function relaxFor(target) {
 }
 
 // ---------------------------------------------------------------- deep links
-const mods = ['card', 'anatomy', 'pharm', 'technique', 'spines', 'ultrasound', 'troubleshooting', 'complications', 'exam', 'quiz'];
+const mods = ['card', 'anatomy', 'pharm', 'technique', 'spines', 'ultrasound', 'troubleshooting', 'complications', 'exam'];
 const revealers = new Map(); // prefix -> reveal(hashId)
 
 function isShown(node) { return !!node && node.getClientRects().length > 0 && !node.closest('[hidden]'); }

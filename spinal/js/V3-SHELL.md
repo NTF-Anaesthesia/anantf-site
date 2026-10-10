@@ -13,7 +13,7 @@ The page is a hub plus nine chapters. Only one chapter is visible at a time.
 | `ch-backs` | Difficult backs & ultrasound | `#spines` > `#mount-spines`, `#ultrasound` > `#mount-ultrasound` |
 | `ch-trouble` | Troubleshooting | `#troubleshooting` > `#mount-troubleshooting` |
 | `ch-complications` | Complications & aftercare | `#complications` > `#mount-complications` |
-| `ch-exam` | Exam (FRCA) & quiz | `#exam` > `#mount-exam` (`sections/exam.js`, prefix `ex`), `#quiz` > `#mount-quiz` |
+| `ch-exam` | Exam (FRCA) | `#exam` > `#mount-exam` (`sections/exam.js`, prefix `ex`) |
 | `ch-refs` | References | `#references` (list `#sp-refs` filled by refs.js) |
 
 Each section has an `h2` (`#<id>-h`) already in index.html: modules should not add another h2 for the same thing.
@@ -47,7 +47,7 @@ For a deep link: `.../spinal/#ts-dry-tap` (wait ~1.6 s for it to settle). `body[
 - Synonyms are in `js/search.js` (`SYN`). Add a row to teach it a new equivalence.
 
 ## Hub tile targets (these ids MUST exist)
-`tq-prep`, `tq-drugs`, `tq-anticoag`, `ts-dry-tap`, `ts-hypotension`, `sx-scoliosis`, `cx-pdph`, `quiz`, `ch-card`, `ch-exam`.
+`tq-prep`, `tq-drugs`, `tq-anticoag`, `ts-dry-tap`, `ts-hypotension`, `sx-scoliosis`, `cx-pdph`, `ch-card`, `ch-exam`.
 All exist today. If you rename one, keep the old id.
 
 ## CSS utilities (css/base.css)
@@ -58,4 +58,4 @@ All exist today. If you rename one, keep the old id.
 
 ## Levels
 The level explanation (MO / Resident / Advanced / All) is shown once on the hub. The dock buttons stay on every chapter.
-In Advanced, `#card`, `#quiz` and `#references` stay fully visible; other sections show a digest of their tier-3 blocks.
+In Advanced, `#card` and `#references` stay fully visible; other sections show a digest of their tier-3 blocks.
