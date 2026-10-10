@@ -1,6 +1,6 @@
 // Abdominal wall page: wires the shared shell to this page's chapters and data.
 import { bootPage } from '../../shared/js/shell.js';
-import { BLOCKS, REFS } from './blocks.js';
+import { BLOCKS } from './blocks.js';
 import { renderAnatomy } from './anatomy.js';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
@@ -28,7 +28,5 @@ bootPage({
     { id: 'ch-ql', title: 'Quadratus lumborum block', short: 'QL', desc: 'Types 1–3 in brief.', block: byId.ql },
     { id: 'ch-iih', title: 'Ilioinguinal and iliohypogastric block', short: 'Ilioinguinal', desc: 'L1: the groin.', block: byId.iih },
   ],
-  refs: REFS,
   synonyms: [['eoi', 'external oblique intercostal'], ['petit', 'landmark', 'blind'], ['catheter', 'catheters', 'infusion']],
-  refsIntro: 'Teaching-slide values are from the department’s teaching slides and teaching notes. Values neither gives are taken from the sources below and cited where they are used.',
 });

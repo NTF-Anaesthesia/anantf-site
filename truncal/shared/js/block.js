@@ -1,7 +1,7 @@
 // Truncal blocks: renders one block chapter from a data object (schema: shared/DATA.md, "Block schema").
 // Order: header + at a glance, scan viewer, position, equipment, landmarks and scanning, approach, sonoanatomy,
 // target and deposition, dose (+ LAST reminder), coverage (map, mechanism, density), complications, pearls,
-// exam corner, sources. Element ids are prefixed with the block id, e.g. #tap-dose, #tap-exam, #tap-step-needle.
+// exam corner. Element ids are prefixed with the block id, e.g. #tap-dose, #tap-exam, #tap-step-needle.
 import { el, fill, callout } from './ui.js';
 import { mountScan } from './scan.js';
 import { coverageMap } from './dermatomes.js';
@@ -19,7 +19,7 @@ function section(b, key, title, ...content) {
   return s;
 }
 
-/** The dose line as a Node: "20 ml of 0.3% ropivacaine per side" + source + LAST reminder. */
+/** The dose line as a Node: "20 ml of 0.3% ropivacaine per side" + note + LAST reminder (a `source` field is ignored). */
 export function doseBox(b) {
   const d = b.dose || {};
   const box = el('div', { class: 'tb-dose', id: `${b.id}-dose-box` });
@@ -31,7 +31,6 @@ export function doseBox(b) {
     if (d.per) line.append(` ${d.per}`);
   }
   box.append(el('p', { class: 'tb-dose-k', text: 'Usual volume and concentration' }), line);
-  if (d.source) box.append(fill(el('p', { class: 'tb-dose-src' }), d.source));
   if (d.note) box.append(fill(el('p', { class: 'tb-dose-note' }), d.note));
   box.append(el('p', { class: 'tb-dose-last' }, el('strong', { text: 'Local anaesthetic toxicity: ' }), b.last || LAST_LINE));
   return box;
@@ -127,7 +126,6 @@ export function renderBlock(b, host) {
     s.classList.add('tb-bsec--examcorner');
     host.append(s);
   }
-  if (b.sources) host.append(el('p', { class: 'tb-bsources' }, el('strong', { text: 'Sources. ' }), fill(el('span'), b.sources)));
   if (b.warning) host.append(callout('warn', b.warning));
   return { scan };
 }

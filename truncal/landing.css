@@ -55,13 +55,6 @@ html{scroll-padding-top:24px}
 .tb-app main .tb-card-link:hover{border-bottom-color:var(--wine);text-decoration:none}
 
 /* source key and tags */
-.tb-key{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:6px 28px;font-size:15px;color:var(--muted);margin:0 0 24px!important}
-.tb-key li{display:flex;align-items:center;gap:8px}
-.tb-srcs{display:inline-flex;flex-wrap:wrap;gap:4px;vertical-align:.08em;margin-left:6px}
-.tb-src{display:inline-block;font:500 12px/1.4 var(--mono);padding:1px 6px;border:1px solid var(--line-strong);color:var(--ink-soft);white-space:nowrap;background:var(--paper)}
-.tb-src--deck{border-color:var(--wine)}
-.tb-src--derived{border-style:dashed}
-.tb-src--notes{border-color:var(--wine);background:var(--blush);color:var(--ink)}
 
 /* chooser */
 .tb-chooser{display:grid;grid-template-columns:270px minmax(0,1fr);gap:40px;align-items:start}
@@ -145,13 +138,6 @@ html{scroll-padding-top:24px}
 .tb-epi .tb-table{max-width:60ch}
 .tb-last{margin-top:36px;padding:14px 18px;background:var(--inset);border-left:3px solid #a12a1c;max-width:72ch;font-size:15px;line-height:1.65}
 
-/* references */
-.tb-refs{padding-left:1.6em;font-size:15px;line-height:1.6;color:var(--ink-soft)}
-.tb-refs li{padding:6px 0;max-width:80ch;scroll-margin-top:24px}
-.tb-refs li:target{background:var(--blush)}
-.tb-refs cite{font-style:italic}
-.tb-refs a{overflow-wrap:anywhere}
-
 /* foot */
 .tb-foot{padding:32px 0;font-size:15px;line-height:1.65;color:var(--muted)}
 .tb-foot p+p{margin-top:8px}
@@ -182,7 +168,6 @@ html{scroll-padding-top:24px}
   .tb-table td::before{display:inline-block;min-width:9.5em;font:500 12px/1.5 var(--sans);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
   .tb-table td:nth-child(2)::before{content:'Cover'}
   .tb-table td:nth-child(3)::before{content:'Single shot'}
-  .tb-table td:nth-child(4)::before{content:'Source'}
   .tb-table--epi td:nth-child(2)::before{content:'Use for'}
 }
 @media (prefers-reduced-motion:reduce){.tb-app *{transition:none!important;animation:none!important}}
