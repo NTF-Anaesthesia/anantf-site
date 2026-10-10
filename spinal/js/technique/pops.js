@@ -87,7 +87,6 @@ export function populationsBlocks() {
     head: ['Drug', 'Label duration', 'Remember'],
     rows: [
       [{ th: true, html: 'Prilocaine 2% hyperbaric' }, `About ${N('100–130 min')}${cite('tq-prilotekal')}`, 'Short-acting; reduce in poor general condition or liver or kidney impairment.'],
-      [{ th: true, html: 'Chloroprocaine 1%' }, `About ${N('80–100 min')}${cite('tq-ampres')}`, `Licensed for surgery of ${N('40 min')} or less. An ester.`],
       [{ th: true, html: 'Bupivacaine, small dose' }, 'Shorter than the usual dose', 'Lower dose gives a shorter, less reliable block. Have a plan if surgery runs on.'],
     ],
   });

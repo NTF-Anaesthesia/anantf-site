@@ -92,11 +92,6 @@ function agents() {
         `Short. About ${D('100–130 min')}.`,
         'Day-case drug. Amide. Low TNS risk.',
         'Dose-related methaemoglobinaemia with large systemic doses; not a problem at spinal doses.'],
-      [{ th: true, html: 'Chloroprocaine 1%' },
-        `${D('40–50 mg')} (${D('4–5 mL')}); maximum ${D('50 mg')}${cite('tq-ampres')}`,
-        `Onset about ${D('8–10 min')}; about ${D('80–100 min')}.`,
-        `Ester. Fast on, fast off. Licensed for surgery expected to last no more than ${D('40 min')}.${cite('tq-ampres')}`,
-        'Needs the preservative-free spinal product; the epidural vials are not for intrathecal use.'],
       [{ th: true, html: 'Lidocaine' },
         'Not recommended: no dose given.',
         'Fast on, short.',
@@ -105,9 +100,9 @@ function agents() {
     ],
   });
   return sub('ph-agents', 'Intrathecal agents at a glance',
-    T(P('<strong>Answer first:</strong> for most lower-limb and hip surgery use hyperbaric bupivacaine 0.5%. For brief day-case surgery use hyperbaric prilocaine or chloroprocaine. Do not use lidocaine if an alternative exists.'), 1),
+    T(P('<strong>Answer first:</strong> for most lower-limb and hip surgery use hyperbaric bupivacaine 0.5%. For brief day-case surgery use hyperbaric prilocaine. Do not use lidocaine if an alternative exists.'), 1),
     T(t, 1),
-    T(P('Bupivacaine doses are this department’s typical doses; prilocaine and chloroprocaine show the label dose. Details in <a href="#tq-drugs">Drugs and doses</a>. Position, dose and patient factors change spread: see <a href="#tq-spread-h">what decides spread</a>.', 'sp-prose ph-note'), 1),
+    T(P('Bupivacaine doses are this department’s typical doses; prilocaine shows the label dose. Chloroprocaine 1% (an ester, licensed for spinal use in operations of up to 40 minutes) is used elsewhere but is not stocked here, so it is not listed. Details in <a href="#tq-drugs">Drugs and doses</a>. Position, dose and patient factors change spread: see <a href="#tq-spread-h">what decides spread</a>.', 'sp-prose ph-note'), 1),
     T(callout('pearl', { title: 'Compare bupivacaine and ropivacaine', body: '<ul><li>Same long-acting amide family; ropivacaine is the S enantiomer with a shorter side chain.</li><li>Ropivacaine: less lipid soluble, less potent, less cardiotoxic, relatively less motor block and a shorter block.</li><li>Bupivacaine is the standard spinal drug because its dose-response and hyperbaric preparation are well established.</li><li>Cardiac toxicity: bupivacaine binds cardiac sodium channels much longer than lidocaine, and the gap between the dose that causes seizures and the dose that causes cardiovascular collapse is narrower (a ratio of about 3, against about 7 for lidocaine). The R enantiomer carries most of the cardiotoxicity, which is why the pure S drugs were developed. With ropivacaine, CNS signs more often come first.</li></ul>' }), 2));
 }
 
@@ -281,7 +276,7 @@ export function mount(root) {
   root.classList.add('ph');
   root.append(
     keyPoints([
-      'Hyperbaric bupivacaine 0.5% is the usual spinal drug. Prilocaine or chloroprocaine suit short day-case surgery. Avoid lidocaine: it causes transient neurological symptoms.',
+      'Hyperbaric bupivacaine 0.5% is the usual spinal drug. Prilocaine suits short day-case surgery. Avoid lidocaine: it causes transient neurological symptoms.',
       'Onset follows pKa (and concentration), potency follows lipid solubility, duration follows protein binding and the dose.',
       'Baricity is the density of the solution against CSF at 37 °C. Glucose makes it hyperbaric. Plain bupivacaine is slightly hypobaric.',
       'Fentanyl acts fast and briefly; morphine is slow, long and can depress breathing many hours later. Monitor after intrathecal morphine for at least 24 h.',

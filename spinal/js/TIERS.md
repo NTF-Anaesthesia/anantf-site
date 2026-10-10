@@ -29,7 +29,7 @@ It is tier 1, styled by base.css. Put it first in your mount.
 Allowed ids: `asra2025`, `esaic2022`, `aagbi2013`, `uppal2023`, `iso80369-6` (core, in refs.js);
 `cx-ichd3`, `ts-qrh2023`, `cx-qrh310`, `tq-asa2016`, `tq-klein2021`, `tq-campbell2014`, `pp-griffiths2021`;
 product labels only inside drug-dose tables or dose lines: `tq-hpra-heavy`, `tq-sg-heavy`, `tq-sg-plain`,
-`tq-prilotekal`, `tq-ampres`, `cx-marcain-smpc`, `ts-smpc-*`.
+`tq-prilotekal`, `cx-marcain-smpc`, `ts-smpc-*`.
 Remove every other `cite(...)` but keep the sentence, and delete unused entries from your `export const refs`.
 
 ## Search
