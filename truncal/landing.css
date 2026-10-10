@@ -59,13 +59,8 @@ html{scroll-padding-top:24px}
 .tb-key li{display:flex;align-items:center;gap:8px}
 .tb-srcs{display:inline-flex;flex-wrap:wrap;gap:4px;vertical-align:.08em;margin-left:6px}
 .tb-src{display:inline-block;font:500 12px/1.4 var(--mono);padding:1px 6px;border:1px solid var(--line-strong);color:var(--ink-soft);white-space:nowrap;background:var(--paper)}
-.tb-app main a.tb-src{text-decoration:none;color:var(--ink-soft)}
-.tb-app main a.tb-src:hover{border-color:var(--wine);color:var(--wine)}
 .tb-src--deck{border-color:var(--wine)}
 .tb-src--derived{border-style:dashed}
-/* tags inside text get a touch-friendly hit area without changing their look */
-.tb-app main a.tb-src{position:relative}
-.tb-app main a.tb-src::after{content:'';position:absolute;inset:-12px -4px}
 
 /* chooser */
 .tb-chooser{display:grid;grid-template-columns:270px minmax(0,1fr);gap:40px;align-items:start}
@@ -80,7 +75,7 @@ html{scroll-padding-top:24px}
 .tb-op:has(input:checked:focus-visible){outline-offset:3px}
 
 .tb-result{min-width:0}
-.tb-status{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.tb-status,.tb-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 .tb-res-title{font:400 34px/1.2 var(--serif);letter-spacing:-.02em;margin:0 0 18px!important;padding-top:4px;border-top:1px solid var(--ink)}
 .tb-res-title:focus{outline:none}
 .tb-brief{font:500 12px/1.4 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border:1px solid var(--line-strong);padding:2px 7px;vertical-align:.4em}
