@@ -1,28 +1,24 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-GB" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Brachial plexus for regional anaesthesia</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath d=%22M4 8h10l8 8h6M4 16h10M4 24h10l8-8%22 fill=%22none%22 stroke=%22%231d4ed8%22 stroke-width=%223%22 stroke-linecap=%22round%22/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Cpath d=%22M4 8h10l8 8h6M4 16h10M4 24h10l8-8%22 fill=%22none%22 stroke=%22%23633d3c%22 stroke-width=%223%22 stroke-linecap=%22round%22/%3E%3C/svg%3E">
 <meta name="description" content="Interactive brachial plexus anatomy for ultrasound-guided regional anaesthesia: 3D model, labelled diagram, ultrasound views, needle and local anaesthetic placement, and block coverage for interscalene, supraclavicular, infraclavicular and axillary blocks.">
-<meta name="color-scheme" content="light dark">
-<script>
-  // Apply a saved theme before first paint (per-viewer convenience only).
-  try { const t = localStorage.getItem('bp-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
-</script>
+<meta name="color-scheme" content="light">
 <script type="importmap">
 {"imports":{"three":"./vendor/three/build/three.module.min.js","three/addons/":"./vendor/three/examples/jsm/"}}
 </script>
-<link rel="stylesheet" href="css/app.css">
-<link rel="stylesheet" href="css/viewer3d.css">
-<link rel="stylesheet" href="css/diagram.css">
-<link rel="stylesheet" href="css/ultrasound.css">
-<link rel="stylesheet" href="css/coverage.css">
+<link rel="stylesheet" href="css/app.css?v=2">
+<link rel="stylesheet" href="css/viewer3d.css?v=2">
+<link rel="stylesheet" href="css/diagram.css?v=2">
+<link rel="stylesheet" href="css/ultrasound.css?v=2">
+<link rel="stylesheet" href="css/coverage.css?v=2">
 <link rel="modulepreload" href="js/data.js">
 <link rel="modulepreload" href="js/bus.js">
-<link rel="stylesheet" href="../assets/couture-app.css?v=20261007-darkfix2"><link rel="stylesheet" href="../assets/navigation.css?v=20261007-framing"><link rel="stylesheet" href="../assets/site-shell.css?v=20261007-framing"><script defer src="../assets/navigation.js?v=20261008"></script><link rel="stylesheet" href="../assets/header-nav.css?v=20261008"></head>
+<link rel="stylesheet" href="../assets/couture-app.css?v=20261010-lightonly"><link rel="stylesheet" href="../assets/navigation.css?v=20261007-framing"><link rel="stylesheet" href="../assets/site-shell.css?v=20261007-framing"><script defer src="../assets/navigation.js?v=20261008"></script><link rel="stylesheet" href="../assets/header-nav.css?v=20261008"></head>
 <body class="plexus-app"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><details class="ntf-menu"><summary>Department</summary><div class="ntf-menu-panel"><a href="../department.html">About Us</a><a href="../why-join-us.html">Why Join Us?</a><a href="../clinical-fellows.html">For Clinical Fellows</a></div></details><details class="ntf-menu"><summary>Resources</summary><div class="ntf-menu-panel"><a href="../mopex/">MO Handbook</a><a href="../senior-resident.html">Senior Residency</a><a href="../exams/">MMed Exam Prep</a></div></details><a href="../airway.html">Airway</a><a href="../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../pocus/">POCUS</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
 <a class="skip" href="#main">Skip to content</a>
 
@@ -36,10 +32,6 @@
       <button type="button" class="tool-btn" id="btn-share" aria-describedby="share-status">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>
         <span>Copy link</span>
-      </button>
-      <button type="button" class="tool-btn" id="btn-theme" aria-label="Colour theme: automatic">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" class="fill"/></svg>
-        <span class="theme-label">Auto</span>
       </button>
       <span id="share-status" class="sr-status" role="status" aria-live="polite"></span>
     </div>

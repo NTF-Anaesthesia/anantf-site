@@ -14,7 +14,7 @@
 /* ------------------------------------------------------------------ patient picker + panels */
 .spinal-app .sx-picker{margin:4px 0 20px}
 .spinal-app main .sx-picker-label{font:600 13px/1.4 var(--sp-sans);margin:0 0 8px;color:var(--sp-ink)}
-.spinal-app main .sx-picker-hint{font-size:13px;color:var(--sp-muted);margin:8px 0 0}
+.spinal-app main .sx-picker-hint{font-size:14px;color:var(--sp-muted);margin:8px 0 0}
 .spinal-app .sx-panel{border:1px solid var(--sp-line);border-top:3px solid var(--sp-ink);background:var(--sp-surface);padding:6px 20px 14px;min-width:0}
 .spinal-app .sx-panel[hidden]{display:none}
 .spinal-app main .sx-panel-h{font:400 24px/1.25 var(--sp-serif);letter-spacing:-.02em;margin:14px 0 10px;max-width:none}

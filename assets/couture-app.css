@@ -1,8 +1,6 @@
 @font-face{font-family:NTF Serif;src:url('../fonts/fraunces-roman.woff2');font-weight:400 600;font-display:swap}@font-face{font-family:NTF Serif;src:url('../fonts/fraunces-italic.woff2');font-style:italic;font-weight:400 600;font-display:swap}
 :root{--bg:#fffaf0;--surface:#fffaf0;--surface-2:#f4ede1;--text:#211a23;--muted:#68616a;--border:#c9c0b4;--primary:#2537cf;--primary-hover:#192699;--primary-soft:#ebe6ff;--on-primary:#fffaf0;--focus:#2537cf;--radius:0;--shadow:none}
 .plexus-app .top{border-top:5px solid var(--primary)}.plexus-app .top-inner{padding-top:20px;padding-bottom:22px}.plexus-app h1{font:400 clamp(32px,4vw,49px)/1.1 'NTF Serif',Georgia,serif;letter-spacing:-.04em}.plexus-app h1 em{color:var(--primary)}.plexus-app .org{display:flex;align-items:center;gap:15px;font-size:11px;margin-bottom:16px}.plexus-app .org img{display:block}.plexus-app .tool-btn,.plexus-app .chip,.plexus-app .panel{border-radius:0}.plexus-app .panel-head{border-top:3px solid var(--primary)}.plexus-app .intro{max-width:850px;font-size:14px}.plexus-app .blockbar-label{font-size:10px}.plexus-app .chip[aria-pressed=true]{background:var(--primary);color:var(--on-primary)}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#211a23;--surface:#2a222e;--surface-2:#342938;--text:#fffaf0;--muted:#c6b8c6;--border:#5c465e;--primary:#bca5ff;--primary-hover:#d5c4f0;--primary-soft:#43305a;--on-primary:#211a23;--focus:#e6ef57}.plexus-app:not([data-theme=light]) .org img{filter:brightness(0) invert(1)}}
-:root[data-theme=dark]{--bg:#211a23;--surface:#2a222e;--surface-2:#342938;--text:#fffaf0;--muted:#c6b8c6;--border:#5c465e;--primary:#bca5ff;--primary-hover:#d5c4f0;--primary-soft:#43305a;--on-primary:#211a23;--focus:#e6ef57}:root[data-theme=dark] .plexus-app .org img{filter:brightness(0) invert(1)}:root[data-theme=light] .plexus-app .org img{filter:none}
 
 @media(max-width:700px){
  .plexus-app .top-inner{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:14px 8px;padding-top:16px;padding-bottom:16px}
@@ -19,20 +17,11 @@
  .plexus-app input,.plexus-app select{font-size:16px}
 }
 /* Match the quieter editorial shell while retaining anatomical colour coding. */
-:root,:root[data-theme=light]{--bg:#f7f5ef;--surface:#f7f5ef;--surface-2:#eeece5;--text:#272722;--muted:#68665f;--border:#d7d2c8;--primary:#633d3c;--primary-hover:#4b2e2d;--primary-soft:#e9e3d8;--on-primary:#fffaf0;--focus:#633d3c}
+/* NTF Anaesthesia design system: light only, readability-tuned (muted text 7:1, Inter body text). */
+:root,:root[data-theme=light],body.plexus-app{--bg:#f7f5ef;--surface:#f7f5ef;--surface-2:#eeece5;--text:#272722;--muted:#55534d;--font:'NTF Sans',Inter,Arial,sans-serif;--border:#d7d2c8;--primary:#633d3c;--primary-hover:#4b2e2d;--primary-soft:#e9e3d8;--on-primary:#fffaf0;--focus:#633d3c}
 .plexus-app .top{border-top:0}.plexus-app .panel-head{border-top:1px solid var(--border)}.plexus-app .chip[aria-pressed=true]{background:var(--primary-soft);color:var(--text)}
 
 .plexus-app .bpd-btn{min-height:44px}
 
-/* The shared site stylesheet (via navigation.css) sets body colours for light mode only; keep the app on its own theme. */
+/* Keep the app on its own palette variables (the shared site stylesheet sets body colours too). */
 body.plexus-app{background:var(--bg);color:var(--text)}
-
-/* The shared couture.css (loaded later via navigation.css) pins light colours on :root and
-   :root[data-theme=dark], which broke the app's in-page Dark toggle (cream page, light text,
-   grey-on-dark muted text). Define the dark palette on body.plexus-app so the app's own
-   descendants inherit it whichever way dark mode is chosen. */
-:root[data-theme=dark] body.plexus-app{--bg:#211a23;--surface:#2a222e;--surface-2:#342938;--text:#fffaf0;--muted:#c6b8c6;--border:#5c465e;--primary:#bca5ff;--primary-hover:#d5c4f0;--primary-soft:#43305a;--on-primary:#211a23;--focus:#e6ef57}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body.plexus-app{--bg:#211a23;--surface:#2a222e;--surface-2:#342938;--text:#fffaf0;--muted:#c6b8c6;--border:#5c465e;--primary:#bca5ff;--primary-hover:#d5c4f0;--primary-soft:#43305a;--on-primary:#211a23;--focus:#e6ef57}}
-/* The shared site header and footer are light-only; keep their own text colours. */
-:root[data-theme=dark] body.plexus-app :is(.ntf-header,.ntf-footer){--text:#272722;--muted:#68665f}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]) body.plexus-app :is(.ntf-header,.ntf-footer){--text:#272722;--muted:#68665f}}

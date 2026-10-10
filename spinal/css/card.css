@@ -41,7 +41,7 @@
 /* steps and stop box inside the card */
 .spinal-app .cd-block .sp-steps{margin:0 0 14px;max-width:none}
 .spinal-app .cd-block .sp-step{grid-template-columns:28px minmax(0,1fr);gap:12px;padding:10px 0}
-.spinal-app .cd-block .sp-step-n{width:28px;height:28px;font-size:13px}
+.spinal-app .cd-block .sp-step-n{width:28px;height:28px;font-size:14px}
 .spinal-app .cd-block .sp-step-title{margin:2px 0 2px}
 .spinal-app .cd-block .sp-step-body{font-size:14.5px;line-height:1.55}
 .spinal-app .cd-stop{max-width:none;margin:0}

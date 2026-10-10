@@ -113,24 +113,8 @@ function syncChips() {
   document.body.dataset.block = bus.state.block || '';
 }
 
-// ---------------------------------------------------------------- theme + share
-const themeBtn = $('#btn-theme');
-const THEMES = ['auto', 'light', 'dark'];
-function currentTheme() { return document.documentElement.dataset.theme || 'auto'; }
-function paintThemeBtn() {
-  const t = currentTheme();
-  themeBtn.querySelector('.theme-label').textContent = t[0].toUpperCase() + t.slice(1);
-  themeBtn.setAttribute('aria-label', `Colour theme: ${t === 'auto' ? 'automatic (follows your device)' : t}. Activate to change.`);
-}
-themeBtn.addEventListener('click', () => {
-  const next = THEMES[(THEMES.indexOf(currentTheme()) + 1) % THEMES.length];
-  if (next === 'auto') delete document.documentElement.dataset.theme;
-  else document.documentElement.dataset.theme = next;
-  try { if (next === 'auto') localStorage.removeItem('bp-theme'); else localStorage.setItem('bp-theme', next); } catch { /* storage may be blocked */ }
-  paintThemeBtn();
-});
-paintThemeBtn();
-
+// ---------------------------------------------------------------- share
+// Light mode only: the page is pinned with <html data-theme="light">.
 $('#btn-share').addEventListener('click', async () => {
   const status = $('#share-status');
   clearTimeout(hashTimer);

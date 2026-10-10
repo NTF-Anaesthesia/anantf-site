@@ -85,7 +85,7 @@
 :root[data-theme="dark"] .v3d-label--el.is-selected { color: #04121f; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .v3d-label--el.is-selected { color: #04121f; } }
 .v3d-label--el[data-status="target"] { box-shadow: 0 0 0 2px #db2777; }
-.v3d-label--collateral, .v3d-label--related { font-weight: 500; font-size: 11px; }
+.v3d-label--collateral, .v3d-label--related { font-weight: 500; font-size: 12px; }
 .v3d-label--level {
   font-size: 12px;
   font-weight: 700;
@@ -132,7 +132,7 @@
 .v3d-btn[aria-pressed="true"], .v3d-btn[aria-expanded="true"] { background: var(--v3d-accent); color: #fff; border-color: transparent; }
 .v3d-btn.is-playing svg { animation: v3d-pulse 1s ease-in-out infinite; }
 .v3d-btn--sm { min-width: 32px; height: 32px; box-shadow: none; }
-.v3d-btn-text { font-size: 11px; }
+.v3d-btn-text { font-size: 12px; }
 @keyframes v3d-pulse { 50% { opacity: 0.4; } }
 
 /* Legend, chip, caption, toast */
@@ -170,7 +170,7 @@
 }
 .v3d-chip[hidden] { display: none; }
 .v3d-chip-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.v3d-chip-status { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 999px; font-size: 11px; color: #fff; background: #475569; }
+.v3d-chip-status { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 999px; font-size: 12px; color: #fff; background: #475569; }
 .v3d-chip-status--target { background: #be185d; }
 .v3d-chip-status--covers { background: #15803d; }
 .v3d-chip-status--variable { background: #b45309; }
@@ -270,12 +270,12 @@
 .v3d-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Compact (phones / narrow panes) */
-.v3d.is-compact .v3d-label { font-size: 11px; padding: 1px 5px; }
-.v3d.is-compact .v3d-label--probe { max-width: 150px; font-size: 11px; }
+.v3d.is-compact .v3d-label { font-size: 12px; padding: 1px 5px; }
+.v3d.is-compact .v3d-label--probe { max-width: 150px; font-size: 12px; }
 .v3d.is-compact .v3d-label--struct { display: none; }
-.v3d.is-compact .v3d-legend { font-size: 11px; padding: 4px 6px; }
+.v3d.is-compact .v3d-legend { font-size: 12px; padding: 4px 6px; }
 .v3d.is-compact .v3d-caption { bottom: 48px; font-size: 12px; }
-.v3d.is-compact .v3d-hint { font-size: 11px; }
+.v3d.is-compact .v3d-hint { font-size: 12px; }
 
 @media (prefers-reduced-motion: reduce) {
   .v3d-btn.is-playing svg { animation: none; }
