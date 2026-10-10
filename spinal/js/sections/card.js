@@ -35,7 +35,7 @@ export function mount(root) {
   try {
     const css = document.createElement('link');
     css.rel = 'stylesheet';
-    css.href = new URL('../../css/card.css?v=1', import.meta.url).href;
+    css.href = new URL('../../css/card.css?v=2', import.meta.url).href;
     document.head.append(css);
   } catch { /* the card still reads without its stylesheet */ }
 

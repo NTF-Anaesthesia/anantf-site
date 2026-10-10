@@ -91,7 +91,7 @@
 .spinal-app .ts-ol-sub{padding-left:18px!important;border-left:1px solid var(--sp-line);margin:4px 0 8px 6px!important}
 .spinal-app .ts-ol-prompt{font-weight:600;margin:4px 0}
 .spinal-app .ts-ol-label{margin:4px 0;color:var(--sp-accent)}
-.spinal-app .ts-ol-note{color:var(--sp-muted);font-size:13px;margin:0 0 4px}
+.spinal-app .ts-ol-note{color:var(--sp-muted);font-size:14px;margin:0 0 4px}
 .spinal-app .ts-ol-note p{margin:0}
 .spinal-app .ts-ol-outcome{margin:4px 0;font-weight:600}
 .spinal-app .ts-ol-tone{font:600 11px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.06em}

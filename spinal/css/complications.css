@@ -28,7 +28,7 @@
 .spinal-app .cx-check-q{border:0;margin:0;padding:0;min-width:0;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 20px;align-items:center}
 .spinal-app .cx-check-legend{float:left;width:100%;padding:0;display:flex;gap:12px;align-items:flex-start;font:500 15px/1.5 var(--sp-sans);color:var(--sp-ink)}
 .spinal-app .cx-check-n{flex:0 0 26px;height:26px;display:inline-flex;align-items:center;justify-content:center;background:var(--sp-ink);color:var(--sp-bg);font:500 12px/1 var(--sp-mono)}
-.spinal-app .cx-check-hint{grid-column:1;margin:0 0 0 38px;font-size:13px;line-height:1.5;color:var(--sp-muted)}
+.spinal-app .cx-check-hint{grid-column:1;margin:0 0 0 38px;font-size:14px;line-height:1.5;color:var(--sp-muted)}
 .spinal-app .cx-check-opts{grid-column:2;grid-row:1 / span 2;display:flex;gap:0}
 .spinal-app .cx-check-opt{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:44px;padding:0 14px;border:1px solid var(--sp-line-strong);font:14px/1 var(--sp-sans);cursor:pointer;color:var(--sp-ink);background:transparent;transition:background-color .15s,border-color .15s}
 .spinal-app .cx-check-opt + .cx-check-opt{margin-left:-1px}
@@ -72,7 +72,7 @@
 .spinal-app .cx-con-ok{fill:none;stroke:var(--sp-ok);stroke-width:3}
 .spinal-app .cx-con-bad{fill:none;stroke:var(--sp-danger);stroke-width:3}
 .spinal-app .cx-con-verdict{font:600 14px var(--sp-sans);fill:var(--sp-ink)}
-.spinal-app .cx-con-key{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:12px 0 0;font-size:13px;color:var(--sp-muted)}
+.spinal-app .cx-con-key{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:12px 0 0;font-size:14px;color:var(--sp-muted)}
 .spinal-app .cx-con-swatch{display:inline-block;width:18px;height:12px;border:1px solid var(--sp-ink);vertical-align:middle}
 .spinal-app .cx-con-swatch--luer{background:var(--sp-surface-2)}
 .spinal-app .cx-con-swatch--nrfit{background:repeating-linear-gradient(45deg,var(--sp-warn) 0 2px,var(--sp-warn-bg) 2px 5px)}

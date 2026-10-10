@@ -41,7 +41,7 @@
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 130px; }
 html, body { margin: 0; }
-body { background: var(--bg); color: var(--text); font: 16px/1.55 var(--font); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+body { background: var(--bg); color: var(--text); font: 17px/1.6 var(--font); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 a { color: var(--primary); text-underline-offset: 2px; }
 a:hover { color: var(--primary-hover); }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
