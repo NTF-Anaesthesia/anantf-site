@@ -114,15 +114,15 @@ export function mount(root) {
 
   // ------------------------------------------------------------ 4 drug and dose
   const drugs = table({
-    caption: 'Typical doses for an average adult, with the label range',
+    caption: 'Typical doses for an average adult',
     head: ['Drug', 'Dose', 'Use'],
     stack: false,
     rows: [
       [{ th: true, html: 'Hyperbaric bupivacaine 0.5%' },
-        `<strong>Typical:</strong> knee replacement ${D('2.5 mL')} (${D('12.5 mg')}); shorter lower-limb surgery about ${D('2 mL')} (${D('10 mg')}); caesarean ${D('2.2–2.3 mL')} (${D('11–11.5 mg')}).<br><span class="sp-label-range">Label range ${D('2–4 mL')} (${D('10–20 mg')}); urological ${D('1.5–3 mL')}${cite('tq-hpra-heavy', 'tq-sg-heavy')}</span>`,
-        `Lower abdominal and lower limb, including hip. Onset ${D('5–8 min')}, lasts ${D('1.5–3 h')}. Lowest dose that works; less in older patients. The top of the label range is rarely needed.`],
+        `<strong>Typical:</strong> knee replacement ${D('2.5 mL')} (${D('12.5 mg')}); shorter lower-limb surgery about ${D('2 mL')} (${D('10 mg')}); caesarean ${D('2.2–2.3 mL')} (${D('11–11.5 mg')}).`,
+        `Lower abdominal and lower limb, including hip. Onset ${D('5–8 min')}, lasts ${D('1.5–3 h')}. Lowest dose that works; less in older patients.`],
       [{ th: true, html: 'Plain bupivacaine 0.5%' },
-        `<strong>Typical:</strong> hip surgery that needs a long block, ${D('3 mL')} (${D('15 mg')}) at most.<br><span class="sp-label-range">Label range ${D('3–4 mL')} (${D('15–20 mg')})${cite('tq-sg-plain')}</span>`,
+        `<strong>Typical:</strong> hip surgery, including frail hip fracture, ${D('2.5–3 mL')} (${D('12.5–15 mg')}). ${D('3 mL')} is the most, for an operation that needs a long block.`,
         `Lower limb surgery lasting ${D('3–4 h')}. Spread is less predictable.`],
       [{ th: true, html: 'Prilocaine 2% hyperbaric' },
         `${D('40–60 mg')} (${D('2–3 mL')}); maximum ${D('80 mg')}${cite('tq-prilotekal')}`,
@@ -134,9 +134,9 @@ export function mount(root) {
   });
   grid.append(block('cd-drug', '4. Drug and dose',
     drugs,
-    el('p', { class: 'cd-lead-line', html: '<strong>Hip fracture and the frail:</strong> the typical dose or less, injected slowly. <strong>Hypotension drugs</strong> (vasopressors, atropine) are on the <a href="#ts-doses">dose table</a>.' }),
+    el('p', { class: 'cd-lead-line', html: `<strong>Hip fracture and the frail:</strong> plain bupivacaine 0.5% ${D('2.5–3 mL')}, injected slowly. <strong>Hypotension drugs</strong> (vasopressors, atropine) are on the <a href="#ts-doses">dose table</a>.` }),
     more('#tq-drugs', 'Drugs and doses in full'),
-    tier(el('p', { class: 'cd-note', html: `Position changes spread. With ${D('3 mL')} of hyperbaric bupivacaine 0.5% at L3–4, sitting for 2 minutes then lying flat usually gives about T7–T10; given on the side then turned flat, about T4–T7.${cite('tq-hpra-heavy', 'tq-sg-heavy')} See <a href="#tq-spread-h">what decides spread</a>.` }), 2)));
+    tier(el('p', { class: 'cd-note', html: `Position changes spread. With hyperbaric bupivacaine at L3–4, sitting for 2 minutes then lying flat keeps the block lower; giving it on the side then turning flat lets it rise a few segments higher. See <a href="#tq-spread-h">what decides spread</a>.` }), 2)));
 
   // ------------------------------------------------------------ 5 steps
   const S = steps([

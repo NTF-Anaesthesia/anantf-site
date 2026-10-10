@@ -30,7 +30,7 @@ export function populationsBlocks() {
 
   const older = card('pp-older', 'Older and frail patients', 1,
     G(1, UL([
-      'Expect more hypotension, and a block that goes higher than in a younger adult. Use the typical dose or less (see <a href="#tq-drugs">Drugs and doses</a>), agreed with your supervisor.',
+      'Expect more hypotension, and a block that goes higher than in a younger adult. Use the typical dose or less (see <a href="#tq-drugs">Drugs and doses</a>); for a frail hip fracture, plain bupivacaine 0.5% 2.5–3 mL.',
       'Keep the vasopressor drawn up, and check the blood pressure often until the level has fixed.',
       'Hip fracture: give the nerve block first, then follow the <a href="#tq-hipfracture">worked example</a>.',
     ])),

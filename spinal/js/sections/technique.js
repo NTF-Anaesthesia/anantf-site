@@ -1,5 +1,6 @@
 // Chapter "Technique": performing a spinal, step by step, with special populations merged in.
-// Doses: "Typical" = the department's usual practice, supplied by Dr Koh Wenjun (Oct 2026). Label ranges from the product labels in `refs` below.
+// Bupivacaine doses: "Typical" = the department's usual practice, supplied by Dr Koh Wenjun (Oct 2026); no manufacturer range is shown.
+// Prilocaine and chloroprocaine: product-label doses from `refs` below.
 // ASRA 2025 anticoagulation values were read in the full text (Kopp 2025) and live in ../technique/anticoag-data.js.
 // Tiers: 1 MO, 2 Resident, 3 Advanced (see ../TIERS.md). Citations: major guidelines only; labels only in dose lines.
 import { el, cite, callout, steps, table, tabs, segmented, figure, details, onResize, whenVisible, tier, keyPoints, registerSearch } from '../ui.js?v=1';
@@ -301,7 +302,7 @@ export function mount(root) {
   api.posTabs = posTabs;
   root.append(part('tq-position', 'Position: sitting or lateral',
     T(posHost, 1),
-    T(callout('pearl', { title: 'Position changes spread', body: `<p>With ${D('3 mL')} of hyperbaric bupivacaine 0.5% at L3–4, sitting for 2 minutes and then lying flat usually gives a block to about ${N('T7–T10')}. The same dose given lying on the side and then turned flat gives about ${N('T4–T7')}.${cite('tq-hpra-heavy', 'tq-sg-heavy')}</p>` }), 2),
+    T(callout('pearl', { title: 'Position changes spread', body: `<p>With hyperbaric bupivacaine at L3–4, sitting for 2 minutes and then lying flat keeps the block lower, because the drug pools in the sacral curve. The same dose given lying on the side and then turned flat rises a few segments higher, towards the thoracic curve.</p>` }), 2),
     PEARL('tilting after the injection', 'Until the level fixes (about 20 minutes), a small head-down tilt moves hyperbaric drug upwards and a head-up tilt keeps it lower. Tilt only on purpose and with the blood pressure watched, because the sympathetic block rises with the sensory level. Unplanned tilts, such as the surgeon asking for a lithotomy or Trendelenburg position early, are a common reason for a block that goes higher than expected.'),
   ));
 
@@ -415,19 +416,19 @@ export function mount(root) {
 
   // ---------------------------------------------------------------- 10 drugs
   const doseTable = table({
-    caption: 'Intrathecal local anaesthetics: typical doses for an average adult, with the label range',
+    caption: 'Intrathecal local anaesthetics: typical doses for an average adult',
     head: ['Drug', 'Dose', 'Onset', 'Duration', 'Notes'],
     rows: [
       [{ th: true, html: 'Hyperbaric bupivacaine 0.5%<span class="tq-cell-sub">Marcain Heavy; Marcain Spinal 0.5% Heavy (Singapore)</span>' },
-        `<strong>Typical:</strong> knee replacement ${D('2.5 mL')} (${D('12.5 mg')}); shorter lower-limb surgery about ${D('2 mL')} (${D('10 mg')}); caesarean ${D('2.2–2.3 mL')} (${D('11–11.5 mg')}).<br><span class="sp-label-range">Label range: lower abdominal and lower limb, including hip, ${D('2–4 mL')} (${D('10–20 mg')})${cite('tq-hpra-heavy', 'tq-sg-heavy')}; urological ${D('1.5–3 mL')} (${D('7.5–15 mg')})${cite('tq-hpra-heavy')}</span>`,
+        `<strong>Typical:</strong> knee replacement ${D('2.5 mL')} (${D('12.5 mg')}); shorter lower-limb surgery about ${D('2 mL')} (${D('10 mg')}); caesarean ${D('2.2–2.3 mL')} (${D('11–11.5 mg')}).`,
         D('5–8 min'),
         `${D('1.5–3 h')}; urological ${D('2–3 h')}`,
         `Use the lowest dose that works. Reduce the dose in older patients (risk of a high block).${cite('tq-hpra-heavy')}`],
       [{ th: true, html: 'Plain (isobaric) bupivacaine 0.5%<span class="tq-cell-sub">Marcain 0.5% (Singapore label)</span>' },
-        `<strong>Typical:</strong> hip surgery that needs a long block, ${D('3 mL')} (${D('15 mg')}) at most.<br><span class="sp-label-range">Label range ${D('3–4 mL')} (${D('15–20 mg')})${cite('tq-sg-plain')}</span>`,
+        `<strong>Typical:</strong> hip surgery, including frail hip fracture, ${D('2.5–3 mL')} (${D('12.5–15 mg')}). ${D('3 mL')} is the most, for an operation that needs a long block.`,
         'Not stated',
         `Lower limb surgery lasting ${D('3–4 h')}`,
-        `${D('4 mL')} gives about 2 segments more spread and ${D('½–1 h')} longer than ${D('3 mL')}.${cite('tq-sg-plain')} Slightly hypobaric at body temperature, so spread is less predictable.`],
+        'Slightly hypobaric at body temperature, so spread is less predictable.'],
       [{ th: true, html: 'Prilocaine 2% hyperbaric<span class="tq-cell-sub">Prilotekal</span>' },
         `${D('40–60 mg')} (${D('2–3 mL')}) for a block to T10; maximum ${D('80 mg')} (${D('4 mL')})${cite('tq-prilotekal')}`,
         'Not stated',
@@ -453,14 +454,14 @@ export function mount(root) {
   ]);
   root.append(part('tq-drugs', 'Drugs and doses',
     T(ANSWER('Answer first', [
-      `Most lower-limb surgery: <strong>hyperbaric bupivacaine 0.5%</strong>, typically ${D('2.5 mL')} for a knee replacement and about ${D('2 mL')} for shorter operations. A long hip operation: <strong>plain bupivacaine 0.5%</strong>, ${D('3 mL')} at most. Use the lowest dose that works.`,
+      `Most lower-limb surgery: <strong>hyperbaric bupivacaine 0.5%</strong>, typically ${D('2.5 mL')} for a knee replacement and about ${D('2 mL')} for shorter operations. Hip surgery: <strong>plain bupivacaine 0.5%</strong>, ${D('2.5–3 mL')}, and ${D('3 mL')} at most. Use the lowest dose that works.`,
       'Short day-case surgery: hyperbaric prilocaine or chloroprocaine.',
-      'Older or frail: the typical dose or less. Agree the dose with your supervisor.',
+      `Older or frail: the typical dose or less; for a frail hip fracture, plain bupivacaine 0.5% ${D('2.5–3 mL')}.`,
       'Use preservative-free preparations only. Check the drug, the concentration and the label twice. Keep the spinal syringe apart from the others.',
     ]), 1),
     T(callout('key', {
       title: 'About the doses',
-      body: '<p>The typical doses are what this department usually gives. They are at the lower end of the product-label range; the top of the label range is rarely needed. This chapter gives no doses for intrathecal clonidine, dexmedetomidine or diamorphine. Pharmacology, adjuvant doses and vasopressors: <a href="#ch-pharm">Pharmacology</a>.</p>',
+      body: '<p>Bupivacaine doses are what this department usually gives. This chapter gives no doses for intrathecal clonidine, dexmedetomidine or diamorphine. Pharmacology, adjuvant doses and vasopressors: <a href="#ch-pharm">Pharmacology</a>.</p>',
     }), 1),
     T(doseTable, 1),
     T(UL([
@@ -485,7 +486,7 @@ export function mount(root) {
       el('h4', { id: 'tq-spread-h', text: 'What changes the spread' }),
       P('Ranked from the strongest effect. Tap a factor for the detail.'),
       spread),
-    PEARL('the dose is a starting point', 'Label ranges are for an average adult. In a frail, older or short patient, or one with a raised intra-abdominal pressure, a dose at the lower end of the range is usual. A smaller dose gives a more stable circulation but a shorter and less reliable block, so have a plan for converting to a general anaesthetic or for adding sedation if surgery runs on.'),
+    PEARL('the dose is a starting point', 'Typical doses are for an average adult. In a frail, older or short patient, or one with a raised intra-abdominal pressure, a smaller dose is usual. A smaller dose gives a more stable circulation but a shorter and less reliable block, so have a plan for converting to a general anaesthetic or for adding sedation if surgery runs on.'),
   ));
   registerSearch([{ title: 'Factors that change spread of a spinal block', text: 'Baricity position dose CSF volume age intra-abdominal pressure speed of injection barbotage interspace spinal curves height weight sex block height level', id: 'tq-spread-h' }]);
 
@@ -609,7 +610,7 @@ export function mount(root) {
       { title: 'Give the analgesic block first', body: `A fascia iliaca, femoral or PENG block before positioning makes the move kinder and is often what lets the patient stay still. The Association of Anaesthetists’ hip fracture guideline supports routine nerve blocks alongside spinal or general anaesthesia.${cite('pp-griffiths2021')} Use ultrasound, and keep a running total of the local anaesthetic you have given.` },
       { title: 'Set up as for any spinal', body: 'IV access, monitors, oxygen, airway kit and a vasopressor drawn up. Have the blood pressure cycling every minute or two while you position and inject.' },
       { title: 'Choose the position', body: 'Lateral is usual. Operative side down gives the densest block on the fractured side with hyperbaric drug, but it hurts: use it only if the nerve block has worked. Operative side up is more comfortable, but gravity favours the good leg, so the block may be more bilateral.' },
-      { title: 'Choose a dose at the cautious end', body: `In this department ${D('3 mL')} (${D('15 mg')}) of plain bupivacaine 0.5% is the most we give for a hip, and that is for an operation that needs a long block. A frail patient often needs less: agree the dose with your consultant. Never go to the top of the label range (${D('4 mL')}). Inject slowly.` },
+      { title: 'Choose a dose at the cautious end', body: `The usual dose is ${D('2.5–3 mL')} (${D('12.5–15 mg')}) of plain bupivacaine 0.5%. ${D('3 mL')} is the most we give, for an operation that needs a long block; use the lower end for the frailest patients. Inject slowly.` },
       { title: 'Be ready for low blood pressure', body: 'Expect it, and treat it early with a vasopressor: <a href="#ts-hypotension">Hypotension and bradycardia</a>. Look for a cause too: hypovolaemia, bleeding or a high block. Lie the patient flat as soon as it is safe, and give oxygen.' },
       { title: 'Keep the sedation light', body: 'Heavy sedation adds hypotension, hypoxia and delirium. Explain what is happening, keep the patient warm, and pad pressure points before the move to the operating table.' },
       { title: 'Hand over', body: 'Record the block level, drugs and any hypotension. Tell recovery about the nerve block, the dose given and the plan for analgesia.' },
