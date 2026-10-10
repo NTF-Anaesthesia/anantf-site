@@ -124,7 +124,8 @@ function pdph() {
         grp(2, H4('Why it happens'),
           P('CSF leaks faster than it is made, so CSF volume and pressure fall. The brain sags and pulls on pain-sensitive structures when upright, and the intracranial veins dilate to make up the lost volume (Monro-Kellie doctrine). Traction on the sixth cranial nerve, which has a long intracranial course, explains the diplopia; traction and pressure changes on the inner ear explain the hearing symptoms.')),
         grp(2, H4('Who gets it'),
-          P(`Overall incidence ranges from under 2% to 40%, depending on patient and needle.${cite('uppal2023')} Pencil-point needles roughly halve the risk compared with cutting needles (${N('4.2%')} vs ${N('11.0%')}; see the <a href="#cx-glance">numbers</a>). Younger age, female sex and a previous PDPH raise the risk; smaller gauges lower it.${cite('uppal2023', 'cx-ichd3')} Needle choice is in <a href="#tq-fig-needles">Technique</a>.`)),
+          P(`Overall incidence ranges from under 2% to 40%, depending on patient and needle.${cite('uppal2023')} Pencil-point needles roughly halve the risk compared with cutting needles (${N('4.2%')} vs ${N('11.0%')}; see the <a href="#cx-glance">numbers</a>). Younger age, female sex and a previous PDPH raise the risk; smaller gauges lower it.${cite('uppal2023', 'cx-ichd3')} Needle choice is in <a href="#tq-fig-needles">Technique</a>.`),
+          P('<strong>Reducing the risk at the time:</strong> replace the stylet before you withdraw the needle, so a strand of arachnoid is not pulled out through the hole and keeps it open. If a cutting needle has to be used, keep the bevel parallel to the long axis of the spine.')),
       ),
       el('div', { class: 'cx-col' },
         T(table({
@@ -170,6 +171,7 @@ function pdph() {
             [{ html: 'Where', th: true }, `At the puncture level or one space below, with strict asepsis for the blood draw and the epidural.${cite('uppal2023')}`],
             [{ html: 'How much', th: true }, `Usually ${D('15–20 mL')}, injected slowly. <strong>Stop</strong> if back pain, headache or radicular pressure becomes significant. More than ${D('30 mL')} did not improve success.${cite('uppal2023')}`],
             [{ html: 'Success', th: true }, `Complete relief in ${N('33–91%')} across studies; very high early figures have not been reproduced. Follow up, as some patients need a second patch.${cite('uppal2023')}`],
+            [{ html: 'Afterwards', th: true }, 'Lie flat for an hour or two, then mobilise gently. Avoid heavy lifting and straining for a day or two. Ask the patient to report back or leg pain, numbness or fever.'],
             [{ html: 'Cautions', th: true }, `Fever or systemic infection; coagulopathy or antithrombotics (apply the <a href="#tq-ac-full">neuraxial timing rules</a>). Consent covers repeat dural puncture, backache and neurological complications.${cite('uppal2023')}`],
           ],
         }),
@@ -212,7 +214,8 @@ function haematoma() {
       UL([
         'Examine and document the level, power and perineal sensation. Tell the senior and the surgeons now.',
         `<strong>Urgent MRI.</strong> Do not wait for the block to wear off, and do not wait for pain.`,
-        `<strong>Neurosurgery:</strong> ESAIC/ESRA advise decompression, if indicated, <strong>within 6 h</strong> for neurological recovery.${cite('esaic2022')} Older surgical series favour operating within about 12 h of symptom onset; both say the same thing: sooner is better.`,
+        `<strong>Neurosurgery:</strong> ESAIC/ESRA advise decompression, if indicated, <strong>within 6 h</strong> for neurological recovery.${cite('esaic2022')} Older surgical series favour operating within about 12 h of symptom onset; recovery becomes unlikely when decompression is delayed beyond about 8–12 h. Sooner is better: every hour counts.`,
+        'If MRI will be delayed, do not let the wait delay the neurosurgical opinion: refer at once and agree the fastest imaging.',
         'Correct any coagulopathy as advised by the senior and haematology.',
       ])),
     T(P(`Trained staff should check sensory and motor recovery regularly for at least ${N('24 h')} after a neuraxial block, and longer in high-risk patients. Brief day-case patients on what to report.${cite('esaic2022')}`), 1),
@@ -234,9 +237,9 @@ function infection() {
       rows: [
         [{ html: 'Cases in the Swedish series', th: true }, '29', '13'],
         [{ html: 'Usually linked to', th: true }, 'Single-shot spinal; mouth organisms from the operator (one outbreak of <i>Streptococcus salivarius</i> was traced to an anaesthetist’s oral flora)', 'Epidural catheters more than single-shot spinals; longer catheter use, immunosuppression, diabetes, bacteraemia'],
-        [{ html: 'Onset', th: true }, 'Hours to a few days', 'Days to weeks; can be delayed'],
-        [{ html: 'Features', th: true }, 'Fever, severe non-postural headache, neck stiffness, photophobia, drowsiness', 'Back pain, local tenderness, fever, then root pain, then leg weakness, then paralysis'],
-        [{ html: 'Action', th: true }, 'Senior, blood cultures, urgent empirical antibiotics, CSF if safe, imaging if focal signs', 'Urgent MRI, blood cultures, antibiotics, neurosurgery. Weakness means the time to operate is short'],
+        [{ html: 'Onset', th: true }, 'Hours to a few days', 'Usually 5–14 days after a catheter, but can be as early as day 2'],
+        [{ html: 'Features', th: true }, 'Fever, severe non-postural headache, neck stiffness, photophobia, drowsiness', 'Back pain, local tenderness (worse when the insertion site is tapped), fever, then root pain, then leg weakness, then paralysis. Only a minority have the full triad of fever, back pain and neurology at first: do not wait for it'],
+        [{ html: 'Action', th: true }, 'Senior, blood cultures, urgent empirical antibiotics, CSF if safe, imaging if focal signs', 'Urgent MRI, with blood tests for infection markers, blood cultures and a swab of any discharge sent at the same time. Antibiotics, neurosurgery. Weakness means the time to operate is short'],
       ],
     }), 2),
     T(P(`<strong>Prevention:</strong> hand hygiene, cap, mask, sterile gown and gloves, and chlorhexidine in alcohol allowed to dry fully before puncture.${cite('tq-campbell2014')} Wear a face mask: it protects against oral streptococci.`), 1),
@@ -284,17 +287,18 @@ function neuro() {
     }), 2),
     grp(1, H4('When to involve neurology or neurosurgery'),
       UL([
-        'Any new deficit outside the expected block, a block that does not regress as expected, or new back pain with neurological signs.',
+        'Any new deficit outside the expected block, a block that does not regress as expected, or new back pain with neurological signs. A senior should see the patient promptly, not at the next round.',
         `<strong>Exclude compression first</strong> with an urgent MRI. A treatable haematoma or abscess must not wait for a neurology opinion.${cite('esaic2022')}`,
         'Then refer to neurology for assessment, with nerve conduction studies or EMG if needed, and follow the patient up.',
       ])),
+    T(P('<strong>History to take:</strong> existing neurological disease or diabetes; anticoagulants, antiplatelets or steroids; a difficult or bloody puncture; any pain or paraesthesia during the block; positioning, tourniquet time and surgical events.'), 2),
     // named syndromes
     T(table({
       id: 'cx-syndromes',
       caption: 'Named neurological syndromes after neuraxial anaesthesia',
       head: ['Syndrome', 'What it is', 'Clues and action'],
       rows: [
-        [{ html: '<span id="cx-ces">Cauda equina syndrome</span>', th: true }, 'Compression or toxic injury of the lumbosacral roots.', 'Saddle numbness, bladder and bowel dysfunction, leg weakness, sexual dysfunction, bilateral sciatica. After neuraxial block: compression by haematoma or abscess until proved otherwise (urgent MRI), or toxicity from a high local anaesthetic concentration around the sacral roots (the 1990s microcatheter cases; see <a href="#ph-tns">pharmacology</a>).'],
+        [{ html: '<span id="cx-ces">Cauda equina syndrome</span>', th: true }, 'Compression or toxic injury of the lumbosacral roots.', 'Saddle numbness (ask: does toilet paper feel different?), bladder and bowel dysfunction, lower motor neurone weakness in both legs, sexual dysfunction, bilateral sciatica. Brisk reflexes or an upgoing toe point to the cord instead. A bladder scan after voiding shows incomplete emptying. After neuraxial block: compression by haematoma or abscess until proved otherwise (urgent MRI), or toxicity from a high local anaesthetic concentration around the sacral roots (the 1990s microcatheter cases; see <a href="#ph-tns">pharmacology</a>).'],
         [{ html: '<span id="cx-arachnoiditis">Adhesive arachnoiditis</span>', th: true }, 'Chronic inflammation and scarring of the arachnoid and the roots, so the roots clump together.', 'Weeks to months later: burning or persistent pain, weakness, sphincter change, progressive. MRI shows clumped roots. Linked to contamination of the subarachnoid space (chlorhexidine, blood, preservatives, wrong drugs) and to infection. No cure, so prevention is everything: <a href="#cx-wrong-route">keep the tray clean</a>.'],
         [{ html: '<span id="cx-asa">Anterior spinal artery syndrome</span>', th: true }, 'Infarction of the anterior two-thirds of the cord (<a href="#an-cordsupply">blood supply</a>).', 'Sudden, usually painless flaccid paraparesis with loss of pain and temperature, but touch and position sense kept, and sphincter loss. Associated with prolonged severe hypotension, vascular disease, or adrenaline-containing spinal solutions are suspected but unproven. MRI to exclude compression; support perfusion.'],
         [{ html: '<span id="cx-ntx">Neurotoxicity</span>', th: true }, 'Direct toxic effect of drug or additive on the roots.', 'Pain on injection, persistent deficit in the injected distribution. Mainly hyperbaric 5% lidocaine and chlorhexidine.'],
@@ -333,7 +337,8 @@ function high() {
         [{ html: 'Brainstem', th: true }, 'Drowsy, apnoea, dilated pupils', 'Drug at the brainstem, or low brainstem flow after circulatory collapse'],
       ],
     }), 2),
-    T(P('Causes: too large a dose for the patient, a hyperbaric drug with the head down or a pregnancy-like state (<a href="#tq-spread-h">spread factors</a>), subdural placement, or an epidural top-up or large injection after an intended spinal. Treat it as an airway, breathing and circulation problem first, and tell the patient what is happening.'), 2),
+    T(P('Causes: too large a dose for the patient, a hyperbaric drug with the head down or a pregnancy-like state (<a href="#tq-spread-h">spread factors</a>), subdural placement, or an epidural top-up or large injection after an intended spinal. The reverse order matters too: a spinal given after a failed epidural, or a repeat spinal after a failed one, can spread much higher than expected. Short stature and obesity add to the risk. Treat it as an airway, breathing and circulation problem first, and tell the patient what is happening.'), 2),
+    T(P('Support breathing and circulation until the block recedes, which can take a couple of hours or more. Afterwards, talk to the patient: explain what happened and how they are, because it can be a frightening experience. Record it and tell the patient’s team.'), 2),
   );
 }
 
@@ -352,7 +357,7 @@ function last() {
     T(P('Mechanism of lipid rescue and the pharmacology of local anaesthetic toxicity are in <a href="#ph-last">Pharmacology</a>.', 'sp-prose cx-small'), 2),
     T(callout('pearl', {
       title: 'Advanced pearl: LAST can be quiet or late',
-      body: '<p>LAST does not always begin with a seizure. It can start with agitation, a metallic taste or perioral numbness, or with cardiovascular collapse alone, and it can appear some minutes after the block. Keep monitoring and keep the lipid pack close. In treatment, lipid emulsion is not replaced by propofol, and vasopressin, calcium channel blockers and beta-blockers are best avoided. Keep a running total of every local anaesthetic given, by every route, in the notes.</p>',
+      body: '<p>LAST does not always begin with a seizure. It can start with agitation, a metallic taste or perioral numbness, or with cardiovascular collapse alone, and it can appear some minutes after the block. Keep monitoring and keep the lipid pack close. In treatment, lipid emulsion is not replaced by propofol, and vasopressin, calcium channel blockers and beta-blockers are best avoided. Keep a running total of every local anaesthetic given, by every route, in the notes.</p><p>Ventricular arrhythmias in LAST can be stubborn: amiodarone is the usual choice, and lidocaine must not be used. Resuscitation may take over an hour, so in a severe case warn the team who can provide cardiopulmonary bypass or ECMO early. After a large dose, watch for at least an hour.</p>',
     }), 3),
   );
 }

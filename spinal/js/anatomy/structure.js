@@ -110,6 +110,7 @@ export function buildMeninges() {
         ],
       }),
       P('Occlusion of the anterior spinal artery gives the <strong>anterior cord syndrome</strong>: paraplegia with loss of pain and temperature below the lesion, but with touch, vibration and position sense kept (dorsal columns spared), plus bladder and bowel loss. Causes include aortic cross-clamping or dissection, severe prolonged hypotension, embolism, and an epidural haematoma that compresses the cord. It is rare after neuraxial block.')), 2),
+      P('For comparison, a <strong>half-cord (Brown-Séquard) lesion</strong> gives, below it, loss of position and vibration sense with weakness on the same side, and loss of pain and temperature on the opposite side, because those fibres cross soon after they enter the cord. Lesions below the conus damage roots only, so they give lower motor neurone signs.'),
     tier(callout('pearl', { title: 'Hypotension and the cord', body: '<p>Cord flow is autoregulated and depends on perfusion pressure. A spinal below the conus does not touch the cord directly, but severe or prolonged hypotension on top of aortic or arterial disease, a very high block or raised CSF pressure can reduce flow in the vulnerable territories. Treat hypotension early and aim near the patient’s usual pressure. New weakness that outlasts the expected block, or back pain with leg weakness, needs urgent review and imaging: see <a href="#cx-neuro-check">neurological checks</a>.</p>' }), 3),
   );
   return s;

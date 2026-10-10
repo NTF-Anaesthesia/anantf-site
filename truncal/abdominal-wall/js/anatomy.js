@@ -1,6 +1,5 @@
 // Abdominal wall: anatomy chapter (T6–L1 innervation). Original schematic drawings (SVG).
 import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../shared/js/ui.js';
-import { cite } from '../../shared/js/refs.js';
 import { OUTLINE } from '../../shared/js/dermatomes.js';
 
 const NERVE = '#e2b21c', NERVE_EDGE = '#7a5c00', LA = '#2c74b3';
@@ -107,11 +106,12 @@ export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'anat-h', text: 'Abdominal wall innervation, T6–L1' }));
   sec.append(fill(el('p', { class: 'tb-lead' }), 'Every abdominal wall block is a decision about <em>which nerves</em> you can reach <em>where</em>. Learn the course of the nerves and the choice of block follows.'));
   sec.append(keyPoints([
-    `The anterior abdominal wall is supplied by the anterior rami of T6–T12 and L1. T7–T12 run between internal oblique and transversus abdominis.${cite('tsai2017')}`,
+    `The anterior abdominal wall is supplied by the anterior rami of T6–T12 and L1. T7–T12 run between internal oblique and transversus abdominis.`,
     'Each nerve gives a lateral cutaneous branch near the mid-axillary line, then continues forward to pierce the rectus sheath and supply the midline skin.',
-    `T6–T9 enter the plane medially, under the costal margin: a <strong>subcostal TAP</strong> catches them.${cite('tsai2017', 'fernandez2025')}`,
-    `A <strong>lateral TAP</strong> catches T10–T12${cite('tsai2017', 'fernandez2025')} and only covers to T10.${cite('deck')}`,
-    `L1 (iliohypogastric and ilioinguinal) generally only enters the plane medial to the ASIS, so the lateral TAP misses the groin.${cite('deck')}`,
+    `Surface levels: T7–T9 above the umbilicus, <strong>T10 at the umbilicus</strong>, T11, T12 and L1 below it.`,
+    `T6–T9 enter the plane medially, under the costal margin: a <strong>subcostal TAP</strong> catches them.`,
+    `A <strong>lateral TAP</strong> catches T10–T12 and only covers to T10.`,
+    `L1 (iliohypogastric and ilioinguinal) generally only enters the plane medial to the ASIS, so the lateral TAP misses the groin.`,
     'All of these blocks are somatic: none treats visceral pain.',
   ]));
 
@@ -130,33 +130,47 @@ export function renderAnatomy(sec) {
   f2.append(el('figcaption', {}, table({
     head: ['Nerves', 'Where they enter the TAP plane', 'Block that reaches them'],
     rows: [
-      [{ th: true, html: 'T6–T9' }, `Under the costal margin, medial to the linea semilunaris${cite('tsai2017', 'fernandez2025')}`, '<a href="#ch-subcostal">Subcostal TAP</a>; <a href="#ch-rsb">rectus sheath</a> (midline branches)'],
-      [{ th: true, html: 'T10–T12' }, `Already in the plane in the lateral wall${cite('tsai2017', 'fernandez2025')}`, '<a href="#ch-tap">Lateral TAP</a>'],
-      [{ th: true, html: 'L1 (iliohypogastric, ilioinguinal)' }, `Medial to the ASIS, near the anterior iliac crest${cite('deck', 'tsai2017')}`, '<a href="#ch-iih">Ilioinguinal and iliohypogastric block</a>'],
+      [{ th: true, html: 'T6–T9' }, `Under the costal margin, medial to the linea semilunaris`, '<a href="#ch-subcostal">Subcostal TAP</a>; <a href="#ch-rsb">rectus sheath</a> (midline branches)'],
+      [{ th: true, html: 'T10–T12' }, `Already in the plane in the lateral wall`, '<a href="#ch-tap">Lateral TAP</a>'],
+      [{ th: true, html: 'L1 (iliohypogastric, ilioinguinal)' }, `Medial to the ASIS, near the anterior iliac crest`, '<a href="#ch-iih">Ilioinguinal and iliohypogastric block</a>'],
       [{ th: true, html: 'Lateral cutaneous branches' }, 'Leave around the mid-axillary line', 'Missed by an anterior TAP; <a href="#ch-ql">QL</a> or back blocks may reach them'],
     ],
   })));
   sec.append(f2);
 
+  sec.append(el('h3', { id: 'anat-sheath', text: 'The rectus sheath and the arcuate line' }));
+  sec.append(fill(el('p'), `The aponeuroses of EO, IO and TA meet at the lateral edge of rectus, the <strong>linea semilunaris</strong> (9th costal cartilage to the pubic tubercle), split around rectus to form the sheath, and join in the midline as the <strong>linea alba</strong> (xiphoid to pubic symphysis). What lies behind rectus changes with level, which matters for the rectus sheath block:`));
+  sec.append(table({
+    head: ['Level', 'Anterior sheath', 'Behind rectus'],
+    rows: [
+      [{ th: true, html: 'Above the costal margin' }, 'EO aponeurosis', 'Costal cartilages (no posterior sheath)'],
+      [{ th: true, html: 'Costal margin to arcuate line' }, 'EO aponeurosis + anterior layer of IO', '<strong>Posterior sheath</strong>: posterior layer of IO + TA aponeurosis. The rectus sheath block target.'],
+      [{ th: true, html: 'Below the arcuate line' }, 'All three aponeuroses', 'Transversalis fascia and peritoneum only'],
+    ],
+    caption: 'Composition of the rectus sheath',
+  }));
+  sec.append(fill(el('p', { class: 'aw-note' }), `The arcuate line lies between the umbilicus and the pubis (a third to halfway down) and is where the inferior epigastric vessels enter the sheath to run behind rectus. The superior epigastric vessels run behind rectus above the umbilicus. <a href="#ch-rsb">Rectus sheath block</a>`));
+
   sec.append(el('h3', { id: 'anat-groin', text: 'Why a lateral TAP misses the groin and the upper abdomen' }));
   sec.append(callout('pearl', {
     title: 'Two sentences for the viva',
-    body: `<p>The lateral TAP is done in the mid-axillary line, where only T10–T12 are in the plane,${cite('tsai2017', 'fernandez2025')} so it covers the wall below the umbilicus and only to T10.${cite('deck')} The upper nerves enter the plane medially under the costal margin (use a subcostal TAP),${cite('tsai2017', 'fernandez2025')} and L1 only enters medial to the ASIS (use an ilioinguinal and iliohypogastric block).${cite('deck')}</p>`,
+    body: `<p>The lateral TAP is done in the mid-axillary line, where only T10–T12 are in the plane, so it covers the wall below the umbilicus and only to T10. The upper nerves enter the plane medially under the costal margin (use a subcostal TAP), and L1 only enters medial to the ASIS (use an ilioinguinal and iliohypogastric block).</p>`,
   }));
 
   sec.append(el('h3', { id: 'anat-choose', text: 'Which block for which incision' }));
   sec.append(table({
-    head: ['Operation', 'Levels to cover (teaching slide 147)', 'Abdominal wall options on this page'],
+    head: ['Operation', 'Levels to cover', 'Abdominal wall options on this page'],
     rows: [
-      [{ th: true, html: 'Hepatectomy, upper abdominal' }, 'T6–T10 bilaterally', `Bilateral oblique <a href="#ch-subcostal">subcostal TAP</a> (single shot or catheter)${cite('dieu2021')}; <a href="#ch-rsb">rectus sheath</a> for a midline wound`],
+      [{ th: true, html: 'Hepatectomy, upper abdominal' }, 'T6–T10 bilaterally', `Bilateral oblique <a href="#ch-subcostal">subcostal TAP</a> (single shot or catheter); <a href="#ch-rsb">rectus sheath</a> for a midline wound`],
       [{ th: true, html: 'Lower midline, hemicolectomy' }, 'T8–T12 bilaterally', 'Bilateral <a href="#ch-rsb">rectus sheath</a> (catheters for laparotomy) or <a href="#ch-tap">lateral TAP</a>'],
       [{ th: true, html: 'Nephrectomy' }, 'T8–T12', '<a href="#ch-ql">QL</a>; or back blocks (<a href="../back/">Back page</a>)'],
       [{ th: true, html: 'Open inguinal hernia' }, 'T10–L2', '<a href="#ch-iih">Ilioinguinal and iliohypogastric</a> + surgical infiltration'],
     ],
   }));
-  sec.append(fill(el('p', { class: 'aw-note' }), `Levels are from the paravertebral table in the teaching slides (slide 147).${cite('deck')} Abdominal wall blocks treat somatic pain only; for visceral pain consider neuraxial or paravertebral techniques.`));
+  sec.append(fill(el('p', { class: 'aw-note' }), `Levels are from the <a href="../back/#ch-levels">level table on the back blocks page</a>. Abdominal wall blocks treat somatic pain only; for visceral pain consider neuraxial or paravertebral techniques.`));
 
   registerSearch([
+    { title: 'Rectus sheath composition', text: 'arcuate line linea alba linea semilunaris posterior rectus sheath inferior epigastric', id: 'anat-sheath' },
     { title: 'Nerve course diagram', text: 'lateral cutaneous branch anterior cutaneous branch dorsal ramus spinal nerve between internal oblique and transversus abdominis', id: 'anat-course' },
   ]);
 }

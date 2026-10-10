@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="../assets/site-shell.css?v=20261008">
 <link rel="stylesheet" href="../assets/header-nav.css?v=20261008">
 <script defer src="../assets/navigation.js?v=20261008"></script>
-<link rel="stylesheet" href="landing.css?v=2">
-<script type="module" src="landing.js?v=2"></script>
+<link rel="stylesheet" href="landing.css?v=4">
+<script type="module" src="landing.js?v=4"></script>
 </head>
 <body class="tb-app">
 <a class="tb-skip" href="#main">Skip to content</a>
@@ -75,12 +75,7 @@
   <section class="tb-section" id="chooser" aria-labelledby="tb-chooser-h">
     <p class="tb-kicker">Across all three pages</p>
     <h2 id="tb-chooser-h">Which block for which operation</h2>
-    <p class="tb-intro">Pick an operation to see the dermatomes to cover, the level for a single-shot injection and the block options. Levels come from the department’s teaching slides; where a value or choice comes from elsewhere it is marked and referenced.</p>
-    <ul class="tb-key" aria-label="Source tags">
-      <li><span class="tb-src tb-src--deck">Slides</span> from the department’s teaching slides</li>
-      <li><span class="tb-src tb-src--ref">Ref</span> from a cited guideline or review</li>
-      <li><span class="tb-src tb-src--derived">Derived</span> worked out from the slides, not stated in them</li>
-    </ul>
+    <p class="tb-intro">Pick an operation to see the dermatomes to cover, the level for a single-shot injection and the block options.</p>
 
     <div class="tb-chooser">
       <fieldset class="tb-ops">
@@ -97,44 +92,52 @@
     <h3 class="tb-h3" id="tb-glance-h">All operations at a glance</h3>
     <div class="tb-table-scroll" role="region" aria-labelledby="tb-glance-h" tabindex="0">
       <table class="tb-table">
-        <thead><tr><th scope="col">Operation</th><th scope="col">Dermatomes to cover</th><th scope="col">Single-shot level</th><th scope="col">Source</th></tr></thead>
+        <thead><tr><th scope="col">Operation</th><th scope="col">Dermatomes to cover</th><th scope="col">Single-shot level</th></tr></thead>
         <tbody>
-          <tr><th scope="row">VATS or thoracotomy</th><td>T2–T9</td><td>T5–T6</td><td>Slides</td></tr>
-          <tr><th scope="row">Mastectomy</th><td>T2–T6</td><td>T4</td><td>Slides</td></tr>
-          <tr><th scope="row">Rib fractures</th><td>Level of the fracture</td><td>Level of the fracture</td><td>Slides</td></tr>
-          <tr><th scope="row">Sternotomy</th><td>T2–T6 bilaterally</td><td>T4</td><td>Slides</td></tr>
-          <tr><th scope="row">Hepatectomy or upper abdominal</th><td>T6–T10 bilaterally</td><td>T8</td><td>Slides</td></tr>
-          <tr><th scope="row">Midline laparotomy (xiphoid to pubis)</th><td>T6–T12 bilaterally</td><td>No single level (T8 and T10)</td><td>Derived</td></tr>
-          <tr><th scope="row">Laparoscopic cholecystectomy</th><td>Port sites, about T6–T10</td><td>Not given</td><td>Derived</td></tr>
-          <tr><th scope="row">Nephrectomy</th><td>T8–T12</td><td>T10</td><td>Slides</td></tr>
-          <tr><th scope="row">Lower midline or hemicolectomy</th><td>T8–T12 bilaterally</td><td>T10</td><td>Slides</td></tr>
-          <tr><th scope="row">Open inguinal hernia</th><td>T10–L2</td><td>T11–L1</td><td>Slides</td></tr>
+          <tr><th scope="row">VATS or thoracotomy</th><td>T2–T9</td><td>T5–T6</td></tr>
+          <tr><th scope="row">Mastectomy</th><td>T2–T6</td><td>T4</td></tr>
+          <tr><th scope="row">Rib fractures</th><td>Level of the fracture</td><td>Level of the fracture</td></tr>
+          <tr><th scope="row">Sternotomy</th><td>T2–T6 bilaterally</td><td>T4</td></tr>
+          <tr><th scope="row">Hepatectomy or upper abdominal</th><td>T6–T10 bilaterally</td><td>T8</td></tr>
+          <tr><th scope="row">Midline laparotomy (xiphoid to pubis)</th><td>T6–T12 bilaterally</td><td>No single level (T8 and T10)</td></tr>
+          <tr><th scope="row">Laparoscopic cholecystectomy</th><td>Port sites, about T6–T10</td><td>No single level</td></tr>
+          <tr><th scope="row">Laparoscopic bariatric surgery</th><td>Port sites, about T6–T10</td><td>No single level</td></tr>
+          <tr><th scope="row">Nephrectomy</th><td>T8–T12</td><td>T10</td></tr>
+          <tr><th scope="row">Lower midline or hemicolectomy</th><td>T8–T12 bilaterally</td><td>T10</td></tr>
+          <tr><th scope="row">Open inguinal hernia</th><td>T10–L2</td><td>T11–L1</td></tr>
         </tbody>
       </table>
     </div>
+
+    <section class="tb-epi" aria-labelledby="tb-epi-h">
+      <h3 class="tb-h3" id="tb-epi-h">Epidural or plane block?</h3>
+      <p>Points that apply to every operation above.</p>
+      <ul class="tb-epi-list">
+        <li>An epidural is dense, covers both sides and treats visceral as well as wound pain. Plane blocks treat wound (somatic) pain only, so always add multimodal analgesia.</li>
+        <li>The cost of an epidural: hypotension from the sympathetic block, closer monitoring after surgery, and it is ruled out by abnormal clotting or sepsis, which are common in emergencies. A plane block is often still possible.</li>
+        <li>Anticoagulants: a paravertebral is a deep block, so follow the same stopping times as for an epidural. Superficial plane blocks at a site you can compress carry less bleeding risk, but still check the drugs and clotting.</li>
+        <li>Single shot or catheter: a single shot lasts hours. When the pain lasts days (rib fractures, thoracotomy, open laparotomy, open liver resection), use a catheter.</li>
+        <li>Multimodal for everyone unless contraindicated: paracetamol, an NSAID or COX-2 inhibitor, a single dose of dexamethasone where PROSPECT recommends it, and opioids as rescue.</li>
+      </ul>
+      <p>If you choose a thoracic epidural, site it to match the incision. A high thoracic epidural spreads mostly downwards, so site it near the top of the incision; a low thoracic one spreads more upwards, so site it near the middle.</p>
+      <div class="tb-table-scroll" role="region" aria-label="Thoracic epidural insertion level by operation" tabindex="0">
+        <table class="tb-table tb-table--epi">
+          <thead><tr><th scope="col">Insertion level</th><th scope="col">Use for</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">T2–T4 (upper thoracic)</th><td>Thoracic surgery</td></tr>
+            <tr><th scope="row">T5–T8 (mid-thoracic)</th><td>Upper abdominal surgery</td></tr>
+            <tr><th scope="row">T9–T11 (low thoracic)</th><td>Lower abdominal surgery</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tb-note">Thoracic epidurals are not otherwise covered on these pages.</p>
+    </section>
 
     <div class="tb-last">
       <p><strong>Local anaesthetic systemic toxicity (LAST)</strong> has its own page, coming soon. Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks and catheters.</p>
     </div>
   </section>
 
-  <section class="tb-section" id="references" aria-labelledby="tb-refs-h">
-    <p class="tb-kicker">Sources</p>
-    <h2 id="tb-refs-h">References</h2>
-    <ol class="tb-refs" id="tb-refs">
-      <li id="ref-deck">NTF Anaesthesia. Truncal blocks teaching slides 106–148 (department teaching, unpublished). Levels to block: slide 147.</li>
-      <li id="ref-vats">Feray S, Lubach J, Joshi GP, Bonnet F, Van de Velde M; PROSPECT Working Group of ESRA. PROSPECT guidelines for video-assisted thoracoscopic surgery: a systematic review and procedure-specific postoperative pain management recommendations. <cite>Anaesthesia</cite> 2022;77:311–25. <a href="https://doi.org/10.1111/anae.15609">doi:10.1111/anae.15609 ↗</a></li>
-      <li id="ref-breast">Desai N, Dirzu DS, Zolger D, Adansi DN, Van de Velde M, Joshi GP; PROSPECT Working Group of ESRA. Pain management after major oncological breast surgery: an updated systematic review and procedure specific postoperative pain management (PROSPECT) recommendations. <cite>Anaesthesia</cite> 2026 (epub 12 August). <a href="https://doi.org/10.1111/anae.70313">doi:10.1111/anae.70313 ↗</a></li>
-      <li id="ref-rib">Williams A, Bigham C, Marchbank A. Anaesthetic and surgical management of rib fractures. <cite>BJA Education</cite> 2020;20:332–40. <a href="https://doi.org/10.1016/j.bjae.2020.06.001">doi:10.1016/j.bjae.2020.06.001 ↗</a></li>
-      <li id="ref-liver">Dieu A, et al; PROSPECT Working Group of ESRA. Pain management after open liver resection: Procedure-Specific Postoperative Pain Management (PROSPECT) recommendations. <cite>Regional Anesthesia and Pain Medicine</cite> 2021;46:433–45. <a href="https://doi.org/10.1136/rapm-2020-101933">doi:10.1136/rapm-2020-101933 ↗</a></li>
-      <li id="ref-chole">Bourgeois C, et al; PROSPECT Working Group of ESRA. Pain management after laparoscopic cholecystectomy: a systematic review and procedure-specific postoperative pain management (PROSPECT) recommendations. <cite>European Journal of Anaesthesiology</cite> 2024;41:841–55. <a href="https://doi.org/10.1097/EJA.0000000000002047">doi:10.1097/EJA.0000000000002047 ↗</a></li>
-      <li id="ref-el">Scott MJ, Aggarwal G, Aitken RJ, et al. Consensus guidelines for perioperative care for emergency laparotomy: Enhanced Recovery After Surgery (ERAS) Society recommendations part 2, emergency laparotomy: intra- and postoperative care. <cite>World Journal of Surgery</cite> 2023;47:1850–80. <a href="https://doi.org/10.1007/s00268-023-07020-6">doi:10.1007/s00268-023-07020-6 ↗</a></li>
-      <li id="ref-hernia">Coppens S, Gidts J, Huynen P, Van de Velde M, Joshi GP; PROSPECT Working Group. Pain management after open inguinal hernia repair: an updated systematic review and procedure-specific postoperative pain management (PROSPECT/ESRA) recommendations. <cite>Acta Anaesthesiologica Belgica</cite> 2020;71:45–56. <a href="https://esraeurope.org/prospect/procedures/inguinal-hernia-repair-2019/summary-recommendations-17/">Read the ESRA PROSPECT summary: inguinal hernia repair, 2019 update (Coppens 2020) ↗</a></li>
-      <li id="ref-chin">Chin KJ, McDonnell JG, Carvalho B, Sharkey A, Pawa A, Gadsden J. Essentials of our current understanding: abdominal wall blocks. <cite>Regional Anesthesia and Pain Medicine</cite> 2017;42:133–83. <a href="https://doi.org/10.1097/AAP.0000000000000545">doi:10.1097/AAP.0000000000000545 ↗</a></li>
-      <li id="ref-upper">Fernandez Martin MT, Mariano ER, Valdes-Vilches LF, Lopez Alvarez S, Elkassabany N. Analgesia for upper abdominal surgery, a scoping review of the current fascial plane block techniques. <cite>Journal of Clinical Medicine</cite> 2025;14:8632. <a href="https://doi.org/10.3390/jcm14248632">doi:10.3390/jcm14248632 ↗</a></li>
-      <li id="ref-names">El-Boghdadly K, Wolmarans M, Stengel AD, et al. Standardizing nomenclature in regional anesthesia: an ASRA-ESRA Delphi consensus study of abdominal wall, paraspinal, and chest wall blocks. <cite>Regional Anesthesia and Pain Medicine</cite> 2021;46:571–80. <a href="https://doi.org/10.1136/rapm-2020-102451">doi:10.1136/rapm-2020-102451 ↗</a></li>
-    </ol>
-  </section>
 </main>
 
 <section class="tb-foot" aria-label="Disclaimer and credits"><div class="site-container">

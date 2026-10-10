@@ -1,6 +1,5 @@
 // Chest wall: anatomy chapter (innervation of the chest wall). Original schematic drawings (SVG).
 import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../shared/js/ui.js';
-import { cite } from '../../shared/js/refs.js';
 import { OUTLINE } from '../../shared/js/dermatomes.js';
 
 const NERVE = '#e2b21c', NERVE_EDGE = '#7a5c00', LA = '#2c74b3', ART = '#c0392b';
@@ -122,12 +121,13 @@ export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'anat-h', text: 'Chest wall innervation' }));
   sec.append(fill(el('p', { class: 'tb-lead' }), 'Every chest wall block catches the nerves at one point on their way round the chest. Know where each branch leaves the intercostal nerve, and you know what each block can and cannot cover.'));
   sec.append(keyPoints([
-    `The chest wall skin is supplied by the <strong>intercostal nerves</strong> (the breast mainly by T4–T6, the axilla by T2 through the intercostobrachial nerve).${cite('atotw346')}`,
-    `Each intercostal nerve gives a <strong>lateral cutaneous branch</strong>, which pierces the intercostal muscles and serratus anterior at about the mid-axillary line and divides into anterior and posterior branches.${cite('atotw427', 'mehta2023')}`,
-    `It then continues forward and ends as an <strong>anterior cutaneous branch</strong> beside the sternum.${cite('atotw427')} Serratus and PECS II act on the lateral branches, so the <strong>sternum and medial chest need a parasternal block</strong>.`,
-    `The muscles have their own nerves: <strong>lateral pectoral (C5–C7) and medial pectoral (C8–T1)</strong> to the pectoral muscles, <strong>long thoracic (C5–C7)</strong> to serratus anterior, <strong>thoracodorsal (C6–C8)</strong> to latissimus dorsi.${cite('atotw346')}`,
-    `The upper chest just below the clavicle is supplied by the <strong>supraclavicular nerves</strong> (C3–C4), which none of these blocks reach.${cite('atotw346')}`,
+    `The chest wall skin is supplied by the <strong>intercostal nerves</strong> (the breast mainly by T4–T6, the axilla by T2 through the intercostobrachial nerve). The breast gets both lateral and anterior cutaneous branches.`,
+    `Each intercostal nerve gives a <strong>lateral cutaneous branch</strong>, which pierces the intercostal muscles and serratus anterior at about the mid-axillary line and divides into anterior and posterior branches.`,
+    `It then continues forward and ends as an <strong>anterior cutaneous branch</strong> beside the sternum. Serratus and PECS II act on the lateral branches, so the <strong>sternum and medial chest need a parasternal block</strong>.`,
+    `The muscles have their own nerves: <strong>lateral pectoral (C5–C7) and medial pectoral (C8–T1)</strong> to the pectoral muscles, <strong>long thoracic (C5–C7)</strong> to serratus anterior, <strong>thoracodorsal (C6–C8)</strong> to latissimus dorsi.`,
+    `The upper chest just below the clavicle is supplied by the <strong>supraclavicular nerves</strong> (C3–C4), which none of these blocks reach.`,
     'The back (dorsal rami) needs a block from the back: see the <a href="../back/">back page</a>.',
+    `For the viva, five groups of nerves supply the anterolateral chest wall: <strong>supraclavicular</strong> (cervical plexus), <strong>intercostal</strong> (lateral and anterior branches, T2–T6), <strong>pectoral</strong> (medial and lateral), <strong>long thoracic</strong>, and, for the axilla, the <strong>intercostobrachial</strong> nerve with the medial cutaneous nerve of the arm.`,
   ]));
 
   const f1 = el('figure', { class: 'cw-fig', id: 'anat-course' });
@@ -150,38 +150,41 @@ export function renderAnatomy(sec) {
   f2.append(el('figcaption', {}, table({
     head: ['Nerve', 'Supplies', 'Block that reaches it'],
     rows: [
-      [{ th: true, html: 'Lateral cutaneous branches, T2–T6 (and below)' }, `Lateral chest wall; lateral breast${cite('atotw427')}`, '<a href="#ch-sap">Serratus</a>, <a href="#ch-pecs">PECS II</a> (pectoserratus)'],
-      [{ th: true, html: 'Intercostobrachial (T2)' }, `The axilla${cite('atotw346')}`, `PECS II, superficial serratus${cite('atotw427', 'blanco2012')}`],
-      [{ th: true, html: 'Anterior cutaneous branches, T2–T6' }, `Skin beside the sternum, medial breast, sternum${cite('atotw427', 'he2026')}`, '<a href="#ch-parasternal">Parasternal</a> (superficial or deep)'],
-      [{ th: true, html: 'Lateral and medial pectoral' }, `Pectoralis major and minor (no skin)${cite('atotw346')}`, `<a href="#ch-pecs">PECS I</a> (interpectoral)${cite('atotw346')}`],
-      [{ th: true, html: 'Long thoracic and thoracodorsal' }, `Serratus anterior; latissimus dorsi${cite('atotw346')}`, `Superficial serratus (both); PECS II (long thoracic, inconsistently)${cite('atotw427', 'atotw346')}`],
-      [{ th: true, html: 'Supraclavicular (C3–C4)' }, `Upper chest below the clavicle${cite('atotw346')}`, 'None of these: not a chest wall plane block'],
+      [{ th: true, html: 'Lateral cutaneous branches, T2–T6 (and below)' }, `Lateral chest wall; lateral breast`, '<a href="#ch-sap">Serratus</a>, <a href="#ch-pecs">PECS II</a> (pectoserratus)'],
+      [{ th: true, html: 'Intercostobrachial (lateral cutaneous branch of T2, sometimes T3)' }, `The axilla and upper medial arm`, `PECS II, superficial serratus; or subcutaneous along the axillary crease`],
+      [{ th: true, html: 'Medial cutaneous nerve of the arm (medial cord)' }, `Upper medial arm, with the intercostobrachial`, 'A brachial plexus block, not a chest wall block'],
+      [{ th: true, html: 'Anterior cutaneous branches, T2–T6' }, `Skin beside the sternum, medial breast, sternum`, '<a href="#ch-parasternal">Parasternal</a> (superficial or deep)'],
+      [{ th: true, html: 'Lateral and medial pectoral' }, `Pectoralis major and minor (no skin)`, `<a href="#ch-pecs">PECS I</a> (interpectoral)`],
+      [{ th: true, html: 'Long thoracic and thoracodorsal' }, `Serratus anterior; latissimus dorsi`, `Superficial serratus (both); PECS II (long thoracic, inconsistently)`],
+      [{ th: true, html: 'Supraclavicular (C3–C4)' }, `Upper chest below the clavicle`, 'None of these: not a chest wall plane block'],
       [{ th: true, html: 'Dorsal rami' }, 'The back', '<a href="../back/#ch-esp">ESP</a>, <a href="../back/#ch-pvb">paravertebral</a>'],
     ],
   })));
   sec.append(f2);
   sec.append(callout('pearl', {
     title: 'Two sentences for the viva',
-    body: `<p>Serratus and PECS II block the lateral cutaneous branches around the mid-axillary line, so they cover the lateral chest and the lateral breast but spare the anterior cutaneous branches beside the sternum.${cite('atotw427', 'mehta2023')} The medial breast and the sternum need a parasternal block (or surgical infiltration), and the back needs an ESP or paravertebral block.${cite('sherwin2018', 'mehta2023')}</p>`,
+    body: `<p>Serratus and PECS II block the lateral cutaneous branches around the mid-axillary line, so they cover the lateral chest and the lateral breast but spare the anterior cutaneous branches beside the sternum. The medial breast and the sternum need a parasternal block (or surgical infiltration), and the back needs an ESP or paravertebral block.</p>`,
   }));
 
   sec.append(el('h3', { id: 'anat-choose', text: 'Which block for which chest operation' }));
   sec.append(table({
-    head: ['Operation', 'Levels to cover; single-shot level (teaching slide 147)', 'Chest wall options on this page'],
+    head: ['Operation', 'Levels to cover; single-shot level', 'Chest wall options on this page'],
     rows: [
-      [{ th: true, html: 'Mastectomy' }, 'T2–T6; T4', `<a href="#ch-pecs">PECS II</a> or <a href="#ch-sap">serratus</a> (superficial or deep): equal single-shot options with ESP, paravertebral and infiltration${cite('desai2026')}`],
-      [{ th: true, html: 'Thoracotomy, VATS' }, 'T2–T9; T5–T6', `<a href="#ch-sap">Serratus</a> as a second choice for VATS; first choice is paravertebral or ESP (<a href="../back/">back page</a>)${cite('feray2022')}`],
-      [{ th: true, html: 'Rib fractures' }, 'The level of the fractures', `<a href="#sap-ribs">Serratus</a> catheter for fractures in the front two-thirds; ESP or paravertebral catheter otherwise${cite('williams2020')}`],
+      [{ th: true, html: 'Mastectomy' }, 'T2–T6; T4', `<a href="#ch-pecs">PECS II</a> or <a href="#ch-sap">serratus</a> (superficial or deep): equal single-shot options with ESP, paravertebral and infiltration`],
+      [{ th: true, html: 'Thoracotomy, VATS' }, 'T2–T9; T5–T6', `<a href="#ch-sap">Serratus</a> as a second choice for VATS; first choice is paravertebral or ESP (<a href="../back/">back page</a>)`],
+      [{ th: true, html: 'Rib fractures' }, 'The level of the fractures', `<a href="#sap-ribs">Serratus</a> catheter for fractures in the front two-thirds; ESP or paravertebral catheter otherwise`],
       [{ th: true, html: 'Sternotomy (brief: no cardiac surgery at NTF)' }, 'T2–T6 on both sides; T4', '<a href="#ch-parasternal">Parasternal</a>, both sides'],
     ],
   }));
-  sec.append(fill(el('p', { class: 'cw-note' }), `Levels are from the level table in the teaching slides (slide 147).${cite('deck')} The <a href="../">truncal blocks landing page</a> has a chooser across all three pages.`));
+  sec.append(fill(el('p', { class: 'cw-note' }), `Levels are from the <a href="../back/#ch-levels">level table on the back blocks page</a>. The <a href="../">truncal blocks landing page</a> has a chooser across all three pages.`));
 
   sec.append(el('h3', { id: 'cw-others', text: 'Others' }));
-  sec.append(fill(el('p', { id: 'clavipectoral' }), `<strong>Clavipectoral block</strong> for clavicle fracture (teaching slide 127).${cite('deck')} Not covered further here.`));
+  sec.append(fill(el('p', { id: 'clavipectoral' }), `<strong>Clavipectoral fascial plane block</strong> for clavicle fracture. The probe lies across the clavicle on each side of the fracture, and local anaesthetic goes between the periosteum and the clavipectoral fascia, both medial and lateral to the fracture. It is a low-risk block. The skin over the clavicle is supplied by the supraclavicular nerves (cervical plexus); the bone's own nerve supply is mixed and debated, which is why some add a superficial cervical plexus block.`));
+  sec.append(fill(el('p', { id: 'intercostal-nb' }), `<strong>Intercostal nerve block</strong>: the nerve runs in the costal groove below its vein and artery (VAN, top to bottom), between the internal and innermost intercostal muscles. Block it between the angle of the rib and the posterior axillary line, before the lateral cutaneous branch leaves: walk off the lower border of the rib, about 3–5 ml per level. Absorption is fast, so add up the dose over several levels; pneumothorax is the other risk.`));
 
   registerSearch([
     { title: 'Intercostal nerve course diagram', text: 'lateral cutaneous branch anterior cutaneous branch dorsal ramus pectoral nerves long thoracic thoracodorsal internal thoracic artery transversus thoracis injection points', id: 'anat-course' },
-    { title: 'Clavipectoral block', text: 'clavipectoral block clavicle fracture', id: 'clavipectoral' },
+    { title: 'Clavipectoral block', text: 'clavipectoral fascial plane block clavicle fracture periosteum supraclavicular', id: 'clavipectoral' },
+    { title: 'Intercostal nerve block', text: 'intercostal nerve block costal groove VAN rib angle', id: 'intercostal-nb' },
   ]);
 }

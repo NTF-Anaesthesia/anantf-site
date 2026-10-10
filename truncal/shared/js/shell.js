@@ -1,8 +1,8 @@
 // Truncal blocks: page shell. Builds the sticky chapter bar, the hub ("I need to…" tiles + chapter list),
-// one chapter at a time with hash routing (browser Back/Forward work), search, copy link, pager and references.
+// one chapter at a time with hash routing (browser Back/Forward work), search, copy link and pager.
 // Usage (see shared/DATA.md):  import { bootPage } from '../shared/js/shell.js';  bootPage({ ...config });
 import { $, $$, el, fill, announce } from './ui.js';
-import { registerRefs, finaliseRefs, renderRefs } from './refs.js';
+import { finaliseRefs } from './refs.js';
 import { attachSearch, buildIndex, addSynonyms } from './search.js';
 import { renderBlock } from './block.js';
 
@@ -58,22 +58,19 @@ const decode = (h) => { try { return decodeURIComponent((h || '').replace(/^#/, 
 /**
  * bootPage(config): see DATA.md for every field.
  * config = { title, eyebrow, lead, tiles:[{title, desc, href}], chapters:[{id, title, short, desc, block?, render?}],
- *            refs:[{id, text, url, label}], synonyms:[[…]], searchPlaceholder, refsIntro }
+ *            synonyms:[[…]], searchPlaceholder, hubExtra }
  */
 export async function bootPage(cfg) {
   const main = $('#main');
   const barHost = $('#tb-bar');
   if (!main) throw new Error('truncal shell: <main id="main"> is missing');
   document.body.classList.add('tb-app', 'tb-booting');
-  registerRefs(cfg.refs || []);
   if (cfg.synonyms) addSynonyms(cfg.synonyms);
   const BASE_TITLE = document.title;
 
-  // ------------------------------------------------------------ chapter list (+ References)
+  // ------------------------------------------------------------ chapter list
+  // (cfg.refs / cfg.refsIntro are ignored: these pages no longer show a References chapter.)
   const chs = (cfg.chapters || []).map((c) => ({ ...c, id: c.id || (c.block ? `ch-${c.block.id}` : `ch-${Math.random().toString(36).slice(2, 7)}`) }));
-  if ((cfg.refs || []).length && !chs.some((c) => c.id === 'ch-refs')) {
-    chs.push({ id: 'ch-refs', title: 'References', short: 'References', desc: 'Sources for the doses, coverage and anatomy on this page.', refs: true });
-  }
 
   // ------------------------------------------------------------ hub
   const placeholder = cfg.searchPlaceholder || 'Search, e.g. TAP, groin, dose';
@@ -211,7 +208,8 @@ export async function bootPage(cfg) {
       return;
     }
     let target = document.getElementById(id);
-    if (!target) return;
+    // Old links to the removed References chapter (#ch-refs, #ref-…) or any unknown chapter land on the hub.
+    if (!target) { if (/^(ch-|ref-)/.test(id)) { showChapter(hub); window.scrollTo({ top: 0, behavior: 'instant' }); } return; }
     const changed = showChapter(target.closest('.tb-chapter'));
     if (changed) window.scrollTo({ top: 0, behavior: 'instant' });
     openAncestors(target);
@@ -274,12 +272,6 @@ export async function bootPage(cfg) {
     const sec = sections.get(c.id);
     try {
       if (c.block) renderBlock(c.block, sec, { pageTitle: cfg.title });
-      if (c.refs) {
-        const h = el('h2', { id: 'references-h', text: c.title });
-        sec.append(h);
-        if (cfg.refsIntro) sec.append(fill(el('p', { class: 'tb-lead tb-lead--small' }), cfg.refsIntro));
-        renderRefs(sec);
-      }
       if (typeof c.render === 'function') await c.render(sec);
       tidyChapter(sec);
     } catch (err) {
@@ -294,7 +286,7 @@ export async function bootPage(cfg) {
     if (next) pager.append(el('a', { class: 'tb-pager-a tb-pager-next', href: `#${next.id}` }, el('small', { text: 'Next' }), el('span', { text: next.title })));
     sec.append(pager);
   }
-  try { finaliseRefs(main); } catch (err) { console.error('[truncal] references failed', err); }
+  try { finaliseRefs(main); } catch (err) { console.error('[truncal] citation cleanup failed', err); }
   try { buildIndex(); } catch (err) { console.error('[truncal] search index failed', err); }
   document.body.classList.remove('tb-booting');
   document.body.classList.add('tb-chapters-on');

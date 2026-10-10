@@ -205,14 +205,6 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app .tb-details[open]>summary::after{content:'−'}
 .tb-app .tb-details>summary:hover{color:var(--tb-wine)}
 .tb-app .tb-details-body{padding:0 0 16px;font-size:16px;line-height:1.65}
-.tb-app .tb-cite{font:500 max(12px,.72em)/1 var(--tb-mono);vertical-align:super;line-height:0;margin-left:1px;white-space:nowrap;color:var(--tb-muted)}
-.tb-app main .tb-cite a{color:var(--tb-wine);text-decoration:none;padding:0 1px}
-.tb-app main .tb-cite a:is(:hover,:focus-visible){text-decoration:underline}
-.tb-app .tb-refs{list-style:none;margin:8px 0 0;padding:0;max-width:92ch;font-size:15px;line-height:1.6}
-.tb-app main .tb-refs li{display:grid;grid-template-columns:2.6em minmax(0,1fr);gap:4px;padding:9px 0;border-bottom:1px solid var(--tb-line);max-width:none}
-.tb-app .tb-refs li:target{background:var(--tb-blush)}
-.tb-app .tb-ref-num{font:500 14px/1.6 var(--tb-mono);color:var(--tb-muted)}
-.tb-app .tb-ref-body{overflow-wrap:anywhere}
 
 /* ------------------------------------------------------------------ block chapter */
 .tb-app .tb-bhead{padding:4px 0 8px}
@@ -241,7 +233,7 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app .tb-dose-k{font:400 12px/1.6 var(--tb-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--tb-muted)}
 .tb-app main .tb-dose-line{font:500 21px/1.45 var(--tb-sans);margin:0 0 6px}
 .tb-app .tb-dose-v{font:500 21px/1.45 var(--tb-mono)}
-.tb-app .tb-dose-src,.tb-app .tb-dose-note{font-size:15px;color:var(--tb-ink-soft)}
+.tb-app .tb-dose-note{font-size:15px;color:var(--tb-ink-soft)}
 .tb-app main .tb-dose-last{margin:12px 0 0;padding-top:10px;border-top:1px solid var(--tb-line);font-size:15px}
 .tb-app .tb-cov-grid{display:grid;gap:20px 40px;align-items:start}
 @media (min-width:900px){.tb-app .tb-cov-grid{grid-template-columns:minmax(300px,440px) minmax(0,1fr)}}
@@ -270,7 +262,6 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app .tb-exam .tb-details{border-top:1px solid var(--tb-line-strong);border-bottom:0}
 .tb-app main .tb-exam-pts{padding-left:1.2em;margin:0 0 12px}
 .tb-app main .tb-exam-pts li{font-size:16px;margin:0 0 6px}
-.tb-app .tb-bsources{margin-top:26px;padding-top:14px;border-top:1px solid var(--tb-line);font-size:15px;color:var(--tb-muted);max-width:90ch}
 
 /* ------------------------------------------------------------------ scan viewer */
 .tb-app .tb-scan-wrap{margin:8px 0 34px}

@@ -1,7 +1,7 @@
 // Back page: wires the shared shell to this page's chapters and data.
 import { bootPage } from '../../shared/js/shell.js';
-import { BLOCKS, REFS } from './blocks.js';
-import { renderAnatomy, renderLandmark, renderLevels } from './anatomy.js';
+import { BLOCKS } from './blocks.js';
+import { renderAnatomy, renderLandmark, renderLevels, renderRelated } from './anatomy.js';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
@@ -17,7 +17,7 @@ bootPage({
     { title: 'Feel the SCTL pop', desc: 'Paravertebral scan viewer, needle step', href: '#pvb-step-needle' },
     { title: 'Try the MTP variant', desc: 'Mid-point transverse process to pleura', href: '#esp-inj-mtp' },
     { title: 'Find the right level', desc: 'C7, tip of the scapula T7, counting ribs', href: '#anat-count' },
-    { title: 'Choose levels for an operation', desc: 'Teaching slide table: levels and single-shot level', href: '#ch-levels' },
+    { title: 'Choose levels for an operation', desc: 'Levels to block and the single-shot level', href: '#ch-levels' },
     { title: 'Prepare for the OSCE', desc: 'Name A–E, ESP and paravertebral questions', href: '#anat-exam' },
   ],
   chapters: [
@@ -26,8 +26,7 @@ bootPage({
     { id: 'ch-pvb', title: 'Paravertebral block: sagittal in-plane', short: 'PVB sagittal', desc: 'Under the SCTL, caudal to cranial. MMed OSCE 2020.', block: byId.pvb },
     { id: 'ch-pvbt', title: 'Paravertebral block: transverse in-plane', short: 'PVB transverse', desc: 'Under the internal intercostal membrane.', block: byId.pvbt },
     { id: 'ch-pvblm', title: 'Paravertebral block: landmark technique', short: 'PVB landmark', desc: 'Tuohy, transverse process at about 4 cm, pop and loss of resistance.', render: renderLandmark },
-    { id: 'ch-levels', title: 'Which level for which operation', short: 'Levels', desc: 'The teaching slides’ level table for blocks done from the back.', render: renderLevels },
+    { id: 'ch-levels', title: 'Which level for which operation', short: 'Levels', desc: 'Levels to block from the back, by operation.', render: renderLevels },
+    { id: 'ch-related', title: 'Related blocks and alternatives', short: 'Related', desc: 'Thoracic epidural, intercostal, intertransverse process (MTP, retrolaminar, TLIP) and interpleural blocks, in brief.', render: renderRelated },
   ],
-  refs: REFS,
-  refsIntro: 'Most values come from the department’s teaching slides (reference 1). Values the teaching slides do not give are taken from the sources below and cited where they are used.',
 });

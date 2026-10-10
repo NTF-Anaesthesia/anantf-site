@@ -20,7 +20,7 @@ const at = (pts, x) => {
 const rib = (r, o) => ({ kind: 'bone', ...o, shape: E(r.cx, r.cy, r.rx, r.ry) });
 
 // ================================================================ serratus anterior plane
-// Right mid-axillary line at the 5th rib, probe along the line of the axilla (WFSA ATOTW 427: from the
+// Right mid-axillary line at the 5th rib, probe along the line of the axilla (from the
 // deltopectoral groove, move inferiorly and posteriorly with increasing coronal orientation to the 5th rib in the
 // mid-axillary line). Screen left = anterosuperior (rib 4), screen right = posteroinferior.
 const SAP_R4 = { cx: 3, cy: 18.4, rx: 6.5, ry: 3.4 };
@@ -82,7 +82,7 @@ const sap = {
 
 // ================================================================ PECS (interpectoral and pectoserratus)
 // Right anterior chest, oblique (probe medial end towards the coracoid), at the 3rd and 4th ribs near the anterior
-// axillary line. Screen left = superomedial, screen right = inferolateral. WFSA ATOTW 346.
+// axillary line. Screen left = superomedial, screen right = inferolateral.
 const PE_R3 = { cx: 8, cy: 28.6, rx: 6.4, ry: 3.3 };
 const PE_R4 = { cx: 34, cy: 27.6, rx: 6.4, ry: 3.3 };
 const PE_PL = curve([[0, 32.4], [8, 32.6], [14, 31.6], [21, 31.2], [28, 31.6], [34, 31.6], [40, 31.0], [45, 30.7]]);
@@ -148,7 +148,7 @@ const pecs = (() => {
 })();
 
 // ================================================================ parasternal intercostal plane
-// Right parasternal, transverse in the 4th intercostal space (He et al. 2026 describe transverse imaging at the
+// Right parasternal, transverse in the 4th intercostal space (transverse imaging at the
 // 3rd–4th space about 2 cm from the sternum). Screen left = medial (sternal edge), right = lateral.
 // Superficial: between pectoralis major and the intercostal muscles. Deep: between the internal intercostal
 // muscle and transversus thoracis, where the internal thoracic vessels run.
