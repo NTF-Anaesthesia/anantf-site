@@ -60,7 +60,7 @@ function testDose() {
 function obstetric() {
   const warn = T(callout('policy', {
     title: 'Exam knowledge only',
-    body: '<p>NTF has no obstetric service, so this is not taught as local practice and no doses are given. It is here because the FRCA examines it.</p>',
+    body: '<p>NTF has no obstetric service. This is here because the FRCA examines it. A typical caesarean dose is <span class="sp-dose">2.2–2.3 mL</span> of hyperbaric bupivacaine 0.5% (<span class="sp-dose">11–11.5 mg</span>).</p>',
   }), 2);
   const body = el('div');
   body.append(

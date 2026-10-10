@@ -29,7 +29,7 @@ function elderly() {
       ['Give analgesia first', 'A patient in pain cannot hold still or curl up. Treat the pain before you position. For a hip fracture, ask about a nerve block for the fracture pain.'],
       ['Position with care', 'Sitting is best if they can manage it. If not, lie them on their side with the spine level. Support the head, chest and shoulders with pillows so the spine does not sag or twist. <a href="#sx-position">Cannot position?</a>'],
       ['Try the midline once, then go paramedian', 'If the midline feels solid, change to the <a href="#sx-paramedian">paramedian approach</a>. If that fails, try <a href="#sx-taylor">L5–S1 (Taylor)</a>.'],
-      ['Be ready for low blood pressure', 'Use the lowest dose that works from the label range. Inject slowly. Have a vasopressor drawn up and check blood pressure often.'],
+      ['Be ready for low blood pressure', 'Use the lowest dose that works: the typical dose or less. Inject slowly. Have a vasopressor drawn up and check blood pressure often.'],
       ['Know your limit', 'If bone, bleeding or pain stops you, stop and change the plan.'],
     ]),
     STOP([
@@ -45,7 +45,7 @@ function elderly() {
         'Rigid ligaments also make the needle bend. A fine needle can drift off the line you chose.',
       ]),
       G(2, 'Dose and blood pressure', [
-        'Older patients usually need less local anaesthetic, and the block can spread higher and last longer. Use the lower end of the label range, or less, and do not raise the dose to make up for a poor block.',
+        'Older patients usually need less local anaesthetic, and the block can spread higher and last longer. Use the typical dose or less, and do not raise the dose to make up for a poor block.',
         'Cardiac reserve is lower. Hypotension is more likely and less well tolerated. Treat early. Aortic stenosis and similar problems are in the <a href="#ch-technique">Technique chapter</a>.',
         'Avoid large fluid loads as the only treatment for hypotension.',
       ]),
