@@ -112,21 +112,16 @@ code{font-size:13px;background:var(--inset);padding:2px 4px;word-break:break-all
   <h2>Send your changes</h2>
   <label class="field">Your name (so we know who suggested them)<input id="who" autocomplete="name" placeholder="e.g. Dr Tan"></label>
   <p class="warn" id="sendNote" hidden></p>
-  <p>Choose one:</p>
-  <ul style="margin:0 0 10px;padding-left:20px">
-    <li><b>Email</b>: opens your email app with the changes filled in. Just press Send. If nothing opens, use Copy and paste them into an email to contact@anantf.com.</li>
-    <li><b>GitHub issue</b>: for site maintainers with a GitHub account. Press <b>Create</b> on the page that opens.</li>
-    <li><b>Copy</b>: paste them into a Claude chat or a message.</li>
-  </ul>
+  <p><b>Send on GitHub</b> opens a GitHub page with your changes filled in. Sign in if asked, then press <b>Create</b>.</p>
+  <p class="muted">Can’t use GitHub? Press <b>Copy</b> and paste your changes into a message to Dr Koh Wen Jun or Dr Chew Shi Hao.</p>
   <textarea id="preview" readonly aria-label="What will be sent"></textarea>
-  <div class="row"><button id="copyTxt">Copy</button><button id="openIssue">GitHub issue</button><button id="openMail" class="primary">Email</button></div>
+  <div class="row"><button id="copyTxt">Copy</button><button id="openIssue" class="primary">Send on GitHub</button></div>
   <div class="row"><button id="sentDone">I’ve sent them: clear my list</button><button id="sendClose">Close</button></div>
 </dialog>
 
 <script>
 (() => {
   const REPO = 'https://github.com/NTF-Anaesthesia/anantf-site/issues/new';
-  const MAIL = 'contact@anantf.com';
   const KEY = 'ntf-page-editor-v1', WHO = 'ntf-page-editor-name';
   const $ = id => document.getElementById(id);
   const frame = $('frame');
@@ -439,18 +434,6 @@ code{font-size:13px;background:var(--inset);padding:2px 4px;word-break:break-all
       $('sendNote').textContent = 'This batch is too long to fill in automatically. It has been copied: paste it into the issue’s description box.'; $('sendNote').hidden = false;
     }
     window.open(url, '_blank', 'noopener');
-  };
-  $('openMail').onclick = () => {
-    if (needName()) return;
-    const body = report();
-    let url = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(title()) + '&body=' + encodeURIComponent(body);
-    if (url.length > 1800) {
-      // Many email apps cut long mailto links short, so copy instead and ask for a paste.
-      copy(body);
-      url = 'mailto:' + MAIL + '?subject=' + encodeURIComponent(title()) + '&body=' + encodeURIComponent('(Paste the copied changes here.)\n');
-      $('sendNote').textContent = 'This batch is too long to fill in automatically. It has been copied: paste it into the email before sending.'; $('sendNote').hidden = false;
-    }
-    location.href = url;
   };
   $('sentDone').onclick = () => { if (!confirm('Clear your list? Only do this once your changes have been sent.')) return; changes = []; save(); $('sendDlg').close(); open(pageOf() || '/'); };
   $('sendClose').onclick = () => $('sendDlg').close();
