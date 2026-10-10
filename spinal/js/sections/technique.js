@@ -1,6 +1,6 @@
 // Chapter "Technique": performing a spinal, step by step, with special populations merged in.
 // Bupivacaine doses: "Typical" = the department's usual practice, supplied by Dr Koh Wenjun (Oct 2026); no manufacturer range is shown.
-// Prilocaine and chloroprocaine: product-label doses from `refs` below.
+// Prilocaine: product-label doses from `refs` below. Chloroprocaine removed (not stocked).
 // ASRA 2025 anticoagulation values were read in the full text (Kopp 2025) and live in ../technique/anticoag-data.js.
 // Tiers: 1 MO, 2 Resident, 3 Advanced (see ../TIERS.md). Citations: major guidelines only; labels only in dose lines.
 import { el, cite, callout, steps, table, tabs, segmented, figure, details, onResize, whenVisible, tier, keyPoints, registerSearch } from '../ui.js?v=1';
@@ -31,11 +31,6 @@ export const refs = {
     label: 'Prilotekal SmPC',
     text: 'Prilotekal 20 mg/ml solution for injection (hyperbaric prilocaine hydrochloride): summary of product characteristics. Electronic medicines compendium (emc).',
     url: 'https://www.medicines.org.uk/emc/product/15160/smpc/print',
-  },
-  'tq-ampres': {
-    label: 'Ampres SmPC',
-    text: 'B. Braun. Ampres 10 mg/ml solution for injection (chloroprocaine hydrochloride): summary of product characteristics. Electronic medicines compendium (emc); updated October 2023.',
-    url: 'https://www.medicines.org.uk/emc/product/15158/smpc/print',
   },
   'tq-klein2021': {
     label: 'Klein 2021',
@@ -448,11 +443,6 @@ export function mount(root) {
         'Not stated',
         `About ${D('100–130 min')}`,
         'Short acting; suits day surgery. Reduce in poor general condition or liver or kidney impairment.'],
-      [{ th: true, html: 'Chloroprocaine 1%<span class="tq-cell-sub">Ampres</span>' },
-        `${D('40–50 mg')} (${D('4–5 mL')}); maximum ${D('50 mg')}${cite('tq-ampres')}`,
-        `About ${D('8–10 min')} (mean)`,
-        `About ${D('80–100 min')}`,
-        `Licensed for surgery expected to last no more than ${D('40 min')}.${cite('tq-ampres')} An ester local anaesthetic.`],
     ],
   });
   const spread = spreadFactors([
@@ -469,7 +459,7 @@ export function mount(root) {
   root.append(part('tq-drugs', 'Drugs and doses',
     T(ANSWER('Answer first', [
       `Most lower-limb surgery: <strong>hyperbaric bupivacaine 0.5%</strong>, typically ${D('2.5 mL')} for a knee replacement and about ${D('2 mL')} for shorter operations. Hip surgery: <strong>plain bupivacaine 0.5%</strong>, ${D('2.5–3 mL')}, and ${D('3 mL')} at most. Use the lowest dose that works.`,
-      'Short day-case surgery: hyperbaric prilocaine or chloroprocaine.',
+      'Short day-case surgery: hyperbaric prilocaine.',
       `Older or frail: the typical dose or less; for a frail hip fracture, plain bupivacaine 0.5% ${D('2.5–3 mL')}.`,
       'Use preservative-free preparations only. Check the drug, the concentration and the label twice. Keep the spinal syringe apart from the others.',
     ]), 1),
@@ -522,7 +512,7 @@ export function mount(root) {
       ])), 2)),
     G(2,
       el('h4', { text: 'Choosing the drug' }),
-      P('A hyperbaric solution gives the most predictable result for both techniques. Plain bupivacaine is slightly hypobaric at body temperature, so its spread is less reliable. Prilocaine and chloroprocaine are short acting and suit brief perineal day-case surgery.')),
+      P('A hyperbaric solution gives the most predictable result for both techniques. Plain bupivacaine is slightly hypobaric at body temperature, so its spread is less reliable. Prilocaine is short acting and suits brief perineal day-case surgery.')),
     PEARL('orient the needle opening', 'With a pencil-point needle, turn the side opening towards the side you want to block before you inject (for a unilateral block, towards the dependent side). The jet then goes towards that side first. Test both legs afterwards; a block that has become bilateral is common and is not a failure, but you must know about it.'),
     PEARL('prone jack-knife and hypobaric solutions', 'For anorectal surgery in the prone jack-knife position, some anaesthetists use hypobaric or specially prepared solutions so that the drug rises towards the sacral roots. Do this only with senior supervision.'),
   ));

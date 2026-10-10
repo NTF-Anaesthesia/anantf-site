@@ -127,9 +127,6 @@ export function mount(root) {
       [{ th: true, html: 'Prilocaine 2% hyperbaric' },
         `${D('40–60 mg')} (${D('2–3 mL')}); maximum ${D('80 mg')}${cite('tq-prilotekal')}`,
         'Short acting; suits day surgery.'],
-      [{ th: true, html: 'Chloroprocaine 1%' },
-        `${D('40–50 mg')} (${D('4–5 mL')}); maximum ${D('50 mg')}${cite('tq-ampres')}`,
-        `Surgery expected to last no more than ${D('40 min')}.`],
     ],
   });
   grid.append(block('cd-drug', '4. Drug and dose',
