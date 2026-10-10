@@ -108,6 +108,8 @@ export const SCENES = {
   },
 
   // Right flank, transverse above the iliac crest, curvilinear probe: the "shamrock" view at L4.
+  // EO, IO and TA taper to zero at the lateral border of QL (x ≈ 44–48), leaving latissimus dorsi posteriorly.
+  // The L4 transverse process runs from the vertebral body out to its tip, which touches QL.
   ql: {
     id: 'aw-ql', title: 'Quadratus lumborum: transverse flank view at L4 (shamrock)', width: 90, depth: 86, focus: 48, skin: 1.6, psf: 2.2, pxmm: 8, att: 0.006,
     view: 'Curvilinear probe transverse on the right flank above the iliac crest, beam aimed medially. Patient lateral, right side up. The L4 transverse process is the stem; psoas, quadratus lumborum and erector spinae are the three leaves.',
@@ -115,10 +117,10 @@ export const SCENES = {
     injectionLabel: 'QL block type',
     layers: [
       { id: 'sc', kind: 'fat', label: 'Subcutaneous fat', short: 'Fat', bottom: [[0, 10], [45, 11], [90, 13]], labelX: 14 },
-      { id: 'eo', kind: 'muscle', label: 'External oblique', short: 'EO', smooth: false, bottom: [[0, 17], [30, 17.5], [46, 15.5], [56, 12], [90, 12]], labelX: 14 },
-      { id: 'ld', kind: 'muscle', label: 'Latissimus dorsi', short: 'LD', smooth: false, bottom: [[0, 10], [52, 12], [62, 17], [75, 21], [90, 22]], labelX: 78 },
-      { id: 'io', kind: 'muscle', label: 'Internal oblique', short: 'IO', smooth: false, bottom: [[0, 27], [30, 27], [42, 24], [50, 20.5], [56, 17], [90, 17]], labelX: 14 },
-      { id: 'ta', kind: 'muscle', label: 'Transversus abdominis', short: 'TA', echo: 0.11, smooth: false, bottom: [[0, 33], [30, 33], [40, 31.5], [46, 29.5], [52, 25.6], [58, 22], [90, 22]], labelX: 14 },
+      { id: 'eo', kind: 'muscle', label: 'External oblique', short: 'EO', smooth: false, bottom: [[0, 17], [22, 17.2], [30, 16.3], [36, 14.6], [41, 12.3], [44, 11.2], [90, 11]], labelX: 14 },
+      { id: 'ld', kind: 'muscle', label: 'Latissimus dorsi', short: 'LD', smooth: false, bottom: [[0, 10], [36, 10.6], [42, 12], [50, 15.5], [60, 19], [75, 21], [90, 22]], labelX: 78 },
+      { id: 'io', kind: 'muscle', label: 'Internal oblique', short: 'IO', smooth: false, bottom: [[0, 27], [24, 27], [32, 25.5], [38, 22.5], [43, 18], [47, 14.5], [90, 14]], labelX: 14 },
+      { id: 'ta', kind: 'muscle', label: 'Transversus abdominis', short: 'TA', echo: 0.11, smooth: false, bottom: [[0, 33], [24, 33], [32, 31.5], [38, 28], [43, 22], [48, 15.5], [90, 15]], labelX: 14 },
       { id: 'rp', kind: 'fat-deep', label: 'Retroperitoneal fat', short: 'RP fat', echo: 0.42, edge: 0.7, bottom: 100, at: [22, 37.5], lab: [18, 37.5] },
     ],
     shapes: [
@@ -126,9 +128,10 @@ export const SCENES = {
       { id: 'ql', kind: 'muscle', label: 'Quadratus lumborum', short: 'QL', echo: 0.11, stri: 20, shape: P([38, 41], [44, 35.5], [54, 33.8], [62, 36], [66.5, 43], [64, 51.5], [55, 55.5], [45, 54], [39, 49]), lab: [52, 44.5] },
       { id: 'pm', kind: 'muscle', label: 'Psoas major', short: 'PM', echo: 0.11, stri: 70, shape: P([30, 60], [37, 56], [47, 57.5], [53, 62], [52, 71], [45, 77], [35, 76], [28, 69]), lab: [40, 67] },
       { id: 'esm', kind: 'muscle', label: 'Erector spinae', short: 'ESM', echo: 0.13, stri: 10, shape: P([65, 53], [71, 45.5], [80, 43], [90, 44], [90, 73], [78, 75], [68, 69], [62, 61]), lab: [78, 60] },
-      { id: 'tlf', kind: 'fascia', label: 'Thoracolumbar fascia (middle layer)', short: 'TLF', shape: L(0.5, [57, 23], [62, 31], [66, 38.5], [67.5, 45], [64.5, 53], [59, 59]), at: [66, 38.5], lab: [74, 33] },
-      { id: 'tp', kind: 'bone', label: 'L4 transverse process', short: 'TP', shape: L(1.5, [56, 60], [57.5, 64], [59.5, 69], [61.5, 74.5]), at: [57.5, 64], lab: [66, 80.6] },
-      { id: 'vb', kind: 'bone', label: 'Vertebral body', short: 'VB', shape: L(1.6, [30, 84.5], [40, 81], [50, 79], [58.5, 78.5]), at: [42, 80.5], lab: [26, 80.5] },
+      { id: 'tap-apo', kind: 'fascia', label: 'Transversus abdominis aponeurosis', short: 'TA apon.', shape: L(0.45, [47.5, 15.6], [45, 22], [42.5, 29], [40.2, 35], [38.6, 39.5]), at: [42.5, 29], lab: [31, 46] },
+      { id: 'tlf', kind: 'fascia', label: 'Thoracolumbar fascia (middle layer)', short: 'TLF', shape: L(0.5, [57, 23], [62, 31], [66, 38.5], [67.5, 45], [64.5, 52], [59.5, 55.5]), at: [66, 38.5], lab: [74, 33] },
+      { id: 'tp', kind: 'bone', label: 'L4 transverse process', short: 'TP', shape: L(1.8, [58.8, 55.4], [59.2, 62], [59.8, 70], [60.6, 78.4]), at: [59.4, 66], lab: [70, 82] },
+      { id: 'vb', kind: 'bone', label: 'Vertebral body', short: 'VB', shape: L(1.6, [30, 84.5], [40, 81], [50, 79], [60.6, 78.4]), at: [42, 80.5], lab: [26, 80.5] },
     ],
     injections: [
       {

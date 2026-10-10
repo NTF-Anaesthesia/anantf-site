@@ -22,12 +22,12 @@ bootPage({
   ],
   chapters: [
     { id: 'ch-anatomy', title: 'Anatomy: T6–L1 innervation', short: 'Anatomy', desc: 'The course of the nerves, where they enter the plane, and which block for which incision.', render: renderAnatomy },
-    { id: 'ch-tap', title: 'Lateral TAP block', short: 'Lateral TAP', desc: 'T10–T12 below the umbilicus. Deck OSCE 2021 and 2024.', block: byId.tap },
+    { id: 'ch-tap', title: 'Lateral TAP block', short: 'Lateral TAP', desc: 'T10–T12 below the umbilicus. MMed OSCE 2021 and 2024.', block: byId.tap },
     { id: 'ch-subcostal', title: 'Subcostal TAP block', short: 'Subcostal TAP', desc: 'T6–T9 for the upper abdomen.', block: byId.subcostal },
-    { id: 'ch-rsb', title: 'Rectus sheath block', short: 'Rectus sheath', desc: 'Midline wounds. Deck OSCE 2024.', block: byId.rsb },
+    { id: 'ch-rsb', title: 'Rectus sheath block', short: 'Rectus sheath', desc: 'Midline wounds. MMed OSCE 2024.', block: byId.rsb },
     { id: 'ch-ql', title: 'Quadratus lumborum block', short: 'QL', desc: 'Types 1–3 in brief.', block: byId.ql },
     { id: 'ch-iih', title: 'Ilioinguinal and iliohypogastric block', short: 'Ilioinguinal', desc: 'L1: the groin.', block: byId.iih },
   ],
   refs: REFS,
-  refsIntro: 'Deck values are the department’s teaching deck. Values the deck does not give are taken from the sources below and cited where they are used.',
+  refsIntro: 'Teaching-slide values are from the department’s teaching slides. Values the slides do not give are taken from the sources below and cited where they are used.',
 });

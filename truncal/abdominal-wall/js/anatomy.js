@@ -39,7 +39,7 @@ function crossSection() {
   nerve('M76 222 Q70 160 60 120 Q56 80 52 46', 3);               // dorsal ramus
   // injection points
   const inj = (n, x, y) => { sv('circle', { cx: x, cy: y, r: 11, fill: LA, stroke: '#fff', 'stroke-width': 2 }, g); sv('text', { x, y: y + 4.5, 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 600, fill: '#fff', text: n }, g); };
-  inj('1', 168, 112); inj('2', 440, 151); inj('3', 610, 158);
+  inj('1', 230, 178); inj('2', 440, 151); inj('3', 610, 158);
   // labels
   const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 13, fill: '#272722' }, svg);
   const lab = (x, y, s, anchor = 'start') => sv('text', { x, y, 'text-anchor': anchor, text: s }, t);
@@ -55,7 +55,7 @@ function crossSection() {
 }
 
 function frontEntry() {
-  const svg = sv('svg', { viewBox: '0 0 340 310', class: 'aw-fig-svg aw-fig-svg--front', role: 'img', 'aria-labelledby': 'aw-fe-t aw-fe-d' });
+  const svg = sv('svg', { viewBox: '0 0 360 310', class: 'aw-fig-svg aw-fig-svg--front', role: 'img', 'aria-labelledby': 'aw-fe-t aw-fe-d' });
   sv('title', { id: 'aw-fe-t', text: 'Where the nerves enter the transversus abdominis plane' }, svg);
   sv('desc', { id: 'aw-fe-d', text: 'Front view of the trunk, right side drawn. T6 to T9 enter the plane under the costal margin, medial to the linea semilunaris. T10 to T12 are already in the plane in the mid-axillary line, where the lateral TAP is done. L1 enters medial to the anterior superior iliac spine.' }, svg);
   const g = sv('g', { transform: 'translate(0 4)' }, svg);
@@ -86,16 +86,19 @@ function frontEntry() {
   sv('path', { d: l1, fill: 'none', stroke: NERVE, 'stroke-width': 2 }, g);
   sv('circle', { cx: 57, cy: 239, r: 2.6, fill: '#272722' }, g);
   // labels on the right-hand side
-  const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 12, fill: '#272722' }, svg);
+  // Font sizes are set so the text renders at 12px or more when the figure is about 330px wide (390px screen).
+  const t = sv('g', { 'font-family': 'NTF Sans, Inter, sans-serif', 'font-size': 14, fill: '#272722' }, svg);
   const lab = (y, s, x = 176) => sv('text', { x, y, text: s }, t);
   const lead = (x1, y1, x2, y2) => sv('line', { x1, y1, x2, y2, stroke: '#55534d', 'stroke-width': 0.8 }, svg);
-  lab(140, 'T6–T9 enter under the'); lab(155, 'costal margin, medially'); lead(172, 140, 86, 145);
-  lab(194, 'T10–T12: already in the'); lab(209, 'plane at the mid-axillary'); lab(224, 'line (lateral TAP zone)'); lead(172, 200, 52, 200);
-  lab(258, 'L1 enters medial to'); lab(273, 'the ASIS'); lead(172, 258, 62, 240);
-  const k = sv('g', { 'font-family': 'NTF Mono, JetBrains Mono, monospace', 'font-size': 11, fill: '#55534d' }, svg);
-  sv('text', { x: 176, y: 34, text: 'Dots: where each nerve' }, k);
-  sv('text', { x: 176, y: 49, text: 'enters the plane.' }, k);
-  sv('text', { x: 176, y: 64, text: 'Blue: injection zones.' }, k);
+  lab(128, 'T6–T9 enter under'); lab(145, 'the costal margin,'); lab(162, 'medially'); lead(172, 140, 86, 145);
+  lab(188, 'T10–T12: already in'); lab(205, 'the plane at the'); lab(222, 'mid-axillary line'); lab(239, '(lateral TAP zone)'); lead(172, 200, 52, 200);
+  lab(264, 'L1 enters medial'); lab(281, 'to the ASIS'); lead(172, 264, 62, 240);
+  const k = sv('g', { 'font-family': 'NTF Mono, JetBrains Mono, monospace', 'font-size': 13.5, fill: '#55534d' }, svg);
+  sv('text', { x: 176, y: 34, text: 'Dots: where each' }, k);
+  sv('text', { x: 176, y: 51, text: 'nerve enters the' }, k);
+  sv('text', { x: 176, y: 68, text: 'plane.' }, k);
+  sv('text', { x: 176, y: 90, text: 'Blue: injection' }, k);
+  sv('text', { x: 176, y: 107, text: 'zones.' }, k);
   sv('text', { x: 20, y: 304, text: 'R' }, k);
   return svg;
 }
@@ -107,15 +110,15 @@ export function renderAnatomy(sec) {
     `The anterior abdominal wall is supplied by the anterior rami of T6–T12 and L1. T7–T12 run between internal oblique and transversus abdominis.${cite('tsai2017')}`,
     'Each nerve gives a lateral cutaneous branch near the mid-axillary line, then continues forward to pierce the rectus sheath and supply the midline skin.',
     `T6–T9 enter the plane medially, under the costal margin: a <strong>subcostal TAP</strong> catches them.${cite('tsai2017', 'fernandez2025')}`,
-    `A <strong>lateral TAP</strong> catches T10–T12 and only covers to T10.${cite('deck')}`,
+    `A <strong>lateral TAP</strong> catches T10–T12${cite('tsai2017', 'fernandez2025')} and only covers to T10.${cite('deck')}`,
     `L1 (iliohypogastric and ilioinguinal) generally only enters the plane medial to the ASIS, so the lateral TAP misses the groin.${cite('deck')}`,
     'All of these blocks are somatic: none treats visceral pain.',
   ]));
 
   const f1 = el('figure', { class: 'aw-fig', id: 'anat-course' });
-  f1.append(el('p', { class: 'aw-fig-title', text: 'The course of a lower thoracic nerve' }), el('div', { class: 'aw-fig-stage aw-fig-stage--wide', tabindex: '0', role: 'region', 'aria-label': 'Nerve course diagram (scrolls sideways on small screens)' }, crossSection()));
+  f1.append(el('p', { class: 'aw-fig-title', text: 'The course of a lower thoracic nerve' }), el('p', { class: 'aw-scroll-hint', text: 'Scroll the diagram sideways to see all of it.' }), el('div', { class: 'aw-fig-stage aw-fig-stage--wide', tabindex: '0', role: 'region', 'aria-label': 'Nerve course diagram (scrolls sideways on small screens)' }, crossSection()));
   const legend = el('ol', { class: 'aw-legend' });
-  legend.append(fill(el('li'), '<strong>Quadratus lumborum</strong> (type 1 shown): posterior, around QL. <a href="#ch-ql">QL block</a>'));
+  legend.append(fill(el('li'), '<strong>Quadratus lumborum</strong> (type 1 shown): at the anterolateral edge of QL, next to the transversus abdominis aponeurosis. <a href="#ch-ql">QL block</a>'));
   legend.append(fill(el('li'), '<strong>Lateral TAP</strong>: between IO and TA at the mid-axillary line. <a href="#ch-tap">Lateral TAP</a>'));
   legend.append(fill(el('li'), '<strong>Rectus sheath</strong>: behind rectus, in front of the posterior sheath. <a href="#ch-rsb">Rectus sheath block</a>'));
   f1.append(el('figcaption', {}, el('p', { text: 'One side of the wall laid out flat: the spine on the left, the midline on the right. Not to scale. Numbered points are injection sites:' }), legend));
@@ -128,7 +131,7 @@ export function renderAnatomy(sec) {
     head: ['Nerves', 'Where they enter the TAP plane', 'Block that reaches them'],
     rows: [
       [{ th: true, html: 'T6–T9' }, `Under the costal margin, medial to the linea semilunaris${cite('tsai2017', 'fernandez2025')}`, '<a href="#ch-subcostal">Subcostal TAP</a>; <a href="#ch-rsb">rectus sheath</a> (midline branches)'],
-      [{ th: true, html: 'T10–T12' }, 'Already in the plane in the lateral wall', '<a href="#ch-tap">Lateral TAP</a>'],
+      [{ th: true, html: 'T10–T12' }, `Already in the plane in the lateral wall${cite('tsai2017', 'fernandez2025')}`, '<a href="#ch-tap">Lateral TAP</a>'],
       [{ th: true, html: 'L1 (iliohypogastric, ilioinguinal)' }, `Medial to the ASIS, near the anterior iliac crest${cite('deck', 'tsai2017')}`, '<a href="#ch-iih">Ilioinguinal and iliohypogastric block</a>'],
       [{ th: true, html: 'Lateral cutaneous branches' }, 'Leave around the mid-axillary line', 'Missed by an anterior TAP; <a href="#ch-ql">QL</a> or back blocks may reach them'],
     ],
@@ -138,20 +141,20 @@ export function renderAnatomy(sec) {
   sec.append(el('h3', { id: 'anat-groin', text: 'Why a lateral TAP misses the groin and the upper abdomen' }));
   sec.append(callout('pearl', {
     title: 'Two sentences for the viva',
-    body: `<p>The lateral TAP is done in the mid-axillary line, where only T10–T12 are in the plane, so it covers the wall below the umbilicus and only to T10.${cite('deck')} The upper nerves enter the plane medially under the costal margin (use a subcostal TAP), and L1 only enters medial to the ASIS (use an ilioinguinal and iliohypogastric block).${cite('deck')}</p>`,
+    body: `<p>The lateral TAP is done in the mid-axillary line, where only T10–T12 are in the plane,${cite('tsai2017', 'fernandez2025')} so it covers the wall below the umbilicus and only to T10.${cite('deck')} The upper nerves enter the plane medially under the costal margin (use a subcostal TAP),${cite('tsai2017', 'fernandez2025')} and L1 only enters medial to the ASIS (use an ilioinguinal and iliohypogastric block).${cite('deck')}</p>`,
   }));
 
   sec.append(el('h3', { id: 'anat-choose', text: 'Which block for which incision' }));
   sec.append(table({
-    head: ['Operation', 'Levels to cover (deck slide 147)', 'Abdominal wall options on this page'],
+    head: ['Operation', 'Levels to cover (teaching slide 147)', 'Abdominal wall options on this page'],
     rows: [
-      [{ th: true, html: 'Hepatectomy, upper abdominal' }, 'T6–T10 bilaterally', 'Bilateral <a href="#ch-subcostal">subcostal TAP</a> ± <a href="#ch-rsb">rectus sheath</a> for a midline wound'],
+      [{ th: true, html: 'Hepatectomy, upper abdominal' }, 'T6–T10 bilaterally', `Bilateral oblique <a href="#ch-subcostal">subcostal TAP</a> (single shot or catheter)${cite('dieu2021')}; <a href="#ch-rsb">rectus sheath</a> for a midline wound`],
       [{ th: true, html: 'Lower midline, hemicolectomy' }, 'T8–T12 bilaterally', 'Bilateral <a href="#ch-rsb">rectus sheath</a> (catheters for laparotomy) or <a href="#ch-tap">lateral TAP</a>'],
       [{ th: true, html: 'Nephrectomy' }, 'T8–T12', '<a href="#ch-ql">QL</a>; or back blocks (<a href="../back/">Back page</a>)'],
       [{ th: true, html: 'Open inguinal hernia' }, 'T10–L2', '<a href="#ch-iih">Ilioinguinal and iliohypogastric</a> + surgical infiltration'],
     ],
   }));
-  sec.append(fill(el('p', { class: 'aw-note' }), `Levels are from the deck’s paravertebral table (slide 147).${cite('deck')} Abdominal wall blocks treat somatic pain only; for visceral pain consider neuraxial or paravertebral techniques.`));
+  sec.append(fill(el('p', { class: 'aw-note' }), `Levels are from the paravertebral table in the teaching slides (slide 147).${cite('deck')} Abdominal wall blocks treat somatic pain only; for visceral pain consider neuraxial or paravertebral techniques.`));
 
   registerSearch([
     { title: 'Nerve course diagram', text: 'lateral cutaneous branch anterior cutaneous branch dorsal ramus spinal nerve between internal oblique and transversus abdominis', id: 'anat-course' },

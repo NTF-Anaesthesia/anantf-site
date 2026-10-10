@@ -4,7 +4,10 @@
 .tb-app .aw-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
 .tb-app .aw-fig-stage--wide{overflow-x:auto}
 .tb-app .aw-fig-svg{display:block;width:100%;height:auto}
-.tb-app .aw-fig-stage--wide .aw-fig-svg{min-width:560px}
+/* Rendered at its intrinsic 760px width on small screens so text stays at 12px or more; the frame scrolls sideways. */
+.tb-app .aw-fig-stage--wide .aw-fig-svg{min-width:760px}
+.tb-app main .aw-scroll-hint{font-size:14px;color:var(--tb-muted);margin:0 0 6px}
+@media (min-width:900px){.tb-app main .aw-scroll-hint{display:none}}
 .tb-app .aw-fig figcaption{margin-top:10px;font-size:15px;color:var(--tb-ink-soft)}
 .tb-app main .aw-legend{margin:6px 0 0;padding-left:1.4em}
 .tb-app main .aw-legend li{margin:0 0 4px}
