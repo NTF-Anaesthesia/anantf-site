@@ -479,7 +479,6 @@ const ICONS = {
   labels: '<path d="M3 12V4h8l10 10-8 8L3 12Z"/><circle cx="7.5" cy="8.5" r="1.5"/>',
   play: '<path d="M7 4.5v15l12-7.5-12-7.5Z"/>',
   layers: '<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/>',
-  cube: '<path d="m12 2.5 8.5 4.8v9.4L12 21.5l-8.5-4.8V7.3L12 2.5Z"/><path d="M12 12v9.5M12 12l8.5-4.7M12 12 3.5 7.3"/>',
   close: '<path d="M6 6l12 12M18 6 6 18"/>',
 };
 
@@ -562,7 +561,6 @@ export function mount(containerEl, bus, options = {}) {
     },
   };
 
-  let glbPreferred = true; // the Blender model is the default view once it loads
 
   // ------------------------------------------------------------------ DOM
   const root = el('div', { class: 'v3d', role: 'region', 'aria-label': '3D model of the right brachial plexus' });
@@ -602,7 +600,6 @@ export function mount(containerEl, bus, options = {}) {
   const btnLabels = mkBtn('labels', 'Labels: Key');
   const btnPlay = mkBtn('play', 'Play needle and local anaesthetic animation', { disabled: '' });
   const btnLayers = mkBtn('layers', 'Show layers', { 'aria-expanded': 'false', 'aria-controls': '' });
-  const btnModel = mkBtn('cube', 'Schematic model', { hidden: '', 'aria-pressed': 'true' });
   const btnLabelText = el('span', { class: 'v3d-btn-text' });
   btnLabels.appendChild(btnLabelText);
 
@@ -1003,9 +1000,8 @@ export function mount(containerEl, bus, options = {}) {
     const ref = glbCentroid('root-c5');
     glb.blockOk = !!ref && ref.distanceTo(V(GLB_REF.c5)) < 0.3;
     if (!glb.blockOk) console.warn('[viewer3d] Blender model differs from the one the block overlays were placed on; overlays use the schematic.');
-    btnModel.hidden = false;
     buildPanel();
-    if (glbPreferred) setMode('glb', { fly: true });
+    setMode('glb', { fly: true }); // the schematic is only a fallback if the file fails to load
   }
 
   /** Vertex centroid (model frame) of an element's Blender parts. */
@@ -1026,9 +1022,6 @@ export function mount(containerEl, bus, options = {}) {
     state.mode = mode;
     schematic.visible = mode === 'schematic';
     if (glb.root) glb.root.visible = mode === 'glb';
-    // Fixed name plus aria-pressed (a toggle), so the state is not announced twice.
-    btnModel.setAttribute('aria-pressed', mode === 'schematic' ? 'true' : 'false');
-    btnModel.title = mode === 'glb' ? 'Schematic model (off: showing the Blender model)' : 'Schematic model (on)';
     root.classList.toggle('is-glb', mode === 'glb');
     // CSS2D labels ignore their parents' visibility, so move/hide them explicitly.
     for (const [id, o] of elementObjs) {
@@ -1658,7 +1651,7 @@ export function mount(containerEl, bus, options = {}) {
     if (!blockId) return;
     buildOverlay(blockId);
     btnPlay.disabled = !overlay;
-    if (!overlay) showToast('Probe and needle are shown on the schematic model for this block.');
+    if (!overlay) showToast('Probe and needle are not available on this model for this block.');
     flyTo(currentHomeView());
     if (!overlay) return;
     if (reducedMotion || !animate) showFinalOverlay();
@@ -1927,10 +1920,6 @@ export function mount(containerEl, bus, options = {}) {
   });
   btnPlay.addEventListener('click', () => { if (overlay) playNeedle(); });
   btnLayers.addEventListener('click', () => togglePanel());
-  btnModel.addEventListener('click', () => {
-    glbPreferred = state.mode !== 'glb';
-    setMode(glbPreferred ? 'glb' : 'schematic', { fly: true });
-  });
   const onPanelKey = (e) => { if (e.key === 'Escape') { togglePanel(false); btnLayers.focus(); } };
   panel.addEventListener('keydown', onPanelKey);
 

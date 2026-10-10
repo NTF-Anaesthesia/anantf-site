@@ -395,9 +395,8 @@ html:has(body.spinal-app){scroll-padding-bottom:96px}
 
 /* Advanced level: each section shows only its digest of consultant pearls (built by app.js). */
 .spinal-app .sp-adv-digest{display:none}
-body.spinal-app[data-level="adv"] main .sp-section:not(#quiz):not(#references):not(#card) > :not(.sp-kicker,h2,.sp-adv-digest){display:none!important}
+body.spinal-app[data-level="adv"] main .sp-section:not(#references):not(#card) > :not(.sp-kicker,h2,.sp-adv-digest){display:none!important}
 body.spinal-app[data-level="adv"] .sp-adv-digest{display:block}
-body.spinal-app[data-level="adv"] #quiz [data-tier="1"],body.spinal-app[data-level="adv"] #quiz [data-tier="2"]{display:none!important}
 .spinal-app .sp-adv-digest{max-width:860px}
 .spinal-app .sp-adv-item{margin:0 0 22px}
 .spinal-app .sp-adv-item > :not(.sp-adv-from){margin-top:6px}

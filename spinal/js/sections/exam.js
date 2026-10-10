@@ -1,4 +1,4 @@
-// Chapter "Exam (FRCA) & quiz", part 1: Exam knowledge.
+// Chapter "Exam (FRCA)": exam knowledge and viva points.
 // Content not taught elsewhere on the page: obstetric and infant spinals (exam only), neuraxial
 // comparison, test doses, evidence, physics, history and viva answers. Mostly tier 2 and 3.
 // No doses are given here. Dose lines live in Pharmacology and Technique.
@@ -224,7 +224,6 @@ export function mount(root) {
       'Infant spinal: for ex-premature infants to avoid apnoea after general anaesthesia; the GAS trial found no difference in outcome.',
       'Hip fracture: REGAIN and RAGA found no clear advantage of spinal over general anaesthesia.',
       'A test dose looks for an intrathecal or intravenous catheter; it never replaces incremental dosing.',
-      'For the self-quiz, go to <a href="#quiz">Exam questions and self-quiz</a>.',
     ]),
     el('ul', { class: 'sp-jump', html: '<li><a href="#ex-compare">Compare techniques</a></li><li><a href="#ex-testdose">Test dose</a></li><li><a href="#ex-obstetric">Caesarean</a></li><li><a href="#ex-paeds">Infant spinal</a></li><li><a href="#ex-evidence">Evidence</a></li><li><a href="#ex-physics">Physics and history</a></li><li><a href="#ex-viva">Viva</a></li>' }),
     compare(),

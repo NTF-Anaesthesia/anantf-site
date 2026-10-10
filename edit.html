@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f7f5ef">
+<meta name="robots" content="noindex,nofollow">
+<title>Page editor — NTF Anaesthesia</title>
+<link rel="icon" href="ana-ntf-monogram.svg" type="image/svg+xml">
+<style>
+@font-face{font-family:NTF Serif;src:url('fonts/fraunces-roman.woff2');font-weight:400 600;font-display:swap}
+@font-face{font-family:NTF Sans;src:url('fonts/inter.woff2') format('woff2');font-display:swap;font-weight:100 900}
+:root{--paper:#f7f5ef;--inset:#eee9df;--ink:#272722;--muted:#55534d;--wine:#633d3c;--wine-hover:#4b2e2d;--ivory:#fffaf0;--line:#d7d2c8;--control:#827b6d;--blush:#e8ded7}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--paper);color:var(--ink);font:15px/1.5 "NTF Sans",system-ui,sans-serif;display:flex;flex-direction:column}
+button,input,textarea{font:inherit;color:inherit;border-radius:0}
+button{min-height:44px;padding:0 14px;border:1px solid var(--control);background:var(--paper);cursor:pointer;font-weight:500}
+button:hover{background:#e9e5dc}
+button.primary{background:var(--wine);border-color:var(--wine);color:var(--ivory)}
+button.primary:hover{background:var(--wine-hover)}
+button[aria-pressed=true]{background:var(--wine);border-color:var(--wine);color:var(--ivory)}
+button:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:2px solid var(--wine);outline-offset:2px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line)}
+.bar h1{font:400 20px/1.2 "NTF Serif",Georgia,serif;margin:0 8px 0 0;white-space:nowrap}
+.bar form{display:flex;flex:1 1 220px;gap:6px;min-width:0}
+.bar input{flex:1;min-width:0;min-height:44px;padding:0 10px;border:1px solid var(--control);background:#fff}
+.seg{display:flex}
+.seg button+button{border-left:0}
+.spacer{flex:1 0 0}
+#frame{flex:1;border:0;width:100%;background:#fff}
+.hint{padding:6px 12px;font-size:14px;color:var(--muted);border-bottom:1px solid var(--line);background:var(--inset)}
+.actions{display:none;border-top:1px solid var(--line);background:var(--paper);padding:10px 12px;gap:8px;flex-wrap:wrap;align-items:center}
+.actions.on{display:flex}
+.actions .whatrow{flex:1 1 100%;display:flex;align-items:center;gap:8px;min-width:0}
+.actions .what{flex:1;min-width:0;font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.actions .x{min-height:36px;min-width:44px;padding:0;border-color:var(--line)}
+dialog{border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:20px;max-width:min(680px,calc(100vw - 32px));width:100%;box-shadow:0 12px 40px rgba(39,39,34,.18)}
+dialog::backdrop{background:rgba(39,39,34,.35)}
+dialog h2{font:400 24px/1.2 "NTF Serif",Georgia,serif;margin:0 0 12px}
+dialog textarea{width:100%;min-height:140px;padding:10px;border:1px solid var(--control);background:#fff;font-size:16px}
+dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+dialog p{margin:0 0 10px}
+.list{max-height:55vh;overflow:auto;border-top:1px solid var(--line)}
+.item{border-bottom:1px solid var(--line);padding:10px 0;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:start}
+.item b{font-weight:600}
+.item .meta{font-size:14px;color:var(--muted)}
+.item q{display:block;font-size:14px;margin-top:4px;white-space:pre-wrap;quotes:none}
+.item button{min-height:36px}
+.muted{color:var(--muted)}
+a{color:var(--wine)}
+code{font-size:13px;background:var(--inset);padding:2px 4px;word-break:break-all}
+.field{display:grid;gap:4px;margin:0 0 12px}
+.field input{min-height:44px;padding:0 10px;border:1px solid var(--control);background:#fff;font-size:16px}
+#preview{min-height:160px;max-height:30vh;font:14px/1.5 ui-monospace,Menlo,monospace}
+.warn{background:#f6e7c8;border:1px solid #b07a2a;padding:8px 10px;margin:0 0 10px}
+@media (max-width:640px){
+  .bar{gap:6px;padding:6px 8px}
+  .bar h1{display:none}
+  .bar form{flex-basis:100%}
+  .bar form button{display:none}
+  .bar button{padding:0 12px}
+  .bar #send{flex:1}
+  .wide{display:none}
+  .bar .spacer{display:none}
+  .hint{font-size:13px;padding:4px 8px}
+  .actions{padding:8px}
+  .actions{gap:6px}
+  #selBtns button,#editBtns button{flex:1 1 0;padding:0 4px;min-width:0}
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>Page editor</h1>
+  <form id="go"><input id="path" aria-label="Page address" placeholder="/spinal/"><button>Open</button></form>
+  <div class="seg" role="group" aria-label="Mode">
+    <button id="mBrowse" aria-pressed="false">Browse</button><button id="mEdit" aria-pressed="true">Edit</button>
+  </div>
+  <button id="review"><span class="wide">Changes </span>(<span id="count">0</span>)</button>
+  <button id="send" class="primary">Send<span class="wide"> to Claude</span></button>
+</div>
+<div class="hint" id="hint" role="status"></div>
+<iframe id="frame" title="Page being edited"></iframe>
+<div class="actions" id="actions" role="toolbar" aria-label="Selected item">
+  <span class="whatrow"><span class="what" id="what"></span><button id="aCancel" class="x" aria-label="Cancel" title="Cancel">✕</button></span>
+  <span id="selBtns" style="display:contents">
+    <button id="aEdit" class="primary">Edit text</button><button id="aComment">Comment</button><button id="aAdd">Add below</button><button id="aDelete">Delete</button>
+  </span>
+  <span id="editBtns" style="display:none">
+    <button id="eSave" class="primary">Save change</button><button id="eCancel">Cancel</button>
+  </span>
+</div>
+
+<dialog id="noteDlg"><form method="dialog">
+  <h2 id="noteTitle">Comment</h2>
+  <p class="muted" id="noteHelp"></p>
+  <textarea id="noteText" required></textarea>
+  <div class="row"><button value="cancel" formnovalidate>Cancel</button><button value="ok" class="primary">Save</button></div>
+</form></dialog>
+
+<dialog id="listDlg">
+  <h2>Pending changes</h2>
+  <p class="muted">Saved in this browser until you send them. Changes on every page are sent together.</p>
+  <div class="list" id="list"></div>
+  <div class="row"><button id="clearAll">Clear all</button><button id="listClose" class="primary">Close</button></div>
+</dialog>
+
+<dialog id="sendDlg">
+  <h2>Send your changes</h2>
+  <label class="field">Your name (so we know who suggested them)<input id="who" autocomplete="name" placeholder="e.g. Dr Tan"></label>
+  <p class="warn" id="sendNote" hidden></p>
+  <p><b>Send on GitHub</b> opens a GitHub page with your changes filled in. Sign in if asked, then press <b>Create</b>.</p>
+  <p class="muted">Can’t use GitHub? Press <b>Copy</b> and paste your changes into a message to Dr Koh Wen Jun or Dr Chew Shi Hao.</p>
+  <textarea id="preview" readonly aria-label="What will be sent"></textarea>
+  <div class="row"><button id="copyTxt">Copy</button><button id="openIssue" class="primary">Send on GitHub</button></div>
+  <div class="row"><button id="sentDone">I’ve sent them: clear my list</button><button id="sendClose">Close</button></div>
+</dialog>
+
+<script>
+(() => {
+  const REPO = 'https://github.com/NTF-Anaesthesia/anantf-site/issues/new';
+  const KEY = 'ntf-page-editor-v1', WHO = 'ntf-page-editor-name';
+  const $ = id => document.getElementById(id);
+  const frame = $('frame');
+  let mode = 'edit', sel = null, editing = null, doc = null;
+
+  // ---- storage (per browser; safe if storage is blocked)
+  let changes = [], stored = true;
+  try { changes = JSON.parse(localStorage.getItem(KEY) || '[]'); if (!Array.isArray(changes)) changes = []; } catch (e) { changes = []; }
+  const save = () => {
+    try { localStorage.setItem(KEY, JSON.stringify(changes)); stored = true; } catch (e) { stored = false; }
+    $('count').textContent = changes.length;
+  };
+  save();
+  try { $('who').value = localStorage.getItem(WHO) || ''; } catch (e) {}
+
+  // ---- page loading
+  const clean = p => {
+    p = (p || '/').trim();
+    try { const u = new URL(p, location.origin); if (u.origin !== location.origin) return '/'; p = u.pathname + u.search + u.hash; } catch (e) { return '/'; }
+    return /\/edit\.html/.test(p) ? '/' : p;
+  };
+  const open = p => { frame.src = clean(p); };
+  const start = new URLSearchParams(location.search).get('page') || '/';
+  $('path').value = clean(start);
+  open(start);
+  $('go').onsubmit = e => { e.preventDefault(); open($('path').value); };
+
+  const pageOf = () => { try { const l = frame.contentWindow.location; return l.pathname + l.search; } catch (e) { return null; } };
+  const viewOf = () => { try { return frame.contentWindow.location.hash; } catch (e) { return ''; } };
+  function syncPath() {
+    const p = pageOf(); if (p == null) return;
+    $('path').value = p + viewOf();
+    try { history.replaceState(null, '', '?page=' + encodeURIComponent(p + viewOf())); } catch (e) {}
+  }
+
+  frame.addEventListener('load', () => {
+    deselect();
+    try { doc = frame.contentDocument; doc.body; } catch (e) { doc = null; }
+    if (!doc) { $('hint').textContent = 'That page is outside anantf.com and can’t be edited here. Use Open to go back.'; return; }
+    syncPath();
+    frame.contentWindow.addEventListener('hashchange', syncPath);
+    if (/\.pdf$/i.test(pageOf())) { $('hint').textContent = 'PDFs can’t be edited here. Go back to the page that links to it and comment on the link instead.'; return; }
+    const st = doc.createElement('style');
+    st.textContent = `
+      html.ntf-ed [data-ntf-hover]{outline:2px dashed #633d3c!important;outline-offset:2px;cursor:pointer}
+      [data-ntf-sel]{outline:3px solid #633d3c!important;outline-offset:2px}
+      [data-ntf-editing]{outline:3px solid #633d3c!important;background:#fffaf0!important;color:#272722!important;-webkit-user-select:text!important;user-select:text!important;cursor:text!important}
+      [data-ntf-done=edit]{box-shadow:inset 4px 0 0 #633d3c;background:#f3ece1!important}
+      [data-ntf-done=comment],[data-ntf-done=add]{box-shadow:inset 4px 0 0 #b07a2a}
+      [data-ntf-done=delete]{text-decoration:line-through!important;opacity:.55}`;
+    doc.head.appendChild(st);
+    doc.addEventListener('mouseover', e => { if (mode !== 'edit' || editing) return; const t = pick(e.target); hover(t); }, true);
+    doc.addEventListener('mouseout', () => hover(null), true);
+    ['click', 'mousedown', 'pointerdown', 'mouseup', 'pointerup', 'dblclick', 'submit', 'change', 'input', 'keydown', 'keyup', 'dragstart'].forEach(ev =>
+      doc.addEventListener(ev, e => {
+        if (mode !== 'edit') return;
+        const inside = editing && editing.contains(e.target);
+        // Inside the text being edited, let the browser place the caret and type, but keep the page's own
+        // scripts (links, tab buttons, quiz handlers) from reacting.
+        if (inside) {
+          e.stopPropagation();
+          if (ev === 'click' || ev === 'submit') e.preventDefault();
+          if (ev === 'keydown') {
+            if (e.key === 'Escape') { e.preventDefault(); $('eCancel').click(); }
+            else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $('eSave').click(); }
+            else if (e.key === 'Enter' && !e.shiftKey && /^(H[1-6]|A|BUTTON|SUMMARY|LABEL|TH|TD|DT|CAPTION)$/.test(editing.tagName)) { e.preventDefault(); }
+          }
+          return;
+        }
+        if (/^key/.test(ev)) { if (ev === 'keydown' && e.key === 'Escape') deselect(); return; }
+        e.preventDefault(); e.stopPropagation();
+        if (ev === 'click') { const t = pick(e.target); if (t) select(t); else { deselect(); $('hint').textContent = 'Tap closer to the words you want to change, or use Browse to open the part of the page you need.'; } }
+      }, true));
+    doc.addEventListener('paste', e => {
+      if (!editing || !editing.contains(e.target)) return;
+      e.preventDefault(); e.stopPropagation();
+      const t = (e.clipboardData || window.clipboardData).getData('text/plain');
+      doc.execCommand('insertText', false, t);
+    }, true);
+    doc.addEventListener('drop', e => { if (mode === 'edit') { e.preventDefault(); e.stopPropagation(); } }, true);
+    // Apps that build their text with JavaScript render after load, so retry marking.
+    restoreMarks(); setTimeout(restoreMarks, 800); setTimeout(restoreMarks, 2500);
+    setMode(mode);
+  });
+
+  // ---- choosing what was tapped
+  const BLOCK = 'h1,h2,h3,h4,h5,h6,p,li,dt,dd,td,th,caption,figcaption,blockquote,summary,label,button,a,img,svg,figure,video,canvas,pre';
+  function pick(node) {
+    if (!node || node.nodeType !== 1 || node === doc.body || node === doc.documentElement) return null;
+    let t = node.closest(BLOCK);
+    if (t && t.tagName.toLowerCase() === 'a' && t.querySelector('h1,h2,h3,h4,p')) { const inner = node.closest('h1,h2,h3,h4,h5,h6,p,span'); if (inner && t.contains(inner)) t = inner; }
+    if (!t) { t = node; while (t && t.parentElement !== doc.body && !directText(t)) t = t.parentElement; }
+    if (t && t.closest('svg') && t.tagName.toLowerCase() !== 'svg') t = t.closest('svg');
+    if (!t || t === doc.body || t === doc.documentElement) return null;
+    // Don't select whole sections: something that holds several paragraphs or headings is too big to edit.
+    // Big blocks (a banner, a whole section) can take a comment but not a text edit.
+    if (!isMedia(t) && t.querySelectorAll('p,h1,h2,h3,h4,h5,h6,li,table,section,article').length > 2 && text(t).length > 400) big.add(t);
+    return t;
+  }
+  const big = new WeakSet();
+  const directText = el => [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim());
+  let hovered = null;
+  function hover(t) { if (hovered) hovered.removeAttribute('data-ntf-hover'); hovered = t; if (t) t.setAttribute('data-ntf-hover', ''); }
+
+  const isMedia = el => /^(img|svg|figure|video|canvas)$/i.test(el.tagName);
+  const text = el => (el.innerText || el.textContent || '').replace(/ /g, ' ').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+  function cssPath(el) {
+    const parts = [];
+    while (el && el.nodeType === 1 && el !== doc.body) {
+      if (el.id && !/^ntf-/.test(el.id)) { parts.unshift('#' + CSS.escape(el.id)); break; }
+      let s = el.tagName.toLowerCase(), i = 1, sib = el;
+      while ((sib = sib.previousElementSibling)) if (sib.tagName === el.tagName) i++;
+      parts.unshift(s + ':nth-of-type(' + i + ')');
+      el = el.parentElement;
+    }
+    return parts.join(' > ');
+  }
+  function heading(el) {
+    let found = '';
+    for (const h of doc.querySelectorAll('h1,h2,h3,h4')) {
+      if (h === el || h.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) found = text(h); else break;
+    }
+    return found.slice(0, 120);
+  }
+  function describe(el) {
+    const tag = el.tagName.toLowerCase();
+    const kind = big.has(el) ? 'section' : /^h[1-6]$/.test(tag) ? 'heading' : { p: 'paragraph', li: 'list item', td: 'table cell', th: 'table heading', a: 'link', button: 'button', img: 'image', svg: 'diagram', figure: 'figure', video: 'video', canvas: 'drawing' }[tag] || 'text';
+    let label = isMedia(el) ? (el.getAttribute('alt') || el.getAttribute('aria-label') || (el.querySelector && el.querySelector('figcaption') ? text(el.querySelector('figcaption')) : '')) : text(el);
+    return { kind, label: label.replace(/\s+/g, ' ').trim().slice(0, 90) };
+  }
+
+  // ---- selection and actions
+  function select(el) {
+    deselect();
+    sel = el; el.setAttribute('data-ntf-sel', '');
+    const d = describe(el);
+    $('what').textContent = `Selected ${d.kind}${d.label ? ': “' + d.label + (d.label.length >= 90 ? '…' : '') + '”' : ''}`;
+    $('aEdit').hidden = isMedia(el) || big.has(el);
+    if (big.has(el)) $('what').textContent = 'Selected a whole section: you can comment on it, add below it or delete it. Tap closer to the words to change them.';
+    $('actions').classList.add('on');
+  }
+  function deselect() {
+    if (editing) cancelEdit();
+    if (sel) sel.removeAttribute('data-ntf-sel');
+    sel = null; $('actions').classList.remove('on');
+  }
+  function record(type, el, body, extra) {
+    const c = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 5), type, page: pageOf(), view: viewOf(), title: doc.title,
+      heading: heading(el), element: describe(el).kind, locator: cssPath(el), before: isMedia(el) ? describe(el).label : text(el).slice(0, 4000), text: body || '', at: new Date().toISOString(), ...extra };
+    changes.push(c); save();
+    el.setAttribute('data-ntf-done', type);
+    return c;
+  }
+
+  $('aEdit').onclick = () => {
+    if (!sel) return;
+    editing = sel; editing.dataset.ntfOrig = editing.innerHTML; editing.dataset.ntfBefore = text(editing);
+    editing.setAttribute('data-ntf-editing', ''); editing.removeAttribute('data-ntf-sel');
+    editing.contentEditable = 'true'; editing.focus();
+    try { const r = doc.createRange(); r.selectNodeContents(editing); r.collapse(false); const s = doc.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+    $('selBtns').style.display = 'none'; $('editBtns').style.display = 'contents';
+    $('what').textContent = 'Editing: type your new wording straight into the page, then Save change.';
+    if (editing.querySelector('a,strong,em,b,i,code,sup,sub,br')) $('what').textContent += ' Links and bold text are kept unless you delete them.';
+  };
+  function endEdit() {
+    editing.contentEditable = 'false'; editing.removeAttribute('data-ntf-editing');
+    $('selBtns').style.display = 'contents'; $('editBtns').style.display = 'none';
+    const el = editing; editing = null; return el;
+  }
+  function cancelEdit() { const orig = editing.dataset.ntfOrig; const el = endEdit(); el.innerHTML = orig; delete el.dataset.ntfOrig; delete el.dataset.ntfBefore; }
+  $('eCancel').onclick = () => { cancelEdit(); deselect(); };
+  $('eSave').onclick = () => {
+    const el = editing, now = text(el);
+    const before = el.dataset.ntfBefore;
+    endEdit(); delete el.dataset.ntfOrig; delete el.dataset.ntfBefore;
+    const loc = cssPath(el), page = pageOf();
+    const prev = changes.find(c => c.type === 'edit' && c.page === page && c.locator === loc && (c.text === before));
+    if (prev) {
+      // A second edit to the same text updates the first, so Claude sees original → final.
+      if (now === prev.before) { changes = changes.filter(c => c !== prev); el.removeAttribute('data-ntf-done'); }
+      else { prev.text = now; prev.at = new Date().toISOString(); }
+      save();
+    } else if (now !== before) {
+      const c = record('edit', el, now);
+      c.before = before.slice(0, 4000); save();
+    }
+    if (!now) $('hint').textContent = 'That text is now empty. If you meant to remove it, Delete makes that clearer.';
+    sel = el; deselect();
+  };
+  $('aCancel').onclick = deselect;
+  $('aDelete').onclick = () => { if (sel) { record('delete', sel, ''); deselect(); } };
+
+  let noteFor = null;
+  function note(type) {
+    if (!sel) return;
+    noteFor = { type, el: sel };
+    $('noteTitle').textContent = type === 'add' ? 'Add below this' : 'Comment';
+    $('noteHelp').textContent = type === 'add'
+      ? 'Write the new text, or describe what should go here (a new paragraph, a table, an image from Drive…). Claude will format it in the site’s style.'
+      : 'Say what should change. For example: “check this dose”, “make this shorter”, “replace this image with the one in Drive”.';
+    $('noteText').value = '';
+    $('noteDlg').showModal();
+  }
+  $('aComment').onclick = () => note('comment');
+  $('aAdd').onclick = () => note('add');
+  $('noteDlg').addEventListener('close', () => {
+    const v = $('noteText').value.trim();
+    if ($('noteDlg').returnValue === 'ok' && v && noteFor) { record(noteFor.type, noteFor.el, v); deselect(); }
+    noteFor = null;
+  });
+
+  // ---- marks for changes already made on this page
+  function restoreMarks() {
+    if (!doc) return;
+    const p = pageOf();
+    for (const c of changes) {
+      if (c.page.split('#')[0] !== p) continue;
+      let el = null; try { el = doc.querySelector(c.locator); } catch (e) {}
+      if (!el) continue;
+      const t = isMedia(el) ? describe(el).label : text(el);
+      if (c.type === 'edit' && t === c.text) { el.setAttribute('data-ntf-done', 'edit'); continue; }
+      if (t.slice(0, 4000) !== c.before) continue;
+      el.setAttribute('data-ntf-done', c.type);
+      if (c.type === 'edit') el.innerText = c.text;
+    }
+  }
+
+  // ---- modes
+  function setMode(m) {
+    mode = m; deselect(); hover(null);
+    $('mEdit').setAttribute('aria-pressed', m === 'edit'); $('mBrowse').setAttribute('aria-pressed', m === 'browse');
+    const small = matchMedia('(max-width:640px)').matches;
+    $('hint').textContent = (m === 'edit'
+      ? (small ? 'Tap text to change it. Use Browse to open tabs and links.' : 'Edit mode: tap any text to change it, comment on it, add something below it or delete it. Use Browse to open tabs and links.')
+      : (small ? 'Use the page normally. Tap Edit to change something.' : 'Browse mode: use the page normally (links, tabs, quizzes). Switch back to Edit to change something.'))
+      + (stored ? '' : ' Your browser is blocking storage (private browsing?), so send your changes before closing this page.');
+    if (doc) doc.documentElement.classList.toggle('ntf-ed', m === 'edit');
+  }
+  $('mEdit').onclick = () => setMode('edit');
+  $('mBrowse').onclick = () => setMode('browse');
+
+  // ---- review list
+  const LABEL = { edit: 'Edit text', comment: 'Comment', add: 'Add below', delete: 'Delete' };
+  const pageKey = c => c.page.split('#')[0];
+  function renderList() {
+    const box = $('list'); box.innerHTML = '';
+    if (!changes.length) { box.innerHTML = '<p class="muted" style="padding:10px 0">No changes yet.</p>'; return; }
+    changes.forEach(c => {
+      const d = document.createElement('div'); d.className = 'item';
+      const info = document.createElement('div');
+      info.innerHTML = '<b></b> <span class="meta"></span><q class="b"></q><q class="t"></q>';
+      info.querySelector('b').textContent = LABEL[c.type];
+      info.querySelector('.meta').textContent = `${c.page}${c.view || ''}${c.heading ? ' · under “' + c.heading + '”' : ''}`;
+      info.querySelector('.b').textContent = (c.type === 'edit' ? 'Was: ' : 'On: ') + c.before.slice(0, 200) + (c.before.length > 200 ? '…' : '');
+      info.querySelector('.t').textContent = c.text ? (c.type === 'edit' ? 'Now: ' : '→ ') + c.text.slice(0, 300) : '';
+      const rm = document.createElement('button'); rm.textContent = 'Remove';
+      rm.onclick = () => { changes = changes.filter(x => x.id !== c.id); save(); renderList(); if (doc) frame.contentWindow.location.reload(); };
+      d.append(info, rm); box.appendChild(d);
+    });
+  }
+  $('review').onclick = () => { renderList(); $('listDlg').showModal(); };
+  $('listClose').onclick = () => $('listDlg').close();
+  $('clearAll').onclick = () => { if (confirm('Delete all pending changes? This can’t be undone.')) { changes = []; save(); renderList(); open(pageOf() || '/'); } };
+
+  // ---- sending
+  const quote = s => s.split('\n').map(l => '> ' + l).join('\n');
+  const who = () => $('who').value.trim().slice(0, 80);
+  function report() {
+    const pages = [...new Set(changes.map(pageKey))];
+    let out = `Suggested by: ${who() || '(name not given)'}\nSent from the page editor (anantf.com/edit.html), ${changes.length} change${changes.length === 1 ? '' : 's'}.\n`;
+    for (const p of pages) {
+      const list = changes.filter(c => pageKey(c) === p);
+      out += `\n## Page: ${p}\n${location.origin}${p}\n`;
+      list.forEach((c, i) => {
+        out += `\n### ${i + 1}. ${LABEL[c.type]} (${c.element}${c.heading ? ', under “' + c.heading + '”' : ''}${c.view ? ', view ' + c.view : ''})\n`;
+        out += `${c.type === 'edit' ? 'Was' : 'On'}:\n${quote(c.before || '(no text)')}\n`;
+        if (c.type === 'edit') out += `Now:\n${quote(c.text)}\n`;
+        else if (c.type === 'comment') out += `Comment:\n${quote(c.text)}\n`;
+        else if (c.type === 'add') out += `Add below it:\n${quote(c.text)}\n`;
+        else out += `Delete this.\n`;
+        out += `Locator: \`${c.locator}\`\n`;
+      });
+    }
+    return out;
+  }
+  const title = () => ('Page edits: ' + [...new Set(changes.map(pageKey))].join(', ')).slice(0, 140) + (who() ? ' (' + who() + ')' : '');
+  const refresh = () => { $('preview').value = report(); $('sendNote').hidden = true; };
+  $('who').addEventListener('input', () => { try { localStorage.setItem(WHO, $('who').value.trim()); } catch (e) {} refresh(); });
+  $('send').onclick = () => {
+    if (editing) { alert('Save or cancel the change you’re typing first.'); return; }
+    if (!changes.length) { alert('No changes to send yet. Switch to Edit and tap some text.'); return; }
+    ['copyTxt'].forEach(id => $(id).textContent = 'Copy');
+    refresh(); $('sendDlg').showModal();
+  };
+  // Copy synchronously where possible so phones keep the tap as permission for the popup that follows.
+  function copy(s) {
+    const ta = $('preview'); ta.value = s;
+    try { navigator.clipboard.writeText(s).catch(() => {}); } catch (e) {}
+    try { ta.focus(); ta.select(); ta.setSelectionRange(0, s.length); document.execCommand('copy'); } catch (e) {}
+  }
+  const needName = () => { if (who()) return false; $('who').focus(); $('sendNote').textContent = 'Add your name first.'; $('sendNote').hidden = false; return true; };
+  $('copyTxt').onclick = () => { if (needName()) return; copy(report()); $('copyTxt').textContent = 'Copied'; };
+  $('openIssue').onclick = () => {
+    if (needName()) return;
+    const body = report();
+    let url = REPO + '?title=' + encodeURIComponent(title()) + '&body=' + encodeURIComponent(body);
+    if (url.length > 7500) {
+      copy(body);
+      url = REPO + '?title=' + encodeURIComponent(title()) + '&body=' + encodeURIComponent('(Paste the copied changes here.)');
+      $('sendNote').textContent = 'This batch is too long to fill in automatically. It has been copied: paste it into the issue’s description box.'; $('sendNote').hidden = false;
+    }
+    window.open(url, '_blank', 'noopener');
+  };
+  $('sentDone').onclick = () => { if (!confirm('Clear your list? Only do this once your changes have been sent.')) return; changes = []; save(); $('sendDlg').close(); open(pageOf() || '/'); };
+  $('sendClose').onclick = () => $('sendDlg').close();
+  addEventListener('keydown', e => { if (e.key === 'Escape' && sel && !editing && !document.querySelector('dialog[open]')) deselect(); });
+  setMode('edit');
+})();
+</script>
+</body>
+</html>
