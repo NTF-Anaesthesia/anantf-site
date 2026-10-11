@@ -134,3 +134,12 @@ to the right group in `essayBank`.
 ## Removed content
 
 The AC guide, its redirect, editing tools and public links were removed at the owner’s request on 7 October 2026. Do not restore them unless explicitly requested. Never publish readable copies of the former guide.
+
+## Claude Code–Codex handovers
+
+For handover, continuation or review across assistants, read
+[the shared handover skill](.agents/skills/claude-codex-handover/SKILL.md).
+GitHub PR bodies/comments carry the branch, goal, completed work, test results,
+blockers and next steps. One assistant owns writes at a time; do not disturb active
+branches or checkouts. Handover tasks require explicit human approval before merge
+or auto-merge, even where a general rule allows immediate merging.
