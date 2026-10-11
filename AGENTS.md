@@ -134,3 +134,18 @@ to the right group in `essayBank`.
 ## Removed content
 
 The AC guide, its redirect, editing tools and public links were removed at the owner’s request on 7 October 2026. Do not restore them unless explicitly requested. Never publish readable copies of the former guide.
+
+## Claude Code–Codex handovers
+
+Both assistants run in separate cloud environments. Use
+[the shared handover skill](.agents/skills/claude-codex-handover/SKILL.md)
+and GitHub PRs to exchange pushed code and task context.
+
+- Review a checkpoint without changing its branch or owner; report the reviewed SHA.
+- Take over only after the sender/human confirms all writers have stopped. Continue
+  on your own session branch and link its PR to the original.
+- Include the branch/PR, goal, completed work, test results, blockers and next steps.
+- Handover tasks require explicit human approval before merge or auto-merge, even
+  where a general rule allows immediate merging.
+- New cloud sessions get the skill through the repository clone. Do not modify an
+  active Claude branch just to install these instructions.
