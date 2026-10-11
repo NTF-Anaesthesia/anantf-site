@@ -17,7 +17,7 @@ export const BLOCK_LINKS = {
 };
 window.BLOCK_LINKS = BLOCK_LINKS;
 
-/* Short names for the "Open … ↗" links */
+/* Short names for the "Open … →" links */
 const BLOCK_NAMES = {
   esp: 'ESP', mtp: 'MTP', pvb: 'paravertebral', sap: 'serratus anterior', pecs: 'PECS', parasternal: 'parasternal',
   clavipectoral: 'clavipectoral', tap: 'lateral TAP', stap: 'subcostal TAP', rsb: 'rectus sheath', ql: 'quadratus lumborum',
@@ -290,7 +290,7 @@ function blockLinks(keys) {
   if (!links.length) return '<span class="tb-opt-page tb-opt-page--none">Not on these pages</span>';
   return links.map(k => {
     const href = BLOCK_LINKS[k], page = PAGE_NAMES[href.split('#')[0]] || href;
-    return `<a class="tb-opt-page" href="${href}">Open ${esc(BLOCK_NAMES[k] || k)} on the ${esc(page)} page <span aria-hidden="true">↗</span></a>`;
+    return `<a class="tb-opt-page" href="${href}">Open ${esc(BLOCK_NAMES[k] || k)} on the ${esc(page)} page <span aria-hidden="true">→</span></a>`;
   }).join('');
 }
 

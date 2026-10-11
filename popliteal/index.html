@@ -63,7 +63,7 @@ input[type=range]{flex:1;accent-color:var(--accent);min-width:0}
   </div>
   <div class="stage" id="stage"><canvas id="c" aria-label="Animated ultrasound-guided popliteal sciatic block"></canvas></div>
   <div class="bar">
-    <button id="play">▶ Play</button>
+    <button id="play">► Play</button>
     <button id="reset">Reset</button>
     <input id="scrub" type="range" min="0" max="16" step="0.01" value="0" aria-label="Demonstration timeline">
     <span id="tc">0.0 s</span>
@@ -585,7 +585,7 @@ new ResizeObserver(resize).observe(cvs);resize();
 
 /* ---------- UI ---------- */
 const playBtn=document.getElementById('play'),resetBtn=document.getElementById('reset'),scrub=document.getElementById('scrub'),tc=document.getElementById('tc'),scenBox=document.getElementById('scen');
-function syncBtn(){playBtn.textContent=playing?'❚❚ Pause':ended?'↻ Replay':started?'▶ Resume':'▶ Play';scrub.max=(cur.Tend-TS0).toFixed(2)}
+function syncBtn(){playBtn.textContent=playing?'❚❚ Pause':ended?'↻ Replay':started?'► Resume':'► Play';scrub.max=(cur.Tend-TS0).toFixed(2)}
 function setPlaying(p){
   if(p){if(ended){playT=0;ended=false}if(dT<7.8)dT=7.8;started=true;playing=true}
   else{playing=false}
@@ -624,5 +624,5 @@ syncBtn();selectAnat('stacked');
 (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(()=>requestAnimationFrame(frame));
 })();
 </script>
-<section class="page-wrap"><div class="page-section source-editorial"><div><p class="page-kicker">At the teaching bench</p><h2 style="font-size:38px">Ultrasound teaching</h2><p>Ultrasound practice with a teaching phantom.</p></div><figure class="source-photo contain"><button class="source-photo-open" type="button" data-photo="../assets/ultrasound-teaching.png" data-photo-colour="true" data-caption="Ultrasound teaching." aria-label="Enlarge photo: Ultrasound teaching with a practice phantom"><img src="../assets/ultrasound-teaching.png" width="342" height="591" alt="Ultrasound teaching with a practice phantom" loading="lazy" decoding="async"><span class="photo-expand" aria-hidden="true">↗</span></button><figcaption><span class="source-photo-title">Ultrasound teaching.</span><span>Practice at the teaching bench.</span></figcaption></figure></div></section><footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer><script>if(document.documentElement.classList.contains('embedded-demo')){const sendSize=()=>parent.postMessage({type:'ana-ntf-preview-height',height:document.querySelector('.wrap').getBoundingClientRect().height},location.origin);new ResizeObserver(sendSize).observe(document.querySelector('.wrap'));sendSize();}</script></body>
+<section class="page-wrap"><div class="page-section source-editorial"><div><p class="page-kicker">At the teaching bench</p><h2 style="font-size:38px">Ultrasound teaching</h2><p>Ultrasound practice with a teaching phantom.</p></div><figure class="source-photo contain"><button class="source-photo-open" type="button" data-photo="../assets/ultrasound-teaching.png" data-photo-colour="true" data-caption="Ultrasound teaching." aria-label="Enlarge photo: Ultrasound teaching with a practice phantom"><img src="../assets/ultrasound-teaching.png" width="342" height="591" alt="Ultrasound teaching with a practice phantom" loading="lazy" decoding="async"><span class="photo-expand" aria-hidden="true">→</span></button><figcaption><span class="source-photo-title">Ultrasound teaching.</span><span>Practice at the teaching bench.</span></figcaption></figure></div></section><footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer><script>if(document.documentElement.classList.contains('embedded-demo')){const sendSize=()=>parent.postMessage({type:'ana-ntf-preview-height',height:document.querySelector('.wrap').getBoundingClientRect().height},location.origin);new ResizeObserver(sendSize).observe(document.querySelector('.wrap'));sendSize();}</script></body>
 </html>

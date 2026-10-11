@@ -198,7 +198,7 @@ new ResizeObserver(resize).observe(cvs);resize();
 if(window.IntersectionObserver)new IntersectionObserver(e=>{visible=e[e.length-1].isIntersecting||!!document.fullscreenElement||stage.classList.contains('full');if(visible)dirty=true}).observe(cvs);
 
 /* ---------- transport ---------- */
-function syncBtn(){playBtn.textContent=P.playing?'❚❚ Pause':P.ended?'↻ Replay':P.started?'▶ Resume':'▶ Play';if(P.cur)scrub.max=(P.cur.Tend-TS0).toFixed(2)}
+function syncBtn(){playBtn.textContent=P.playing?'❚❚ Pause':P.ended?'↻ Replay':P.started?'► Resume':'► Play';if(P.cur)scrub.max=(P.cur.Tend-TS0).toFixed(2)}
 function setPlaying(p){
   if(!rt)return;dirty=true;
   if(p){if(P.ended){P.playT=0;P.ended=false}if(P.dT<7.8)P.dT=7.8;P.started=true;P.playing=true}
@@ -299,7 +299,7 @@ function unmount(){
   stopLoop();P.playing=false;exitFull();
   if(rt&&rt.release)rt.release();
   rt=null;meta=null;P.block=null;P.cur=null;P.tab=null;P.curScen={};vtabs.innerHTML='';scenBox.innerHTML='';scenBox.hidden=true;
-  playBtn.textContent='▶ Play';scrub.value=0;tc.textContent='0.0 s';
+  playBtn.textContent='► Play';scrub.value=0;tc.textContent='0.0 s';
   ctx.setTransform(cvs.width/W,0,0,cvs.width/W,0,0);ctx.drawImage(paperC,0,0,W,H);
 }
 const fontsReady=document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve();

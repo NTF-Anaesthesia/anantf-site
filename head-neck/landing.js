@@ -141,7 +141,7 @@ function blockLinks(keys) {
   if (!links.length) return '';
   return links.map((k) => {
     const [href, name, page] = BLOCK_LINKS[k];
-    return `<a class="tb-opt-page" href="${href}">Open ${esc(name)} on the ${esc(page)} page <span aria-hidden="true">↗</span></a>`;
+    return `<a class="tb-opt-page" href="${href}">Open ${esc(name)} on the ${esc(page)} page <span aria-hidden="true">→</span></a>`;
   }).join('');
 }
 

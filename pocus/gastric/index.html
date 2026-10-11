@@ -391,7 +391,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 </section>
 
 <!-- ============ 5 SET-UP & SWEEP ============ -->
-<section class="slide" data-min="2.5" data-title="Set-up and the sweep" data-prompt="Slide the probe from far left to far right. Name the plane each time. Then switch Supine ↔ RLD at the aorta plane with 80 mL in the stomach and ask what changed.">
+<section class="slide" data-min="2.5" data-title="Set-up and the sweep" data-prompt="Slide the probe from far left to far right. Name the plane each time. Then switch Supine ⇄ RLD at the aorta plane with 80 mL in the stomach and ask what changed.">
   <div class="inner two">
     <div>
       <div class="kicker">03 · Set-up and the sweep</div>
@@ -520,7 +520,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
               <label>Rotate&nbsp; <input type="range" id="rtT" min="0" max="90" value="0" step="1"><output id="rtTo"></output></label>
               <label>Fan&nbsp;&nbsp;&nbsp;&nbsp; <input type="range" id="rtF" min="-15" max="15" value="0" step="1"><output id="rtFo"></output></label>
               <label>Depth&nbsp;&nbsp; <input type="range" id="rtD" min="10" max="20" value="18" step="1"><output id="rtDo"></output></label>
-              <div><button class="btn" id="rtPlay">▶ Walk me through</button> <button class="btn ghost" id="rtReset">Reset</button></div>
+              <div><button class="btn" id="rtPlay">► Walk me through</button> <button class="btn ghost" id="rtReset">Reset</button></div>
             </div>
             <div class="status" id="rtStat"></div>
           </div>
@@ -632,7 +632,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
         <div class="scanner"><canvas id="csUS" class="us"></canvas></div>
         <div class="ctrls">
           <label>True volume <input type="range" id="csV" min="20" max="400" value="140" step="5"><output id="csVo"></output></label>
-          <button class="btn" id="csFrz">❄ Freeze &amp; trace</button>
+          <button class="btn" id="csFrz">Freeze &amp; trace</button>
           <button class="btn ghost" id="csSend" disabled>Use this CSA →</button>
         </div>
         <div class="status" id="csStat"></div>
@@ -748,7 +748,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
   <span class="q">“If you love what you do, you will teach yourself. If you do not love what you do, others will teach you.” — Yukitaka Yamaguchi</span>
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 35:30</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
   <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
-  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents ↗</button>
+  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents →</button>
   <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
   <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
 </div></nav>
@@ -1174,7 +1174,7 @@ class GSim {
     // orientation marker beside the left end of the footprint
     const mx = ax + Rc * ppc * Math.sin(-half) - 9, my = ay + Rc * ppc * Math.cos(-half) - 2;
     c.fillStyle = '#5ab0ff'; c.beginPath(); c.arc(mx, my, 3.4, 0, TAU); c.fill();
-    if (S.frozen) { c.fillStyle = '#9fd3ff'; c.textAlign = 'right'; c.fillText('❄ FROZEN', W - 50, 6); }
+    if (S.frozen) { c.fillStyle = '#9fd3ff'; c.textAlign = 'right'; c.fillText('FROZEN', W - 50, 6); }
     if (S.doppler) { const gx = 10, gy = 30; const gr = c.createLinearGradient(0, gy, 0, gy + 60); gr.addColorStop(0, '#ff9a3c'); gr.addColorStop(.45, '#7a1010'); gr.addColorStop(.55, '#0c2a6a'); gr.addColorStop(1, '#3ca0ff'); c.fillStyle = gr; c.fillRect(gx, gy, 6, 60); c.textAlign = 'left'; c.fillStyle = 'rgba(205,220,225,.85)'; c.fillText('towards', gx + 10, gy - 2); c.fillText('away', gx + 10, gy + 52);
       c.strokeStyle = 'rgba(160,230,160,.45)'; c.beginPath(); c.arc(ax, ay, (Rc + .8) * ppc, Math.PI / 2 + half * .62, Math.PI / 2 - half * .62, true); c.arc(ax, ay, (Rc + D - .3) * ppc, Math.PI / 2 - half * .62, Math.PI / 2 + half * .62); c.closePath(); c.stroke(); }
     if (S.trace && this.measure) {
@@ -1317,7 +1317,7 @@ function updTimer() {
   const se = elapsed - slideStart, sug = plan[cur] * 60;
   $('#elT').textContent = fmt(elapsed); $('#elT').classList.toggle('over', elapsed > TOTAL);
   const sl = $('#slT'); sl.textContent = `${fmt(se)} / ${fmt(sug)}`; sl.classList.toggle('over', se > sug * 1.25);
-  $('#tmB').textContent = running ? '❚❚' : '▶';
+  $('#tmB').textContent = running ? '❚❚' : '►';
   let k = 0, m = elapsed / 60; while (k < plan.length - 1 && cumStart[k + 1] <= m) k++;
   const frac = clamp((m - cumStart[k]) / plan[k], 0, 1);
   $('#pace').style.left = ((k + frac) / slides.length * 100) + '%';
@@ -1430,7 +1430,7 @@ function mediaEl(id, o = {}) {
 }
 function capHTML(id, badge) { return `<span class="id">${fileId(id)}${badge ? ' · ' + badge : ''}</span>${MEDIA[id].cap}`; }
 function thumbsHTML(ids, badges = {}) {
-  return ids.map(id => `<button data-id="${id}" title="${fileId(id)}"><img src="${thumbSrc(id)}" alt=""><span class="k">${badges[id] || MEDIA[id].k}</span>${MEDIA[id].t === 'vid' ? '<span class="pl">▶</span>' : ''}</button>`).join('');
+  return ids.map(id => `<button data-id="${id}" title="${fileId(id)}"><img src="${thumbSrc(id)}" alt=""><span class="k">${badges[id] || MEDIA[id].k}</span>${MEDIA[id].t === 'vid' ? '<span class="pl">►</span>' : ''}</button>`).join('');
 }
 
 /* ---------- lightbox ---------- */
@@ -1619,7 +1619,7 @@ const RT = rig({ us: $('#rtUS'), anat: $('#rtA'), top: $('#rtTop'), topOpts: { w
   S: Object.assign({ z0: -.3, pos: 'sup', content: 'empty', age: 50, periT: 14 }, RT_STEPS[0]),
   frame(R, t) {
     const S = R.S;
-    if (RT.play) { const k = Math.floor((t - RT.play) / 3.4); if (k !== RT.k) { if (k >= RT_STEPS.length) { RT.play = 0; $('#rtPlay').textContent = '▶ Walk me through'; } else rtStep(k, true); } }
+    if (RT.play) { const k = Math.floor((t - RT.play) / 3.4); if (k !== RT.k) { if (k >= RT_STEPS.length) { RT.play = 0; $('#rtPlay').textContent = '► Walk me through'; } else rtStep(k, true); } }
     syncR('rtX', S.x0, v => v >= 0 ? `${v.toFixed(1)} cm L` : `${(-v).toFixed(1)} cm R`); syncR('rtT', S.th, v => `${Math.round(v)}°`); syncR('rtF', S.fan, v => `${Math.round(v)}°`); syncR('rtD', S.depth, v => `${Math.round(v)} cm`);
     $('#rtPov').textContent = S.th < 20 ? 'Ultrasound · transverse' : S.th > 80 ? 'Ultrasound · sagittal' : 'Ultrasound · oblique';
     const off = S.x0 - .9, th = S.th;
@@ -1636,11 +1636,11 @@ function syncR(id, v, f) { const el = $('#' + id); if (document.activeElement !=
 function rtStep(k, auto) {
   RT.k = k; const st = RT_STEPS[k]; RT.S.hl = st.hl; const { hl, ...v } = st; RT.to(v, 1.4);
   $$('#rtList li').forEach(li => li.classList.toggle('on', +li.dataset.s === k));
-  if (!auto) { RT.play = 0; $('#rtPlay').textContent = '▶ Walk me through'; }
+  if (!auto) { RT.play = 0; $('#rtPlay').textContent = '► Walk me through'; }
 }
 $('#rtList').addEventListener('click', e => { const li = e.target.closest('li'); if (li) rtStep(+li.dataset.s); });
-for (const [id, key] of [['rtX', 'x0'], ['rtT', 'th'], ['rtF', 'fan'], ['rtD', 'depth']]) $('#' + id).addEventListener('input', e => { RT.tw = RT.tw.filter(w => w.k !== key); RT.S[key] = +e.target.value; RT.S.hl = null; RT.play = 0; $('#rtPlay').textContent = '▶ Walk me through'; });
-$('#rtPlay').onclick = () => { if (RT.play) { RT.play = 0; $('#rtPlay').textContent = '▶ Walk me through'; return; } RT.k = -1; RT.play = performance.now() / 1000; rtStep(0, true); $('#rtPlay').textContent = '❚❚ Stop'; };
+for (const [id, key] of [['rtX', 'x0'], ['rtT', 'th'], ['rtF', 'fan'], ['rtD', 'depth']]) $('#' + id).addEventListener('input', e => { RT.tw = RT.tw.filter(w => w.k !== key); RT.S[key] = +e.target.value; RT.S.hl = null; RT.play = 0; $('#rtPlay').textContent = '► Walk me through'; });
+$('#rtPlay').onclick = () => { if (RT.play) { RT.play = 0; $('#rtPlay').textContent = '► Walk me through'; return; } RT.k = -1; RT.play = performance.now() / 1000; rtStep(0, true); $('#rtPlay').textContent = '❚❚ Stop'; };
 $('#rtReset').onclick = () => rtStep(0);
 
 /* =====================================================================
@@ -1707,7 +1707,7 @@ const CS = rig({ us: $('#csUS'), sim: { w: 520, h: 360, nb: 170, ns: 240 }, S: {
 rng('csV', 'csVo', v => `${v} mL`, v => { CS.S.vol = v; if (CS.S.frozen) frz(false); });
 function frz(on) {
   CS.S.frozen = on; CS.S.trace = on; if (CS.sim) CS.sim.dirty = true;
-  $('#csFrz').textContent = on ? '▶ Unfreeze' : '❄ Freeze & trace'; $('#csSend').disabled = !on;
+  $('#csFrz').textContent = on ? '► Unfreeze' : 'Freeze & trace'; $('#csSend').disabled = !on;
 }
 $('#csFrz').onclick = () => frz(!CS.S.frozen);
 $('#csSend').onclick = () => { const m = CS.sim && CS.sim.measure; if (!m) return; $('#cAge').value = 45; seg_set('cMeth', 'trace'); $('#cCSA').value = m.A.toFixed(1); calc(); };
@@ -1831,7 +1831,7 @@ $('#libTabs').innerHTML = LIBCAT.map(([k, l], i) => `<button aria-selected="${i 
 function libShow(k) {
   libList = Object.keys(MEDIA).filter(id => k === 'all' || MEDIA[id].cat.includes(k));
   $$('#libTabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.k === k));
-  $('#libGrid').innerHTML = libList.map(id => `<button data-id="${id}"><div class="ph"><img src="${thumbSrc(id)}" alt="" loading="lazy">${MEDIA[id].t === 'vid' ? '<span class="pl">▶ clip</span>' : ''}</div><div class="tx"><b>${fileId(id)} · ${MEDIA[id].k}</b>${MEDIA[id].cap}</div></button>`).join('');
+  $('#libGrid').innerHTML = libList.map(id => `<button data-id="${id}"><div class="ph"><img src="${thumbSrc(id)}" alt="" loading="lazy">${MEDIA[id].t === 'vid' ? '<span class="pl">► clip</span>' : ''}</div><div class="tx"><b>${fileId(id)} · ${MEDIA[id].k}</b>${MEDIA[id].cap}</div></button>`).join('');
 }
 $('#libTabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) libShow(b.dataset.k); });
 $('#libGrid').addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if (b) lbOpen(libList, libList.indexOf(b.dataset.id)); });

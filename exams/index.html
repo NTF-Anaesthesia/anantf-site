@@ -189,7 +189,7 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
 .exam-page .cal-stem{display:block;margin-bottom:18px}
 .exam-page .cal-qpart{display:block;margin-top:12px}
 .exam-page .cal-gpt-link{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:23px 30px;font:12px/1.7 var(--sans);color:var(--accent)}
-.exam-page .cal-gpt-link::after{content:'↗';font-size:19px}
+.exam-page .cal-gpt-link::after{content:'→';font-size:19px}
 .exam-page .cal-gpt-link:hover{background:var(--wash)}
 .exam-page #sub-content{min-height:210px;scroll-margin-top:120px}
 .exam-page #sub-content:focus-visible,.exam-page #exam-tertiary-panel:focus-visible{outline-offset:12px}
@@ -815,7 +815,7 @@ function renderSubContent(section) {
 
     const tabs = section.subsections.map(ss =>
       ss.url
-        ? `<a class="subsubtab subsubtab--link" href="${escapeHtml(ss.url)}" target="_blank" rel="noopener">${escapeHtml(ss.name)} ↗</a>`
+        ? `<a class="subsubtab subsubtab--link" href="${escapeHtml(ss.url)}" target="_blank" rel="noopener">${escapeHtml(ss.name)} →</a>`
         : `<button class="subsubtab${activeSS && ss.key === activeSS.key ? ' active' : ''}" data-sskey="${ss.key}" type="button" role="tab" aria-selected="${activeSS && ss.key === activeSS.key}" id="ss-${ss.key}" tabindex="${activeSS && ss.key === activeSS.key ? 0 : -1}" aria-controls="exam-tertiary-panel">${escapeHtml(ss.name)}</button>`
     ).join('');
     parts.push(`<div class="subsubtabs" role="tablist" aria-label="SAQ resources">${tabs}</div>`);
