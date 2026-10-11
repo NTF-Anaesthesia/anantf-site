@@ -297,7 +297,7 @@ svg text{font-family:var(--mono)}
       <h1>Arterial lines.</h1>
       <p class="big-quote" style="font-style:normal">Choosing the artery, the cannula, the technique. And what to do when it doesn't go to plan.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Survey the artery · Match the cannula · Track the tip · Confirm the waveform</p>
-      <p style="margin-top:28px"><a class="btn" style="text-decoration:none;display:inline-block" href="https://www.youtube.com/watch?v=g7EiWUpR_NE&amp;list=PLNGmHzdYW6Z6L4SP3rc-xpWf7e-gemT55&amp;index=20" target="_blank" rel="noopener">▶ Watch: Ki-Jinn Chin — Ultrasound-Guided Arterial Cannulation (YouTube)</a></p>
+      <p style="margin-top:28px"><a class="btn" style="text-decoration:none;display:inline-block" href="https://www.youtube.com/watch?v=g7EiWUpR_NE&amp;list=PLNGmHzdYW6Z6L4SP3rc-xpWf7e-gemT55&amp;index=20" target="_blank" rel="noopener">► Watch: Ki-Jinn Chin — Ultrasound-Guided Arterial Cannulation (YouTube)</a></p>
     </div>
     <div>
       <div class="panel"><canvas id="partIMon"></canvas><div class="mini">The goal: a crisp arterial trace with a clear dicrotic notch.</div></div>
@@ -358,7 +358,7 @@ svg text{font-family:var(--mono)}
         <div class="ctrls">
           <label>Depth <input type="range" id="csD" min="3" max="16" value="6" step="0.5"><output id="csDo"></output></label>
           <label>Angle <input type="range" id="csA" min="20" max="45" value="30"><output id="csAo"></output></label>
-          <button class="btn" id="csMove">▶ Patient moves wrist</button><button class="btn ghost" id="csReset">Reset</button>
+          <button class="btn" id="csMove">► Patient moves wrist</button><button class="btn ghost" id="csReset">Reset</button>
         </div>
         <canvas id="csMon" style="margin-top:10px;border-radius:8px"></canvas>
         <div class="mini">Device lengths are the deck's preferences — confirm the actual length and OD on the device you use.</div>
@@ -395,7 +395,7 @@ svg text{font-family:var(--mono)}
               <div class="ctrls" style="margin-top:0;flex-direction:column;align-items:flex-start">
                 <label>Needle <input type="range" id="oopN" min="0" max="16" value="0" step="0.1"><output id="oopNo"></output></label>
                 <label>Probe&nbsp; <input type="range" id="oopP" min="-10" max="4" value="-8" step="0.1"><output id="oopPo"></output></label>
-                <div><button class="btn" id="oopAuto">▶ Auto: blink</button> <button class="btn ghost" id="oopReset">Reset</button></div>
+                <div><button class="btn" id="oopAuto">► Auto: blink</button> <button class="btn ghost" id="oopReset">Reset</button></div>
               </div>
               <div class="status" id="oopStat"></div>
             </div>
@@ -413,7 +413,7 @@ svg text{font-family:var(--mono)}
         </div>
         <div class="tabpanel" data-tp="wp" hidden>
           <div class="grid2"><div><div class="pov">Ultrasound · long axis</div><div class="scanner"><canvas id="wpUS" class="us"></canvas></div></div><div><div class="pov">Cut-away · side</div><canvas id="wpSide" class="side"></canvas></div></div>
-          <div class="ctrls"><button class="btn" id="wpPlay">▶ Play</button><label>Step <input type="range" id="wpT" min="0" max="10" value="0" step="0.05"><output id="wpTo"></output></label><label><input type="checkbox" id="wpPost"> Pitfall: keep advancing on the same trajectory</label></div>
+          <div class="ctrls"><button class="btn" id="wpPlay">► Play</button><label>Step <input type="range" id="wpT" min="0" max="10" value="0" step="0.05"><output id="wpTo"></output></label><label><input type="checkbox" id="wpPost"> Pitfall: keep advancing on the same trajectory</label></div>
           <div class="status" id="wpStat"></div>
         </div>
         <div class="tabpanel" data-tp="cf" hidden>
@@ -642,7 +642,7 @@ svg text{font-family:var(--mono)}
             <label>Vein depth b <input type="range" id="geoB" min="2" max="15" value="5" step="0.5"><output id="geoBo"></output></label>
             <label>Angle θ <input type="range" id="geoT" min="15" max="60" value="30"><output id="geoTo"></output></label>
             <div class="seg" id="geoSeg"><button data-l="25" data-g="22" aria-pressed="false">22G 25</button><button data-l="32" data-g="20" aria-pressed="true">20G 32</button><button data-l="45" data-g="18" aria-pressed="false">18G 45</button><button data-l="48" data-g="20" aria-pressed="false">Angiocath 48</button><button data-l="50" data-g="16" aria-pressed="false">16G 50</button><button data-l="80" data-g="20" aria-pressed="false">Vygon 80</button></div>
-            <button class="btn" id="geoGo">▶ Insert &amp; thread</button>
+            <button class="btn" id="geoGo">► Insert &amp; thread</button>
           </div>
           <div class="status" id="geoStat" style="font-size:13.5px"></div>
         </div>
@@ -689,7 +689,7 @@ svg text{font-family:var(--mono)}
   <span class="q">“If you love what you do, you will teach yourself. If you do not love what you do, others will teach you.” — Yukitaka Yamaguchi</span>
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed / 30:00">0:00</span><span class="sl">/ 30:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
   <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
-  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents ↗</button>
+  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents →</button>
   <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
   <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
 </div></nav>
@@ -1525,7 +1525,7 @@ function updTimer() {
   const se = elapsed - slideStart, sug = plan[cur] * 60;
   $('#elT').textContent = fmt(elapsed); $('#elT').classList.toggle('over', elapsed > 1800);
   const sl = $('#slT'); sl.textContent = `${fmt(se)} / ${fmt(sug)}`; sl.classList.toggle('over', se > sug * 1.25);
-  $('#tmB').textContent = running ? '❚❚' : '▶';
+  $('#tmB').textContent = running ? '❚❚' : '►';
   // pace marker: where in the deck you should be by now
   let k = 0, m = elapsed / 60; while (k < plan.length - 1 && cumStart[k + 1] <= m) k++;
   const frac = clamp((m - cumStart[k]) / plan[k], 0, 1);
@@ -2022,7 +2022,7 @@ scene($('#csSide'), {
     const name = { 32: 'Optiva 32 mm', 45: 'Flowswitch 45 mm', 48: 'Angiocath 48 mm', 80: 'Vygon 8 cm (Seldinger)' }[CS.L];
     setStat('csStat', `<b>${name}</b> at ${CS.D} mm, ${CS.A}° · path to wall ${(b / Math.sin(th)).toFixed(1)} mm` +
       (CS.dis ? ' · <span class="bad">DISLODGED — tip now extraluminal, haematoma, trace lost.</span>' :
-        ` · now <b>${Math.max(0, inV).toFixed(0)} mm</b> in lumen${CS.minIn < 98 ? `, minimum during movement ${Math.max(0, CS.minIn).toFixed(0)} mm` : ''}. ${CS.moveT < 0 ? 'Press ▶ to flex the wrist (skin slides ~9 mm over the artery).' : ''}`));
+        ` · now <b>${Math.max(0, inV).toFixed(0)} mm</b> in lumen${CS.minIn < 98 ? `, minimum during movement ${Math.max(0, CS.minIn).toFixed(0)} mm` : ''}. ${CS.moveT < 0 ? 'Press ► to flex the wrist (skin slides ~9 mm over the artery).' : ''}`));
   }
 });
 
@@ -2752,7 +2752,7 @@ scene($('#ipTop'), {
 /* ---------- S7 wall puncture tab ---------- */
 const WP = { t: 0, play: false, post: false };
 const wpT = rng('wpT', 'wpTo', v => v.toFixed(1), v => { WP.t = v; });
-$('#wpPlay').onclick = () => { if (WP.t >= 9.95) WP.t = 0; WP.play = !WP.play; $('#wpPlay').textContent = WP.play ? '❚❚ Pause' : '▶ Play'; };
+$('#wpPlay').onclick = () => { if (WP.t >= 9.95) WP.t = 0; WP.play = !WP.play; $('#wpPlay').textContent = WP.play ? '❚❚ Pause' : '► Play'; };
 $('#wpPost').onchange = e => { WP.post = e.target.checked; WP.t = 0; wpT.value = 0; };
 scene($('#wpSide'), {
   init() {
@@ -2762,7 +2762,7 @@ scene($('#wpSide'), {
     this.nm = new NeedleModel({ E: [-14, 0], th: 25 * D2R, tent: .85 }); this.flash = 0;
   },
   frame(t, dt) {
-    if (WP.play) { WP.t = Math.min(10, WP.t + dt * .9); wpT.value = WP.t; $('#wpTo').textContent = WP.t.toFixed(1); if (WP.t >= 10) { WP.play = false; $('#wpPlay').textContent = '▶ Play'; } }
+    if (WP.play) { WP.t = Math.min(10, WP.t + dt * .9); wpT.value = WP.t; $('#wpTo').textContent = WP.t.toFixed(1); if (WP.t >= 10) { WP.play = false; $('#wpPlay').textContent = '► Play'; } }
     const T = WP.t, th0 = 25 * D2R, E = [-14, 0], top = 5 - 1.3, aWall = top / Math.sin(th0), P = [E[0] + aWall * Math.cos(th0), top];
     const cy = () => 5, sv = this.sv, nm = this.nm;
     let tip, d, state, thr = 0, th = th0;

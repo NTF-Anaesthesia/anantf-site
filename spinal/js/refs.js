@@ -110,7 +110,7 @@ export function finalise() {
     back.href = `#cite-${id}-1`;
     back.className = 'sp-ref-back';
     back.setAttribute('aria-label', `Back to first citation of reference ${num.get(id)}`);
-    back.textContent = '↩';
+    back.textContent = '↑';
     body.append(' ', back);
     li.append(n, body);
     list.append(li);

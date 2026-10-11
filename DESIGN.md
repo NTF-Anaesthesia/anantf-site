@@ -23,7 +23,7 @@ The full design system (brand book, tokens, component previews, logos and illust
 - **Teaching colours stay.** Anatomy, ultrasound and block-status colours are clinical codes: nerves
   yellow, arteries red, veins blue; danger and warning colours keep their meaning. Don't recolour them
   to the brand or to sepia.
-- Plain English, British spelling, sentence case for titles, verb-first links ending in ↗, no emoji.
+- Plain English, British spelling, sentence case for titles, verb-first links ending in →, no emoji. Use only arrows that never render as emoji on phones (→ ← ↑ ↓ ⇄ ►); never ↗ ↘ ↔ ↩ ▶, which iOS and Android draw as coloured emoji tiles.
 
 ## Colours
 

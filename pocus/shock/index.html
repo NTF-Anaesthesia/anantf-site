@@ -911,7 +911,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
   <span class="q">Pump, tank, pipes. Finish the exam, act on what you find, then scan again.</span>
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 0:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
   <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
-  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents ↗</button>
+  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents →</button>
   <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
   <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
 </div></nav>
@@ -1293,7 +1293,7 @@ function vZ(S, st, t) {
   if (cpr) label(c, 'Compressions: no usable image', W / 2, H * .45, 'center', '#ffd678');
   else if (sr >= .5) label(c, 'Looking for the window…', W / 2, H * .45, 'center', '#ffd678');
   if (st.rec) { c.save(); c.fillStyle = '#ff4d4d'; c.beginPath(); c.arc(14, 74, 5, 0, TAU); c.fill(); c.restore(); label(c, 'REC ' + st.rec.toFixed(1) + ' s', 24, 74, 'left', '#ff8a8a'); }
-  if (st.replay) label(c, '▶ Recorded clip · CPR continuing', 8, 74, 'left', '#9fe0ff');
+  if (st.replay) label(c, '► Recorded clip · CPR continuing', 8, 74, 'left', '#9fe0ff');
   if (st.title) title(S, st.title);
   smk(S, 'r'); zEcg(S, st, t); wm(S);
 }
@@ -1420,7 +1420,7 @@ function ease(st, dt) {
   if (st.pressT !== undefined) st.press = (st.press || 0) + (st.pressT - (st.press || 0)) * Math.min(1, dt * 5);
   if (st.gasT !== undefined) st.gasF = clamp((st.gasF || 0) + Math.sign(st.gasT - (st.gasF || 0)) * dt, 0, 1);
 }
-function setPlay(v) { PLAY = v; $$('.ppb').forEach(b => { b.textContent = PLAY ? '❚❚ Pause' : '▶ Play'; b.setAttribute('aria-pressed', String(!PLAY)); }); }
+function setPlay(v) { PLAY = v; $$('.ppb').forEach(b => { b.textContent = PLAY ? '❚❚ Pause' : '► Play'; b.setAttribute('aria-pressed', String(!PLAY)); }); }
 document.addEventListener('click', e => { if (e.target.closest('.ppb')) setPlay(!PLAY); });
 const dirty = sc => { if (sc) sc.dirty = true; };
 
@@ -1455,7 +1455,7 @@ function updTimer() {
   const se = elapsed - slideStart, sug = plan[cur] * 60;
   $('#elT').textContent = fmt(elapsed); $('#elT').classList.toggle('over', elapsed > TOTAL);
   const sl = $('#slT'); sl.textContent = `${fmt(se)} / ${fmt(sug)}`; sl.classList.toggle('over', se > sug * 1.25);
-  $('#tmB').textContent = running ? '❚❚' : '▶';
+  $('#tmB').textContent = running ? '❚❚' : '►';
   let k = 0, m = elapsed / 60; while (k < plan.length - 1 && cumStart[k + 1] <= m) k++;
   const frac = clamp((m - cumStart[k]) / plan[k], 0, 1);
   $('#pace').style.left = ((k + frac) / slides.length * 100) + '%';

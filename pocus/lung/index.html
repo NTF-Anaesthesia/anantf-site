@@ -433,7 +433,7 @@ ol.tight{margin:6px 0 0;padding-left:20px;font-size:14.5px;line-height:1.55;colo
     <div>
       <div class="pov">Linear probe · intercostal · longitudinal</div>
       <div class="scanner"><span class="sbadge">SCHEMATIC – simulated, not a real scan</span><canvas id="heroUS" class="us" aria-label="Simulated lung ultrasound loop: dry lung with A-lines crossfading to wet lung with B-lines"></canvas></div>
-      <div class="cvcap">Same probe, same spot: dry lung (A-lines) ↔ wet lung (B-lines)</div>
+      <div class="cvcap">Same probe, same spot: dry lung (A-lines) ⇄ wet lung (B-lines)</div>
       <div class="card" style="margin-top:14px"><div class="cap">Why it matters</div>
         <p>In a systematic review, lung ultrasound detected pneumothorax with a pooled sensitivity of about 91% (specificity 98%), against about 50% for supine chest radiography (Alrajhi 2012). In the original BLUE study, lung and venous ultrasound reached the correct diagnosis in 90.5% of patients with acute respiratory failure (Lichtenstein 2008).</p></div>
       <div class="callout"><b>Schematic notice:</b> every sonogram on this page is a simulated drawing or canvas animation made for teaching. None is a real patient scan.</div>
@@ -1085,7 +1085,7 @@ ol.tight{margin:6px 0 0;padding-left:20px;font-size:14.5px;line-height:1.55;colo
   <span class="q">Inconclusive is not negative.</span>
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 0:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
   <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
-  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents ↗</button>
+  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents →</button>
   <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
   <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
 </div></nav>
@@ -1480,7 +1480,7 @@ function updTimer() {
   const se = elapsed - slideStart, sug = plan[cur] * 60;
   $('#elT').textContent = fmt(elapsed); $('#elT').classList.toggle('over', elapsed > TOTAL);
   const sl = $('#slT'); sl.textContent = `${fmt(se)} / ${fmt(sug)}`; sl.classList.toggle('over', se > sug * 1.25);
-  $('#tmB').textContent = running ? '❚❚' : '▶';
+  $('#tmB').textContent = running ? '❚❚' : '►';
   let k = 0, m = elapsed / 60; while (k < plan.length - 1 && cumStart[k + 1] <= m) k++;
   const frac = clamp((m - cumStart[k]) / plan[k], 0, 1);
   $('#pace').style.left = ((k + frac) / slides.length * 100) + '%';
@@ -1585,7 +1585,7 @@ function thumbFig(key, cap) { return `<figure><div class="scanner" style="paddin
 function bindMinis(root, o) { $$('canvas[data-mini]', root).forEach(c => { if (!c._m) c._m = mini(c, c.dataset.mini, o); }); }
 
 /* =====================================================================
-   SLIDE 1 — hero (A-lines ↔ B-lines crossfade)
+   SLIDE 1 — hero (A-lines ⇄ B-lines crossfade)
    ===================================================================== */
 (() => {
   const P = { d: .9, D: 5, ribX: [-3.15, 3.15], ribW: .7, slide: 1, aStr: .85, bl: BL(4, 0, 1.7) };
@@ -2516,7 +2516,7 @@ $('#refs').innerHTML = REFS.map(r => `<li>${r}</li>`).join('');
 /* ---------- reduced motion: still frames with a Play control ---------- */
 if (RM) {
   const btns = [];
-  const sync = () => btns.forEach(b => { b.textContent = MOTION ? '❚❚ Pause' : '▶ Play'; b.setAttribute('aria-pressed', MOTION); });
+  const sync = () => btns.forEach(b => { b.textContent = MOTION ? '❚❚ Pause' : '► Play'; b.setAttribute('aria-pressed', MOTION); });
   $$('.scanner').forEach(sc => { if (!$('canvas', sc)) return; const b = document.createElement('button'); b.type = 'button'; b.className = 'rmplay'; b.addEventListener('click', () => { MOTION = !MOTION; sync(); }); sc.append(b); btns.push(b); });
   sync();
 }

@@ -836,7 +836,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
   <span class="q">Squeeze the vein. If the walls do not meet, the leg has a clot until proven otherwise.</span>
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 0:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
   <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
-  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents ↗</button>
+  <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents →</button>
   <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
   <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
 </div></nav>
@@ -1124,7 +1124,7 @@ function updTimer() {
   const se = elapsed - slideStart, sug = plan[cur] * 60;
   $('#elT').textContent = fmt(elapsed); $('#elT').classList.toggle('over', elapsed > TOTAL);
   const sl = $('#slT'); sl.textContent = `${fmt(se)} / ${fmt(sug)}`; sl.classList.toggle('over', se > sug * 1.25);
-  $('#tmB').textContent = running ? '❚❚' : '▶';
+  $('#tmB').textContent = running ? '❚❚' : '►';
   let k = 0, m = elapsed / 60; while (k < plan.length - 1 && cumStart[k + 1] <= m) k++;
   const frac = clamp((m - cumStart[k]) / plan[k], 0, 1);
   $('#pace').style.left = ((k + frac) / slides.length * 100) + '%';
