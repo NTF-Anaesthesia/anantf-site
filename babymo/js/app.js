@@ -74,6 +74,7 @@ function renderNav() {
     html += link('#/faculty/people', S.pending ? `Faculty (${S.pending})` : 'Faculty', /people/.test(h));
     html += link('#/faculty/help', 'Help', /help/.test(h));
   } else html += link('#/faculty', 'Faculty', h.startsWith('#/faculty'));
+  if (S.user && !S.user.anonymous) html += `<button type="button" id="signout" title="${esc(S.user.email || '')}">Sign out</button>`;
   $('#nav').innerHTML = html;
   $('#banner').innerHTML = mode === 'local' ? `<div class="demo">${isDemo ? 'Demo' : 'Not connected'}: everything here stays in this browser only. <a href="#/faculty/help">What is this?</a></div>` : '';
 }
@@ -116,6 +117,13 @@ async function refreshPending() {
 }
 const go = h => { if (location.hash === h) route(); else location.hash = h; };
 window.addEventListener('hashchange', route);
+$('#nav').addEventListener('click', async ev => {
+  if (!ev.target.closest('#signout')) return;
+  try { await api.signOut(); } catch { /* already signed out */ }
+  S.role = null; S.pending = 0; S.loaded = {};
+  toast('Signed out.');
+  if (location.hash === '#/faculty') route(); else go('#/faculty');
+});
 
 // ---------- MO: home, ready, test, result ----------
 function viewHome() {
