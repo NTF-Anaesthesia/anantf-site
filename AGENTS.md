@@ -74,7 +74,7 @@ warning colours) are never recoloured to the brand.
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
-- `babymo/` saves data and signs people in: its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit the real question bank, names or results.
+- `babymo/` is an installable app (service worker): after changing any file listed in `SHELL` in `babymo/sw.js` (pages, scripts, styles, manifest, icons) run `node babymo/tools/stamp.mjs`, or phones keep the old files (`node babymo/test/version.test.mjs` checks). Its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/version.test.mjs`, `node babymo/test/e2e.mjs`, `node babymo/test/pwa.e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit the real question bank, names or results.
 - After editing a page, open it in a browser (or a local static server) and check it still loads
   without console errors before committing.
 
