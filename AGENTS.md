@@ -46,6 +46,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting and ultrasound (Dr Koh Wenjun and Dr Chew Shi Hao) | No (unlisted) |
 | `truncal/` | Truncal blocks: landing page with the "which block for which operation" chooser, and `back/`, `chest-wall/`, `abdominal-wall/` pages on a shared engine in `truncal/shared/` (see `truncal/shared/DATA.md`) | No (unlisted; card on Regional) |
 | `head-neck/` | Head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the truncal engine (`truncal/shared/`) plus head figures in `head-neck/shared/js/head.js` | No (unlisted; card on Regional, link from Airway) |
+| `babymo/` | Baby MO test: the department's MCQ test for new medical officers (MOs enter a name and a shared passphrase; faculty edit questions and see results in the app). Own Firebase project `ntf-mo-portal`; start with `babymo/NOTES.md`. The real question bank is not in this repo | No (unlisted) |
 | `ra.html` | Popliteal sciatic block (the only lower-limb block on the main site; linked from `regional.html`) | Via Regional |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
 | `draft-ra.html` | Draft copy of the full lower-limb block app (all 7 blocks, combinations) | No (draft) |
@@ -69,10 +70,11 @@ warning colours) are never recoloured to the brand.
   and drop "draft" from its breadcrumb. To publish another lower-limb block, add it back to `RA_INDEX` in `ra.html`.
 
 - The main navigation is Airway, Regional Anaesthesia, POCUS and MMed Exam Prep. Don't add department, recruitment or handbook pages back.
-- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/` or `head-neck/` from the homepage, and keep their
+- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/` or `babymo/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
+- `babymo/` saves data and signs people in: its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit the real question bank, names or results.
 - After editing a page, open it in a browser (or a local static server) and check it still loads
   without console errors before committing.
 

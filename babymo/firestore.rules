@@ -1,0 +1,175 @@
+rules_version = '2';
+
+// Baby MO test (Firebase project ntf-mo-portal). Published by pasting it into Firestore Database > Rules (see SETUP.md step F). Tested by babymo/test/run-rules.sh.
+//
+// Two kinds of people:
+//  - faculty: Google sign-in, verified email, listed in /members (role 'admin' or 'editor')
+//  - MOs: anonymous sign-in plus a /sessions/{uid} document, which can only be created with the shared passphrase.
+//    A session is valid only while its passphrase still equals /config/access, so changing the passphrase locks
+//    everyone out until they enter the new one.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- faculty ----
+    function signedIn() {
+      return request.auth != null && request.auth.token.email_verified == true && 'email' in request.auth.token;
+    }
+    function email() {
+      return request.auth.token.email.lower();
+    }
+    function member() {
+      return signedIn() && exists(/databases/$(database)/documents/members/$(email()));
+    }
+    function admin() {
+      return member() && get(/databases/$(database)/documents/members/$(email())).data.get('role', '') == 'admin';
+    }
+    function editor() {
+      return member() && get(/databases/$(database)/documents/members/$(email())).data.get('role', '') in ['admin', 'editor'];
+    }
+    function stampedBy(d) {
+      return d.get('updatedBy', {}).get('email', '') == email();
+    }
+    function validStamp(d) {
+      return d.updatedBy is map && d.updatedBy.keys().hasOnly(['email', 'name'])
+        && d.updatedBy.get('name', '') is string && d.updatedBy.get('name', '').size() <= 100
+        && stampedBy(d);
+    }
+
+    // ---- MOs ----
+    function anonymous() {
+      return request.auth != null && request.auth.token.firebase.sign_in_provider == 'anonymous';
+    }
+    function passphrase() {
+      return get(/databases/$(database)/documents/config/access).data.passphrase;
+    }
+    function sessionPath() {
+      return /databases/$(database)/documents/sessions/$(request.auth.uid);
+    }
+    // an MO whose login still matches the current passphrase (missing config/access means nobody is valid)
+    function validSession() {
+      return anonymous() && exists(sessionPath())
+        && exists(/databases/$(database)/documents/config/access)
+        && get(sessionPath()).data.pass == passphrase();
+    }
+
+    // ---- members ----
+    function validMember() {
+      return request.resource.data.keys().hasOnly(['role', 'name'])
+        && request.resource.data.role in ['admin', 'editor']
+        && request.resource.data.get('name', '') is string && request.resource.data.get('name', '').size() <= 100;
+    }
+    match /members/{memberEmail} {
+      allow get: if signedIn() && memberEmail == email();
+      allow list, get: if member();
+      allow create: if admin() && validMember() && memberEmail == memberEmail.lower();
+      // an admin can't demote or remove themselves, so there is always one
+      allow update: if admin() && validMember() && (memberEmail != email() || request.resource.data.role == 'admin');
+      allow delete: if admin() && memberEmail != email();
+    }
+
+    // ---- config ----
+    match /config/access {
+      allow read: if admin();
+      allow create, update: if admin() && request.resource.data.keys().hasOnly(['passphrase'])
+        && request.resource.data.passphrase is string
+        && request.resource.data.passphrase.size() >= 4 && request.resource.data.passphrase.size() <= 100;
+      allow delete: if false;
+    }
+    match /config/test {
+      allow read: if member() || validSession();
+      allow create, update: if admin() && validSettings(request.resource.data) && validStamp(request.resource.data);
+      allow delete: if false;
+    }
+    function validSettings(d) {
+      return d.keys().hasOnly(['title', 'count', 'passMark', 'minutes', 'review', 'cohort', 'intro', 'updatedAt', 'updatedBy'])
+        && d.title is string && d.title.size() >= 1 && d.title.size() <= 100
+        && d.count is int && d.count >= 1 && d.count <= 100
+        && d.passMark is int && d.passMark >= 1 && d.passMark <= 100
+        && d.minutes is int && d.minutes >= 1 && d.minutes <= 240
+        && d.review in ['score', 'marks', 'full']
+        && d.cohort is string && d.cohort.size() <= 100
+        && d.intro is string && d.intro.size() <= 3000
+        && d.updatedAt is number;
+    }
+
+    // ---- MO logins ----
+    match /sessions/{uid} {
+      allow get: if (request.auth != null && request.auth.uid == uid) || member();
+      allow list: if member();
+      allow create: if anonymous() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['name', 'pass', 'at'])
+        && request.resource.data.name is string && request.resource.data.name.size() >= 1 && request.resource.data.name.size() <= 80
+        && request.resource.data.at is number
+        && exists(/databases/$(database)/documents/config/access)
+        && request.resource.data.pass == passphrase();
+      allow update: if false;
+      allow delete: if member();
+    }
+
+    // ---- questions ----
+    // drafts and archived questions may be unfinished (blank options, answer -1); active ones must be complete
+    function validOption(o, complete) {
+      return o is string && o.size() <= 500 && (!complete || o.size() >= 1);
+    }
+    function validQuestion(d) {
+      return d.stem is string && d.stem.size() >= 1 && d.stem.size() <= 2000
+        && d.status in ['draft', 'active', 'archived']
+        && d.options is list && d.options.size() == 4
+        && validOption(d.options[0], d.status == 'active') && validOption(d.options[1], d.status == 'active')
+        && validOption(d.options[2], d.status == 'active') && validOption(d.options[3], d.status == 'active')
+        && d.answer is int && d.answer >= (d.status == 'active' ? 0 : -1) && d.answer <= 3
+        && d.explain is string && d.explain.size() <= 5000
+        && d.topic is string && d.topic.size() <= 100
+        && d.image is string && d.image.size() <= 400000
+        && d.status in ['draft', 'active', 'archived']
+        && d.rev is int && d.rev >= 1
+        && d.updatedAt is number
+        && validStamp(d);
+    }
+    match /questions/{id} {
+      allow get: if member() || (validSession() && resource.data.status == 'active');
+      allow list: if member() || (validSession() && resource.data.status == 'active');
+      allow create: if editor()
+        && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'updatedAt', 'updatedBy'])
+        && validQuestion(request.resource.data) && request.resource.data.rev == 1;
+      // optimistic concurrency: a save must be exactly one revision ahead of what is stored
+      allow update: if editor()
+        && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'updatedAt', 'updatedBy'])
+        && validQuestion(request.resource.data) && request.resource.data.rev == resource.data.rev + 1;
+      allow delete: if admin();
+
+      // a copy of every save: permanent
+      match /history/{h} {
+        allow read: if member();
+        allow create: if editor()
+          && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'updatedAt', 'updatedBy', 'savedAt'])
+          && request.resource.data.savedAt is number
+          && validQuestion(request.resource.data);
+        allow update, delete: if false;
+      }
+    }
+
+    // ---- attempts ----
+    function validItem(i) {
+      return i is map && i.keys().hasOnly(['qid', 'stem', 'options', 'answer', 'topic', 'explain', 'picked']);
+    }
+    match /attempts/{id} {
+      allow read: if member() || (request.auth != null && resource.data.uid == request.auth.uid);
+      allow create: if validSession()
+        && request.resource.data.keys().hasOnly(['uid', 'name', 'cohort', 'startedAt', 'submittedAt', 'durationSec', 'items', 'settings', 'score', 'total', 'pass'])
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.name == get(sessionPath()).data.name
+        && request.resource.data.cohort is string && request.resource.data.cohort.size() <= 100
+        && request.resource.data.startedAt is number && request.resource.data.submittedAt is number
+        && request.resource.data.durationSec is number
+        && request.resource.data.items is list && request.resource.data.items.size() >= 1 && request.resource.data.items.size() <= 100
+        && validItem(request.resource.data.items[0])
+        && request.resource.data.settings is map
+        && request.resource.data.settings.keys().hasOnly(['count', 'passMark', 'minutes'])
+        && request.resource.data.score is int && request.resource.data.total is int
+        && request.resource.data.pass is bool;
+      allow update: if false;
+      allow delete: if admin();
+    }
+  }
+}
