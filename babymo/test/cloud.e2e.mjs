@@ -121,8 +121,25 @@ async function fillQuestion(p, { stem, options, answer, status, topic }) {
   await p.fill('#stem', stem);
   if (options) for (let k = 0; k < 4; k++) await p.fill('#opt' + k, options[k]);
   if (answer != null) await p.click(`label[for=ans${answer}]`);
-  if (topic) await p.fill('#topic', topic);
-  if (status) await p.locator(`input[name=status][value=${status}]`).check({ force: true });
+  if (topic) { await p.selectOption('#addtopic', '__new'); await p.fill('#addtopic-new', topic); await p.click('#addtopic-add'); await p.locator('.tchip', { hasText: topic }).waitFor(); }
+  if (status) await p.locator(`input[name=status][value=${status}]`).dispatchEvent('click');
+}
+
+// open the empty question editor; after a save the app returns to the list a moment later, so retry until the editor stays
+async function openNewQuestion(p) {
+  for (let i = 0; i < 6; i++) {
+    await p.goto(URL_EMU + '#/faculty'); await p.waitForTimeout(300);
+    await p.goto(URL_EMU + '#/faculty/q/new'); await p.waitForTimeout(500);
+    if (await p.locator('#stem').count()) return;
+  }
+}
+
+async function openQuestion(p, id) {
+  for (let i = 0; i < 6; i++) {
+    await p.goto(URL_EMU + '#/faculty'); await p.waitForTimeout(300);
+    await p.goto(URL_EMU + '#/faculty/q/' + id); await p.waitForTimeout(500);
+    if (await p.locator('#stem').count()) return;
+  }
 }
 
 try {
@@ -209,7 +226,7 @@ try {
     assert.match(t, /Seed question 1/); assert.match(t, /SECRET DRAFT/);   // faculty see the draft
   });
   await step('create an unfinished question as a draft', async () => {
-    await page.goto(URL_EMU + '#/faculty/q/new');
+    await openNewQuestion(page);
     await fillQuestion(page, { stem: 'Draft only: half written question', status: 'draft' });
     await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#qf button[type=submit]'); await toastText(page, /Saved/);
     const q = await byStem('Draft only: half written question');
@@ -217,14 +234,14 @@ try {
     assert.equal((await docs(`questions/${q.id}/history`)).length, 1); ids.draft = q.id;
   });
   await step('an incomplete question cannot be saved as active (client check)', async () => {
-    await page.goto(URL_EMU + '#/faculty/q/new');
+    await openNewQuestion(page);
     await fillQuestion(page, { stem: 'Not finished', status: 'active' });
     await page.click('#qf button[type=submit]');
     await page.locator('#qerr:not([hidden])').waitFor();
     assert.equal(await byStem('Not finished'), undefined);
   });
   await step('create a complete question as active', async () => {
-    await page.goto(URL_EMU + '#/faculty/q/new');
+    await openNewQuestion(page);
     await fillQuestion(page, { stem: 'New active: which is the antidote to heparin?', options: ['Protamine', 'Vitamin K', 'Naloxone', 'Flumazenil'], answer: 0, status: 'active', topic: 'Drugs' });
     await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#qf button[type=submit]'); await toastText(page, /in the test/);
     const q = await byStem('New active: which is the antidote to heparin?');
@@ -232,20 +249,20 @@ try {
   });
   await step('edit twice: rev 3, three history entries', async () => {
     for (const [n, stem] of [[2, 'New active (edit 1): which is the antidote to heparin?'], [3, 'New active (edit 2): which is the antidote to heparin?']]) {
-      await page.goto(URL_EMU + '#/faculty/q/' + ids.active); await page.locator('#stem').waitFor();
+      await openQuestion(page, ids.active); await page.locator('#stem').waitFor();
       await page.waitForFunction(() => document.querySelector('#stem').value.startsWith('New active'));
       await page.fill('#stem', stem); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#qf button[type=submit]'); await toastText(page, /Saved/);
       const q = await getD('questions', ids.active); assert.equal(q.rev, n); assert.equal(q.stem, stem);
     }
     const h = await docs(`questions/${ids.active}/history`); assert.equal(h.length, 3); assert.deepEqual(h.map(x => x.rev).sort(), [1, 2, 3]);
     // the history panel in the editor lists them
-    await page.goto(URL_EMU + '#/faculty/q/' + ids.active); await page.locator('#hist summary').click();
+    await openQuestion(page, ids.active); await page.locator('#hist summary').click();
     await page.waitForFunction(() => document.querySelectorAll('#histbody li').length === 3);
   });
   await step('two tabs: stale revision shows the conflict dialog; keep mine saves on top', async () => {
     const A = page, B = await newPage(facCtx);
-    await A.goto(URL_EMU + '#/faculty/q/' + ids.active); await stemIs(A, 'New active (edit 2)');
-    await B.goto(URL_EMU + '#/faculty/q/' + ids.active); await stemIs(B, 'New active (edit 2)');
+    await openQuestion(A, ids.active); await stemIs(A, 'New active (edit 2)');
+    await openQuestion(B, ids.active); await stemIs(B, 'New active (edit 2)');
     await B.fill('#stem', 'Tab B wins: which is the antidote to heparin?'); await B.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await B.click('#qf button[type=submit]'); await toastText(B, /Saved/);
     assert.equal((await getD('questions', ids.active)).rev, 4);
     await A.fill('#stem', 'Tab A mine: which is the antidote to heparin?'); await A.click('#qf button[type=submit]');
@@ -256,8 +273,8 @@ try {
     const q = await getD('questions', ids.active); assert.equal(q.stem.startsWith('Tab A mine'), true); assert.equal(q.rev, 5);
     assert.equal((await docs(`questions/${ids.active}/history`)).length, 5, "B's version is kept in the history");
     // and the other way: choose "load theirs"
-    await B.goto(URL_EMU + '#/faculty/q/' + ids.active); await B.reload(); await stemIs(B, 'Tab A mine');
-    await A.goto(URL_EMU + '#/faculty/q/' + ids.active); await stemIs(A, 'Tab A mine');
+    await openQuestion(B, ids.active); await B.reload(); await stemIs(B, 'Tab A mine');
+    await openQuestion(A, ids.active); await stemIs(A, 'Tab A mine');
     await B.fill('#stem', 'Tab B again: which is the antidote to heparin?'); await B.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await B.click('#qf button[type=submit]'); await toastText(B, /Saved/);
     await A.fill('#stem', 'Tab A loses: which is the antidote to heparin?'); await A.click('#qf button[type=submit]');
     await A.locator('dialog[open]').waitFor(); await A.click('dialog button[value=no]');
@@ -288,7 +305,7 @@ B) two
 C) three
 D) four`);
     await page.click('#read'); await page.locator('#addall').waitFor();
-    await page.locator('input[name=as][value=active]').check({ force: true }); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#addall'); await toastText(page, /3 added/);
+    await page.locator('input[name=as][value=active]').dispatchEvent('click'); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#addall'); await toastText(page, /3 added/);
     const a = await byStem('Which drug is first-line for anaphylaxis?'), b2 = await byStem('Which gas is used for inhalational induction in children?'), c = await byStem('A pasted question with no answer given?');
     assert.ok(a && b2 && c); assert.equal(a.status, 'active'); assert.equal(a.answer, 0); assert.equal(a.explain, 'Adrenaline first, always.');
     assert.equal(b2.status, 'active'); assert.equal(b2.answer, 1); assert.equal(c.status, 'draft'); assert.equal(c.answer, -1);
@@ -308,12 +325,13 @@ D) four`);
     const n = await byStem('CSV new question: which is a vasopressor?'); assert.ok(n); assert.equal(n.status, 'active'); assert.equal(n.answer, 0);
   });
   await step('delete a question (admin) leaves its history', async () => {
-    await page.goto(URL_EMU + '#/faculty/q/' + ids.draft); await page.locator('#del').waitFor();
+    await openQuestion(page, ids.draft); await page.locator('#del').waitFor();
     await page.click('#del'); await page.locator('dialog[open]').waitFor(); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('dialog button[value=yes]'); await toastText(page, /Deleted/);
     assert.equal(await getD('questions', ids.draft), null); assert.equal((await docs(`questions/${ids.draft}/history`)).length, 1);
   });
   await step('results page lists the MO\'s attempt; attempt page shows the answers', async () => {
-    await page.goto(URL_EMU + '#/faculty/results'); await page.locator('table').waitFor();
+    await page.waitForTimeout(800);   // the editor returns to the list a moment after a delete
+    await page.goto(URL_EMU + '#/faculty/results'); await page.locator('table').waitFor(); await page.waitForTimeout(300);
     const t = await text(page, 'table'); assert.match(t, /Dr Test Person/); assert.match(t, /4\/5/); assert.match(t, /pass/i); assert.match(t, /Oct 2026/);
     await page.click('table a'); await page.locator('.review').waitFor();
     assert.equal(await page.locator('.review li').count(), 5);
@@ -323,7 +341,7 @@ D) four`);
   await step('settings: save (admin); Faculty page: add and remove a faculty member', async () => {
     await page.goto(URL_EMU + '#/faculty/settings'); await page.locator('#sf').waitFor();
     assert.equal(await page.inputValue('#p-pass'), PASS);
-    await page.fill('#s-cohort', 'Nov 2026 intake'); await page.locator('input[name=review][value=marks]').check({ force: true }); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#sf button[type=submit]'); await toastText(page, /Saved/);
+    await page.fill('#s-cohort', 'Nov 2026 intake'); await page.locator('input[name=review][value=marks]').dispatchEvent('click'); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#sf button[type=submit]'); await toastText(page, /Saved/);
     const s = await getD('config', 'test'); assert.equal(s.cohort, 'Nov 2026 intake'); assert.equal(s.review, 'marks'); assert.equal(s.updatedBy.email, ADMIN); assert.equal(s.count, 5);
     await page.locator('#sf').waitFor();
     await page.goto(URL_EMU + '#/faculty/people'); await page.locator('#mf').waitFor();
@@ -638,6 +656,41 @@ D) four`);
       assert.equal(sub.ok, true, JSON.stringify(sub)); assert.equal((await getD('attempts', 'att-no-2')).attemptNo, 2);
       const none = await run(mo1, 'submitAttempt', { id: 'att-no-none', name: 'Dr Limit', cohort: 'Oct 2026', startedAt: 1, submittedAt: 2, durationSec: 1, items: [item], settings: { count: 1, passMark: 80, minutes: 5 }, score: 1, total: 1, pass: true });
       assert.equal(none.ok, true); assert.equal('attemptNo' in (await getD('attempts', 'att-no-none')), false);
+    });
+    await step('topics: getTopics is [] at first, saveTopics cleans the list, MOs cannot read or write it', async () => {
+      assert.deepEqual((await run(fac, 'getTopics')).v, []);
+      const long = 'x'.repeat(80);
+      const sv = await run(fac, 'saveTopics', ['  Airway ', 'airway', 'Drugs', '', '   ', 'DRUGS', 'Regional', long], { email: EDITOR, name: 'editor' });
+      assert.equal(sv.ok, true, JSON.stringify(sv)); assert.deepEqual(sv.v, ['Airway', 'Drugs', 'Regional', 'x'.repeat(60)]);
+      assert.deepEqual((await run(fac, 'getTopics')).v, ['Airway', 'Drugs', 'Regional', 'x'.repeat(60)]);
+      const st = await getD('config', 'topics'); assert.equal(st.updatedBy.email, EDITOR); assert.equal(typeof st.updatedAt, 'number');
+      assert.equal((await run(fac, 'saveTopics', ['Only one'], { email: EDITOR, name: 'e' })).ok, true);
+      assert.deepEqual((await run(fac, 'getTopics')).v, ['Only one'], 'saving replaces the list');
+      const many = Array.from({ length: 250 }, (_, i) => 'T' + i);
+      assert.equal((await run(fac, 'saveTopics', many, { email: EDITOR, name: 'e' })).v.length, 200, 'capped at 200');
+      assert.equal((await run(fac, 'saveTopics', [], { email: EDITOR, name: 'e' })).ok, true);
+      assert.deepEqual((await run(fac, 'getTopics')).v, []);
+      assert.equal((await run(mo1, 'getTopics')).code, 'permission');
+      assert.equal((await run(mo1, 'saveTopics', ['Hack'], { email: 'x@example.com', name: 'x' })).code, 'permission');
+      const ctx = await newCtx(STRANGER); const sp = await newPage(ctx); await sp.goto(BLANK);
+      assert.equal((await run(sp, 'facultySignIn')).ok, true);
+      assert.equal((await run(sp, 'getTopics')).code, 'permission');
+      assert.equal((await run(sp, 'saveTopics', ['Hack'], { email: STRANGER, name: 's' })).code, 'permission');
+      await sp.close();
+    });
+    await step('a question can hold several topics joined by "; " (up to 240 characters)', async () => {
+      const u = { email: EDITOR, name: 'editor' };
+      const base = { stem: 'Multi-topic question?', options: ['a', 'b', 'c', 'd'], answer: 1, explain: '', status: 'active' };
+      const a = await run(fac, 'saveQuestion', { ...base, topic: 'Airway; Drugs; Regional' }, u);
+      assert.equal(a.ok, true, JSON.stringify(a)); assert.equal((await getD('questions', a.v.id)).topic, 'Airway; Drugs; Regional');
+      const t240 = 'a'.repeat(240);
+      const b = await run(fac, 'saveQuestion', { ...base, stem: 'Long topic?', topic: t240 + 'zzz' }, u);
+      assert.equal(b.ok, true, JSON.stringify(b)); assert.equal((await getD('questions', b.v.id)).topic, t240, 'longer text is cut at 240');
+      const list = (await run(mo1, 'listQuestions', { activeOnly: true })).v;
+      assert.equal(list.find(x => x.stem === 'Multi-topic question?').topic, 'Airway; Drugs; Regional');
+      const item = { qid: 'q1', stem: 's', options: ['a', 'b', 'c', 'd'], answer: 0, topic: 'Airway; Drugs; ' + 'b'.repeat(200), explain: '', picked: 0 };
+      const sub = await run(mo1, 'submitAttempt', { id: 'att-topics', name: 'Dr Limit', cohort: 'Oct 2026', startedAt: 1, submittedAt: 2, durationSec: 1, items: [item], settings: { count: 1, passMark: 80, minutes: 5 }, score: 1, total: 1, pass: true });
+      assert.equal(sub.ok, true, JSON.stringify(sub)); assert.equal((await getD('attempts', 'att-topics')).items[0].topic, item.topic);
     });
     for (const p of [mo1, mo2, fac]) await p.close().catch(() => {});
     await seed();   // leave the data as the later steps expect

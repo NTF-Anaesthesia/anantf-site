@@ -43,6 +43,20 @@ a set of small modules behind one sign-in; add them as nav links, don't bend the
 - Real question text is **not** in this public repo. The bank lives in Firestore; the owner imports it from a JSON
   backup. The demo has six invented sample questions in `js/local.js`.
 
+## How a sitting is made, attempts and topics (owner, 14 Oct 2026)
+
+- A sitting is 20 questions (setting) drawn from the "In the test" bank: every **must-ask** question, then the set number of
+  **hard** ones (setting `hardCount`, default 4), then the rest at random from ordinary ones. Pass mark 80%, **2 attempts**
+  each (setting `maxAttempts`).
+- Attempts are counted per person per cohort by name (`attemptCounts/<cohort>__<name>`), when the MO taps Start. The rules
+  stop the counter going past the maximum. Faculty give another attempt from a result page (`grantAttempt`). Name spelling
+  matters; a new cohort name starts everyone fresh.
+- A question can be in several **topics**, stored as one text "A; B" in `topic` (the app uses the list `topics`). The topic
+  list (`config/topics`) lives beside the questions so topics can exist before any question uses them.
+- Faculty UI rules: choices are rows of buttons, not dropdowns (a dropdown only where the list is long and open-ended, such
+  as topics); rows of buttons and the tabs must fit on one line at phone width (the browser test checks this); several
+  questions can be ticked on the Questions page and changed together.
+
 ## Code map
 
 - `js/logic.js`: pure logic (validation, drawing a test, marking, paste parser, CSV, backup JSON, stats); tests in
