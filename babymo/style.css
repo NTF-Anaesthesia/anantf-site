@@ -100,6 +100,7 @@ pre.ex{background:var(--inset);border:1px solid var(--line);padding:.7rem;overfl
 dialog{border:1px solid var(--line-strong);padding:1.3rem;max-width:min(28rem,92vw);background:var(--paper);color:var(--ink);box-shadow:0 10px 40px rgba(39,39,34,.3)}dialog::backdrop{background:rgba(39,39,34,.5)}dialog h2{margin-top:0}
 #toast{position:fixed;left:50%;bottom:1rem;transform:translate(-50%,150%);background:var(--ink);color:var(--ivory);padding:.7rem 1.1rem;max-width:92vw;transition:transform .2s;z-index:30;pointer-events:none}#toast.on{transform:translate(-50%,0)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+@media all and (display-mode:standalone),all and (display-mode:fullscreen),all and (display-mode:minimal-ui){.ntf-header,.ntf-footer{display:none}}
 @media print{.ntf-header,.ntf-footer,.bm-bar,#banner,.row,.navrow{display:none}body.babymo{background:#fff}}
 
 /* segmented buttons (radio buttons that look like a row of buttons) */
