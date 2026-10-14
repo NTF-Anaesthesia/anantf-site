@@ -1,17 +1,20 @@
 // Shared storage for the Baby MO portal: Google sign-in for faculty, a name + passphrase for MOs, Cloud Firestore.
 // Only used when firebase-config.js has a project configured (js/store.js picks this or js/local.js).
 // Access is limited by firestore.rules. Every failure is thrown as an Error with a .code:
-// 'permission', 'offline', 'conflict', 'not-found', 'bad-passphrase', 'cancelled' or 'error'.
+// 'permission', 'offline', 'conflict', 'not-found', 'bad-passphrase', 'cancelled', 'limit' or 'error'.
 //
 // Data:
 //   members/{email}                 { role: 'admin' | 'editor', name }
 //   accessRequests/{email}          { email, name, requestedAt }         (a Google user asking to become faculty; approved or declined by faculty)
 //   config/access                   { passphrase }                       (admins only)
 //   config/test                     { title, count, passMark, minutes, review, cohort, intro, updatedAt, updatedBy }
+//   config/topics                   { list[], updatedAt, updatedBy }     (faculty only: the topics to pick from; a question's topic holds one or more joined by "; ", up to 240 characters)
 //   sessions/{uid}                  { name, pass, at }                   (an MO's login; created once, never changed)
 //   questions/{id}                  { stem, options[4], answer, explain, topic, image, status, rev, updatedAt, updatedBy }
 //   questions/{id}/history/{auto}   the same fields + savedAt            (never changed once written)
-//   attempts/{id}                   { uid, name, cohort, startedAt, submittedAt, durationSec, items[], settings, score, total, pass }
+//   attempts/{id}                   { uid, name, cohort, startedAt, submittedAt, durationSec, items[], settings, score, total, pass, attemptNo? }
+//   attemptCounts/{key}             { n, updatedAt }                     (key = <cohort-slug>__<name-key>; sittings started; an MO can only raise it by 1, up to config/test maxAttempts)
+// questions also carry optional must (bool) and level ('standard' | 'hard'); config/test optional maxAttempts (default 2) and hardCount (default 4).
 
 import { FIREBASE_CONFIG } from './firebase-config.js';
 
@@ -48,7 +51,7 @@ async function sdk() {
 const plain = o => JSON.parse(JSON.stringify(o));
 
 // ---- errors ----
-const OWN_CODES = ['permission', 'offline', 'conflict', 'not-found', 'bad-passphrase', 'cancelled', 'error'];
+const OWN_CODES = ['permission', 'offline', 'conflict', 'not-found', 'bad-passphrase', 'cancelled', 'limit', 'error'];
 function fail(e, fallback) {
   if (e && OWN_CODES.includes(e.code) && e.isMoPortal) return e;
   const c = String((e && e.code) || '').replace(/^(auth|firestore)\//, '');
@@ -318,6 +321,9 @@ export async function getSettings() {
 export async function saveSettings(s, user) {
   return guard(async () => {
     const { db, F } = await ready();
+    const extra = {};
+    if (s.maxAttempts != null) extra.maxAttempts = Math.min(10, Math.max(1, int(s.maxAttempts, 2)));
+    if (s.hardCount != null) extra.hardCount = Math.min(100, Math.max(0, int(s.hardCount, 4)));
     const doc = plain({
       title: str(s.title, 100) || 'Baby MO test',
       count: int(s.count, 20),
@@ -326,6 +332,7 @@ export async function saveSettings(s, user) {
       review: ['score', 'marks', 'full'].includes(s.review) ? s.review : 'score',
       cohort: str(s.cohort, 100),
       intro: str(s.intro, 3000),
+      ...extra,
       updatedAt: Date.now(),
       updatedBy: who(user),
     });
@@ -358,9 +365,11 @@ function questionFields(q) {
     options,
     answer: int(q.answer, 0),
     explain: str(q.explain, 5000),
-    topic: str(q.topic, 100),
+    topic: str(q.topic, 240),
     image: str(q.image, 400000),
     status: ['draft', 'active', 'archived'].includes(q.status) ? q.status : 'draft',
+    must: q.must === true,
+    level: q.level === 'hard' ? 'hard' : 'standard',
   };
 }
 
@@ -455,7 +464,7 @@ function attemptFields(a, uid, displayName) {
       stem: str(i.stem, 2000),
       options: (i.options || []).slice(0, 4).map(o => str(o, 500)),
       answer: int(i.answer, 0),
-      topic: str(i.topic, 100),
+      topic: str(i.topic, 240),
       explain: str(i.explain, 5000),
       picked: i.picked == null ? null : int(i.picked, null),
     })),
@@ -467,6 +476,7 @@ function attemptFields(a, uid, displayName) {
     score: int(a.score, 0),
     total: int(a.total, 0),
     pass: !!a.pass,
+    ...(a.attemptNo != null ? { attemptNo: Math.min(10, Math.max(1, int(a.attemptNo, 1))) } : {}),
   };
 }
 
@@ -505,5 +515,93 @@ export async function deleteAttempt(id) {
   return guard(async () => {
     const { db, F } = await ready();
     await F.deleteDoc(F.doc(db, 'attempts', id));
+  });
+}
+
+// ---- attempt counters ----
+// key = '<cohort-slug>__<name-key>' (lower-case a-z 0-9 _ -, up to 120). The count is how many sittings that MO has
+// started in the cohort; the limit is config/test maxAttempts (default 2). The rules enforce both.
+const countRef = (db, F, key) => F.doc(db, 'attemptCounts', String(key || ''));
+const countOf = snap => (snap.exists() && Number.isFinite(snap.data().n) ? snap.data().n : 0);
+
+// MO or faculty. 0 when there is no counter yet.
+export async function getAttemptCount(key) {
+  return guard(async () => {
+    const { db, F } = await ready();
+    return countOf(await F.getDoc(countRef(db, F, key)));
+  });
+}
+
+// MO: starts a sitting. Reads the count; if it has reached the limit throws code 'limit' without writing, otherwise
+// creates the counter at 1 or raises it by 1. Returns the new count.
+export async function bumpAttempt(key) {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const ref = countRef(db, F, key);
+    let result = 0;
+    await F.runTransaction(db, async tx => {
+      const cfg = await tx.get(F.doc(db, 'config', 'test'));
+      const max = cfg.exists() && Number.isInteger(cfg.data().maxAttempts) ? cfg.data().maxAttempts : 2;
+      const n = countOf(await tx.get(ref));
+      if (n >= max) throw own('limit', 'No attempts left.');
+      tx.set(ref, { n: n + 1, updatedAt: Date.now() });
+      result = n + 1;
+    });
+    return result;
+  });
+}
+
+// Faculty: give one more attempt (count down by 1, never below 0; the counter is deleted at 0).
+export async function grantAttempt(key) {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const ref = countRef(db, F, key);
+    let result = 0;
+    await F.runTransaction(db, async tx => {
+      const n = countOf(await tx.get(ref));
+      result = Math.max(0, n - 1);
+      if (result === 0) { if (n > 0) tx.delete(ref); } else tx.set(ref, { n: result, updatedAt: Date.now() });
+    });
+    return result;
+  });
+}
+
+// Faculty only ('permission' for an MO). [{ key, n }]
+export async function listAttemptCounts() {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const snap = await F.getDocs(F.collection(db, 'attemptCounts'));
+    return snap.docs.map(d => ({ key: d.id, n: countOf(d) }));
+  });
+}
+
+// ---- topics ----
+// Clean a topic list: trimmed, empties dropped, duplicates (ignoring case) dropped, 60 characters each, 200 at most.
+export function cleanTopicList(list) {
+  const seen = new Set(), out = [];
+  for (const t of Array.isArray(list) ? list : []) {
+    const v = str(t, 60).replace(/[\r\n|]+/g, ' ').trim(), k = v.toLowerCase();
+    if (v && !seen.has(k)) { seen.add(k); out.push(v); }
+    if (out.length >= 200) break;
+  }
+  return out;
+}
+
+// Faculty only ('permission' for an MO). [] when no list has been saved yet.
+export async function getTopics() {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const snap = await F.getDoc(F.doc(db, 'config', 'topics'));
+    return snap.exists() && Array.isArray(snap.data().list) ? snap.data().list : [];
+  });
+}
+
+// Faculty. Replaces the whole list; returns the cleaned list.
+export async function saveTopics(list, user) {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const clean = cleanTopicList(list);
+    await F.setDoc(F.doc(db, 'config', 'topics'), plain({ list: clean, updatedAt: Date.now(), updatedBy: who(user) }));
+    return clean;
   });
 }

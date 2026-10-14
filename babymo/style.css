@@ -10,14 +10,14 @@ body.babymo{
 .babymo a{color:var(--wine);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px}
 .babymo a:hover{color:var(--wine-hover)}
 .bm-skip{position:absolute;left:-999px;top:0;background:var(--wine);color:var(--ivory);padding:.6rem 1rem;z-index:20}.bm-skip:focus{left:0}
-/* section bar under the site header */
+/* section bar under the site header: title and sign out on one line, the tabs on one line below */
 .bm-bar{border-bottom:1px solid var(--line);background:var(--paper)}
-.bm-bar-inner{max-width:1240px;margin:0 auto;padding:.4rem 22px;display:flex;flex-wrap:wrap;gap:.25rem 1.25rem;align-items:center}
+.bm-bar-inner{max-width:1240px;margin:0 auto;padding:.3rem 14px 0;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
 .bm-title{font-family:'NTF Serif',Georgia,serif;font-size:1.25rem;letter-spacing:-.01em}
-#nav{display:flex;flex-wrap:wrap;gap:0 .25rem;margin-left:auto}
-#nav a{color:var(--ink);text-decoration:none;padding:.5rem .8rem;min-height:44px;display:inline-flex;align-items:center;font-size:15px;font-weight:500;border-bottom:2px solid transparent}
-#nav a:hover,#nav button:hover{background:#e9e5dc}
-#nav button{font:inherit;color:var(--ink2);background:none;border:0;border-bottom:2px solid transparent;padding:.5rem .8rem;min-height:44px;font-size:15px;font-weight:500;cursor:pointer}
+#who button{font:inherit;font-size:14px;font-weight:500;color:var(--ink2);background:none;border:1px solid var(--line);padding:.3rem .8rem;min-height:44px;cursor:pointer}#who button:hover{background:#e9e5dc}
+#nav{display:flex;flex-wrap:nowrap;max-width:1240px;margin:0 auto;padding:0 6px;overflow-x:auto}
+#nav a{flex:1 1 auto;color:var(--ink);text-decoration:none;padding:.5rem .3rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:500;border-bottom:2px solid transparent;white-space:nowrap}
+#nav a:hover{background:#e9e5dc}
 #nav a[aria-current]{color:var(--wine);border-bottom-color:var(--wine)}
 .babymo .demo{background:var(--warn-bg);border-bottom:1px solid var(--line);color:var(--warn-ink);padding:.4rem 22px;font-size:15px;text-align:center}
 main#app{max-width:46rem;margin:0 auto;padding:1.25rem 22px 4rem;outline:none}
@@ -32,7 +32,8 @@ main#app{max-width:46rem;margin:0 auto;padding:1.25rem 22px 4rem;outline:none}
 .stack>*+*{margin-top:.9rem}
 .row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:1.1rem 0}.row.end{justify-content:flex-end}
 .row.sticky{position:sticky;bottom:0;background:linear-gradient(rgba(247,245,239,0),var(--paper) 35%);padding:1rem 0 .6rem;margin-bottom:0}
-.babymo label{display:block;font-weight:500}.babymo label .muted{font-weight:400}
+.babymo label{display:block;font-weight:500}
+.babymo label.check{display:flex;align-items:center;gap:.5rem;min-height:44px;align-self:end;cursor:pointer}.babymo label.check input{width:1.3rem;height:1.3rem;margin:0}.babymo label .muted{font-weight:400}
 .babymo input,.babymo textarea,.babymo select{display:block;width:100%;font:inherit;padding:.6rem .7rem;margin-top:.3rem;border:1px solid var(--control);background:var(--ivory);color:var(--ink);min-height:44px}
 .babymo textarea{resize:vertical}
 .babymo input[type=radio],.babymo input[type=checkbox]{display:inline-block;width:auto;min-height:0;margin:0 .5rem 0 0;accent-color:var(--wine)}
@@ -84,7 +85,7 @@ main#app{max-width:46rem;margin:0 auto;padding:1.25rem 22px 4rem;outline:none}
 .qlist a{display:block;padding:.8rem .5rem;text-decoration:none;color:var(--ink)}.qlist a:hover{background:rgba(233,229,220,.5)}
 .qs{display:block;margin-top:.25rem}.qm{display:block;color:var(--muted);font-size:15px;margin-top:.25rem}
 .badge{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;padding:.05rem .5rem;margin-right:.3rem;border:1px solid var(--line-strong)}
-.badge.active{background:var(--ok-bg);color:#173f27}.badge.draft{background:var(--warn-bg);color:var(--warn-ink)}.badge.archived{background:var(--inset);color:var(--ink2)}.badge.bad{background:var(--bad-bg);color:#7a1a10}
+.badge.active{background:var(--ok-bg);color:#173f27}.badge.draft{background:var(--warn-bg);color:var(--warn-ink)}.badge.archived{background:var(--inset);color:var(--ink2)}.badge.must{background:var(--blush);color:var(--wine);border-color:var(--wine)}.badge.hard{background:var(--ink);color:var(--ivory);border-color:var(--ink)}.badge.bad{background:var(--bad-bg);color:#7a1a10}
 .arow{display:flex;align-items:center;gap:.5rem;margin-top:.5rem}.arow input[type=radio]{width:1.4rem;height:1.4rem;margin:0;flex:none}.arow .ltr{cursor:pointer;margin:0}.arow input:not([type=radio]){margin:0;flex:1}
 .answers{border:1px solid var(--line);padding:.5rem .8rem .8rem;background:var(--paper)}.answers legend{font-weight:500;padding:0 .3rem}
 .two,.three{display:grid;gap:.8rem;grid-template-columns:1fr}@media(min-width:34rem){.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr)}}
@@ -99,3 +100,31 @@ dialog{border:1px solid var(--line-strong);padding:1.3rem;max-width:min(28rem,92
 #toast{position:fixed;left:50%;bottom:1rem;transform:translate(-50%,150%);background:var(--ink);color:var(--ivory);padding:.7rem 1.1rem;max-width:92vw;transition:transform .2s;z-index:30;pointer-events:none}#toast.on{transform:translate(-50%,0)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 @media print{.ntf-header,.ntf-footer,.bm-bar,#banner,.row,.navrow{display:none}body.babymo{background:#fff}}
+
+/* segmented buttons (radio buttons that look like a row of buttons) */
+.seg{border:0;padding:0;margin:0;min-width:0}.seg legend{padding:0;font-weight:500;margin-bottom:.3rem}
+.segrow{display:flex;flex-wrap:wrap}
+.segopt{position:relative;margin:0 0 0 -1px;font-weight:500}.segopt:first-child{margin-left:0}
+.segopt input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
+.segopt span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:48px;padding:.5rem 1.1rem;border:1px solid var(--wine);color:var(--wine);background:transparent;font-size:15px}
+.segopt input:checked+span{background:var(--wine);color:var(--ivory)}
+.segopt:hover input:not(:checked)+span{background:var(--blush)}
+.segopt:has(input:focus-visible) span{outline:2px solid var(--wine);outline-offset:4px;position:relative;z-index:1}
+/* select several */
+.babymo label.selrow{display:flex;gap:.8rem;align-items:flex-start;padding:.8rem .5rem;font-weight:400;cursor:pointer}.selrow:hover{background:rgba(233,229,220,.5)}
+.selrow input{width:1.5rem;height:1.5rem;margin:.2rem 0 0;flex:none}.selbody{flex:1;display:block}
+.bulkbar{position:sticky;top:0;z-index:5;background:var(--inset);border:1px solid var(--line-strong);padding:.2rem .9rem;margin:1rem 0}.bulkbar .row{margin:.5rem 0}
+
+/* rows of buttons stay on one line, even on a phone */
+.row.one{flex-wrap:nowrap;gap:.4rem}.row.one>*{flex:1 1 auto;min-width:0;padding-left:.35rem;padding-right:.35rem;font-size:14px;white-space:nowrap;text-align:center}
+.row.one>b,.row.one>span.muted{flex:0 0 auto;padding:0 .2rem}
+.chips{flex-wrap:nowrap;gap:.3rem}.chip{flex:1 1 auto;justify-content:center;padding:.35rem .4rem;font-size:14px;white-space:nowrap;min-width:0}
+.segrow{flex-wrap:nowrap;width:100%}.segopt{flex:1 1 auto}.segopt span{padding:.5rem .35rem}
+
+/* topics */
+.topicbox{border:1px solid var(--line);padding:.6rem .8rem .8rem;background:var(--paper)}
+.tchips{list-style:none;display:flex;flex-wrap:wrap;gap:.4rem;padding:0;margin:.5rem 0}
+.tchip{font:inherit;font-size:15px;min-height:44px;padding:.3rem .8rem;background:var(--blush);color:var(--wine);border:1px solid var(--wine);cursor:pointer}.tchip:hover{background:var(--wine);color:var(--ivory)}
+.tpick{display:flex;flex-direction:column;gap:.5rem}.tpick select{margin-top:0}
+.tnew:not([hidden]){display:flex;gap:.4rem}.tnew input{margin-top:0;flex:1}.tnew .btn{flex:none}
+#tf input{margin:0;flex:2 1 auto}

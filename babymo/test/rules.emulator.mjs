@@ -264,6 +264,159 @@ await t('editor cannot delete an attempt', assertFails(deleteDoc(doc(edi, 'attem
 await t('MO cannot delete own attempt', assertFails(deleteDoc(doc(mo, 'attempts', 'a-mo'))));
 await t('admin deletes an attempt', assertSucceeds(deleteDoc(doc(adm, 'attempts', 'a-mo'))));
 
+// must / level on questions (both optional: old documents without them stay valid)
+const hq = (extra = {}) => ({ ...q(EDITOR), ...extra });
+await t('question without must/level still saves (old document)', assertSucceeds(setDoc(doc(edi, 'questions', 'ml-old'), q(EDITOR))));
+await t('question with must true', assertSucceeds(setDoc(doc(edi, 'questions', 'ml-1'), hq({ must: true }))));
+await t('question with level hard', assertSucceeds(setDoc(doc(edi, 'questions', 'ml-2'), hq({ level: 'hard' }))));
+await t('question with must false and level standard', assertSucceeds(setDoc(doc(edi, 'questions', 'ml-3'), hq({ must: false, level: 'standard' }))));
+await t('question with must as a string', assertFails(setDoc(doc(edi, 'questions', 'ml-x'), hq({ must: 'true' }))));
+await t('question with must as a number', assertFails(setDoc(doc(edi, 'questions', 'ml-x'), hq({ must: 1 }))));
+await t('question with level easy', assertFails(setDoc(doc(edi, 'questions', 'ml-x'), hq({ level: 'easy' }))));
+await t('question with level as a number', assertFails(setDoc(doc(edi, 'questions', 'ml-x'), hq({ level: 2 }))));
+await t('question with an unknown extra field still refused', assertFails(setDoc(doc(edi, 'questions', 'ml-x'), hq({ must: true, weight: 3 }))));
+await t('update adds must/level to an old question', assertSucceeds(setDoc(doc(edi, 'questions', 'ml-old'), hq({ rev: 2, must: true, level: 'hard' }))));
+await t('update with a bad level refused', assertFails(setDoc(doc(edi, 'questions', 'ml-old'), hq({ rev: 3, level: 'medium' }))));
+await t('history accepts must/level', assertSucceeds(addDoc(collection(edi, 'questions', 'ml-old', 'history'), { ...hq({ rev: 2, must: true, level: 'hard' }), savedAt: 6 })));
+await t('history refuses a bad must', assertFails(addDoc(collection(edi, 'questions', 'ml-old', 'history'), { ...hq({ must: 'yes' }), savedAt: 6 })));
+await t('MO reads an active must/hard question', assertSucceeds(getDoc(doc(mo, 'questions', 'ml-1'))));
+await t('MO lists active questions including must/hard ones', assertSucceeds(getDocs(active(mo))));
+await t('MO still reads an old active question without the fields', assertSucceeds(getDoc(doc(mo, 'questions', 'q-active'))));
+await t('MO cannot read a draft must question', assertFails(getDoc(doc(mo, 'questions', 'ml-d'))));
+await t('batch of questions with must/level', assertSucceeds((async () => {
+  const b = writeBatch(edi);
+  for (let i = 0; i < 3; i++) { b.set(doc(edi, 'questions', 'mlb' + i), hq({ must: i === 0, level: i === 1 ? 'hard' : 'standard' })); b.set(doc(collection(edi, 'questions', 'mlb' + i, 'history')), { ...hq({ must: i === 0 }), savedAt: 5 }); }
+  await b.commit();
+})()));
+
+// new settings fields: maxAttempts (1..10) and hardCount (0..100), both optional
+await t('settings with maxAttempts and hardCount', assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: 2, hardCount: 4 }))));
+await t('settings without them still valid (old document)', assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN))));
+await t('maxAttempts 1 and 10 ok', assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: 1 }))));
+await t('maxAttempts 10 ok', assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: 10 }))));
+await t('maxAttempts 0 refused', assertFails(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: 0 }))));
+await t('maxAttempts 11 refused', assertFails(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: 11 }))));
+await t('maxAttempts fractional refused', assertFails(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: 1.5 }))));
+await t('maxAttempts string refused', assertFails(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: '2' }))));
+await t('hardCount 0 and 100 ok', assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { hardCount: 0 }))));
+await t('hardCount 100 ok', assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { hardCount: 100 }))));
+await t('hardCount -1 refused', assertFails(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { hardCount: -1 }))));
+await t('hardCount 101 refused', assertFails(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { hardCount: 101 }))));
+await t('hardCount fractional refused', assertFails(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { hardCount: 2.5 }))));
+await t('editor cannot save the new settings', assertFails(setDoc(doc(edi, 'config', 'test'), settings(EDITOR, { maxAttempts: 3, hardCount: 4 }))));
+await t('MO reads settings with the new fields', (async () => {
+  await assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: 3, hardCount: 4 })));
+  const s = await assertSucceeds(getDoc(doc(mo, 'config', 'test')));
+  if (s.data().maxAttempts !== 3 || s.data().hardCount !== 4) throw new Error('fields missing');
+})());
+
+// attemptNo on attempts (optional, 1..10)
+await t('attempt with attemptNo 1', assertSucceeds(setDoc(doc(mo, 'attempts', 'an-1'), att('mo-ok', { attemptNo: 1 }))));
+await t('attempt with attemptNo 10', assertSucceeds(setDoc(doc(mo, 'attempts', 'an-10'), att('mo-ok', { attemptNo: 10 }))));
+await t('attempt with attemptNo 0 refused', assertFails(setDoc(doc(mo, 'attempts', 'an-x'), att('mo-ok', { attemptNo: 0 }))));
+await t('attempt with attemptNo 11 refused', assertFails(setDoc(doc(mo, 'attempts', 'an-x'), att('mo-ok', { attemptNo: 11 }))));
+await t('attempt with attemptNo as a string refused', assertFails(setDoc(doc(mo, 'attempts', 'an-x'), att('mo-ok', { attemptNo: '1' }))));
+await t('attempt with attemptNo fractional refused', assertFails(setDoc(doc(mo, 'attempts', 'an-x'), att('mo-ok', { attemptNo: 1.5 }))));
+
+// attemptCounts: an MO may only create at 1 and raise by exactly 1 up to maxAttempts; faculty set or delete
+const K = 'cohort-2026__dr-mo', cnt = (n, extra = {}) => ({ n, updatedAt: 9, ...extra });
+await env.withSecurityRulesDisabled(ctx => setDoc(doc(ctx.firestore(), 'config', 'test'), settings(ADMIN, { maxAttempts: 2 })));
+await t('MO creates a counter at 1', assertSucceeds(setDoc(doc(mo, 'attemptCounts', K), cnt(1))));
+await t('MO reads own counter', assertSucceeds(getDoc(doc(mo, 'attemptCounts', K))));
+await t('another MO reads a counter (by key)', assertSucceeds(getDoc(doc(moOther, 'attemptCounts', K))));
+await t('MO cannot list all counters (only get by key)', assertFails(getDocs(collection(mo, 'attemptCounts'))));
+await t('MO cannot create at 2', assertFails(setDoc(doc(mo, 'attemptCounts', 'k-two'), cnt(2))));
+await t('MO cannot create at 0', assertFails(setDoc(doc(mo, 'attemptCounts', 'k-zero'), cnt(0))));
+await t('MO cannot create with an extra field', assertFails(setDoc(doc(mo, 'attemptCounts', 'k-extra'), cnt(1, { who: 'me' }))));
+await t('MO cannot create without updatedAt', assertFails(setDoc(doc(mo, 'attemptCounts', 'k-nots'), { n: 1 })));
+await t('MO cannot create with n as a string', assertFails(setDoc(doc(mo, 'attemptCounts', 'k-str'), cnt('1'))));
+await t('MO cannot skip: 1 to 3 refused', assertFails(setDoc(doc(mo, 'attemptCounts', K), cnt(3))));
+await t('MO cannot rewrite the same value', assertFails(setDoc(doc(mo, 'attemptCounts', K), cnt(1))));
+await t('MO raises 1 to 2', assertSucceeds(setDoc(doc(mo, 'attemptCounts', K), cnt(2))));
+await t('MO cannot lower 2 to 1', assertFails(setDoc(doc(mo, 'attemptCounts', K), cnt(1))));
+await t('MO cannot lower 2 to 0', assertFails(setDoc(doc(mo, 'attemptCounts', K), cnt(0))));
+await t('MO cannot go beyond maxAttempts (2 to 3)', assertFails(setDoc(doc(mo, 'attemptCounts', K), cnt(3))));
+await t('MO cannot delete a counter', assertFails(deleteDoc(doc(mo, 'attemptCounts', K))));
+await t('maxAttempts raised to 3 lets the MO go to 3', (async () => {
+  await assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN, { maxAttempts: 3 })));
+  await assertSucceeds(setDoc(doc(mo, 'attemptCounts', K), cnt(3)));
+})());
+await t('MO cannot go to 4 with maxAttempts 3', assertFails(setDoc(doc(mo, 'attemptCounts', K), cnt(4))));
+await t('with no maxAttempts the limit is 2', (async () => {
+  await assertSucceeds(setDoc(doc(adm, 'config', 'test'), settings(ADMIN)));
+  await assertSucceeds(setDoc(doc(moOther, 'attemptCounts', 'k-def'), cnt(1)));
+  await assertSucceeds(setDoc(doc(moOther, 'attemptCounts', 'k-def'), cnt(2)));
+  await assertFails(setDoc(doc(moOther, 'attemptCounts', 'k-def'), cnt(3)));
+})());
+await t('old-passphrase MO cannot create a counter', assertFails(setDoc(doc(moOld, 'attemptCounts', 'k-old'), cnt(1))));
+await t('old-passphrase MO cannot read a counter', assertFails(getDoc(doc(moOld, 'attemptCounts', K))));
+await t('MO without session cannot create a counter', assertFails(setDoc(doc(moNoSession, 'attemptCounts', 'k-nos'), cnt(1))));
+await t('MO without session cannot read a counter', assertFails(getDoc(doc(moNoSession, 'attemptCounts', K))));
+await t('signed out cannot read a counter', assertFails(getDoc(doc(nobody, 'attemptCounts', K))));
+await t('signed out cannot create a counter', assertFails(setDoc(doc(nobody, 'attemptCounts', 'k-out'), cnt(1))));
+await t('stranger (Google, not faculty) cannot read a counter', assertFails(getDoc(doc(stranger, 'attemptCounts', K))));
+await t('stranger cannot create a counter', assertFails(setDoc(doc(stranger, 'attemptCounts', 'k-str2'), cnt(1))));
+await t('key with capital letters refused', assertFails(setDoc(doc(mo, 'attemptCounts', 'Cohort__Mo'), cnt(1))));
+await t('key with a space refused', assertFails(setDoc(doc(mo, 'attemptCounts', 'a b'), cnt(1))));
+await t('key with a dot refused', assertFails(setDoc(doc(mo, 'attemptCounts', 'a.b'), cnt(1))));
+await t('key of 120 characters ok', assertSucceeds(setDoc(doc(mo, 'attemptCounts', 'a'.repeat(120)), cnt(1))));
+await t('key of 121 characters refused', assertFails(setDoc(doc(mo, 'attemptCounts', 'a'.repeat(121)), cnt(1))));
+await t('key with underscores and dashes ok', assertSucceeds(setDoc(doc(moOther, 'attemptCounts', 'c-1__dr_mo-2'), cnt(1))));
+await t('editor sets a counter to any value', assertSucceeds(setDoc(doc(edi, 'attemptCounts', K), cnt(7))));
+await t('editor sets a counter to 0', assertSucceeds(setDoc(doc(edi, 'attemptCounts', K), cnt(0))));
+await t('editor cannot set above 10', assertFails(setDoc(doc(edi, 'attemptCounts', K), cnt(11))));
+await t('editor cannot set below 0', assertFails(setDoc(doc(edi, 'attemptCounts', K), cnt(-1))));
+await t('editor cannot add a field to a counter', assertFails(setDoc(doc(edi, 'attemptCounts', K), cnt(1, { x: 1 }))));
+await t('editor cannot use a bad key', assertFails(setDoc(doc(edi, 'attemptCounts', 'Bad Key'), cnt(1))));
+await t('editor creates a counter', assertSucceeds(setDoc(doc(edi, 'attemptCounts', 'k-fac'), cnt(2))));
+await t('editor reads and lists counters', assertSucceeds(getDocs(collection(edi, 'attemptCounts'))));
+await t('editor deletes a counter (another attempt)', assertSucceeds(deleteDoc(doc(edi, 'attemptCounts', K))));
+await t('MO can start again after the counter is deleted', assertSucceeds(setDoc(doc(mo, 'attemptCounts', K), cnt(1))));
+await t('admin deletes a counter', assertSucceeds(deleteDoc(doc(adm, 'attemptCounts', 'k-fac'))));
+await t('ODD (mistyped role) cannot set a counter', assertFails(setDoc(doc(odd, 'attemptCounts', K), cnt(0))));
+await t('stranger cannot delete a counter', assertFails(deleteDoc(doc(stranger, 'attemptCounts', K))));
+await t('signed out cannot delete a counter', assertFails(deleteDoc(doc(nobody, 'attemptCounts', K))));
+await t('no config/test: MO cannot raise a counter', (async () => {
+  await env.withSecurityRulesDisabled(async ctx => { await deleteDoc(doc(ctx.firestore(), 'config', 'test')); });
+  await assertFails(setDoc(doc(mo, 'attemptCounts', K), cnt(2)));
+  await env.withSecurityRulesDisabled(ctx => setDoc(doc(ctx.firestore(), 'config', 'test'), settings(ADMIN)));
+})());
+
+// topics: a question's topic may hold several joined by "; " (up to 240 characters); config/topics is the faculty list
+await t('question topic of 240 characters', assertSucceeds(setDoc(doc(edi, 'questions', 'tp-240'), q(EDITOR, { topic: 'a'.repeat(240) }))));
+await t('question topic of 241 characters refused', assertFails(setDoc(doc(edi, 'questions', 'tp-241'), q(EDITOR, { topic: 'a'.repeat(241) }))));
+await t('question with several topics joined', assertSucceeds(setDoc(doc(edi, 'questions', 'tp-many'), q(EDITOR, { topic: 'Airway; Drugs; Regional' }))));
+await t('history topic of 240 ok, 241 refused', (async () => {
+  await assertSucceeds(addDoc(collection(edi, 'questions', 'tp-240', 'history'), { ...q(EDITOR, { topic: 'a'.repeat(240) }), savedAt: 6 }));
+  await assertFails(addDoc(collection(edi, 'questions', 'tp-240', 'history'), { ...q(EDITOR, { topic: 'a'.repeat(241) }), savedAt: 6 }));
+})());
+const tops = (email, list, extra = {}) => ({ list, updatedAt: 3, updatedBy: by(email), ...extra });
+const names = n => Array.from({ length: n }, (_, i) => 'Topic ' + i);
+await t('editor saves the topic list', assertSucceeds(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['Airway', 'Drugs']))));
+await t('admin saves the topic list', assertSucceeds(setDoc(doc(adm, 'config', 'topics'), tops(ADMIN, ['Airway', 'Drugs', 'Regional']))));
+await t('empty topic list ok', assertSucceeds(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, []))));
+for (const n of [1, 2, 3, 5, 9, 64, 65, 100, 128, 130, 200]) await t(`list of ${n} topics ok`, assertSucceeds(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, names(n)))));
+await t('201 topics refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, names(201)))));
+await t('item of 60 characters ok', assertSucceeds(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['a'.repeat(60)]))));
+await t('item of 61 characters refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['a'.repeat(61)]))));
+await t('empty item refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['Airway', '']))));
+await t('non-string item refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['Airway', 5]))));
+await t('long item deep in a 200 list refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, [...names(199), 'a'.repeat(61)]))));
+await t('long item in the middle of a 7 list refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['a', 'b', 'c', 'd'.repeat(61), 'e', 'f', 'g']))));
+await t('list that is not a list refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, 'Airway'))));
+await t('wrong updatedBy refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(ADMIN, ['Airway']))));
+await t('extra key refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['Airway'], { extra: 1 }))));
+await t('missing updatedAt refused', assertFails(setDoc(doc(edi, 'config', 'topics'), { list: ['Airway'], updatedBy: by(EDITOR) })));
+await t('members read the topic list', assertSucceeds(getDoc(doc(edi, 'config', 'topics'))));
+await t('MO cannot read the topic list', assertFails(getDoc(doc(mo, 'config', 'topics'))));
+await t('MO cannot write the topic list', assertFails(setDoc(doc(mo, 'config', 'topics'), tops('mo@example.com', ['x']))));
+await t('stranger cannot read the topic list', assertFails(getDoc(doc(stranger, 'config', 'topics'))));
+await t('stranger cannot write the topic list', assertFails(setDoc(doc(stranger, 'config', 'topics'), tops('someone@example.com', ['x']))));
+await t('signed out cannot read the topic list', assertFails(getDoc(doc(nobody, 'config', 'topics'))));
+await t('signed out cannot write the topic list', assertFails(setDoc(doc(nobody, 'config', 'topics'), tops(EDITOR, ['x']))));
+await t('topic list cannot be deleted', assertFails(deleteDoc(doc(adm, 'config', 'topics'))));
+await t('attempt item with a long topic is accepted (stored by the app up to 240)', assertSucceeds(setDoc(doc(mo, 'attempts', 'tp-att'), att('mo-ok', { items: [{ ...item, topic: 'a'.repeat(240) }] }))));
+
 // passphrase rotation locks old sessions out
 await t('admin rotates the passphrase', assertSucceeds(setDoc(doc(adm, 'config', 'access'), { passphrase: 'new-passphrase-9' })));
 await t('after rotation: MO cannot read questions', assertFails(getDocs(active(mo))));

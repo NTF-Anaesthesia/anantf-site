@@ -5,8 +5,10 @@
 export const LETTERS = ['A', 'B', 'C', 'D'];
 export const STATUSES = ['draft', 'active', 'archived'];
 export const STATUS_LABEL = { draft: 'Draft', active: 'In the test', archived: 'Archived' };
-export const DEFAULT_SETTINGS = { title: 'Baby MO Test', count: 20, passMark: 80, minutes: 20, review: 'marks', cohort: '', intro: '' };
-export const LIMITS = { stem: 2000, option: 500, explain: 3000, topic: 60, image: 400000 };
+export const DEFAULT_SETTINGS = { title: 'Baby MO Test', count: 20, passMark: 80, minutes: 20, review: 'marks', cohort: '', intro: '', maxAttempts: 2, hardCount: 4 };
+export const LEVELS = ['standard', 'hard'];
+export const LEVEL_LABEL = { standard: 'Standard', hard: 'Hard' };
+export const LIMITS = { stem: 2000, option: 500, explain: 3000, topic: 60, topics: 240, image: 400000 };
 
 const str = v => (v == null ? '' : String(v));
 const tidy = s => str(s).replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').trim();
@@ -15,6 +17,24 @@ export function newId() {
   const a = new Uint8Array(8);
   (globalThis.crypto || { getRandomValues: x => x.map(() => Math.random() * 256) }).getRandomValues(a);
   return [...a].map(b => (b % 36).toString(36)).join('');
+}
+
+// A question can be in several topics. They are stored in the single `topic` text as "Airway; Drugs" and used as the
+// list `topics` everywhere else.
+export function splitTopics(v) {
+  const out = [], seen = new Set();
+  for (const raw of (Array.isArray(v) ? v : str(v).split(';'))) {
+    const t = str(raw).replace(/\s+/g, ' ').trim().slice(0, LIMITS.topic);
+    if (t && !seen.has(t.toLowerCase())) { seen.add(t.toLowerCase()); out.push(t); }
+  }
+  return out;
+}
+export const joinTopics = list => splitTopics(list).join('; ').slice(0, LIMITS.topics).replace(/;\s*$/, '');
+// every topic in use plus the saved list, no repeats (case-insensitive), A to Z
+export function allTopics(questions, saved = []) {
+  const m = new Map();
+  for (const t of [...saved, ...questions.flatMap(q => splitTopics(q.topics || q.topic))]) { const k = t.toLowerCase(); if (!m.has(k)) m.set(k, t); }
+  return [...m.values()].sort((a, b) => a.localeCompare(b));
 }
 
 // A question with every field present and tidy, whatever came in (old data, a CSV row, a half-filled form).
@@ -27,9 +47,12 @@ export function cleanQuestion(q = {}) {
     options: [0, 1, 2, 3].map(i => tidy(opts[i])),
     answer: ans >= 0 && ans <= 3 ? ans : -1,
     explain: tidy(q.explain),
-    topic: tidy(q.topic).slice(0, LIMITS.topic),
+    topic: joinTopics(Array.isArray(q.topics) ? q.topics : q.topic),
+    topics: splitTopics(Array.isArray(q.topics) ? q.topics : q.topic),
     image: str(q.image),
     status: STATUSES.includes(q.status) ? q.status : 'draft',
+    must: q.must === true || q.must === 'true',
+    level: LEVELS.includes(q.level) ? q.level : 'standard',
     rev: Number.isInteger(q.rev) ? q.rev : 0,
     updatedAt: Number(q.updatedAt) || 0,
     updatedBy: q.updatedBy && typeof q.updatedBy === 'object' ? { email: str(q.updatedBy.email), name: str(q.updatedBy.name) } : null,
@@ -67,12 +90,42 @@ export function shuffle(list, rng = Math.random) {
   return a;
 }
 
-// The questions for one sitting: random from the usable ones, at most settings.count.
+// The questions for one sitting (settings.count of them, 20 by default):
+//  1. every must-ask question that is ready (if there are more than fit, a random few of them);
+//  2. settings.hardCount hard questions (fewer if the bank has fewer), chosen at random;
+//  3. the rest at random from the standard questions (leftover hard ones only if standard ones run out).
+// Then shuffled, so must-ask and hard questions are mixed in. Only active, complete questions are used.
 export function drawTest(questions, settings, rng = Math.random) {
+  const count = Math.max(1, settings.count | 0);
+  const hardWanted = Math.max(0, (settings.hardCount ?? DEFAULT_SETTINGS.hardCount) | 0);
   const pool = questions.map(cleanQuestion).filter(isUsable);
-  return shuffle(pool, rng).slice(0, Math.max(1, settings.count | 0)).map(q => ({
+  const must = shuffle(pool.filter(q => q.must), rng).slice(0, count);
+  const rest = pool.filter(q => !q.must);
+  const hard = shuffle(rest.filter(q => q.level === 'hard'), rng);
+  const std = shuffle(rest.filter(q => q.level !== 'hard'), rng);
+  let slots = count - must.length;
+  const hardHave = must.filter(q => q.level === 'hard').length;
+  const takeHard = Math.min(Math.max(hardWanted - hardHave, 0), hard.length, slots);
+  const pickedHard = hard.slice(0, takeHard); slots -= takeHard;
+  const fromStd = std.slice(0, slots); slots -= fromStd.length;
+  const extra = hard.slice(takeHard, takeHard + slots);
+  return shuffle([...must, ...pickedHard, ...fromStd, ...extra], rng).map(q => ({
     qid: q.id, stem: q.stem, options: q.options, answer: q.answer, topic: q.topic, explain: q.explain, image: q.image, picked: null,
   }));
+}
+
+// What a test would be made of, for the faculty pages: { ready, must, hard, mustFit, hardShort }
+export function bankSummary(questions, settings) {
+  const pool = questions.map(cleanQuestion).filter(isUsable);
+  const count = Math.max(1, settings.count | 0), hardWanted = Math.max(0, (settings.hardCount ?? DEFAULT_SETTINGS.hardCount) | 0);
+  const hard = pool.filter(q => !q.must && q.level === 'hard').length;
+  return { ready: pool.length, must: pool.filter(q => q.must).length, hard, mustFit: pool.filter(q => q.must).length <= count, hardShort: Math.max(0, hardWanted - hard), short: Math.max(0, count - pool.length) };
+}
+
+// The key that counts one person's attempts in one intake: same name and cohort = same person.
+export function attemptKey(cohort, name) {
+  const slug = s => str(s).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '').slice(0, 50);
+  return `${slug(cohort) || 'general'}__${slug(name) || 'unknown'}`;
 }
 
 export function mark(items) {
@@ -164,13 +217,13 @@ export function csvCell(v) { const s = str(v); return /[",\n\r]/.test(s) ? '"' +
 const safe = v => (/^[=+\-@]/.test(str(v)) ? "'" + str(v) : str(v));
 const unsafe = v => (/^'[=+\-@]/.test(str(v)) ? str(v).slice(1) : str(v));
 
-export const QUESTION_COLUMNS = ['id', 'status', 'topic', 'question', 'A', 'B', 'C', 'D', 'answer', 'explanation'];
+export const QUESTION_COLUMNS = ['id', 'status', 'topic', 'question', 'A', 'B', 'C', 'D', 'answer', 'explanation', 'must-ask', 'difficulty'];
 
 export function questionsToCSV(questions) {
   const rows = [QUESTION_COLUMNS];
   for (const q0 of questions) {
     const q = cleanQuestion(q0);
-    rows.push([q.id, q.status, q.topic, q.stem, ...q.options, q.answer >= 0 ? LETTERS[q.answer] : '', q.explain].map(safe));
+    rows.push([q.id, q.status, q.topic, q.stem, ...q.options, q.answer >= 0 ? LETTERS[q.answer] : '', q.explain, q.must ? 'yes' : '', q.level].map(safe));
   }
   return '﻿' + rows.map(r => r.map(csvCell).join(',')).join('\r\n') + '\r\n';
 }
@@ -198,7 +251,7 @@ export function questionsFromCSV(text) {
   if (rows.length < 2) return { questions: [], warnings: ['The file has no rows.'] };
   const head = rows[0].map(h => h.trim().toLowerCase());
   const col = (...names) => head.findIndex(h => names.includes(h));
-  const ix = { id: col('id'), status: col('status'), topic: col('topic'), stem: col('question', 'stem'), A: col('a'), B: col('b'), C: col('c'), D: col('d'), answer: col('answer', 'correct'), explain: col('explanation', 'explain') };
+  const ix = { id: col('id'), status: col('status'), topic: col('topic'), stem: col('question', 'stem'), A: col('a'), B: col('b'), C: col('c'), D: col('d'), answer: col('answer', 'correct'), explain: col('explanation', 'explain'), must: col('must-ask', 'must', 'must ask'), level: col('difficulty', 'level') };
   if (ix.stem < 0 || ix.A < 0 || ix.D < 0) return { questions: [], warnings: ['I could not find the columns. The first row should have: question, A, B, C, D, answer (and optionally id, status, topic, explanation).'] };
   const get = (r, i) => (i < 0 ? '' : unsafe(r[i] ?? ''));
   const questions = rows.slice(1).map((r, n) => {
@@ -208,6 +261,8 @@ export function questionsFromCSV(text) {
       id: get(r, ix.id).trim(), stem: get(r, ix.stem), options: [get(r, ix.A), get(r, ix.B), get(r, ix.C), get(r, ix.D)],
       answer: a ? 'ABCD'.indexOf(a) : -1, explain: get(r, ix.explain), topic: get(r, ix.topic),
       status: STATUSES.includes(status) ? status : 'draft',
+      must: /^(y|yes|true|1|x|must)/i.test(get(r, ix.must).trim()),
+      level: /^h/i.test(get(r, ix.level).trim()) ? 'hard' : 'standard',
     });
     if (status && !STATUSES.includes(status)) warnings.push(`Row ${n + 2}: status "${status}" is not draft, active or archived; saved as draft.`);
     if (q.status === 'active' && problems(q, 'active').length) { warnings.push(`Row ${n + 2}: not complete, so saved as a draft.`); q.status = 'draft'; }

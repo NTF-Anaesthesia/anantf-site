@@ -33,6 +33,7 @@ a set of small modules behind one sign-in; add them as nav links, don't bend the
   saved start); the timer auto-submits; a finished attempt waits in a local outbox until the server has it (retried on
   reconnect; ids make a retry idempotent); unsaved question edits are kept on the device; saves use a revision number so
   two editors can't silently overwrite each other (the second is asked); every save keeps a history entry.
+- **Attempt limit and question flags (14 Oct 2026)**: each sitting draws 20 from a large bank; questions may be `must` (in every sitting) or `level: 'hard'` (a `hardCount` of them mixed in, default 4); both optional, old questions read as standard. Pass mark 80%. Each MO gets `maxAttempts` (default 2) sittings, counted in `attemptCounts/<cohort-slug>__<name-key>` ({n, updatedAt}): the rules let an MO create it at 1 and raise it by exactly 1 up to the limit (never lower or delete it, and only `get` by key, no list); faculty set or delete it (`grantAttempt` = another attempt). `cloud.js`/`local.js`: `getAttemptCount`, `bumpAttempt` (throws code `limit`), `grantAttempt`, `listAttemptCounts`. Attempts may carry `attemptNo`.
 - **Past results never change**: an attempt stores a snapshot of each question (stem, options, answer) as the MO saw it,
   and scores are recomputed from the snapshot (`summarise`), not read from a stored number. Editing a question later is
   safe.
@@ -41,6 +42,20 @@ a set of small modules behind one sign-in; add them as nav links, don't bend the
 - Pictures (ECG, X-ray) are shrunk in the browser to a JPEG under 400 KB and stored in the question.
 - Real question text is **not** in this public repo. The bank lives in Firestore; the owner imports it from a JSON
   backup. The demo has six invented sample questions in `js/local.js`.
+
+## How a sitting is made, attempts and topics (owner, 14 Oct 2026)
+
+- A sitting is 20 questions (setting) drawn from the "In the test" bank: every **must-ask** question, then the set number of
+  **hard** ones (setting `hardCount`, default 4), then the rest at random from ordinary ones. Pass mark 80%, **2 attempts**
+  each (setting `maxAttempts`).
+- Attempts are counted per person per cohort by name (`attemptCounts/<cohort>__<name>`), when the MO taps Start. The rules
+  stop the counter going past the maximum. Faculty give another attempt from a result page (`grantAttempt`). Name spelling
+  matters; a new cohort name starts everyone fresh.
+- A question can be in several **topics**, stored as one text "A; B" in `topic` (the app uses the list `topics`). The topic
+  list (`config/topics`) lives beside the questions so topics can exist before any question uses them.
+- Faculty UI rules: choices are rows of buttons, not dropdowns (a dropdown only where the list is long and open-ended, such
+  as topics); rows of buttons and the tabs must fit on one line at phone width (the browser test checks this); several
+  questions can be ticked on the Questions page and changed together.
 
 ## Code map
 

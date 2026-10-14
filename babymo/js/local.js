@@ -24,11 +24,12 @@ function load() {
   let d = null;
   try { d = JSON.parse(read(KEY) || 'null'); } catch { d = null; }
   if (!d || typeof d !== 'object') {
-    d = { questions: [], attempts: [], settings: { ...DEFAULT_SETTINGS, count: 5, minutes: 5 }, passphrase: 'demo', members: [{ email: 'demo@example.com', role: 'admin', name: 'Demo faculty' }], history: {}, requests: [] };
+    d = { questions: [], attempts: [], settings: { ...DEFAULT_SETTINGS, count: 5, minutes: 5 }, passphrase: 'demo', members: [{ email: 'demo@example.com', role: 'admin', name: 'Demo faculty' }], history: {}, requests: [], attemptCounts: {} };
     d.questions = SAMPLE.map(([topic, stem, options, answer, explain], i) => cleanQuestion({ id: 's' + (i + 1), topic, stem, options, answer, explain, status: 'active', rev: 1, updatedAt: Date.now(), updatedBy: { email: 'demo@example.com', name: 'Sample' } }));
     save(d);
   }
   if (!Array.isArray(d.requests)) d.requests = [];   // saved by an older version
+  if (!d.attemptCounts || typeof d.attemptCounts !== 'object') d.attemptCounts = {};   // saved by an older version
   return d;
 }
 const save = d => write(KEY, JSON.stringify(d));
@@ -90,6 +91,34 @@ export async function submitAttempt(att) {
 }
 export async function listAttempts({ limit = 500 } = {}) { return clone(load().attempts).sort((a, b) => b.submittedAt - a.submittedAt).slice(0, limit); }
 export async function deleteAttempt(id) { const d = load(); d.attempts = d.attempts.filter(a => a.id !== id); save(d); }
+
+// ---- topics (same names as cloud.js) ----
+export async function getTopics() { const t = load().topics; return Array.isArray(t) ? clone(t) : []; }
+export async function saveTopics(list, user) {
+  const seen = new Set(), out = [];
+  for (const t of Array.isArray(list) ? list : []) {
+    const v = String(t == null ? '' : t).replace(/[\r\n|]+/g, ' ').slice(0, 60).trim(), k = v.toLowerCase();
+    if (v && !seen.has(k)) { seen.add(k); out.push(v); }
+    if (out.length >= 200) break;
+  }
+  const d = load(); d.topics = out; save(d); return clone(out);
+}
+
+// ---- attempt counters (same names and errors as cloud.js) ----
+const countOf = (d, key) => Number.isFinite(d.attemptCounts[key]) ? d.attemptCounts[key] : 0;
+export async function getAttemptCount(key) { return countOf(load(), String(key || '')); }
+export async function bumpAttempt(key) {
+  const d = load(), k = String(key || ''), s = d.settings || {};
+  const max = Number.isInteger(s.maxAttempts) ? s.maxAttempts : 2, n = countOf(d, k);
+  if (n >= max) throw fail('limit', 'No attempts left.');
+  d.attemptCounts[k] = n + 1; save(d); return n + 1;
+}
+export async function grantAttempt(key) {
+  const d = load(), k = String(key || ''), n = Math.max(0, countOf(d, k) - 1);
+  if (n === 0) delete d.attemptCounts[k]; else d.attemptCounts[k] = n;
+  save(d); return n;
+}
+export async function listAttemptCounts() { const d = load(); return Object.keys(d.attemptCounts).map(key => ({ key, n: d.attemptCounts[key] })); }
 
 // ---- members ----
 export async function listMembers() { return clone(load().members); }
