@@ -16,13 +16,16 @@ export function versionOf() {
   for (const f of shell.slice().sort()) h.update(f + '\0').update(fs.readFileSync(path.join(dir, f))).update('\0');
   // the worker's own code counts too (everything except the VERSION line)
   h.update(sw.replace(/const VERSION = '[^']*';/, ''));
-  return 'babymo-' + h.digest('hex').slice(0, 8);
+  return h.digest('hex').slice(0, 8);
 }
-const want = versionOf(), have = sw.match(/const VERSION = '([^']*)'/)?.[1];
+// VERSION is babymo-<date stamped>-<hash>; the app shows it as "App version <date> (<hash>)". Only the hash is checked,
+// so the date stays the day the files last changed.
+const hash = versionOf(), have = sw.match(/const VERSION = '([^']*)'/)?.[1];
+const ok = (have || '').endsWith('-' + hash), want = `babymo-${new Date().toISOString().slice(0, 10)}-${hash}`;
 if (process.argv.includes('--check')) {
-  if (have !== want) { console.error(`sw.js VERSION is ${have}, but the files give ${want}. Run: node babymo/tools/stamp.mjs`); process.exit(1); }
+  if (!ok) { console.error(`sw.js VERSION is ${have}, but the files give ${hash}. Run: node babymo/tools/stamp.mjs`); process.exit(1); }
   console.log(`sw.js VERSION ok (${have})`);
-} else if (have !== want) {
+} else if (!ok) {
   fs.writeFileSync(swPath, sw.replace(/const VERSION = '[^']*';/, `const VERSION = '${want}';`));
   console.log(`sw.js VERSION ${have} -> ${want}`);
 } else console.log(`sw.js VERSION already ${have}`);

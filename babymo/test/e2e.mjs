@@ -206,8 +206,7 @@ try {
     await page.locator('#selcount:has-text("0 ticked")').waitFor();
     assert.match(await text('.summary'), /^0 ready/);
     await page.click('.chip[data-s=draft]'); await page.click('#selall'); await page.click('[data-bulk=active]'); await page.click('dialog button[value=yes]');
-    await page.locator('.toast, #toast.on').first().waitFor();
-    assert.match(await text('#toast'), /put in the test/);
+    await page.locator('#toast.on', { hasText: 'put in the test' }).waitFor();   // not the earlier "made drafts" toast, still showing
     await page.locator('#selcount').waitFor(); await page.click('#selmode'); await page.locator('.bulkbar').waitFor({ state: 'detached' });
     await page.click('.chip[data-s=all]');
     assert.notEqual(await text('.summary'), '');

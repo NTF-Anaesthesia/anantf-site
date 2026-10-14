@@ -113,6 +113,11 @@ Built around what went wrong in the logbook and prewarming apps (anawj.com):
   signal returns, when the page comes to the front, every minute while open and on opening. While one is waiting a note shows
   on every page ("A test result is waiting to be sent"). Starting a test needs a signal (the passphrase is checked on the
   server); once started it works offline and the result is sent afterwards. Attempts used up are counted at Start.
+- **App version and "Get the latest version"** (owner, 14 Oct 2026; as in the prewarming app): at the foot of the start page
+  (no test runs there) and of Settings, "App version <date> (<hash>)" from the `babymo-` cache name (`stamp.mjs` writes
+  `babymo-<date>-<hash>`; only the hash is checked), and a button that checks for a signal by fetching `sw.js`, then
+  unregisters the worker, deletes only `babymo-` caches and reloads. It never touches localStorage (answers, outbox, name)
+  or sign-in; with no signal it changes nothing and says so.
 - Faculty Google sign-in uses a popup, which can fail in an app installed on an iPhone: faculty should use the browser there.
 - Tests: `node babymo/test/pwa.e2e.mjs` (manifest and icons, first install without reload, offline start, a broken release leaves
   the working version, updates never reload during a test or typing). Icons are the NTF monogram (`icons/`), made from
