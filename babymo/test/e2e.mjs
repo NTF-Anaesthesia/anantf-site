@@ -275,7 +275,9 @@ try {
   });
   await step('sign out returns to the faculty sign-in', async () => {
     await page.goto(BASE + '?demo#/faculty/results'); await page.locator('#signout').waitFor();
+    assert.match(await text('#wholine'), /Signed in as demo@example.com · Admin/);
     await page.click('#signout'); await page.locator('#in').waitFor();
+    assert.match(await text('#wholine'), /Not signed in/);
     assert.equal(await page.locator('#signout').count(), 0); assert.doesNotMatch(await text('#nav'), /Results/);
     await page.click('#in'); await page.locator('.qlist, .summary').first().waitFor();
   });
