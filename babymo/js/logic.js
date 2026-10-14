@@ -8,7 +8,7 @@ export const STATUS_LABEL = { draft: 'Draft', active: 'In the test', archived: '
 export const DEFAULT_SETTINGS = { title: 'Baby MO Test', count: 20, passMark: 80, minutes: 20, review: 'marks', cohort: '', intro: '', maxAttempts: 2, hardCount: 4 };
 export const LEVELS = ['standard', 'hard'];
 export const LEVEL_LABEL = { standard: 'Standard', hard: 'Hard' };
-export const LIMITS = { stem: 2000, option: 500, explain: 3000, topic: 60, image: 400000 };
+export const LIMITS = { stem: 2000, option: 500, explain: 3000, topic: 60, topics: 240, image: 400000 };
 
 const str = v => (v == null ? '' : String(v));
 const tidy = s => str(s).replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').trim();
@@ -17,6 +17,24 @@ export function newId() {
   const a = new Uint8Array(8);
   (globalThis.crypto || { getRandomValues: x => x.map(() => Math.random() * 256) }).getRandomValues(a);
   return [...a].map(b => (b % 36).toString(36)).join('');
+}
+
+// A question can be in several topics. They are stored in the single `topic` text as "Airway; Drugs" and used as the
+// list `topics` everywhere else.
+export function splitTopics(v) {
+  const out = [], seen = new Set();
+  for (const raw of (Array.isArray(v) ? v : str(v).split(';'))) {
+    const t = str(raw).replace(/\s+/g, ' ').trim().slice(0, LIMITS.topic);
+    if (t && !seen.has(t.toLowerCase())) { seen.add(t.toLowerCase()); out.push(t); }
+  }
+  return out;
+}
+export const joinTopics = list => splitTopics(list).join('; ').slice(0, LIMITS.topics).replace(/;\s*$/, '');
+// every topic in use plus the saved list, no repeats (case-insensitive), A to Z
+export function allTopics(questions, saved = []) {
+  const m = new Map();
+  for (const t of [...saved, ...questions.flatMap(q => splitTopics(q.topics || q.topic))]) { const k = t.toLowerCase(); if (!m.has(k)) m.set(k, t); }
+  return [...m.values()].sort((a, b) => a.localeCompare(b));
 }
 
 // A question with every field present and tidy, whatever came in (old data, a CSV row, a half-filled form).
@@ -29,7 +47,8 @@ export function cleanQuestion(q = {}) {
     options: [0, 1, 2, 3].map(i => tidy(opts[i])),
     answer: ans >= 0 && ans <= 3 ? ans : -1,
     explain: tidy(q.explain),
-    topic: tidy(q.topic).slice(0, LIMITS.topic),
+    topic: joinTopics(Array.isArray(q.topics) ? q.topics : q.topic),
+    topics: splitTopics(Array.isArray(q.topics) ? q.topics : q.topic),
     image: str(q.image),
     status: STATUSES.includes(q.status) ? q.status : 'draft',
     must: q.must === true || q.must === 'true',

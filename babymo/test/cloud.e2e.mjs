@@ -122,7 +122,7 @@ async function fillQuestion(p, { stem, options, answer, status, topic }) {
   if (options) for (let k = 0; k < 4; k++) await p.fill('#opt' + k, options[k]);
   if (answer != null) await p.click(`label[for=ans${answer}]`);
   if (topic) await p.fill('#topic', topic);
-  if (status) await p.selectOption('#status', status);
+  if (status) await p.locator(`input[name=status][value=${status}]`).check({ force: true });
 }
 
 try {
@@ -288,7 +288,7 @@ B) two
 C) three
 D) four`);
     await page.click('#read'); await page.locator('#addall').waitFor();
-    await page.selectOption('#as', 'active'); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#addall'); await toastText(page, /3 added/);
+    await page.locator('input[name=as][value=active]').check({ force: true }); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#addall'); await toastText(page, /3 added/);
     const a = await byStem('Which drug is first-line for anaphylaxis?'), b2 = await byStem('Which gas is used for inhalational induction in children?'), c = await byStem('A pasted question with no answer given?');
     assert.ok(a && b2 && c); assert.equal(a.status, 'active'); assert.equal(a.answer, 0); assert.equal(a.explain, 'Adrenaline first, always.');
     assert.equal(b2.status, 'active'); assert.equal(b2.answer, 1); assert.equal(c.status, 'draft'); assert.equal(c.answer, -1);
@@ -323,7 +323,7 @@ D) four`);
   await step('settings: save (admin); Faculty page: add and remove a faculty member', async () => {
     await page.goto(URL_EMU + '#/faculty/settings'); await page.locator('#sf').waitFor();
     assert.equal(await page.inputValue('#p-pass'), PASS);
-    await page.fill('#s-cohort', 'Nov 2026 intake'); await page.selectOption('#s-review', 'marks'); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#sf button[type=submit]'); await toastText(page, /Saved/);
+    await page.fill('#s-cohort', 'Nov 2026 intake'); await page.locator('input[name=review][value=marks]').check({ force: true }); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#sf button[type=submit]'); await toastText(page, /Saved/);
     const s = await getD('config', 'test'); assert.equal(s.cohort, 'Nov 2026 intake'); assert.equal(s.review, 'marks'); assert.equal(s.updatedBy.email, ADMIN); assert.equal(s.count, 5);
     await page.locator('#sf').waitFor();
     await page.goto(URL_EMU + '#/faculty/people'); await page.locator('#mf').waitFor();

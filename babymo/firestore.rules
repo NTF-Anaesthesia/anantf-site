@@ -101,6 +101,20 @@ service cloud.firestore {
         && request.resource.data.passphrase.size() >= 4 && request.resource.data.passphrase.size() <= 100;
       allow delete: if false;
     }
+    // rules have no loops: join the items with '|' and check the whole text with one pattern (1 to 60 characters per item,
+    // no '|' inside an item). The first and last item must be strings; the app only ever writes strings.
+    function topicsOk(l) {
+      return l.size() == 0 || (l[0] is string && l[l.size() - 1] is string && l.join('|').matches('^([^|]{1,60}[|]){0,199}[^|]{1,60}$'));
+    }
+    // the list of topics faculty pick from: any member, never an MO
+    match /config/topics {
+      allow read: if member();
+      allow create, update: if member() && request.resource.data.keys().hasOnly(['list', 'updatedAt', 'updatedBy'])
+        && request.resource.data.list is list && request.resource.data.list.size() <= 200
+        && topicsOk(request.resource.data.list)
+        && request.resource.data.updatedAt is number && validStamp(request.resource.data);
+      allow delete: if false;
+    }
     match /config/test {
       allow read: if member() || validSession();
       allow create, update: if admin() && validSettings(request.resource.data) && validStamp(request.resource.data);
@@ -147,7 +161,7 @@ service cloud.firestore {
         && validOption(d.options[2], d.status == 'active') && validOption(d.options[3], d.status == 'active')
         && d.answer is int && d.answer >= (d.status == 'active' ? 0 : -1) && d.answer <= 3
         && d.explain is string && d.explain.size() <= 5000
-        && d.topic is string && d.topic.size() <= 100
+        && d.topic is string && d.topic.size() <= 240
         && d.image is string && d.image.size() <= 400000
         && d.status in ['draft', 'active', 'archived']
         && d.get('must', false) is bool

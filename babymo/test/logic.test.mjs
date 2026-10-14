@@ -166,5 +166,18 @@ t('similar finds a near duplicate but not a different question', () => {
   assert.equal(L.similar(q({ stem: 'Which of the following confirm adequate placement of the Proseal LMA EXCEPT?' }), bank)?.id, '1');
   assert.equal(L.similar(q({ stem: 'What is the maximum dose of ropivacaine for a sixty kilogram patient' }), bank), null);
 });
+t('topics: several per question, stored as one text, no repeats', () => {
+  assert.deepEqual(L.splitTopics('Airway;  Drugs ; airway;;'), ['Airway', 'Drugs']);
+  const c = L.cleanQuestion({ stem: 'x', topic: 'Airway; Drugs' });
+  assert.deepEqual(c.topics, ['Airway', 'Drugs']); assert.equal(c.topic, 'Airway; Drugs');
+  const d = L.cleanQuestion({ stem: 'x', topics: ['Regional', 'regional', 'PACU'] });
+  assert.equal(d.topic, 'Regional; PACU'); assert.deepEqual(L.cleanQuestion(d).topics, ['Regional', 'PACU']);
+  assert.deepEqual(L.cleanQuestion({ stem: 'x' }).topics, []); assert.equal(L.cleanQuestion({ stem: 'x' }).topic, '');
+  assert.ok(L.joinTopics(Array.from({ length: 50 }, (_, i) => 'Topic number ' + i)).length <= 240);
+  assert.equal(L.splitTopics('a'.repeat(100))[0].length, 60);
+  assert.deepEqual(L.allTopics([q({ topic: 'Drugs; Airway' }), q({ topic: 'pacu' })], ['PACU', 'Zeta']), ['Airway', 'Drugs', 'PACU', 'Zeta']);
+  const back = L.questionsFromCSV(L.questionsToCSV([q({ topic: 'Airway; Drugs' })])).questions[0];
+  assert.deepEqual(back.topics, ['Airway', 'Drugs']);
+});
 t('newId makes distinct ids', () => assert.equal(new Set(Array.from({ length: 200 }, L.newId)).size, 200));
 console.log(`logic: ${n} tests ok`);

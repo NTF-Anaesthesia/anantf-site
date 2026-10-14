@@ -25,6 +25,7 @@ const S = {
   attempt: lsJson('mo-attempt'),   // a test in progress
   last: lsJson('mo-last'),         // the last finished attempt (this device)
   q: { search: '', status: 'all', topic: '', flag: '' },
+  topicList: [],      // the saved list of topics (faculty); topics in use are added to it when shown
   sel: new Set(), selMode: false,   // several questions ticked on the Questions page
   pending: 0,         // faculty access requests waiting (faculty only)
 };
@@ -72,7 +73,7 @@ function renderNav() {
   const link = (href, label, on) => `<a href="${href}"${on ? ' aria-current="page"' : ''}>${label}</a>`;
   let html = link('#/', 'Test', !h.startsWith('#/faculty'));
   if (S.role) {
-    html += link('#/faculty', 'Questions', /^#\/faculty($|\/q|\/paste|\/data)/.test(h));
+    html += link('#/faculty', 'Questions', /^#\/faculty($|\/q|\/paste|\/data|\/topics)/.test(h));
     html += link('#/faculty/results', 'Results', /results|attempt/.test(h));
     if (S.role === 'admin') html += link('#/faculty/settings', 'Settings', /settings/.test(h));
     html += link('#/faculty/people', S.pending ? `Faculty (${S.pending})` : 'Faculty', /people/.test(h));
@@ -105,6 +106,7 @@ async function route() {
     if (sub === 'q') return viewEditor(arg);
     if (sub === 'paste') return viewPaste();
     if (sub === 'data') return viewData();
+    if (sub === 'topics') return viewTopics();
     if (sub === 'results') return viewResults();
     if (sub === 'attempt') return viewAttempt(arg);
     if (sub === 'people') return viewPeople();
@@ -406,11 +408,49 @@ async function viewFacultyGate() {
 
 // ---------- faculty: questions ----------
 async function loadQuestions(force) {
-  if (force || !S.loaded.q) { S.questions = (await api.listQuestions()).map(L.cleanQuestion); S.loaded.q = true; }
+  if (force || !S.loaded.q) { S.questions = (await api.listQuestions()).map(L.cleanQuestion); S.loaded.q = true; S.topicList = await Promise.resolve(api.getTopics?.()).then(l => l || []).catch(() => []); }
   if (!S.settings) S.settings = { ...L.DEFAULT_SETTINGS, ...(await api.getSettings() || {}) };
   return S.questions;
 }
-const topicsOf = qs => [...new Set(qs.map(q => q.topic).filter(Boolean))].sort();
+const topicsOf = () => L.allTopics(S.questions, S.topicList);
+const hasTopic = (q, t) => q.topics.some(x => x.toLowerCase() === t.toLowerCase());
+// remember a new topic in the saved list (quietly: the topic still works on the question if this fails)
+function rememberTopic(t) {
+  if (topicsOf().some(x => x.toLowerCase() === t.toLowerCase()) && S.topicList.some(x => x.toLowerCase() === t.toLowerCase())) return;
+  S.topicList = L.splitTopics([...S.topicList, t]);
+  Promise.resolve(api.saveTopics?.(S.topicList, S.user)).catch(() => {});
+}
+// A dropdown of the topics (not already chosen) with a "New topic…" choice that opens a text box.
+function topicPicker(id, chosen, label) {
+  const free = topicsOf().filter(t => !chosen.some(c => c.toLowerCase() === t.toLowerCase()));
+  return `<div class="tpick"><label class="visually-hidden" for="${id}">${esc(label)}</label><select id="${id}"><option value="">${esc(label)}…</option>${free.map(t => `<option>${esc(t)}</option>`).join('')}<option value="__new">New topic…</option></select>
+    <span class="tnew" hidden><label class="visually-hidden" for="${id}-new">New topic name</label><input id="${id}-new" maxlength="${L.LIMITS.topic}" placeholder="New topic name" autocomplete="off"><button type="button" class="btn" id="${id}-add">Add</button></span></div>`;
+}
+function wireTopicPicker(id, onPick) {
+  const sel = $('#' + id), box = sel.parentElement.querySelector('.tnew'), inp = $('#' + id + '-new');
+  sel.addEventListener('change', () => { if (sel.value === '__new') { box.hidden = false; inp.focus(); } else if (sel.value) onPick(sel.value); });
+  const add = () => { const t = L.splitTopics(inp.value)[0]; if (t) onPick(t); };
+  $('#' + id + '-add').addEventListener('click', add);
+  inp.addEventListener('keydown', ev => { if (ev.key === 'Enter') { ev.preventDefault(); add(); } });
+}
+// A small dialog to choose a topic (or type a new one). Resolves to the topic text, or null if cancelled.
+function askTopic(title, ok, topics, allowNew) {
+  return new Promise(res => {
+    const d = document.createElement('dialog');
+    d.innerHTML = `<form method="dialog"><h2>${esc(title)}</h2><label for="at-sel">Topic</label><select id="at-sel"><option value="">Choose a topic…</option>${topics.map(t => `<option>${esc(t)}</option>`).join('')}${allowNew ? '<option value="__new">New topic…</option>' : ''}</select>
+      <span id="at-new" hidden><label for="at-txt">New topic name</label><input id="at-txt" maxlength="${L.LIMITS.topic}" autocomplete="off"></span><p id="at-err" class="err" hidden>Choose a topic first.</p>
+      <div class="row end"><button value="no" class="btn">Cancel</button><button value="yes" class="btn primary" id="at-ok">${esc(ok)}</button></div></form>`;
+    let val = null;
+    d.addEventListener('close', () => { res(d.returnValue === 'yes' ? val : null); d.remove(); });
+    document.body.append(d); d.showModal();
+    const sel = d.querySelector('#at-sel'), box = d.querySelector('#at-new');
+    sel.addEventListener('change', () => { box.hidden = sel.value !== '__new'; if (sel.value === '__new') d.querySelector('#at-txt').focus(); });
+    d.querySelector('#at-ok').addEventListener('click', ev => {
+      val = sel.value === '__new' ? (L.splitTopics(d.querySelector('#at-txt').value)[0] || '') : sel.value;
+      if (!val) { ev.preventDefault(); d.querySelector('#at-err').hidden = false; }
+    });
+  });
+}
 
 async function viewQuestions() {
   setView('<h1>Questions</h1><p class="loading">Loading…</p>', 'Questions');
@@ -418,24 +458,25 @@ async function viewQuestions() {
   const count = S.settings.count, usable = all.filter(L.isUsable).length, bs = L.bankSummary(all, S.settings);
   const f = S.q;
   const flagOk = q => !f.flag || (f.flag === 'must' ? q.must : f.flag === 'hard' ? q.level === 'hard' : !q.must && q.level !== 'hard');
-  const list = all.filter(q => flagOk(q) && (f.status === 'all' ? q.status !== 'archived' || false : q.status === f.status) && (!f.topic || q.topic === f.topic) && (!f.search || (q.stem + ' ' + q.options.join(' ') + ' ' + q.topic).toLowerCase().includes(f.search.toLowerCase())))
+  const list = all.filter(q => flagOk(q) && (f.status === 'all' ? q.status !== 'archived' || false : q.status === f.status) && (!f.topic || hasTopic(q, f.topic)) && (!f.search || (q.stem + ' ' + q.options.join(' ') + ' ' + q.topic).toLowerCase().includes(f.search.toLowerCase())))
     .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   const c = s => all.filter(q => q.status === s).length;
   setView(`
     <h1>Questions</h1>
     <p class="summary"><b>${usable}</b> ready for the test (<b>${bs.must}</b> must-ask, <b>${bs.hard}</b> hard). Each sitting has <b>${Math.min(count, usable)}</b> questions: every must-ask one, ${S.settings.hardCount ?? 4} hard, and the rest at random. ${bs.short ? `<span class="warn-text">You asked for ${count}; add ${bs.short} more complete question${bs.short > 1 ? 's' : ''}.</span> ` : ''}${!bs.mustFit ? `<span class="warn-text">There are more must-ask questions (${bs.must}) than fit in a sitting (${count}); raise “Questions per test” in Settings.</span> ` : ''}${bs.hardShort ? `<span class="warn-text">Only ${bs.hard} hard question${bs.hard === 1 ? '' : 's'} ready; Settings ask for ${S.settings.hardCount}.</span> ` : ''}${c('draft') ? `${c('draft')} draft${c('draft') > 1 ? 's' : ''} waiting for a check.` : ''}</p>
-    <p class="row one"><a class="btn primary" href="#/faculty/q/new" aria-label="New question">+ New</a><a class="btn" href="#/faculty/paste" aria-label="Paste many questions">Paste many</a><a class="btn" href="#/faculty/data" aria-label="Backup and import">Backup</a><button id="selmode" class="btn${S.selMode ? ' on' : ''}" aria-pressed="${S.selMode}" aria-label="${S.selMode ? 'Done selecting' : 'Select several questions'}">${S.selMode ? 'Done' : 'Select'}</button></p>
+    <p class="row one"><a class="btn primary" href="#/faculty/q/new" aria-label="New question">+ New</a><a class="btn" href="#/faculty/paste" aria-label="Paste many questions">Paste many</a><a class="btn" href="#/faculty/data" aria-label="Backup and import">Backup</a><a class="btn" href="#/faculty/topics" aria-label="Manage topics">Topics</a><button id="selmode" class="btn${S.selMode ? ' on' : ''}" aria-pressed="${S.selMode}" aria-label="${S.selMode ? 'Done selecting' : 'Select several questions'}">${S.selMode ? 'Done' : 'Select'}</button></p>
     <div class="filters">
       <label class="visually-hidden" for="qs">Search questions</label><input id="qs" type="search" placeholder="Search questions" value="${esc(f.search)}">
       <div class="chips" role="group" aria-label="Show">${[['all', 'All'], ['active', 'In the test'], ['draft', 'Drafts'], ['archived', 'Archived']].map(([k, l]) => `<button class="chip" data-s="${k}" aria-pressed="${f.status === k}">${l}${k === 'all' ? '' : ` ${c(k)}`}</button>`).join('')}</div>
       <div class="chips" role="group" aria-label="Kind of question">${[['', 'Any kind'], ['must', 'Must-ask'], ['hard', 'Hard'], ['std', 'Ordinary']].map(([k, l]) => `<button class="chip" data-k="${k}" aria-pressed="${f.flag === k}">${l}</button>`).join('')}</div>
-      ${topicsOf(all).length ? `<label class="visually-hidden" for="qt">Topic</label><select id="qt"><option value="">All topics</option>${topicsOf(all).map(t => `<option${f.topic === t ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}
+      ${topicsOf().length ? `<label class="visually-hidden" for="qt">Topic</label><select id="qt"><option value="">All topics</option>${topicsOf().map(t => `<option${f.topic === t ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}
     </div>
     ${S.selMode ? `<div class="bulkbar" role="region" aria-label="Change the ticked questions">
       <p class="row one"><b id="selcount">${S.sel.size} ticked</b><button id="selall" class="btn" aria-label="Tick all ${list.length} shown">Tick all</button><button id="selnone" class="btn">Clear</button></p>
       <p class="row one"><span class="muted small">Mark as</span><button class="btn primary" data-bulk="active">In the test</button><button class="btn" data-bulk="draft">Draft</button><button class="btn" data-bulk="archived">Archived</button></p>
-      <p class="row one"><button class="btn" data-bulk="must1">Must ask</button><button class="btn" data-bulk="must0" aria-label="Not must-ask">Not must</button><button class="btn" data-bulk="hard">Hard</button><button class="btn" data-bulk="std" aria-label="Ordinary, not hard">Ordinary</button></p></div>` : ''}
-    ${list.length ? `<ul class="qlist${S.selMode ? ' selecting' : ''}">${list.map(q => `<li>${S.selMode ? `<label class="selrow"><input type="checkbox" data-sel="${esc(q.id)}"${S.sel.has(q.id) ? ' checked' : ''}><span class="selbody">` : `<a href="#/faculty/q/${esc(q.id)}">`}<span class="badge ${q.status}">${L.STATUS_LABEL[q.status]}</span>${q.must ? '<span class="badge must">Must ask</span>' : ''}${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${L.problems(q, 'active').length && q.status === 'active' ? '<span class="badge bad">Incomplete</span>' : ''}<span class="qs">${esc(q.stem.length > 150 ? q.stem.slice(0, 150) + '…' : q.stem)}</span><span class="qm">${q.topic ? esc(q.topic) + ' · ' : ''}${q.answer >= 0 ? 'Answer ' + L.LETTERS[q.answer] : 'No answer yet'}${q.image ? ' · picture' : ''}</span>${S.selMode ? '</span></label>' : '</a>'}</li>`).join('')}</ul>` : `<p class="empty">${all.length ? 'No questions match.' : 'No questions yet. Tap “+ New question”, or “Paste many” to add a whole paper at once.'}</p>`}`, 'Questions');
+      <p class="row one"><button class="btn" data-bulk="must1">Must ask</button><button class="btn" data-bulk="must0" aria-label="Not must-ask">Not must</button><button class="btn" data-bulk="hard">Hard</button><button class="btn" data-bulk="std" aria-label="Ordinary, not hard">Ordinary</button></p>
+      <p class="row one"><span class="muted small">Topic</span><button class="btn" data-bulk="addtopic">Add to topic…</button><button class="btn" data-bulk="rmtopic">Take out…</button></p></div>` : ''}
+    ${list.length ? `<ul class="qlist${S.selMode ? ' selecting' : ''}">${list.map(q => `<li>${S.selMode ? `<label class="selrow"><input type="checkbox" data-sel="${esc(q.id)}"${S.sel.has(q.id) ? ' checked' : ''}><span class="selbody">` : `<a href="#/faculty/q/${esc(q.id)}">`}<span class="badge ${q.status}">${L.STATUS_LABEL[q.status]}</span>${q.must ? '<span class="badge must">Must ask</span>' : ''}${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${L.problems(q, 'active').length && q.status === 'active' ? '<span class="badge bad">Incomplete</span>' : ''}<span class="qs">${esc(q.stem.length > 150 ? q.stem.slice(0, 150) + '…' : q.stem)}</span><span class="qm">${q.topics.length ? esc(q.topics.join(', ')) + ' · ' : ''}${q.answer >= 0 ? 'Answer ' + L.LETTERS[q.answer] : 'No answer yet'}${q.image ? ' · picture' : ''}</span>${S.selMode ? '</span></label>' : '</a>'}</li>`).join('')}</ul>` : `<p class="empty">${all.length ? 'No questions match.' : 'No questions yet. Tap “+ New question”, or “Paste many” to add a whole paper at once.'}</p>`}`, 'Questions');
   $('#qs').addEventListener('input', ev => { f.search = ev.target.value; clearTimeout(viewQuestions.t); viewQuestions.t = setTimeout(async () => { await viewQuestions(); const el = $('#qs'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }, 250); });
   $('#app').querySelectorAll('.chip[data-s]').forEach(b => b.addEventListener('click', () => { f.status = b.dataset.s; viewQuestions(); }));
   $('#app').querySelectorAll('.chip[data-k]').forEach(b => b.addEventListener('click', () => { f.flag = b.dataset.k; viewQuestions(); }));
@@ -450,20 +491,30 @@ async function viewQuestions() {
 
 const BULK = {
   active: [{ status: 'active' }, 'put in the test'], draft: [{ status: 'draft' }, 'made drafts'], archived: [{ status: 'archived' }, 'archived'],
+  addtopic: [null, 'added to the topic'], rmtopic: [null, 'taken out of the topic'],
   must1: [{ must: true }, 'marked must-ask'], must0: [{ must: false }, 'marked not must-ask'], hard: [{ level: 'hard' }, 'marked hard'], std: [{ level: 'standard' }, 'marked ordinary'],
 };
 // Apply one change to every ticked question (each save keeps its own history). Incomplete questions can't go in the test: they are skipped and stay ticked.
 async function bulkChange(kind, btn) {
   const ids = [...S.sel];
   if (!ids.length) return toast('Tick some questions first.');
-  const [change, said] = BULK[kind];
+  let [change, said] = BULK[kind], topic = '';
+  if (kind === 'addtopic' || kind === 'rmtopic') {
+    const have = kind === 'rmtopic' ? L.allTopics(ids.map(i => S.questions.find(x => x.id === i)).filter(Boolean)) : topicsOf();
+    if (kind === 'rmtopic' && !have.length) return toast('None of the ticked questions has a topic.');
+    topic = await askTopic(kind === 'addtopic' ? 'Add to which topic?' : 'Take out of which topic?', kind === 'addtopic' ? 'Add' : 'Take out', have, kind === 'addtopic');
+    if (!topic) return;
+    change = kind === 'addtopic' ? q => ({ topics: [...q.topics, topic] }) : q => ({ topics: q.topics.filter(x => x.toLowerCase() !== topic.toLowerCase()) });
+    said += ` “${topic}”`;
+    if (kind === 'addtopic') rememberTopic(topic);
+  }
   if (!await ask(`Change ${ids.length} question${ids.length > 1 ? 's' : ''}?`, `<p>${ids.length} ticked question${ids.length > 1 ? 's' : ''} will be ${said}. Each change is saved in the question's history, so it can be undone.</p>`, 'Go ahead')) return;
   let done = 0, same = 0, failed = 0; const left = new Set(); const skipped = [];
   await busy(btn, async () => {
     for (const id of ids) {
       const q = S.questions.find(x => x.id === id); if (!q) continue;
-      if (Object.entries(change).every(([k, v]) => q[k] === v)) { same++; continue; }
-      const nq = L.cleanQuestion({ ...q, ...change });
+      const nq = L.cleanQuestion({ ...q, ...(typeof change === 'function' ? change(q) : change) });
+      if (['status', 'must', 'level', 'topic'].every(k => nq[k] === q[k])) { same++; continue; }
       if (L.problems(nq, nq.status).length) { skipped.push(q); left.add(id); continue; }
       try { await api.saveQuestion(nq, S.user); done++; } catch { failed++; left.add(id); }
     }
@@ -500,7 +551,9 @@ async function viewEditor(id) {
           ${has('answer')}
         </fieldset>
         <label>Why this is the answer <span class="muted">(optional, shown to the MO in review)</span><textarea id="explain" rows="3" maxlength="${L.LIMITS.explain}">${esc(q.explain)}</textarea></label>
-        <label>Topic <span class="muted">(optional)</span><input id="topic" list="topics" maxlength="${L.LIMITS.topic}" value="${esc(q.topic)}"><datalist id="topics">${topicsOf(S.questions).map(t => `<option value="${esc(t)}">`).join('')}</datalist></label>
+        <div class="topicbox"><b id="tl">Topics</b> <span class="muted">(optional; a question can be in several)</span>
+          <ul class="tchips" aria-labelledby="tl">${q.topics.map(t => `<li><button type="button" class="tchip" data-rmtopic="${esc(t)}" aria-label="Remove topic ${esc(t)}">${esc(t)} ×</button></li>`).join('')}</ul>
+          ${topicPicker('addtopic', q.topics, 'Add a topic')}</div>
         ${seg('status', 'Status', L.STATUSES.map(x => [x, L.STATUS_LABEL[x]]), q.status)}
         ${seg('level', 'Difficulty', L.LEVELS.map(x => [x, L.LEVEL_LABEL[x]]), q.level)}
         <label class="check"><input type="checkbox" id="must"${q.must ? ' checked' : ''}> Must ask in every test</label>
@@ -522,7 +575,7 @@ async function viewEditor(id) {
     wire();
   };
   const read = () => {
-    q.stem = $('#stem').value; q.explain = $('#explain').value; q.topic = $('#topic').value; q.status = segVal('status') || q.status;
+    q.stem = $('#stem').value; q.explain = $('#explain').value; q.status = segVal('status') || q.status;
     q.must = $('#must').checked; q.level = segVal('level') || q.level;
     q.options = [0, 1, 2, 3].map(k => $('#opt' + k).value);
     const r = document.querySelector('input[name=ans]:checked'); q.answer = r ? +r.value : -1;
@@ -530,6 +583,8 @@ async function viewEditor(id) {
   };
   const keep = () => { lsSet(draftKey, JSON.stringify({ q, rev: base.rev })); };
   const wire = () => {
+    wireTopicPicker('addtopic', t => { read(); q = L.cleanQuestion({ ...q, topics: [...q.topics, t] }); rememberTopic(t); keep(); draw(); $('#addtopic')?.focus(); });
+    $('#qf').querySelectorAll('[data-rmtopic]').forEach(b => b.addEventListener('click', () => { read(); q = L.cleanQuestion({ ...q, topics: q.topics.filter(x => x !== b.dataset.rmtopic) }); keep(); draw(); $('#addtopic')?.focus(); }));
     $('#restore')?.addEventListener('click', () => { q = restored; restored = null; draw(); });
     $('#discard')?.addEventListener('click', () => { lsDel(draftKey); restored = null; draw(); });
     const live = () => { read(); keep(); $('.preview').innerHTML = `<summary>How an MO sees it</summary>${previewHtml(q)}`; };
@@ -634,6 +689,52 @@ Explanation: Adrenaline first, always.</pre></details>
   });
 }
 
+// ---------- faculty: topics ----------
+// Change a list of questions one by one (each save keeps its history). Returns { done, failed }.
+async function saveMany(pairs) {
+  let done = 0, failed = 0;
+  for (const [q, nq] of pairs) { try { await api.saveQuestion(nq, S.user); done++; } catch { failed++; } }
+  S.loaded.q = false; return { done, failed };
+}
+async function viewTopics() {
+  setView('<h1>Topics</h1><p class="loading">Loading…</p>', 'Topics');
+  await loadQuestions(true);
+  const topics = topicsOf(), count = t => S.questions.filter(q => hasTopic(q, t)).length;
+  setView(`
+    <p><a href="#/faculty">← All questions</a></p>
+    <h1>Topics</h1>
+    <p class="lead">Group questions by topic. A question can be in several topics: add them when you edit a question, or tick several questions on the Questions page and use “Add to topic”.</p>
+    <form id="tf" class="row one"><label class="visually-hidden" for="tname">New topic</label><input id="tname" maxlength="${L.LIMITS.topic}" placeholder="New topic" autocomplete="off"><button class="btn primary" type="submit">Add topic</button></form>
+    ${topics.length ? `<ul class="members" id="tlist">${topics.map(t => `<li><span><b>${esc(t)}</b> <span class="muted small">${count(t)} question${count(t) === 1 ? '' : 's'}</span></span><span class="row one"><button class="btn" data-ren="${esc(t)}">Rename</button><button class="btn" data-del="${esc(t)}">Delete</button></span></li>`).join('')}</ul>` : '<p class="empty">No topics yet. Add one above.</p>'}`, 'Topics');
+  const save = async list => { S.topicList = L.splitTopics(list); await api.saveTopics?.(S.topicList, S.user); };
+  $('#tf').addEventListener('submit', async ev => {
+    ev.preventDefault(); const t = L.splitTopics($('#tname').value)[0]; if (!t) return;
+    try { await save([...S.topicList, t]); toast('Added.'); viewTopics(); } catch (e) { toast(errText(e)); }
+  });
+  $('#app').querySelectorAll('[data-ren]').forEach(b => b.addEventListener('click', async () => {
+    const old = b.dataset.ren;
+    const name = await new Promise(res => {
+      const d = document.createElement('dialog');
+      d.innerHTML = `<form method="dialog"><h2>Rename topic</h2><label for="rn">New name</label><input id="rn" maxlength="${L.LIMITS.topic}" value="${esc(old)}" autocomplete="off"><div class="row end"><button value="no" class="btn">Cancel</button><button value="yes" class="btn primary">Rename</button></div></form>`;
+      d.addEventListener('close', () => { res(d.returnValue === 'yes' ? L.splitTopics(d.querySelector('#rn').value)[0] || '' : ''); d.remove(); });
+      document.body.append(d); d.showModal();
+    });
+    if (!name || name === old) return;
+    const pairs = S.questions.filter(q => hasTopic(q, old)).map(q => [q, L.cleanQuestion({ ...q, topics: q.topics.map(x => (x.toLowerCase() === old.toLowerCase() ? name : x)) })]);
+    const r = await saveMany(pairs);
+    try { await save(S.topicList.map(x => (x.toLowerCase() === old.toLowerCase() ? name : x)).concat(S.topicList.some(x => x.toLowerCase() === old.toLowerCase()) ? [] : [name])); } catch { /* list not saved; the questions carry the topic */ }
+    toast(`Renamed in ${r.done} question${r.done === 1 ? '' : 's'}.${r.failed ? ` ${r.failed} could not be saved: try again.` : ''}`, 7000); viewTopics();
+  }));
+  $('#app').querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+    const t = b.dataset.del, n = count(t);
+    if (!await ask('Delete this topic?', `<p>“${esc(t)}” will be taken off ${n} question${n === 1 ? '' : 's'} and removed from the list. The questions themselves stay.</p>`, 'Delete', true)) return;
+    const pairs = S.questions.filter(q => hasTopic(q, t)).map(q => [q, L.cleanQuestion({ ...q, topics: q.topics.filter(x => x.toLowerCase() !== t.toLowerCase()) })]);
+    const r = await saveMany(pairs);
+    try { await save(S.topicList.filter(x => x.toLowerCase() !== t.toLowerCase())); } catch { /* ignore */ }
+    toast(`Deleted.${r.failed ? ` ${r.failed} question${r.failed === 1 ? '' : 's'} could not be updated: try again.` : ''}`, 7000); viewTopics();
+  }));
+}
+
 // ---------- faculty: backup and import ----------
 async function viewData() {
   const all = await loadQuestions(true);
@@ -676,20 +777,26 @@ async function loadAttempts(force) { if (force || !S.loaded.a) { S.attempts = aw
 async function viewResults() {
   setView('<h1>Results</h1><p class="loading">Loading…</p>', 'Results');
   const all = await loadAttempts(true);
-  const tab = new URLSearchParams(location.hash.split('?')[1] || '').get('by') === 'question' ? 'question' : 'person';
+  const by = new URLSearchParams(location.hash.split('?')[1] || '').get('by'), tab = by === 'question' ? 'question' : by === 'topic' ? 'topic' : 'person';
   const cohorts = [...new Set(all.map(a => a.cohort).filter(Boolean))].sort().reverse();
   const f = viewResults.f ||= { search: '', cohort: '' };
   const rows = all.filter(a => (!f.cohort || a.cohort === f.cohort) && (!f.search || a.name.toLowerCase().includes(f.search.toLowerCase())));
   const sums = rows.map(a => ({ a, s: L.summarise(a) }));
   const passN = sums.filter(x => x.s.pass).length;
   const body = tab === 'person' ? (rows.length ? `<div class="tablewrap"><table><thead><tr><th scope="col">Name</th><th scope="col">Cohort</th><th scope="col">When</th><th scope="col">Try</th><th scope="col">Score</th><th scope="col">Result</th></tr></thead><tbody>${sums.map(({ a, s }) => `<tr><th scope="row"><a href="#/faculty/attempt/${esc(a.id)}">${esc(a.name)}</a></th><td>${esc(a.cohort || '')}</td><td>${esc(L.fmtDate(a.submittedAt))}</td><td>${a.attemptNo || ''}</td><td>${s.score}/${s.total}</td><td><span class="badge ${s.pass ? 'active' : 'bad'}">${s.pass ? 'Pass' : 'Not yet'}</span></td></tr>`).join('')}</tbody></table></div>` : '<p class="empty">No results yet.</p>')
+    : tab === 'topic' ? (() => {
+      const bt = new Map();
+      for (const a of rows) for (const it of a.items || []) for (const t of (L.splitTopics(it.topic).length ? L.splitTopics(it.topic) : ['(no topic)'])) { const o = bt.get(t) || { n: 0, right: 0 }; o.n++; if (it.picked === it.answer) o.right++; bt.set(t, o); }
+      const list = [...bt].map(([t, o]) => ({ t, ...o, pct: Math.round(o.right / o.n * 100) })).sort((x, y) => x.pct - y.pct);
+      return list.length ? `<p class="muted">Weakest topic first, across all the sittings shown. Useful for deciding what to teach.</p><div class="tablewrap"><table><thead><tr><th scope="col">Topic</th><th scope="col">Asked</th><th scope="col">Correct</th></tr></thead><tbody>${list.map(x => `<tr><th scope="row">${esc(x.t)}</th><td>${x.n}</td><td><span class="badge ${x.pct >= 60 ? 'active' : 'bad'}">${x.pct}%</span></td></tr>`).join('')}</tbody></table></div>` : '<p class="empty">No results yet.</p>';
+    })()
     : (() => { const st = L.questionStats(rows); return st.length ? `<p class="muted">Hardest first. A question most people get wrong may be badly worded, or have the wrong answer saved: worth a look.</p><div class="tablewrap"><table><thead><tr><th scope="col">Question</th><th scope="col">Asked</th><th scope="col">Correct</th><th scope="col">Most chosen wrong answer</th></tr></thead><tbody>${st.map(x => { const w = x.picks.map((n, k) => [n, k]).filter(([, k]) => k !== x.answer).sort((p, q) => q[0] - p[0])[0]; return `<tr><th scope="row"><a href="#/faculty/q/${esc(x.qid)}">${esc(x.stem.slice(0, 110))}</a></th><td>${x.n}</td><td><span class="badge ${x.pct >= 60 ? 'active' : 'bad'}">${x.pct}%</span></td><td>${w && w[0] ? L.LETTERS[w[1]] + ' (' + w[0] + ')' : '-'}</td></tr>`; }).join('')}</tbody></table></div>` : '<p class="empty">No results yet.</p>'; })();
   setView(`
     <h1>Results</h1>
     <p class="summary"><b>${rows.length}</b> sitting${rows.length === 1 ? '' : 's'}${rows.length ? `; <b>${passN}</b> passed (${Math.round(passN / rows.length * 100)}%)` : ''}.</p>
     <div class="filters"><label class="visually-hidden" for="rs">Search by name</label><input id="rs" type="search" placeholder="Search by name" value="${esc(f.search)}">
       ${cohorts.length ? `<label class="visually-hidden" for="rc">Cohort</label><select id="rc"><option value="">All cohorts</option>${cohorts.map(c => `<option${f.cohort === c ? ' selected' : ''}>${esc(c)}</option>`).join('')}</select>` : ''}
-      <div class="chips"><a class="chip" href="#/faculty/results" aria-current="${tab === 'person'}">By person</a><a class="chip" href="#/faculty/results?by=question" aria-current="${tab === 'question'}">By question</a></div></div>
+      <div class="chips"><a class="chip" href="#/faculty/results" aria-current="${tab === 'person'}">By person</a><a class="chip" href="#/faculty/results?by=question" aria-current="${tab === 'question'}">By question</a><a class="chip" href="#/faculty/results?by=topic" aria-current="${tab === 'topic'}">By topic</a></div></div>
     ${body}
     <p class="row"><button id="csv" class="btn"${rows.length ? '' : ' disabled'}>Download as spreadsheet</button></p>`, 'Results');
   $('#rs').addEventListener('input', ev => { f.search = ev.target.value; clearTimeout(viewResults.t); viewResults.t = setTimeout(async () => { await viewResults(); const el = $('#rs'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }, 250); });
@@ -822,6 +929,7 @@ function viewHelp() {
     <h2>Mistakes</h2><ul><li>Every save keeps the earlier version: open the question and look under <b>Earlier versions</b>.</li><li>If two people edit the same question, the app tells the second person and lets them choose.</li><li>If your connection drops while typing, your text is kept on your device.</li><li>Please download a <b>full backup</b> now and then.</li></ul>
     <h2>How a test is made up</h2><p>Each MO gets a sitting of 20 questions (you can change this in Settings). <b>Must-ask</b> questions are in every sitting; a set number of <b>hard</b> questions are mixed in at random; the rest come at random from the other ready questions. Tick “Must ask in every test” and set “Difficulty” on a question to use this. Pass mark and attempts are in Settings (80% and 2 by default).</p>
     <h2>Attempts</h2><p>Each person gets two attempts, counted by name within the current cohort (so use the same spelling; a new cohort name starts everyone fresh). An attempt is counted when they tap Start. To let someone try again, open their result under <b>Results</b> and tap <b>Give one more attempt</b>.</p>
+    <h2>Topics</h2><p>A question can be in several topics (Airway, Drugs…). When you edit a question, pick topics from the list or choose “New topic…” to type one. Tick several questions (<b>Select</b>) to add or take out a topic for all of them at once. The <b>Topics</b> button manages the list: add, rename or delete a topic. <b>Results → By topic</b> shows which topics MOs find hardest.</p>
     <h2>Adding faculty</h2><p>Nobody has to be listed in advance. A colleague opens the Faculty page, signs in with Google and taps <b>Ask for faculty access</b>. Any faculty member then opens <b>Faculty</b> in the menu (it shows a number when someone is waiting) and taps <b>Approve</b>.</p>
     <h2>For each new intake</h2><ol><li>Settings: change the <b>passphrase</b> and the <b>cohort</b> name.</li><li>Send the MOs the link and the passphrase.</li><li>Results appear under <b>Results</b>; download them as a spreadsheet.</li></ol>
     <h2>Good to know</h2><p>Each MO gets a different random set of questions from the “In the test” ones. The passphrase keeps casual visitors out; it is not high security, so do not put anything confidential in a question.</p>`, 'Help');

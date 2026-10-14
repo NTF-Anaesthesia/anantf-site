@@ -382,6 +382,41 @@ await t('no config/test: MO cannot raise a counter', (async () => {
   await env.withSecurityRulesDisabled(ctx => setDoc(doc(ctx.firestore(), 'config', 'test'), settings(ADMIN)));
 })());
 
+// topics: a question's topic may hold several joined by "; " (up to 240 characters); config/topics is the faculty list
+await t('question topic of 240 characters', assertSucceeds(setDoc(doc(edi, 'questions', 'tp-240'), q(EDITOR, { topic: 'a'.repeat(240) }))));
+await t('question topic of 241 characters refused', assertFails(setDoc(doc(edi, 'questions', 'tp-241'), q(EDITOR, { topic: 'a'.repeat(241) }))));
+await t('question with several topics joined', assertSucceeds(setDoc(doc(edi, 'questions', 'tp-many'), q(EDITOR, { topic: 'Airway; Drugs; Regional' }))));
+await t('history topic of 240 ok, 241 refused', (async () => {
+  await assertSucceeds(addDoc(collection(edi, 'questions', 'tp-240', 'history'), { ...q(EDITOR, { topic: 'a'.repeat(240) }), savedAt: 6 }));
+  await assertFails(addDoc(collection(edi, 'questions', 'tp-240', 'history'), { ...q(EDITOR, { topic: 'a'.repeat(241) }), savedAt: 6 }));
+})());
+const tops = (email, list, extra = {}) => ({ list, updatedAt: 3, updatedBy: by(email), ...extra });
+const names = n => Array.from({ length: n }, (_, i) => 'Topic ' + i);
+await t('editor saves the topic list', assertSucceeds(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['Airway', 'Drugs']))));
+await t('admin saves the topic list', assertSucceeds(setDoc(doc(adm, 'config', 'topics'), tops(ADMIN, ['Airway', 'Drugs', 'Regional']))));
+await t('empty topic list ok', assertSucceeds(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, []))));
+for (const n of [1, 2, 3, 5, 9, 64, 65, 100, 128, 130, 200]) await t(`list of ${n} topics ok`, assertSucceeds(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, names(n)))));
+await t('201 topics refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, names(201)))));
+await t('item of 60 characters ok', assertSucceeds(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['a'.repeat(60)]))));
+await t('item of 61 characters refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['a'.repeat(61)]))));
+await t('empty item refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['Airway', '']))));
+await t('non-string item refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['Airway', 5]))));
+await t('long item deep in a 200 list refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, [...names(199), 'a'.repeat(61)]))));
+await t('long item in the middle of a 7 list refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['a', 'b', 'c', 'd'.repeat(61), 'e', 'f', 'g']))));
+await t('list that is not a list refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, 'Airway'))));
+await t('wrong updatedBy refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(ADMIN, ['Airway']))));
+await t('extra key refused', assertFails(setDoc(doc(edi, 'config', 'topics'), tops(EDITOR, ['Airway'], { extra: 1 }))));
+await t('missing updatedAt refused', assertFails(setDoc(doc(edi, 'config', 'topics'), { list: ['Airway'], updatedBy: by(EDITOR) })));
+await t('members read the topic list', assertSucceeds(getDoc(doc(edi, 'config', 'topics'))));
+await t('MO cannot read the topic list', assertFails(getDoc(doc(mo, 'config', 'topics'))));
+await t('MO cannot write the topic list', assertFails(setDoc(doc(mo, 'config', 'topics'), tops('mo@example.com', ['x']))));
+await t('stranger cannot read the topic list', assertFails(getDoc(doc(stranger, 'config', 'topics'))));
+await t('stranger cannot write the topic list', assertFails(setDoc(doc(stranger, 'config', 'topics'), tops('someone@example.com', ['x']))));
+await t('signed out cannot read the topic list', assertFails(getDoc(doc(nobody, 'config', 'topics'))));
+await t('signed out cannot write the topic list', assertFails(setDoc(doc(nobody, 'config', 'topics'), tops(EDITOR, ['x']))));
+await t('topic list cannot be deleted', assertFails(deleteDoc(doc(adm, 'config', 'topics'))));
+await t('attempt item with a long topic is accepted (stored by the app up to 240)', assertSucceeds(setDoc(doc(mo, 'attempts', 'tp-att'), att('mo-ok', { items: [{ ...item, topic: 'a'.repeat(240) }] }))));
+
 // passphrase rotation locks old sessions out
 await t('admin rotates the passphrase', assertSucceeds(setDoc(doc(adm, 'config', 'access'), { passphrase: 'new-passphrase-9' })));
 await t('after rotation: MO cannot read questions', assertFails(getDocs(active(mo))));

@@ -92,6 +92,18 @@ export async function submitAttempt(att) {
 export async function listAttempts({ limit = 500 } = {}) { return clone(load().attempts).sort((a, b) => b.submittedAt - a.submittedAt).slice(0, limit); }
 export async function deleteAttempt(id) { const d = load(); d.attempts = d.attempts.filter(a => a.id !== id); save(d); }
 
+// ---- topics (same names as cloud.js) ----
+export async function getTopics() { const t = load().topics; return Array.isArray(t) ? clone(t) : []; }
+export async function saveTopics(list, user) {
+  const seen = new Set(), out = [];
+  for (const t of Array.isArray(list) ? list : []) {
+    const v = String(t == null ? '' : t).replace(/[\r\n|]+/g, ' ').slice(0, 60).trim(), k = v.toLowerCase();
+    if (v && !seen.has(k)) { seen.add(k); out.push(v); }
+    if (out.length >= 200) break;
+  }
+  const d = load(); d.topics = out; save(d); return clone(out);
+}
+
 // ---- attempt counters (same names and errors as cloud.js) ----
 const countOf = (d, key) => Number.isFinite(d.attemptCounts[key]) ? d.attemptCounts[key] : 0;
 export async function getAttemptCount(key) { return countOf(load(), String(key || '')); }

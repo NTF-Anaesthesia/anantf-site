@@ -8,6 +8,7 @@
 //   accessRequests/{email}          { email, name, requestedAt }         (a Google user asking to become faculty; approved or declined by faculty)
 //   config/access                   { passphrase }                       (admins only)
 //   config/test                     { title, count, passMark, minutes, review, cohort, intro, updatedAt, updatedBy }
+//   config/topics                   { list[], updatedAt, updatedBy }     (faculty only: the topics to pick from; a question's topic holds one or more joined by "; ", up to 240 characters)
 //   sessions/{uid}                  { name, pass, at }                   (an MO's login; created once, never changed)
 //   questions/{id}                  { stem, options[4], answer, explain, topic, image, status, rev, updatedAt, updatedBy }
 //   questions/{id}/history/{auto}   the same fields + savedAt            (never changed once written)
@@ -364,7 +365,7 @@ function questionFields(q) {
     options,
     answer: int(q.answer, 0),
     explain: str(q.explain, 5000),
-    topic: str(q.topic, 100),
+    topic: str(q.topic, 240),
     image: str(q.image, 400000),
     status: ['draft', 'active', 'archived'].includes(q.status) ? q.status : 'draft',
     must: q.must === true,
@@ -463,7 +464,7 @@ function attemptFields(a, uid, displayName) {
       stem: str(i.stem, 2000),
       options: (i.options || []).slice(0, 4).map(o => str(o, 500)),
       answer: int(i.answer, 0),
-      topic: str(i.topic, 100),
+      topic: str(i.topic, 240),
       explain: str(i.explain, 5000),
       picked: i.picked == null ? null : int(i.picked, null),
     })),
@@ -571,5 +572,36 @@ export async function listAttemptCounts() {
     const { db, F } = await ready();
     const snap = await F.getDocs(F.collection(db, 'attemptCounts'));
     return snap.docs.map(d => ({ key: d.id, n: countOf(d) }));
+  });
+}
+
+// ---- topics ----
+// Clean a topic list: trimmed, empties dropped, duplicates (ignoring case) dropped, 60 characters each, 200 at most.
+export function cleanTopicList(list) {
+  const seen = new Set(), out = [];
+  for (const t of Array.isArray(list) ? list : []) {
+    const v = str(t, 60).replace(/[\r\n|]+/g, ' ').trim(), k = v.toLowerCase();
+    if (v && !seen.has(k)) { seen.add(k); out.push(v); }
+    if (out.length >= 200) break;
+  }
+  return out;
+}
+
+// Faculty only ('permission' for an MO). [] when no list has been saved yet.
+export async function getTopics() {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const snap = await F.getDoc(F.doc(db, 'config', 'topics'));
+    return snap.exists() && Array.isArray(snap.data().list) ? snap.data().list : [];
+  });
+}
+
+// Faculty. Replaces the whole list; returns the cleaned list.
+export async function saveTopics(list, user) {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const clean = cleanTopicList(list);
+    await F.setDoc(F.doc(db, 'config', 'topics'), plain({ list: clean, updatedAt: Date.now(), updatedBy: who(user) }));
+    return clean;
   });
 }

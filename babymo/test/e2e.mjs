@@ -164,6 +164,7 @@ try {
     assert.equal(await page.locator('tbody tr').count(), 2); assert.match(await text('tbody'), /Dr Test Person/); assert.match(await text('tbody'), /Slow Person/);
     await shot('results'); await axe('results');
     await page.click('a:has-text("By question")'); await page.locator('th:has-text("Question")').waitFor(); assert.match(await text('tbody'), /100%|0%/);
+    await page.click('a:has-text("By topic")'); await page.locator('th:has-text("Topic")').waitFor(); assert.match(await text('tbody'), /%/);
     await page.click('a:has-text("By person")'); await page.click('a:has-text("Dr Test Person")'); await page.locator('.review').waitFor(); assert.match(await text('.summary'), /5\/5/);
   });
   await step('settings: save, numbers checked, passphrase', async () => {
@@ -210,6 +211,48 @@ try {
     await page.locator('#selcount').waitFor(); await page.click('#selmode'); await page.locator('.bulkbar').waitFor({ state: 'detached' });
     await page.click('.chip[data-s=all]');
     assert.notEqual(await text('.summary'), '');
+  });
+  await step('topics: several per question, a topic list, rename, bulk add, delete', async () => {
+    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
+    await page.click('.qlist li:has(.badge.active) >> nth=0'); await page.locator('#qf').waitFor();
+    await page.selectOption('#addtopic', '__new'); await page.fill('#addtopic-new', 'Cardiac'); await page.press('#addtopic-new', 'Enter');
+    await page.locator('.tchip:has-text("Cardiac")').waitFor();
+    const existing = (await page.locator('#addtopic option').allTextContents()).find(o => o && !o.endsWith('…'));
+    assert.ok(existing, 'the dropdown lists existing topics');
+    await page.selectOption('#addtopic', existing); await page.locator(`.tchip:has-text("${existing}")`).waitFor();
+    assert.equal(await page.locator('.tchip').count() >= 2, true); await shot('topics-editor'); await axe('topics-editor');
+    await page.click(`.tchip:has-text("${existing}")`); assert.equal(await page.locator(`.tchip:has-text("${existing}")`).count(), 0);
+    await page.selectOption('#addtopic', existing);
+    await page.click('#qf button[type=submit]'); await page.locator('.qlist').waitFor();
+    assert.match(await text('.qlist'), new RegExp(`Cardiac, ${existing}`));
+    // the topic filter finds a question by any of its topics
+    await page.selectOption('#qt', 'Cardiac'); await page.locator('.qlist li').first().waitFor(); assert.equal(await page.locator('.qlist li').count(), 1);
+    await page.selectOption('#qt', '');
+    // the topic list page
+    await page.click('a[href="#/faculty/topics"]'); await page.locator('#tlist').waitFor();
+    await page.fill('#tname', 'Neuro'); await page.click('#tf button[type=submit]'); await page.locator('#tlist li:has-text("Neuro")').waitFor();
+    await shot('topics'); await axe('topics'); await oneRow('.row.one');
+    await page.click('[data-ren="Cardiac"]'); await page.locator('dialog[open] #rn').waitFor(); await page.fill('dialog #rn', 'Cardiology'); await page.click('dialog button[value=yes]');
+    await page.locator('#tlist li:has-text("Cardiology")').waitFor(); assert.equal(await page.locator('#tlist li:has-text("Cardiology") .muted').innerText(), '1 question');
+    assert.equal(await page.locator('#tlist li:has-text("Cardiac")').count(), 0);
+    // reload: the saved list (Neuro has no questions yet) is still there
+    await page.reload(); await page.locator('#tlist').waitFor(); await page.locator('#tlist li:has-text("Neuro")').waitFor();
+    // bulk: add Neuro to every ticked question
+    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor(); await page.click('#selmode'); await page.click('.chip[data-s=active]'); await page.click('#selall');
+    await page.click('[data-bulk=addtopic]'); await page.locator('dialog #at-sel').waitFor(); await page.selectOption('dialog #at-sel', 'Neuro'); await page.click('dialog #at-ok');
+    await page.locator('dialog[open] button[value=yes]').waitFor(); await page.click('dialog[open] button[value=yes]');
+    await page.locator('#toast.on:has-text("added to the topic")').waitFor();
+    await page.click('#selmode'); await page.selectOption('#qt', 'Neuro'); await page.locator('.qlist li').first().waitFor();
+    const nNeuro = await page.locator('.qlist li').count(); assert.equal(nNeuro >= 6, true);
+    await page.click('#selmode'); await page.click('.chip[data-s=active]'); await page.click('#selall'); await page.click('[data-bulk=rmtopic]');
+    await page.selectOption('dialog #at-sel', 'Neuro'); await page.click('dialog #at-ok');
+    await page.locator('dialog[open] button[value=yes]').waitFor(); await page.click('dialog[open] button[value=yes]');
+    await page.locator('#toast.on:has-text("taken out")').waitFor();
+    await page.selectOption('#qt', ''); await page.click('#selmode');
+    // delete a topic: it comes off the questions and the list
+    await page.goto(BASE + '?demo#/faculty/topics'); await page.locator('#tlist').waitFor();
+    await page.click('[data-del="Cardiology"]'); await page.click('dialog button[value=yes]');
+    await page.locator('#tlist li:has-text("Cardiology")').waitFor({ state: 'detached' });
   });
   await step('question flags: must-ask and hard show on the list and filter', async () => {
     await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
