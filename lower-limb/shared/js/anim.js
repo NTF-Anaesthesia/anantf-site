@@ -9,7 +9,7 @@ const ROOT = new URL('../../anim/', import.meta.url).href;
 export function animFigure(slug, { caption = '', variant = '', title = 'Animated block' } = {}) {
   const src = `${ROOT}?embed=1#${slug}${variant ? `/${variant}` : ''}`;
   return `<figure class="ll-anim">
-  <iframe class="ll-anim-frame" src="${src}" title="${title}: press Play to watch the needle and the spread" loading="lazy" allow="fullscreen" allowfullscreen></iframe>
+  <iframe class="ll-anim-frame" src="${src}" title="${title}: press Play to watch the needle and the spread" loading="lazy" allow="fullscreen"></iframe>
   <figcaption class="ll-anim-cap">${caption ? `${caption} ` : ''}Animation by <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>. Tap Full screen and turn the phone sideways for the largest view.</figcaption>
 </figure>`;
 }

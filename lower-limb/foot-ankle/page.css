@@ -1,0 +1,55 @@
+/* Foot and ankle page: anatomy figures, the ankle cross-section, the tourniquet and operation choosers (prefix fa-).
+   Shared styles: ../../truncal/shared/css/truncal.css and ../shared/css/lowerlimb.css. */
+.tb-app .fa-fig{margin:24px 0 10px;max-width:760px}
+.tb-app main .fa-fig-title,.tb-app main .fa-tq-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
+.tb-app .fa-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
+.tb-app .fa-fig-svg{display:block;width:100%;height:auto;max-width:440px;margin:0 auto}
+.tb-app .fa-fig figcaption{margin-top:10px;font-size:15px;line-height:1.6;color:var(--tb-ink-soft);max-width:68ch}
+
+/* ankle cross-section */
+.tb-app .fa-xs{margin:16px 0 24px;border:1px solid var(--tb-line);background:#fbf9f4;padding:12px}
+.tb-app .fa-xs-ctrls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 12px}
+.tb-app .fa-xs-seg,.tb-app .fa-tq-seg,.tb-app .fa-op-seg,.tb-app .fa-sw-seg{display:flex;flex-wrap:wrap;gap:6px}
+.tb-app .fa-xs-seg .tb-seg-btn,.tb-app .fa-op-seg .tb-seg-btn,.tb-app .fa-sw-seg .tb-seg-btn{flex:1 1 auto;min-width:0}
+.tb-app .fa-xs-grid,.tb-app .fa-tq-grid{display:grid;gap:14px 28px;align-items:start}
+@media (min-width:860px){.tb-app .fa-xs-grid{grid-template-columns:minmax(300px,1.1fr) minmax(0,1fr)}.tb-app .fa-tq-grid{grid-template-columns:minmax(150px,220px) minmax(0,1fr)}}
+.tb-app .fa-xs-svg{display:block;width:100%;height:auto;max-width:520px;margin:0 auto}
+.tb-app .fa-xs-n{transition:opacity .35s ease}
+.tb-app .fa-xs-n.is-dim{opacity:.45}
+.tb-app .fa-xs-halo{opacity:0}
+.tb-app .fa-xs-n.is-on .fa-xs-halo{opacity:1;animation:fa-halo 1.8s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes fa-halo{0%,100%{opacity:.25;transform:scale(.85)}50%{opacity:1;transform:scale(1.1)}}
+.tb-app main .fa-xs-k{font:400 12px/1.6 var(--tb-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--tb-muted);margin:0 0 2px}
+.tb-app main .fa-xs-name{font:400 22px/1.3 var(--tb-serif);margin:0 0 8px}
+.tb-app .fa-xs-dl{margin:0}
+.tb-app .fa-xs-dl>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 14px;padding:8px 0;border-bottom:1px solid var(--tb-line)}
+.tb-app .fa-xs-dl dt{font:400 12px/1.6 var(--tb-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--tb-muted);padding-top:3px}
+.tb-app .fa-xs-dl dd{margin:0;font-size:16px;line-height:1.55}
+@media (max-width:420px){.tb-app .fa-xs-dl>div{grid-template-columns:1fr}.tb-app .fa-xs-dl dt{padding-top:0}}
+.tb-app .fa-xs-foot{display:grid;grid-template-columns:repeat(2,minmax(0,120px));gap:10px;margin-top:12px;justify-content:center}
+.tb-app .fa-xs-footfig{margin:0}
+.tb-app .fa-xs-footfig svg{display:block;width:100%;height:auto}
+.tb-app main .fa-xs-footfig figcaption{font-size:14px;color:var(--tb-muted);text-align:center}
+.tb-app .fa-xs-panel{animation:fa-fade .35s ease}
+
+/* tourniquet and operation choosers */
+.tb-app .fa-tq,.tb-app .fa-op{margin:16px 0 24px;border:1px solid var(--tb-line);background:#fbf9f4;padding:12px}
+.tb-app .fa-tq-seg,.tb-app .fa-op-seg{margin:0 0 14px}
+.tb-app .fa-tq-fig svg{display:block;width:100%;max-width:150px;height:auto;margin:0 auto}
+@media (max-width:859px){.tb-app .fa-tq-fig svg{max-width:120px}}
+.tb-app .fa-tq-band{animation:fa-pulse 2.4s ease-in-out infinite}
+@keyframes fa-pulse{0%,100%{opacity:.7}50%{opacity:1}}
+.tb-app .fa-tq-out,.tb-app .fa-op-out{animation:fa-fade .35s ease}
+@keyframes fa-fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* scan switcher (ankle: the other four nerves) */
+.tb-app .fa-sw-seg{margin:12px 0 14px}
+.tb-app .fa-sw-pane[hidden]{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  .tb-app .fa-xs-n.is-on .fa-xs-halo,.tb-app .fa-tq-band{animation:none}
+  .tb-app .fa-xs-panel,.tb-app .fa-tq-out,.tb-app .fa-op-out{animation:none}
+}
+
+/* Ankle block coverage: the foot views only, side by side rather than stacked full width. */
+.tb-app #ankle-coverage .ll-cov-views--1 .ll-cov-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px;margin-inline:auto}

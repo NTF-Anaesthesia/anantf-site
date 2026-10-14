@@ -37,6 +37,7 @@ legFigure(view, { zones, density, points, labels }) // one view as an SVG elemen
 | `front` | `0 0 160 420` | anterior view, iliac crest at the top, toes at the bottom; **lateral on the viewer's left, medial (midline) on the right** |
 | `back` | `0 0 160 420` | posterior view; **medial on the viewer's left, lateral on the right** |
 | `sole` | `0 0 120 200` | plantar view of the right foot, toes at the top, heel at the bottom; medial on the viewer's right |
+| `dorsum` | `0 0 120 200` | top of the right foot, toes at the top; medial on the viewer's left |
 
 ### Landmarks (`LANDMARKS[view][name] = [x, y]`)
 - `front`: `iliac-crest` [40,10], `asis` [38,40], `aiis` [50,58], `inguinal-crease-mid` [92,70] (femoral pulse),
@@ -55,9 +56,9 @@ legFigure(view, { zones, density, points, labels }) // one view as an SVG elemen
 Cutaneous: `lfcn` (lateral thigh), `femoral-ant` (anterior thigh: intermediate and medial femoral cutaneous),
 `genitofemoral` (small area below the inguinal ligament), `ilioinguinal` (upper medial thigh), `obturator`
 (variable patch of distal medial thigh), `pfcn` (posterior thigh to the popliteal fossa), `saphenous-knee`
-(infrapatellar and medial knee), `saphenous-leg` (medial leg), `saphenous-foot` (medial ankle and medial foot to the
-first metatarsal head), `lat-cut-calf` (lateral calf, common peroneal branch), `sural` (posterolateral distal calf and
-lateral foot), `sup-peroneal` (dorsum of the foot), `deep-peroneal` (first web space), `tibial-sole` (sole, medial and
+(infrapatellar and medial knee), `saphenous-leg` (medial leg), `saphenous-foot` (medial ankle and medial foot; usually ends at the
+medial midfoot, short of the first tarsometatarsal joint), `lat-cut-calf` (lateral calf, common peroneal branch), `sural` (posterolateral distal calf and
+lateral foot) (split into `sural-calf` and `sural-foot`), `sup-peroneal` (dorsum of the foot), `sup-peroneal-leg` (front and outer side of the lower leg), `deep-peroneal` (first web space), `tibial-sole` (sole, medial and
 lateral plantar), `calcaneal` (heel), `cluneal` (buttock).
 Deep (drawn as hatched joint and bone glyphs, labelled "deep"): `hip-ant` (anterior hip capsule), `hip-post`,
 `knee-ant` (anterior and anteromedial capsule), `knee-post` (posterior capsule), `femur`, `tibia`, `ankle-joint`,

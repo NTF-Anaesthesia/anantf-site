@@ -1,0 +1,30 @@
+/* Lower-limb blocks: section styles on top of truncal/shared/css/truncal.css. Prefix ll-. */
+.ll-anim{margin:0 0 28px;border:1px solid var(--line,#d9d2c3);background:#f7f5ef}
+.ll-anim-frame{display:block;width:100%;height:520px;border:0;background:#f7f5ef}
+.ll-anim-cap{font-size:14px;line-height:1.5;color:var(--ink-soft,#5d554b);padding:10px 14px;border-top:1px solid var(--line,#d9d2c3)}
+.ll-anim-cap a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+/* Leg figures (lower-limb/shared/js/leg.js): coverage maps, probe insets, anatomy figures */
+.tb-app .ll-cov{max-width:460px}
+.tb-app .ll-cov-views{display:grid;gap:6px;align-items:start}
+.tb-app .ll-cov-view{min-width:0}
+.tb-app .ll-cov-foot{display:grid;gap:10px;min-width:0}
+.tb-app .ll-cov-svg{display:block;width:100%;height:auto}
+.tb-app main .ll-cov-vname{margin:2px 0 0;font-size:14px;line-height:1.3;color:var(--tb-muted);text-align:center}
+.tb-app main .ll-cov-zones{list-style:none;margin:8px 0 0;padding:8px 0 0;border-top:1px solid var(--tb-line)}
+.tb-app main .ll-cov-zones li{font-size:15px;line-height:1.5;margin:0 0 4px;color:var(--tb-ink-soft)}
+.tb-app main .ll-cov-zones strong{font-weight:600;color:var(--tb-ink)}
+.tb-app .ll-cov-sw--deep{background:repeating-linear-gradient(-45deg,#183f63 0 1px,transparent 1px 4px),rgba(44,116,179,.25);border:1.5px solid #183f63}
+.tb-app .ll-probe-svg{width:96px}
+@media (max-width:999px){.tb-app .ll-probe-svg{width:80px}}
+.tb-app .ll-fig{margin:24px 0 8px}
+.tb-app main .ll-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
+.tb-app .ll-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px;display:grid;gap:8px;max-width:720px;align-items:start;grid-template-columns:var(--ll-cols,1fr)}
+@media (max-width:560px){.tb-app .ll-fig-stage--3,.tb-app .ll-fig-stage--4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tb-app .ll-fig-stage figure{margin:0;min-width:0}
+.tb-app .ll-fig-svg{display:block;width:100%;height:auto}
+.tb-app main .ll-fig-stage figcaption{font-size:14px;color:var(--tb-muted);text-align:center;margin-top:2px}
+.tb-app .ll-fig>figcaption{margin-top:10px;font-size:15px;color:var(--tb-ink-soft);max-width:68ch}
+.tb-app main .ll-key{margin:10px 0 0;padding:0;list-style:none;counter-reset:ll;max-width:68ch}
+.tb-app main .ll-key li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:baseline;margin:0 0 8px;font-size:15px;line-height:1.55}
+.tb-app main .ll-key li::before{counter-increment:ll;content:counter(ll);display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--tb-wine);color:var(--tb-ivory);font:600 13px/1 var(--tb-sans)}

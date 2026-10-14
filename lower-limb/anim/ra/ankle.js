@@ -430,7 +430,7 @@ SC.dpn=positive({view:'dpn',surf:'anterior',NS:[1230,-40],NT:[858,326],tent:10,v
   cue:['Colour Doppler: anterior tibial artery',440,560,()=>[766,350]],
   caps:[[0,8.2,'1','Deep peroneal nerve lies beside the anterior tibial artery on the tibia, deep to the extensor retinaculum.'],
     [8.2,12.4,'2','Move the big toe to find extensor hallucis longus. In-plane from lateral, through the retinaculum.'],
-    [12.4,16,'3','Ropivacaine 0.5%: 1 mL, aspirate, then 2 mL. Keep the tip lateral to the artery.'],
+    [12.4,16,'3','Ropivacaine 0.5%: 1 mL, aspirate, then 2 mL. Keep the tip beside the nerve, away from the artery.'],
     [16,99,'4','3 mL in: LA outlines the nerve beside the artery, beneath the extensor retinaculum.']]});
 SC.spn=positive({view:'spn',surf:'lateral',pill:'Superficial peroneal nerve',NS:[1592,-40],NT:[792,236],vol:3,disp:[-2,0],spread:spnSpread,
   subtitle:'Superficial peroneal nerve: in-plane from anterior',Tend:20.5,magT:15.6,
