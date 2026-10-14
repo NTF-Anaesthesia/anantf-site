@@ -196,6 +196,12 @@ try {
     await page.locator('.score').waitFor(); assert.match(await text('#app'), /Correct answer|Your answer/); await shot('result-full'); await axe('result-full');
     const c = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v1')).attempts.at(-1).cohort); assert.equal(c, 'Oct 2026');
   });
+  await step('sign out returns to the faculty sign-in', async () => {
+    await page.goto(BASE + '?demo#/faculty/results'); await page.locator('#signout').waitFor();
+    await page.click('#signout'); await page.locator('#in').waitFor();
+    assert.equal(await page.locator('#signout').count(), 0); assert.doesNotMatch(await text('#nav'), /Results/);
+    await page.click('#in'); await page.locator('.qlist, .summary').first().waitFor();
+  });
   await step('help page', async () => { await page.goto(BASE + '?demo#/faculty/help'); await page.locator('h1').waitFor(); assert.match(await text('h1'), /How this works/); await axe('help'); });
   assert.deepEqual(errors, [], 'console errors: ' + errors.join(' | '));
   console.log('babymo e2e: all steps ok');

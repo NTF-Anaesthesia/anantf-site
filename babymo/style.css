@@ -16,7 +16,8 @@ body.babymo{
 .bm-title{font-family:'NTF Serif',Georgia,serif;font-size:1.25rem;letter-spacing:-.01em}
 #nav{display:flex;flex-wrap:wrap;gap:0 .25rem;margin-left:auto}
 #nav a{color:var(--ink);text-decoration:none;padding:.5rem .8rem;min-height:44px;display:inline-flex;align-items:center;font-size:15px;font-weight:500;border-bottom:2px solid transparent}
-#nav a:hover{background:#e9e5dc}
+#nav a:hover,#nav button:hover{background:#e9e5dc}
+#nav button{font:inherit;color:var(--ink2);background:none;border:0;border-bottom:2px solid transparent;padding:.5rem .8rem;min-height:44px;font-size:15px;font-weight:500;cursor:pointer}
 #nav a[aria-current]{color:var(--wine);border-bottom-color:var(--wine)}
 .babymo .demo{background:var(--warn-bg);border-bottom:1px solid var(--line);color:var(--warn-ink);padding:.4rem 22px;font-size:15px;text-align:center}
 main#app{max-width:46rem;margin:0 auto;padding:1.25rem 22px 4rem;outline:none}
