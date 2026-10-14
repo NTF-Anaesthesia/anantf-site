@@ -104,6 +104,57 @@ await t('admin cannot remove themselves', assertFails(deleteDoc(doc(adm, 'member
 await t('editor cannot remove a member', assertFails(deleteDoc(doc(edi, 'members', 'new@example.com'))));
 await t('admin removes another member', assertSucceeds(deleteDoc(doc(adm, 'members', 'new@example.com'))));
 
+// access requests (anyone with Google can ask; faculty approve or decline)
+const REQ = 'req@example.com', req = google(REQ), req2 = google('req2@example.com'), anonReq = env.authenticatedContext('mo-ok', { firebase: { sign_in_provider: 'anonymous' } }).firestore();
+const rq = (email, extra = {}) => ({ email, name: 'Dr Requester', requestedAt: 5, ...extra });
+const approve = async (db, email, role = 'editor') => { const b = writeBatch(db); b.set(doc(db, 'members', email), { role, name: 'Dr Requester' }); b.delete(doc(db, 'accessRequests', email)); await b.commit(); };
+await t('requester files own request', assertSucceeds(setDoc(doc(req, 'accessRequests', REQ), rq(REQ))));
+await t('requester reads own request', assertSucceeds(getDoc(doc(req, 'accessRequests', REQ))));
+await t('requester updates own request', assertSucceeds(setDoc(doc(req, 'accessRequests', REQ), rq(REQ, { name: 'Dr R Two', requestedAt: 6 }))));
+await t('requester cannot list requests', assertFails(getDocs(collection(req, 'accessRequests'))));
+await t('stranger cannot list requests', assertFails(getDocs(collection(stranger, 'accessRequests'))));
+await t('stranger cannot read another request', assertFails(getDoc(doc(stranger, 'accessRequests', REQ))));
+await t('MO cannot list requests', assertFails(getDocs(collection(mo, 'accessRequests'))));
+await t('signed out cannot list requests', assertFails(getDocs(collection(nobody, 'accessRequests'))));
+await t('request for someone else\'s email', assertFails(setDoc(doc(req2, 'accessRequests', REQ), rq(REQ))));
+await t('request whose email field differs', assertFails(setDoc(doc(req2, 'accessRequests', 'req2@example.com'), rq(REQ))));
+await t('request with an upper-case id', assertFails(setDoc(doc(google('Req3@Example.com'), 'accessRequests', 'Req3@Example.com'), rq('Req3@Example.com'))));
+await t('request with an extra key', assertFails(setDoc(doc(req2, 'accessRequests', 'req2@example.com'), rq('req2@example.com', { role: 'admin' }))));
+await t('request without a name', assertFails(setDoc(doc(req2, 'accessRequests', 'req2@example.com'), rq('req2@example.com', { name: '' }))));
+await t('request with a 101-character name', assertFails(setDoc(doc(req2, 'accessRequests', 'req2@example.com'), rq('req2@example.com', { name: 'x'.repeat(101) }))));
+await t('request with requestedAt not a number', assertFails(setDoc(doc(req2, 'accessRequests', 'req2@example.com'), rq('req2@example.com', { requestedAt: 'now' }))));
+await t('anonymous MO cannot file a request', assertFails(setDoc(doc(anonReq, 'accessRequests', 'mo-ok'), rq('mo-ok'))));
+await t('unverified email cannot file a request', assertFails(setDoc(doc(google('req2@example.com', false), 'accessRequests', 'req2@example.com'), rq('req2@example.com'))));
+await t('signed out cannot file a request', assertFails(setDoc(doc(nobody, 'accessRequests', 'req2@example.com'), rq('req2@example.com'))));
+await t('a member cannot file a request', assertFails(setDoc(doc(edi, 'accessRequests', EDITOR), rq(EDITOR))));
+await t('requester cannot make themselves a member', assertFails(setDoc(doc(req, 'members', REQ), { role: 'editor', name: 'Dr Requester' })));
+await t('requester cannot make themselves a member in a batch', assertFails(approve(req, REQ)));
+await t('stranger cannot delete another\'s request', assertFails(deleteDoc(doc(stranger, 'accessRequests', REQ))));
+await t('editor lists requests', assertSucceeds(getDocs(collection(edi, 'accessRequests'))));
+await t('admin lists requests', assertSucceeds(getDocs(collection(adm, 'accessRequests'))));
+await t('editor reads a request', assertSucceeds(getDoc(doc(edi, 'accessRequests', REQ))));
+await t('editor cannot edit a request', assertFails(setDoc(doc(edi, 'accessRequests', REQ), rq(REQ, { name: 'Changed' }))));
+await t('editor cannot add a member with no request', assertFails(setDoc(doc(edi, 'members', 'norequest@example.com'), { role: 'editor', name: 'N' })));
+await t('editor cannot add a member with no request, in a batch', assertFails(approve(edi, 'norequest@example.com')));
+await t('editor cannot approve as admin', assertFails(approve(edi, REQ, 'admin')));
+await t('editor cannot approve with an extra key', assertFails((async () => { const b = writeBatch(edi); b.set(doc(edi, 'members', REQ), { role: 'editor', name: 'R', x: 1 }); b.delete(doc(edi, 'accessRequests', REQ)); await b.commit(); })()));
+await t('editor cannot approve an upper-case id', assertFails(approve(edi, 'Req@example.com')));
+await t('editor approves with one batch', assertSucceeds(approve(edi, REQ)));
+await t('after approval the request is gone', assertSucceeds((async () => { if ((await getDoc(doc(edi, 'accessRequests', REQ))).exists()) throw new Error('request still there'); })()));
+await t('after approval the new member is an editor', assertSucceeds(getDocs(collection(req, 'questions'))));
+await t('after approval the new editor cannot update a member', assertFails(setDoc(doc(req, 'members', REQ), { role: 'admin', name: 'Dr Requester' })));
+await t('editor cannot remove a member', assertFails(deleteDoc(doc(edi, 'members', REQ))));
+await t('editor cannot update a member', assertFails(setDoc(doc(edi, 'members', REQ), { role: 'editor', name: 'Renamed' })));
+await t('admin can still remove a member', assertSucceeds(deleteDoc(doc(adm, 'members', REQ))));
+await t('requester files again', assertSucceeds(setDoc(doc(req, 'accessRequests', REQ), rq(REQ))));
+await t('admin approves as admin with one batch', assertSucceeds(approve(adm, REQ, 'admin')));
+await t('admin removes that admin', assertSucceeds(deleteDoc(doc(adm, 'members', REQ))));
+await t('requester withdraws own request', assertSucceeds((async () => { await setDoc(doc(req2, 'accessRequests', 'req2@example.com'), rq('req2@example.com')); await deleteDoc(doc(req2, 'accessRequests', 'req2@example.com')); })()));
+await t('editor declines a request', assertSucceeds((async () => { await setDoc(doc(req2, 'accessRequests', 'req2@example.com'), rq('req2@example.com')); await deleteDoc(doc(edi, 'accessRequests', 'req2@example.com')); })()));
+await t('admin adds a member directly (no request)', assertSucceeds(setDoc(doc(adm, 'members', 'direct@example.com'), { role: 'admin', name: 'Direct' })));
+await t('admin deletes a request', assertSucceeds((async () => { await setDoc(doc(req2, 'accessRequests', 'req2@example.com'), rq('req2@example.com')); await deleteDoc(doc(adm, 'accessRequests', 'req2@example.com')); })()));
+await t('admin removes the direct member', assertSucceeds(deleteDoc(doc(adm, 'members', 'direct@example.com'))));
+
 // questions: reading
 await t('MO reads active questions by query', assertSucceeds(getDocs(active(mo))));
 await t('MO cannot list all questions', assertFails(getDocs(collection(mo, 'questions'))));

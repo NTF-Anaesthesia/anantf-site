@@ -24,10 +24,11 @@ function load() {
   let d = null;
   try { d = JSON.parse(read(KEY) || 'null'); } catch { d = null; }
   if (!d || typeof d !== 'object') {
-    d = { questions: [], attempts: [], settings: { ...DEFAULT_SETTINGS, count: 5, minutes: 5 }, passphrase: 'demo', members: [{ email: 'demo@example.com', role: 'admin', name: 'Demo faculty' }], history: {} };
+    d = { questions: [], attempts: [], settings: { ...DEFAULT_SETTINGS, count: 5, minutes: 5 }, passphrase: 'demo', members: [{ email: 'demo@example.com', role: 'admin', name: 'Demo faculty' }], history: {}, requests: [] };
     d.questions = SAMPLE.map(([topic, stem, options, answer, explain], i) => cleanQuestion({ id: 's' + (i + 1), topic, stem, options, answer, explain, status: 'active', rev: 1, updatedAt: Date.now(), updatedBy: { email: 'demo@example.com', name: 'Sample' } }));
     save(d);
   }
+  if (!Array.isArray(d.requests)) d.requests = [];   // saved by an older version
   return d;
 }
 const save = d => write(KEY, JSON.stringify(d));
@@ -97,3 +98,21 @@ export async function saveMember(email, { role, name }) {
   const m = { email: e, role, name: name || '' }; if (i >= 0) d.members[i] = m; else d.members.push(m); save(d);
 }
 export async function removeMember(email) { const d = load(); d.members = d.members.filter(m => m.email !== String(email).toLowerCase()); save(d); }
+
+// ---- requests for faculty access ----
+const DEMO_EMAIL = 'demo@example.com';
+export async function requestAccess(name) {
+  const d = load(), r = { email: DEMO_EMAIL, name: String(name || '').trim().slice(0, 100) || 'Demo faculty', requestedAt: Date.now() };
+  d.requests = d.requests.filter(x => x.email !== r.email); d.requests.push(r); save(d); return clone(r);
+}
+export async function myRequest() { const r = load().requests.find(x => x.email === DEMO_EMAIL); return r ? clone(r) : null; }
+export async function cancelRequest() { const d = load(); d.requests = d.requests.filter(x => x.email !== DEMO_EMAIL); save(d); }
+export async function listRequests() { return clone(load().requests).sort((a, b) => b.requestedAt - a.requestedAt); }
+export async function approveRequest(email, role = 'editor') {
+  const d = load(), e = String(email).toLowerCase(), r = d.requests.find(x => x.email === e);
+  if (!r) throw fail('not-found', 'That request is no longer there.');
+  const m = { email: e, role: role === 'admin' ? 'admin' : 'editor', name: r.name };
+  const i = d.members.findIndex(x => x.email === e); if (i >= 0) d.members[i] = m; else d.members.push(m);
+  d.requests = d.requests.filter(x => x.email !== e); save(d); return clone(m);
+}
+export async function declineRequest(email) { const d = load(); d.requests = d.requests.filter(x => x.email !== String(email).toLowerCase()); save(d); }
