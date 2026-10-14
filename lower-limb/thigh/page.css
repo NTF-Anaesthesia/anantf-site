@@ -1,0 +1,127 @@
+/* Thigh and amputation page: levels figure, mid-thigh cross-section, amputation planner, combinations (prefix th-).
+   Shared styles: ../../truncal/shared/css/truncal.css and ../shared/css/lowerlimb.css. */
+.tb-app main .th-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
+.tb-app main .th-rapid{border-left:3px solid var(--tb-wine);background:var(--tb-inset);padding:10px 14px;font-size:16px;line-height:1.6;max-width:68ch}
+
+/* yes / no chips in the approaches table */
+.tb-app .th-yn{display:inline-block;padding:1px 8px;font:600 13px/1.5 var(--tb-sans);border:1px solid #633d3c}
+.tb-app .th-yn--y{background:#2c74b3;border-color:#2c74b3;color:#fff}
+.tb-app .th-yn--p{background:repeating-linear-gradient(45deg,rgba(44,116,179,.32) 0 2px,transparent 2px 5px);border-color:#2c74b3;color:#13314f}
+.tb-app .th-yn--n{border-style:dashed;color:#55534d}
+
+/* scan switcher */
+.tb-app .th-sw-seg{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 14px}
+.tb-app .th-sw-seg .tb-seg-btn{flex:1 1 auto;min-width:0}
+.tb-app .th-sw-pane[hidden]{display:none}
+
+/* levels figure */
+.tb-app .th-lv{margin:16px 0 24px;border:1px solid var(--tb-line);background:#fbf9f4;padding:12px}
+.tb-app .th-lv-seg{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.tb-app .th-lv-seg .tb-seg-btn{flex:1 1 auto;min-width:0}
+.tb-app .th-lv-grid{display:grid;gap:14px 28px;align-items:start}
+@media (min-width:860px){.tb-app .th-lv-grid{grid-template-columns:minmax(300px,1fr) minmax(0,1fr)}}
+.tb-app .th-lv-svg{display:block;width:100%;height:auto;max-width:420px;margin:0 auto}
+.tb-app .th-lv-probe{transition:transform .9s cubic-bezier(.4,0,.2,1)}
+.tb-app .th-lv-probe text{transition:opacity .4s ease}
+.tb-app .th-lv-n{transition:opacity .5s ease}
+.tb-app .th-lv-n.is-dim{opacity:.35}
+.tb-app .th-lv-ov{transition:opacity .4s ease}
+.tb-app .th-lv-ov--patchy path{stroke-dasharray:6 5}
+.tb-app .th-lv-pulse{transform-box:fill-box;transform-origin:center;opacity:0}
+.tb-app .th-lv-pulse.is-on{animation:th-pulse 2.2s ease-out 1}
+@keyframes th-pulse{0%{opacity:.6;transform:scale(.2)}70%{opacity:.35;transform:scale(1.5)}100%{opacity:0;transform:scale(1.9)}}
+.tb-app main .th-lv-k,.tb-app main .th-plan-k{font:400 12px/1.6 var(--tb-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--tb-muted);margin:0 0 4px}
+.tb-app main .th-lv-name{font:400 24px/1.3 var(--tb-serif);margin:0 0 8px}
+.tb-app .th-dl{margin:0}
+.tb-app .th-dl>div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:4px 14px;padding:8px 0;border-bottom:1px solid var(--tb-line)}
+.tb-app .th-dl dt{font:400 12px/1.6 var(--tb-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--tb-muted);padding-top:3px}
+.tb-app .th-dl dd{margin:0;font-size:16px;line-height:1.55}
+@media (max-width:420px){.tb-app .th-dl>div{grid-template-columns:1fr}.tb-app .th-dl dt{padding-top:0}}
+.tb-app main .th-lv-go{margin:10px 0 0;font-size:16px}
+.tb-app .th-lv figcaption,.tb-app .th-plan>figcaption{margin-top:12px;font-size:15px;line-height:1.6;color:var(--tb-ink-soft);max-width:68ch}
+.tb-app .th-anim-in{animation:th-fade .35s ease}
+@keyframes th-fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* mid-thigh cross-section */
+.tb-app .th-xs-svg{display:block;width:100%;height:auto;max-width:400px;margin:0 auto}
+.tb-app .th-xs-comp{transition:fill .45s ease}
+.tb-app .th-xs-comp[data-shade=on]{fill:#7fa9cf}
+.tb-app .th-xs-comp[data-shade=part]{fill:url(#th-xs-h)}
+.tb-app .th-xs-comp[data-shade=gap]{stroke:#633d3c;stroke-width:2.4;stroke-dasharray:6 4}
+.tb-app .th-xs-arc{transition:stroke .45s ease}
+.tb-app .th-xs-n .th-xs-halo{transition:opacity .45s ease}
+.tb-app .th-xs-n.is-on .th-xs-halo{opacity:.45;transform-box:fill-box;transform-origin:center;animation:th-halo 2.4s ease-in-out infinite}
+.tb-app .th-xs-n.is-part .th-xs-halo{opacity:.2}
+.tb-app .th-xs-n.is-gap circle:nth-child(2){stroke:#633d3c;stroke-width:2.4}
+@keyframes th-halo{0%,100%{transform:scale(.85)}50%{transform:scale(1.15)}}
+
+/* planner */
+.tb-app .th-plan{margin:16px 0 24px;border:1px solid var(--tb-line);background:#fbf9f4;padding:12px}
+.tb-app .th-plan-ops{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.tb-app .th-plan-ops .tb-seg-btn{flex:1 1 calc(50% - 6px);min-width:0}
+.tb-app .th-plan .tb-seg-btn[aria-pressed=true]{background:var(--tb-wine);border-color:var(--tb-wine);color:var(--tb-ivory)}
+.tb-app .th-plan-top{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:0 0 14px}
+.tb-app .th-plan-w{display:flex;flex-direction:column;gap:4px}
+.tb-app .th-plan-wlab{font:400 12px/1.6 var(--tb-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--tb-muted)}
+.tb-app .th-plan-wt{width:110px;min-height:44px;padding:6px 10px;border:1px solid var(--tb-line-strong);border-radius:0;background:var(--tb-paper);font:500 17px/1.2 var(--tb-sans);color:var(--tb-ink)}
+.tb-app .th-plan-grid{display:grid;gap:16px 28px;align-items:start}
+@media (min-width:980px){.tb-app .th-plan-grid{grid-template-columns:minmax(300px,420px) minmax(0,1fr)}}
+.tb-app .th-plan-figs{display:grid;gap:12px}
+.tb-app .th-plan-legs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-width:340px;margin:0 auto;width:100%}
+.tb-app .th-plan-leg{margin:0}
+.tb-app .th-plan-leg svg{display:block;width:100%;height:auto}
+.tb-app main .th-plan-leg figcaption{text-align:center;font-size:14px;color:var(--tb-muted)}
+.tb-app main .th-plan-xs-cap{font-size:14px;line-height:1.5;color:var(--tb-muted);text-align:center;margin:4px 0 0}
+.tb-app .th-plan-xs[hidden]{display:none}
+.tb-app .th-plan-blocks{display:grid;gap:6px;margin:0 0 14px}
+.tb-app .th-pb{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px 10px;align-items:center;padding:6px 8px;border:1px solid var(--tb-line);background:var(--tb-paper);transition:background-color .2s,border-color .2s}
+.tb-app .th-pb.is-on{border-color:#2c74b3;background:#eef4fa}
+.tb-app .th-pb-lab{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;font-size:15.5px;line-height:1.3}
+.tb-app .th-pb-cb{width:20px;height:20px;accent-color:#633d3c;flex:none}
+.tb-app .th-pb-dose{display:flex;align-items:center;gap:4px}
+.tb-app .th-pb-sel{min-height:40px;padding:4px 6px;border:1px solid var(--tb-line-strong);border-radius:0;background:var(--tb-paper);font:500 14px/1.2 var(--tb-sans);color:var(--tb-ink)}
+.tb-app .th-pb-x{color:var(--tb-muted)}
+.tb-app .th-pb-mg{font:600 14px/1.2 var(--tb-mono);min-width:62px;text-align:right}
+.tb-app main .th-pb-link{font-size:14px}
+@media (max-width:620px){
+  .tb-app .th-pb{grid-template-columns:minmax(0,1fr) auto}
+  .tb-app .th-pb-dose{grid-column:1 / 2;padding-left:30px}
+  .tb-app .th-pb-link{grid-column:2;grid-row:1}
+}
+.tb-app main .th-st-list{list-style:none;margin:6px 0 14px;padding:0}
+.tb-app main .th-st{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--tb-line);font-size:15.5px;line-height:1.5}
+.tb-app .th-st-tag{display:inline-block;text-align:center;padding:1px 6px;font:600 13px/1.5 var(--tb-sans);border:1px solid #2c74b3}
+.tb-app .th-st--ok .th-st-tag{background:#2c74b3;color:#fff}
+.tb-app .th-st--part .th-st-tag{background:repeating-linear-gradient(45deg,rgba(44,116,179,.32) 0 2px,transparent 2px 5px);color:#13314f}
+.tb-app .th-st--gap .th-st-tag{border:2px solid #633d3c;color:#633d3c;background:#f6ece9}
+.tb-app .th-dose{border:1px solid var(--tb-line);padding:10px 12px;background:var(--tb-paper);margin:0 0 12px}
+.tb-app main .th-dose-l{margin:0 0 6px;font-size:16px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.tb-app main .th-dose-l strong{font:600 22px/1.2 var(--tb-mono)}
+.tb-app main .th-dose-of{font-size:14px;color:var(--tb-muted)}
+.tb-app .th-dose-bar{height:12px;border:1px solid var(--tb-line-strong);background:#fff;overflow:hidden}
+.tb-app .th-dose-bar span{display:block;height:100%;background:#2c74b3;transition:width .5s ease}
+.tb-app .th-dose.is-near .th-dose-bar span{background:repeating-linear-gradient(45deg,#7a4f00 0 3px,#b88a2c 3px 6px)}
+.tb-app .th-dose.is-over{border-color:var(--tb-danger);background:var(--tb-danger-bg)}
+.tb-app .th-dose.is-over .th-dose-bar span{background:var(--tb-danger)}
+.tb-app main .th-dose-msg{margin:6px 0 0;font-size:15px;line-height:1.5}
+.tb-app main .th-plan-note{font-size:16px;line-height:1.6;margin:0 0 8px;max-width:68ch}
+.tb-app main .th-plan-bnotes{font-size:15px;line-height:1.5;margin:0;padding-left:1.2em;color:var(--tb-ink-soft)}
+.tb-app .th-plan-out{border-top:1px solid var(--tb-line);padding-top:10px}
+
+/* steps and exam */
+.tb-app main .th-steps{padding-left:1.4em;max-width:68ch}
+.tb-app main .th-steps li{margin:0 0 10px}
+/* collapsed deeper layers and the phone summary of the four levels */
+.tb-app .th-more{margin:4px 0 8px}
+.tb-app .th-more>summary{color:var(--tb-wine)}
+.tb-app main .th-lvl-sum{padding-left:1.2em;margin:10px 0 12px;max-width:68ch}
+.tb-app main .th-lvl-sum li{margin:0 0 6px}
+.tb-app .th-more .tb-table-wrap,.tb-app .th-more table{margin-top:4px}
+.tb-app main .th-cmb-key{padding-left:1.2em;margin:10px 0 8px;font-size:15px;line-height:1.55;max-width:68ch}
+.tb-app main .th-cmb-key li{margin:0 0 6px}
+.tb-app main .th-cmb-alt{font-size:14px;color:var(--tb-muted)}
+
+@media (prefers-reduced-motion:reduce){
+  .tb-app .th-lv-probe,.tb-app .th-lv-n,.tb-app .th-xs-comp,.tb-app .th-xs-arc,.tb-app .th-dose-bar span,.tb-app .th-pb{transition:none}
+  .tb-app .th-lv-pulse.is-on,.tb-app .th-xs-n.is-on .th-xs-halo,.tb-app .th-anim-in{animation:none}
+}

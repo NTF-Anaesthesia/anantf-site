@@ -9,13 +9,13 @@ RA.register('peng', {
   pills: null,
   probe: true,
   notes: `<p class="note"><strong>Dose:</strong> ropivacaine 0.2%, 20 mL to PENG. With an LFCN block add 5 mL 0.2% (total 25 mL, 50 mg).</p>
-<p class="note"><strong>Motor sparing, not incision cover.</strong> PENG targets the articular branches of the femoral, obturator and accessory obturator nerves, so the quadriceps is usually spared. It does not cover the skin incision. My practice for bipolar hip hemiarthroplasty and total hip replacement is PENG plus an <a href="#lfcn">LFCN block</a>, which covers anterior and anterolateral incisions; a posterior incision is only partly covered, so supplement with local infiltration.</p>
+<p class="note"><strong>Motor sparing, not incision cover.</strong> PENG targets the articular branches of the femoral, obturator and accessory obturator nerves, so the quadriceps is usually spared. It does not cover the skin incision. A common combination for bipolar hip hemiarthroplasty and total hip replacement is PENG plus an <a href="#lfcn">LFCN block</a>, which covers anterior and anterolateral incisions; a posterior incision is only partly covered, so supplement with local infiltration.</p>
 <p class="note"><strong>Safety:</strong> the needle enters near the ASIS and AIIS, where the LFCN runs. Keep the tip on bone lateral to the iliopubic eminence; do not pass medially towards the femoral artery and pectineus.</p>`,
   tips: `
 <p class="lede">Practical points from the sources listed below, grouped by step.</p>
 <h3>Indication</h3>
 <ul>
-  <li>The PENG exists because the hip's articular branches leave the femoral and accessory obturator nerves high, over the pubic ramus. A classic fascia iliaca block was no better than sham after hip arthroplasty in a placebo-controlled trial. <span class="src">Girón-Arango 2018 [6]; Shariat 2013 [7]</span></li>
+  <li>The PENG exists because the hip's articular branches leave the femoral and accessory obturator nerves high, over the pubic ramus. A classic infra-inguinal fascia iliaca block was no better than sham after hip arthroplasty in a placebo-controlled trial. <span class="src">Girón-Arango 2018 [6]; Shariat 2013 [7]</span></li>
   <li>For hip fracture, a 20 mL PENG gave dynamic pain relief and ease of positioning for spinal anaesthesia comparable to a 30 mL supra-inguinal fascia iliaca block, with no difference in Bromage scores. <span class="src">Koh 2025 [8]</span></li>
 </ul>
 <h3>Scanning</h3>

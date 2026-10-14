@@ -1,7 +1,7 @@
 # NTF Anaesthesia design language
 
 The default look for every new or edited page on anantf.com. Warm paper, ink text, one wine accent,
-square edges and hairline rules. Light only. The popliteal block page (`ra.html`) is the reference
+square edges and hairline rules. Light only. The archived popliteal block page (`popliteal-animation/`) is the reference
 for interactive teaching apps.
 
 The full design system (brand book, tokens, component previews, logos and illustrations) is the
@@ -47,7 +47,7 @@ The full design system (brand book, tokens, component previews, logos and illust
 | line-strong | `#8f8574` | Link underlines, badge borders (3:1) |
 | control-line | `#827b6d` | Borders of controls and inputs |
 
-Selected states, as on `ra.html`: a solid wine fill with ivory text (tabs, Play), or blush with a wine
+Selected states, as on `popliteal-animation/`: a solid wine fill with ivory text (tabs, Play), or blush with a wine
 border (a chosen item). Unselected controls are outlined in `line` on paper.
 
 ## Type

@@ -374,7 +374,7 @@ function fixLedger(label,off,tFix,label2){return(s,t)=>{if(t<tFix)return null;co
     la:[[1080,226,'left',s=>laMid(s,950),'LA in the tunnel',FXI+1.2]],
     guides:[[along(NS,NT,.3),NT,7,11]],
     caps:[[0,8.2,'1','The LFCN lies in a flat fat-filled tunnel within fascia lata, between sartorius and TFL.'],
-      [8.2,12.4,'2','Error: too steep. The tip passes just beyond the tunnel floor, just beyond the tunnel floor, in superficial TFL.'],
+      [8.2,12.4,'2','Error: too steep. The tip passes just beyond the tunnel floor, into superficial TFL.'],
       [12.4,15.4,'3','LA swells inside tensor fasciae latae, between its fibres. The tunnel stays flat.'],
       [15.4,TR,'4','Error recognised: the nerve is not outlined. Intramuscular injection: stop after 1 mL.'],
       [TR,FXI-.6,'5','Fix: withdraw into the fat, flatten the angle and re-enter the tunnel lateral to the nerve.'],
