@@ -161,14 +161,32 @@ try {
     await page.click('a:has-text("By question")'); await page.locator('th:has-text("Question")').waitFor(); assert.match(await text('tbody'), /100%|0%/);
     await page.click('a:has-text("By person")'); await page.click('a:has-text("Dr Test Person")'); await page.locator('.review').waitFor(); assert.match(await text('.summary'), /5\/5/);
   });
-  await step('settings: save, numbers checked, passphrase, members', async () => {
+  await step('settings: save, numbers checked, passphrase', async () => {
     await page.click('#nav >> text=Settings'); await page.locator('#sf').waitFor();
     await page.fill('#s-count', '0'); await page.click('#sf button[type=submit]'); await page.locator('#serr:not([hidden])').waitFor();
     await page.fill('#s-count', '3'); await page.fill('#s-cohort', 'Oct 2026'); await page.selectOption('#s-review', 'full'); await page.click('#sf button[type=submit]');
     await page.locator('#sf').waitFor(); assert.equal(await page.inputValue('#s-count'), '3');
     await page.fill('#p-pass', 'newpass'); await page.click('#pf button[type=submit]');
+    await shot('settings'); await axe('settings');
+  });
+  await step('faculty page: approve and decline requests, add, change role, remove', async () => {
+    await page.evaluate(() => {   // two people have asked for access (in the real app they do this from the Faculty page)
+      const d = JSON.parse(localStorage.getItem('mo-local-v1'));
+      d.requests = [{ email: 'dr.new@example.com', name: 'Dr New', requestedAt: Date.now() }, { email: 'dr.no@example.com', name: 'Dr No', requestedAt: Date.now() - 1000 }];
+      localStorage.setItem('mo-local-v1', JSON.stringify(d));
+    });
+    await page.goto(BASE + '?demo#/faculty/people'); await page.locator('#reqs').waitFor();
+    assert.equal(await page.locator('#reqs li').count(), 2); assert.match(await text('#nav'), /Faculty \(2\)/);
+    await shot('people'); await axe('people');
+    await page.click('[data-ap="dr.new@example.com"][data-role=editor]'); await page.click('dialog button[value=yes]');
+    await page.locator('#mem li:has-text("dr.new@example.com")').first().waitFor(); assert.equal(await page.locator('#reqs li').count(), 1);
+    await page.click('[data-dec="dr.no@example.com"]'); await page.click('dialog button[value=yes]');
+    await page.locator('text=Nobody is waiting').waitFor(); assert.doesNotMatch(await text('#nav'), /\(/);
+    await page.selectOption('[data-role-of="dr.new@example.com"]', 'admin'); await page.locator('#mem li:has-text("dr.new@example.com"):has-text("Admin")').waitFor();
     await page.fill('#m-email', 'dr.lee@example.com'); await page.fill('#m-name', 'Dr Lee'); await page.click('#mf button[type=submit]');
-    await page.locator('.members li >> text=dr.lee@example.com').waitFor(); await shot('settings'); await axe('settings');
+    await page.locator('#mem li:has-text("dr.lee@example.com")').first().waitFor();
+    await page.click('[data-rm="dr.lee@example.com"]'); await page.click('dialog button[value=yes]');
+    await page.locator('#mem li:has-text("dr.lee@example.com")').waitFor({ state: 'detached' });
   });
   await step('new settings apply: 3 questions, full review, cohort recorded', async () => {
     await page.click('#nav >> text=Test'); await page.fill('#f-name', 'Dr Third'); await page.fill('#f-pass', 'newpass'); await page.click('#start button[type=submit]');

@@ -22,6 +22,7 @@ const S = {
   attempt: lsJson('mo-attempt'),   // a test in progress
   last: lsJson('mo-last'),         // the last finished attempt (this device)
   q: { search: '', status: 'all', topic: '' },
+  pending: 0,         // faculty access requests waiting (faculty only)
 };
 let timer = null, userReady;
 const userKnown = new Promise(r => (userReady = r));
@@ -70,6 +71,7 @@ function renderNav() {
     html += link('#/faculty', 'Questions', /^#\/faculty($|\/q|\/paste|\/data)/.test(h));
     html += link('#/faculty/results', 'Results', /results|attempt/.test(h));
     if (S.role === 'admin') html += link('#/faculty/settings', 'Settings', /settings/.test(h));
+    html += link('#/faculty/people', S.pending ? `Faculty (${S.pending})` : 'Faculty', /people/.test(h));
     html += link('#/faculty/help', 'Help', /help/.test(h));
   } else html += link('#/faculty', 'Faculty', h.startsWith('#/faculty'));
   $('#nav').innerHTML = html;
@@ -92,7 +94,7 @@ async function route() {
     }
     await userKnown;
     if (!S.role) return viewFacultyGate();
-    renderNav();
+    renderNav(); refreshPending();
     const [, sub, arg] = p;
     if (!sub) return viewQuestions();
     if (sub === 'q') return viewEditor(arg);
@@ -100,6 +102,7 @@ async function route() {
     if (sub === 'data') return viewData();
     if (sub === 'results') return viewResults();
     if (sub === 'attempt') return viewAttempt(arg);
+    if (sub === 'people') return viewPeople();
     if (sub === 'settings') return S.role === 'admin' ? viewSettings() : go('#/faculty');
     if (sub === 'help') return viewHelp();
     return go('#/faculty');
@@ -107,6 +110,9 @@ async function route() {
     console.error(e);
     setView(`<h1>Something went wrong</h1><p>${esc(errText(e))}</p><p><a class="btn" href="#/">Back to the start</a></p>`);
   }
+}
+async function refreshPending() {
+  try { const n = (await api.listRequests()).length; if (n !== S.pending) { S.pending = n; renderNav(); } } catch { /* not allowed or offline: no badge */ }
 }
 const go = h => { if (location.hash === h) route(); else location.hash = h; };
 window.addEventListener('hashchange', route);
@@ -316,18 +322,48 @@ function viewResult() {
 }
 
 // ---------- faculty: gate ----------
-function viewFacultyGate() {
+async function viewFacultyGate() {
   const signedIn = S.user && !S.user.anonymous;
+  if (!signedIn) {
+    setView(`
+      <h1>Faculty</h1>
+      <p class="lead">Sign in to edit questions and see results.</p>
+      <p class="row"><button id="in" class="btn primary big">${mode === 'local' ? 'Open the demo as faculty' : 'Sign in with Google'}</button></p>
+      <p id="gate-err" class="err" role="alert" hidden></p>
+      <p class="muted"><a href="#/">Back to the test</a></p>`, 'Faculty');
+    $('#in').addEventListener('click', async ev => busy(ev.target, async () => {
+      try { await api.facultySignIn(); } catch (e) { const el = $('#gate-err'); el.textContent = e.code === 'offline' ? errText(e) : e.code === 'cancelled' ? 'Sign-in was closed before it finished. Try again.' : 'Sign-in did not finish. Try again.'; el.hidden = false; }
+    }));
+    return;
+  }
+  setView('<h1>Faculty</h1><p class="loading">Loading…</p>', 'Faculty');
+  const req = await api.myRequest().catch(() => null);
   setView(`
     <h1>Faculty</h1>
-    ${signedIn ? `<div class="card"><p>You are signed in as <b>${esc(S.user.email)}</b>, but this account is not on the faculty list.</p><p>Ask an admin to add this email address, or sign in with a different account.</p><p class="row"><button id="out" class="btn">Sign out</button></p></div>`
-      : `<p class="lead">Sign in to edit questions and see results.</p><p class="row"><button id="in" class="btn primary big">${mode === 'local' ? 'Open the demo as faculty' : 'Sign in with Google'}</button></p>`}
+    <div class="card stack">
+      <p>You are signed in as <b>${esc(S.user.email)}</b>. This account is not faculty yet.</p>
+      ${req ? `<p class="status ok">Your request was sent ${esc(L.fmtDate(req.requestedAt))}. Ask a faculty member to open <b>Faculty</b> and approve it, then tap <b>Check again</b>.</p>
+        <p class="row"><button id="again" class="btn primary">Check again</button> <button id="cancel" class="btn">Cancel my request</button> <button id="out" class="btn">Sign out</button></p>`
+      : `<form id="rq" class="stack"><label>Your name <span class="muted">(shown to the faculty who approve you)</span><input id="rq-name" required maxlength="100" value="${esc(S.user.name && S.user.name !== S.user.email ? S.user.name : '')}" autocomplete="name"></label>
+        <p class="row"><button class="btn primary" type="submit">Ask for faculty access</button> <button type="button" id="out" class="btn">Sign out</button></p></form>
+        <p class="muted small">Any current faculty member can approve you. They see your name and email address.</p>`}
+    </div>
     <p id="gate-err" class="err" role="alert" hidden></p>
     <p class="muted"><a href="#/">Back to the test</a></p>`, 'Faculty');
-  $('#in')?.addEventListener('click', async ev => busy(ev.target, async () => {
-    try { await api.facultySignIn(); } catch (e) { const el = $('#gate-err'); el.textContent = e.code === 'offline' ? errText(e) : 'Sign-in did not finish. Try again.'; el.hidden = false; }
-  }));
   $('#out')?.addEventListener('click', () => api.signOut());
+  $('#rq')?.addEventListener('submit', async ev => {
+    ev.preventDefault();
+    await busy(ev.submitter, async () => {
+      try { await api.requestAccess($('#rq-name').value.trim().replace(/\s+/g, ' ')); toast('Request sent.'); viewFacultyGate(); }
+      catch (e) { const el = $('#gate-err'); el.textContent = 'Not sent: ' + errText(e); el.hidden = false; }
+    });
+  });
+  $('#cancel')?.addEventListener('click', async () => { try { await api.cancelRequest(); viewFacultyGate(); } catch (e) { toast(errText(e)); } });
+  $('#again')?.addEventListener('click', async ev => busy(ev.target, async () => {
+    let role = null; try { role = await api.memberRole(S.user.email); } catch { /* offline */ }
+    if (role) { S.role = role; S.loaded = {}; renderNav(); toast('You are faculty now.'); go('#/faculty'); route(); }
+    else toast('Not approved yet.');
+  }));
 }
 
 // ---------- faculty: questions ----------
@@ -603,7 +639,7 @@ async function viewAttempt(id) {
 async function viewSettings() {
   setView('<h1>Settings</h1><p class="loading">Loading…</p>', 'Settings');
   await loadQuestions(true);
-  const st = S.settings, pass = await api.getPassphrase().catch(() => ''), members = await api.listMembers().catch(() => []);
+  const st = S.settings, pass = await api.getPassphrase().catch(() => '');
   const usable = S.questions.filter(L.isUsable).length;
   setView(`
     <h1>Settings</h1>
@@ -624,12 +660,7 @@ async function viewSettings() {
     <form id="pf" class="card stack"><h2>Passphrase for MOs</h2>
       <label>Passphrase<input id="p-pass" value="${esc(pass)}" autocomplete="off"></label>
       <p class="muted small">${mode === 'cloud' ? 'Changing it signs everyone out of new tests; share the new one with the next group.' : 'Demo passphrase.'} Anyone who has it can sit the test, so change it for each new intake.</p>
-      <p class="row"><button class="btn primary" type="submit">Save passphrase</button></p></form>
-    <div class="card stack"><h2>Faculty (can edit questions and see results)</h2>
-      <ul class="members">${members.map(m => `<li><span>${esc(m.name || '')} <b>${esc(m.email)}</b> · ${esc(m.role)}</span> ${m.email === S.user.email ? '<span class="muted">you</span>' : `<button class="link" data-rm="${esc(m.email)}">Remove</button>`}</li>`).join('')}</ul>
-      <form id="mf" class="stack"><div class="two"><label>Google email<input id="m-email" type="email" required placeholder="name@example.com"></label><label>Name<input id="m-name" placeholder="Dr Tan"></label></div>
-      <label>Can<select id="m-role"><option value="editor">Edit questions and see results</option><option value="admin">Do everything (settings, passphrase, faculty list)</option></select></label>
-      <p class="row"><button class="btn" type="submit">Add</button></p></form></div>`, 'Settings');
+      <p class="row"><button class="btn primary" type="submit">Save passphrase</button></p></form>`, 'Settings');
   $('#sf').addEventListener('submit', async ev => {
     ev.preventDefault();
     const n = { title: $('#s-title').value.trim() || L.DEFAULT_SETTINGS.title, count: +$('#s-count').value, minutes: +$('#s-min').value, passMark: +$('#s-pass').value, cohort: $('#s-cohort').value.trim(), review: $('#s-review').value, intro: $('#s-intro').value.trim() };
@@ -643,13 +674,48 @@ async function viewSettings() {
     if (p.length < 4) return toast('Use at least 4 characters.');
     try { await api.setPassphrase(p); toast('Passphrase saved.'); } catch (e) { toast(errText(e)); }
   });
-  $('#mf').addEventListener('submit', async ev => {
+}
+
+// ---------- faculty: people (requests and the faculty list) ----------
+async function viewPeople() {
+  setView('<h1>Faculty</h1><p class="loading">Loading…</p>', 'Faculty');
+  const [members, reqs] = await Promise.all([api.listMembers().catch(() => []), api.listRequests().catch(() => [])]);
+  if (reqs.length !== S.pending) { S.pending = reqs.length; renderNav(); }
+  const admin = S.role === 'admin';
+  const roleName = r => (r === 'admin' ? 'Admin' : 'Faculty');
+  setView(`
+    <h1>Faculty</h1>
+    <p class="lead">Faculty can edit questions and see every result. Anyone with a Google account can ask for access on the Faculty page; any faculty member can approve.</p>
+    <h2>Waiting for approval</h2>
+    ${reqs.length ? `<ul class="members" id="reqs">${reqs.map(r => `<li><span>${esc(r.name)} <b>${esc(r.email)}</b><br><span class="muted small">asked ${esc(L.fmtDate(r.requestedAt))}</span></span>
+      <span class="row"><button class="btn primary" data-ap="${esc(r.email)}" data-role="editor">Approve</button>${admin ? `<button class="btn" data-ap="${esc(r.email)}" data-role="admin">Approve as admin</button>` : ''}<button class="btn" data-dec="${esc(r.email)}">Decline</button></span></li>`).join('')}</ul>` : '<p class="muted">Nobody is waiting.</p>'}
+    <h2>Current faculty</h2>
+    <ul class="members" id="mem">${members.map(m => `<li><span>${esc(m.name || '')} <b>${esc(m.email)}</b> · ${roleName(m.role)}</span>${m.email === S.user.email ? '<span class="muted">you</span>' : admin ? `<span class="row"><label class="visually-hidden" for="r-${esc(m.email)}">Role of ${esc(m.email)}</label><select id="r-${esc(m.email)}" data-role-of="${esc(m.email)}"><option value="editor"${m.role !== 'admin' ? ' selected' : ''}>Faculty</option><option value="admin"${m.role === 'admin' ? ' selected' : ''}>Admin</option></select><button class="btn" data-rm="${esc(m.email)}">Remove</button></span>` : ''}</li>`).join('')}</ul>
+    <p class="muted small">Faculty can approve new faculty. Only admins can make someone an admin, change a role or remove a person, and change settings.</p>
+    ${admin ? `<form id="mf" class="card stack"><h2>Add someone yourself</h2><div class="two"><label>Google email<input id="m-email" type="email" required placeholder="name@example.com"></label><label>Name<input id="m-name" placeholder="Dr Tan"></label></div>
+      <label>Can<select id="m-role"><option value="editor">Edit questions and see results</option><option value="admin">Do everything (settings, passphrase, make others admin)</option></select></label>
+      <p class="row"><button class="btn" type="submit">Add</button></p></form>` : ''}`, 'Faculty');
+  const again = () => viewPeople();
+  $('#app').querySelectorAll('[data-ap]').forEach(b => b.addEventListener('click', async () => {
+    const as = b.dataset.role;
+    if (!await ask('Approve this person?', `<p><b>${esc(b.dataset.ap)}</b> will be able to ${as === 'admin' ? 'do everything: settings, the passphrase, and the faculty list, as well as ' : ''}edit questions and see every MO's result.</p>`, 'Approve')) return;
+    try { await api.approveRequest(b.dataset.ap, as); toast('Approved.'); again(); } catch (e) { toast(e.code === 'not-found' ? 'That request is gone (already handled?).' : errText(e)); again(); }
+  }));
+  $('#app').querySelectorAll('[data-dec]').forEach(b => b.addEventListener('click', async () => {
+    if (!await ask('Decline this request?', `<p>${esc(b.dataset.dec)} will not get access. They can ask again.</p>`, 'Decline', true)) return;
+    try { await api.declineRequest(b.dataset.dec); again(); } catch (e) { toast(errText(e)); }
+  }));
+  $('#app').querySelectorAll('[data-role-of]').forEach(sel => sel.addEventListener('change', async () => {
+    const m = members.find(x => x.email === sel.dataset.roleOf);
+    try { await api.saveMember(m.email, { role: sel.value, name: m.name || '' }); toast('Saved.'); again(); } catch (e) { toast(errText(e)); again(); }
+  }));
+  $('#mf')?.addEventListener('submit', async ev => {
     ev.preventDefault();
-    try { await api.saveMember($('#m-email').value.trim(), { role: $('#m-role').value, name: $('#m-name').value.trim() }); toast('Added.'); viewSettings(); } catch (e) { toast(errText(e)); }
+    try { await api.saveMember($('#m-email').value.trim(), { role: $('#m-role').value, name: $('#m-name').value.trim() }); toast('Added.'); again(); } catch (e) { toast(errText(e)); }
   });
   $('#app').querySelectorAll('[data-rm]').forEach(b => b.addEventListener('click', async () => {
     if (!await ask('Remove from faculty?', `<p>${esc(b.dataset.rm)} will no longer be able to edit questions or see results.</p>`, 'Remove', true)) return;
-    try { await api.removeMember(b.dataset.rm); viewSettings(); } catch (e) { toast(errText(e)); }
+    try { await api.removeMember(b.dataset.rm); again(); } catch (e) { toast(errText(e)); }
   }));
 }
 
@@ -663,6 +729,7 @@ function viewHelp() {
     <p>Wrong answer noticed later? Edit it and save. Past results keep the question as it was when that person sat the test, so old scores do not change.</p>
     <h2>Adding many at once</h2><p>Use <b>Paste many</b>: paste questions from Word or an email. Or download the spreadsheet from <b>Backup and import</b>, add rows in Excel or Google Sheets, and upload it again.</p>
     <h2>Mistakes</h2><ul><li>Every save keeps the earlier version: open the question and look under <b>Earlier versions</b>.</li><li>If two people edit the same question, the app tells the second person and lets them choose.</li><li>If your connection drops while typing, your text is kept on your device.</li><li>Please download a <b>full backup</b> now and then.</li></ul>
+    <h2>Adding faculty</h2><p>Nobody has to be listed in advance. A colleague opens the Faculty page, signs in with Google and taps <b>Ask for faculty access</b>. Any faculty member then opens <b>Faculty</b> in the menu (it shows a number when someone is waiting) and taps <b>Approve</b>.</p>
     <h2>For each new intake</h2><ol><li>Settings: change the <b>passphrase</b> and the <b>cohort</b> name.</li><li>Send the MOs the link and the passphrase.</li><li>Results appear under <b>Results</b>; download them as a spreadsheet.</li></ol>
     <h2>Good to know</h2><p>Each MO gets a different random set of questions from the “In the test” ones. The passphrase keeps casual visitors out; it is not high security, so do not put anything confidential in a question.</p>`, 'Help');
 }

@@ -3,7 +3,10 @@ rules_version = '2';
 // Baby MO test (Firebase project ntf-mo-portal). Published by pasting it into Firestore Database > Rules (see SETUP.md step F). Tested by babymo/test/run-rules.sh.
 //
 // Two kinds of people:
-//  - faculty: Google sign-in, verified email, listed in /members (role 'admin' or 'editor')
+//  - faculty: Google sign-in, verified email, listed in /members (role 'admin' or 'editor'). Only the first admin is
+//    created by hand in the console; anyone else signs in with Google and files /accessRequests/{their lower-case
+//    email} = { email, name, requestedAt }, and any faculty member approves it (an editor may add only role 'editor',
+//    and only for an email with a request; admins can add anyone and make admins) or declines it.
 //  - MOs: anonymous sign-in plus a /sessions/{uid} document, which can only be created with the shared passphrase.
 //    A session is valid only while its passphrase still equals /config/access, so changing the passphrase locks
 //    everyone out until they enter the new one.
@@ -61,10 +64,33 @@ service cloud.firestore {
     match /members/{memberEmail} {
       allow get: if signedIn() && memberEmail == email();
       allow list, get: if member();
-      allow create: if admin() && validMember() && memberEmail == memberEmail.lower();
+      // admins add anyone; an editor may only approve a request (the request must exist before the write: in a batch
+      // that also deletes it, exists() still sees the state before the batch) and only as an 'editor'
+      allow create: if validMember() && memberEmail == memberEmail.lower()
+        && (admin() || (editor() && request.resource.data.role == 'editor'
+          && exists(/databases/$(database)/documents/accessRequests/$(memberEmail))));
       // an admin can't demote or remove themselves, so there is always one
       allow update: if admin() && validMember() && (memberEmail != email() || request.resource.data.role == 'admin');
       allow delete: if admin() && memberEmail != email();
+    }
+
+    // ---- requests for faculty access ----
+    // a Google user (never an MO, who has no email) can file, change, read and withdraw only their own request,
+    // and only while not yet faculty. Faculty can list, read and delete (decline or approve) any request.
+    function ownRequest(reqEmail) {
+      return signedIn() && reqEmail == email();
+    }
+    function validRequest(reqEmail) {
+      return request.resource.data.keys().hasOnly(['email', 'name', 'requestedAt'])
+        && request.resource.data.email == reqEmail
+        && request.resource.data.name is string && request.resource.data.name.size() >= 1 && request.resource.data.name.size() <= 100
+        && request.resource.data.requestedAt is number;
+    }
+    match /accessRequests/{reqEmail} {
+      allow get: if member() || ownRequest(reqEmail);
+      allow list: if member();
+      allow create, update: if ownRequest(reqEmail) && !member() && validRequest(reqEmail);
+      allow delete: if member() || (ownRequest(reqEmail) && !member());
     }
 
     // ---- config ----

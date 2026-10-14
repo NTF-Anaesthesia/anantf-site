@@ -5,6 +5,7 @@
 //
 // Data:
 //   members/{email}                 { role: 'admin' | 'editor', name }
+//   accessRequests/{email}          { email, name, requestedAt }         (a Google user asking to become faculty; approved or declined by faculty)
 //   config/access                   { passphrase }                       (admins only)
 //   config/test                     { title, count, passMark, minutes, review, cohort, intro, updatedAt, updatedBy }
 //   sessions/{uid}                  { name, pass, at }                   (an MO's login; created once, never changed)
@@ -182,6 +183,80 @@ export async function removeMember(email) {
   return guard(async () => {
     const { db, F } = await ready();
     await F.deleteDoc(F.doc(db, 'members', String(email || '').trim().toLowerCase()));
+  });
+}
+
+// ---- requests for faculty access ----
+// Anyone signed in with Google may ask (requestAccess); any faculty member may approve (as an editor; an admin can
+// approve as admin) or decline. A request is keyed by the lower-case email.
+async function me() {
+  const { auth } = await ready();
+  const u = auth.currentUser;
+  if (!u || u.isAnonymous || !u.email) throw own('permission', 'Please sign in with Google first.');
+  return { email: u.email.toLowerCase(), name: u.displayName || u.email.toLowerCase() };
+}
+
+// Files (or updates) the signed-in person's own request. Returns { email, name, requestedAt }.
+export async function requestAccess(name) {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const m = await me();
+    const doc = plain({ email: m.email, name: str(name, 100).trim() || m.name.slice(0, 100), requestedAt: Date.now() });
+    await F.setDoc(F.doc(db, 'accessRequests', m.email), doc);
+    return doc;
+  });
+}
+
+// The signed-in person's own request, or null.
+export async function myRequest() {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const m = await me();
+    const snap = await F.getDoc(F.doc(db, 'accessRequests', m.email));
+    return snap.exists() ? snap.data() : null;
+  });
+}
+
+export async function cancelRequest() {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const m = await me();
+    await F.deleteDoc(F.doc(db, 'accessRequests', m.email));
+  });
+}
+
+// Faculty only. Newest first.
+export async function listRequests() {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const snap = await F.getDocs(F.collection(db, 'accessRequests'));
+    return snap.docs.map(d => ({ email: d.id, name: d.data().name || '', requestedAt: d.data().requestedAt || 0 }))
+      .sort((a, b) => b.requestedAt - a.requestedAt);
+  });
+}
+
+// Faculty only. One batch: adds members/{email} (name from the request) and deletes the request. role 'admin' is
+// refused by the rules unless the caller is an admin. Throws 'not-found' if the request is gone.
+export async function approveRequest(email, role = 'editor') {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const id = String(email || '').trim().toLowerCase();
+    const reqRef = F.doc(db, 'accessRequests', id);
+    const snap = await F.getDoc(reqRef);
+    if (!snap.exists()) throw own('not-found', 'That request is no longer there.');
+    const name = str(snap.data().name, 100);
+    const batch = F.writeBatch(db);
+    batch.set(F.doc(db, 'members', id), plain({ role: role === 'admin' ? 'admin' : 'editor', name }));
+    batch.delete(reqRef);
+    await batch.commit();
+    return { email: id, role: role === 'admin' ? 'admin' : 'editor', name };
+  });
+}
+
+export async function declineRequest(email) {
+  return guard(async () => {
+    const { db, F } = await ready();
+    await F.deleteDoc(F.doc(db, 'accessRequests', String(email || '').trim().toLowerCase()));
   });
 }
 

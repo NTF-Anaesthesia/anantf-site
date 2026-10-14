@@ -45,7 +45,9 @@ The rules below are not live yet, but the console always works, so you create th
 2. Click **Start collection** again. Collection id: `members`. Document id: **your own Google email, all lower case**
    (for example `you@gmail.com`). Add two **string** fields: `role` = `admin` and `name` = your name. Save.
 
-Later you add other faculty inside the portal (Faculty tab), and change the passphrase there too. Changing the
+Only this first admin is created by hand. Every other faculty member signs in with Google in the app and taps
+"Request faculty access"; any current faculty member (editor or admin) then approves or declines the request inside the
+portal. (An admin can still add someone directly in the Faculty tab, and changes the passphrase there too.) Changing the
 passphrase signs every MO out until they enter the new one: do it when a new cohort starts.
 
 ## F. Put the rules live

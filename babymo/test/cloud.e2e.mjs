@@ -320,14 +320,15 @@ D) four`);
     await page.goto(URL_EMU + '#/faculty/results?by=question'); await page.locator('table').waitFor();
     assert.ok(await page.locator('table tbody tr').count() >= 5);
   });
-  await step('settings: save (admin), members list, add and remove a faculty member', async () => {
+  await step('settings: save (admin); Faculty page: add and remove a faculty member', async () => {
     await page.goto(URL_EMU + '#/faculty/settings'); await page.locator('#sf').waitFor();
     assert.equal(await page.inputValue('#p-pass'), PASS);
     await page.fill('#s-cohort', 'Nov 2026 intake'); await page.selectOption('#s-review', 'marks'); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#sf button[type=submit]'); await toastText(page, /Saved/);
     const s = await getD('config', 'test'); assert.equal(s.cohort, 'Nov 2026 intake'); assert.equal(s.review, 'marks'); assert.equal(s.updatedBy.email, ADMIN); assert.equal(s.count, 5);
     await page.locator('#sf').waitFor();
+    await page.goto(URL_EMU + '#/faculty/people'); await page.locator('#mf').waitFor();
     await page.fill('#m-email', 'New.Person@Example.com'); await page.fill('#m-name', 'New Person'); await page.click('#mf button[type=submit]');
-    await page.locator('.members li', { hasText: 'new.person@example.com' }).waitFor();
+    await page.locator('.members li', { hasText: 'new.person@example.com' }).first().waitFor();
     assert.deepEqual(await getD('members', 'new.person@example.com'), { id: 'new.person@example.com', role: 'editor', name: 'New Person' });
     await page.locator('.members li', { hasText: 'new.person@example.com' }).locator('[data-rm]').click();
     await page.locator('dialog[open]').waitFor(); await page.click('dialog button[value=yes]');
@@ -355,7 +356,7 @@ D) four`);
     const ctx = await newCtx(STRANGER); const p = await facultyPage(ctx); page = p;
     await p.locator('#in').waitFor(); await p.click('#in');
     await p.locator('#out').waitFor();
-    assert.match(await text(p, '#app'), /not on the faculty list/);
+    assert.match(await text(p, "#app"), /not on the faculty list|not faculty yet/);
     assert.equal(await p.locator('#nav a', { hasText: 'Results' }).count(), 0);
     const r = await p.evaluate(async () => {
       const c = await import('/babymo/js/cloud.js'); const out = {};
@@ -367,6 +368,75 @@ D) four`);
     const w = await p.evaluate(async () => { const c = await import('/babymo/js/cloud.js'); try { await c.saveMember('stranger@example.com', { role: 'admin', name: 'me' }); return 'allowed'; } catch (e) { return e.code; } });
     assert.equal(w, 'permission'); assert.equal(await getD('members', STRANGER), null);
     await p.click('#out'); await p.locator('#in').waitFor();   // sign out returns to the gate
+  });
+
+  // ================= asking for faculty access =================
+  const NEWFAC = 'newfac@example.com', SECOND = 'second@example.com';
+  const call = (p, fn, ...args) => p.evaluate(async ([f, a]) => {
+    const c = await import('/babymo/js/cloud.js');
+    try { const v = await c[f](...a); return { ok: true, v: v === undefined ? null : v }; } catch (e) { return { ok: false, code: e.code }; }
+  }, [fn, args]);
+  const gatePage = async email => {   // a Google account that is not faculty: sits on the "not on the faculty list" gate
+    const ctx = await newCtx(email); const p = await facultyPage(ctx); page = p;
+    await p.locator('#in').waitFor(); await p.click('#in'); await p.locator('#out').waitFor();
+    return p;
+  };
+  let reqPage, edPage;
+  await step('a non-member asks for access: request filed; they cannot list requests or approve themselves', async () => {
+    reqPage = await gatePage(NEWFAC);
+    const r = await call(reqPage, 'requestAccess', 'Dr New Faculty');
+    assert.equal(r.ok, true, JSON.stringify(r)); assert.equal(r.v.email, NEWFAC); assert.equal(r.v.name, 'Dr New Faculty');
+    const stored = await getD('accessRequests', NEWFAC);
+    assert.equal(stored.name, 'Dr New Faculty'); assert.equal(stored.email, NEWFAC); assert.equal(typeof stored.requestedAt, 'number');
+    assert.deepEqual(Object.keys(stored).sort(), ['email', 'id', 'name', 'requestedAt']);
+    assert.equal((await call(reqPage, 'myRequest')).v.name, 'Dr New Faculty');
+    assert.equal((await call(reqPage, 'listRequests')).code, 'permission');
+    assert.equal((await call(reqPage, 'approveRequest', NEWFAC)).code, 'permission');
+    assert.equal((await call(reqPage, 'declineRequest', 'someone-else@example.com')).code, 'permission');
+    assert.equal(await call(reqPage, 'memberRole', NEWFAC).then(x => x.v), null);
+    assert.equal(await getD('members', NEWFAC), null); assert.notEqual(await getD('accessRequests', NEWFAC), null);
+  });
+  await step('asking again updates the request; cancelling removes it', async () => {
+    assert.equal((await call(reqPage, 'requestAccess', 'Dr New F')).ok, true);
+    assert.equal((await getD('accessRequests', NEWFAC)).name, 'Dr New F');
+    assert.equal((await call(reqPage, 'cancelRequest')).ok, true);
+    assert.equal(await getD('accessRequests', NEWFAC), null); assert.equal((await call(reqPage, 'myRequest')).v, null);
+    assert.equal((await call(reqPage, 'requestAccess', 'Dr New Faculty')).ok, true);
+  });
+  await step('an editor lists the request, cannot approve as admin, then approves: member + request gone in one batch', async () => {
+    const ctx = await newCtx(EDITOR); edPage = await facultyPage(ctx); await facultySignIn(edPage);
+    const list = (await call(edPage, 'listRequests')).v;
+    assert.ok(list.some(x => x.email === NEWFAC && x.name === 'Dr New Faculty'), JSON.stringify(list));
+    assert.equal((await call(edPage, 'approveRequest', NEWFAC, 'admin')).code, 'permission');
+    assert.notEqual(await getD('accessRequests', NEWFAC), null, 'a refused approval must leave the request');
+    assert.equal(await getD('members', NEWFAC), null);
+    const ok = await call(edPage, 'approveRequest', NEWFAC);
+    assert.equal(ok.ok, true, JSON.stringify(ok)); assert.deepEqual(ok.v, { email: NEWFAC, role: 'editor', name: 'Dr New Faculty' });
+    assert.deepEqual(await getD('members', NEWFAC), { id: NEWFAC, role: 'editor', name: 'Dr New Faculty' });
+    assert.equal(await getD('accessRequests', NEWFAC), null);
+    assert.equal((await call(edPage, 'approveRequest', NEWFAC)).code, 'not-found', 'a request that has vanished is not-found');
+  });
+  await step('the approved person is now faculty (editor) and reads the questions; a reload shows the faculty screens', async () => {
+    assert.equal((await call(reqPage, 'memberRole', NEWFAC)).v, 'editor');
+    assert.equal((await call(reqPage, 'listQuestions')).ok, true);
+    assert.equal((await call(reqPage, 'myRequest')).v, null);
+    assert.equal((await call(reqPage, 'getPassphrase')).code, 'permission', 'an approved editor is still not an admin');
+    await reqPage.reload(); await reqPage.locator('#nav a', { hasText: 'Results' }).waitFor();
+  });
+  await step('an admin approves another request as admin; an admin declines one; a non-faculty account still cannot list', async () => {
+    const ctx2 = await newCtx(SECOND); const p2 = await facultyPage(ctx2); await p2.locator('#in').waitFor(); await p2.click('#in'); await p2.locator('#out').waitFor();
+    assert.equal((await call(p2, 'requestAccess', 'Dr Second')).ok, true);
+    assert.equal((await call(p2, 'listRequests')).code, 'permission');
+    const adminPage = await facultyPage(facCtx); await adminPage.locator('#nav a', { hasText: 'Results' }).waitFor();
+    assert.ok((await call(adminPage, 'listRequests')).v.some(x => x.email === SECOND));
+    assert.equal((await call(adminPage, 'declineRequest', SECOND)).ok, true);
+    assert.equal(await getD('accessRequests', SECOND), null); assert.equal(await getD('members', SECOND), null);
+    assert.equal((await call(p2, 'requestAccess', 'Dr Second')).ok, true);
+    const ok = await call(adminPage, 'approveRequest', SECOND, 'admin');
+    assert.equal(ok.ok, true, JSON.stringify(ok));
+    assert.deepEqual(await getD('members', SECOND), { id: SECOND, role: 'admin', name: 'Dr Second' });
+    assert.equal((await call(p2, 'memberRole', SECOND)).v, 'admin');
+    await adminPage.close(); await p2.close(); await edPage.close();
   });
 
   // ================= change the passphrase =================
