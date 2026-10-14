@@ -320,14 +320,15 @@ D) four`);
     await page.goto(URL_EMU + '#/faculty/results?by=question'); await page.locator('table').waitFor();
     assert.ok(await page.locator('table tbody tr').count() >= 5);
   });
-  await step('settings: save (admin), members list, add and remove a faculty member', async () => {
+  await step('settings: save (admin); Faculty page: add and remove a faculty member', async () => {
     await page.goto(URL_EMU + '#/faculty/settings'); await page.locator('#sf').waitFor();
     assert.equal(await page.inputValue('#p-pass'), PASS);
     await page.fill('#s-cohort', 'Nov 2026 intake'); await page.selectOption('#s-review', 'marks'); await page.evaluate(() => { document.querySelector('#toast').textContent = ''; }); await page.click('#sf button[type=submit]'); await toastText(page, /Saved/);
     const s = await getD('config', 'test'); assert.equal(s.cohort, 'Nov 2026 intake'); assert.equal(s.review, 'marks'); assert.equal(s.updatedBy.email, ADMIN); assert.equal(s.count, 5);
     await page.locator('#sf').waitFor();
+    await page.goto(URL_EMU + '#/faculty/people'); await page.locator('#mf').waitFor();
     await page.fill('#m-email', 'New.Person@Example.com'); await page.fill('#m-name', 'New Person'); await page.click('#mf button[type=submit]');
-    await page.locator('.members li', { hasText: 'new.person@example.com' }).waitFor();
+    await page.locator('.members li', { hasText: 'new.person@example.com' }).first().waitFor();
     assert.deepEqual(await getD('members', 'new.person@example.com'), { id: 'new.person@example.com', role: 'editor', name: 'New Person' });
     await page.locator('.members li', { hasText: 'new.person@example.com' }).locator('[data-rm]').click();
     await page.locator('dialog[open]').waitFor(); await page.click('dialog button[value=yes]');
@@ -355,7 +356,7 @@ D) four`);
     const ctx = await newCtx(STRANGER); const p = await facultyPage(ctx); page = p;
     await p.locator('#in').waitFor(); await p.click('#in');
     await p.locator('#out').waitFor();
-    assert.match(await text(p, '#app'), /not on the faculty list/);
+    assert.match(await text(p, "#app"), /not on the faculty list|not faculty yet/);
     assert.equal(await p.locator('#nav a', { hasText: 'Results' }).count(), 0);
     const r = await p.evaluate(async () => {
       const c = await import('/babymo/js/cloud.js'); const out = {};
