@@ -528,6 +528,7 @@ D) four`);
       await p.locator('.score').waitFor();
       assert.equal((await docs('attempts', where('name', '==', name))).length, 0, 'nothing can be saved while offline');
       assert.equal(await p.evaluate(() => JSON.parse(localStorage.getItem('mo-outbox')).length), 1);
+      assert.match(await p.locator('#banner').innerText(), /waiting to be sent/, 'a note says the result is waiting');
       await p.waitForTimeout(offlineMs);
       await ctx.setOffline(false);
       await p.locator('#saved.ok').waitFor({ timeout: 40000 });
@@ -535,6 +536,7 @@ D) four`);
       const as = await docs('attempts', where('name', '==', name));
       assert.equal(as.length, 1, `expected exactly one saved attempt, got ${as.length}`);
       assert.equal(await p.evaluate(() => JSON.parse(localStorage.getItem('mo-outbox')).length), 0, 'outbox emptied');
+      assert.doesNotMatch(await p.locator('#banner').innerText(), /waiting to be sent/, 'the note is gone once it is sent');
       assert.equal(as[0].items.length, 5);
     });
   }

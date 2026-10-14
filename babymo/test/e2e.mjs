@@ -303,6 +303,13 @@ try {
     await sit('Retry Person'); await page.locator('#go').waitFor(); assert.match(await text('#app'), /attempt 2 of 2/);
     await page.click('#cancel');
   });
+  await step('a result left waiting from earlier is sent when the page opens', async () => {
+    await page.goto(BASE + '?demo'); await page.locator('#f-name').waitFor();
+    const before = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v1')).attempts.length);
+    await page.evaluate(() => localStorage.setItem('mo-outbox', JSON.stringify([{ id: 'waiting1', uid: 'local', name: 'Dr Waiting', cohort: '', startedAt: 1, submittedAt: 2, durationSec: 5, items: [{ qid: 'x', stem: 'S', options: ['a', 'b', 'c', 'd'], answer: 0, topic: '', explain: '', picked: 0 }], settings: { count: 1, passMark: 80, minutes: 5 } }])));
+    await page.reload(); await page.locator('#f-name').waitFor();
+    await page.waitForFunction(b => JSON.parse(localStorage.getItem('mo-local-v1')).attempts.length === b + 1 && !JSON.parse(localStorage.getItem('mo-outbox') || '[]').length, before, { timeout: 10000 });
+  });
   await step('help page', async () => { await page.goto(BASE + '?demo#/faculty/help'); await page.locator('h1').waitFor(); assert.match(await text('h1'), /How this works/); await axe('help'); });
   assert.deepEqual(errors, [], 'console errors: ' + errors.join(' | '));
   console.log('babymo e2e: all steps ok');

@@ -85,12 +85,20 @@ function renderNav() {
   $('#wholine').innerHTML = signedIn ? `Signed in as <b>${esc(S.user.email || S.user.name || '')}</b> · ${roleName}${mode === 'local' ? ' (demo)' : ''}` : h.startsWith('#/faculty') ? 'Not signed in' : '';
   $('#who').innerHTML = S.user && !S.user.anonymous ? `<button type="button" id="signout" title="${esc(S.user.email || '')}">Sign out</button>` : '';
   $('#nav').innerHTML = html;
-  $('#banner').innerHTML = mode === 'local' ? `<div class="demo">${isDemo ? 'Demo' : 'Not connected'}: everything here stays in this browser only. <a href="#/faculty/help">What is this?</a></div>` : '';
+  renderBanner();
+}
+
+function renderBanner() {
+  const demo = mode === 'local' ? `<div class="demo">${isDemo ? 'Demo' : 'Not connected'}: everything here stays in this browser only. <a href="#/faculty/help">What is this?</a></div>` : '';
+  const n = outbox().length;
+  const waiting = n ? `<div class="demo outboxnote">${n === 1 ? 'A test result is' : n + ' test results are'} waiting to be sent. Keep this page open with a signal, or <button type="button" class="link" id="sendnow">send now</button>.${outboxStuck ? ' It was refused: start the test again with the passphrase and it will be sent.' : ''}</div>` : '';
+  $('#banner').innerHTML = demo + waiting;
+  $('#sendnow')?.addEventListener('click', () => flushOutbox());
 }
 
 // ---------- routing ----------
 async function route() {
-  renderNav();
+  renderNav(); applyUpdate();
   const h = (location.hash || '#/').replace(/^#/, '').split('?')[0];
   const p = h.split('/').filter(Boolean);
   try {
@@ -149,7 +157,9 @@ function viewHome() {
       <button class="btn primary big" type="submit">Continue</button>
     </form>
     ${last ? `<p class="muted">Your last result on this phone: <a href="#/result">${last.name}, ${esc(String(L.summarise(last).score))}/${esc(String(L.summarise(last).total))}</a></p>` : ''}
+    <p id="install" class="muted small" hidden></p>
     <p class="muted"><a href="#/faculty">Faculty sign in</a></p>`, 'Start');
+  paintInstall();
   $('#start').addEventListener('submit', async ev => {
     ev.preventDefault();
     const name = $('#f-name').value.trim().replace(/\s+/g, ' '), pass = $('#f-pass').value;
@@ -301,10 +311,10 @@ async function finish(timeUp) {
 
 // Finished tests wait in the outbox until the server has them (weak signal, closed tab: nothing is lost).
 const outbox = () => lsJson('mo-outbox') || [];
-const outboxAdd = att => lsSet('mo-outbox', JSON.stringify([...outbox().filter(x => x.id !== att.id), att]));
-let flushing = false;
+const outboxAdd = att => { lsSet('mo-outbox', JSON.stringify([...outbox().filter(x => x.id !== att.id), att])); renderBanner(); };
+let flushing = false, outboxStuck = false;
 async function flushOutbox() {
-  if (flushing) return; flushing = true;
+  if (flushing) return; flushing = true; outboxStuck = false;
   try {
     for (const att of outbox()) {
       try {
@@ -314,12 +324,17 @@ async function flushOutbox() {
       } catch (e) {
         if (S.last?.id === att.id) { S.last.saveError = e.code || 'error'; }
         if (e.code === 'offline') break;   // no connection: stop and retry later; any other refusal only parks this result
+        outboxStuck = true;
       }
     }
   } finally { flushing = false; }
+  renderBanner();
   if (location.hash === '#/result') paintSaved();
 }
+// sent again whenever there is a chance: signal back, the page comes to the front, every minute while it is open
 window.addEventListener('online', flushOutbox);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && outbox().length) flushOutbox(); });
+setInterval(() => { if (!document.hidden && outbox().length) flushOutbox(); }, 60000);
 
 function paintSaved() {
   const el = $('#saved'); if (!el || !S.last) return;
@@ -933,10 +948,57 @@ function viewHelp() {
     <h2>Mistakes</h2><ul><li>Every save keeps the earlier version: open the question and look under <b>Earlier versions</b>.</li><li>If two people edit the same question, the app tells the second person and lets them choose.</li><li>If your connection drops while typing, your text is kept on your device.</li><li>Please download a <b>full backup</b> now and then.</li></ul>
     <h2>How a test is made up</h2><p>Each MO gets a sitting of 20 questions (you can change this in Settings). <b>Must-ask</b> questions are in every sitting; a set number of <b>hard</b> questions are mixed in at random; the rest come at random from the other ready questions. Tick “Must ask in every test” and set “Difficulty” on a question to use this. Pass mark and attempts are in Settings (80% and 2 by default).</p>
     <h2>Attempts</h2><p>Each person gets two attempts, counted by name within the current cohort (so use the same spelling; a new cohort name starts everyone fresh). An attempt is counted when they tap Start. To let someone try again, open their result under <b>Results</b> and tap <b>Give one more attempt</b>.</p>
+    <h2>Put it on your phone</h2><p>Android: open the browser menu and tap <b>Install app</b> (or the link on the start page). iPhone: tap Share, then <b>Add to Home Screen</b>. It then opens like an app and starts even with no signal. A test result finished without signal is kept and sent as soon as the phone is online; a note at the top tells you while one is waiting. Faculty: use the browser, not the home-screen app, to sign in with Google on an iPhone.</p>
     <h2>Topics</h2><p>A question can be in several topics (Airway, Drugs…). When you edit a question, pick topics from the list or choose “New topic…” to type one. Tick several questions (<b>Select</b>) to add or take out a topic for all of them at once. The <b>Topics</b> button manages the list: add, rename or delete a topic. <b>Results → By topic</b> shows which topics MOs find hardest.</p>
     <h2>Adding faculty</h2><p>Nobody has to be listed in advance. A colleague opens the Faculty page, signs in with Google and taps <b>Ask for faculty access</b>. Any faculty member then opens <b>Faculty</b> in the menu (it shows a number when someone is waiting) and taps <b>Approve</b>.</p>
     <h2>For each new intake</h2><ol><li>Settings: change the <b>passphrase</b> and the <b>cohort</b> name.</li><li>Send the MOs the link and the passphrase.</li><li>Results appear under <b>Results</b>; download them as a spreadsheet.</li></ol>
     <h2>Good to know</h2><p>Each MO gets a different random set of questions from the “In the test” ones. The passphrase keeps casual visitors out; it is not high security, so do not put anything confidential in a question.</p>`, 'Help');
+}
+
+// ---------- installable app (service worker) ----------
+// What the logbook and prewarming apps learned: the page reloads only when an update takes over (never on the first
+// install: that wiped what was typed), never during a test or while something is half typed, and the page asks the
+// browser to look for an update whenever it comes back to the front, because phones keep the app open for hours.
+let updateReady = false, reloading = false;
+function safeToReload() {
+  if (S.attempt?.items) return false;                                   // a test is being sat
+  if (document.querySelector('dialog[open]')) return false;
+  if ([...document.querySelectorAll('main input:not([type=checkbox]):not([type=radio]):not([type=search]), main textarea')].some(el => el.value !== el.defaultValue)) return false;   // half typed (a remembered name already in the box does not count)
+  if (location.hash.startsWith('#/faculty/q/') || location.hash.startsWith('#/faculty/paste')) return false;   // editing
+  if (/^#\/(test|ready|result)/.test(location.hash)) return false;                              // sitting, about to sit, or reading the result
+  return true;
+}
+function applyUpdate() {
+  if (!updateReady || reloading || !safeToReload()) return;
+  reloading = true; location.reload();
+}
+async function setupPwa() {
+  if (!('serviceWorker' in navigator) || !(location.protocol === 'https:' || ['localhost', '127.0.0.1'].includes(location.hostname))) return;
+  let hadController = !!navigator.serviceWorker.controller;           // false on the very first visit
+  let reg; try { reg = await navigator.serviceWorker.register('sw.js'); } catch { return; }
+  if (!reg) return;   // blocked (private mode, tests)
+  const check = () => reg.update().catch(() => {});
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { check(); applyUpdate(); } });
+  window.addEventListener('online', check);
+  setInterval(check, 10 * 60 * 1000);
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController) { hadController = true; return; }               // first install taking control: no reload
+    updateReady = true; applyUpdate();
+  });
+  window.addEventListener('hashchange', applyUpdate);
+}
+// "Add to home screen": Android offers a button; on iPhone it is Share, then Add to Home Screen
+let installEvent = null;
+window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); installEvent = ev; paintInstall(); });
+window.addEventListener('appinstalled', () => { installEvent = null; paintInstall(); });
+function paintInstall() {
+  const el = $('#install'); if (!el) return;
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  if (standalone) { el.hidden = true; return; }
+  if (installEvent) { el.hidden = false; el.innerHTML = '<button type="button" class="link" id="doinstall">Install this app on your phone</button>'; $('#doinstall').addEventListener('click', async () => { installEvent.prompt(); await installEvent.userChoice.catch(() => {}); installEvent = null; paintInstall(); }); }
+  else if (ios) { el.hidden = false; el.textContent = 'To keep this on your phone: tap Share, then Add to Home Screen.'; }
+  else el.hidden = true;
 }
 
 // ---------- start ----------
@@ -955,6 +1017,7 @@ function viewHelp() {
     if (u) flushOutbox();
   });
   setTimeout(userReady, 5000);   // never sit on "Loading" if sign-in services are unreachable
-  if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+  setupPwa();
   route();
+  if (outbox().length) flushOutbox();
 })();

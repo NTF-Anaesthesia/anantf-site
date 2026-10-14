@@ -1,5 +1,6 @@
 /* Baby MO test. NTF Anaesthesia design language (../DESIGN.md): warm paper, ink, one wine accent, square, hairlines, light only. */
 @font-face{font-family:'NTF Mono';src:url('../fonts/jetbrains-mono.woff2') format('woff2');font-weight:400 500;font-display:swap}
+html,body.babymo{overscroll-behavior-y:none}
 body.babymo{
   --paper:#f7f5ef;--inset:#eee9df;--panel:#eeece5;--blush:#e8ded7;--ink:#272722;--ink2:#504e47;--muted:#55534d;
   --wine:#633d3c;--wine-hover:#4b2e2d;--ivory:#fffaf0;--line:#d7d2c8;--line-strong:#8f8574;--control:#827b6d;
@@ -131,3 +132,5 @@ dialog{border:1px solid var(--line-strong);padding:1.3rem;max-width:min(28rem,92
 
 .bm-id{display:flex;flex-direction:column;min-width:0}
 .bm-who{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}.bm-who b{color:var(--ink);font-weight:500}
+
+.outboxnote button.link{color:var(--warn-ink);font-weight:600}

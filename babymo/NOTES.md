@@ -92,3 +92,28 @@ colours do not apply here; green and amber are only used for pass and draft stat
 - The real question bank is not in this repo: the owner imports a JSON backup (Questions > Backup and import). It has
   14 questions ready and 16 drafts for faculty to check.
 - Next (ideas, not agreed): CBD discussions, feedback and questions as further modules; per-MO history across attempts.
+
+## Installable app (PWA) and updates (owner, 14 Oct 2026)
+
+Installable from the browser menu (Android: "Install app"; iPhone: Share, Add to Home Screen) and opens with no signal.
+Built around what went wrong in the logbook and prewarming apps (anawj.com):
+
+- **No surprise reloads.** A new version takes over by itself (`skipWaiting`) but the page only reloads when it is safe: never
+  on the first install (a reload wiped typed text in prewarm), never during a test or on the Ready or Result screens, never
+  with text half typed or a dialog open, never while editing a question. It reloads when the person comes back to the start
+  page or the page is idle there. Pull-to-refresh is off (`overscroll-behavior-y: none`).
+- **Updates are found.** Browsers only look for a new worker when a page opens, and phones keep apps open for hours, so the
+  page calls `reg.update()` when it comes to the front, when signal returns and every 10 minutes.
+- **All or nothing.** `sw.js` caches every shell file into one cache per version on install (`addAll`); if any file fails the old
+  version stays. The page never runs on a mix of two versions. Only `babymo-` caches are touched and only this folder is handled.
+- **VERSION is a hash of the shell files**, because this site has no deploy step that stamps it (anawj.com does):
+  after changing anything in `SHELL` (the list in `sw.js`, which includes the manifest and icons), run
+  `node babymo/tools/stamp.mjs`. `node babymo/test/version.test.mjs` fails if it was forgotten, so a phone never keeps old files.
+- **Results are never lost, and you can see when one is waiting.** A finished test goes into a local outbox and is sent again when
+  signal returns, when the page comes to the front, every minute while open and on opening. While one is waiting a note shows
+  on every page ("A test result is waiting to be sent"). Starting a test needs a signal (the passphrase is checked on the
+  server); once started it works offline and the result is sent afterwards. Attempts used up are counted at Start.
+- Faculty Google sign-in uses a popup, which can fail in an app installed on an iPhone: faculty should use the browser there.
+- Tests: `node babymo/test/pwa.e2e.mjs` (manifest and icons, first install without reload, offline start, a broken release leaves
+  the working version, updates never reload during a test or typing). Icons are the NTF monogram (`icons/`), made from
+  `ana-ntf-monogram.svg`.
