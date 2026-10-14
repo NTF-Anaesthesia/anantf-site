@@ -79,6 +79,10 @@ function renderNav() {
     html += link('#/faculty/people', S.pending ? `Faculty (${S.pending})` : 'Faculty', /people/.test(h));
     html += link('#/faculty/help', 'Help', /help/.test(h));
   } else html += link('#/faculty', 'Faculty', h.startsWith('#/faculty'));
+  // who is signed in, on every faculty page and whenever someone is signed in
+  const signedIn = S.user && !S.user.anonymous;
+  const roleName = S.role === 'admin' ? 'Admin' : S.role ? 'Faculty' : 'waiting for approval';
+  $('#wholine').innerHTML = signedIn ? `Signed in as <b>${esc(S.user.email || S.user.name || '')}</b> · ${roleName}${mode === 'local' ? ' (demo)' : ''}` : h.startsWith('#/faculty') ? 'Not signed in' : '';
   $('#who').innerHTML = S.user && !S.user.anonymous ? `<button type="button" id="signout" title="${esc(S.user.email || '')}">Sign out</button>` : '';
   $('#nav').innerHTML = html;
   $('#banner').innerHTML = mode === 'local' ? `<div class="demo">${isDemo ? 'Demo' : 'Not connected'}: everything here stays in this browser only. <a href="#/faculty/help">What is this?</a></div>` : '';

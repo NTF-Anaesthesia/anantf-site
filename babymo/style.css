@@ -128,3 +128,6 @@ dialog{border:1px solid var(--line-strong);padding:1.3rem;max-width:min(28rem,92
 .tpick{display:flex;flex-direction:column;gap:.5rem}.tpick select{margin-top:0}
 .tnew:not([hidden]){display:flex;gap:.4rem}.tnew input{margin-top:0;flex:1}.tnew .btn{flex:none}
 #tf input{margin:0;flex:2 1 auto}
+
+.bm-id{display:flex;flex-direction:column;min-width:0}
+.bm-who{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}.bm-who b{color:var(--ink);font-weight:500}
