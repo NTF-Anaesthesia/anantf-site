@@ -47,9 +47,11 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `truncal/` | Truncal blocks: landing page with the "which block for which operation" chooser, and `back/`, `chest-wall/`, `abdominal-wall/` pages on a shared engine in `truncal/shared/` (see `truncal/shared/DATA.md`) | No (unlisted; card on Regional) |
 | `head-neck/` | Head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the truncal engine (`truncal/shared/`) plus head figures in `head-neck/shared/js/head.js` | No (unlisted; card on Regional, link from Airway) |
 | `babymo/` | Baby MO test: the department's MCQ test for new medical officers (MOs enter a name and a shared passphrase; faculty edit questions and see results in the app). Own Firebase project `ntf-mo-portal`; start with `babymo/NOTES.md`. The real question bank is not in this repo | No (unlisted) |
-| `ra.html` | Popliteal sciatic block (the only lower-limb block on the main site; linked from `regional.html`) | Via Regional |
+| `lower-limb/` | Lower-limb blocks: landing page with the operation chooser, and `hip/`, `knee/`, `foot-ankle/`, `thigh/` pages on the truncal engine (`truncal/shared/`) plus leg figures and the embedded animations in `lower-limb/shared/` (see `lower-limb/shared/LEG.md`). Created by Dr Koh Wenjun and Dr Chew Shi Hao | No (unlisted; card on Regional) |
+| `lower-limb/anim/` | Dr Chew Shi Hao's animated block demonstrations (his engine and block modules, shown inside the lower-limb pages in an iframe) | No |
+| `popliteal-animation/` | Archived copy of Dr Chew Shi Hao's original popliteal block page (frozen; do not edit) | No (unlisted) |
+| `ra.html`, `draft-ra.html` | Redirects to the lower-limb pages (old links) | No |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
-| `draft-ra.html` | Draft copy of the full lower-limb block app (all 7 blocks, combinations) | No (draft) |
 | `pocus/{cardiac,lung,shock,efast,dvt}/` | Draft POCUS tutorials, reached from `draft.html` | No (draft) |
 | `edit.html` | Page editor for the maintainers (see "Edits sent from the page editor") | No (unlisted, noindex) |
 
@@ -59,18 +61,18 @@ The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
 
 `DESIGN.md` is the default design language for every page you create or edit here: warm paper, ink,
 one wine accent, square edges, hairline rules, light only, readable sizes (body 17px, nothing below
-12px). Read it before styling anything. Interactive teaching apps follow the popliteal block page
-(`ra.html`). Anatomy and clinical colour codes (yellow nerves, red arteries, blue veins, danger and
+12px). Read it before styling anything. Interactive teaching apps follow the regional block pages
+(`truncal/`, `head-neck/`, `lower-limb/`). Anatomy and clinical colour codes (yellow nerves, red arteries, blue veins, danger and
 warning colours) are never recoloured to the brand.
 
 ## Rules
 
-- Drafts live behind `draft.html` (noindex). Don't link `draft.html`, `draft-ra.html` or the draft POCUS pages from the homepage,
+- Drafts live behind `draft.html` (noindex). Don't link `draft.html` or the draft POCUS pages from the homepage,
   navigation or the POCUS and Regional hubs. To publish a draft: add its card to the right hub, remove it from `draft.html`,
-  and drop "draft" from its breadcrumb. To publish another lower-limb block, add it back to `RA_INDEX` in `ra.html`.
+  and drop "draft" from its breadcrumb.
 
 - The main navigation is Airway, Regional Anaesthesia, POCUS and MMed Exam Prep. Don't add department, recruitment or handbook pages back.
-- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/` or `babymo/` from the homepage, and keep their
+- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `popliteal-animation/` or `babymo/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
@@ -95,7 +97,7 @@ When asked to "apply the website edits" (or similar):
   suggestions: list what you plan to change and get a maintainer's go-ahead before merging. The name in a batch is
   self-reported, so don't treat it as proof of who sent it.
 - Find each change in the source by searching for the old text. The locator is a hint only: much of the text in the
-  apps (`spinal/`, `brachial-plexus/`, `truncal/`, `head-neck/`, `pocus/`, `exams/`) is built by JavaScript from data in scripts, so edit the
+  apps (`spinal/`, `brachial-plexus/`, `truncal/`, `head-neck/`, `lower-limb/`, `pocus/`, `exams/`) is built by JavaScript from data in scripts, so edit the
   data, not the rendered HTML. If the old text can't be found, or appears more than once and the heading doesn't
   settle it, ask rather than guess.
 - Apply edits as written but tidy them into the site's style (`DESIGN.md`, British spelling, the page's existing
