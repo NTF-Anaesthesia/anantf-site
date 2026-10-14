@@ -324,7 +324,7 @@ await env.withSecurityRulesDisabled(ctx => setDoc(doc(ctx.firestore(), 'config',
 await t('MO creates a counter at 1', assertSucceeds(setDoc(doc(mo, 'attemptCounts', K), cnt(1))));
 await t('MO reads own counter', assertSucceeds(getDoc(doc(mo, 'attemptCounts', K))));
 await t('another MO reads a counter (by key)', assertSucceeds(getDoc(doc(moOther, 'attemptCounts', K))));
-await t('MO lists counters (read is allowed)', assertSucceeds(getDocs(collection(mo, 'attemptCounts'))));
+await t('MO cannot list all counters (only get by key)', assertFails(getDocs(collection(mo, 'attemptCounts'))));
 await t('MO cannot create at 2', assertFails(setDoc(doc(mo, 'attemptCounts', 'k-two'), cnt(2))));
 await t('MO cannot create at 0', assertFails(setDoc(doc(mo, 'attemptCounts', 'k-zero'), cnt(0))));
 await t('MO cannot create with an extra field', assertFails(setDoc(doc(mo, 'attemptCounts', 'k-extra'), cnt(1, { who: 'me' }))));

@@ -33,6 +33,7 @@ a set of small modules behind one sign-in; add them as nav links, don't bend the
   saved start); the timer auto-submits; a finished attempt waits in a local outbox until the server has it (retried on
   reconnect; ids make a retry idempotent); unsaved question edits are kept on the device; saves use a revision number so
   two editors can't silently overwrite each other (the second is asked); every save keeps a history entry.
+- **Attempt limit and question flags (14 Oct 2026)**: each sitting draws 20 from a large bank; questions may be `must` (in every sitting) or `level: 'hard'` (a `hardCount` of them mixed in, default 4); both optional, old questions read as standard. Pass mark 80%. Each MO gets `maxAttempts` (default 2) sittings, counted in `attemptCounts/<cohort-slug>__<name-key>` ({n, updatedAt}): the rules let an MO create it at 1 and raise it by exactly 1 up to the limit (never lower or delete it, and only `get` by key, no list); faculty set or delete it (`grantAttempt` = another attempt). `cloud.js`/`local.js`: `getAttemptCount`, `bumpAttempt` (throws code `limit`), `grantAttempt`, `listAttemptCounts`. Attempts may carry `attemptNo`.
 - **Past results never change**: an attempt stores a snapshot of each question (stem, options, answer) as the MO saw it,
   and scores are recomputed from the snapshot (`summarise`), not read from a stored number. Editing a question later is
   safe.

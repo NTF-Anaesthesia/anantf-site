@@ -38,6 +38,11 @@ const axe = async label => {
   assert.equal(bad.length, 0, `axe (${label}): ` + bad.map(v => v.id + ' ' + v.nodes[0]?.target + ' ' + v.nodes[0]?.failureSummary?.slice(0, 120)).join('; '));
 };
 const step = async (name, fn) => { try { await fn(); console.log('ok  ', name); } catch (e) { console.error('FAIL', name, '\n', e.message); await shot('fail-' + name.replace(/\W+/g, '-')); process.exitCode = 1; throw e; } };
+// every direct child of the matching element sits on one line (same vertical centre, give or take a few pixels): rows of buttons must not wrap on a phone
+const oneRow = async sel => {
+  const bad = await page.evaluate(s => [...document.querySelectorAll(s)].filter(el => { const k = [...el.children].filter(c => c.offsetParent); return k.length > 1 && (() => { const m = k.map(c => { const r = c.getBoundingClientRect(); return r.top + r.height / 2; }); return Math.max(...m) - Math.min(...m) > 12; })(); }).map(el => el.className || el.id), sel);
+  assert.deepEqual(bad, [], `wraps onto a second line at phone width: ${sel}`);
+};
 const text = sel => page.locator(sel).innerText();
 
 try {
@@ -108,11 +113,11 @@ try {
     assert.match(await text('.summary'), /6.*ready for the test/); await shot('questions'); await axe('questions');
   });
   await step('new question: validation, then save as active', async () => {
-    await page.click('text=+ New question'); await page.locator('#qf').waitFor();
-    await page.fill('#stem', 'What is the antidote to heparin?'); await page.selectOption('#status', 'active');
+    await page.click('a[href="#/faculty/q/new"]'); await page.locator('#qf').waitFor();
+    await page.fill('#stem', 'What is the antidote to heparin?'); await page.check('input[name=status][value=active]', { force: true });
     await page.click('#qf button[type=submit]');
     assert.match(await text('#app'), /Fill in choice A/); assert.match(await text('#app'), /Pick the correct answer/);
-    await shot('editor-errors'); await axe('editor-errors');
+    await shot('editor-errors'); await axe('editor-errors'); await oneRow('.segrow');
     await page.fill('#opt0', 'Protamine'); await page.fill('#opt1', 'Vitamin K'); await page.fill('#opt2', 'Tranexamic acid'); await page.fill('#opt3', 'Naloxone');
     await page.check('#ans0');
     assert.match(await text('.preview'), /Correct answer/);
@@ -130,18 +135,18 @@ try {
     assert.equal(await page.locator('.hist li').count(), 2); await page.click('a:has-text("All questions")');
   });
   await step('a draft can be unfinished and is not given to MOs', async () => {
-    await page.click('text=+ New question'); await page.fill('#stem', 'Half-written question'); await page.click('#qf button[type=submit]');
+    await page.click('a[href="#/faculty/q/new"]'); await page.fill('#stem', 'Half-written question'); await page.click('#qf button[type=submit]');
     await page.locator('.qlist').waitFor(); assert.match(await text('.summary'), /7.*ready/); assert.match(await text('.summary'), /1 draft/);
   });
   await step('paste many', async () => {
-    await page.click('text=Paste many'); await page.fill('#paste', 'Q1 Normal adult heart rate?\n(A) 20-30\n(B) 60-100\n(C) 120-160\n(D) 200\nAnswer: B\n\nQ2 No answer here?\nA) a\nB) b\nC) c\nD) d\n');
+    await page.click('a[href="#/faculty/paste"]'); await page.fill('#paste', 'Q1 Normal adult heart rate?\n(A) 20-30\n(B) 60-100\n(C) 120-160\n(D) 200\nAnswer: B\n\nQ2 No answer here?\nA) a\nB) b\nC) c\nD) d\n');
     await page.click('#read'); await page.locator('#addall').waitFor(); assert.match(await text('#out'), /2 questions found/); assert.match(await text('#out'), /no answer/);
-    await shot('paste'); await axe('paste');
-    await page.selectOption('#as', 'active'); await page.click('#addall'); await page.locator('.qlist').waitFor();
+    await shot('paste'); await axe('paste'); await oneRow('.segrow');
+    await page.check('input[name=as][value=active]', { force: true }); await page.click('#addall'); await page.locator('.qlist').waitFor();
     assert.match(await text('.summary'), /8.*ready/); assert.match(await text('.summary'), /2 drafts/);
   });
   await step('spreadsheet round trip and backup', async () => {
-    await page.click('text=Backup and import');
+    await page.click('a[href="#/faculty/data"]');
     const [dl] = await Promise.all([page.waitForEvent('download'), page.click('#csvdown')]);
     const csv = fs.readFileSync(await dl.path(), 'utf8'); assert.match(csv, /question,A,B,C,D,answer/); assert.match(csv, /What reverses heparin/);
     const edited = csv.replace('What reverses heparin?', 'What reverses heparin effect?') + 'new1,draft,Airway,"Brand new, with comma?",a,b,c,d,C,\r\n';
@@ -149,7 +154,7 @@ try {
     await page.setInputFiles('#csvup', tmp); await page.locator('#doimp').waitFor(); assert.match(await text('#out'), /1 new question/); assert.match(await text('#out'), /10 existing/);
     await page.click('#doimp'); await page.locator('.qlist').waitFor();
     assert.match(await text('#app'), /What reverses heparin effect/); assert.match(await text('#app'), /Brand new, with comma/);
-    await page.click('text=Backup and import'); const [dj] = await Promise.all([page.waitForEvent('download'), page.click('#jsondown')]);
+    await page.click('a[href="#/faculty/data"]'); const [dj] = await Promise.all([page.waitForEvent('download'), page.click('#jsondown')]);
     assert.equal(JSON.parse(fs.readFileSync(await dj.path(), 'utf8')).kind, 'baby-mo-bank');
     await page.setInputFiles('#jsonup', { name: 'bad.json', mimeType: 'application/json', buffer: Buffer.from('{"x":1}') }); await page.locator('#out .status').waitFor();
     await page.click('a:has-text("All questions")');
@@ -164,10 +169,10 @@ try {
   await step('settings: save, numbers checked, passphrase', async () => {
     await page.click('#nav >> text=Settings'); await page.locator('#sf').waitFor();
     await page.fill('#s-count', '0'); await page.click('#sf button[type=submit]'); await page.locator('#serr:not([hidden])').waitFor();
-    await page.fill('#s-count', '3'); await page.fill('#s-cohort', 'Oct 2026'); await page.selectOption('#s-review', 'full'); await page.click('#sf button[type=submit]');
+    await page.fill('#s-count', '3'); await page.fill('#s-cohort', 'Oct 2026'); await page.check('input[name=review][value=full]', { force: true }); await page.click('#sf button[type=submit]');
     await page.locator('#sf').waitFor(); assert.equal(await page.inputValue('#s-count'), '3');
     await page.fill('#p-pass', 'newpass'); await page.click('#pf button[type=submit]');
-    await shot('settings'); await axe('settings');
+    await shot('settings'); await axe('settings'); await oneRow('.segrow');
   });
   await step('faculty page: approve and decline requests, add, change role, remove', async () => {
     await page.evaluate(() => {   // two people have asked for access (in the real app they do this from the Faculty page)
@@ -177,25 +182,43 @@ try {
     });
     await page.goto(BASE + '?demo#/faculty/people'); await page.locator('#reqs').waitFor();
     assert.equal(await page.locator('#reqs li').count(), 2); assert.match(await text('#nav'), /Faculty \(2\)/);
-    await shot('people'); await axe('people');
+    await shot('people'); await axe('people'); await oneRow('.row.one'); await oneRow('#nav');
     await page.click('[data-ap="dr.new@example.com"][data-role=editor]'); await page.click('dialog button[value=yes]');
     await page.locator('#mem li:has-text("dr.new@example.com")').first().waitFor(); assert.equal(await page.locator('#reqs li').count(), 1);
     await page.click('[data-dec="dr.no@example.com"]'); await page.click('dialog button[value=yes]');
     await page.locator('text=Nobody is waiting').waitFor(); assert.doesNotMatch(await text('#nav'), /\(/);
-    await page.selectOption('[data-role-of="dr.new@example.com"]', 'admin'); await page.locator('#mem li:has-text("dr.new@example.com"):has-text("Admin")').waitFor();
+    await page.click('[data-setrole="dr.new@example.com"]'); await page.locator('#mem li:has-text("dr.new@example.com"):has-text("Admin")').waitFor();
     await page.fill('#m-email', 'dr.lee@example.com'); await page.fill('#m-name', 'Dr Lee'); await page.click('#mf button[type=submit]');
     await page.locator('#mem li:has-text("dr.lee@example.com")').first().waitFor();
     await page.click('[data-rm="dr.lee@example.com"]'); await page.click('dialog button[value=yes]');
     await page.locator('#mem li:has-text("dr.lee@example.com")').waitFor({ state: 'detached' });
   });
+  await step('select several questions and change them together', async () => {
+    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
+    const before = await text('.summary');
+    await page.click('#selmode'); await page.locator('.bulkbar').waitFor(); assert.equal(await page.locator('.qlist input[data-sel]').count() > 3, true);
+    await page.click('.chip[data-s=active]'); await page.locator('.qlist input[data-sel]').first().waitFor();
+    const n = await page.locator('.qlist input[data-sel]').count();
+    await page.click('#selall'); assert.match(await text('#selcount'), new RegExp(n + ' ticked'));
+    await shot('bulk'); await axe('bulk'); await oneRow('.row.one'); await oneRow('.chips'); await oneRow('#nav');
+    await page.click('[data-bulk=draft]'); await page.click('dialog button[value=yes]');
+    await page.locator('#selcount:has-text("0 ticked")').waitFor();
+    assert.match(await text('.summary'), /^0 ready/);
+    await page.click('.chip[data-s=draft]'); await page.click('#selall'); await page.click('[data-bulk=active]'); await page.click('dialog button[value=yes]');
+    await page.locator('.toast, #toast.on').first().waitFor();
+    assert.match(await text('#toast'), /put in the test/);
+    await page.locator('#selcount').waitFor(); await page.click('#selmode'); await page.locator('.bulkbar').waitFor({ state: 'detached' });
+    await page.click('.chip[data-s=all]');
+    assert.notEqual(await text('.summary'), '');
+  });
   await step('question flags: must-ask and hard show on the list and filter', async () => {
     await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
     await page.click('.qlist li:has(.badge.active) >> nth=0'); await page.locator('#qf').waitFor();
-    await page.check('#must'); await page.selectOption('#level', 'hard'); await page.click('#qf button[type=submit]'); await page.locator('.qlist').waitFor();
+    await page.check('#must'); await page.check('input[name=level][value=hard]', { force: true }); await page.click('#qf button[type=submit]'); await page.locator('.qlist').waitFor();
     assert.equal(await page.locator('.badge.must').count(), 1); assert.equal(await page.locator('.badge.hard').count(), 1);
-    assert.match(await text('.summary'), /1<\/b> must-ask|1 must-ask/); await shot('flags'); await axe('flags');
-    await page.selectOption('#qf2', 'must'); await page.locator('.qlist li').first().waitFor(); assert.equal(await page.locator('.qlist li').count(), 1);
-    await page.selectOption('#qf2', ''); 
+    assert.match(await text('.summary'), /1<\/b> must-ask|1 must-ask/); await shot('flags'); await axe('flags'); await oneRow('.chips');
+    await page.click('.chip[data-k=must]'); await page.locator('.qlist li').first().waitFor(); assert.equal(await page.locator('.qlist li').count(), 1);
+    await page.click('.chip[data-k=""]'); 
   });
   await step('new settings apply: 3 questions, full review, cohort recorded', async () => {
     await page.click('#nav >> text=Test'); await page.fill('#f-name', 'Dr Third'); await page.fill('#f-pass', 'newpass'); await page.click('#start button[type=submit]');

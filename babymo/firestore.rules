@@ -214,7 +214,8 @@ service cloud.firestore {
       return d.keys().hasOnly(['n', 'updatedAt']) && d.n is int && d.updatedAt is number;
     }
     match /attemptCounts/{key} {
-      allow read: if member() || validSession();
+      allow get: if member() || validSession();
+      allow list: if member();
       allow create: if key.matches('^[a-z0-9_-]{1,120}$') && validCount(request.resource.data)
         && ((validSession() && request.resource.data.n == 1) || (editor() && request.resource.data.n >= 0 && request.resource.data.n <= 10));
       allow update: if validCount(request.resource.data)
