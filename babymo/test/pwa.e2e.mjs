@@ -9,11 +9,12 @@ import path from 'node:path';
 
 const root = new URL('../../', import.meta.url).pathname;
 const MIME = { html: 'text/html', js: 'text/javascript', css: 'text/css', svg: 'image/svg+xml', json: 'application/json', png: 'image/png', webmanifest: 'application/manifest+json' };
-let swVersion = null, swExtra = '';   // what the test server says sw.js is: another VERSION (a new release) or a broken file list
+let swVersion = null, swExtra = '', swDown = false;   // what the test server says sw.js is: another VERSION (a new release) or a broken file list
 const server = http.createServer((req, res) => {
   const rel = decodeURIComponent(new URL(req.url, 'http://x').pathname).replace(/^\//, '');
   let f = path.join(root, rel.endsWith('/') || rel === '' ? rel + 'index.html' : rel);
   if (!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); return res.end('nf'); }
+  if (swDown && rel === 'babymo/sw.js') return req.socket.destroy();   // no signal for the worker's script
   let body = fs.readFileSync(f);
   if (rel === 'babymo/sw.js' && (swVersion || swExtra)) {
     let t = body.toString('utf8');
@@ -67,6 +68,35 @@ try {
     const shell = [...fs.readFileSync(path.join(root, 'babymo/sw.js'), 'utf8').match(/const SHELL = \[([\s\S]*?)\];/)[1].matchAll(/'([^']+)'/g)].map(m => m[1]);
     const urls = await page.evaluate(async v => (await (await caches.open(v)).keys()).map(r => new URL(r.url).pathname), SW0);
     for (const f of shell) assert.ok(urls.includes('/babymo/' + (f === './' ? '' : f)), 'not cached: ' + f);
+  });
+  await step('start page shows the app version and "Get the latest version"', async () => {
+    const [, d, h] = SW0.match(/^babymo-(\d{4}-\d{2}-\d{2})-([0-9a-f]+)$/);
+    await page.reload(); await page.locator('#appver:not([hidden])').waitFor();   // the line appears once the offline copy exists
+    assert.equal(await page.textContent('#appver'), `App version ${d} (${h})`);
+    assert.equal(await page.textContent('#getlatest'), 'Not updating? Get the latest version');
+  });
+  await step('"Get the latest version" with no signal changes nothing', async () => {
+    swDown = true; await page.evaluate(() => { window.__marker = 6; });
+    await page.click('#getlatest');
+    await page.waitForFunction(() => /No signal/.test(document.querySelector('#appver-msg')?.textContent));
+    swDown = false;
+    assert.equal(await page.evaluate(() => window.__marker), 6, 'the page reloaded');
+    assert.equal(await page.isDisabled('#getlatest'), false);
+    assert.deepEqual(await versions(), [SW0]);
+    assert.ok(await page.evaluate(async () => !!(await navigator.serviceWorker.getRegistration())?.active), 'worker was removed');
+  });
+  await step('"Get the latest version" with a signal clears only babymo- caches and keeps saved data', async () => {
+    await page.evaluate(async () => { localStorage.setItem('bm-keep', 'yes'); await caches.open('babymo-old'); await caches.open('other-app'); window.__marker = 5; });
+    await page.click('#getlatest');
+    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 });
+    await page.locator('#f-name').waitFor();
+    const keys = await page.evaluate(() => caches.keys());
+    assert.ok(!keys.includes('babymo-old'), 'old babymo- cache kept');
+    assert.ok(keys.includes('other-app'), 'another app\'s cache was deleted');
+    assert.equal(await page.evaluate(() => localStorage.getItem('bm-keep')), 'yes');
+    await page.waitForFunction(() => navigator.serviceWorker.controller, null, { timeout: 15000 });   // re-installed fresh
+    await activeVersion(SW0);
+    await page.evaluate(async () => { localStorage.removeItem('bm-keep'); await caches.delete('other-app'); });
   });
   await step('offline: the app opens from the cache and says so when it cannot connect', async () => {
     await ctx.setOffline(true);

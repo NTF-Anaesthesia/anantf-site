@@ -158,8 +158,9 @@ function viewHome() {
     </form>
     ${last ? `<p class="muted">Your last result on this phone: <a href="#/result">${last.name}, ${esc(String(L.summarise(last).score))}/${esc(String(L.summarise(last).total))}</a></p>` : ''}
     <p id="install" class="muted small" hidden></p>
-    <p class="muted"><a href="#/faculty">Faculty sign in</a></p>`, 'Start');
-  paintInstall();
+    <p class="muted"><a href="#/faculty">Faculty sign in</a></p>
+    ${APPVER}`, 'Start');
+  paintInstall(); paintVersion();
   $('#start').addEventListener('submit', async ev => {
     ev.preventDefault();
     const name = $('#f-name').value.trim().replace(/\s+/g, ' '), pass = $('#f-pass').value;
@@ -875,7 +876,9 @@ async function viewSettings() {
     <form id="pf" class="card stack"><h2>Passphrase for MOs</h2>
       <label>Passphrase<input id="p-pass" value="${esc(pass)}" autocomplete="off"></label>
       <p class="muted small">${mode === 'cloud' ? 'Changing it signs everyone out of new tests; share the new one with the next group.' : 'Demo passphrase.'} Anyone who has it can sit the test, so change it for each new intake.</p>
-      <p class="row"><button class="btn primary" type="submit">Save passphrase</button></p></form>`, 'Settings');
+      <p class="row"><button class="btn primary" type="submit">Save passphrase</button></p></form>
+    ${APPVER}`, 'Settings');
+  paintVersion();
   $('#sf').addEventListener('submit', async ev => {
     ev.preventDefault();
     const n = { title: $('#s-title').value.trim() || L.DEFAULT_SETTINGS.title, count: +$('#s-count').value, minutes: +$('#s-min').value, passMark: +$('#s-pass').value, maxAttempts: +$('#s-attempts').value, hardCount: +$('#s-hard').value, cohort: $('#s-cohort').value.trim(), review: segVal('review') || 'marks', intro: $('#s-intro').value.trim() };
@@ -987,6 +990,35 @@ async function setupPwa() {
   });
   window.addEventListener('hashchange', applyUpdate);
 }
+// App version and "Get the latest version", at the foot of the start page (no test is running there) and of Settings.
+// The button clears only this app's offline copy (the worker and babymo- caches), never saved answers, the outbox or sign-in,
+// and only after checking there is a signal, so the app is never left with nothing to open.
+const APPVER = '<div class="appver"><p id="appver" hidden></p><p><button type="button" class="link" id="getlatest">Not updating? Get the latest version</button></p><p id="appver-msg" role="status"></p></div>';
+async function paintVersion() {
+  const el = $('#appver'), btn = $('#getlatest'); if (!el) return;
+  btn.addEventListener('click', getLatest);
+  try {
+    const k = (await caches.keys()).find(k => k.startsWith('babymo-')); if (!k) return;
+    const v = k.slice(7), m = v.match(/^(\d{4}-\d{2}-\d{2})-([0-9a-f]+)$/);
+    el.textContent = 'App version ' + (m ? `${m[1]} (${m[2]})` : v); el.hidden = false;
+  } catch { /* no caches (old browser, blocked): no line */ }
+}
+async function getLatest() {
+  const btn = $('#getlatest'), msg = $('#appver-msg');
+  btn.disabled = true; msg.textContent = '';
+  try {
+    const reg = 'serviceWorker' in navigator ? await navigator.serviceWorker.getRegistration() : null;
+    const url = new URL(reg?.active?.scriptURL || new URL('sw.js', location.href));
+    url.searchParams.set('fresh', Date.now());
+    const res = await fetch(url, { cache: 'no-store' }); if (!res.ok) throw new Error(res.status);
+    if (reg) await reg.unregister();
+    for (const k of await caches.keys()) if (k.startsWith('babymo-')) await caches.delete(k);
+    location.reload();
+  } catch {
+    msg.textContent = 'No signal: nothing was changed. Try again with signal.'; btn.disabled = false;
+  }
+}
+
 // "Add to home screen": Android offers a button; on iPhone it is Share, then Add to Home Screen
 let installEvent = null;
 window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); installEvent = ev; paintInstall(); });

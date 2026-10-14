@@ -134,3 +134,7 @@ dialog{border:1px solid var(--line-strong);padding:1.3rem;max-width:min(28rem,92
 .bm-who{font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:60vw}.bm-who b{color:var(--ink);font-weight:500}
 
 .outboxnote button.link{color:var(--warn-ink);font-weight:600}
+
+/* app version and "Get the latest version", at the foot of the start page and Settings */
+.appver{margin-top:2.5rem;border-top:1px solid var(--line);padding-top:.6rem;color:var(--muted);font-size:14px;line-height:1.5}.appver p{margin:.2rem 0}
+.appver .link{font-size:14px;color:var(--muted);text-decoration-color:var(--line-strong);min-height:44px}.appver .link:disabled{opacity:.6;cursor:default}

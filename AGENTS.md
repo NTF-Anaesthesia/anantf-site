@@ -75,6 +75,10 @@ warning colours) are never recoloured to the brand.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
 - `babymo/` is an installable app (service worker): after changing any file listed in `SHELL` in `babymo/sw.js` (pages, scripts, styles, manifest, icons) run `node babymo/tools/stamp.mjs`, or phones keep the old files (`node babymo/test/version.test.mjs` checks). Its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/version.test.mjs`, `node babymo/test/e2e.mjs`, `node babymo/test/pwa.e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit the real question bank, names or results.
+- Every installable app (one with a service worker, today `babymo/`) ends its settings or start page with two lines of small
+  muted text (owner, 14 Oct 2026, as on anawj.com): `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
+  read from the app's cache name) and a `Not updating? Get the latest version` button that checks for signal, then
+  removes only that app's service worker and caches and reloads, never touching saved answers or sign-in.
 - After editing a page, open it in a browser (or a local static server) and check it still loads
   without console errors before committing.
 
