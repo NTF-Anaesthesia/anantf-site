@@ -520,6 +520,129 @@ D) four`);
       assert.equal(as[0].items.length, 5);
     });
   }
+  // ================= attempt limits, must / hard question flags (cloud.js driven directly, no app UI) =================
+  {
+    const BLANK = BASE + 'style.css?emu=1';   // any page on the test origin: cloud.js is imported straight into it
+    const KEY = 'oct-2026__dr-limit', run = (p, fn, ...args) => call(p, fn, ...args);
+    let mo1, fac, mo2;
+    await step('attempt limits: seed the settings (maxAttempts 2, hardCount 3) and sign in an MO', async () => {
+      await seed();
+      await admin(db => setDoc(doc(db, 'config', 'test'), { title: 'Baby MO test', count: 5, passMark: 60, minutes: 10, review: 'full', cohort: 'Oct 2026', intro: '', maxAttempts: 2, hardCount: 3, updatedAt: 1, updatedBy: by(ADMIN) }));
+      const ctx = await newCtx(); mo1 = await newPage(ctx); page = mo1; await mo1.goto(BLANK);
+      const r = await run(mo1, 'startSession', 'Dr Limit', PASS); assert.equal(r.ok, true, JSON.stringify(r));
+      assert.equal((await run(mo1, 'getAttemptCount', KEY)).v, 0, 'no counter yet reads as 0');
+    });
+    await step('bumpAttempt: 1, then 2, then the third throws "limit" without writing', async () => {
+      assert.equal((await run(mo1, 'bumpAttempt', KEY)).v, 1);
+      assert.equal((await run(mo1, 'getAttemptCount', KEY)).v, 1);
+      assert.equal((await run(mo1, 'bumpAttempt', KEY)).v, 2);
+      const third = await run(mo1, 'bumpAttempt', KEY); assert.equal(third.ok, false); assert.equal(third.code, 'limit');
+      assert.equal((await getD('attemptCounts', KEY)).n, 2, 'a refused bump does not write');
+      assert.equal((await run(mo1, 'getAttemptCount', KEY)).v, 2);
+      assert.equal(typeof (await getD('attemptCounts', KEY)).updatedAt, 'number');
+    });
+    await step('an MO session cannot lower, delete or list the counters', async () => {
+      const w = await mo1.evaluate(async key => {
+        const { getFirestore, doc, setDoc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
+        const { getApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
+        const db = getFirestore(getApp()), out = {};
+        try { await setDoc(doc(db, 'attemptCounts', key), { n: 1, updatedAt: 1 }); out.lower = 'allowed'; } catch (e) { out.lower = e.code; }
+        try { await setDoc(doc(db, 'attemptCounts', key), { n: 3, updatedAt: 1 }); out.raise = 'allowed'; } catch (e) { out.raise = e.code; }
+        try { await deleteDoc(doc(db, 'attemptCounts', key)); out.del = 'allowed'; } catch (e) { out.del = e.code; }
+        return out;
+      }, KEY);
+      assert.deepEqual(w, { lower: 'permission-denied', raise: 'permission-denied', del: 'permission-denied' });
+      assert.equal((await getD('attemptCounts', KEY)).n, 2);
+      assert.equal((await run(mo1, 'listAttemptCounts')).code, 'permission');
+      assert.equal((await run(mo1, 'grantAttempt', KEY)).code, 'permission');
+      assert.equal((await getD('attemptCounts', KEY)).n, 2);
+    });
+    await step('another MO has their own counter; a second MO session cannot read faculty-only lists', async () => {
+      const ctx = await newCtx(); mo2 = await newPage(ctx); await mo2.goto(BLANK);
+      assert.equal((await run(mo2, 'startSession', 'Dr Other', PASS)).ok, true);
+      assert.equal((await run(mo2, 'bumpAttempt', 'oct-2026__dr-other')).v, 1);
+      assert.equal((await run(mo2, 'getAttemptCount', 'oct-2026__dr-other')).v, 1);
+      assert.equal((await run(mo2, 'listAttemptCounts')).code, 'permission');
+    });
+    await step('faculty: listAttemptCounts, grantAttempt gives another attempt, the MO can go again', async () => {
+      const ctx = await newCtx(EDITOR); fac = await newPage(ctx); page = fac; await fac.goto(BLANK);
+      assert.equal((await run(fac, 'facultySignIn')).ok, true);
+      const l = await run(fac, 'listAttemptCounts'); assert.equal(l.ok, true);
+      assert.deepEqual(l.v.sort((a, b) => a.key.localeCompare(b.key)), [{ key: KEY, n: 2 }, { key: 'oct-2026__dr-other', n: 1 }]);
+      assert.equal((await run(fac, 'getAttemptCount', KEY)).v, 2);
+      assert.equal((await run(fac, 'grantAttempt', KEY)).v, 1);
+      assert.equal((await getD('attemptCounts', KEY)).n, 1);
+      assert.equal((await run(mo1, 'bumpAttempt', KEY)).v, 2, 'the MO has an attempt left again');
+      assert.equal((await run(mo1, 'bumpAttempt', KEY)).code, 'limit');
+      assert.equal((await run(fac, 'grantAttempt', KEY)).v, 1);
+      assert.equal((await run(fac, 'grantAttempt', KEY)).v, 0);
+      assert.equal(await getD('attemptCounts', KEY), null, 'the counter is deleted at 0');
+      assert.equal((await run(fac, 'grantAttempt', KEY)).v, 0, 'never below 0');
+      assert.equal(await getD('attemptCounts', KEY), null);
+      assert.equal((await run(fac, 'getAttemptCount', KEY)).v, 0);
+      assert.equal((await run(mo1, 'bumpAttempt', KEY)).v, 1);
+    });
+    await step('maxAttempts follows the settings (3 allows a third, 1 allows only one); old settings default to 2', async () => {
+      assert.equal((await run(fac, 'saveSettings', { title: 'T', count: 5, passMark: 60, minutes: 10, review: 'full', cohort: 'Oct 2026', intro: '', maxAttempts: 3, hardCount: 5 }, { email: 'editor@example.com', name: 'e' })).code, 'permission', 'an editor cannot save settings');
+      const ctxA = await newCtx(ADMIN); const ad = await newPage(ctxA); await ad.goto(BLANK);
+      assert.equal((await run(ad, 'facultySignIn')).ok, true);
+      const sv = await run(ad, 'saveSettings', { title: 'T', count: 5, passMark: 80, minutes: 10, review: 'full', cohort: 'Oct 2026', intro: '', maxAttempts: 3, hardCount: 5 }, { email: ADMIN, name: 'Admin' });
+      assert.equal(sv.ok, true, JSON.stringify(sv)); assert.equal(sv.v.maxAttempts, 3); assert.equal(sv.v.hardCount, 5);
+      const g = (await run(mo1, 'getSettings')).v; assert.equal(g.maxAttempts, 3); assert.equal(g.hardCount, 5); assert.equal(g.passMark, 80);
+      assert.equal((await run(mo1, 'bumpAttempt', KEY)).v, 2);
+      assert.equal((await run(mo1, 'bumpAttempt', KEY)).v, 3);
+      assert.equal((await run(mo1, 'bumpAttempt', KEY)).code, 'limit');
+      await run(ad, 'saveSettings', { title: 'T', count: 5, passMark: 80, minutes: 10, review: 'full', cohort: 'Oct 2026', intro: '', maxAttempts: 1, hardCount: 0 }, { email: ADMIN, name: 'Admin' });
+      assert.equal((await run(mo2, 'bumpAttempt', 'oct-2026__dr-other')).code, 'limit', 'maxAttempts 1: the second bump is refused');
+      // settings saved without the new fields (an older page) are stored without them and still work: default 2
+      const old = await run(ad, 'saveSettings', { title: 'T', count: 5, passMark: 80, minutes: 10, review: 'full', cohort: 'Oct 2026', intro: '' }, { email: ADMIN, name: 'Admin' });
+      assert.equal(old.ok, true); assert.equal('maxAttempts' in old.v, false);
+      assert.equal((await run(mo2, 'bumpAttempt', 'oct-2026__dr-other')).v, 2);
+      assert.equal((await run(mo2, 'bumpAttempt', 'oct-2026__dr-other')).code, 'limit');
+      // out-of-range values are clamped before they are written
+      const cl = await run(ad, 'saveSettings', { title: 'T', count: 5, passMark: 80, minutes: 10, review: 'full', cohort: '', intro: '', maxAttempts: 99, hardCount: -4 }, { email: ADMIN, name: 'Admin' });
+      assert.equal(cl.v.maxAttempts, 10); assert.equal(cl.v.hardCount, 0);
+    });
+    await step('questions round-trip must and level (save, bulk save, list, history); old questions read as before', async () => {
+      const u = { email: EDITOR, name: 'editor' };
+      const base = { stem: 'Flagged question?', options: ['a', 'b', 'c', 'd'], answer: 2, explain: 'e', topic: 'Drugs', status: 'active' };
+      const sv = await run(fac, 'saveQuestion', { ...base, must: true, level: 'hard' }, u);
+      assert.equal(sv.ok, true, JSON.stringify(sv)); assert.equal(sv.v.must, true); assert.equal(sv.v.level, 'hard');
+      let st = await getD('questions', sv.v.id); assert.equal(st.must, true); assert.equal(st.level, 'hard');
+      const up = await run(fac, 'saveQuestion', { ...sv.v, must: false, level: 'standard' }, u);
+      assert.equal(up.ok, true, JSON.stringify(up)); assert.equal(up.v.rev, 2);
+      st = await getD('questions', sv.v.id); assert.equal(st.must, false); assert.equal(st.level, 'standard');
+      const h = (await run(fac, 'listHistory', sv.v.id)).v; assert.equal(h.length, 2); assert.equal(h[1].must, true); assert.equal(h[1].level, 'hard');
+      // junk is coerced: must only true when it is true, level only hard/standard
+      const junk = await run(fac, 'saveQuestion', { ...base, stem: 'Junk flags?', must: 'yes', level: 'impossible' }, u);
+      assert.equal(junk.ok, true, JSON.stringify(junk)); assert.equal(junk.v.must, false); assert.equal(junk.v.level, 'standard');
+      // an unknown field is not written
+      const extra = await run(fac, 'saveQuestion', { ...base, stem: 'Extra field?', weight: 9 }, u);
+      assert.equal(extra.ok, true); assert.equal('weight' in (await getD('questions', extra.v.id)), false);
+      const bulk = await run(fac, 'bulkSaveQuestions', [{ ...base, stem: 'Bulk A?', must: true }, { ...base, stem: 'Bulk B?', level: 'hard' }, { ...base, stem: 'Bulk C?' }], u);
+      assert.equal(bulk.v, 3);
+      const a = await byStem('Bulk A?'), bb = await byStem('Bulk B?'), c = await byStem('Bulk C?');
+      assert.deepEqual([a.must, a.level, bb.must, bb.level, c.must, c.level], [true, 'standard', false, 'hard', false, 'standard']);
+      // an MO lists only active ones, with the flags; seeded questions without the fields come back without them
+      const list = (await run(mo1, 'listQuestions', { activeOnly: true })).v;
+      const la = list.find(x => x.stem === 'Bulk A?'); assert.equal(la.must, true);
+      const old = list.find(x => x.id === 'q1'); assert.equal(old.must, undefined); assert.equal(old.level, undefined);
+      // a draft with a hard flag stays hidden from the MO
+      const dr = await run(fac, 'saveQuestion', { ...base, stem: 'Hidden hard draft?', status: 'draft', level: 'hard', must: true }, u);
+      assert.equal(dr.ok, true);
+      assert.equal((await run(mo1, 'listQuestions', { activeOnly: true })).v.some(x => x.stem === 'Hidden hard draft?'), false);
+    });
+    await step('attempts accept attemptNo and keep it', async () => {
+      const item = { qid: 'q1', stem: 's', options: ['a', 'b', 'c', 'd'], answer: 0, topic: 't', explain: '', picked: 0 };
+      const sub = await run(mo1, 'submitAttempt', { id: 'att-no-2', name: 'Dr Limit', cohort: 'Oct 2026', startedAt: 1, submittedAt: 2, durationSec: 1, items: [item], settings: { count: 1, passMark: 80, minutes: 5 }, score: 1, total: 1, pass: true, attemptNo: 2 });
+      assert.equal(sub.ok, true, JSON.stringify(sub)); assert.equal((await getD('attempts', 'att-no-2')).attemptNo, 2);
+      const none = await run(mo1, 'submitAttempt', { id: 'att-no-none', name: 'Dr Limit', cohort: 'Oct 2026', startedAt: 1, submittedAt: 2, durationSec: 1, items: [item], settings: { count: 1, passMark: 80, minutes: 5 }, score: 1, total: 1, pass: true });
+      assert.equal(none.ok, true); assert.equal('attemptNo' in (await getD('attempts', 'att-no-none')), false);
+    });
+    for (const p of [mo1, mo2, fac]) await p.close().catch(() => {});
+    await seed();   // leave the data as the later steps expect
+  }
+
   await step('no uncaught page errors', async () => { assert.deepEqual(errors, []); });
   if (consoleErrors.size) console.log('\n(browser console errors seen, for information):\n  ' + [...consoleErrors].join('\n  '));
   console.log('\nAll cloud checks passed.');

@@ -107,7 +107,7 @@ service cloud.firestore {
       allow delete: if false;
     }
     function validSettings(d) {
-      return d.keys().hasOnly(['title', 'count', 'passMark', 'minutes', 'review', 'cohort', 'intro', 'updatedAt', 'updatedBy'])
+      return d.keys().hasOnly(['title', 'count', 'passMark', 'minutes', 'review', 'cohort', 'intro', 'maxAttempts', 'hardCount', 'updatedAt', 'updatedBy'])
         && d.title is string && d.title.size() >= 1 && d.title.size() <= 100
         && d.count is int && d.count >= 1 && d.count <= 100
         && d.passMark is int && d.passMark >= 1 && d.passMark <= 100
@@ -115,6 +115,8 @@ service cloud.firestore {
         && d.review in ['score', 'marks', 'full']
         && d.cohort is string && d.cohort.size() <= 100
         && d.intro is string && d.intro.size() <= 3000
+        && d.get('maxAttempts', 2) is int && d.get('maxAttempts', 2) >= 1 && d.get('maxAttempts', 2) <= 10
+        && d.get('hardCount', 0) is int && d.get('hardCount', 0) >= 0 && d.get('hardCount', 0) <= 100
         && d.updatedAt is number;
     }
 
@@ -148,6 +150,8 @@ service cloud.firestore {
         && d.topic is string && d.topic.size() <= 100
         && d.image is string && d.image.size() <= 400000
         && d.status in ['draft', 'active', 'archived']
+        && d.get('must', false) is bool
+        && d.get('level', 'standard') in ['standard', 'hard']
         && d.rev is int && d.rev >= 1
         && d.updatedAt is number
         && validStamp(d);
@@ -156,11 +160,11 @@ service cloud.firestore {
       allow get: if member() || (validSession() && resource.data.status == 'active');
       allow list: if member() || (validSession() && resource.data.status == 'active');
       allow create: if editor()
-        && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'updatedAt', 'updatedBy'])
+        && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'must', 'level', 'updatedAt', 'updatedBy'])
         && validQuestion(request.resource.data) && request.resource.data.rev == 1;
       // optimistic concurrency: a save must be exactly one revision ahead of what is stored
       allow update: if editor()
-        && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'updatedAt', 'updatedBy'])
+        && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'must', 'level', 'updatedAt', 'updatedBy'])
         && validQuestion(request.resource.data) && request.resource.data.rev == resource.data.rev + 1;
       allow delete: if admin();
 
@@ -168,7 +172,7 @@ service cloud.firestore {
       match /history/{h} {
         allow read: if member();
         allow create: if editor()
-          && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'updatedAt', 'updatedBy', 'savedAt'])
+          && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'must', 'level', 'updatedAt', 'updatedBy', 'savedAt'])
           && request.resource.data.savedAt is number
           && validQuestion(request.resource.data);
         allow update, delete: if false;
@@ -182,7 +186,7 @@ service cloud.firestore {
     match /attempts/{id} {
       allow read: if member() || (request.auth != null && resource.data.uid == request.auth.uid);
       allow create: if validSession()
-        && request.resource.data.keys().hasOnly(['uid', 'name', 'cohort', 'startedAt', 'submittedAt', 'durationSec', 'items', 'settings', 'score', 'total', 'pass'])
+        && request.resource.data.keys().hasOnly(['uid', 'name', 'cohort', 'startedAt', 'submittedAt', 'durationSec', 'items', 'settings', 'score', 'total', 'pass', 'attemptNo'])
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.name == get(sessionPath()).data.name
         && request.resource.data.cohort is string && request.resource.data.cohort.size() <= 100
@@ -193,9 +197,31 @@ service cloud.firestore {
         && request.resource.data.settings is map
         && request.resource.data.settings.keys().hasOnly(['count', 'passMark', 'minutes'])
         && request.resource.data.score is int && request.resource.data.total is int
+        && request.resource.data.get('attemptNo', 1) is int && request.resource.data.get('attemptNo', 1) >= 1 && request.resource.data.get('attemptNo', 1) <= 10
         && request.resource.data.pass is bool;
       allow update: if false;
       allow delete: if admin();
+    }
+
+    // ---- attempt counters ----
+    // attemptCounts/{cohort-slug}__{name-key} = { n, updatedAt }: how many sittings that MO has started. An MO can only
+    // create it at 1 and raise it by exactly 1 while below the limit in config/test (default 2); faculty can set it to
+    // any 0..10 or delete it (that is "give another attempt").
+    function maxAttempts() {
+      return get(/databases/$(database)/documents/config/test).data.get('maxAttempts', 2);
+    }
+    function validCount(d) {
+      return d.keys().hasOnly(['n', 'updatedAt']) && d.n is int && d.updatedAt is number;
+    }
+    match /attemptCounts/{key} {
+      allow read: if member() || validSession();
+      allow create: if key.matches('^[a-z0-9_-]{1,120}$') && validCount(request.resource.data)
+        && ((validSession() && request.resource.data.n == 1) || (editor() && request.resource.data.n >= 0 && request.resource.data.n <= 10));
+      allow update: if validCount(request.resource.data)
+        && ((validSession() && exists(/databases/$(database)/documents/config/test)
+              && request.resource.data.n == resource.data.n + 1 && request.resource.data.n <= maxAttempts())
+          || (editor() && request.resource.data.n >= 0 && request.resource.data.n <= 10));
+      allow delete: if editor();
     }
   }
 }

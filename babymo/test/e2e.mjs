@@ -188,12 +188,23 @@ try {
     await page.click('[data-rm="dr.lee@example.com"]'); await page.click('dialog button[value=yes]');
     await page.locator('#mem li:has-text("dr.lee@example.com")').waitFor({ state: 'detached' });
   });
+  await step('question flags: must-ask and hard show on the list and filter', async () => {
+    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
+    await page.click('.qlist li:has(.badge.active) >> nth=0'); await page.locator('#qf').waitFor();
+    await page.check('#must'); await page.selectOption('#level', 'hard'); await page.click('#qf button[type=submit]'); await page.locator('.qlist').waitFor();
+    assert.equal(await page.locator('.badge.must').count(), 1); assert.equal(await page.locator('.badge.hard').count(), 1);
+    assert.match(await text('.summary'), /1<\/b> must-ask|1 must-ask/); await shot('flags'); await axe('flags');
+    await page.selectOption('#qf2', 'must'); await page.locator('.qlist li').first().waitFor(); assert.equal(await page.locator('.qlist li').count(), 1);
+    await page.selectOption('#qf2', ''); 
+  });
   await step('new settings apply: 3 questions, full review, cohort recorded', async () => {
     await page.click('#nav >> text=Test'); await page.fill('#f-name', 'Dr Third'); await page.fill('#f-pass', 'newpass'); await page.click('#start button[type=submit]');
     await page.locator('#go').waitFor(); assert.match(await text('#app'), /3 questions/); await page.click('#go');
     for (let i = 0; i < 2; i++) { await page.locator('.opt').first().click(); await page.click('#next'); }
     await page.locator('.opt').first().click(); await page.click('#review'); await page.click('#submit'); await page.click('dialog button[value=yes]');
-    await page.locator('.score').waitFor(); assert.match(await text('#app'), /Correct answer|Your answer/); await shot('result-full'); await axe('result-full');
+    await page.locator('.score').waitFor(); assert.match(await text('#app'), /Correct answer|Your answer/);
+    const mustStem = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('mo-local-v1')); return d.questions.find(q => q.must).stem; });
+    assert.ok((await text('#app')).includes(mustStem.slice(0, 40)), 'the must-ask question is in the sitting'); await shot('result-full'); await axe('result-full');
     const c = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v1')).attempts.at(-1).cohort); assert.equal(c, 'Oct 2026');
   });
   await step('sign out returns to the faculty sign-in', async () => {
@@ -201,6 +212,28 @@ try {
     await page.click('#signout'); await page.locator('#in').waitFor();
     assert.equal(await page.locator('#signout').count(), 0); assert.doesNotMatch(await text('#nav'), /Results/);
     await page.click('#in'); await page.locator('.qlist, .summary').first().waitFor();
+  });
+  const sit = async name => { await page.goto(BASE + '?demo'); await page.fill('#f-name', name); await page.fill('#f-pass', 'newpass'); await page.click('#start button[type=submit]'); };
+  const submitBlank = async () => {
+    await page.click('#go'); await page.locator('#qform').waitFor(); await page.click('#rv'); await page.locator('.grid').waitFor();
+    await page.click('#submit'); await page.click('dialog button[value=yes]'); await page.locator('.score').waitFor();
+  };
+  await step('two attempts: fail, try again, last attempt, then blocked', async () => {
+    await sit('Retry Person'); await page.locator('#go').waitFor(); assert.match(await text('#app'), /attempt 1 of 2/);
+    await submitBlank(); assert.match(await text('#app'), /Attempt 1 of 2/); assert.match(await text('#app'), /1<\/b> attempt left|1 attempt left/);
+    await shot('retry'); await axe('retry');
+    await page.click('#again'); await page.locator('#go').waitFor(); assert.match(await text('#app'), /attempt 2 of 2/);
+    await submitBlank(); assert.match(await text('#app'), /last attempt/); assert.equal(await page.locator('#again').count(), 0);
+    await page.click('#done');
+    await sit('retry  PERSON'); await page.locator('#start-err:not([hidden])').waitFor(); assert.match(await text('#start-err'), /used all 2 of your attempts/);
+  });
+  await step('faculty can give another attempt', async () => {
+    await page.goto(BASE + '?demo#/faculty/results'); await page.locator('table').waitFor();
+    await page.click('tbody a:has-text("Retry Person") >> nth=0'); await page.locator('#grant').waitFor();
+    assert.match(await text('.status'), /2 of 2/); await page.click('#grant'); await page.click('dialog button[value=yes]');
+    await page.locator('.status:has-text("1 of 2")').waitFor();
+    await sit('Retry Person'); await page.locator('#go').waitFor(); assert.match(await text('#app'), /attempt 2 of 2/);
+    await page.click('#cancel');
   });
   await step('help page', async () => { await page.goto(BASE + '?demo#/faculty/help'); await page.locator('h1').waitFor(); assert.match(await text('h1'), /How this works/); await axe('help'); });
   assert.deepEqual(errors, [], 'console errors: ' + errors.join(' | '));

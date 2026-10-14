@@ -21,7 +21,7 @@ const S = {
   name: lsGet('mo-name') || '',
   attempt: lsJson('mo-attempt'),   // a test in progress
   last: lsJson('mo-last'),         // the last finished attempt (this device)
-  q: { search: '', status: 'all', topic: '' },
+  q: { search: '', status: 'all', topic: '', flag: '' },
   pending: 0,         // faculty access requests waiting (faculty only)
 };
 let timer = null, userReady;
@@ -148,22 +148,32 @@ function viewHome() {
       try {
         await api.startSession(name, pass);
         S.name = name; lsSet('mo-name', name);
-        S.settings = { ...L.DEFAULT_SETTINGS, ...(await api.getSettings() || {}) };
-        const qs = await api.listQuestions({ activeOnly: true });
-        S.pool = qs.map(L.cleanQuestion).filter(L.isUsable);
-        if (!S.pool.length) throw Object.assign(new Error('empty'), { code: 'empty' });
-        S.attempt = { id: L.newId(), name, view: 'ready', settings: pick(S.settings), cohort: S.settings.cohort || '', pool: S.pool };
-        saveAttempt(); go('#/ready');
+        await prepareAttempt(name);
+        go('#/ready');
       } catch (e) {
         err.textContent = e.code === 'bad-passphrase' ? 'That passphrase is not right. Check it with your supervisor.'
           : e.code === 'empty' ? 'There are no questions in the test yet. Please tell the faculty.'
+          : e.code === 'limit' ? `You have used all ${e.max} of your attempts. Please speak to the faculty.`
           : errText(e);
         err.hidden = false;
       }
     });
   });
 }
-const pick = s => ({ title: s.title, count: s.count, passMark: s.passMark, minutes: s.minutes, review: s.review });
+const pick = s => ({ title: s.title, count: s.count, passMark: s.passMark, minutes: s.minutes, review: s.review, hardCount: s.hardCount });
+// Load the settings and questions, check how many attempts this person has used, and get the "Ready" screen's data.
+// Throws code 'empty' (no questions) or 'limit' (all attempts used).
+async function prepareAttempt(name) {
+  S.settings = { ...L.DEFAULT_SETTINGS, ...(await api.getSettings() || {}) };
+  const qs = await api.listQuestions({ activeOnly: true });
+  S.pool = qs.map(L.cleanQuestion).filter(L.isUsable);
+  if (!S.pool.length) throw Object.assign(new Error('empty'), { code: 'empty' });
+  const max = S.settings.maxAttempts || L.DEFAULT_SETTINGS.maxAttempts, key = L.attemptKey(S.settings.cohort, name);
+  const used = await api.getAttemptCount(key);
+  if (used >= max) throw Object.assign(new Error('limit'), { code: 'limit', used, max });
+  S.attempt = { id: L.newId(), name, view: 'ready', settings: pick(S.settings), cohort: S.settings.cohort || '', pool: S.pool, key, attemptNo: used + 1, maxAttempts: max };
+  saveAttempt();
+}
 const saveAttempt = () => { if (S.attempt) lsSet('mo-attempt', JSON.stringify(S.attempt)); else lsDel('mo-attempt'); };
 
 function viewReady() {
@@ -172,17 +182,26 @@ function viewReady() {
     <h1>Ready, ${esc(a.name.split(' ')[0])}?</h1>
     ${S.settings?.intro ? `<div class="card intro">${nl(S.settings.intro)}</div>` : ''}
     <ul class="facts">
+      <li>This is <b>attempt ${a.attemptNo || 1} of ${a.maxAttempts || 1}</b>. Pass mark <b>${st.passMark}%</b> (${Math.ceil(n * st.passMark / 100 - 1e-9)} or more correct).</li>
       <li><b>${n}</b> questions, one answer each</li>
       <li><b>${st.minutes}</b> minutes. The clock starts when you tap Start.</li>
-      <li>Pass mark <b>${st.passMark}%</b> (${Math.ceil(n * st.passMark / 100 - 1e-9)} or more correct)</li>
       <li>No negative marking. You can go back and change answers before you submit.</li>
     </ul>
     <p class="row"><button id="go" class="btn primary big">Start</button> <button id="cancel" class="btn">Not now</button></p>`, 'Ready');
-  $('#go').addEventListener('click', () => {
+  $('#go').addEventListener('click', ev => busy(ev.target, async () => {
+    let no = a.attemptNo || 1;
+    if (a.key) {   // use up the attempt now, so closing the page and starting again does not give a free look
+      try { no = await api.bumpAttempt(a.key); }
+      catch (e) {
+        S.attempt = null; saveAttempt();
+        toast(e.code === 'limit' ? 'You have used all your attempts. Please speak to the faculty.' : 'Could not start: ' + errText(e), 7000);
+        return go('#/');
+      }
+    }
     const draw = L.drawTest(a.pool, st);
-    S.attempt = { id: a.id, name: a.name, view: 'q', idx: 0, flags: [], startedAt: Date.now(), settings: st, cohort: a.cohort, items: draw };
+    S.attempt = { id: a.id, name: a.name, view: 'q', idx: 0, flags: [], startedAt: Date.now(), settings: st, cohort: a.cohort, items: draw, key: a.key, attemptNo: no, maxAttempts: a.maxAttempts };
     saveAttempt(); go('#/test'); route();
-  });
+  }));
   $('#cancel').addEventListener('click', () => { S.attempt = null; saveAttempt(); go('#/'); });
 }
 
@@ -259,9 +278,10 @@ async function finish(timeUp) {
     durationSec: Math.min(Math.round((Date.now() - a.startedAt) / 1000), a.settings.minutes * 60),
     items: a.items.map(({ qid, stem, options, answer, topic, explain, picked }) => ({ qid, stem, options, answer, topic, explain, picked })),
     settings: { count: a.settings.count, passMark: a.settings.passMark, minutes: a.settings.minutes },
+    ...(a.attemptNo ? { attemptNo: a.attemptNo } : {}),
   };
   const sm = L.summarise(att); att.score = sm.score; att.total = sm.total; att.pass = sm.pass;
-  S.last = { ...att, review: a.settings.review, timeUp, saved: false };
+  S.last = { ...att, review: a.settings.review, timeUp, saved: false, maxAttempts: a.maxAttempts || 0 };
   lsSet('mo-last', JSON.stringify(S.last));
   S.attempt = null; saveAttempt();
   outboxAdd(att);
@@ -305,6 +325,7 @@ function viewResult() {
   const r = S.last;
   if (!r) return viewHome();
   const sm = L.summarise(r), mode_ = r.review || 'marks';
+  const left = (r.maxAttempts || 0) - (r.attemptNo || 0);
   const rows = r.items.map((it, i) => {
     const ok = it.picked === it.answer;
     const head = `<span class="mk ${ok ? 'ok' : 'no'}" aria-hidden="true">${ok ? '✓' : '✗'}</span>`;
@@ -321,9 +342,14 @@ function viewResult() {
       <p>${sm.pass ? 'Pass' : 'Not yet at the pass mark'} (${sm.pct}%; pass mark ${r.settings.passMark}%)</p>
     </div>
     ${r.timeUp ? '<p class="muted">Time ran out, so the test was submitted for you.</p>' : ''}
+    ${r.attemptNo && r.maxAttempts ? `<p class="status ${sm.pass ? 'ok' : 'warn'}">Attempt ${r.attemptNo} of ${r.maxAttempts}. ${sm.pass ? 'You have passed; no more attempts are needed.' : left > 0 ? `You have <b>${left}</b> attempt${left > 1 ? 's' : ''} left.` : 'That was your last attempt. Please speak to the faculty.'}</p>` : ''}
     <p id="saved" class="status" role="status"></p>
     ${mode_ === 'score' ? '' : `<h2>Your answers</h2><ol class="review">${rows}</ol>`}
-    <p class="row"><button id="dl" class="btn">Download my result</button> <a class="btn primary" href="#/" id="done">Done</a></p>`, 'Result');
+    <p class="row">${!sm.pass && left > 0 ? '<button id="again" class="btn primary">Try again</button> ' : ''}<button id="dl" class="btn">Download my result</button> <a class="btn${!sm.pass && left > 0 ? '' : ' primary'}" href="#/" id="done">Done</a></p>`, 'Result');
+  $('#again')?.addEventListener('click', ev => busy(ev.target, async () => {
+    try { await prepareAttempt(r.name); go('#/ready'); }
+    catch (e) { toast(e.code === 'limit' ? 'You have used all your attempts. Please speak to the faculty.' : errText(e), 6000); }
+  }));
   paintSaved();
   $('#dl').addEventListener('click', () => download(`baby-mo-${r.name.replace(/\W+/g, '-')}-${today()}.csv`, L.attemptsToCSV([r])));
   $('#done').addEventListener('click', () => { S.last = null; lsDel('mo-last'); });
@@ -385,23 +411,26 @@ const topicsOf = qs => [...new Set(qs.map(q => q.topic).filter(Boolean))].sort()
 async function viewQuestions() {
   setView('<h1>Questions</h1><p class="loading">Loading…</p>', 'Questions');
   const all = await loadQuestions(true);
-  const count = S.settings.count, usable = all.filter(L.isUsable).length;
+  const count = S.settings.count, usable = all.filter(L.isUsable).length, bs = L.bankSummary(all, S.settings);
   const f = S.q;
-  const list = all.filter(q => (f.status === 'all' ? q.status !== 'archived' || false : q.status === f.status) && (!f.topic || q.topic === f.topic) && (!f.search || (q.stem + ' ' + q.options.join(' ') + ' ' + q.topic).toLowerCase().includes(f.search.toLowerCase())))
+  const flagOk = q => !f.flag || (f.flag === 'must' ? q.must : f.flag === 'hard' ? q.level === 'hard' : !q.must && q.level !== 'hard');
+  const list = all.filter(q => flagOk(q) && (f.status === 'all' ? q.status !== 'archived' || false : q.status === f.status) && (!f.topic || q.topic === f.topic) && (!f.search || (q.stem + ' ' + q.options.join(' ') + ' ' + q.topic).toLowerCase().includes(f.search.toLowerCase())))
     .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   const c = s => all.filter(q => q.status === s).length;
   setView(`
     <h1>Questions</h1>
-    <p class="summary"><b>${usable}</b> ready for the test. Each sitting draws <b>${Math.min(count, usable)}</b> at random${usable < count ? ` <span class="warn-text">(you asked for ${count}; add ${count - usable} more complete question${count - usable > 1 ? 's' : ''})</span>` : ''}. ${c('draft') ? `${c('draft')} draft${c('draft') > 1 ? 's' : ''} waiting for a check.` : ''}</p>
+    <p class="summary"><b>${usable}</b> ready for the test (<b>${bs.must}</b> must-ask, <b>${bs.hard}</b> hard). Each sitting has <b>${Math.min(count, usable)}</b> questions: every must-ask one, ${S.settings.hardCount ?? 4} hard, and the rest at random. ${bs.short ? `<span class="warn-text">You asked for ${count}; add ${bs.short} more complete question${bs.short > 1 ? 's' : ''}.</span> ` : ''}${!bs.mustFit ? `<span class="warn-text">There are more must-ask questions (${bs.must}) than fit in a sitting (${count}); raise “Questions per test” in Settings.</span> ` : ''}${bs.hardShort ? `<span class="warn-text">Only ${bs.hard} hard question${bs.hard === 1 ? '' : 's'} ready; Settings ask for ${S.settings.hardCount}.</span> ` : ''}${c('draft') ? `${c('draft')} draft${c('draft') > 1 ? 's' : ''} waiting for a check.` : ''}</p>
     <p class="row"><a class="btn primary" href="#/faculty/q/new">+ New question</a> <a class="btn" href="#/faculty/paste">Paste many</a> <a class="btn" href="#/faculty/data">Backup and import</a></p>
     <div class="filters">
       <label class="visually-hidden" for="qs">Search questions</label><input id="qs" type="search" placeholder="Search questions" value="${esc(f.search)}">
       <div class="chips" role="group" aria-label="Show">${[['all', 'All'], ['active', 'In the test'], ['draft', 'Drafts'], ['archived', 'Archived']].map(([k, l]) => `<button class="chip" data-s="${k}" aria-pressed="${f.status === k}">${l}${k === 'all' ? '' : ` ${c(k)}`}</button>`).join('')}</div>
+      <label class="visually-hidden" for="qf2">Kind of question</label><select id="qf2"><option value="">Any kind</option><option value="must"${f.flag === 'must' ? ' selected' : ''}>Must-ask only</option><option value="hard"${f.flag === 'hard' ? ' selected' : ''}>Hard only</option><option value="std"${f.flag === 'std' ? ' selected' : ''}>Ordinary only</option></select>
       ${topicsOf(all).length ? `<label class="visually-hidden" for="qt">Topic</label><select id="qt"><option value="">All topics</option>${topicsOf(all).map(t => `<option${f.topic === t ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select>` : ''}
     </div>
-    ${list.length ? `<ul class="qlist">${list.map(q => `<li><a href="#/faculty/q/${esc(q.id)}"><span class="badge ${q.status}">${L.STATUS_LABEL[q.status]}</span>${L.problems(q, 'active').length && q.status === 'active' ? '<span class="badge bad">Incomplete</span>' : ''}<span class="qs">${esc(q.stem.length > 150 ? q.stem.slice(0, 150) + '…' : q.stem)}</span><span class="qm">${q.topic ? esc(q.topic) + ' · ' : ''}${q.answer >= 0 ? 'Answer ' + L.LETTERS[q.answer] : 'No answer yet'}${q.image ? ' · picture' : ''}</span></a></li>`).join('')}</ul>` : `<p class="empty">${all.length ? 'No questions match.' : 'No questions yet. Tap “+ New question”, or “Paste many” to add a whole paper at once.'}</p>`}`, 'Questions');
+    ${list.length ? `<ul class="qlist">${list.map(q => `<li><a href="#/faculty/q/${esc(q.id)}"><span class="badge ${q.status}">${L.STATUS_LABEL[q.status]}</span>${q.must ? '<span class="badge must">Must ask</span>' : ''}${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${L.problems(q, 'active').length && q.status === 'active' ? '<span class="badge bad">Incomplete</span>' : ''}<span class="qs">${esc(q.stem.length > 150 ? q.stem.slice(0, 150) + '…' : q.stem)}</span><span class="qm">${q.topic ? esc(q.topic) + ' · ' : ''}${q.answer >= 0 ? 'Answer ' + L.LETTERS[q.answer] : 'No answer yet'}${q.image ? ' · picture' : ''}</span></a></li>`).join('')}</ul>` : `<p class="empty">${all.length ? 'No questions match.' : 'No questions yet. Tap “+ New question”, or “Paste many” to add a whole paper at once.'}</p>`}`, 'Questions');
   $('#qs').addEventListener('input', ev => { f.search = ev.target.value; clearTimeout(viewQuestions.t); viewQuestions.t = setTimeout(async () => { await viewQuestions(); const el = $('#qs'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }, 250); });
   $('#app').querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => { f.status = b.dataset.s; viewQuestions(); }));
+  $('#qf2').addEventListener('change', ev => { f.flag = ev.target.value; viewQuestions(); });
   $('#qt')?.addEventListener('change', ev => { f.topic = ev.target.value; viewQuestions(); });
 }
 
@@ -436,7 +465,11 @@ async function viewEditor(id) {
           <label>Topic <span class="muted">(optional)</span><input id="topic" list="topics" maxlength="${L.LIMITS.topic}" value="${esc(q.topic)}"><datalist id="topics">${topicsOf(S.questions).map(t => `<option value="${esc(t)}">`).join('')}</datalist></label>
           <label>Status<select id="status">${L.STATUSES.map(s => `<option value="${s}"${q.status === s ? ' selected' : ''}>${L.STATUS_LABEL[s]}</option>`).join('')}</select></label>
         </div>
-        <p class="muted small">${q.status === 'draft' ? 'Drafts are saved but never given to MOs. Set to “In the test” when it is checked.' : q.status === 'active' ? 'This question can be given to MOs.' : 'Archived questions are kept but never given to MOs.'}</p>
+        <div class="two">
+          <label>Difficulty<select id="level">${L.LEVELS.map(l => `<option value="${l}"${q.level === l ? ' selected' : ''}>${L.LEVEL_LABEL[l]}</option>`).join('')}</select></label>
+          <label class="check"><input type="checkbox" id="must"${q.must ? ' checked' : ''}> Must ask in every test</label>
+        </div>
+        <p class="muted small">Must-ask questions are in every sitting. Hard questions are drawn at random, up to the number set in Settings. ${q.status === 'draft' ? 'Drafts are saved but never given to MOs. Set to “In the test” when it is checked.' : q.status === 'active' ? 'This question can be given to MOs.' : 'Archived questions are kept but never given to MOs.'}</p>
         <div class="imgbox"><b>Picture</b> <span class="muted">(optional, for ECGs, X-rays)</span>
           ${safeImg(q.image) ? `<img class="qimg" src="${safeImg(q.image)}" alt="Attached picture"><p class="row"><button type="button" id="rmimg" class="btn">Remove picture</button></p>` : `<p><label class="btn">Add a picture<input id="img" type="file" accept="image/*" class="visually-hidden"></label></p>`}
           ${has('image')}
@@ -455,6 +488,7 @@ async function viewEditor(id) {
   };
   const read = () => {
     q.stem = $('#stem').value; q.explain = $('#explain').value; q.topic = $('#topic').value; q.status = $('#status').value;
+    q.must = $('#must').checked; q.level = $('#level').value;
     q.options = [0, 1, 2, 3].map(k => $('#opt' + k).value);
     const r = document.querySelector('input[name=ans]:checked'); q.answer = r ? +r.value : -1;
     q = L.cleanQuestion({ ...q, options: q.options.map(x => x.replace(/\s+$/, '')), id: q.id, rev: q.rev, image: q.image, updatedAt: q.updatedAt, updatedBy: q.updatedBy });
@@ -612,7 +646,7 @@ async function viewResults() {
   const rows = all.filter(a => (!f.cohort || a.cohort === f.cohort) && (!f.search || a.name.toLowerCase().includes(f.search.toLowerCase())));
   const sums = rows.map(a => ({ a, s: L.summarise(a) }));
   const passN = sums.filter(x => x.s.pass).length;
-  const body = tab === 'person' ? (rows.length ? `<div class="tablewrap"><table><thead><tr><th scope="col">Name</th><th scope="col">Cohort</th><th scope="col">When</th><th scope="col">Score</th><th scope="col">Result</th></tr></thead><tbody>${sums.map(({ a, s }) => `<tr><th scope="row"><a href="#/faculty/attempt/${esc(a.id)}">${esc(a.name)}</a></th><td>${esc(a.cohort || '')}</td><td>${esc(L.fmtDate(a.submittedAt))}</td><td>${s.score}/${s.total}</td><td><span class="badge ${s.pass ? 'active' : 'bad'}">${s.pass ? 'Pass' : 'Not yet'}</span></td></tr>`).join('')}</tbody></table></div>` : '<p class="empty">No results yet.</p>')
+  const body = tab === 'person' ? (rows.length ? `<div class="tablewrap"><table><thead><tr><th scope="col">Name</th><th scope="col">Cohort</th><th scope="col">When</th><th scope="col">Try</th><th scope="col">Score</th><th scope="col">Result</th></tr></thead><tbody>${sums.map(({ a, s }) => `<tr><th scope="row"><a href="#/faculty/attempt/${esc(a.id)}">${esc(a.name)}</a></th><td>${esc(a.cohort || '')}</td><td>${esc(L.fmtDate(a.submittedAt))}</td><td>${a.attemptNo || ''}</td><td>${s.score}/${s.total}</td><td><span class="badge ${s.pass ? 'active' : 'bad'}">${s.pass ? 'Pass' : 'Not yet'}</span></td></tr>`).join('')}</tbody></table></div>` : '<p class="empty">No results yet.</p>')
     : (() => { const st = L.questionStats(rows); return st.length ? `<p class="muted">Hardest first. A question most people get wrong may be badly worded, or have the wrong answer saved: worth a look.</p><div class="tablewrap"><table><thead><tr><th scope="col">Question</th><th scope="col">Asked</th><th scope="col">Correct</th><th scope="col">Most chosen wrong answer</th></tr></thead><tbody>${st.map(x => { const w = x.picks.map((n, k) => [n, k]).filter(([, k]) => k !== x.answer).sort((p, q) => q[0] - p[0])[0]; return `<tr><th scope="row"><a href="#/faculty/q/${esc(x.qid)}">${esc(x.stem.slice(0, 110))}</a></th><td>${x.n}</td><td><span class="badge ${x.pct >= 60 ? 'active' : 'bad'}">${x.pct}%</span></td><td>${w && w[0] ? L.LETTERS[w[1]] + ' (' + w[0] + ')' : '-'}</td></tr>`; }).join('')}</tbody></table></div>` : '<p class="empty">No results yet.</p>'; })();
   setView(`
     <h1>Results</h1>
@@ -630,13 +664,20 @@ async function viewResults() {
 async function viewAttempt(id) {
   const a = (await loadAttempts()).find(x => x.id === id);
   if (!a) return go('#/faculty/results');
-  const s = L.summarise(a);
+  await loadQuestions();
+  const s = L.summarise(a), key = L.attemptKey(a.cohort, a.name), max = S.settings.maxAttempts || L.DEFAULT_SETTINGS.maxAttempts;
+  const used = ((await api.listAttemptCounts().catch(() => [])).find(c => c.key === key) || {}).n || 0;
   setView(`
     <p><a href="#/faculty/results">← All results</a></p>
     <h1>${esc(a.name)}</h1>
-    <p class="summary"><b>${s.score}/${s.total}</b> (${s.pct}%) · ${s.pass ? 'Pass' : 'Not yet'} · ${esc(L.fmtDate(a.submittedAt))}${a.cohort ? ' · ' + esc(a.cohort) : ''}${a.durationSec != null ? ` · ${Math.round(a.durationSec / 60)} min` : ''}</p>
+    <p class="summary"><b>${s.score}/${s.total}</b> (${s.pct}%) · ${s.pass ? 'Pass' : 'Not yet'} · ${esc(L.fmtDate(a.submittedAt))}${a.cohort ? ' · ' + esc(a.cohort) : ''}${a.durationSec != null ? ` · ${Math.round(a.durationSec / 60)} min` : ''}${a.attemptNo ? ` · attempt ${a.attemptNo}` : ''}</p>
+    <p class="status ${used >= max ? 'warn' : 'ok'}">Attempts used by ${esc(a.name)}${a.cohort ? ' (' + esc(a.cohort) + ')' : ''}: <b>${used} of ${max}</b>. ${used > 0 ? '<button id="grant" class="link">Give one more attempt</button>' : ''}</p>
     <ol class="review">${a.items.map((it, i) => { const ok = it.picked === it.answer; return `<li class="rv ${ok ? 'ok' : 'no'}"><p><b>${i + 1}.</b> ${nl(it.stem)}</p><p><span class="mk ${ok ? 'ok' : 'no'}" aria-hidden="true">${ok ? '✓' : '✗'}</span> Chose: <b>${it.picked == null ? 'none' : L.LETTERS[it.picked] + '. ' + esc(it.options[it.picked])}</b></p>${ok ? '' : `<p>Correct: <b>${L.LETTERS[it.answer]}. ${esc(it.options[it.answer])}</b></p>`}</li>`; }).join('')}</ol>
     ${S.role === 'admin' ? '<p class="row"><button id="delatt" class="btn danger">Delete this result</button></p>' : ''}`, a.name);
+  $('#grant')?.addEventListener('click', async () => {
+    if (!await ask('Give another attempt?', `<p>${esc(a.name)} will be able to sit the test once more (one fewer attempt counted as used).</p>`, 'Give another')) return;
+    try { await api.grantAttempt(key); toast('Done.'); viewAttempt(id); } catch (e) { toast(errText(e)); }
+  });
   $('#delatt')?.addEventListener('click', async () => {
     if (!await ask('Delete this result?', `<p>${esc(a.name)}'s sitting is removed for good.</p>`, 'Delete', true)) return;
     try { await api.deleteAttempt(a.id); S.loaded.a = false; go('#/faculty/results'); } catch (e) { toast(errText(e)); }
@@ -658,6 +699,10 @@ async function viewSettings() {
         <label>Minutes<input id="s-min" type="number" min="1" max="240" value="${st.minutes}"></label>
         <label>Pass mark %<input id="s-pass" type="number" min="1" max="100" value="${st.passMark}"></label>
       </div>
+      <div class="two">
+        <label>Attempts each<input id="s-attempts" type="number" min="1" max="10" value="${st.maxAttempts ?? 2}"></label>
+        <label>Hard questions per test<input id="s-hard" type="number" min="0" max="100" value="${st.hardCount ?? 4}"></label>
+      </div>
       <p class="muted small">${usable} complete questions are in the test now. Each MO gets a different random ${Math.min(st.count, usable)}.</p>
       <label>Current cohort <span class="muted">(stamped on every result, e.g. “Oct 2026 intake”)</span><input id="s-cohort" value="${esc(st.cohort)}" maxlength="60"></label>
       <label>After submitting, the MO sees<select id="s-review"><option value="score"${st.review === 'score' ? ' selected' : ''}>Score only</option><option value="marks"${st.review === 'marks' ? ' selected' : ''}>Score and which questions were right or wrong</option><option value="full"${st.review === 'full' ? ' selected' : ''}>Everything: correct answers and explanations</option></select></label>
@@ -671,9 +716,9 @@ async function viewSettings() {
       <p class="row"><button class="btn primary" type="submit">Save passphrase</button></p></form>`, 'Settings');
   $('#sf').addEventListener('submit', async ev => {
     ev.preventDefault();
-    const n = { title: $('#s-title').value.trim() || L.DEFAULT_SETTINGS.title, count: +$('#s-count').value, minutes: +$('#s-min').value, passMark: +$('#s-pass').value, cohort: $('#s-cohort').value.trim(), review: $('#s-review').value, intro: $('#s-intro').value.trim() };
+    const n = { title: $('#s-title').value.trim() || L.DEFAULT_SETTINGS.title, count: +$('#s-count').value, minutes: +$('#s-min').value, passMark: +$('#s-pass').value, maxAttempts: +$('#s-attempts').value, hardCount: +$('#s-hard').value, cohort: $('#s-cohort').value.trim(), review: $('#s-review').value, intro: $('#s-intro').value.trim() };
     const err = $('#serr');
-    if (![n.count, n.minutes, n.passMark].every(Number.isInteger) || n.count < 1 || n.count > 100 || n.minutes < 1 || n.minutes > 240 || n.passMark < 1 || n.passMark > 100) { err.textContent = 'Check the numbers: questions 1 to 100, minutes 1 to 240, pass mark 1 to 100.'; err.hidden = false; return; }
+    if (![n.count, n.minutes, n.passMark, n.maxAttempts, n.hardCount].every(Number.isInteger) || n.maxAttempts < 1 || n.maxAttempts > 10 || n.hardCount < 0 || n.hardCount > 100 || n.count < 1 || n.count > 100 || n.minutes < 1 || n.minutes > 240 || n.passMark < 1 || n.passMark > 100) { err.textContent = 'Check the numbers: questions 1 to 100, minutes 1 to 240, pass mark 1 to 100, attempts 1 to 10, hard questions 0 to 100.'; err.hidden = false; return; }
     err.hidden = true;
     try { await api.saveSettings(n, S.user); S.settings = { ...L.DEFAULT_SETTINGS, ...n }; toast('Saved.'); viewSettings(); } catch (e) { err.textContent = 'Not saved: ' + errText(e); err.hidden = false; }
   });
@@ -737,6 +782,8 @@ function viewHelp() {
     <p>Wrong answer noticed later? Edit it and save. Past results keep the question as it was when that person sat the test, so old scores do not change.</p>
     <h2>Adding many at once</h2><p>Use <b>Paste many</b>: paste questions from Word or an email. Or download the spreadsheet from <b>Backup and import</b>, add rows in Excel or Google Sheets, and upload it again.</p>
     <h2>Mistakes</h2><ul><li>Every save keeps the earlier version: open the question and look under <b>Earlier versions</b>.</li><li>If two people edit the same question, the app tells the second person and lets them choose.</li><li>If your connection drops while typing, your text is kept on your device.</li><li>Please download a <b>full backup</b> now and then.</li></ul>
+    <h2>How a test is made up</h2><p>Each MO gets a sitting of 20 questions (you can change this in Settings). <b>Must-ask</b> questions are in every sitting; a set number of <b>hard</b> questions are mixed in at random; the rest come at random from the other ready questions. Tick “Must ask in every test” and set “Difficulty” on a question to use this. Pass mark and attempts are in Settings (80% and 2 by default).</p>
+    <h2>Attempts</h2><p>Each person gets two attempts, counted by name within the current cohort (so use the same spelling; a new cohort name starts everyone fresh). An attempt is counted when they tap Start. To let someone try again, open their result under <b>Results</b> and tap <b>Give one more attempt</b>.</p>
     <h2>Adding faculty</h2><p>Nobody has to be listed in advance. A colleague opens the Faculty page, signs in with Google and taps <b>Ask for faculty access</b>. Any faculty member then opens <b>Faculty</b> in the menu (it shows a number when someone is waiting) and taps <b>Approve</b>.</p>
     <h2>For each new intake</h2><ol><li>Settings: change the <b>passphrase</b> and the <b>cohort</b> name.</li><li>Send the MOs the link and the passphrase.</li><li>Results appear under <b>Results</b>; download them as a spreadsheet.</li></ol>
     <h2>Good to know</h2><p>Each MO gets a different random set of questions from the “In the test” ones. The passphrase keeps casual visitors out; it is not high security, so do not put anything confidential in a question.</p>`, 'Help');

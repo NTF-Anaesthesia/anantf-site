@@ -28,6 +28,46 @@ t('drawTest takes only usable questions, at most count, no repeats', () => {
   assert.equal(L.drawTest(bank, { count: 20 }).length, 3);
   assert.ok(d.every(x => x.picked === null));
 });
+t('every sitting has all must-ask questions and the set number of hard ones', () => {
+  const bank = [
+    ...Array.from({ length: 3 }, (_, i) => q({ id: 'm' + i, must: true })),
+    ...Array.from({ length: 6 }, (_, i) => q({ id: 'h' + i, level: 'hard' })),
+    ...Array.from({ length: 30 }, (_, i) => q({ id: 's' + i })),
+    q({ id: 'draftmust', must: true, status: 'draft' }), q({ id: 'brokenmust', must: true, answer: -1 }),
+  ];
+  for (let k = 0; k < 40; k++) {
+    const d = L.drawTest(bank, { count: 20, hardCount: 4 });
+    const ids = d.map(x => x.qid);
+    assert.equal(d.length, 20); assert.equal(new Set(ids).size, 20);
+    for (const m of ['m0', 'm1', 'm2']) assert.ok(ids.includes(m), 'must-ask missing');
+    assert.ok(!ids.includes('draftmust') && !ids.includes('brokenmust'));
+    assert.equal(ids.filter(i => i.startsWith('h')).length, 4);
+  }
+});
+t('draw copes with too many must-ask, too few hard, and a small bank', () => {
+  const musts = Array.from({ length: 25 }, (_, i) => q({ id: 'm' + i, must: true }));
+  assert.equal(L.drawTest(musts, { count: 20, hardCount: 4 }).length, 20);
+  const few = [q({ id: 'a' }), q({ id: 'b', level: 'hard' }), q({ id: 'c' })];
+  const d = L.drawTest(few, { count: 20, hardCount: 4 });
+  assert.equal(d.length, 3); assert.ok(d.some(x => x.qid === 'b'));
+  const mix = [...Array.from({ length: 5 }, (_, i) => q({ id: 'h' + i, level: 'hard' })), q({ id: 's1' })];
+  assert.equal(L.drawTest(mix, { count: 6, hardCount: 1 }).length, 6);   // standard ran out: leftover hard fill the sitting
+  assert.equal(L.drawTest(mix, { count: 3, hardCount: 0 }).filter(x => x.qid === 's1').length, 1);
+});
+t('bankSummary and attemptKey', () => {
+  const b = [q({ id: '1', must: true }), q({ id: '2', level: 'hard' }), q({ id: '3' })];
+  const s = L.bankSummary(b, { count: 20, hardCount: 4 });
+  assert.equal(s.ready, 3); assert.equal(s.must, 1); assert.equal(s.hard, 1); assert.equal(s.hardShort, 3); assert.equal(s.short, 17);
+  assert.equal(L.attemptKey('Oct 2026 intake', 'Dr  Tan, Wei'), 'oct2026intake__drtanwei');
+  assert.equal(L.attemptKey('', 'A'), 'general__a');
+  assert.equal(L.attemptKey('X', 'dr tan wei'), L.attemptKey('x', 'DR TAN WEI'));
+});
+t('CSV keeps must-ask and difficulty', () => {
+  const back = L.questionsFromCSV(L.questionsToCSV([q({ id: 'x', must: true, level: 'hard' }), q({ id: 'y' })])).questions;
+  assert.equal(back[0].must, true); assert.equal(back[0].level, 'hard'); assert.equal(back[1].must, false); assert.equal(back[1].level, 'standard');
+  const old = L.questionsFromCSV('Question,a,b,c,d,Correct\r\nWhat?,1,2,3,4,c\r\n').questions[0];
+  assert.equal(old.must, false); assert.equal(old.level, 'standard');
+});
 t('shuffle keeps the same items and respects the rng', () => {
   const a = [1, 2, 3, 4, 5, 6];
   assert.deepEqual(L.shuffle(a, () => 0.5).sort(), a); assert.deepEqual(a, [1, 2, 3, 4, 5, 6]);
