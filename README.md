@@ -8,8 +8,7 @@ Static site served by GitHub Pages at https://anantf.com.
 | `resources.html` | Searchable learning library |
 | `airway.html` | Airway learning and NAPS model collection |
 | `regional.html` | Regional anaesthesia learning |
-| `senior-resident.html` | Senior resident rotation guide |
-| `department.html` | Department photographs and teaching |
+| `pocus/` | Point-of-care ultrasound tutorials |
 | `exams/` | MMed exam resources by Dr Chew Shi Hao (canonical master copy) |
 | `exams/reference/` | Part B model-answer PDFs |
 | `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
