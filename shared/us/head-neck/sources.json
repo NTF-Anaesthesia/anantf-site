@@ -183,7 +183,8 @@
             0.16,
             0.475
           ]
-        ]
+        ],
+        "block": true
       },
       {
         "text": "Carotid artery",
@@ -639,7 +640,8 @@
             0.08,
             0.26
           ]
-        ]
+        ],
+        "block": true
       },
       {
         "text": "Carotid bifurcation",
