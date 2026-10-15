@@ -5,6 +5,8 @@
 // ctx = { data, bus, lineage(id) -> Set, status(blockId, elId), levelColour(level), rootsLabel(id) }
 // Emits 'hover' and 'select' (source 'diagram'); listens to 'select', 'hover', 'block'.
 
+import { STATUS, STATUS_COLOURS as SHARED_STATUS_COLOURS } from '../../shared/regional/js/status.js?v=20261015';
+
 const SVGNS = 'http://www.w3.org/2000/svg';
 const SOURCE = 'diagram';
 
@@ -14,7 +16,16 @@ const WIDTH = { xl: 14, l: 10, m: 7, s: 5 };
 const BASE_PX = 560;
 const FONT = { root: 15, struct: 13, term: 14, branch: 13, sub: 13, colHead: 14, colSub: 13, region: 13, note: 13, band: 13 };
 
-export const STATUS_COLOURS = { target: '#db2777', covers: '#16a34a', variable: '#f59e0b', spares: '#94a3b8' };
+// Block status: the shared regional tokens (colour + line style). Kept as a named export for older imports.
+export const STATUS_COLOURS = SHARED_STATUS_COLOURS;
+// Line style per status, in multiples of the nerve's stroke width w. Long dashes stay reserved for inconstant nerves
+// (data geom.dash), so variable is beaded (dots on a pale orange line) and spares is a thin, faded, short-dashed line.
+const ST_STYLE = {
+  target: { width: 1.3, edge: 'rgba(31,26,23,.6)' },
+  covers: { width: 1, edge: 'rgba(31,26,23,.5)' },
+  variable: { width: 1, edge: 'rgba(194,65,12,.38)', dots: true },
+  spares: { width: 0.7, edge: 'rgba(31,26,23,.25)', dash: [0.55, 0.9], opacity: STATUS.spares.opacity },
+};
 const NERVE = '#e8b923';
 const NERVE_EDGE = '#7a5c00';
 const RELATED = '#9a8f7a';
@@ -52,12 +63,26 @@ export function mountDiagram(container, ctx) {
 
   const root = document.createElement('div');
   root.className = 'px-dg';
+  // Narrow screens: readable by default (scrolls sideways); "Fit to screen" shows the whole diagram, and a pinch on the
+  // diagram switches between the two. The button names the action, so it has no aria-pressed.
+  const tools = document.createElement('div');
+  tools.className = 'px-dg-tools';
   const hint = document.createElement('p');
   hint.className = 'px-dg-hint';
-  hint.textContent = 'Scroll sideways to see the whole diagram. Tap a nerve to follow it.';
+  const zoomBtn = document.createElement('button');
+  zoomBtn.type = 'button';
+  zoomBtn.className = 'px-v3-btn px-dg-zoom';
+  tools.append(hint, zoomBtn);
   const scroller = document.createElement('div');
   scroller.className = 'px-dg-scroll';
-  root.append(hint, scroller);
+  root.append(tools, scroller);
+  let zoomed = true;
+  const paintZoom = () => {
+    root.classList.toggle('is-zoomed', zoomed);
+    zoomBtn.textContent = zoomed ? 'Fit to screen' : 'Zoom in';
+    hint.textContent = zoomed ? 'Scroll sideways to see the whole diagram. Tap a nerve to follow it.' : 'Whole diagram. Zoom in (or pinch) to read the labels.';
+  };
+  paintZoom();
 
   if (!Object.keys(geom).length) {
     const p = document.createElement('p');
@@ -175,8 +200,40 @@ export function mountDiagram(container, ctx) {
         }
       }
     }
-    nodes.set(id, { g, gl, mains, edges, halos, related });
+    nodes.set(id, { g, gl, mains, edges, halos, related, w, dash: g0.dash ? `${w * 1.6} ${w * 1.2}` : null });
   }
+
+  function setZoom(z, cx) {
+    if (z === zoomed) return;
+    const frac = cx == null ? null : cx;
+    zoomed = z;
+    paintZoom();
+    if (zoomed) {
+      // Keep the pinch point (or the selected nerve) in view.
+      if (frac != null) requestAnimationFrame(() => { scroller.scrollLeft = Math.max(0, frac * scroller.scrollWidth - scroller.clientWidth / 2); });
+      else requestAnimationFrame(() => scrollToSelected('zoom', true));
+    }
+  }
+  zoomBtn.addEventListener('click', () => setZoom(!zoomed));
+  // Two-finger pinch: out = zoom in, in = fit. One switch per gesture.
+  let pinch = null;
+  const dist2 = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  const onTouchStart = (e) => { if (e.touches.length === 2) pinch = { d0: dist2(e.touches), done: false }; };
+  const onTouchMove = (e) => {
+    if (!pinch || e.touches.length !== 2 || pinch.done) return;
+    const r = dist2(e.touches) / Math.max(1, pinch.d0);
+    if (r > 1.2 && !zoomed) {
+      const box = s.getBoundingClientRect();
+      const mid = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      pinch.done = true;
+      setZoom(true, Math.min(1, Math.max(0, (mid - box.left) / Math.max(1, box.width))));
+    } else if (r < 0.83 && zoomed && root.classList.contains('is-narrow')) { pinch.done = true; setZoom(false); }
+  };
+  const onTouchEnd = (e) => { if (e.touches.length < 2) pinch = null; };
+  scroller.addEventListener('touchstart', onTouchStart, { passive: true });
+  scroller.addEventListener('touchmove', onTouchMove, { passive: true });
+  scroller.addEventListener('touchend', onTouchEnd, { passive: true });
+  scroller.addEventListener('touchcancel', onTouchEnd, { passive: true });
 
   // Coloured level badges behind the root labels (sized to the text once it is laid out).
   function placeBadges() {
@@ -202,7 +259,13 @@ export function mountDiagram(container, ctx) {
   void fontsReady;
   // If the panel was hidden while mounting, getBBox returned zero: retry when it shows.
   let destroyed = false;
-  const ro = new ResizeObserver(() => { if (!destroyed && root.offsetWidth > 0) placeBadges(); });
+  const ro = new ResizeObserver(() => {
+    if (destroyed || root.offsetWidth <= 0) return;
+    root.classList.toggle('is-narrow', root.offsetWidth < BASE_PX);
+    placeBadges();
+    if (needBand) drawBand();
+  });
+  let needBand = false;
   ro.observe(root);
 
   // ---------------------------------------------------------------- block band
@@ -214,9 +277,37 @@ export function mountDiagram(container, ctx) {
     if (!band || !Number.isFinite(band.x0) || !Number.isFinite(band.x1)) return;
     const y0 = Number.isFinite(band.y0) ? band.y0 : vy + fs(44);
     const y1 = Number.isFinite(band.y1) ? band.y1 : vy + vh;
-    svg('rect', { x: Math.min(band.x0, band.x1), y: Math.min(y0, y1), width: Math.abs(band.x1 - band.x0), height: Math.abs(y1 - y0), class: 'band-area', 'stroke-width': Math.max(1.5, k) }, gBand);
-    const t = svg('text', { x: (band.x0 + band.x1) / 2, y: Math.min(y0, y1) + fs(17), 'text-anchor': 'middle', class: 'band-label', 'font-size': fs(FONT.band) }, gBand);
+    const top = Math.min(y0, y1); const bot = Math.max(y0, y1);
+    const left = Math.min(band.x0, band.x1); const right = Math.max(band.x0, band.x1);
+    svg('rect', { x: left, y: top, width: right - left, height: bot - top, class: 'band-area', 'stroke-width': Math.max(1.5, k) }, gBand);
+    const t = svg('text', { x: (left + right) / 2, y: top + fs(17), 'text-anchor': 'middle', class: 'band-label', 'font-size': fs(FONT.band), 'stroke-width': fs(4) }, gBand);
     t.textContent = band.label || b.short || b.name || bid;
+    placeBandLabel(t, { left, right, top, bot });
+  }
+
+  // Put the band label where it does not sit on a nerve label: inside the top of the band, just above it, just below
+  // it or inside the bottom; centred, then at either side. Needs layout (retried when the panel is shown).
+  function placeBandLabel(t, b) {
+    let obstacles;
+    try {
+      obstacles = [...gLabels.querySelectorAll('text'), ...gCols.querySelectorAll('text')].map((n) => n.getBBox()).filter((r) => r.width > 0);
+      const probe = t.getBBox();
+      if (!probe.width) { needBand = true; return; }
+    } catch { needBand = true; return; }
+    needBand = false;
+    const pad = fs(3);
+    const ys = [b.top + fs(17), b.top - fs(7), b.bot + fs(17), b.bot - fs(7)];
+    const xs = [[(b.left + b.right) / 2, 'middle'], [b.left + fs(8), 'start'], [b.right - fs(8), 'end']];
+    const hits = (r) => obstacles.some((o) => r.x < o.x + o.width + pad && r.x + r.width + pad > o.x && r.y < o.y + o.height + pad && r.y + r.height + pad > o.y);
+    const inside = (r) => r.x >= vx && r.x + r.width <= vx + vw && r.y >= vy + fs(40) && r.y + r.height <= vy + vh;
+    for (const y of ys) {
+      for (const [x, anchor] of xs) {
+        t.setAttribute('x', x.toFixed(1)); t.setAttribute('y', y.toFixed(1)); t.setAttribute('text-anchor', anchor);
+        const r = t.getBBox();
+        if (inside(r) && !hits(r)) return;
+      }
+    }
+    t.setAttribute('x', ((b.left + b.right) / 2).toFixed(1)); t.setAttribute('y', (b.top + fs(17)).toFixed(1)); t.setAttribute('text-anchor', 'middle');
   }
 
   // ---------------------------------------------------------------- state -> classes
@@ -233,10 +324,25 @@ export function mountDiagram(container, ctx) {
       }
       n.g.setAttribute('aria-pressed', id === selected ? 'true' : 'false');
       const colour = st ? STATUS_COLOURS[st] : (n.related ? RELATED : NERVE);
-      const edge = st ? 'rgba(39,39,34,.55)' : (n.related ? RELATED_EDGE : NERVE_EDGE);
-      n.mains.forEach((p) => p.setAttribute('stroke', colour));
-      n.edges.forEach((p) => p.setAttribute('stroke', edge));
+      const sty = st ? ST_STYLE[st] : null;
+      const edge = sty ? sty.edge : (n.related ? RELATED_EDGE : NERVE_EDGE);
+      const w = n.w * (sty?.width || 1);
+      const dash = sty?.dots ? `0.01 ${(n.w * 1.75).toFixed(2)}` : sty?.dash ? sty.dash.map((f) => (n.w * f).toFixed(2)).join(' ') : n.dash;
+      n.mains.forEach((p) => {
+        p.setAttribute('stroke', colour);
+        p.setAttribute('stroke-width', w);
+        if (dash) p.setAttribute('stroke-dasharray', dash); else p.removeAttribute('stroke-dasharray');
+        if (sty?.opacity) p.setAttribute('stroke-opacity', sty.opacity); else p.removeAttribute('stroke-opacity');
+      });
+      n.edges.forEach((p) => {
+        p.setAttribute('stroke', edge);
+        p.setAttribute('stroke-width', w + 3);
+        // Dotted (variable) nerves sit on a solid pale line; other patterns dash their outline too.
+        if (dash && !sty?.dots) p.setAttribute('stroke-dasharray', dash); else p.removeAttribute('stroke-dasharray');
+      });
       n.g.dataset.status = st || '';
+      n.gl.dataset.status = st || '';
+      n.halos.forEach((p) => p.setAttribute('stroke-width', st === 'target' ? w + 9 : n.w + 14));
     }
   }
 
@@ -269,7 +375,7 @@ export function mountDiagram(container, ctx) {
   s.addEventListener('focusout', onBlur);
 
   // Bring the selected nerve into view inside the scroller (phones).
-  function scrollToSelected(source) {
+  function scrollToSelected(source, instant) {
     if (source === SOURCE) return;
     const n = nodes.get(bus.state.selected);
     if (!n || scroller.scrollWidth <= scroller.clientWidth + 4) return;
@@ -277,13 +383,13 @@ export function mountDiagram(container, ctx) {
       const bb = n.gl.getBBox().width ? n.gl.getBBox() : n.g.getBBox();
       const scale = s.getBoundingClientRect().width / vw;
       const cx = (bb.x + bb.width / 2 - vx) * scale;
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reduce = instant || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       scroller.scrollTo({ left: Math.max(0, cx - scroller.clientWidth / 2), behavior: reduce ? 'auto' : 'smooth' });
     } catch { /* not laid out */ }
   }
 
   const offs = [
-    bus.on('select', (p) => { refresh(); scrollToSelected(p.source); }),
+    bus.on('select', (p) => { refresh(); scrollToSelected(p.source, p.instant); }),
     bus.on('hover', refresh),
     bus.on('block', () => { drawBand(); refresh(); }),
   ];
@@ -295,6 +401,8 @@ export function mountDiagram(container, ctx) {
       destroyed = true;
       ro.disconnect();
       offs.forEach((f) => f());
+      scroller.removeEventListener('touchstart', onTouchStart);
+      scroller.removeEventListener('touchmove', onTouchMove);
       root.remove();
     },
   };
