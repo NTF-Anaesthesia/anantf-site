@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en-GB" class="app" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f1ede4">
+<title>App kit specimen · NTF Anaesthesia</title>
+<meta name="description" content="Every component of the NTF Anaesthesia phone-app kit (assets/app/app.css) in its states.">
+<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml">
+<link rel="stylesheet" href="app.css">
+</head>
+<body class="app-body app-has-tabbar">
+<a class="app-skip" href="#main">Skip to content</a>
+
+<header class="app-bar" id="bar">
+  <div class="app-bar-row">
+    <div class="app-bar-lead"></div>
+    <p class="app-bar-title" aria-hidden="true">Components</p>
+    <div class="app-bar-trail">
+      <button class="app-bar-btn" type="button" aria-label="About this kit" data-open="sheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main class="app-main" id="main" tabindex="-1">
+  <h1 class="app-large-title" id="large-title">Components</h1>
+  <p class="app-large-sub">The NTF Anaesthesia app kit, at phone width. DESIGN-APP.md explains each part.</p>
+
+  <!-- Cards -->
+  <section class="app-section" aria-labelledby="h-cards">
+    <h2 class="app-section-header" id="h-cards">Cards</h2>
+    <div class="app-card">
+      <p class="app-kicker">Resume</p>
+      <p class="app-card-title">Question 6 of 10</p>
+      <p class="app-small app-muted" style="margin:0">Quick 10 · started 4 minutes ago</p>
+      <div class="app-card-actions">
+        <button class="app-btn app-btn--plain" type="button">Discard</button>
+        <button class="app-btn app-btn--primary" type="button">Resume</button>
+      </div>
+    </div>
+    <div class="app-card app-card--accent">
+      <p class="app-kicker">Today</p>
+      <p class="app-card-title">10 questions, mixed</p>
+      <p class="app-small app-muted" style="margin:0">Unseen and missed, about 8 minutes</p>
+      <div class="app-card-actions"><button class="app-btn app-btn--primary" type="button" data-toast="Starting 10 questions">Start</button></div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section class="app-section" aria-labelledby="h-type">
+    <h2 class="app-section-header" id="h-type">Type</h2>
+    <div class="app-card">
+      <p class="app-kicker">Airway · Must know</p>
+      <h3 class="app-h2" style="margin-top:0">Rapid sequence induction</h3>
+      <p class="app-text">Body text is Inter at 17px. The serif is kept for large titles, card titles and scores, never bold.</p>
+      <p class="app-small app-muted" style="margin:0">Secondary text is 15px in muted ink. Doses use <span class="app-mono">1.5 mg/kg</span>.</p>
+    </div>
+  </section>
+
+  <!-- Grouped list -->
+  <section class="app-section" aria-labelledby="h-list">
+    <h2 class="app-section-header" id="h-list">Grouped list</h2>
+    <ul class="app-list">
+      <li><a class="app-row" href="#h-list"><span class="app-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11"/></svg></span><span class="app-row-body"><span class="app-row-title">By topic</span></span><span class="app-row-value">12</span><span class="app-row-chevron" aria-hidden="true"></span></a></li>
+      <li><a class="app-row" href="#h-list"><span class="app-row-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></span><span class="app-row-body"><span class="app-row-title">Exam mode</span><span class="app-row-sub">Timed, no feedback until you submit</span></span><span class="app-row-chevron" aria-hidden="true"></span></a></li>
+      <li><a class="app-row is-pressed" href="#h-list"><span class="app-row-icon app-row-icon--bad" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></span><span class="app-row-body"><span class="app-row-title">My missed</span><span class="app-row-sub">Pressed state</span></span><span class="app-row-value">7</span><span class="app-row-chevron" aria-hidden="true"></span></a></li>
+      <li><label class="app-row"><span class="app-row-icon app-row-icon--ink" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 21V4M6 4h11l-2.5 4L17 12H6"/></svg></span><span class="app-row-body"><span class="app-row-title">Show flagged first</span></span><input class="app-switch" type="checkbox" role="switch" checked></label></li>
+    </ul>
+    <p class="app-section-footer">Rows are at least 50px tall. Hairlines are inset to the text.</p>
+  </section>
+
+  <section class="app-section" aria-labelledby="h-rows">
+    <h2 class="app-section-header" id="h-rows">Rows without icons</h2>
+    <ul class="app-list">
+      <li><a class="app-row" href="#h-rows"><span class="app-row-body"><span class="app-row-title">A 65-year-old for laparoscopic cholecystectomy has a BMI of 41. Which is the best predictor of difficult mask ventilation?</span><span class="app-row-sub app-row-sub--clamp">Airway · answered twice, last correct</span></span><span class="app-badge">Must</span><span class="app-row-chevron" aria-hidden="true"></span></a></li>
+      <li><div class="app-row"><span class="app-row-body"><span class="app-row-title">App version</span></span><span class="app-row-value app-mono">2026-10-15</span></div></li>
+      <li><button class="app-row app-row--action" type="button" data-toast="Checking for a new version"><span class="app-row-body"><span class="app-row-title">Get the latest version</span></span></button></li>
+      <li><button class="app-row app-row--danger" type="button" data-toast="Progress kept. This is a demo"><span class="app-row-body"><span class="app-row-title">Reset progress on this phone</span></span></button></li>
+    </ul>
+  </section>
+
+  <!-- Buttons -->
+  <section class="app-section" aria-labelledby="h-btn">
+    <h2 class="app-section-header" id="h-btn">Buttons</h2>
+    <div class="app-btn-stack">
+      <button class="app-btn app-btn--primary app-btn--block" type="button">Start 10 questions</button>
+      <button class="app-btn app-btn--secondary app-btn--block" type="button">Custom practice</button>
+      <button class="app-btn app-btn--outline app-btn--block" type="button">Copy text</button>
+      <button class="app-btn app-btn--danger app-btn--block" type="button">Leave test</button>
+    </div>
+    <div class="app-btn-row">
+      <button class="app-btn app-btn--primary is-pressed" type="button">Pressed</button>
+      <button class="app-btn app-btn--primary" type="button" disabled>Disabled</button>
+    </div>
+    <div class="app-btn-row">
+      <button class="app-btn app-btn--plain" type="button">Plain</button>
+      <button class="app-btn app-btn--secondary app-btn--compact" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4M6 4h11l-2.5 4L17 12H6"/></svg>Flag</button>
+    </div>
+  </section>
+
+  <!-- Choices -->
+  <section class="app-section" aria-labelledby="h-choice">
+    <h2 class="app-section-header" id="h-choice">Answer choices</h2>
+    <div class="app-card">
+      <p class="app-kicker">Pharmacology</p>
+      <p class="app-text" style="margin:0">Which drug is the first choice to reverse rocuronium in a can't intubate, can't oxygenate emergency?</p>
+      <div class="app-choices" role="group" aria-label="Choices, before answering" id="demo-choices">
+        <button class="app-choice" type="button" aria-pressed="false"><span class="app-choice-letter" aria-hidden="true">A</span><span class="app-choice-text">Neostigmine with glycopyrrolate</span></button>
+        <button class="app-choice is-selected" type="button" aria-pressed="true"><span class="app-choice-letter" aria-hidden="true">B</span><span class="app-choice-text">Sugammadex 16 mg/kg</span></button>
+        <button class="app-choice" type="button" aria-pressed="false"><span class="app-choice-letter" aria-hidden="true">C</span><span class="app-choice-text">Edrophonium</span></button>
+      </div>
+    </div>
+    <div class="app-card">
+      <p class="app-kicker">After answering</p>
+      <div class="app-choices is-locked" role="group" aria-label="Choices, after answering">
+        <button class="app-choice is-dimmed" type="button" aria-disabled="true"><span class="app-choice-letter" aria-hidden="true">A</span><span class="app-choice-text">Mallampati class</span></button>
+        <button class="app-choice is-incorrect" type="button" aria-disabled="true" aria-label="B, Thyromental distance, your answer, incorrect"><span class="app-choice-letter" aria-hidden="true">B</span><span class="app-choice-text">Thyromental distance</span><span class="app-choice-tag" aria-hidden="true">Yours</span></button>
+        <button class="app-choice is-answer" type="button" aria-disabled="true" aria-label="C, Presence of a beard, the answer"><span class="app-choice-letter" aria-hidden="true">C</span><span class="app-choice-text">Presence of a beard</span><span class="app-choice-tag" aria-hidden="true">Answer</span></button>
+      </div>
+      <div class="app-choices is-locked" role="group" aria-label="A correct answer">
+        <button class="app-choice is-correct" type="button" aria-disabled="true" aria-label="D, Age over 55, your answer, correct"><span class="app-choice-letter" aria-hidden="true">D</span><span class="app-choice-text">Age over 55</span><span class="app-choice-tag" aria-hidden="true">Correct</span></button>
+      </div>
+      <div class="app-panel"><strong>Why.</strong> A beard, obesity, no teeth, snoring and age over 55 each predict difficult mask ventilation.</div>
+    </div>
+  </section>
+
+  <!-- Segmented -->
+  <section class="app-section" aria-labelledby="h-seg">
+    <h2 class="app-section-header" id="h-seg">Segmented control</h2>
+    <fieldset class="app-segmented"><legend>Mode</legend>
+      <label class="app-seg"><input type="radio" name="mode" checked><span>Practice</span></label>
+      <label class="app-seg"><input type="radio" name="mode"><span>Exam</span></label>
+    </fieldset>
+    <fieldset class="app-segmented"><legend>Show</legend>
+      <label class="app-seg"><input type="radio" name="show"><span>All</span></label>
+      <label class="app-seg"><input type="radio" name="show" checked><span>Unseen</span></label>
+      <label class="app-seg"><input type="radio" name="show"><span>Missed</span></label>
+      <label class="app-seg"><input type="radio" name="show"><span>Flagged</span></label>
+    </fieldset>
+  </section>
+
+  <!-- Switches -->
+  <section class="app-section" aria-labelledby="h-sw">
+    <h2 class="app-section-header" id="h-sw">Switches</h2>
+    <ul class="app-list">
+      <li><label class="app-row"><span class="app-row-body"><span class="app-row-title">Show timer</span></span><input class="app-switch" type="checkbox" role="switch" checked></label></li>
+      <li><label class="app-row"><span class="app-row-body"><span class="app-row-title">Vibrate on answer</span><span class="app-row-sub">Android only</span></span><input class="app-switch" type="checkbox" role="switch"></label></li>
+      <li><label class="app-row"><span class="app-row-body"><span class="app-row-title">Include drafts</span><span class="app-row-sub">Disabled</span></span><input class="app-switch" type="checkbox" role="switch" disabled></label></li>
+    </ul>
+  </section>
+
+  <!-- Chips -->
+  <section class="app-section" aria-labelledby="h-chips">
+    <h2 class="app-section-header" id="h-chips">Chips</h2>
+    <div class="app-chips" role="group" aria-label="Topics" id="demo-chips">
+      <button class="app-chip" type="button" aria-pressed="true">Airway <span class="app-chip-count">24</span></button>
+      <button class="app-chip" type="button" aria-pressed="false">Regional <span class="app-chip-count">18</span></button>
+      <button class="app-chip" type="button" aria-pressed="true">Obstetrics <span class="app-chip-count">11</span></button>
+      <button class="app-chip" type="button" aria-pressed="false">Paediatrics <span class="app-chip-count">9</span></button>
+      <button class="app-chip" type="button" aria-pressed="false">Pharmacology <span class="app-chip-count">30</span></button>
+      <button class="app-chip" type="button" aria-pressed="false">Equipment <span class="app-chip-count">6</span></button>
+    </div>
+  </section>
+
+  <!-- Fields -->
+  <section class="app-section" aria-labelledby="h-field">
+    <h2 class="app-section-header" id="h-field">Fields</h2>
+    <label class="app-field"><span class="app-field-label">Your name</span><input class="app-input" type="text" autocomplete="name" placeholder="As on your staff pass"></label>
+    <label class="app-field"><span class="app-field-label">Passphrase</span><input class="app-input" type="text" value="wrong one" aria-invalid="true" aria-describedby="pass-err" autocomplete="off"></label>
+    <p class="app-field-error" id="pass-err" style="margin-top:-10px">The passphrase is not right. Ask your supervisor.</p>
+  </section>
+
+  <!-- Badges -->
+  <section class="app-section" aria-labelledby="h-badge">
+    <h2 class="app-section-header" id="h-badge">Badges and pills</h2>
+    <div class="app-card" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+      <span class="app-badge">Must</span><span class="app-badge app-badge--ink">Hard</span><span class="app-badge app-badge--ok">Pass</span>
+      <span class="app-badge app-badge--bad">Not yet</span><span class="app-badge app-badge--warn">Offline</span><span class="app-pill">Q 3/10</span><span class="app-pill app-mono">12:40</span>
+    </div>
+  </section>
+
+  <!-- Session bar -->
+  <section class="app-section" aria-labelledby="h-session">
+    <h2 class="app-section-header" id="h-session">Bars</h2>
+    <div class="app-card" style="padding:0;overflow:hidden">
+      <div class="app-bar app-bar--static app-bar--solid">
+        <div class="app-bar-row">
+          <div class="app-bar-lead"><a class="app-bar-btn app-back" href="#h-session">Topics</a></div>
+          <p class="app-bar-title">Airway</p>
+          <div class="app-bar-trail"><button class="app-bar-btn" type="button" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button></div>
+        </div>
+      </div>
+      <div class="app-bar app-bar--static app-bar--solid" style="margin-top:12px">
+        <div class="app-bar-row">
+          <div class="app-bar-lead"><button class="app-bar-btn" type="button" aria-label="Leave"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+          <span class="app-pill">Q 3/10</span>
+          <div class="app-bar-trail"><span class="app-mono app-small app-muted">12:40</span><button class="app-bar-btn" type="button" aria-label="Flag this question" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 21V4M6 4h11l-2.5 4L17 12H6"/></svg></button></div>
+        </div>
+        <progress class="app-progress" max="10" value="3" aria-label="Question 3 of 10"></progress>
+      </div>
+    </div>
+  </section>
+
+  <!-- Progress -->
+  <section class="app-section" aria-labelledby="h-prog">
+    <h2 class="app-section-header" id="h-prog">Progress</h2>
+    <div class="app-card">
+      <div style="display:flex;justify-content:space-around;align-items:center;gap:16px;margin-bottom:16px">
+        <div class="app-ring app-ring--ok" style="--app-ring:80" role="img" aria-label="Score 80 percent">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="app-ring-track" cx="50" cy="50" r="44"/><circle class="app-ring-value" cx="50" cy="50" r="44" pathLength="100"/></svg>
+          <span class="app-ring-label" aria-hidden="true"><strong>80%</strong><span>Pass</span></span>
+        </div>
+        <div class="app-ring" style="--app-ring:45" role="img" aria-label="45 percent mastered">
+          <svg viewBox="0 0 100 100" aria-hidden="true"><circle class="app-ring-track" cx="50" cy="50" r="44"/><circle class="app-ring-value" cx="50" cy="50" r="44" pathLength="100"/></svg>
+          <span class="app-ring-label" aria-hidden="true"><strong>45%</strong><span>Mastered</span></span>
+        </div>
+      </div>
+      <p class="app-small" style="margin:0 0 6px;display:flex;justify-content:space-between"><span>Airway</span><span class="app-muted">9 of 12</span></p>
+      <progress class="app-progress app-progress--ok" max="12" value="9" aria-label="Airway, 9 of 12 mastered"></progress>
+      <p class="app-small" style="margin:14px 0 6px;display:flex;justify-content:space-between"><span>Regional</span><span class="app-muted">4 of 18</span></p>
+      <progress class="app-progress" max="18" value="4" aria-label="Regional, 4 of 18 mastered"></progress>
+    </div>
+  </section>
+
+  <!-- Sheet and toast -->
+  <section class="app-section" aria-labelledby="h-float">
+    <h2 class="app-section-header" id="h-float">Sheet and toast</h2>
+    <div class="app-btn-row">
+      <button class="app-btn app-btn--secondary" type="button" data-open="sheet">Open sheet</button>
+      <button class="app-btn app-btn--secondary" type="button" data-toast="Saved on this phone" data-undo>Show toast</button>
+    </div>
+  </section>
+
+  <!-- Empty -->
+  <section class="app-section" aria-labelledby="h-empty">
+    <h2 class="app-section-header" id="h-empty">Empty state</h2>
+    <div class="app-card app-empty">
+      <span class="app-empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg></span>
+      <p class="app-empty-title">Nothing missed yet</p>
+      <p class="app-empty-text">Questions you get wrong collect here, so you can try them again.</p>
+      <button class="app-btn app-btn--primary" type="button">Start 10 questions</button>
+    </div>
+  </section>
+
+  <!-- Skeleton -->
+  <section class="app-section" aria-labelledby="h-skel">
+    <h2 class="app-section-header" id="h-skel">Loading</h2>
+    <ul class="app-list" aria-busy="true" aria-label="Loading topics">
+      <li><div class="app-row"><span class="app-skeleton app-skeleton--tile"></span><span class="app-row-body"><span class="app-skeleton app-skeleton--line"></span><span class="app-skeleton app-skeleton--short"></span></span></div></li>
+      <li><div class="app-row"><span class="app-skeleton app-skeleton--tile"></span><span class="app-row-body"><span class="app-skeleton app-skeleton--line"></span><span class="app-skeleton app-skeleton--short"></span></span></div></li>
+      <li><div class="app-row"><span class="app-skeleton app-skeleton--tile"></span><span class="app-row-body"><span class="app-skeleton app-skeleton--line"></span><span class="app-skeleton app-skeleton--short"></span></span></div></li>
+    </ul>
+  </section>
+</main>
+
+<nav class="app-tabbar" aria-label="Sections">
+  <div class="app-tabbar-inner">
+    <a class="app-tab" href="#main" aria-current="page"><span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8"/></svg></span>Practise</a>
+    <a class="app-tab" href="#h-list"><span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11"/></svg></span>Browse</a>
+    <a class="app-tab" href="#h-prog"><span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 20v-8M12 20V5M19 20v-5"/></svg><span class="app-tab-badge">3</span></span>Progress</a>
+    <a class="app-tab" href="#h-sw"><span class="app-tab-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.5"/><circle cx="10" cy="17" r="2.5"/></svg></span>Settings</a>
+  </div>
+</nav>
+
+<dialog class="app-sheet app-sheet--medium" id="sheet" aria-labelledby="sheet-title">
+  <span class="app-sheet-grabber" aria-hidden="true"></span>
+  <div class="app-sheet-head">
+    <span></span>
+    <h2 class="app-sheet-title" id="sheet-title">Custom practice</h2>
+    <button class="app-btn app-btn--plain app-btn--compact" type="button" data-close>Done</button>
+  </div>
+  <div class="app-sheet-body">
+    <p class="app-section-header" style="padding-left:4px">Topics</p>
+    <div class="app-chips" role="group" aria-label="Topics in the sheet">
+      <button class="app-chip" type="button" aria-pressed="true">Airway</button>
+      <button class="app-chip" type="button" aria-pressed="false">Regional</button>
+      <button class="app-chip" type="button" aria-pressed="false">Obstetrics</button>
+      <button class="app-chip" type="button" aria-pressed="false">Paediatrics</button>
+    </div>
+    <fieldset class="app-segmented"><legend>Mode</legend>
+      <label class="app-seg"><input type="radio" name="smode" checked><span>Practice</span></label>
+      <label class="app-seg"><input type="radio" name="smode"><span>Exam</span></label>
+    </fieldset>
+    <p class="app-small app-muted">14 questions match.</p>
+  </div>
+  <div class="app-sheet-foot"><button class="app-btn app-btn--primary app-btn--block" type="button" data-close>Start 14 questions</button></div>
+</dialog>
+
+<div class="app-toast" id="toast" role="status" aria-live="polite"><span class="app-toast-text" id="toast-text"></span><button class="app-toast-action" type="button" id="toast-undo" hidden>Undo</button></div>
+
+<script>
+// iOS only shows :active press states when the page listens for touches.
+document.addEventListener('touchstart', function () {}, { passive: true });
+
+// Large title collapses into the bar.
+(function () {
+  var bar = document.getElementById('bar'), t = document.getElementById('large-title');
+  if (!('IntersectionObserver' in window)) { bar.classList.add('is-collapsed'); return; }
+  new IntersectionObserver(function (e) { bar.classList.toggle('is-collapsed', !e[0].isIntersecting); },
+    { rootMargin: '-' + (bar.offsetHeight) + 'px 0px 0px 0px', threshold: 0 }).observe(t);
+})();
+
+// Toggles: chips and choices.
+document.querySelectorAll('.app-chip').forEach(function (c) {
+  c.addEventListener('click', function () { c.setAttribute('aria-pressed', c.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); });
+});
+document.querySelectorAll('#demo-choices .app-choice').forEach(function (c, i, all) {
+  c.addEventListener('click', function () {
+    all.forEach(function (o) { o.classList.toggle('is-selected', o === c); o.setAttribute('aria-pressed', o === c ? 'true' : 'false'); });
+    if (navigator.vibrate) navigator.vibrate(10);
+  });
+});
+
+// Toast.
+var toast = document.getElementById('toast'), toastText = document.getElementById('toast-text'), undo = document.getElementById('toast-undo'), timer;
+function showToast(msg, withUndo) {
+  toastText.textContent = msg; undo.hidden = !withUndo;
+  toast.classList.add('is-visible'); clearTimeout(timer);
+  timer = setTimeout(function () { toast.classList.remove('is-visible'); }, 4000);
+}
+undo.addEventListener('click', function () { showToast('Undone', false); });
+document.querySelectorAll('[data-toast]').forEach(function (b) {
+  b.addEventListener('click', function () { showToast(b.getAttribute('data-toast'), b.hasAttribute('data-undo')); });
+});
+
+// Sheet: opens as a modal dialog (focus is trapped, Esc closes), backdrop tap closes, drag down to close.
+var sheet = document.getElementById('sheet'), opener = null;
+document.querySelectorAll('[data-open="sheet"]').forEach(function (b) {
+  b.addEventListener('click', function () { opener = b; sheet.showModal(); });
+});
+sheet.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { sheet.close(); }); });
+sheet.addEventListener('click', function (e) { if (e.target === sheet) sheet.close(); });
+sheet.addEventListener('close', function () { sheet.style.transform = ''; if (opener) opener.focus(); });
+(function () {
+  var startY = null, dy = 0, t0 = 0;
+  var handle = sheet.querySelector('.app-sheet-head'), grab = sheet.querySelector('.app-sheet-grabber');
+  function down(e) { startY = e.clientY; dy = 0; t0 = e.timeStamp; sheet.classList.add('is-dragging'); }
+  function move(e) { if (startY === null) return; dy = Math.max(0, e.clientY - startY); sheet.style.transform = 'translateY(' + dy + 'px)'; }
+  function up(e) {
+    if (startY === null) return;
+    var v = dy / Math.max(1, e.timeStamp - t0); startY = null; sheet.classList.remove('is-dragging');
+    if (dy > 120 || v > 0.6) sheet.close(); else sheet.style.transform = '';
+  }
+  [handle, grab].forEach(function (h) { h.addEventListener('pointerdown', down); });
+  window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', up);
+})();
+</script>
+</body>
+</html>

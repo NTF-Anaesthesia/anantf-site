@@ -66,6 +66,8 @@ one wine accent, square edges, hairline rules, light only, readable sizes (body 
 12px). Read it before styling anything. Interactive teaching apps follow the regional block pages
 (`truncal/`, `head-neck/`, `lower-limb/`). Anatomy and clinical colour codes (yellow nerves, red arteries, blue veins, danger and
 warning colours) are never recoloured to the brand.
+Installable web apps (with a service worker or home-screen icon) follow `DESIGN-APP.md`, the phone-app version
+of the language, and use the shared kit `assets/app/app.css` (every component in `assets/app/specimen.html`).
 
 ## Rules
 
