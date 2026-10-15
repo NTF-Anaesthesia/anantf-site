@@ -14,11 +14,11 @@ body.mo{
 .mo :focus-visible{outline:2px solid var(--wine);outline-offset:4px}
 .mo a{color:var(--wine);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px}
 .mo a:hover{color:var(--wine-hover)}
-.mo-skip{position:absolute;left:-999px;top:0;background:var(--wine);color:var(--ivory)!important;padding:.6rem 1rem;z-index:20}.mo-skip:focus{left:0}
+.mo-skip{position:fixed;left:-999px;top:0;background:var(--wine);color:var(--ivory)!important;padding:.6rem 1rem;z-index:100}.mo-skip:focus{left:0}
 .visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
 /* app bar under the site header: title and search on one line, five tabs below */
-.mo-bar{border-bottom:1px solid var(--line);background:var(--paper);position:sticky;top:0;z-index:10}
+.mo-bar{display:block;border-bottom:1px solid var(--line);background:var(--paper)}
 .mo-bar-inner{max-width:1240px;margin:0 auto;padding:.15rem 14px 0;display:flex;justify-content:space-between;align-items:center;gap:.5rem}
 .mo .mo-title{font-family:'NTF Serif',Georgia,serif;font-size:1.3rem;letter-spacing:-.01em;color:var(--ink);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
 .mo .mo-search{display:inline-flex;align-items:center;gap:.35rem;min-height:44px;padding:0 .6rem;color:var(--ink2);text-decoration:none;font-size:15px;font-weight:500}
@@ -39,9 +39,9 @@ main#app{max-width:46rem;margin:0 auto;padding:1rem 22px 4rem;outline:none}
 .muted{color:var(--muted)}.small{font-size:15px}.loading{color:var(--muted);padding:1rem 0}
 .kicker,.page-kicker{font-size:12px;line-height:1.5;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--muted);font-family:'NTF Sans',Inter,sans-serif!important;margin:0 0 .3rem}
 .mo h2.kicker{font-size:12px;letter-spacing:.08em;margin:0 0 .4rem}
-.crumbs{font-size:13px;color:var(--muted);margin:.4rem 0 0}.crumbs a{color:var(--muted)}
+.crumbs{font-size:13px;color:var(--muted);margin:.4rem 0 0}.crumbs a{color:var(--muted);display:inline-flex;align-items:center;min-height:44px}
 .meta{font-size:14px;color:var(--muted);margin:-.2rem 0 1rem}
-.v{font-family:'NTF Mono',ui-monospace,monospace;font-size:.92em;white-space:nowrap}
+.v{font-family:'NTF Mono',ui-monospace,monospace;font-size:max(15px,.92em);overflow-wrap:anywhere}.v.nw{white-space:nowrap}
 .ok-text{color:var(--ok);font-weight:500}.warn-text{color:var(--warn-ink)}.err{color:var(--bad);font-weight:500}
 
 /* home */
@@ -102,15 +102,17 @@ ol.topics{counter-reset:t}
 .mo th,.mo td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
 .mo thead th{background:var(--inset);color:var(--wine);font-weight:600}
 .mo tbody th{font-weight:600}
-.mo caption{text-align:left;font-size:14px;color:var(--muted);padding:.4rem .6rem;caption-side:top}
+.mo caption{text-align:left;font-size:15px;color:var(--muted);padding:.4rem .6rem;caption-side:top}
 table.mini{margin:.8rem 0;border-top:1px solid var(--line)}
 .more{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:1.1rem 0}
-.more summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center;color:var(--wine)}
+.more summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center;justify-content:space-between;gap:1rem;color:var(--wine);list-style:none}
+.more summary::-webkit-details-marker{display:none}
+.more summary::after{content:'+';font-size:22px;line-height:1}.more[open] summary::after{content:'\2212'}
 .more-body{padding-bottom:.6rem}
 .links ul{padding-left:1.1rem}
 .fig{margin:1.2rem 0;padding:.6rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .fig svg{display:block;width:100%;height:auto;max-height:70vh}
-.fig figcaption{font-size:14px;color:var(--muted);margin-top:.4rem}
+.fig figcaption{font-size:15px;color:var(--muted);margin-top:.4rem}
 
 /* checklists and check-yourself */
 fieldset.check,fieldset.ticks{border:0;padding:0;margin:1.1rem 0;min-width:0}
@@ -147,10 +149,12 @@ fieldset.check legend{float:left;width:100%;font-weight:600;padding:.2rem 0 .3re
 .three{grid-template-columns:1fr 1fr}.three>.seg{grid-column:1/-1}
 @media(min-width:40rem){.three{grid-template-columns:1fr 1fr 1.3fr}.three>.seg{grid-column:auto}}
 .seg{border:0;padding:0;margin:.5rem 0;min-width:0}.seg legend{padding:0;font-weight:500;margin-bottom:.25rem}
-.segrow{display:flex;flex-wrap:nowrap;width:100%}
-.segopt{position:relative;margin:0 0 0 -1px!important;font-weight:500;flex:1 1 0;min-width:0}.segopt:first-child{margin-left:0!important}
+.segrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(5.6rem,1fr));gap:4px;width:100%}
+.segrow.stack{grid-template-columns:1fr}
+.segopt{position:relative;margin:0!important;font-weight:500;min-width:0}
 .segopt input{position:absolute;opacity:0;width:100%;height:100%;left:0;top:0;margin:0;cursor:pointer}
-.segopt span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:44px;padding:.35rem .3rem;border:1px solid var(--wine);color:var(--wine);background:transparent;font-size:14px;line-height:1.25}
+.segopt span{display:flex;align-items:center;justify-content:center;text-align:center;min-height:44px;padding:.35rem .3rem;border:1px solid var(--wine);color:var(--wine);background:transparent;font-size:15px;line-height:1.25;overflow-wrap:anywhere}
+.segrow.stack .segopt span{justify-content:flex-start;text-align:left;padding-left:.8rem}
 .segopt input:checked+span{background:var(--wine);color:var(--ivory)}
 .segopt:hover input:not(:checked)+span{background:var(--blush)}
 .segopt:has(input:focus-visible) span{outline:2px solid var(--wine);outline-offset:3px;position:relative;z-index:1}
@@ -177,12 +181,13 @@ fieldset.check legend{float:left;width:100%;font-weight:600;padding:.2rem 0 .3re
 .dl-dose{flex:1 1 12rem}
 .dl-calc{flex:1 1 100%;background:var(--ivory);border-left:3px solid var(--wine);padding:.2rem .6rem;font-size:15px}
 .dl-calc b{font-family:'NTF Mono',ui-monospace,monospace;font-weight:500}
-.dl-warn{flex:1 1 100%;font-size:14px;color:var(--warn-ink)}
+.dl-warn{flex:1 1 100%;font-size:15px;color:var(--warn-ink)}
 .dl-note{flex:1 1 100%;font-size:15px;color:var(--muted)}
 .dtable{list-style:none;padding:0;margin:.4rem 0 1rem}
 .dtable>li{display:flex;gap:.7rem;align-items:flex-start;padding:.55rem 0;border-top:1px solid var(--line);max-width:none}
 .dtable>li>div{flex:1;min-width:0}
-.dtable a strong{font-size:18px}
+.dtable a{display:inline-flex;align-items:center;min-height:44px}.dtable a strong{font-size:18px}
+.crisis-doses .dl-label a{display:inline-flex;align-items:center;min-height:44px}
 .dtable .doses{border-top:0;margin:.2rem 0 0}.dtable .doses>li{padding:.25rem 0}
 .drugtable-in h3{margin-top:.4rem}
 
@@ -205,7 +210,7 @@ fieldset.check legend{float:left;width:100%;font-weight:600;padding:.2rem 0 .3re
 .result b{font-family:'NTF Mono',ui-monospace,monospace;font-weight:500;font-size:1.05em}
 .score-line{font-size:19px;margin:.3rem 0}
 .band{font-weight:700;padding:0 .35rem}.band.low{background:var(--ok-bg);color:#173f27}.band.intermediate{background:var(--warn-bg);color:var(--warn-ink)}.band.high{background:var(--bad-bg);color:var(--bad-ink)}
-pre.built{white-space:pre-wrap;font-family:'NTF Mono',ui-monospace,monospace;font-size:14px;background:var(--inset);padding:.7rem;border:1px solid var(--line);margin:0}
+pre.built{white-space:pre-wrap;font-family:'NTF Mono',ui-monospace,monospace;font-size:15px;background:var(--inset);padding:.7rem;border:1px solid var(--line);margin:0}
 .rsi-row .doses{border-top:0}
 
 /* practice */
@@ -238,3 +243,9 @@ pre.built{white-space:pre-wrap;font-family:'NTF Mono',ui-monospace,monospace;fon
 .mo h1[tabindex="-1"]:focus{outline:none}
 .tool-embed>.tool-head{border-top:2px solid var(--wine);padding-top:.4rem;margin-top:1.4rem}
 .tool-head h3{margin:.2rem 0 0}.tool-head p{margin:.1rem 0 .4rem}
+.mo ::placeholder{color:var(--muted);opacity:1}
+body.mo .page-kicker{font-size:12px}
+body.mo .ntf-footer-identity>span{font-size:12px}
+.drugcard.page h1{margin:0;font-size:clamp(30px,6.5vw,40px)}
+.mo h2.sub4,.mo h4.sub4{font-family:'NTF Sans',Inter,sans-serif;font-size:15px;font-weight:600;letter-spacing:0;margin:1rem 0 .2rem;color:var(--ink2)}
+#scen-text,#scen-fb,#scen-end,#flash-q,#dr-q,#cards-done{outline:none}

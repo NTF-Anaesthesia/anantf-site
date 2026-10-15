@@ -12,9 +12,9 @@ export const DRUGS_MORE = [
     infusionConc: { value: 0.08, unit: 'mg/mL' },
     doses: [
       { label: 'Bolus for low blood pressure', text: '`10–20 mcg` IV (`1–2 mL` of 1:100,000), repeated or increased as needed', note: 'When your consultant asks, or in a crisis: severe hypotension or bradycardia that is not responding to ephedrine or phenylephrine.' },
-      { label: 'Infusion', per: [0.01, 0.2], unit: 'mcg/kg/min', infusion: true },
+      { label: 'Infusion', per: [0.01, 0.2], unit: 'mcg/kg/min', infusion: true, note: 'Your consultant decides when to start it and the blood pressure target.' },
       { label: 'Anaphylaxis', text: '`50 mcg` IV (`0.5 mL` of 1:10,000 or `5 mL` of 1:100,000), repeated every 1–2 min as needed. No IV access: `0.5 mg` IM (`0.5 mL` of 1:1000) into the thigh, repeated after 5 min' },
-      { label: 'Cardiac arrest', text: '`1 mg` IV (`10 mL` of 1:10,000) every 3–5 min', note: 'Non-shockable rhythm: as soon as you have access. Shockable rhythm: after the third shock.' },
+      { label: 'Cardiac arrest', text: '`1 mg` IV (`10 mL` of 1:10,000) every 3–5 min', note: 'Non-shockable rhythm: as soon as you have access. Shockable rhythm: after the third shock. In local anaesthetic toxicity use smaller doses (`1 mcg/kg` or less): see [LAST](#/crisis/last).' },
     ],
     onset: 'Within 1 min IV', duration: '2–5 min after a bolus',
     notes: [
@@ -40,7 +40,7 @@ export const DRUGS_MORE = [
     infusionPrep: '`4 mg` made up to `50 mL` with 5% dextrose or saline',
     infusionConc: { value: 0.08, unit: 'mg/mL' },
     doses: [
-      { label: 'Infusion', per: [0.01, 0.2], unit: 'mcg/kg/min', infusion: true, note: 'Start at the low end and titrate every 2–5 min to the blood pressure target your consultant sets.' },
+      { label: 'Infusion', per: [0.01, 0.2], unit: 'mcg/kg/min', infusion: true, note: 'Your consultant decides when to start it and the blood pressure target. Start at the low end and titrate every 2–5 min.' },
     ],
     onset: '1–2 min', duration: '1–2 min after it stops, so never let it run out',
     notes: [
@@ -68,8 +68,8 @@ export const DRUGS_MORE = [
     conc: { value: 100, unit: 'mcg/mL' },
     infusionPrep: 'No set strength: made up by pharmacy or as your consultant asks. The calculator uses `100 mcg/mL`: check the label and recalculate if it differs',
     doses: [
-      { label: 'Bolus', text: '`50–100 mcg` IV (`0.5–1 mL` of `100 mcg/mL`), repeated every 1–2 min as needed' },
-      { label: 'Infusion', per: [10, 100], unit: 'mcg/min', infusion: true, note: 'Strengths vary: check the syringe label before you set the rate.' },
+      { label: 'Bolus', text: '`50–100 mcg` IV (`0.5–1 mL` of `100 mcg/mL`), repeated every 1–2 min as needed', note: 'As your consultant plans or asks. If they are not in theatre, call them as you treat, and look for the cause.' },
+      { label: 'Infusion', per: [10, 100], unit: 'mcg/min', infusion: true, note: 'Your consultant decides. Strengths vary: check the syringe label before you set the rate.' },
     ],
     onset: 'Within 1 min', duration: '5–20 min',
     notes: [
@@ -93,7 +93,7 @@ export const DRUGS_MORE = [
     prep: '`30 mg` (`1 mL`) plus `5 mL` saline = `6 mL`',
     conc: { value: 5, unit: 'mg/mL' },
     doses: [
-      { label: 'Bolus', text: '`5 mg` IV (`1 mL`), repeated every 2–5 min as needed' },
+      { label: 'Bolus', text: '`5 mg` IV (`1 mL`), repeated every 2–5 min as needed', note: 'As your consultant plans or asks. If they are not in theatre, call them as you treat, and look for the cause.' },
     ],
     onset: 'About 1 min', duration: '10–20 min',
     notes: [
@@ -115,7 +115,7 @@ export const DRUGS_MORE = [
     prep: 'Infusion only: `20 U` made up to `20 mL` with saline',
     conc: { value: 1, unit: 'U/mL' },
     doses: [
-      { label: 'Infusion', per: [0.6, 2.4], unit: 'U/h', infusion: true, note: 'The same as `0.01–0.04 U/min`. Run it at a set rate and titrate the noradrenaline instead.' },
+      { label: 'Infusion', per: [0.6, 2.4], unit: 'U/h', infusion: true, note: 'Your consultant decides. The same as `0.01–0.04 U/min`. Run it at a set rate and titrate the noradrenaline instead.' },
     ],
     onset: 'Within minutes', duration: '10–20 min after it stops',
     notes: [
@@ -125,6 +125,7 @@ export const DRUGS_MORE = [
     ],
     cautions: [
       'Constricts gut, skin, finger and coronary vessels: watch for ischaemia, especially above `2.4 U/h`.',
+      'Avoid in local anaesthetic toxicity: small doses of adrenaline are used instead (see [LAST](#/crisis/last)).',
       'Not the same drug as desmopressin or terlipressin: read the ampoule.',
       'Low sodium with longer use (water retention).',
     ],
@@ -140,7 +141,7 @@ export const DRUGS_MORE = [
     prep: 'Neat',
     conc: { value: 10, unit: 'mg/mL' },
     doses: [
-      { label: 'Bolus', text: '`10–20 mg` IV (`1–2 mL`), repeated as needed' },
+      { label: 'Bolus', text: '`10–20 mg` IV (`1–2 mL`), repeated as needed', note: 'When your consultant asks, after you have looked for the cause.' },
       { label: 'Loading dose', per: [0.5], unit: 'mg/kg', weight: 'TBW', note: 'Over 1 min, for a fast heart rate that keeps coming back, with your consultant.' },
     ],
     onset: '1–2 min', duration: '10–20 min',
@@ -165,7 +166,7 @@ export const DRUGS_MORE = [
     prep: 'Neat',
     conc: { value: 5, unit: 'mg/mL' },
     doses: [
-      { label: 'Bolus', text: '`2.5–5 mg` IV (`0.5–1 mL`), repeated every 5–10 min as needed' },
+      { label: 'Bolus', text: '`2.5–5 mg` IV (`0.5–1 mL`), repeated every 5–10 min as needed', note: 'When your consultant asks (in PACU, the primary anaesthetist), after you have treated the cause: light anaesthesia, pain, a full bladder, missed blood pressure tablets.' },
       { label: 'Severe hypertension', text: '`10–20 mg` IV boluses, with your consultant (for example in pre-eclampsia)' },
     ],
     onset: '2–5 min (peak at 5–15 min)', duration: '2–4 h',
@@ -189,7 +190,7 @@ export const DRUGS_MORE = [
     prep: '`20 mg` dissolved in `5 mL` saline',
     conc: { value: 4, unit: 'mg/mL' },
     doses: [
-      { label: 'Bolus', text: '`2–4 mg` IV (`0.5–1 mL`); wait 15–20 min before you repeat' },
+      { label: 'Bolus', text: '`2–4 mg` IV (`0.5–1 mL`); wait 15–20 min before you repeat', note: 'When your consultant asks (in PACU, the primary anaesthetist), after you have treated pain, a full bladder and missed blood pressure tablets.' },
     ],
     onset: '5–20 min (peak at 15–30 min)', duration: '2–4 h',
     notes: [
@@ -213,7 +214,7 @@ export const DRUGS_MORE = [
     prep: 'Infusion: `50 mg` made up to `50 mL` with saline or 5% dextrose',
     conc: { value: 1, unit: 'mg/mL' },
     doses: [
-      { label: 'Sublingual', text: '`400–800 mcg` (1–2 puffs) under the tongue; repeat after 5 min if needed' },
+      { label: 'Sublingual', text: '`400–800 mcg` (1–2 puffs) under the tongue; repeat after 5 min if needed', note: 'Only with a systolic blood pressure over `90 mmHg`, and as your consultant asks.' },
       { label: 'Infusion', per: [10, 200], unit: 'mcg/min', infusion: true, note: 'Start at `10–20 mcg/min` and go up every 3–5 min, with your consultant.' },
     ],
     onset: '1–3 min', duration: '20–30 min sublingual; a few minutes after an infusion stops',
@@ -305,7 +306,7 @@ export const DRUGS_MORE = [
     prep: 'For antiemetic doses: `5 mg` (`1 mL`) made up to `10 mL` with saline',
     conc: { value: 0.5, unit: 'mg/mL' },
     doses: [
-      { label: 'Nausea and vomiting rescue', text: '`0.5–1 mg` IV (`1–2 mL` of `0.5 mg/mL`)' },
+      { label: 'Nausea and vomiting rescue', text: '`0.5–1 mg` IV (`1–2 mL` of `0.5 mg/mL`)', note: 'Ask your consultant first, and check the QT interval on the ECG.' },
     ],
     onset: '10–20 min', duration: 'Many hours',
     notes: [
@@ -367,6 +368,7 @@ export const DRUGS_MORE = [
       'Usually a single dose in OT, alongside [paracetamol](#/drugs/paracetamol).',
     ],
     cautions: [
+      'One NSAID at a time: check the drug chart and the anaesthetic chart for ibuprofen, diclofenac, ketorolac or celecoxib first.',
       'Avoid in kidney impairment, hypovolaemia or major bleeding, especially with angiotensin-converting enzyme (ACE) inhibitors, angiotensin receptor blockers or diuretics.',
       'Do not give after coronary artery bypass surgery, or with ischaemic heart disease, stroke, peripheral arterial disease or moderate to severe heart failure.',
       'Avoid with an active peptic ulcer or gut bleeding, severe liver disease, and in the third trimester of pregnancy.',
@@ -468,7 +470,7 @@ export const DRUGS_MORE = [
     presentation: 'Powder vial (`500 mg` or `1 g`: check the label)',
     prep: 'Dissolve, then dilute to no stronger than `5 mg/mL` (for example `1 g` in `200 mL` saline); infuse no faster than `10 mg/min`',
     doses: [
-      { label: 'Prophylaxis', per: [15], unit: 'mg/kg', weight: 'TBW', note: 'Start within 120 min before incision: it takes at least 60 min to run in. Many protocols cap a single dose at `2 g`.' },
+      { label: 'Prophylaxis', per: [15], unit: 'mg/kg', weight: 'TBW', note: 'Start within 120 min before incision: at no faster than `10 mg/min`, `1 g` takes at least 100 min to run in. Many protocols cap a single dose at `2 g`.' },
       { label: 'Redose', text: 'Not usually needed: long half-life (4–6 h with normal kidneys)' },
     ],
     notes: [
@@ -488,10 +490,10 @@ export const DRUGS_MORE = [
   {
     id: 'potassium-chloride', name: 'Potassium chloride (KCl)', group: 'other',
     cls: 'Electrolyte replacement (high-alert medicine)',
-    presentation: '`10 mmol` concentrate ampoule (check the label for the volume)',
-    prep: 'Never give it neat. Add it to a bag of fluid and mix well (turn the bag over several times). Peripheral line: about `10 mmol` in `250 mL` (`40 mmol/L`). Stronger mixes (for example `10 mmol` in `100 mL`) only through a central line',
+    presentation: '`10 mmol` concentrate ampoule (check the label for the volume). Premixed bags also exist: check the label',
+    prep: 'Never give the concentrate neat. Add it to a bag of fluid and mix well (turn the bag over several times). Peripheral line: about `10 mmol` in `250 mL` (`40 mmol/L`). Stronger mixes (for example `10 mmol` in `100 mL`) only through a central line. A premixed bag: use as labelled, on a pump',
     doses: [
-      { label: 'Replacement', text: '`10 mmol` IV over at least 1 h on a pump (peripheral line: no faster than `10 mmol/h`)' },
+      { label: 'Replacement', text: '`10 mmol` IV over at least 1 h on a pump (peripheral line: no faster than `10 mmol/h`)', note: 'Only when your consultant decides, after checking the potassium level.' },
       { label: 'Faster replacement', text: 'Up to `20 mmol/h` only through a central line, on a pump, with continuous ECG monitoring, when your consultant decides' },
     ],
     notes: [
@@ -502,6 +504,7 @@ export const DRUGS_MORE = [
     cautions: [
       'High-alert medicine: never give it as a bolus or a push. Concentrated potassium injected fast stops the heart.',
       'Always on a pump, never by gravity. Label the bag, and never add potassium to a bag that is already running (it pools at the bottom and runs in as a bolus).',
+      'The ampoules look like saline and water ampoules: read the label every time you draw up a flush or a diluent.',
       'Care in kidney impairment and with drugs that raise potassium (angiotensin-converting enzyme inhibitors, angiotensin receptor blockers, spironolactone).',
       'Peripheral infusions sting and cause phlebitis; a leak into the tissues damages them.',
     ],
@@ -512,11 +515,11 @@ export const DRUGS_MORE = [
     id: 'insulin', name: 'Insulin (soluble)', aka: ['Actrapid', 'Regular insulin'], group: 'other', label: 'other',
     cls: 'Short-acting soluble insulin (high-alert medicine)',
     presentation: '`100 units/mL` vial',
-    prep: 'Infusion: `50 units` made up to `50 mL` with saline. Draw insulin up only with an insulin syringe',
+    prep: 'Infusion: `50 units` made up to `50 mL` with saline. Draw insulin up only from a vial, with an insulin syringe (never from a pen)',
     conc: { value: 1, unit: 'U/mL' },
     doses: [
-      { label: 'Hyperkalaemia', text: '`10 units` IV with `25 g` glucose (`50 mL` of 50% dextrose) over 15–30 min', note: 'If the glucose was under `7 mmol/L` before treatment, follow with a 10% dextrose infusion as your consultant decides.' },
-      { label: 'Glucose control', text: 'Variable-rate infusion (`1 unit/mL`) to keep glucose `6–10 mmol/L`: the rate follows the glucose on a scale, with glucose-containing fluid running alongside' },
+      { label: 'Hyperkalaemia', text: '`10 units` IV with `25 g` glucose (`250 mL` of 10%, or `50 mL` of 50% into a large vein) over 15–30 min', note: 'Your consultant decides. If the glucose was under `7 mmol/L` before treatment, follow with a 10% dextrose infusion as your consultant decides.' },
+      { label: 'Glucose control', text: 'Variable-rate infusion (`1 unit/mL`) to keep glucose `6–10 mmol/L`: the rate follows the glucose on a scale, with glucose-containing fluid running alongside', note: 'Never start insulin on your own: your consultant decides.' },
     ],
     onset: 'Within 15 min IV', duration: 'Potassium stays lower for 4–6 h; check glucose for 6 h',
     notes: [
@@ -527,6 +530,7 @@ export const DRUGS_MORE = [
     cautions: [
       'Hypoglycaemia: check glucose before, then every 30–60 min for at least 6 h after insulin and glucose, more often in kidney failure, a low starting glucose or low body weight.',
       'High-alert medicine: write "units" in full (a "U" can be read as a zero) and have a second person check the dose.',
+      'Tenfold overdoses happen when insulin goes into an ordinary syringe: `10 units` is only `0.1 mL` of the `100 units/mL` vial.',
       'Insulin sticks to plastic: prime the infusion line before you connect it.',
       'Lowers potassium: check it during an insulin infusion.',
     ],
@@ -556,5 +560,78 @@ export const DRUGS_MORE = [
       'Care with an active clot (deep vein thrombosis, pulmonary embolism) or a history of clots.',
     ],
     source: 'beyond',
+  },
+
+  // ---------------------------------------------------------------- inhalational agents
+  {
+    id: 'sevoflurane', name: 'Sevoflurane', aka: ['Sevorane'], group: 'inhalational',
+    cls: 'Volatile (inhalational) anaesthetic',
+    presentation: 'Liquid in a bottle, poured into the sevoflurane vaporiser through its keyed filler',
+    doses: [
+      { label: '1 MAC', text: '`2–2.2%` end-tidal in a young adult', note: 'About 6% less for each decade over 40, and less again with opioids, benzodiazepines and nitrous oxide. The machine shows the age-adjusted MAC when the age is entered.' },
+      { label: 'Maintenance', text: 'About `1 MAC` end-tidal (age-adjusted), less with opioids, nitrous oxide or a working block', note: 'With a muscle relaxant on board the patient cannot move to warn you: going below about `0.7 MAC` risks awareness, so ask your consultant (or use BIS or SedLine).' },
+      { label: 'Gas induction', text: 'Up to `8%` on the dial in oxygen, with or without nitrous oxide; mostly for children, with your consultant' },
+    ],
+    onset: 'Fast (low blood solubility): asleep in 1–2 min on a gas induction', duration: 'Awake within minutes of turning it off; longer after long cases and in the elderly',
+    notes: [
+      'MAC (minimum alveolar concentration) is the end-tidal concentration at which half of patients do not move to a standard surgical stimulus. About `1.5 MAC` (MAC-BAR) blocks the heart rate and blood pressure response to surgery.',
+      'Sweet smelling and does not irritate the airway, so it is the agent for gas induction. A bronchodilator, like all the volatiles.',
+      'Lowers the blood pressure (vasodilatation) and depresses breathing, both more with depth.',
+      'Forms compound A in the carbon dioxide absorber at low fresh gas flows (the handbook says below `2 L/min`), which harmed kidneys in rats; follow your consultant on the flow.',
+    ],
+    cautions: [
+      'Triggers malignant hyperthermia (MH), like every volatile: never use it in a patient with a personal or family history of MH.',
+      'Children often wake agitated (emergence delirium): keep them safe and look for pain first.',
+      'A greenhouse gas: use the lowest fresh gas flow your consultant is happy with and turn it off when it is not needed.',
+    ],
+    local: 'Our usual volatile. Spare liquid is in the last drawer of the drug trolley. The handbook gives 1 MAC as `2–2.2%`.',
+    source: 'handbook',
+  },
+  {
+    id: 'desflurane', name: 'Desflurane', aka: ['Suprane'], group: 'inhalational',
+    cls: 'Volatile (inhalational) anaesthetic',
+    presentation: 'Liquid in a bottle with a keyed cap that fits only its own electrically heated, pressurised vaporiser (it boils at about `23 °C`)',
+    doses: [
+      { label: '1 MAC', text: '`6–6.6%` end-tidal in a young adult', note: 'About 6% less for each decade over 40, and less with opioids and nitrous oxide.' },
+      { label: 'Maintenance', text: 'About `1 MAC` end-tidal (age-adjusted), only when your consultant has asked for it' },
+    ],
+    onset: 'The fastest of the volatiles (the least soluble in blood)', duration: 'Awake within minutes of turning it off, even after long cases',
+    notes: [
+      'Its main advantage is a fast, predictable wake-up, for example after long operations or in obesity.',
+      'Turning it up quickly (above about `1 MAC`) can cause a surge in heart rate and blood pressure.',
+    ],
+    cautions: [
+      'Irritates the airway: coughing, breath-holding, laryngospasm and bronchospasm. Never for gas induction; care in asthma and smokers.',
+      'Triggers malignant hyperthermia (MH), like every volatile.',
+      'Expensive, and the worst greenhouse gas of the volatiles.',
+    ],
+    local: 'At the time of the handbook, desflurane is not kept in theatre at NTFGH: it has to be requested. The handbook gives 1 MAC as `6–6.6%`.',
+    source: 'handbook',
+  },
+  {
+    id: 'nitrous-oxide', name: 'Nitrous oxide (N2O)', group: 'inhalational',
+    cls: 'Inhalational anaesthetic gas and analgesic',
+    presentation: 'Gas from the pipeline or a cylinder, mixed with oxygen at the anaesthetic machine. Entonox is a premixed 50:50 mix with oxygen',
+    doses: [
+      { label: 'With a volatile or TIVA', text: '`50–70%` in oxygen' },
+      { label: '1 MAC', text: '`104%`: never reached at normal pressure, so it cannot be the only anaesthetic' },
+      { label: 'Entonox (analgesia)', text: '50% nitrous oxide in oxygen, breathed on demand through a mouthpiece or mask' },
+    ],
+    onset: 'Fast (low blood solubility)', duration: 'Minutes after it is turned off',
+    notes: [
+      'MACs add up: about `50%` nitrous oxide is half a MAC, so about half a MAC less volatile is needed.',
+      'Cheap, a good analgesic, and depresses the heart less than the volatiles. It does not trigger malignant hyperthermia.',
+      'At the end of the case, give `100%` oxygen for a few minutes after turning it off: it floods out of the blood into the lungs and dilutes the oxygen there (diffusion hypoxia).',
+    ],
+    cautions: [
+      'Expands closed gas spaces: avoid in pneumothorax, bowel obstruction, air embolism, middle ear surgery and for weeks after eye surgery with a gas bubble. It also raises the pressure in tracheal tube and supraglottic airway cuffs: check the cuff pressure.',
+      'Raises pulmonary vascular resistance: avoid in pulmonary hypertension.',
+      'Causes nausea and vomiting, more in long cases.',
+      'Lowers the oxygen you can give: not for a patient who needs a high inspired oxygen.',
+      'Inactivates vitamin B12 with long or repeated exposure: avoid in B12 deficiency.',
+      'A greenhouse gas that lasts about 109 years in the atmosphere, and damages the ozone layer.',
+    ],
+    local: 'The handbook lists its pros (cheap, less depression of the heart, less volatile needed) and cons (expands gas-filled spaces, raises pulmonary vascular resistance, causes sickness, lowers the inspired oxygen, lasts about 109 years in the atmosphere).',
+    source: 'handbook',
   },
 ];

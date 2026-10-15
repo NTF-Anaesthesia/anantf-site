@@ -81,10 +81,13 @@ try {
   await step('offline: the guide opens from the cache with the site header styled and the fonts loaded', async () => {
     await page.goto(BASE); await ready();
     await ctx.setOffline(true);
+    const failed = []; const onFail = r => failed.push(r.url()); page.on('requestfailed', onFail);
     await page.reload(); await ready();
     await page.goto(BASE + '#/drugs'); await page.waitForSelector('#drug-list');
     assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.ntf-header')).borderBottomStyle), 'solid', 'site header styles missing offline');
     assert.ok(await page.evaluate(async () => { await document.fonts.ready; return document.fonts.check('16px "NTF Sans"'); }), 'font missing offline');
+    page.off('requestfailed', onFail);
+    assert.deepEqual(failed.filter(u => u.startsWith('http://localhost')), [], 'files that failed to load offline');
     await ctx.setOffline(false);
   });
   await step('"Get the latest version" with no signal changes nothing', async () => {
@@ -122,6 +125,13 @@ try {
     swVersion = 'mo-update1'; await update(); await activeVersion('mo-update1'); await sleep(1500);
     assert.equal(await page.evaluate(() => window.__marker), 2, 'reloaded with a half-filled form');
     assert.equal(await page.inputValue('form.tool input[type=number] >> nth=0'), '70');
+  });
+  await step('an update never reloads the page with boxes ticked in a score', async () => {
+    await page.goto(BASE + '#/tools/stopbang'); await ready();
+    await page.locator('form.tool label.tick').first().click();
+    await page.evaluate(() => { window.__marker = 7; });
+    swVersion = 'mo-update1b'; await update(); await activeVersion('mo-update1b'); await sleep(1500);
+    assert.equal(await page.evaluate(() => window.__marker), 7, 'reloaded with boxes ticked');
   });
   await step('...and applies when the person moves on', async () => {
     await page.evaluate(() => { location.hash = '#/learn'; });

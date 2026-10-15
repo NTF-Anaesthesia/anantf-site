@@ -1,10 +1,10 @@
 // Drug cards: doses worked out for the patient's weight, the volume to draw up, and the patient panel that sets the weight.
 import { md, esc } from './md.js';
-import { bodyWeights, doseFor, volumeFor, infusionRate, fmt, WEIGHT_NAMES, okNum } from './calc.js';
+import { bodyWeights, doseFor, volumeFor, infusionFor, fmt, WEIGHT_NAMES, okNum } from './calc.js';
 import { patient, setPatient, clearPatient } from './store.js';
 import { DRUGS, DRUG_GROUPS } from './data/drugs.js';
 
-export const drugById = Object.fromEntries(DRUGS.map(d => [d.id, d]));
+export const drugById = Object.assign(Object.create(null), Object.fromEntries(DRUGS.map(d => [d.id, d])));
 export const weightsNow = () => bodyWeights(patient());
 
 // ISO 26825 user-applied syringe label colours (approximate screen colours)
@@ -28,48 +28,56 @@ export function labelChip(d) {
 }
 
 const range = (a, b) => (fmt(a) === fmt(b) ? fmt(a) : `${fmt(a)}–${fmt(b)}`);
+// a prescribed value is shown exactly as written in the data; only worked-out amounts are rounded
+const asWritten = (a, b) => (b == null || a === b ? String(a) : `${a}–${b}`);
+const short = basis => WEIGHT_NAMES[basis].split(' ')[0];
+function fallbackNote(dose, r) {
+  if (!r.fallback) return '';
+  const want = esc(WEIGHT_NAMES[dose.weight]);
+  return `<span class="dl-warn">${r.why === 'child' ? `Worked out on total weight: ${want} is for adults.` : `Worked out on total weight: set height and sex for ${want}.`}</span>`;
+}
 
 /** One dose line, worked out for the weights `w` if it is per kg. */
 export function doseLine(d, dose, w = weightsNow()) {
   const label = `<span class="dl-label">${md(dose.label || 'Dose')}</span>`;
   if (dose.text) return `<li>${label}<span class="dl-dose">${md(dose.text)}</span>${dose.note ? `<span class="dl-note">${md(dose.note)}</span>` : ''}</li>`;
   const per = Array.isArray(dose.per) ? dose.per : [];
-  const perText = `${range(per[0], per[1] ?? per[0])} ${dose.unit}`;
+  const perText = `${asWritten(per[0], per[1])} ${dose.unit}`;
   let calc = '';
-  const ic = d.infusionConc || d.conc;
   if (dose.infusion) {
-    const needsKg = dose.unit.includes('/kg/');
-    if (ic && (w.tbw != null || !needsKg)) {
-      const lo = infusionRate({ dose: per[0], unit: dose.unit, weight: w.tbw, conc: ic });
-      const hi = infusionRate({ dose: per[1] ?? per[0], unit: dose.unit, weight: w.tbw, conc: ic });
-      if (lo != null) calc = `<span class="dl-calc">= <b>${range(lo, hi)} mL/h</b> at ${fmt(ic.value)} ${esc(ic.unit)}${needsKg ? ` for ${fmt(w.tbw)} kg` : ''}</span>`;
+    const ic = d.infusionConc || d.conc;
+    const r = ic ? infusionFor(dose, w, ic) : null;
+    if (r) {
+      const on = !r.perKg ? '' : dose.weight && dose.weight !== 'TBW' && !r.fallback ? ` on ${short(r.basis)} weight ${fmt(r.kg)} kg` : ` for ${fmt(r.kg)} kg`;
+      calc = `<span class="dl-calc">= <b>${range(r.lo, r.hi)} mL/h</b> at ${fmt(ic.value)} ${esc(ic.unit)}${on}</span>${fallbackNote(dose, r)}`;
     }
   } else {
     const r = doseFor(dose, w);
     if (r) {
       const vlo = volumeFor(r.min, r.unit, d.conc), vhi = volumeFor(r.max, r.unit, d.conc);
       const vol = vlo != null ? ` = <b>${range(vlo, vhi)} mL</b>` : '';
-      const basis = dose.weight && dose.weight !== 'TBW' ? ` on ${r.fallback ? 'total' : WEIGHT_NAMES[r.basis].split(' ')[0]} weight ${fmt(r.kg)} kg` : ` for ${fmt(r.kg)} kg`;
-      calc = `<span class="dl-calc">= <b>${range(r.min, r.max)} ${r.unit}</b>${vol}${basis}${r.capped ? ` (capped at ${fmt(dose.max.value)} ${esc(dose.max.unit)})` : ''}</span>`;
-      if (r.fallback) calc += `<span class="dl-warn">Uses total weight: set height and sex for ${esc(WEIGHT_NAMES[dose.weight])}.</span>`;
+      const basis = dose.weight && dose.weight !== 'TBW' && !r.fallback ? ` on ${short(r.basis)} weight ${fmt(r.kg)} kg` : ` for ${fmt(r.kg)} kg`;
+      calc = `<span class="dl-calc">= <b>${range(r.min, r.max)} ${r.unit}</b>${vol}${basis}${r.capped ? ` (capped at ${dose.max.value} ${esc(dose.max.unit)})` : ''}</span>${fallbackNote(dose, r)}`;
     }
   }
   const basisNote = dose.weight && dose.weight !== 'TBW' && !calc ? ` <span class="muted">(${esc(WEIGHT_NAMES[dose.weight])})</span>` : '';
-  return `<li>${label}<span class="dl-dose"><span class="v">${esc(perText)}</span>${basisNote}${dose.max ? ` <span class="muted">max ${fmt(dose.max.value)} ${esc(dose.max.unit)}</span>` : ''}</span>${calc}${dose.note ? `<span class="dl-note">${md(dose.note)}</span>` : ''}</li>`;
+  return `<li>${label}<span class="dl-dose"><span class="v">${esc(perText)}</span>${basisNote}${dose.max ? ` <span class="muted">max ${dose.max.value} ${esc(dose.max.unit)}</span>` : ''}</span>${calc}${dose.note ? `<span class="dl-note">${md(dose.note)}</span>` : ''}</li>`;
 }
 
-/** A full drug card. `full` adds notes, cautions and local practice. */
-export function drugCard(d, { full = true, link = false, w = weightsNow() } = {}) {
+/** A full drug card. `full` adds notes, cautions and local practice; `level: 1` makes the name the page's h1 (the drug's
+ * own screen), and `panel` is HTML (the patient panel) placed under the heading. */
+export function drugCard(d, { full = true, link = false, level = 3, panel = '', w = weightsNow() } = {}) {
   if (!d) return '';
   const g = DRUG_GROUPS[d.group]?.name || '';
   const name = link ? `<a href="#/drugs/${esc(d.id)}">${esc(d.name)}</a>` : esc(d.name);
-  return `<article class="drugcard" data-drugcard="${esc(d.id)}">
-  <header>${labelChip(d)}<div><h3>${name}</h3><p class="muted small">${esc(d.cls || g)}${d.aka?.length ? ` · also ${esc(d.aka.join(', '))}` : ''}</p></div></header>
+  const hn = level === 1 ? 'h1' : 'h3', sub = level === 1 ? 'h2' : 'h4';
+  return `<article class="drugcard${level === 1 ? ' page' : ''}" data-drugcard="${esc(d.id)}">
+  <header>${labelChip(d)}<div><${hn}>${name}</${hn}><p class="muted small">${esc(d.cls || g)}${d.aka?.length ? ` · also ${esc(d.aka.join(', '))}` : ''}</p></div></header>${panel}
   <dl class="facts">${d.presentation ? `<dt>Comes as</dt><dd>${md(d.presentation)}</dd>` : ''}${d.prep ? `<dt>Draw up</dt><dd>${md(d.prep)}${d.conc ? ` → <span class="v">${fmt(d.conc.value)} ${esc(d.conc.unit)}</span>` : ''}</dd>` : ''}${d.infusionPrep ? `<dt>Infusion</dt><dd>${md(d.infusionPrep)}${d.infusionConc ? ` → <span class="v">${fmt(d.infusionConc.value)} ${esc(d.infusionConc.unit)}</span>` : ''}</dd>` : ''}${d.onset ? `<dt>Onset</dt><dd>${md(d.onset)}</dd>` : ''}${d.duration ? `<dt>Lasts</dt><dd>${md(d.duration)}</dd>` : ''}</dl>
   <ul class="doses">${(d.doses || []).map(x => doseLine(d, x, w)).join('')}</ul>
-  ${full && d.local ? `<aside class="callout local"><p class="callout-t">At NTFGH</p><p>${md(d.local)}</p></aside>` : ''}
-  ${full && d.notes?.length ? `<h4>Notes</h4><ul class="list">${d.notes.map(n => `<li>${md(n)}</li>`).join('')}</ul>` : ''}
-  ${full && d.cautions?.length ? `<h4>Cautions</h4><ul class="list">${d.cautions.map(n => `<li>${md(n)}</li>`).join('')}</ul>` : ''}
+  ${full && d.local ? `<div class="callout local" role="note"><p class="callout-t">At NTFGH</p><p>${md(d.local)}</p></div>` : ''}
+  ${full && d.notes?.length ? `<${sub} class="sub4">Notes</${sub}><ul class="list">${d.notes.map(n => `<li>${md(n)}</li>`).join('')}</ul>` : ''}
+  ${full && d.cautions?.length ? `<${sub} class="sub4">Cautions</${sub}><ul class="list">${d.cautions.map(n => `<li>${md(n)}</li>`).join('')}</ul>` : ''}
 </article>`;
 }
 
@@ -109,8 +117,9 @@ export function patientPanel() {
 }
 
 export function weightsLine(w) {
-  if (w.ibw == null && w.lbw == null) return '<p class="muted small weights-line">Add height and sex for ideal and lean weight.</p>';
-  return `<p class="muted small weights-line">Ideal <span class="v">${fmt(w.ibw)} kg</span> · lean <span class="v">${fmt(w.lbw)} kg</span> · adjusted <span class="v">${fmt(w.abw)} kg</span></p>`;
+  if (w.lbw == null) return '<p class="muted small weights-line">Add height and sex for ideal and lean weight.</p>';
+  const bits = [w.ibw != null ? `Ideal <span class="v">${fmt(w.ibw)} kg</span>` : '', `lean <span class="v">${fmt(w.lbw)} kg</span>`, w.abw != null ? `adjusted <span class="v">${fmt(w.abw)} kg</span>` : ''].filter(Boolean);
+  return `<p class="muted small weights-line">${bits.join(' · ')}</p>${w.warnings.map(x => `<p class="small warn-text weights-line">${esc(x)}</p>`).join('')}`;
 }
 
 /** Wire a patient panel inside root; onChange redraws whatever shows doses. */
@@ -130,7 +139,7 @@ export function wirePatient(root, onChange) {
     if (bad) { err.textContent = bad; err.hidden = false; return; }
     err.hidden = true;
     setPatient({ weight, height, sex });
-    onChange?.();
+    onChange?.(`Doses worked out for ${fmt(weight)} kg.`);
   });
-  form.querySelector('#p-clear').addEventListener('click', () => { clearPatient(); onChange?.(); });
+  form.querySelector('#p-clear').addEventListener('click', () => { clearPatient(); onChange?.('Weight cleared: doses show per kg.'); });
 }

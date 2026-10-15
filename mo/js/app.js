@@ -12,13 +12,15 @@ import { drugById, drugCard, drugTable, doseLine, labelChip, patientPanel, wireP
 import { TOOLS, TOOL_GROUPS, mountTool } from './tools.js';
 import * as PR from './practice.js';
 import { search } from './search.js';
-import { progress, isRead, markRead, setLast, resetAll, getChecks } from './store.js';
+import { progress, isRead, markRead, setLast, resetAll, getChecks, patientExpired } from './store.js';
 import { plain } from './md.js';
 
 const $ = s => document.querySelector(s);
 const app = $('#app');
-const crisisById = Object.fromEntries(CRISES.map(c => [c.id, c]));
-const modById = Object.fromEntries(MODULES.map(m => [m.id, m]));
+const byId = list => Object.assign(Object.create(null), Object.fromEntries(list.map(x => [x.id, x])));
+const crisisById = byId(CRISES);
+const modById = byId(MODULES);
+const hasTool = id => id != null && Object.hasOwn(TOOLS, id);
 const NAV = [['learn', 'Learn'], ['drugs', 'Drugs'], ['tools', 'Tools'], ['crisis', 'Crisis'], ['practice', 'Practice']];
 
 const topicKey = (m, t) => `${m}/${t}`;
@@ -93,6 +95,7 @@ function drugsScreen(q = '') {
   return `<h1>Drug doses</h1><p class="lead">The department's doses and dilutions for adults. Set the weight and every dose is worked out.</p>
   ${patientPanel()}
   <label for="drug-q" class="visually-hidden">Find a drug</label><input id="drug-q" type="search" placeholder="Find a drug" value="${esc(q)}" autocomplete="off">
+  <p id="drug-count" class="visually-hidden" role="status"></p>
   <div id="drug-list">${Object.entries(DRUG_GROUPS).map(([g, info]) => {
     const ds = DRUGS.filter(d => d.group === g && match(d)); if (!ds.length) return '';
     return `<h2>${esc(info.name)}</h2><ul class="dtable">${ds.map(d => `<li>${labelChip(d)}<div><a href="#/drugs/${esc(d.id)}"><strong>${esc(d.name)}</strong></a><ul class="doses">${(d.doses || []).slice(0, 2).map(x => doseLine(d, x, w)).join('')}</ul></div></li>`).join('')}</ul>`;
@@ -101,7 +104,7 @@ function drugsScreen(q = '') {
 }
 
 function drugScreen(d) {
-  return `<p class="crumbs"><a href="#/drugs">Drugs</a> /</p>${patientPanel()}${drugCard(d, { full: true })}`;
+  return `<p class="crumbs"><a href="#/drugs">Drugs</a> /</p>${drugCard(d, { full: true, level: 1, panel: patientPanel() })}`;
 }
 
 function toolsScreen() {
@@ -192,7 +195,8 @@ let current = null;
 function parse() {
   const h = location.hash.replace(/^#\/?/, '');
   const [path, qs] = h.split('?');
-  return { parts: path.split('/').filter(Boolean).map(decodeURIComponent), q: new URLSearchParams(qs || '') };
+  const dec = x => { try { return decodeURIComponent(x); } catch { return x; } };
+  return { parts: path.split('/').filter(Boolean).map(dec), q: new URLSearchParams(qs || '') };
 }
 
 function route(keepFocus = false, focusSel = null) {
@@ -212,7 +216,7 @@ function route(keepFocus = false, focusSel = null) {
       html = topicScreen(m, t); title = t.title;
       after = root => {
         wire(root, { quizzes: collectQuizzes(t.blocks), mount: mountEmbeds });
-        wirePatient(root, () => route(true));
+        wirePatient(root, patientChanged);
         root.querySelector('#markread').addEventListener('click', () => { markRead(topicKey(m.id, t.id), !isRead(topicKey(m.id, t.id))); route(true, '#markread'); });
       };
     }
@@ -220,37 +224,44 @@ function route(keepFocus = false, focusSel = null) {
   else if (a === 'drugs' && !b) {
     html = drugsScreen(q.get('q') || ''); title = 'Drug doses';
     after = root => {
-      wirePatient(root, () => route(true));
+      wirePatient(root, patientChanged);
       const inp = root.querySelector('#drug-q');
-      inp.addEventListener('input', () => { history.replaceState(null, '', inp.value ? `#/drugs?q=${encodeURIComponent(inp.value)}` : '#/drugs'); const tmp = document.createElement('div'); tmp.innerHTML = drugsScreen(inp.value); root.querySelector('#drug-list').replaceWith(tmp.querySelector('#drug-list')); });
+      inp.addEventListener('input', () => {
+        history.replaceState(null, '', inp.value ? `#/drugs?q=${encodeURIComponent(inp.value)}` : '#/drugs');
+        const tmp = document.createElement('div'); tmp.innerHTML = drugsScreen(inp.value);
+        root.querySelector('#drug-list').replaceWith(tmp.querySelector('#drug-list'));
+        const n = root.querySelectorAll('#drug-list .dtable > li').length;
+        root.querySelector('#drug-count').textContent = n ? `${n} drug${n === 1 ? '' : 's'}` : 'No drug matches';
+      });
     };
   }
-  else if (a === 'drugs' && drugById[b]) { html = drugScreen(drugById[b]); title = drugById[b].name; after = root => wirePatient(root, () => route(true)); }
+  else if (a === 'drugs' && drugById[b]) { html = drugScreen(drugById[b]); title = drugById[b].name; after = root => wirePatient(root, patientChanged); }
   else if (a === 'tools' && !b) { html = toolsScreen(); title = 'Calculators'; }
-  else if (a === 'tools' && TOOLS[b]) { html = toolScreen(b); title = TOOLS[b].title; after = mountEmbeds; }
+  else if (a === 'tools' && hasTool(b)) { html = toolScreen(b); title = TOOLS[b].title; after = mountEmbeds; }
   else if (a === 'crisis' && !b) { html = crisisList(); title = 'Crisis cards'; }
   else if (a === 'crisis' && crisisById[b]) { html = crisisScreen(crisisById[b]); title = crisisById[b].title; }
   else if (a === 'practice' && !b) { html = PR.practiceHub(); title = 'Practice'; }
-  else if (a === 'practice' && b === 'scenario') { html = PR.scenarioScreen(c); title = PR.scenarioById[c]?.title; after = root => PR.wireScenario(root, c, redraw); }
+  else if (a === 'practice' && b === 'scenario') { html = PR.scenarioScreen(c); title = PR.scenarioById[c]?.title || 'Scenario'; after = root => PR.wireScenario(root, c, redraw); }
   else if (a === 'practice' && b === 'cards' && c) { html = PR.cardsScreen(c); title = 'Flashcards'; after = root => PR.wireCards(root, redraw); }
   else if (a === 'practice' && b === 'quiz') { html = PR.quizScreen(c); title = 'Check yourself'; after = root => PR.wireQuizScreen(root, c); }
   else if (a === 'practice' && b === 'drawers') { html = PR.drawersScreen(); title = 'Find it in the trolley'; after = root => PR.wireDrawers(root, redraw); }
   else if (a === 'progress') {
     html = progressScreen(); title = 'Progress'; section = '';
-    after = root => root.querySelector('#reset').addEventListener('click', () => { if (confirm('Clear all your progress on this phone? This cannot be undone.')) { resetAll(); route(); } });
+    after = root => root.querySelector('#reset').addEventListener('click', () => { if (confirm('Clear all your progress on this phone? This cannot be undone.')) { resetAll(); safeRoute(); } });
   }
   else if (a === 'search') {
     html = searchScreen(q.get('q') || ''); title = 'Search'; section = '';
     after = root => {
       const inp = root.querySelector('#sq');
-      let t; inp.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { history.replaceState(null, '', `#/search?q=${encodeURIComponent(inp.value)}`); const tmp = document.createElement('div'); tmp.innerHTML = searchScreen(inp.value); root.querySelector('#sres').replaceWith(tmp.querySelector('#sres')); }, 150); });
+      let t; inp.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => { history.replaceState(null, '', `#/search?q=${encodeURIComponent(inp.value)}`); const tmp = document.createElement('div'); tmp.innerHTML = searchScreen(inp.value); root.querySelector('#sres').innerHTML = tmp.querySelector('#sres').innerHTML; }, 150); });
       root.querySelector('#sform').addEventListener('submit', e => e.preventDefault());
       if (!keepFocus) inp.focus();
     };
   }
   else if (a === 'about') { html = about(); title = 'About'; section = ''; after = paintVersion; }
 
-  if (html == null) { html = notFound(); title = 'Not found'; after = null; }
+  const found = html != null;
+  if (!found) { html = notFound(); title = 'Not found'; after = null; }
   const same = current === location.hash;
   current = location.hash;
   const y = window.scrollY;
@@ -259,31 +270,50 @@ function route(keepFocus = false, focusSel = null) {
   document.title = `${title} · MO guide · NTF Anaesthesia`;
   if (after) after(app);
   paintInstall();
+  const h1 = app.querySelector('h1');
+  h1?.setAttribute('tabindex', '-1');
   if (keepFocus) {
     if (same && !focusSel) window.scrollTo(0, y);
-    const f = focusSel && app.querySelector(focusSel);
-    if (f) f.focus(); else if (!same) { window.scrollTo(0, 0); app.querySelector('h1')?.focus(); }
+    const f = (focusSel && app.querySelector(focusSel)) || (!same || focusSel ? h1 : null);
+    if (f) { if (f.tabIndex < 0 && !f.hasAttribute('tabindex')) f.setAttribute('tabindex', '-1'); f.focus({ preventScroll: true }); f.scrollIntoView({ block: 'nearest' }); }
   } else {
     window.scrollTo(0, 0);
-    if (a !== 'search') app.querySelector('h1')?.setAttribute('tabindex', '-1'), app.querySelector('h1')?.focus({ preventScroll: true });
+    if (a !== 'search') h1?.focus({ preventScroll: true });
   }
-  if (a === 'learn' && c && title) setLast(location.hash, title);
-  else if (['drugs', 'crisis', 'tools'].includes(a) && b && title) setLast(location.hash, title);
+  if (found && ((a === 'learn' && c) || (['drugs', 'crisis', 'tools'].includes(a) && b))) setLast(location.hash, title);
 }
-function redraw(keepFocus, focusSel) {
-  route(true, focusSel || '.scen .choice, #scen-next, #scen-again, #card-show, #card-yes, .choices .choice, #cards-again, #dr-again');
-  if (!focusSel) app.querySelector('h1')?.scrollIntoView({ block: 'start' });
+function safeRoute(keepFocus, focusSel) {
+  try { route(keepFocus, focusSel); }
+  catch (e) { console.error(e); app.innerHTML = notFound(); renderNav(''); }
+}
+// practice screens redraw in place and move focus to what changed (feedback, the next question)
+function redraw(keepFocus, focusSel) { safeRoute(true, focusSel || 'h1'); }
+
+/** The patient's weight was set or cleared: redraw the doses, keep focus on the panel and say what happened. */
+function patientChanged(msg) {
+  safeRoute(true, '#patient-edit');
+  announce(msg);
+}
+function announce(msg) {
+  const el = $('#announce'); if (!el || !msg) return;
+  el.textContent = ''; setTimeout(() => { el.textContent = msg; }, 50);
 }
 
-window.addEventListener('hashchange', () => route());
-window.addEventListener('patientchange', () => { /* screens that show doses redraw themselves through wirePatient */ });
+// only routes (#/…) change the screen; '#app' and other in-page anchors (the skip link) do not
+window.addEventListener('hashchange', () => { if (!location.hash || location.hash.startsWith('#/')) safeRoute(); });
+// a weight older than 6 hours is dropped when the app comes back to the front
+document.addEventListener('visibilitychange', () => { if (!document.hidden && patientExpired()) safeRoute(true); });
+$('.mo-skip')?.addEventListener('click', e => { e.preventDefault(); (app.querySelector('h1') || app).focus(); });
 
 // ---------------------------------------------------------------- installable app (service worker)
 // As in the Baby MO test: a new version takes over by itself, but the page reloads only when it is safe (never on the first
 // install, never with something half typed or mid-scenario), and the page asks for updates when it comes back to the front.
 let updateReady = false, reloading = false;
 function safeToReload() {
-  if ([...document.querySelectorAll('main input:not([type=checkbox]):not([type=radio]):not([type=search]), main textarea')].some(el => el.value !== el.defaultValue)) return false;
+  // anything typed, ticked or chosen on this screen (search boxes keep their text in the address, so they don't count)
+  const changed = el => el.type === 'checkbox' || el.type === 'radio' ? el.checked !== el.defaultChecked
+    : el.tagName === 'SELECT' ? [...el.options].some(o => o.selected !== o.defaultSelected) : el.value !== el.defaultValue;
+  if ([...document.querySelectorAll('main input:not([type=search]), main textarea, main select')].some(changed)) return false;
   if (/^#\/practice\/(scenario|cards|drawers)/.test(location.hash)) return false;
   if (/^#\/crisis\//.test(location.hash)) return false;
   return true;
@@ -348,6 +378,6 @@ function paintInstall() {
   else el.hidden = true;
 }
 
-route();
+safeRoute();
 setupPwa();
 document.body.dataset.ready = 'true';

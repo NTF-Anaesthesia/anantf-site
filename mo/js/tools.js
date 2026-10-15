@@ -14,13 +14,13 @@ let seq = 0;
 function field(id, label, unit, value = '', attrs = '') {
   return `<label for="${id}">${label}${unit ? ` <span class="muted">${unit}</span>` : ''}<input id="${id}" type="number" inputmode="decimal" value="${value ?? ''}" ${attrs}></label>`;
 }
-/** A row of buttons that act as one choice (radio). */
-function seg(name, legend, opts, value) {
-  return `<fieldset class="seg"><legend>${legend}</legend><div class="segrow">${opts.map(([v, t]) => `<label class="segopt"><input type="radio" name="${name}" value="${esc(v)}"${String(v) === String(value) ? ' checked' : ''}><span>${t}</span></label>`).join('')}</div></fieldset>`;
+/** A row of buttons that act as one choice (radio); `stack` puts long options one under another. */
+function seg(name, legend, opts, value, stack = false) {
+  return `<fieldset class="seg"><legend>${legend}</legend><div class="segrow${stack ? ' stack' : ''}">${opts.map(([v, t]) => `<label class="segopt"><input type="radio" name="${name}" value="${esc(v)}"${String(v) === String(value) ? ' checked' : ''}><span>${t}</span></label>`).join('')}</div></fieldset>`;
 }
-/** Yes/no items as tick boxes. */
-function ticks(name, items) {
-  return `<fieldset class="ticks"><legend class="visually-hidden">${name}</legend>${items.map(([k, t]) => `<label class="tick"><input type="checkbox" name="${name}" value="${k}"><span>${md(t)}</span></label>`).join('')}</fieldset>`;
+/** Yes/no items as tick boxes, under a legend screen readers announce. */
+function ticks(name, legend, items) {
+  return `<fieldset class="ticks"><legend class="visually-hidden">${esc(legend)}</legend>${items.map(([k, t]) => `<label class="tick"><input type="checkbox" name="${name}" value="${k}"><span>${md(t)}</span></label>`).join('')}</fieldset>`;
 }
 const val = (host, name) => host.querySelector(`input[name="${name}"]:checked`)?.value ?? null;
 const checked = (host, name) => Object.fromEntries([...host.querySelectorAll(`input[name="${name}"]`)].map(i => [i.value, i.checked]));
@@ -71,7 +71,7 @@ export const TOOLS = {
       if (!r) return '<p class="muted">Enter the weight.</p>';
       const d = C.LA[h.querySelector(`#${p}d`).value];
       return `<dl class="result"><dt>Maximum</dt><dd><b>${fmt(r.mg)} mg</b>${r.capped ? ` <span class="muted">(the ${d.cap} mg ceiling)</span>` : ''}</dd><dt>At ${esc(val(h, `${p}pc`))}%</dt><dd><b>${fmt(r.ml)} mL</b> <span class="muted">(${fmt(r.mgml)} mg/mL)</span></dd><dt>Based on</dt><dd>${d.mgkg} mg/kg × ${fmt(r.kg)} kg ${r.basis === 'LBW' ? 'lean body weight (BMI 30 or more)' : 'total body weight'}</dd></dl>
-      <aside class="callout warn"><p class="callout-t">Caution</p><ul><li>Doses of different local anaesthetics add up: if you use two, the total must stay under the limit.</li><li>This is a ceiling, not a target. Use the least that works; take more care in the elderly, frail, and in heart, liver or kidney disease.</li><li>Know the signs of toxicity and where the lipid is: [local anaesthetic toxicity](#/crisis/last).</li></ul></aside>`;
+      <div class="callout warn" role="note"><p class="callout-t">Caution</p><ul><li>Doses of different local anaesthetics add up: if you use two, the total must stay under the limit.</li><li>This is a ceiling, not a target. Use the least that works; take more care in the elderly, frail, and in heart, liver or kidney disease.</li><li>Know the signs of toxicity and where the lipid is: [local anaesthetic toxicity](#/crisis/last).</li></ul></div>`;
     },
   },
 
@@ -90,11 +90,14 @@ export const TOOLS = {
       h.querySelector(`#${p}unit`).textContent = spec.unit;
       h.querySelector(`#${p}conc`).innerHTML = `Standard strength: ${md(d.infusionPrep || d.prep || '')} → <span class="v">${fmt(ic.value)} ${esc(ic.unit)}</span>`;
       const weight = num(h.querySelector(`#${p}w`).value), dose = h.querySelector(`#${p}dose`), rate = h.querySelector(`#${p}rate`);
-      if (ev?.target === h.querySelector(`#${p}d`)) { dose.value = ''; rate.value = ''; }
+      if (ev?.target === h.querySelector(`#${p}d`)) { dose.value = ''; rate.value = ''; delete h.dataset.from; }
+      // work out the other box from the one the person typed in last; never write into the box being typed in
+      if (ev?.target === dose || ev?.target === rate) h.dataset.from = ev.target === dose ? 'dose' : 'rate';
       const args = { unit: spec.unit, weight, conc: ic };
-      if (spec.unit.includes('/kg/') && !C.okNum(weight, 0.5, 400)) return '<p class="muted">Enter the weight.</p>';
-      if (ev?.target === rate && num(rate.value) != null) { const x = C.infusionDose({ ...args, rate: num(rate.value) }); dose.value = x == null ? '' : C.nice(x); }
-      else if (num(dose.value) != null) { const x = C.infusionRate({ ...args, dose: num(dose.value) }); rate.value = x == null ? '' : C.nice(x); }
+      const needsKg = spec.unit.includes('/kg/');
+      if (needsKg && !C.okNum(weight, 0.5, 400)) { if (h.dataset.from === 'dose') rate.value = ''; else if (h.dataset.from === 'rate') dose.value = ''; return '<p class="muted">Enter the weight.</p>'; }
+      if (h.dataset.from === 'rate') { const r = num(rate.value), x = r == null ? null : C.infusionDose({ ...args, rate: r }); dose.value = x == null ? '' : C.nice(x); }
+      else if (h.dataset.from === 'dose') { const d0 = num(dose.value), x = d0 == null ? null : C.infusionRate({ ...args, dose: d0 }); rate.value = x == null ? '' : C.nice(x); }
       const lo = C.infusionRate({ ...args, dose: spec.range[0] }), hi = C.infusionRate({ ...args, dose: spec.range[1] });
       return `<p>Usual range <span class="v">${spec.range[0]}–${spec.range[1]} ${esc(spec.unit)}</span> = <b>${range(lo, hi)} mL/h</b>${spec.unit.includes('/kg/') ? ` for ${fmt(weight)} kg` : ''}.</p>${spec.note ? `<p class="muted small">${md(spec.note)}</p>` : ''}`;
     },
@@ -145,7 +148,7 @@ export const TOOLS = {
   stopbang: {
     title: 'STOP-BANG', group: 'scores',
     summary: 'Screening for obstructive sleep apnoea before surgery.',
-    form: p => ticks(`${p}i`, [['snore', '**S**nore loudly (heard through a closed door)'], ['tired', '**T**ired, fatigued or sleepy in the day'], ['observed', '**O**bserved to stop breathing or choke in sleep'], ['pressure', 'High blood **p**ressure, treated or not'], ['bmi', '**B**MI over 35'], ['age', '**A**ge over 50'], ['neck', '**N**eck circumference over 40 cm'], ['male', 'Male **g**ender']]),
+    form: p => ticks(`${p}i`, 'STOP-BANG: tick each one that applies', [['snore', '**S**nore loudly (heard through a closed door)'], ['tired', '**T**ired, fatigued or sleepy in the day'], ['observed', '**O**bserved to stop breathing or choke in sleep'], ['pressure', 'High blood **p**ressure, treated or not'], ['bmi', '**B**MI over 35'], ['age', '**A**ge over 50'], ['neck', '**N**eck circumference over 40 cm'], ['male', 'Male **g**ender']]),
     calc: (h, p) => {
       const r = C.stopBang(checked(h, `${p}i`));
       return `<p class="score-line"><b>${r.score} of 8</b>: <span class="band ${r.band}">${r.band} risk</span> of moderate to severe sleep apnoea</p><p class="muted small">0–2 low, 3–4 intermediate, 5–8 high. Also high if 2 or more of the first four plus male, BMI over 35 or a large neck. Tell your consultant about intermediate or high scores: they change the plan for opioids, sedation and where the patient goes after.</p>`;
@@ -155,7 +158,7 @@ export const TOOLS = {
   apfel: {
     title: 'PONV risk (Apfel)', group: 'scores',
     summary: 'Simplified risk of nausea and vomiting after a general anaesthetic.',
-    form: p => ticks(`${p}i`, [['female', 'Female'], ['nonSmoker', 'Non-smoker'], ['history', 'Past PONV or motion sickness'], ['opioids', 'Opioids likely after surgery']]),
+    form: p => ticks(`${p}i`, 'PONV risk factors: tick each one that applies', [['female', 'Female'], ['nonSmoker', 'Non-smoker'], ['history', 'Past PONV or motion sickness'], ['opioids', 'Opioids likely after surgery']]),
     calc: (h, p) => {
       const r = C.apfel(checked(h, `${p}i`));
       return `<p class="score-line"><b>${r.score} of 4</b>: about <b>${r.risk}%</b> risk of PONV</p><p class="muted small">Risk with 0, 1, 2, 3, 4 factors: 10, 21, 39, 61, 79%. More factors, more prevention: see [PONV](#/learn/pacu/ponv).</p>`;
@@ -165,7 +168,7 @@ export const TOOLS = {
   rcri: {
     title: 'Revised Cardiac Risk Index', group: 'scores',
     summary: 'Six-item estimate of heart complications after non-cardiac surgery.',
-    form: p => ticks(`${p}i`, [['surgery', 'High-risk surgery: inside the chest or abdomen, or vascular above the groin'], ['ihd', 'Ischaemic heart disease'], ['hf', 'Heart failure'], ['cvd', 'Stroke or TIA'], ['insulin', 'Diabetes treated with insulin'], ['creatinine', 'Creatinine over `177 µmol/L`']]),
+    form: p => ticks(`${p}i`, 'Cardiac risk factors: tick each one that applies', [['surgery', 'High-risk surgery: inside the chest or abdomen, or vascular above the groin'], ['ihd', 'Ischaemic heart disease'], ['hf', 'Heart failure'], ['cvd', 'Stroke or TIA'], ['insulin', 'Diabetes treated with insulin'], ['creatinine', 'Creatinine over `177 µmol/L`']]),
     calc: (h, p) => {
       const r = C.rcri(checked(h, `${p}i`));
       return `<p class="score-line"><b>${r.score} point${r.score === 1 ? '' : 's'}</b>: about <b>${r.risk}%</b> risk of heart attack, cardiac arrest or death within 30 days</p><p class="muted small">Risks by points (0, 1, 2, 3 or more): 3.9, 6.0, 10.1, 15%. A score of 1 or more, or poor effort tolerance, is worth a word with your consultant.</p>`;
@@ -175,7 +178,7 @@ export const TOOLS = {
   aldrete: {
     title: 'PACU discharge score (modified Aldrete)', group: 'scores',
     summary: 'Five signs scored 0–2; ready for the ward at 9 or more.',
-    form: p => ALDRETE.map(([k, t, o]) => seg(`${p}${k}`, t, o.map((x, i) => [i, `${i}: ${x}`]))).join(''),
+    form: p => ALDRETE.map(([k, t, o]) => seg(`${p}${k}`, t, o.map((x, i) => [i, `${i}: ${x}`]), null, true)).join(''),
     calc: (h, p) => {
       const r = C.aldrete(Object.fromEntries(ALDRETE.map(([k]) => [k, val(h, `${p}${k}`) == null ? null : +val(h, `${p}${k}`)])));
       if (!r.complete) return '<p class="muted">Score all five.</p>';
@@ -193,19 +196,20 @@ export const TOOLS = {
       const w = num(h.querySelector(`#${p}w`).value) ?? est;
       if (!C.okNum(w, 0.5, 80)) return '<p class="muted">Enter the age or the weight.</p>';
       const t = years != null ? C.paedsTube(years) : null;
-      const kg = x => fmt(x * w);
+      // per-kg dose with an adult ceiling: "10 mcg/kg = 150 mcg" or "= 1 mg (adult maximum)"
+      const kg = (x, cap, unit) => { const v = x * w; return cap != null && v > cap ? `${fmt(cap)} ${unit} (adult maximum)` : `${fmt(v)} ${unit}`; };
       return `<dl class="result"><dt>Weight</dt><dd><b>${fmt(w)} kg</b>${num(h.querySelector(`#${p}w`).value) == null ? ' <span class="muted">estimated</span>' : ''}</dd>
         ${t ? `<dt>Tracheal tube</dt><dd>cuffed <b>${fmt(t.cuffed)}</b> mm, uncuffed ${fmt(t.uncuffed)} mm; oral length about <b>${fmt(t.oral)} cm</b> at the lips</dd>` : ''}
         <dt>LMA size</dt><dd><b>${C.lmaSize(w)}</b></dd>
         <dt>Maintenance</dt><dd>${fmt(C.maintenance421(w))} mL/h</dd></dl>
         <table class="mini"><caption>Doses for ${fmt(w)} kg</caption><tbody>
-        <tr><th scope="row">Adrenaline (cardiac arrest)</th><td>10 mcg/kg = <b>${kg(10)} mcg</b></td></tr>
-        <tr><th scope="row">Atropine</th><td>20 mcg/kg = <b>${kg(20)} mcg</b></td></tr>
-        <tr><th scope="row">Suxamethonium</th><td>2 mg/kg = <b>${kg(2)} mg</b></td></tr>
-        <tr><th scope="row">Fluid bolus</th><td>10 mL/kg = <b>${kg(10)} mL</b> balanced crystalloid</td></tr>
-        <tr><th scope="row">Glucose for low sugar</th><td>2 mL/kg of 10% = <b>${kg(2)} mL</b></td></tr>
-        <tr><th scope="row">Defibrillation</th><td>4 J/kg = <b>${kg(4)} J</b></td></tr>
-        <tr><th scope="row">Paracetamol</th><td>15 mg/kg = <b>${kg(15)} mg</b></td></tr></tbody></table>
+        <tr><th scope="row">Adrenaline (cardiac arrest)</th><td>10 mcg/kg = <b>${kg(10, 1000, 'mcg')}</b></td></tr>
+        <tr><th scope="row">Atropine</th><td>20 mcg/kg = <b>${kg(20, 600, 'mcg')}</b></td></tr>
+        <tr><th scope="row">Suxamethonium</th><td>2 mg/kg = <b>${kg(2, 150, 'mg')}</b></td></tr>
+        <tr><th scope="row">Fluid bolus</th><td>10 mL/kg = <b>${kg(10, 500, 'mL')}</b> balanced crystalloid</td></tr>
+        <tr><th scope="row">Glucose for low sugar</th><td>2 mL/kg of 10% = <b>${kg(2, 200, 'mL')}</b></td></tr>
+        <tr><th scope="row">Defibrillation</th><td>4 J/kg = <b>${kg(4, 200, 'J')}</b></td></tr>
+        <tr><th scope="row">Paracetamol</th><td>15 mg/kg = <b>${kg(15, 1000, 'mg')}</b></td></tr></tbody></table>
         <p class="muted small">Weight estimate (APLS): under 1 year (0.5 × months) + 4; 1–5 years (2 × age) + 8; 6–12 years (3 × age) + 7. Weigh the child whenever you can. Children are anaesthetised with a consultant: use this to prepare and to check.</p>`;
     },
   },

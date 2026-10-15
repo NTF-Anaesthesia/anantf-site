@@ -15,6 +15,7 @@ const { DECKS, CARDS } = await import('../js/data/cards.js');
 const { TOOLS } = await import('../js/tools.js');
 const { FIGURES } = await import('../js/figures.js');
 const { LABELS } = await import('../js/drugs-ui.js');
+const { convertAmount } = await import('../js/calc.js');
 
 const errors = [];
 const err = (where, msg) => errors.push(`${where}: ${msg}`);
@@ -173,6 +174,7 @@ for (const d of DRUGS) {
     if (x.weight && !['TBW', 'IBW', 'LBW', 'ABW'].includes(x.weight)) err(wd, `weight "${x.weight}"`);
     if (x.infusion && !d.conc && !d.infusionConc) err(wd, 'infusion dose needs the drug infusionConc or conc');
     if (x.max && (!(x.max.value > 0) || !isStr(x.max.unit))) err(wd, 'max needs value and unit');
+    else if (x.max && !x.infusion && convertAmount(1, x.max.unit, String(x.unit).split('/')[0]) == null) err(wd, `max unit ${x.max.unit} can't be compared with ${x.unit}`);
   });
   walkStrings(d, w);
 }

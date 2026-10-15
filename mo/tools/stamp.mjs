@@ -16,9 +16,26 @@ const sw = fs.readFileSync(swPath, 'utf8');
 const walk = d => fs.readdirSync(path.join(dir, d), { withFileTypes: true }).flatMap(e => e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]);
 const shell = ['index.html', 'style.css', 'manifest.webmanifest', ...walk('icons').filter(f => f.endsWith('.png')), ...walk('js').filter(f => f.endsWith('.js'))]
   .map(f => f.split(path.sep).join('/')).sort();
-// shared site files the page links to (outside this folder)
-const site = ['../assets/navigation.css', '../assets/site-shell.css', '../assets/header-nav.css', '../assets/navigation.js',
-  '../ana-ntf-logo.svg', '../ana-ntf-monogram.svg', '../fonts/inter.woff2', '../fonts/fraunces-roman.woff2', '../fonts/jetbrains-mono.woff2'];
+// shared site files the page uses (outside this folder): what index.html links to, and what those stylesheets (and ours)
+// pull in with @import and url(), followed all the way down, so the guide looks the same with no signal
+const rel = (from, ref) => path.relative(dir, path.resolve(path.dirname(path.join(dir, from)), ref.replace(/[?#].*$/, ''))).split(path.sep).join('/');
+const html = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
+const found = new Set();
+const queue = [...html.matchAll(/(?:href|src)="(\.\.\/[^"]+)"/g)].map(m => rel('index.html', m[1])).concat(['style.css']);
+while (queue.length) {
+  const f = queue.shift();
+  // resources only (styles, scripts, images, fonts), not links to other pages or folders
+  if (found.has(f) || !/\.(css|js|svg|png|webp|woff2)$/.test(f) || !fs.existsSync(path.join(dir, f))) continue;
+  found.add(f);
+  if (f.endsWith('.css')) {
+    const css = fs.readFileSync(path.join(dir, f), 'utf8');
+    for (const m of css.matchAll(/@import\s+url\(\s*["']?([^"')]+)["']?\s*\)|url\(\s*["']?([^"')]+\.woff2)["']?\s*\)/g)) {
+      const ref = m[1] || m[2];
+      if (!/^(data:|https?:)/.test(ref)) queue.push(rel(f, ref));
+    }
+  }
+}
+const site = [...found].filter(f => f.startsWith('../')).sort();
 for (const f of [...shell, ...site]) if (!fs.existsSync(path.join(dir, f))) { console.error('missing ' + f); process.exit(1); }
 
 const list = a => '[' + a.map(f => `'${f}'`).join(', ') + ']';

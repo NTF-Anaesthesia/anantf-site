@@ -42,9 +42,12 @@ export function buildIndex() {
   return INDEX;
 }
 
+const reEsc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+// what the person typed matches anywhere in a word; the synonyms it brings in match whole words only
+// (so "toxicity" finding "last" doesn't match "she last ate", and "tube" finding "ett" doesn't match "setting")
 function expand(term) {
-  const row = SYN.find(r => r.includes(term));
-  return row ? row : [term];
+  const row = SYN.find(r => r.includes(term)) || [term];
+  return row.map(a => a === term ? (s => s.includes(a)) : (re => s => re.test(s))(new RegExp(`\\b${reEsc(a)}\\b`)));
 }
 
 export function search(q, limit = 40) {
@@ -55,10 +58,10 @@ export function search(q, limit = 40) {
     let score = 0, all = true;
     for (const term of terms) {
       const alts = expand(term);
-      const hit = (s, w) => alts.some(a => s.includes(a)) ? w : 0;
+      const hit = (s, w) => alts.some(a => a(s)) ? w : 0;
       const s = Math.max(hit(e._t, 10), hit(e._s, 4), hit(e._b, 1));
       if (!s) { all = false; break; }
-      score += s + (alts.some(a => e._t.startsWith(a)) ? 5 : 0);
+      score += s + (e._t.startsWith(term) ? 5 : 0);
     }
     if (all) res.push({ e, score: score + (e.kind === 'Crisis' ? 2 : 0) });
   }
@@ -66,11 +69,13 @@ export function search(q, limit = 40) {
 }
 
 function snippet(e, terms) {
-  const src = e.summary || '';
   const b = e.body, lb = e._b;
   for (const t of terms) {
     const i = lb.indexOf(t);
-    if (i >= 0 && !e._t.includes(t)) return '…' + esc(b.slice(Math.max(0, i - 50), i + 90)).replace(new RegExp(t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig'), m => `<mark>${m}</mark>`) + '…';
+    if (i < 0 || e._t.includes(t)) continue;
+    // highlight on the raw text, then escape each piece (escaping first would split things like &quot;)
+    const raw = b.slice(Math.max(0, i - 50), i + 90);
+    return '…' + raw.split(new RegExp(`(${reEsc(t)})`, 'i')).map((part, k) => k % 2 ? `<mark>${esc(part)}</mark>` : esc(part)).join('') + '…';
   }
-  return esc(src);
+  return esc(e.summary || '');
 }

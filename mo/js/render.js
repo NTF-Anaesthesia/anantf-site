@@ -28,7 +28,7 @@ function block(b, ctx) {
     case 'table': return table(b);
     case 'callout': {
       const k = CALLOUT[b.kind] ? b.kind : 'note';
-      return `<aside class="callout ${k}"><p class="callout-t">${b.title ? md(b.title) : CALLOUT[k]}</p>${b.text ? `<p>${md(b.text)}</p>` : ''}${b.items ? items(b.items) : ''}</aside>`;
+      return `<div class="callout ${k}" role="note"><p class="callout-t">${b.title ? md(b.title) : CALLOUT[k]}</p>${b.text ? `<p>${md(b.text)}</p>` : ''}${b.items ? items(b.items) : ''}</div>`;
     }
     case 'dl': return `<dl class="dl">${(b.items || []).map(i => `<dt>${md(i.term)}</dt><dd>${md(i.def)}</dd>`).join('')}</dl>`;
     case 'script':

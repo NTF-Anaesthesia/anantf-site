@@ -21,19 +21,23 @@ export const okNum = (x, lo, hi) => typeof x === 'number' && Number.isFinite(x) 
 // ---------------------------------------------------------------- body size
 /**
  * BMI, ideal body weight (Devine), lean body weight (Janmahasatian 2005) and adjusted body weight (IBW + 0.4 × excess).
- * weight in kg, height in cm, sex 'm' | 'f'. Missing height gives only total weight.
+ * weight in kg, height in cm, sex 'm' | 'f'. Missing height gives only total weight. Devine is extended below 152 cm
+ * (it loses about 0.9 kg per cm) down to 120 cm, with a warning under 150 cm; below 120 cm (children) there is no
+ * ideal or adjusted weight.
  */
 export function bodyWeights({ weight, height, sex } = {}) {
-  const out = { tbw: null, bmi: null, ibw: null, lbw: null, abw: null, warnings: [] };
+  const out = { tbw: null, bmi: null, ibw: null, lbw: null, abw: null, warnings: [], why: 'no-height' };
   if (!okNum(weight, 0.3, 400)) return out;
   out.tbw = weight;
   if (!okNum(height, 40, 250) || !(sex === 'm' || sex === 'f')) return out;
+  out.why = null;
   const m = height / 100;
   out.bmi = weight / (m * m);
-  if (height >= 150) {
-    out.ibw = (sex === 'f' ? 45.5 : 50) + 0.91 * (height - 152.4);
+  if (height >= 120) {
+    out.ibw = Math.max(1, (sex === 'f' ? 45.5 : 50) + 0.91 * (height - 152.4));
     if (out.ibw > weight) out.ibw = weight; // never dose above the real weight
-  } else out.warnings.push('Ideal body weight formulas are for adults 150 cm or taller.');
+    if (height < 150) out.warnings.push('Ideal weight is less certain under 150 cm: check doses with your consultant.');
+  } else { out.why = 'child'; out.warnings.push('Ideal and adjusted weight formulas are for adults: use the children\'s quick sheet.'); }
   out.lbw = sex === 'f' ? (9270 * weight) / (8780 + 244 * out.bmi) : (9270 * weight) / (6680 + 216 * out.bmi);
   out.abw = out.ibw == null ? null : out.ibw + 0.4 * Math.max(0, weight - out.ibw);
   return out;
@@ -45,7 +49,7 @@ export const WEIGHT_NAMES = { TBW: 'total body weight', IBW: 'ideal body weight'
 export function dosingWeight(basis, w) {
   const key = { TBW: 'tbw', IBW: 'ibw', LBW: 'lbw', ABW: 'abw' }[basis || 'TBW'] || 'tbw';
   if (w[key] != null) return { kg: w[key], basis: basis || 'TBW', fallback: false };
-  return { kg: w.tbw, basis: 'TBW', fallback: (basis || 'TBW') !== 'TBW' };
+  return { kg: w.tbw, basis: 'TBW', fallback: (basis || 'TBW') !== 'TBW', why: w.why || 'no-height' };
 }
 
 // ---------------------------------------------------------------- doses and volumes
@@ -60,14 +64,23 @@ export function doseFor(dose, w) {
   if (!unit || !Array.isArray(dose.per) || w?.tbw == null) return null;
   const dw = dosingWeight(dose.weight, w);
   let min = dose.per[0] * dw.kg, max = (dose.per[1] ?? dose.per[0]) * dw.kg, capped = false;
-  if (dose.max && dose.max.unit === unit) {
-    if (max > dose.max.value) { max = dose.max.value; capped = true; }
-    if (min > dose.max.value) { min = dose.max.value; capped = true; }
+  const cap = dose.max ? convertAmount(dose.max.value, dose.max.unit, unit) : null;
+  if (cap != null) {
+    if (max > cap) { max = cap; capped = true; }
+    if (min > cap) { min = cap; capped = true; }
   }
-  return { min, max, unit, kg: dw.kg, basis: dw.basis, fallback: dw.fallback, capped };
+  return { min, max, unit, kg: dw.kg, basis: dw.basis, fallback: dw.fallback, why: dw.why, capped };
 }
 
 const MASS = { g: 1e6, mg: 1000, mcg: 1, ng: 0.001 }; // in mcg
+
+/** An amount in one unit expressed in another (g, mg, mcg, ng convert; anything else only to itself). null if they don't. */
+export function convertAmount(value, from, to) {
+  if (!Number.isFinite(value)) return null;
+  if (from === to) return value;
+  if (MASS[from] && MASS[to]) return (value * MASS[from]) / MASS[to];
+  return null;
+}
 
 /** mL that holds `amount` of `unit` at concentration conc = { value, unit: 'mg/mL' | 'mcg/mL' | 'U/mL' | 'mmol/mL' }. */
 export function volumeFor(amount, unit, conc) {
@@ -95,6 +108,18 @@ export function infusionRate({ dose, unit, weight, conc }) {
   const perHour = dose * (u[1] ? weight : 1) * (u[2] ? 60 : 1);
   if (u[0] === 'mL') return perHour;
   return volumeFor(perHour, u[0], conc);
+}
+
+/** An infusion dose range in mL/h for one patient, on the dose's weight basis. null if it can't be worked out. */
+export function infusionFor(dose, w, conc) {
+  if (!dose?.infusion || !Array.isArray(dose.per) || !INF[dose.unit]) return null;
+  const perKg = INF[dose.unit][1];
+  let dw = { kg: null, basis: 'TBW', fallback: false };
+  if (perKg) { if (w?.tbw == null) return null; dw = dosingWeight(dose.weight, w); }
+  const lo = infusionRate({ dose: dose.per[0], unit: dose.unit, weight: dw.kg, conc });
+  const hi = infusionRate({ dose: dose.per[1] ?? dose.per[0], unit: dose.unit, weight: dw.kg, conc });
+  if (lo == null || hi == null) return null;
+  return { lo, hi, perKg, kg: dw.kg, basis: dw.basis, fallback: dw.fallback, why: dw.why };
 }
 
 /** The dose rate a given mL/h delivers (the inverse of infusionRate). */

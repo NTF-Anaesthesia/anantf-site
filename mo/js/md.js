@@ -27,7 +27,8 @@ export function md(text) {
     return `<a href="${esc(ok)}"${ext ? ' target="_blank" rel="noopener"' : ''}>${words}</a>`;
   });
   s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-  s = s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<span class="v">${codes[i]}</span>`);
+  // short values never break across lines; long ones may wrap so they can't push the page wider than a phone
+  s = s.replace(/\u0000(\d+)\u0000/g, (_, i) => `<span class="v${codes[i].length <= 18 ? ' nw' : ''}">${codes[i]}</span>`);
   return s;
 }
 

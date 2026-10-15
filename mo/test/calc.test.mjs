@@ -22,11 +22,21 @@ t('body weights: ideal never above real weight; no height gives total only', () 
   const w = C.bodyWeights({ weight: 50, height: 185, sex: 'm' }); assert.equal(w.ibw, 50); assert.equal(w.abw, 50);
   const x = C.bodyWeights({ weight: 70 }); assert.equal(x.tbw, 70); assert.equal(x.ibw, null); assert.equal(x.bmi, null);
   assert.equal(C.bodyWeights({ weight: -1 }).tbw, null); assert.equal(C.bodyWeights({ weight: 'abc' }).tbw, null);
-  assert.ok(C.bodyWeights({ weight: 40, height: 140, sex: 'f' }).warnings.length);
+  const short = C.bodyWeights({ weight: 40, height: 140, sex: 'f' });
+  assert.ok(short.warnings.length); near(short.ibw, 45.5 + 0.91 * (140 - 152.4), 1e-9);
+});
+t('a short adult (under 150 cm) still gets ideal and adjusted weight, never total weight', () => {
+  const w = C.bodyWeights({ weight: 90, height: 148, sex: 'f' });
+  near(w.ibw, 41.496, 1e-6); near(w.abw, 41.496 + 0.4 * (90 - 41.496), 1e-6);
+  const r = C.doseFor({ per: [0.6, 1.2], unit: 'mg/kg', weight: 'IBW' }, w);
+  assert.equal(r.fallback, false); near(r.max, 1.2 * 41.496, 1e-6);
+  const child = C.bodyWeights({ weight: 20, height: 110, sex: 'm' });
+  assert.equal(child.ibw, null); assert.equal(child.why, 'child');
+  assert.equal(C.doseFor({ per: [1], unit: 'mg/kg', weight: 'IBW' }, child).why, 'child');
 });
 t('dosing weight falls back to total weight with a flag', () => {
   const w = C.bodyWeights({ weight: 100 });
-  assert.deepEqual(C.dosingWeight('LBW', w), { kg: 100, basis: 'TBW', fallback: true });
+  assert.deepEqual(C.dosingWeight('LBW', w), { kg: 100, basis: 'TBW', fallback: true, why: 'no-height' });
   assert.deepEqual(C.dosingWeight('TBW', w), { kg: 100, basis: 'TBW', fallback: false });
 });
 t('doseFor: propofol 1–2 mg/kg at 70 kg', () => {
@@ -36,6 +46,21 @@ t('doseFor: propofol 1–2 mg/kg at 70 kg', () => {
 t('doseFor: cap applies', () => {
   const r = C.doseFor({ per: [0.05], unit: 'mg/kg', max: { value: 2.5, unit: 'mg' } }, C.bodyWeights({ weight: 90 }));
   assert.equal(r.min, 2.5); assert.equal(r.max, 2.5); assert.equal(r.capped, true);
+});
+t('doseFor: a ceiling in another unit is converted before it is applied', () => {
+  const r = C.doseFor({ per: [20], unit: 'mcg/kg', max: { value: 0.6, unit: 'mg' } }, C.bodyWeights({ weight: 40 }));
+  assert.equal(r.max, 600); assert.equal(r.capped, true);
+  const g = C.doseFor({ per: [15], unit: 'mg/kg', max: { value: 1, unit: 'g' } }, C.bodyWeights({ weight: 80 }));
+  assert.equal(g.max, 1000); assert.equal(g.capped, true);
+  assert.equal(C.convertAmount(1, 'mg', 'mcg'), 1000); assert.equal(C.convertAmount(1, 'U', 'mg'), null);
+});
+t('infusionFor uses the dose\'s weight basis', () => {
+  const w = C.bodyWeights({ weight: 120, height: 170, sex: 'm' }), conc = { value: 4, unit: 'mcg/mL' };
+  const r = C.infusionFor({ per: [0.5], unit: 'mcg/kg/h', weight: 'LBW', infusion: true }, w, conc);
+  near(r.lo, (0.5 * w.lbw) / 4, 1e-9); assert.equal(r.basis, 'LBW');
+  const u = C.infusionFor({ per: [0.6, 2.4], unit: 'U/h', infusion: true }, C.bodyWeights({}), { value: 1, unit: 'U/mL' });
+  assert.equal(u.lo, 0.6); assert.equal(u.hi, 2.4);
+  assert.equal(C.infusionFor({ per: [0.1], unit: 'mcg/kg/min', infusion: true }, C.bodyWeights({}), { value: 0.08, unit: 'mg/mL' }), null);
 });
 t('doseFor: rocuronium on lean weight uses LBW', () => {
   const w = C.bodyWeights({ weight: 120, height: 170, sex: 'm' });
