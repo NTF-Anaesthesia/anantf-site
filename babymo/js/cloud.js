@@ -7,14 +7,15 @@
 //   members/{email}                 { role: 'admin' | 'editor', name }
 //   accessRequests/{email}          { email, name, requestedAt }         (a Google user asking to become faculty; approved or declined by faculty)
 //   config/access                   { passphrase }                       (admins only)
-//   config/test                     { title, count, passMark, minutes, review, cohort, intro, updatedAt, updatedBy }
-//   config/topics                   { list[], updatedAt, updatedBy }     (faculty only: the topics to pick from; a question's topic holds one or more joined by "; ", up to 240 characters)
+//   config/test                     { title, count, passMark, minutes, review, cohort, intro, updatedAt, updatedBy } (count, pass mark and minutes override the paper's)
 //   sessions/{uid}                  { name, pass, at }                   (an MO's login; created once, never changed)
-//   questions/{id}                  { stem, options[4], answer, explain, topic, image, status, rev, updatedAt, updatedBy }
-//   questions/{id}/history/{auto}   the same fields + savedAt            (never changed once written)
 //   attempts/{id}                   { uid, name, cohort, startedAt, submittedAt, durationSec, items[], settings, score, total, pass, attemptNo? }
+//                                   items: [{ qid, stem, options[2-6], answer, topic, explain, picked }], a snapshot of each question as the MO saw it
 //   attemptCounts/{key}             { n, updatedAt }                     (key = <cohort-slug>__<name-key>; sittings started; an MO can only raise it by 1, up to config/test maxAttempts)
-// questions also carry optional must (bool) and level ('standard' | 'hard'); config/test optional maxAttempts (default 2) and hardCount (default 4).
+// config/test also has optional maxAttempts (default 2) and hardCount (from the paper when missing).
+// The questions are NOT in Firebase any more (15 Oct 2026): they come from the shared bank, ../qbank/bank/questions.json,
+// and the paper ../qbank/papers/babymo.json. The rules still allow the old questions and config/topics paths; the
+// app no longer reads or writes them (removing them from the rules is a separate change the owner pastes in).
 
 import { FIREBASE_CONFIG } from './firebase-config.js';
 
@@ -356,100 +357,6 @@ export async function setPassphrase(p) {
   });
 }
 
-// ---- questions ----
-function questionFields(q) {
-  const options = Array.isArray(q.options) ? q.options.slice(0, 4).map(o => str(o, 500)) : [];
-  while (options.length < 4) options.push('');
-  return {
-    stem: str(q.stem, 2000),
-    options,
-    answer: int(q.answer, 0),
-    explain: str(q.explain, 5000),
-    topic: str(q.topic, 240),
-    image: str(q.image, 400000),
-    status: ['draft', 'active', 'archived'].includes(q.status) ? q.status : 'draft',
-    must: q.must === true,
-    level: q.level === 'hard' ? 'hard' : 'standard',
-  };
-}
-
-export async function listQuestions({ activeOnly = false } = {}) {
-  return guard(async () => {
-    const { db, F } = await ready();
-    const col = F.collection(db, 'questions');
-    // an MO is only allowed the query that asks for active questions
-    const snap = await F.getDocs(activeOnly ? F.query(col, F.where('status', '==', 'active')) : col);
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  });
-}
-
-// q.id empty: a new question (rev 1). Otherwise q.rev is the revision the editor loaded: if the stored one differs,
-// throws code 'conflict'. Also adds a history entry. Returns the saved question.
-export async function saveQuestion(q, user) {
-  return guard(async () => {
-    const { db, F } = await ready();
-    const by = who(user), now = Date.now();
-    const ref = q.id ? F.doc(db, 'questions', q.id) : F.doc(F.collection(db, 'questions'));
-    const hist = F.doc(F.collection(db, 'questions', ref.id, 'history'));
-    let saved = null;
-    await F.runTransaction(db, async tx => {
-      const cur = await tx.get(ref);
-      let rev = 1;
-      if (q.id) {
-        if (!cur.exists()) throw own('not-found', 'This question no longer exists.');
-        if (cur.data().rev !== int(q.rev, 0)) throw own('conflict', 'Someone else changed this question first.');
-        rev = cur.data().rev + 1;
-      } else if (cur.exists()) {
-        throw own('conflict', 'This question already exists.');
-      }
-      const data = plain({ ...questionFields(q), rev, updatedAt: now, updatedBy: by });
-      tx.set(ref, data);
-      tx.set(hist, plain({ ...data, savedAt: now }));
-      saved = { id: ref.id, ...data };
-    });
-    return saved;
-  });
-}
-
-// Newest first.
-export async function listHistory(id) {
-  return guard(async () => {
-    const { db, F } = await ready();
-    const snap = await F.getDocs(F.query(F.collection(db, 'questions', id, 'history'), F.orderBy('savedAt', 'desc'), F.limit(100)));
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  });
-}
-
-// New questions only (rev 1, with a history entry each), in batches that stay under Firestore's 500-writes limit.
-export async function bulkSaveQuestions(list, user) {
-  return guard(async () => {
-    const { db, F } = await ready();
-    const by = who(user), now = Date.now();
-    const CHUNK = 200; // 2 writes each: the question and its history entry
-    let count = 0;
-    for (let i = 0; i < list.length; i += CHUNK) {
-      const batch = F.writeBatch(db);
-      for (const q of list.slice(i, i + CHUNK)) {
-        const ref = F.doc(F.collection(db, 'questions'));
-        const data = plain({ ...questionFields(q), rev: 1, updatedAt: now, updatedBy: by });
-        batch.set(ref, data);
-        batch.set(F.doc(F.collection(db, 'questions', ref.id, 'history')), plain({ ...data, savedAt: now }));
-        count++;
-      }
-      await batch.commit();
-    }
-    return count;
-  });
-}
-
-// Admins only. The question's history entries stay behind (the rules never allow deleting them).
-export async function deleteQuestion(id) {
-  return guard(async () => {
-    const { db, F } = await ready();
-    await F.deleteDoc(F.doc(db, 'questions', id));
-  });
-}
-
 // ---- attempts ----
 function attemptFields(a, uid, displayName) {
   return {
@@ -461,8 +368,8 @@ function attemptFields(a, uid, displayName) {
     durationSec: Number(a.durationSec) || 0,
     items: (a.items || []).slice(0, 100).map(i => ({
       qid: str(i.qid, 100),
-      stem: str(i.stem, 2000),
-      options: (i.options || []).slice(0, 4).map(o => str(o, 500)),
+      stem: str(i.stem, 3000),
+      options: (i.options || []).slice(0, 6).map(o => str(o, 500)),
       answer: int(i.answer, 0),
       topic: str(i.topic, 240),
       explain: str(i.explain, 5000),
@@ -566,42 +473,21 @@ export async function grantAttempt(key) {
   });
 }
 
+// Faculty: set the count to n (0 to 10; 0 deletes it). Used to undo "Give another attempt".
+export async function setAttemptCount(key, n) {
+  return guard(async () => {
+    const { db, F } = await ready();
+    const ref = countRef(db, F, key), v = Math.min(10, Math.max(0, int(n, 0)));
+    if (v === 0) await F.deleteDoc(ref); else await F.setDoc(ref, { n: v, updatedAt: Date.now() });
+    return v;
+  });
+}
+
 // Faculty only ('permission' for an MO). [{ key, n }]
 export async function listAttemptCounts() {
   return guard(async () => {
     const { db, F } = await ready();
     const snap = await F.getDocs(F.collection(db, 'attemptCounts'));
     return snap.docs.map(d => ({ key: d.id, n: countOf(d) }));
-  });
-}
-
-// ---- topics ----
-// Clean a topic list: trimmed, empties dropped, duplicates (ignoring case) dropped, 60 characters each, 200 at most.
-export function cleanTopicList(list) {
-  const seen = new Set(), out = [];
-  for (const t of Array.isArray(list) ? list : []) {
-    const v = str(t, 60).replace(/[\r\n|]+/g, ' ').trim(), k = v.toLowerCase();
-    if (v && !seen.has(k)) { seen.add(k); out.push(v); }
-    if (out.length >= 200) break;
-  }
-  return out;
-}
-
-// Faculty only ('permission' for an MO). [] when no list has been saved yet.
-export async function getTopics() {
-  return guard(async () => {
-    const { db, F } = await ready();
-    const snap = await F.getDoc(F.doc(db, 'config', 'topics'));
-    return snap.exists() && Array.isArray(snap.data().list) ? snap.data().list : [];
-  });
-}
-
-// Faculty. Replaces the whole list; returns the cleaned list.
-export async function saveTopics(list, user) {
-  return guard(async () => {
-    const { db, F } = await ready();
-    const clean = cleanTopicList(list);
-    await F.setDoc(F.doc(db, 'config', 'topics'), plain({ list: clean, updatedAt: Date.now(), updatedBy: who(user) }));
-    return clean;
   });
 }

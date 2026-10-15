@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
 <meta name="theme-color" content="#f7f5ef">
-<title>Baby MO test — NTF Anaesthesia</title>
+<title>Baby MO test · NTF Anaesthesia</title>
 <meta name="description" content="The Baby MO test for new medical officers in the NTFGH anaesthesia department.">
 <link rel="icon" href="../ana-ntf-monogram.svg" type="image/svg+xml">
 <link rel="manifest" href="manifest.webmanifest">
@@ -15,21 +15,19 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Baby MO">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="stylesheet" href="../assets/navigation.css?v=20261008">
-<link rel="stylesheet" href="../assets/site-shell.css?v=20261008">
-<link rel="stylesheet" href="../assets/header-nav.css?v=20261008">
-<script defer src="../assets/navigation.js?v=20261008"></script>
+<link rel="preload" href="../fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="style.css">
 </head>
-<body class="babymo">
-<a class="bm-skip" href="#app">Skip to content</a>
-<header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../airway.html">Airway</a><a href="../regional.html">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="../exams/">MMed Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
-<div class="bm-bar"><div class="bm-bar-inner"><div class="bm-id"><span class="bm-title">Baby MO test</span><span id="wholine" class="bm-who" role="status"></span></div><span id="who"></span></div><nav id="nav" aria-label="Baby MO test sections"></nav></div>
-<div id="banner" role="status"></div>
-<main id="app" tabindex="-1"><p class="loading">Loading…</p></main>
+<body>
+<a class="skip" href="#app">Skip to content</a>
+<div id="shell">
+  <main id="app" tabindex="-1"><div class="content"><p class="empty">Loading…</p></div></main>
+  <div id="bottom"></div>
+  <nav id="tabs" aria-label="Faculty sections" hidden></nav>
+</div>
 <div id="toast" role="status" aria-live="polite"></div>
-<noscript><p class="loading">This page needs JavaScript.</p></noscript>
-<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer>
+<p id="announce" class="vh" aria-live="polite"></p>
+<noscript><p>This page needs JavaScript.</p></noscript>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>
