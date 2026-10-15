@@ -14,6 +14,8 @@ const SOURCE = 'diagram';
 const WIDTH = { xl: 14, l: 10, m: 7, s: 5 };
 // Font sizes in CSS pixels at the minimum rendered width (BASE_PX).
 const BASE_PX = 560;
+// Narrowest width drawn without scrolling: fonts there are still at least 12px (13px x 520/560). Matches the CSS min-width.
+const MIN_PX = 520;
 const FONT = { root: 15, struct: 13, term: 14, branch: 13, sub: 13, colHead: 14, colSub: 13, region: 13, note: 13, band: 13 };
 
 // Block status: the shared regional tokens (colour + line style). Kept as a named export for older imports.
@@ -261,7 +263,7 @@ export function mountDiagram(container, ctx) {
   let destroyed = false;
   const ro = new ResizeObserver(() => {
     if (destroyed || root.offsetWidth <= 0) return;
-    root.classList.toggle('is-narrow', root.offsetWidth < BASE_PX);
+    root.classList.toggle('is-narrow', root.offsetWidth < MIN_PX);
     placeBadges();
     if (needBand) drawBand();
   });

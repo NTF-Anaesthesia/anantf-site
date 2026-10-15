@@ -77,6 +77,9 @@ main { padding-top: 14px; padding-bottom: 32px; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px 8px 16px; border-bottom: 1px solid var(--border); }
 .panel.is-collapsed .panel-head { border-bottom: 0; }
 .panel-head h2 { margin: 0; font-size: 17px; }
+/* Link from the 3D panel to the shared Anatomy in 3D explorer (plexus/), on the same block and nerve. */
+#sec-3d .panel-head h2 { white-space: nowrap; }
+.panel-out { display: inline-flex; align-items: center; min-height: 44px; margin-left: auto; padding: 0 6px; font-size: 14px; color: #633d3c; text-underline-offset: 3px; white-space: nowrap; }
 .collapse-btn { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid transparent; border-radius: 0; background: transparent; cursor: pointer; color: var(--muted); }
 .collapse-btn:hover { border-color: var(--border); color: var(--text); }
 .collapse-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .2s; }

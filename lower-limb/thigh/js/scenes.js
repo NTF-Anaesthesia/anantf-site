@@ -25,7 +25,7 @@ function nerve(id, label, short, cx, cy, rx, ry, opts = {}) {
   return [
     { id: `${id}-epi`, kind: opts.epiKind || 'connective', label: 'Epineurium', nolabel: true, echo: opts.echo ?? 0.82, shape: E(cx, cy, rx, ry, opts.rot || 0) },
     { id: `${id}-rim`, kind: 'membrane', label: 'Epineurium', nolabel: true, amp: 0.8, shape: L(Math.max(0.3, ry * 0.11), ...ring(cx, cy, rx, ry, 28)) },
-    { id, kind: 'nerve', label, short, shape: fasc, at: opts.at || [cx, cy], lab: opts.lab },
+    { id, kind: 'nerve', label, short, ...(opts.ids ? { ids: opts.ids } : {}), ...(opts.desc ? { desc: opts.desc } : {}), shape: fasc, at: opts.at || [cx, cy], lab: opts.lab },
   ];
 }
 
@@ -42,20 +42,20 @@ export const SCENES = {
     injectionLabel: 'Choose the injection',
     layers: [
       { id: 'sc', kind: 'fat', label: 'Subcutaneous fat', short: 'Fat', bottom: [[0, 13], [38, 14.2], [76, 12.2]], edge: 0.6, at: [56, 7.4], lab: [56, 7.4] },
-      { id: 'gm', kind: 'muscle', label: 'Gluteus maximus', short: 'Glut max', bottom: [[0, 29.6], [20, 30.4], [30, 30.4], [38, 30.8], [46, 30.9], [56, 32.4], [76, 30.4]], smooth: true, echo: 0.15, stri: -10, dens: 0.5, edge: 0.95, edgeW: 0.55, at: [58, 22], lab: [62, 18.6] },
-      { id: 'am', kind: 'muscle', label: 'Adductor magnus', short: 'Add magnus', bottom: 80, echo: 0.13, stri: 4, dens: 0.4, edge: 0, at: [44, 58], lab: [44, 59.5] },
+      { id: 'gm', kind: 'muscle', label: 'Gluteus maximus', short: 'Glut max', desc: 'Gluteus maximus; the subgluteal space is the plane under it.', bottom: [[0, 29.6], [20, 30.4], [30, 30.4], [38, 30.8], [46, 30.9], [56, 32.4], [76, 30.4]], smooth: true, echo: 0.15, stri: -10, dens: 0.5, edge: 0.95, edgeW: 0.55, at: [58, 22], lab: [62, 18.6] },
+      { id: 'am', kind: 'muscle', label: 'Adductor magnus', short: 'Add magnus', desc: 'Adductor magnus, just below quadratus femoris.', bottom: 80, echo: 0.13, stri: 4, dens: 0.4, edge: 0, at: [44, 58], lab: [44, 59.5] },
     ],
     lines: [
       { id: 'dif', kind: 'fascia', label: 'Deep investing fascia', short: 'Fascia', nolabel: true, amp: 0.7, w: 0.4, pts: [[14, 33.6], [22, 33.1], [30, 33], [38, 33.2], [46, 33.3], [54, 34.2]] },
     ],
     shapes: [
-      { id: 'ham', kind: 'aponeurosis', label: 'Hamstring origin (long head of biceps femoris and semitendinosus)', short: 'Hamstrings', shape: P([0, 31], [9, 31.2], [16, 33.6], [17, 38.4], [10, 41.4], [0, 41.6]), at: [7, 36], lab: [7, 19] },
-      { id: 'qf', kind: 'muscle', label: 'Quadratus femoris', short: 'QF', stri: 0, echo: 0.12, dens: 0.35, shape: P([15, 41.6], [30, 40.8], [48, 40.6], [62, 41], [66, 45.4], [60, 50], [30, 50.6], [16, 48.6]), at: [36, 46], lab: [26, 46.4] },
-      { id: 'it', kind: 'bone', label: 'Ischial tuberosity', short: 'Ischium', shape: L(1.5, [0, 44.6], [5, 42.8], [10, 43.4], [14, 46.4], [15.4, 50]), at: [5, 43], lab: [7.4, 52.8] },
-      { id: 'fem', kind: 'bone', label: 'Femur', short: 'Femur', shape: L(1.6, [62.4, 47], [65.6, 43.4], [70, 42], [76, 42.2]), at: [70, 42], lab: [63, 54] },
+      { id: 'ham', kind: 'aponeurosis', label: 'Hamstring origin (long head of biceps femoris and semitendinosus)', short: 'Hamstrings', desc: 'The hamstring origin, medially, from the ischial tuberosity.', shape: P([0, 31], [9, 31.2], [16, 33.6], [17, 38.4], [10, 41.4], [0, 41.6]), at: [7, 36], lab: [7, 19] },
+      { id: 'qf', kind: 'muscle', label: 'Quadratus femoris', short: 'QF', desc: 'Quadratus femoris: the sciatic nerve lies on it.', stri: 0, echo: 0.12, dens: 0.35, shape: P([15, 41.6], [30, 40.8], [48, 40.6], [62, 41], [66, 45.4], [60, 50], [30, 50.6], [16, 48.6]), at: [36, 46], lab: [26, 46.4] },
+      { id: 'it', kind: 'bone', label: 'Ischial tuberosity', short: 'Ischium', desc: 'The ischial tuberosity, medially.', shape: L(1.5, [0, 44.6], [5, 42.8], [10, 43.4], [14, 46.4], [15.4, 50]), at: [5, 43], lab: [7.4, 52.8] },
+      { id: 'fem', kind: 'bone', label: 'Femur', short: 'Femur', desc: 'The femur, laterally.', shape: L(1.6, [62.4, 47], [65.6, 43.4], [70, 42], [76, 42.2]), at: [70, 42], lab: [63, 54] },
       { id: 'iga', kind: 'artery', label: 'Artery to the sciatic nerve (inferior gluteal)', short: 'Artery', nolabel: true, shape: E(28.6, 36.6, 0.95, 0.9) },
-      ...nerve('pfcn', 'Posterior femoral cutaneous nerve', 'PFCN', 43.4, 32.1, 1.7, 0.95, { n: 2, fr: 0.24, echo: 0.8, epiKind: 'aponeurosis', lab: [45, 25.4], at: [43.4, 32.1] }),
-      ...nerve('sn', 'Sciatic nerve', 'Sciatic', 38.4, 36.7, 8.2, 3.05, { n: 7, fr: 0.12, echo: 0.72, epiKind: 'aponeurosis', rot: -3, lab: [26, 27], at: [36, 36.2] }),
+      ...nerve('pfcn', 'Posterior femoral cutaneous nerve', 'PFCN', 43.4, 32.1, 1.7, 0.95, { n: 2, fr: 0.24, echo: 0.8, epiKind: 'aponeurosis', lab: [45, 25.4], at: [43.4, 32.1], ids: ['sacral:n-pfcn'], desc: 'The posterior femoral cutaneous nerve: a small dot superficial to the sciatic nerve.' }),
+      ...nerve('sn', 'Sciatic nerve', 'Sciatic', 38.4, 36.7, 8.2, 3.05, { n: 7, fr: 0.12, echo: 0.72, epiKind: 'aponeurosis', rot: -3, lab: [26, 27], at: [36, 36.2], ids: ['sacral:n-sciatic'], desc: 'The sciatic nerve: a broad, flat, bright oval or triangle, much wider than it is deep, on quadratus femoris.' }),
     ],
     target: { at: [46.6, 38.4], r: 2.2 },
     injections: [
@@ -100,17 +100,17 @@ export const SCENES = {
     orient: { left: 'Medial', right: 'Lateral', marker: 'right' },
     layers: [
       { id: 'sc', kind: 'fat', label: 'Subcutaneous fat', short: 'Fat', bottom: [[0, 13.6], [40, 15], [80, 13.4]], edge: 0.6, at: [62, 8], lab: [62, 8] },
-      { id: 'gm', kind: 'muscle', label: 'Gluteus maximus', short: 'Glut max', bottom: [[0, 40], [22, 42.4], [40, 44], [60, 43.2], [80, 40.4]], smooth: true, echo: 0.15, stri: -14, dens: 0.55, edge: 0.95, edgeW: 0.6, at: [56, 28], lab: [56, 28] },
+      { id: 'gm', kind: 'muscle', label: 'Gluteus maximus', short: 'Glut max', desc: 'The thick gluteus maximus; the subgluteal space is the plane under it.', bottom: [[0, 40], [22, 42.4], [40, 44], [60, 43.2], [80, 40.4]], smooth: true, echo: 0.15, stri: -14, dens: 0.55, edge: 0.95, edgeW: 0.6, at: [56, 28], lab: [56, 28] },
       { id: 'deep', kind: 'muscle', label: 'Obturator internus and gemelli', short: 'OI', nolabel: true, bottom: 90, echo: 0.11, stri: 6, dens: 0.3, edge: 0 },
     ],
     lines: [],
     shapes: [
-      { id: 'qf', kind: 'muscle', label: 'Quadratus femoris', short: 'QF', stri: 0, echo: 0.12, dens: 0.35, shape: P([16, 48.6], [34, 48.4], [52, 48], [64, 49.2], [66, 55], [56, 60], [32, 60.6], [17, 57]), at: [40, 54], lab: [30, 55] },
-      { id: 'it', kind: 'bone', label: 'Ischial tuberosity', short: 'Ischium', shape: L(1.6, [0, 49], [6, 46.6], [12, 47], [16.4, 50.6], [17.6, 56]), at: [6, 46.6], lab: [8, 61] },
-      { id: 'gt', kind: 'bone', label: 'Greater trochanter', short: 'Trochanter', shape: L(1.7, [64.8, 54], [67, 48.6], [71, 45.6], [76, 44.6], [80, 45]), at: [72, 45.4], lab: [64, 66] },
-      { id: 'iga', kind: 'artery', label: 'Inferior gluteal artery', short: 'IGA', shape: E(31.2, 45.8, 1.25, 1.15), at: [31.2, 45.8], lab: [30, 35.6] },
-      ...nerve('pfcn', 'Posterior femoral cutaneous nerve', 'PFCN', 26.2, 45.2, 1.9, 1.15, { n: 3, fr: 0.26, echo: 0.7, lab: [10, 39] }),
-      ...nerve('sn', 'Sciatic nerve', 'Sciatic', 42.4, 46.2, 8.6, 3.2, { n: 11, rot: -2, lab: [55, 37.6], at: [43, 45.4] }),
+      { id: 'qf', kind: 'muscle', label: 'Quadratus femoris', short: 'QF', desc: 'Quadratus femoris: the sciatic nerve lies on it.', stri: 0, echo: 0.12, dens: 0.35, shape: P([16, 48.6], [34, 48.4], [52, 48], [64, 49.2], [66, 55], [56, 60], [32, 60.6], [17, 57]), at: [40, 54], lab: [30, 55] },
+      { id: 'it', kind: 'bone', label: 'Ischial tuberosity', short: 'Ischium', desc: 'The ischial tuberosity, medially: the nerve lies nearer it.', shape: L(1.6, [0, 49], [6, 46.6], [12, 47], [16.4, 50.6], [17.6, 56]), at: [6, 46.6], lab: [8, 61] },
+      { id: 'gt', kind: 'bone', label: 'Greater trochanter', short: 'Trochanter', desc: 'The greater trochanter, laterally.', shape: L(1.7, [64.8, 54], [67, 48.6], [71, 45.6], [76, 44.6], [80, 45]), at: [72, 45.4], lab: [64, 66] },
+      { id: 'iga', kind: 'artery', label: 'Inferior gluteal artery', short: 'IGA', desc: 'The inferior gluteal artery, medial to the sciatic nerve (colour Doppler).', shape: E(31.2, 45.8, 1.25, 1.15), at: [31.2, 45.8], lab: [30, 35.6] },
+      ...nerve('pfcn', 'Posterior femoral cutaneous nerve', 'PFCN', 26.2, 45.2, 1.9, 1.15, { n: 3, fr: 0.26, echo: 0.7, lab: [10, 39], ids: ['sacral:n-pfcn'], desc: 'The posterior femoral cutaneous nerve runs with the artery, still close to the sciatic nerve at this level.' }),
+      ...nerve('sn', 'Sciatic nerve', 'Sciatic', 42.4, 46.2, 8.6, 3.2, { n: 11, rot: -2, lab: [55, 37.6], at: [43, 45.4], ids: ['sacral:n-sciatic'], desc: 'The sciatic nerve: a bright flat oval in the subgluteal space, nearer the ischium.' }),
     ],
     target: { at: [51.6, 46.4], r: 2.2 },
     injections: [
@@ -142,17 +142,17 @@ export const SCENES = {
       { id: 'vm', kind: 'muscle', label: 'Vastus medialis', short: 'VM', bottom: [[0, 34], [20, 30], [32, 18], [40, 10.4], [90, 10]], smooth: true, echo: 0.14, stri: 4, dens: 0.45, edge: 0.7, at: [12, 22], lab: [12, 22] },
       { id: 'al', kind: 'muscle', label: 'Adductor longus', short: 'Add longus', bottom: [[0, 34], [24, 32], [44, 28], [60, 26], [90, 27]], smooth: true, echo: 0.15, stri: -6, dens: 0.45, edge: 0.75, at: [72, 19], lab: [72, 19] },
       { id: 'ab', kind: 'muscle', label: 'Adductor brevis', short: 'Add brevis', bottom: [[0, 36], [26, 38], [46, 44], [64, 46], [90, 47]], smooth: true, echo: 0.13, stri: 6, dens: 0.4, edge: 0.75, at: [56, 40], lab: [56, 40] },
-      { id: 'am', kind: 'muscle', label: 'Adductor magnus', short: 'Add magnus', bottom: [[0, 70], [30, 70.2], [44, 71.2], [60, 72], [90, 71]], smooth: true, echo: 0.14, stri: 2, dens: 0.45, edge: 0.9, edgeW: 0.5, at: [36, 59], lab: [36, 59] },
-      { id: 'hams', kind: 'muscle', label: 'Hamstrings', short: 'Hamstrings', bottom: 110, echo: 0.12, stri: 0, dens: 0.35, edge: 0, at: [66, 84], lab: [66, 85] },
+      { id: 'am', kind: 'muscle', label: 'Adductor magnus', short: 'Add magnus', desc: 'Adductor magnus: the sciatic nerve lies behind it.', bottom: [[0, 70], [30, 70.2], [44, 71.2], [60, 72], [90, 71]], smooth: true, echo: 0.14, stri: 2, dens: 0.45, edge: 0.9, edgeW: 0.5, at: [36, 59], lab: [36, 59] },
+      { id: 'hams', kind: 'muscle', label: 'Hamstrings', short: 'Hamstrings', desc: 'The hamstrings, behind the sciatic nerve.', bottom: 110, echo: 0.12, stri: 0, dens: 0.35, edge: 0, at: [66, 84], lab: [66, 85] },
     ],
     lines: [],
     shapes: [
       { id: 'sart', kind: 'muscle', label: 'Sartorius', short: 'Sart', stri: 0, echo: 0.16, shape: P([28, 11], [42, 10.6], [50, 12.4], [48, 18.4], [38, 20], [29, 17.4]), at: [39, 15], lab: [39, 15] },
-      { id: 'sfa', kind: 'artery', label: 'Femoral artery', short: 'FA', shape: E(40.6, 23.4, 3, 2.9), at: [40.6, 22], lab: [47, 3.4] },
+      { id: 'sfa', kind: 'artery', label: 'Femoral artery', short: 'FA', desc: 'The femoral artery under sartorius: keep the needle medial to the femoral vessels.', shape: E(40.6, 23.4, 3, 2.9), at: [40.6, 22], lab: [47, 3.4] },
       { id: 'sfv', kind: 'vein', label: 'Femoral vein', short: 'FV', shape: E(45.4, 27.8, 3.6, 2.7), at: [46.6, 28.2], lab: [58, 31] },
-      { id: 'pfa', kind: 'artery', label: 'Deep artery of the thigh (profunda)', short: 'Profunda', shape: E(33.2, 35.2, 2.3, 2.2), at: [33.2, 35.2], lab: [30, 43.6] },
+      { id: 'pfa', kind: 'artery', label: 'Deep artery of the thigh (profunda)', short: 'Profunda', desc: 'The profunda, deeper and nearer the femur.', shape: E(33.2, 35.2, 2.3, 2.2), at: [33.2, 35.2], lab: [30, 43.6] },
       { id: 'fem', kind: 'bone', label: 'Femur', short: 'Femur', shape: L(1.8, [0, 42], [6, 39.2], [12, 38.4], [18, 39.4], [23, 42.6], [25, 47]), at: [11, 38.4], lab: [12, 50] },
-      ...nerve('sn', 'Sciatic nerve', 'Sciatic', 40.6, 75.2, 8.4, 3.5, { n: 11, rot: 2, lab: [24, 86.6], at: [38, 76] }),
+      ...nerve('sn', 'Sciatic nerve', 'Sciatic', 40.6, 75.2, 8.4, 3.5, { n: 11, rot: 2, lab: [24, 86.6], at: [38, 76], ids: ['sacral:n-sciatic'], desc: 'The sciatic nerve: a flat bright oval behind adductor magnus, 6–8 cm deep.' }),
     ],
     target: { at: [49.4, 75.2], r: 2.4 },
     injections: [
@@ -183,15 +183,15 @@ export const SCENES = {
     layers: [
       { id: 'sc', kind: 'fat', label: 'Subcutaneous fat', short: 'Fat', bottom: [[0, 12.4], [40, 13.6], [80, 13]], edge: 0.6, at: [60, 7.6], lab: [60, 7.6] },
       { id: 'gm', kind: 'muscle', label: 'Gluteus maximus', short: 'Glut max', bottom: [[0, 34], [30, 36.2], [56, 37], [80, 35]], smooth: true, echo: 0.15, stri: -12, dens: 0.55, edge: 0.92, edgeW: 0.55, at: [60, 25], lab: [60, 25] },
-      { id: 'pir', kind: 'muscle', label: 'Piriformis', short: 'Piriformis', bottom: [[0, 49.6], [20, 51.4], [40, 51.6], [60, 47], [80, 41.6]], smooth: true, echo: 0.12, stri: 18, dens: 0.45, edge: 0.9, edgeW: 0.5, at: [24, 44.6], lab: [24, 44.6] },
+      { id: 'pir', kind: 'muscle', label: 'Piriformis', short: 'Piriformis', desc: 'The triangular piriformis, over the sacral plexus.', bottom: [[0, 49.6], [20, 51.4], [40, 51.6], [60, 47], [80, 41.6]], smooth: true, echo: 0.12, stri: 18, dens: 0.45, edge: 0.9, edgeW: 0.5, at: [24, 44.6], lab: [24, 44.6] },
       { id: 'pelv', kind: 'connective', label: 'Pelvic fat', short: 'Pelvis', nolabel: true, bottom: 100, echo: 0.24, edge: 0 },
     ],
     lines: [],
     shapes: [
-      { id: 'sac', kind: 'bone', label: 'Sacrum', short: 'Sacrum', shape: L(1.7, [0, 47.4], [5, 47.6], [10, 49], [14.4, 52.6]), at: [5, 47.6], lab: [7, 61] },
-      { id: 'isc', kind: 'bone', label: 'Ischium', short: 'Ischium', shape: L(1.7, [52, 66], [58, 61.4], [64, 59.2], [72, 58.4], [80, 58.6]), at: [66, 59], lab: [68, 68] },
-      { id: 'iga', kind: 'artery', label: 'Inferior gluteal artery', short: 'IGA', shape: E(45.2, 52.8, 1.3, 1.25), at: [45.2, 52.8], lab: [44, 70] },
-      ...nerve('sp', 'Sacral plexus', 'Plexus', 31.4, 56.2, 8.6, 3.6, { n: 8, echo: 0.95, fr: 0.13, rot: 8, lab: [22, 72.4], at: [30, 57] }),
+      { id: 'sac', kind: 'bone', label: 'Sacrum', short: 'Sacrum', desc: 'The sacrum, medial to the plexus.', shape: L(1.7, [0, 47.4], [5, 47.6], [10, 49], [14.4, 52.6]), at: [5, 47.6], lab: [7, 61] },
+      { id: 'isc', kind: 'bone', label: 'Ischium', short: 'Ischium', desc: 'The ischium, lateral to the plexus.', shape: L(1.7, [52, 66], [58, 61.4], [64, 59.2], [72, 58.4], [80, 58.6]), at: [66, 59], lab: [68, 68] },
+      { id: 'iga', kind: 'artery', label: 'Inferior gluteal artery', short: 'IGA', desc: 'The gluteal vessels leave the pelvis here too: colour Doppler first.', shape: E(45.2, 52.8, 1.3, 1.25), at: [45.2, 52.8], lab: [44, 70] },
+      ...nerve('sp', 'Sacral plexus', 'Plexus', 31.4, 56.2, 8.6, 3.6, { n: 8, echo: 0.95, fr: 0.13, rot: 8, lab: [22, 72.4], at: [30, 57], desc: 'The sacral plexus: a bright band between the sacrum (medial) and the ischium (lateral).' }),
     ],
     target: { at: [40.6, 55.4], r: 2.2 },
     injections: [

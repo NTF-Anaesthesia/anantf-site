@@ -142,7 +142,7 @@ const PAGES = [
   { t: 'Amputation planner', d: 'Above- and below-knee amputation under nerve blocks: which nerves, what dose', href: '../lower-limb/thigh/#ch-amputation', k: 'Lower limb' },
   { t: 'Block combinations for the whole lower limb', d: 'Operation, blocks and total dose for every lower-limb operation', href: '../lower-limb/thigh/#ch-combinations', k: 'Lower limb' },
   { t: 'Brachial plexus', d: '3D model, labelled diagram, ultrasound and coverage for the brachial plexus blocks', href: '../brachial-plexus/', k: 'Upper limb' },
-  { t: 'Cervical, lumbar and sacral plexuses in 3D', d: 'Anatomy in 3D linked to a labelled diagram', href: '../plexus/', k: 'Anatomy in 3D' },
+  { t: 'Cervical, brachial, lumbar and sacral plexuses in 3D', d: 'Anatomy in 3D linked to a labelled diagram', href: '../plexus/', k: 'Anatomy in 3D' },
   { t: 'Spinal anaesthesia', d: 'Ward card, anatomy, pharmacology, technique, troubleshooting, complications', href: '../spinal/', k: 'Neuraxial' },
   { t: 'Ward card', d: 'Spinal anaesthesia', href: '../spinal/#ch-card', k: 'Neuraxial' },
   { t: 'Spinal technique', d: 'Spinal anaesthesia', href: '../spinal/#ch-technique', k: 'Neuraxial' },
@@ -500,8 +500,8 @@ function regionCards() {
 }
 function anatomyRows() {
   const rows = [
-    ['Brachial plexus', 'Upper-limb blocks: 3D model, diagram and ultrasound views', '../brachial-plexus/', blocksIn('upper-limb').length],
     ['Cervical plexus', 'Superficial, intermediate and deep cervical plexus blocks', '../plexus/#plexus=cervical', null],
+    ['Brachial plexus', 'Interscalene, supraclavicular, infraclavicular and axillary, with the advanced variants', '../plexus/#plexus=brachial', null],
     ['Lumbar plexus', 'Femoral, fascia iliaca, PENG, LFCN, obturator, adductor canal', '../plexus/#plexus=lumbar', null],
     ['Sacral plexus', 'Sciatic approaches, popliteal and pudendal', '../plexus/#plexus=sacral', null],
   ];

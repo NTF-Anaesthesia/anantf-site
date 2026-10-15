@@ -34,19 +34,19 @@ export const REGIONS = Object.freeze([
 export const REGISTRY = Object.freeze({
   // ---------------------------------------------------------------- Upper limb (brachial plexus app)
   interscalene: { title: 'Interscalene block', region: 'upper-limb', url: '/brachial-plexus/#block=interscalene',
-    aliases: ['ISB', 'interscalene brachial plexus block'], anatomy3d: { app: 'brachial-plexus', block: 'interscalene' } },
+    aliases: ['ISB', 'interscalene brachial plexus block'], anatomy3d: { plexus: 'brachial', block: 'interscalene' } },
   'superior-trunk': { title: 'Superior trunk block', region: 'upper-limb', url: '/brachial-plexus/#block=superior-trunk',
-    aliases: ['STB', 'upper trunk block'], anatomy3d: { app: 'brachial-plexus', block: 'superior-trunk' } },
+    aliases: ['STB', 'upper trunk block'], anatomy3d: { plexus: 'brachial', block: 'superior-trunk' } },
   supraclavicular: { title: 'Supraclavicular block', region: 'upper-limb', url: '/brachial-plexus/#block=supraclavicular',
-    aliases: ['SCB', 'supraclavicular brachial plexus block'], anatomy3d: { app: 'brachial-plexus', block: 'supraclavicular' } },
+    aliases: ['SCB', 'supraclavicular brachial plexus block'], anatomy3d: { plexus: 'brachial', block: 'supraclavicular' } },
   infraclavicular: { title: 'Infraclavicular block (coracoid / parasagittal)', region: 'upper-limb', url: '/brachial-plexus/#block=infraclavicular',
-    aliases: ['ICB', 'coracoid block', 'lateral sagittal infraclavicular'], anatomy3d: { app: 'brachial-plexus', block: 'infraclavicular' } },
+    aliases: ['ICB', 'coracoid block', 'lateral sagittal infraclavicular'], anatomy3d: { plexus: 'brachial', block: 'infraclavicular' } },
   costoclavicular: { title: 'Costoclavicular block', region: 'upper-limb', url: '/brachial-plexus/#block=costoclavicular',
-    aliases: ['CCB', 'costoclavicular brachial plexus block'], anatomy3d: { app: 'brachial-plexus', block: 'costoclavicular' } },
+    aliases: ['CCB', 'costoclavicular brachial plexus block'], anatomy3d: { plexus: 'brachial', block: 'costoclavicular' } },
   raptir: { title: 'RAPTIR (retroclavicular) block', region: 'upper-limb', url: '/brachial-plexus/#block=raptir',
-    aliases: ['retroclavicular block', 'retroclavicular'], anatomy3d: { app: 'brachial-plexus', block: 'raptir' } },
+    aliases: ['retroclavicular block', 'retroclavicular'], anatomy3d: { plexus: 'brachial', block: 'raptir' } },
   axillary: { title: 'Axillary block', region: 'upper-limb', url: '/brachial-plexus/#block=axillary',
-    aliases: ['axillary brachial plexus block', 'AXB'], anatomy3d: { app: 'brachial-plexus', block: 'axillary' } },
+    aliases: ['axillary brachial plexus block', 'AXB'], anatomy3d: { plexus: 'brachial', block: 'axillary' } },
 
   // ---------------------------------------------------------------- Trunk
   esp: { title: 'Erector spinae plane block', region: 'trunk', url: '/truncal/back/#ch-esp',

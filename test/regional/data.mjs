@@ -47,7 +47,7 @@ async function gatherModules(browser) {
       }
       try { const r = await import('/shared/regional/js/registry.js'); out.registry = strip(r.REGISTRY); out.regions = strip(r.REGIONS); } catch (e) { out.errors.push(`registry.js: ${e.message}`); }
       out.plexus = {};
-      for (const px of ['cervical', 'lumbar', 'sacral']) { try { out.plexus[px] = strip((await import(`/plexus/js/data/${px}.js`)).default); } catch (e) { out.errors.push(`plexus ${px}: ${e.message}`); } }
+      for (const px of ['cervical', 'brachial', 'lumbar', 'sacral']) { try { out.plexus[px] = strip((await import(`/plexus/js/data/${px}.js`)).default); } catch (e) { out.errors.push(`plexus ${px}: ${e.message}`); } }
       try { const b = await import('/brachial-plexus/js/data.js'); out.brachial = { elements: Object.keys(b.ELEMENTS || {}), blocks: Object.keys(b.BLOCKS || {}) }; } catch (e) { out.errors.push(`brachial data: ${e.message}`); }
       try { const h = await import('/shared/regional/js/figures/head.js'); out.headZones = [...Object.keys(h.ZONES || {}), ...Object.keys(h.GROUPS || {})]; } catch (e) { out.errors.push(`head.js: ${e.message}`); }
       try { const l = await import('/shared/regional/js/figures/leg.js'); out.legZones = [...Object.keys(l.ZONES || {}), ...Object.keys(l.GROUPS || {})]; } catch (e) { out.errors.push(`leg.js: ${e.message}`); }

@@ -1,7 +1,7 @@
 // Back: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
 // Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
 // nothing is traced from published images.
-import { E, PS, L } from '../../../shared/regional/js/scene.js';
+import { E, P, PS, L } from '../../../shared/regional/js/scene.js';
 
 // Square-shouldered transverse process (sharp polygon): flat posterior surface, squared corners.
 const tp = (x0, x1, top, bot) => PS([x0, top + 0.5], [x0 + 0.6, top], [x1 - 0.6, top], [x1, top + 0.5], [x1, bot], [x0, bot]);
@@ -106,16 +106,20 @@ export const SCENES = {
     layers: [
       { id: 'sc', kind: 'fat', label: 'Subcutaneous fat', short: 'Fat', nolabel: true, bottom: [[0, 5.6], [50, 5.2]] },
       { id: 'trap', kind: 'muscle', label: 'Trapezius', short: 'Trap', stri: 0, bottom: [[0, 10.4], [50, 9.4]], labelX: 40 },
-      { id: 'esm', kind: 'muscle', label: 'Erector spinae', short: 'ESM', stri: 0, echo: 0.15, dens: 0.5, bottom: [[0, 23.4], [16, 23.6], [24, 21.6], [36, 18.6], [50, 17.6]], labelX: 14 },
-      { id: 'eic', kind: 'muscle', label: 'External intercostal muscle', short: 'EIM', stri: -14, echo: 0.13, edge: 0.4, bottom: [[0, 23.4], [16, 23.7], [22, 25], [34, 25.3], [50, 25]], at: [44, 23.3], lab: [43, 20.6] },
+      // Erector spinae lies on the transverse process medially; lateral to the TP tip it thins over the external intercostal.
+      { id: 'esm', kind: 'muscle', label: 'Erector spinae', short: 'ESM', stri: 0, echo: 0.15, dens: 0.5, smooth: false,
+        bottom: [[0, 21.3], [9, 21.1], [12.6, 21.5], [15.2, 22.7], [16.6, 24.2], [19, 23.4], [24, 21.6], [36, 18.6], [50, 17.6]], labelX: 14 },
+      { id: 'eic', kind: 'muscle', label: 'External intercostal muscle', short: 'EIM', stri: -14, echo: 0.13, edge: 0.4, smooth: false,
+        bottom: [[0, 21.3], [15.2, 22.7], [16.6, 24.4], [22, 25], [34, 25.3], [50, 25]], at: [44, 23.3], lab: [43, 20.6] },
     ],
     lines: [
-      { id: 'iim', kind: 'ligament', label: 'Internal intercostal membrane', short: 'IIM', pts: [[15.6, 25.4], [22, 25.6], [34, 25.9], [50, 25.6]], w: 0.6, at: [34, 25.9], lab: [33, 32] },
+      { id: 'iim', kind: 'ligament', label: 'Internal intercostal membrane', short: 'IIM', pts: [[16.2, 25.5], [22, 25.6], [34, 25.9], [50, 25.6]], w: 0.6, at: [34, 25.9], lab: [33, 32] },
       { id: 'pleura', kind: 'pleura', label: 'Pleura', pts: [[0, 35.6], [10, 34], [18, 32], [30, 29.6], [50, 28.8]], sliding: true, at: [46, 28.9], lab: [44, 36.5] },
     ],
     shapes: [
       { id: 'pvs', kind: 'none', label: 'Paravertebral space', short: 'PVS', shape: PS([15.6, 25.9], [26, 26.2], [18, 31.6], [11, 33.5]), at: [17, 29], lab: [10, 41.6] },
-      { id: 'tp', kind: 'bone', label: 'Transverse process', short: 'TP', shape: L(1.6, [0, 23.9], [8, 24.3], [15.4, 25.3]), at: [6, 24.2], lab: [7, 29.5] },
+      // Solid TP with a rounded lateral tip: its back surface sits a few mm superficial to the IIM, which leaves the tip.
+      { id: 'tp', kind: 'bone', label: 'Transverse process', short: 'TP', shape: P([-2, 21.4], [8, 21.2], [12.6, 21.6], [15.2, 22.8], [16.6, 24.6], [16, 26], [13, 26.6], [-2, 27]), at: [6, 21.3], lab: [7, 29.5] },
     ],
     target: { at: [17.5, 28.2], r: 2 },
     injections: [
@@ -159,7 +163,11 @@ describe(SCENES, {
   'Superior costotransverse ligament': 'The bright band sloping from the transverse process to the rib below; the paravertebral space is under it.',
   'Internal intercostal membrane': 'The posterior wall of the space in this view, continuous with the SCTL. Deposit below it.',
   'ESP plane': 'Deep to erector spinae, on the transverse process.',
+  'Intertransverse tissue complex': 'Between the transverse processes, with the pleura deeper still.',
+  'External intercostal muscle': 'Lateral to the transverse process, with the internal intercostal membrane under it.',
 }, {
   pvb: { 'Paravertebral space': 'Under the SCTL. Deposit below it: the pleura should be pushed down.' },
-  pvbt: { 'Paravertebral space': 'A hypoechoic wedge between the internal intercostal membrane above and the bright pleura below, which moves with breathing.' },
+  pvbt: {
+    'Transverse process': 'Bright, with a shadow; the internal intercostal membrane runs laterally from its tip.',
+    'Paravertebral space': 'A hypoechoic wedge between the internal intercostal membrane above and the bright pleura below, which moves with breathing.' },
 });

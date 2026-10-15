@@ -1,25 +1,26 @@
-// Cervical, lumbar and sacral plexus teaching page: the app bar (home, plexus and block picker, copy link, level),
-// URL state (#plexus=…&el=…&block=…), the first-visit level picker and Escape. The explorer itself (3D, diagram,
-// details) is explorer.js, which block pages also use.
+// Anatomy in 3D (cervical, brachial, lumbar and sacral plexuses): the page around the explorer. The regional app bar
+// (back to /blocks/, plexus menu, search, copy link, MO · Res · Con level), URL state (#plexus=…&el=…&block=…), the
+// first-visit level picker and Escape. The explorer itself (plexus tabs, block chips, 3D, diagram, details) is
+// explorer.js, which block pages also use.
 //
 // ?embed=1 (used by explorer.js on pages without a three.js import map) shows the explorer alone, for an iframe.
 
-import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015';
+import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015c';
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../../shared/regional/js/levels.js?v=20261015';
 
-// Where the Home button goes. Change here when the regional front door (/blocks/) is live.
-const HOME = { href: '../regional.html', label: 'Regional', aria: 'Back to Regional anaesthesia' };
-
+const V = '20261015c';
 const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const embed = new URLSearchParams(location.search).has('embed');
 if (embed) document.body.classList.add('px-embed');
 
 applyLevel();
 
 const ui = {
-  bar: $('px-bar'), home: $('px-home'), pick: $('px-pick'), pickPlexus: $('px-pick-plexus'), pickBlock: $('px-pick-block'),
-  panel: $('px-picker'), tabs: $('plexus-tabs'), chips: $('block-chips'), share: $('btn-share'), shareMenu: $('btn-share-menu'),
-  shareStatus: $('share-status'), level: $('px-level'), mount: $('explorer'), credit: $('data-credit'), lead: $('px-lead'),
+  bar: $('tb-bar'), home: $('px-home'), pick: $('px-pick'), pickCur: $('px-pick-cur'), menu: $('px-picker'), wrap: $('px-chmenu'),
+  chlist: $('tb-chlist'), share: $('tb-share'), shareMenu: $('btn-share-menu'), shareStatus: $('share-status'), level: $('px-level'),
+  mount: $('explorer'), credit: $('data-credit'),
+  searchOpen: $('tb-search-open'), sheet: $('tb-sheet'), q: $('tb-sheet-q'), res: $('tb-sheet-res'), resStatus: $('tb-sheet-status'), sheetClose: $('tb-sheet-close'),
 };
 
 // ------------------------------------------------------------------ home link
@@ -27,13 +28,9 @@ if (embed) {
   // In an iframe: the home button opens this view as the full page.
   ui.home.href = location.pathname + location.hash;
   ui.home.target = '_top';
-  ui.home.setAttribute('aria-label', 'Open the full plexus page');
+  ui.home.setAttribute('aria-label', 'Open the full Anatomy in 3D page');
   ui.home.querySelector('span').textContent = 'Full page';
   ui.home.classList.add('is-out');
-} else {
-  ui.home.href = HOME.href;
-  ui.home.setAttribute('aria-label', HOME.aria);
-  ui.home.querySelector('span').textContent = HOME.label;
 }
 
 // ------------------------------------------------------------------ level
@@ -60,51 +57,62 @@ function writeHash(s) {
   if (embed) ui.home.href = location.pathname + next;
 }
 
-// ------------------------------------------------------------------ picker menu (phones and tablets)
-const wide = window.matchMedia('(min-width: 900px)');
-function setMenu(open, { focus = false } = {}) {
-  const isOpen = !ui.panel.classList.contains('is-closed');
-  if (wide.matches) { ui.panel.classList.remove('is-closed'); ui.pick.setAttribute('aria-expanded', 'false'); return; }
-  if (open === isOpen) return;
-  ui.panel.classList.toggle('is-closed', !open);
-  ui.pick.setAttribute('aria-expanded', String(open));
-  document.body.classList.toggle('px-menu-open', open);
-  if (open) {
-    const top = Math.max(0, ui.bar.getBoundingClientRect().bottom);
-    ui.panel.style.maxHeight = `${Math.max(220, Math.round(window.innerHeight - top - 12))}px`;
-    (ui.panel.querySelector('[aria-pressed="true"]') || ui.panel.querySelector('button'))?.focus({ preventScroll: true });
-  } else if (focus) ui.pick.focus({ preventScroll: true });
-}
-const syncMode = () => { ui.panel.classList.toggle('is-closed', !wide.matches); ui.pick.setAttribute('aria-expanded', 'false'); document.body.classList.remove('px-menu-open'); };
-wide.addEventListener?.('change', syncMode);
-syncMode();
-ui.pick.addEventListener('click', () => setMenu(ui.panel.classList.contains('is-closed')));
-document.addEventListener('pointerdown', (e) => {
-  if (wide.matches || ui.panel.classList.contains('is-closed')) return;
-  if (!ui.panel.contains(e.target) && !ui.pick.contains(e.target)) setMenu(false);
+// ------------------------------------------------------------------ plexus menu (the regional bar's chapter menu)
+const closeMenu = (refocus) => {
+  if (ui.menu.hidden) return;
+  ui.menu.hidden = true;
+  ui.pick.setAttribute('aria-expanded', 'false');
+  if (refocus) ui.pick.focus();
+};
+ui.pick.addEventListener('click', () => {
+  if (!ui.menu.hidden) { closeMenu(); return; }
+  closeSearch();
+  ui.menu.hidden = false;
+  ui.pick.setAttribute('aria-expanded', 'true');
+  ui.menu.style.maxHeight = `${Math.max(200, Math.round(innerHeight - Math.max(0, ui.bar.getBoundingClientRect().bottom) - 12))}px`;
+  (ui.menu.querySelector('a[aria-current]') || ui.menu.querySelector('a, button')).focus();
 });
-ui.panel.addEventListener('focusout', (e) => {
-  if (wide.matches || !e.relatedTarget) return;
-  if (!ui.panel.contains(e.relatedTarget) && !ui.pick.contains(e.relatedTarget)) setMenu(false);
+ui.menu.addEventListener('click', (e) => { if (e.target.closest('a')) closeMenu(); });
+ui.wrap.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !ui.menu.hidden) { e.preventDefault(); e.stopPropagation(); closeMenu(true); return; }
+  if (ui.menu.hidden || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+  const items = [...ui.menu.querySelectorAll('a, button')].filter((n) => n.getClientRects().length);
+  const i = items.indexOf(document.activeElement);
+  e.preventDefault();
+  const n = e.key === 'Home' ? 0 : e.key === 'End' ? items.length - 1 : Math.max(0, Math.min(items.length - 1, i + (e.key === 'ArrowDown' ? 1 : -1)));
+  items[n].focus();
+});
+ui.wrap.addEventListener('focusout', (e) => { if (!ui.wrap.contains(e.relatedTarget)) closeMenu(); });
+document.addEventListener('pointerdown', (e) => {
+  if (!ui.wrap.contains(e.target)) closeMenu();
+  if (!ui.sheet.hidden && !ui.sheet.contains(e.target) && !ui.searchOpen.contains(e.target) && !ui.wrap.contains(e.target)) closeSearch();
 });
 
-function paintPick(s) {
-  ui.pickPlexus.textContent = s.plexusTab || PLEXUSES.find((p) => p.id === s.plexus)?.tab || '';
-  ui.pickBlock.textContent = s.blockShort || 'Pick a block';
-  ui.pick.setAttribute('aria-label', `${s.plexusName || 'Plexus'}${s.blockName ? `, ${s.blockName}` : ', no block chosen'}. Change plexus or block`);
+// Wide screens show the four plexuses inline; when they don't fit next to the tools, the menu instead.
+const fitBar = () => { ui.bar.classList.remove('tb-bar--menu'); if (ui.chlist.getClientRects().length && ui.chlist.scrollWidth > ui.chlist.clientWidth + 1) ui.bar.classList.add('tb-bar--menu'); };
+addEventListener('resize', fitBar);
+document.fonts?.ready?.then(fitBar);
+fitBar();
+
+function paintBar(s) {
+  const p = PLEXUSES.find((x) => x.id === s.plexus);
+  ui.pickCur.innerHTML = `${esc(s.plexusTab || p?.tab || '')}${s.blockShort ? `<span class="px-cur-block"> · ${esc(s.blockShort)}</span>` : ''}`;
+  ui.pick.setAttribute('aria-label', `${s.plexusName || 'Plexus'}${s.blockName ? `, ${s.blockName}` : ''}. Choose a plexus`);
+  for (const a of ui.bar.querySelectorAll('a[data-ch]')) {
+    if (a.dataset.ch === s.plexus) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  }
 }
 
 // ------------------------------------------------------------------ explorer
 const first = readHash();
 const ex = mountExplorer(ui.mount, {
   plexus: first.plexus, block: first.block, el: first.el,
-  tabsHost: ui.tabs, chipsHost: ui.chips, creditHost: ui.credit, legacyIds: true,
+  creditHost: ui.credit, legacyIds: true,
   onChange(s) {
     writeHash(s);
-    paintPick(s);
-    if (s.plexusName) document.title = `${s.plexusName}${s.blockName ? `: ${s.blockShort}` : ''} for regional anaesthesia`;
+    paintBar(s);
+    if (s.plexusName) document.title = `${s.plexusName}${s.blockName ? `: ${s.blockShort}` : ''} — Anatomy in 3D — NTF Anaesthesia`;
   },
-  onBlockPick() { setMenu(false); },
 });
 
 window.addEventListener('hashchange', () => {
@@ -113,12 +121,75 @@ window.addEventListener('hashchange', () => {
 });
 
 document.addEventListener('keydown', (ev) => {
+  if ((ev.ctrlKey || ev.metaKey) && !ev.altKey && !ev.shiftKey && (ev.key === 'k' || ev.key === 'K')) { ev.preventDefault(); openSearch(); return; }
   if (ev.key !== 'Escape') return;
-  if (!wide.matches && !ui.panel.classList.contains('is-closed')) { setMenu(false, { focus: true }); return; }
-  if (ev.target.closest?.('input, textarea, select, .px-v3-menu')) return;
+  if (!ui.sheet.hidden) { closeSearch(true); return; }
+  if (ev.target.closest?.('input, textarea, select, .px-v3-menu, .tb-chmenu')) return;
   // Escape clears the selected nerve and the block together.
   const s = ex.state();
   if (s.el || s.block) ex.clear();
+});
+
+// ------------------------------------------------------------------ search (nerves and blocks in every plexus)
+let index = null;
+async function loadIndex() {
+  if (index) return index;
+  const rows = [];
+  await Promise.all(PLEXUSES.map(async (p) => {
+    try {
+      const d = (await import(`./data/${p.id}.js?v=${V}`)).default;
+      for (const id of d.blockOrder || Object.keys(d.blocks || {})) {
+        const b = d.blocks[id];
+        rows.push({ plexus: p, kind: 'Block', title: b.name || id, hash: `plexus=${p.id}&block=${id}`, text: [b.name, b.short, id].join(' ') });
+      }
+      for (const id of d.order || Object.keys(d.elements || {})) {
+        const e = d.elements[id];
+        if (!e) continue;
+        rows.push({ plexus: p, kind: e.kind === 'related' ? 'Related nerve' : 'Nerve', title: e.name || id, hash: `plexus=${p.id}&el=${id}`, text: [e.name, e.short, (e.roots || []).join(' ')].join(' ') });
+      }
+    } catch (err) { console.warn(`[plexus] search could not load ${p.id}`, err); }
+  }));
+  const order = PLEXUSES.map((p) => p.id);
+  rows.sort((a, b) => order.indexOf(a.plexus.id) - order.indexOf(b.plexus.id));
+  index = rows;
+  return rows;
+}
+const norm = (s) => String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[–—-]/g, ' ');
+async function runSearch() {
+  const q = norm(ui.q.value).trim();
+  if (!q) { ui.res.replaceChildren(); ui.resStatus.textContent = ''; return; }
+  const rows = await loadIndex();
+  const words = q.split(/\s+/);
+  const hits = rows.filter((r) => { const t = norm(`${r.text} ${r.plexus.name}`); return words.every((w) => t.includes(w)); })
+    .sort((a, b) => (norm(b.title).startsWith(words[0]) - norm(a.title).startsWith(words[0])) || (a.kind === 'Block' ? -1 : 0) - (b.kind === 'Block' ? -1 : 0))
+    .slice(0, 30);
+  if (norm(ui.q.value).trim() !== q) return;
+  ui.res.innerHTML = hits.length
+    ? hits.map((r) => `<li><a class="tb-sres" href="#${esc(r.hash)}"><span class="tb-sres-t">${esc(r.title)}</span><span class="tb-sres-c">${esc(r.plexus.name)} · ${esc(r.kind)}</span></a></li>`).join('')
+    : '<li class="tb-sres-none">No results. Try a nerve, a root (for example C5) or a block.</li>';
+  ui.resStatus.textContent = hits.length ? `${hits.length} result${hits.length === 1 ? '' : 's'}` : 'No results';
+}
+function openSearch() {
+  closeMenu();
+  ui.sheet.hidden = false;
+  ui.searchOpen.setAttribute('aria-expanded', 'true');
+  ui.q.focus();
+  loadIndex();
+}
+function closeSearch(refocus) {
+  if (ui.sheet.hidden) return;
+  ui.sheet.hidden = true;
+  ui.searchOpen.setAttribute('aria-expanded', 'false');
+  if (refocus) ui.searchOpen.focus();
+}
+ui.searchOpen.addEventListener('click', () => (ui.sheet.hidden ? openSearch() : closeSearch()));
+ui.sheetClose.addEventListener('click', () => closeSearch(true));
+ui.bar.querySelector('.tb-chmenu-search').addEventListener('click', () => openSearch());
+ui.q.addEventListener('input', runSearch);
+ui.res.addEventListener('click', (e) => {
+  if (!e.target.closest('a')) return;
+  closeSearch();
+  ui.mount.scrollIntoView({ block: 'start', behavior: 'auto' });
 });
 
 // ------------------------------------------------------------------ copy link
@@ -134,16 +205,12 @@ async function copyLink(btn) {
     ta.remove();
   }
   ui.shareStatus.textContent = ok ? 'Link copied' : 'Copy the address from the address bar';
-  for (const b of [ui.share, ui.shareMenu]) b?.classList.remove('is-done');
-  btn.classList.toggle('is-done', ok);
   const span = btn.querySelector('span');
-  const was = btn === ui.share ? 'Copy link' : 'Copy link to this view';
-  if (span) span.textContent = ok ? 'Link copied' : was;
+  if (span && ok) span.textContent = btn === ui.share ? 'Copied' : 'Link copied';
   clearTimeout(shareTimer);
   shareTimer = setTimeout(() => {
     ui.share.querySelector('span').textContent = 'Copy link';
     ui.shareMenu.querySelector('span').textContent = 'Copy link to this view';
-    for (const b of [ui.share, ui.shareMenu]) b.classList.remove('is-done');
     ui.shareStatus.textContent = '';
   }, 2200);
 }

@@ -1,6 +1,8 @@
 // Face: anatomy chapter and the deep trigeminal (maxillary and mandibular) blocks chapter.
 import { el, fill, table, callout, registerSearch } from '../../../shared/regional/js/ui.js';
 import { viewsFigure } from '../../../shared/regional/js/figures/head.js?v=20261015';
+import { mountScan } from '../../../shared/regional/js/scan.js';
+import { SCENES } from './scenes.js?v=20261015';
 
 export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'fa-anat-h', text: 'Anatomy: the trigeminal nerve' }));
@@ -41,6 +43,10 @@ export function renderDeep(sec) {
   sec.append(fill(el('div', { class: 'tb-prose' }), `<p>Covers the lower jaw and teeth, the front two-thirds of the tongue, the floor of the mouth, the temple and the front of the ear, and relaxes the muscles of mastication. Used for jaw and tongue surgery and in the pain clinic (trigeminal neuralgia).</p>
 <ul><li>The needle enters in the <strong>coronoid notch</strong>, below the middle of the zygomatic arch, perpendicular to the skin, to the <strong>lateral pterygoid plate</strong>. It is then walked off the back of the plate for V3, or the front of it (towards the pterygopalatine fossa) for V2.</li>
 <li>Aspirate often: the <strong>maxillary artery</strong> is in the way. The pharynx is just medial.</li></ul>`));
+  // Schematic section of the coronoid notch approach (both nerves); deep links #deep-step-*, #deep-inj-v2 / -v3.
+  const scanWrap = el('div', { class: 'tb-scan-wrap' });
+  sec.append(scanWrap);
+  mountScan(scanWrap, SCENES.deep, { blockId: 'deep' });
   sec.append(table({
     head: ['Risk', 'Why'],
     rows: [

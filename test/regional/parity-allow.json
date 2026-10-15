@@ -111,5 +111,13 @@
         "why": "Owner rule (no citations on pages): brachial-plexus app.js keeps b.sources in data.js but no longer shows them (WP4)."
       }
     ]
+  },
+  "plexus/": {
+    "missingPatterns": [
+      {
+        "re": "^The lumbosacral trunk \\(L4–L5\\) and the anterior rami of S1–S4 join on the front of piriformis\\. Almost every branch leaves the pelvis through the greater sciatic foramen",
+        "why": "Plexus subsumed into the regional app (Anatomy in 3D, 15 Oct 2026): the plexus tabs, block chips and page heading moved into <main> and the explorer into section#px-explorer, so the baseline's single _main text blob (sacral intro + legend run together) is now split into lines. Every sentence of it is still on the page (intro and legend lines in #px-explorer)."
+      }
+    ]
   }
 }

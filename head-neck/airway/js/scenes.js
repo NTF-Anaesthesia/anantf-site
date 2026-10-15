@@ -74,4 +74,44 @@ export const SCENES = {
     probe: { view: 'front', x: 100, y: 202, angle: 90, label: 'longitudinal in the midline of the neck over the larynx.' },
     probeInset: headProbeInset,
   },
+  // Glossopharyngeal nerve, intraoral (landmark block: schematic section, no ultrasound). A horizontal section through
+  // the right side of the oropharynx at the base of the tonsillar pillars, turned so that depth from the mucosa (outwards,
+  // into the neck) runs down the screen. The nerve curves forward on stylopharyngeus, just deep to the thin superior
+  // constrictor, to the base of the tongue; the internal carotid artery lies about 2 cm deeper. Not to scale.
+  gpn: {
+    id: 'hn-aw-gpn', title: 'Glossopharyngeal nerve: section at the base of the tonsillar pillars', image: 'diagram',
+    width: 36, depth: 30, focus: 10, skin: 0.6,
+    stepTitles: ['Landmarks', 'Identify', 'Needle', 'Inject'],
+    view: 'Schematic horizontal section through the right side of the oropharynx at the base of the tonsillar pillars, turned so that depth from the mucosa (outwards, into the neck) runs down the screen: towards the tongue (anterior) on the left, the back of the pharynx (posterior) on the right. Not to scale.',
+    alt: 'Under the mucosa: the lower pole of the tonsil in front and palatopharyngeus (the posterior pillar) behind, then the thin superior constrictor. The glossopharyngeal nerve lies just deep to it beside stylopharyngeus. Deeper, in the parapharyngeal space, are the internal carotid artery and the internal jugular vein.',
+    orient: { left: 'Anterior (tongue)', right: 'Posterior', marker: 'left' },
+    layers: [
+      { id: 'sm', kind: 'connective', label: 'Mucosa and submucosa', short: 'Mucosa', edge: 0, bottom: 1.6, at: [30, 1.1], lab: [30, 1.1] },
+      { id: 'pp', kind: 'muscle', label: 'Palatopharyngeus (posterior pillar)', short: 'Post. pillar', stri: 0, bottom: [[0, 1.6], [12.4, 1.6], [16.6, 3.8], [36, 3.8]], smooth: false, edge: 0.7, at: [27, 2.7], lab: [27, 2.7] },
+      { id: 'sc', kind: 'muscle', label: 'Superior constrictor', short: 'Constrictor', stri: 8, echo: 0.13, edge: 0.6, bottom: [[0, 5.2], [36, 4.9]], at: [30, 4.4], lab: [31, 7.6] },
+      { id: 'pps', kind: 'fat-deep', label: 'Parapharyngeal space', short: 'Parapharyngeal', edge: 0, bottom: 40, at: [20, 13.4], lab: [20, 13.4] },
+    ],
+    shapes: [
+      { id: 'ton', kind: 'connective', label: 'Palatine tonsil (lower pole)', short: 'Tonsil', shape: P([0.6, 1.7], [11.6, 1.7], [14.4, 3], [12, 4.2], [1, 4.2]), at: [6.6, 3.2], lab: [6.6, 3.2] },
+      { id: 'stp', kind: 'muscle', label: 'Stylopharyngeus', short: 'Stylo.', shape: E(21.2, 6.7, 2, 1.1), lab: [25.4, 10.2] },
+      { id: 'mpt', kind: 'muscle', label: 'Medial pterygoid', short: 'Med. pteryg.', shape: P([0, 10.6], [8, 10.2], [11.4, 14.6], [9, 21], [0, 21.6]), at: [4.4, 15.6], lab: [4.4, 15.6] },
+      { id: 'sty', kind: 'bone', label: 'Styloid process', short: 'Styloid', shape: E(15.2, 25.6, 1.3, 1.1), lab: [8.6, 27.2] },
+      { id: 'ica', kind: 'artery', label: 'Internal carotid artery', short: 'ICA', shape: E(22.6, 20.2, 2.7, 2.6), lab: [15, 19.4] },
+      { id: 'ijv', kind: 'vein', label: 'Internal jugular vein', short: 'IJV', shape: E(30.4, 23.4, 3.4, 2.8), lab: [30.6, 28] },
+      { id: 'gpn', kind: 'nerve', label: 'Glossopharyngeal nerve (IX)', short: 'IX', shape: E(17.6, 6.1, 1, 0.7), lab: [11.6, 8.8] },
+    ],
+    target: { at: [17.6, 5.8], r: 1.8 },
+    injections: [
+      { id: 'gpn', label: 'Base of the posterior pillar', entry: [25, -4], tip: [18.2, 4.9],
+        spread: { along: [[12, 5.3], [17.6, 5.3], [23, 5.1]], x0: 13, x1: 22, from: 18, thick: 1.6, up: 0.5, above: 3 } },
+    ],
+    steps: {
+      scan: '<p>Mouth open, after topical spray. Push the tongue to the other side with a tongue depressor and find the <strong>base of the posterior tonsillar pillar</strong>, about 0.5 cm lateral to the side of the tongue where it meets the floor of the mouth.</p>',
+      identify: '<p>The <strong>glossopharyngeal nerve</strong> runs just under the mucosa at the base of the tonsillar pillars. The <strong>internal carotid artery</strong> is close behind the tonsillar pillar, deeper in the neck.</p>',
+      needle: '<p>Insert the needle <strong>submucosally</strong> at the base of the posterior tonsillar pillar (or the anterior pillar). The nerve is just under the mucosa, so the needle stays shallow.</p>',
+      inject: '<p>Aspirate, then inject (dose box below). Repeat on the other side.</p>',
+    },
+    probe: { view: 'airway', points: [[114, 128]], key: 'Needle entry', label: 'inside the mouth, at the base of the posterior tonsillar pillar (each side in turn).' },
+    probeInset: headProbeInset,
+  },
 };
