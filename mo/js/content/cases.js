@@ -24,9 +24,9 @@ export default {
           "Pain comes from the port sites and the shoulder tip: paracetamol, an anti-inflammatory if safe, a little opioid and local anaesthetic at the ports.",
         ] },
         { t: 'table', head: ['Operation', 'Usual airway', 'Watch for'], rows: [
-          ['Laparoscopic cholecystectomy', 'Tracheal tube, relaxant', 'Head up, tilted left; vagal slowing; PONV'],
-          ['Laparoscopic appendicectomy', 'Tracheal tube; rapid sequence induction (RSI) for an acute abdomen', 'Often young, dehydrated and with a full stomach'],
-          ['Laparoscopic hernia repair', 'Tracheal tube, relaxant', 'Head down; deep relaxation helps the surgeon'],
+          ['Gallbladder (cholecystectomy)', 'Tube and relaxant', 'Head up, tilted left; slow heart; PONV'],
+          ['Appendix (appendicectomy)', 'Rapid sequence induction (RSI), tube', 'Young, dry, full stomach'],
+          ['Laparoscopic hernia', 'Tube and relaxant', 'Head down; deep relaxation helps'],
           ['Open inguinal hernia', 'Laryngeal mask (LMA), spinal, or local with sedation', 'Short; often a day case'],
         ], caption: 'The usual choices. Your consultant may choose differently for a particular patient.' },
         { t: 'callout', kind: 'local', text: "The handbook lists an acute abdomen (appendicitis, gastric outlet obstruction) among the reasons for an RSI, so most emergency appendicectomies are RSIs: see [rapid sequence induction](#/learn/induction/rsi)." },
