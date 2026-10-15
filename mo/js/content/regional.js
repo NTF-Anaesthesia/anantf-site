@@ -129,8 +129,7 @@ export default {
           'A spinal is local anaesthetic injected into the cerebrospinal fluid (CSF) below the end of the spinal cord. It numbs the lower body within minutes.',
           'Full asepsis; chlorhexidine kept away from the spinal tray and left to dry.',
           'A good position makes it easy: help the patient curl forward and keep still, and keep talking to them.',
-          'Blood pressure often falls: measure it every `2–3 min` for the first `20 min` and treat early.',
-          'Nausea or yawning soon after a spinal means low blood pressure until proved otherwise.',
+          'Blood pressure often falls: measure it every `2–3 min` for the first `20 min` and treat early. Nausea or yawning means low pressure until proved otherwise.',
           'Check the block height with cold on both sides before surgery, and keep the patient warm.',
           'Tingling or weak hands, breathlessness or a weak voice means the block is too high: call for help.',
         ] },
@@ -142,7 +141,7 @@ export default {
           { title: 'Vasopressor.', text: 'Ask your consultant what to draw up before the spinal: usually phenylephrine. Ephedrine and atropine are on the emergency drug (E-drug) tray.' },
           { title: 'Kit.', text: 'Spinal pack, hat, mask, sterile gown and gloves, chlorhexidine in alcohol, a fine pencil-point spinal needle (`25–27 G`), a filter needle, lignocaine 1% for the skin, and the spinal drug your consultant chooses.' },
         ] },
-        { t: 'callout', kind: 'local', text: 'At NTFGH the spinal trolley is extra kit, set up only when your consultant asks for it. Find out at your premed visit, so it is ready before the patient comes in.' },
+        { t: 'callout', kind: 'local', text: 'At NTFGH the spinal trolley is set up only when your consultant asks for it. Ask when you update them after the premed visit, so it is ready before the patient comes in.' },
         { t: 'callout', kind: 'warn', title: 'Chlorhexidine and the spinal tray', text: 'Chlorhexidine is toxic to nerves. The skin is cleaned before the spinal tray is opened or well away from it, left to dry fully, and no chlorhexidine goes near the drug pots or needles.' },
         { t: 'h', text: 'Positioning' },
         { t: 'compare', cols: [
@@ -153,18 +152,17 @@ export default {
             'Patients can faint: keep a hand on them.',
           ] },
           { title: 'On the side', items: [
-            'Back at the edge of the table and parallel to it.',
+            'Back at the edge of the table and parallel to it, shoulders and hips stacked straight.',
             'Knees to chest, chin down, curled up.',
             'For patients who cannot sit, such as after a hip fracture.',
-            'Shoulders and hips stacked straight, not rolling forward.',
           ] },
         ] },
-        { t: 'script', title: 'Words while the spinal goes in', lines: [
-          '"A cold wipe on your back now. Then a sharp scratch: that\'s the numbing injection."',
-          '"You may feel pushing. Tell us if you feel a sharp pain or tingling down a leg, but try to keep still."',
-          '"Done. Your legs will feel warm and tingly, then heavy. That\'s normal."',
-        ] },
-        { t: 'details', title: 'Explaining a spinal to a patient', blocks: [
+        { t: 'details', title: 'What to say to the patient: consent, and while the spinal goes in', blocks: [
+          { t: 'script', title: 'While the spinal goes in', lines: [
+            '"A cold wipe on your back now. Then a sharp scratch: that\'s the numbing injection."',
+            '"You may feel pushing. Tell us if you feel a sharp pain or tingling down a leg, but try to keep still."',
+            '"Done. Your legs will feel warm and tingly, then heavy. That\'s normal."',
+          ] },
           { t: 'script', title: 'Words for the consent', lines: [
             '"We numb you from the waist down with an injection in your back. You stay awake, or lightly sleepy if you wish, and feel no pain from the operation. Your legs will be heavy and numb for a few hours afterwards."',
             '"The risks: bleeding or infection where the needle goes in, very rarely a blood clot or abscess pressing on the nerves, a headache in the days afterwards, and rarely nerve damage or, very rarely, paralysis. Sometimes the spinal does not work well enough, and then we give you a general anaesthetic."',
@@ -182,9 +180,9 @@ export default {
         { t: 'h', text: 'Afterwards: the first 20 minutes' },
         { t: 'steps', items: [
           { title: 'Position as asked.', text: 'Usually flat. Do not tilt head-down after a heavy spinal unless your consultant asks: the drug can run higher.' },
-          { title: 'Blood pressure every 2–3 min.', text: 'Cycle the NIBP every `2–3 min` for the first `20 min`, then every `3–5 min`. Watch the heart rate, the patient\'s colour and how they talk.' },
+          { title: 'Blood pressure every 2–3 min.', text: 'Cycle the NIBP, then every `3–5 min` after `20 min`. Watch the heart rate, the patient\'s colour and how they talk.' },
           { title: 'Treat early.', text: 'Before the spinal, agree with your consultant what pressure to keep (often within `20%` of baseline) and what you may give. Then treat a fall straight away (table below).' },
-          { title: 'Check the block.', text: 'Cold (ice or a cold spray) on both sides, from the legs upwards, at about 5, 10 and 20 minutes and before the incision: "Does this feel as cold as on your arm?" Note the level each side. Your consultant decides whether it is high enough for surgery to start.' },
+          { title: 'Check the block.', text: 'Cold (ice or a cold spray) on both sides, moving up from the legs, at about 5, 10 and 20 minutes and before the incision: "Does this feel as cold as on your arm?" Note the level each side (table below). Your consultant decides whether it is high enough for surgery.' },
           { title: 'Keep them warm.', text: 'A spinal moves heat from the core to the legs. Warm air blanket (Bair Hugger), warm fluids, a temperature probe in longer cases.' },
           { title: 'Keep talking.', text: 'An awake patient is the best monitor of a high block and, in a TURP, of fluid absorption (new confusion, restlessness or nausea).' },
         ] },
@@ -286,7 +284,9 @@ export default {
         { t: 'tool', id: 'la-max' },
         { t: 'p', text: '**Doses add up.** Two local anaesthetics share one limit. If half the bupivacaine maximum has been given, only half the lignocaine maximum is left. Before the surgeon infiltrates, add up what has already gone in (the chart and the block note) and, with your consultant, tell them how much is left.' },
         { t: 'p', text: '**Strengths.** A percentage is grams per `100 mL`, so multiply by 10 for mg/mL. Lignocaine 2% is `20 mg/mL`, so a `10 mL` syringe holds `200 mg`: the plain maximum for a `67 kg` adult. Adrenaline 1:200,000 is `5 mcg/mL`. The [strength converter](#/tools/convert) does the sums.' },
-        { t: 'drugs', ids: ['lignocaine', 'bupivacaine', 'ropivacaine', 'levobupivacaine'], title: 'The local anaesthetics' },
+        { t: 'details', title: 'Drug cards: lignocaine, bupivacaine, ropivacaine, levobupivacaine', blocks: [
+          { t: 'drugs', ids: ['lignocaine', 'bupivacaine', 'ropivacaine', 'levobupivacaine'], title: 'The local anaesthetics' },
+        ] },
         { t: 'h', text: 'Injecting safely' },
         { t: 'list', items: [
           'Ultrasound lets your consultant see the needle and the spread, which lowers the risk of injecting into a vessel.',
@@ -294,12 +294,12 @@ export default {
           'Inject slowly, `3–5 mL` at a time with a pause between, watching the patient and the electrocardiogram (ECG) as well as the spread.',
           'Stop if the injection is painful or very hard to push: the needle may be in the nerve.',
           '[Stop before you block](#/learn/regional/ra-role): check the mark and the side again just before the needle.',
-          'Label every syringe with drug and strength (local anaesthetic labels are grey), and keep block syringes away from IV drugs. Never give local anaesthetic with adrenaline intravenously.',
+          'Label every syringe with drug and strength (local anaesthetic labels are grey), and keep block syringes well apart from IV drugs.',
           'Keep watching after the needle is out: blood levels peak `10–30 min` after most blocks, and later after large-volume fascial plane blocks.',
         ] },
         { t: 'callout', kind: 'warn', title: 'Who is at more risk', text: 'The elderly and frail; small, thin or pregnant patients; poor heart function or heart block; liver disease; blocks in very vascular places (between the ribs); and large-volume fascial plane blocks.' },
         { t: 'h', text: 'Recognising toxicity' },
-        { t: 'p', text: 'Local anaesthetic systemic toxicity (LAST) can start within a minute (injection into a vessel) or up to an hour later (absorption). It usually starts in the brain and moves to the heart, but a sedated or anaesthetised patient may show only the heart signs, and bupivacaine can stop the heart with little warning.' },
+        { t: 'p', text: 'LAST can start within a minute (injection into a vessel) or up to an hour later (absorption). It usually starts in the brain and moves to the heart, but a sedated or anaesthetised patient may show only the heart signs, and bupivacaine can stop the heart with little warning.' },
         { t: 'compare', cols: [
           { title: 'Brain (often first)', items: [
             'Numb lips or tongue, a metallic taste',
@@ -317,7 +317,7 @@ export default {
         { t: 'callout', kind: 'stop', title: 'LAST: what to do', items: [
           'Stop injecting. Call for help and get the [LAST crisis card](#/crisis/last).',
           'Airway and `100%` oxygen; ventilate if needed. Low oxygen and acidosis make toxicity worse.',
-          'Seizures: a benzodiazepine (midazolam `2–5 mg` IV), or small doses of propofol only if the blood pressure is stable, as your consultant directs.',
+          'Seizures: midazolam `2–5 mg` IV, or small doses of propofol only if the blood pressure is stable, as your consultant directs.',
           'Give lipid emulsion at the first sign of serious toxicity (arrhythmias, seizures that do not stop, falling blood pressure), not only after an arrest.',
           'Arrhythmias: amiodarone, never lignocaine (it is another local anaesthetic). Avoid vasopressin, calcium channel blockers and beta-blockers.',
           'No pulse: start cardiopulmonary resuscitation (CPR), use smaller adrenaline doses (`1 mcg/kg` or less), and keep going: recovery can take over an hour.',

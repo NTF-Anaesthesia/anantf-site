@@ -379,13 +379,13 @@ export default {
           'Call for help: stop, or go to the nearest place with help, and phone your consultant.',
           'Take the patient off the ventilator and hand-ventilate with the self-inflating bag on `100%` oxygen.',
           'Check the oxygen: is the cylinder turned on, and is it empty?',
-          'Check the tube: still in (a capnography trace), not kinked or blocked; suction it.',
+          'Check the tube: still in (is there a capnography trace?), not kinked or blocked; suction it.',
           'Check the chest: moving on both sides? A pneumothorax is possible.',
-          'Check the circulation: pulse, BP and EtCO2. A falling cardiac output also drops the SpO2.',
+          'Check the circulation: pulse, BP and end-tidal CO2 (EtCO2). A falling cardiac output also drops the SpO2.',
         ] },
 
         { t: 'h', text: 'Arrival and handover' },
-        { t: 'p', text: "Move the patient onto the receiving unit's oxygen and monitor one at a time, so they are never without both. Then hand over with the same structure as a PACU handover (the [handover builder](#/tools/handover) helps), and ask the receiving team to listen before they start their own tasks. Stay until they have accepted the patient, and write a short note of the transfer: times, vital signs and anything that happened on the way." },
+        { t: 'p', text: "Swap the patient to the receiving unit's oxygen, then to its monitor, one at a time, so they are never left without oxygen or monitoring. Then hand over with the same structure as a PACU handover (the [handover builder](#/tools/handover) helps), and ask the receiving team to listen before they start their own tasks. Stay until they have accepted the patient, and write a short note of the transfer: times, vital signs and anything that happened on the way." },
         { t: 'script', title: 'Handing over in HD', lines: [
           '"This is Mr K, 67, after an emergency laparotomy for a perforated ulcer. No known drug allergies."',
           '"General anaesthetic with a rapid sequence induction, uneventful. Blood loss 400 mL; 2 L of Hartmann\'s. He needed a little noradrenaline during the case; it was stopped an hour ago and his BP has stayed around 110/65."',
@@ -401,10 +401,10 @@ export default {
             explain: '`340 L ÷ 10 L/min = 34 min`: less than the trip, with no margin for a stuck lift or a slow scan. Take at least twice what you expect to use. Turning down the oxygen to save gas risks hypoxia.',
           },
           {
-            q: 'A patient in PACU is ready to go to HD. Who takes them?',
-            options: ['The PACU MO', 'The primary anaesthetic MO, with a PACU discharge note', 'A porter and a nurse on their own', 'The HD team, who come to collect'],
+            q: 'Your patient from an emergency laparotomy is in PACU and ready to go to HD. You are the primary anaesthetic MO and your next case is not ready yet. What happens?',
+            options: ['The PACU MO takes him, as he is a PACU patient', 'You take him, once the PACU discharge note is written, with a monitor, oxygen and a bag', 'A porter and a nurse take him on their own', 'He waits in PACU until the HD team can collect him'],
             answer: 1,
-            explain: 'At NTFGH the primary anaesthetic MO transports HD patients from PACU, and a PACU discharge note is still needed.',
+            explain: 'At NTFGH the primary anaesthetic MO transports HD patients from PACU, and a PACU discharge note is still needed. The PACU MO stays in PACU at all times, looking after everyone else. Check with your consultant before you go: they decide whether he is stable enough and who goes with him.',
           },
           {
             q: 'In the lift, the SpO2 of a ventilated patient falls to `88%`. What do you do first?',

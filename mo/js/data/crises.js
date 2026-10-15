@@ -497,7 +497,7 @@ export const CRISES = [
         'Look at heart rate, rhythm, EtCO2, SpO2 and airway pressure.',
         'Turn down the anaesthetic (volatile or propofol).',
         'Raise the legs. Fluid bolus `250–500 mL` crystalloid.',
-        'Vasopressor from the E-drug tray: slow heart rate → ephedrine; normal or fast heart rate → phenylephrine.',
+        'Vasopressor from the emergency drug (E-drug) tray: slow heart rate → ephedrine; normal or fast heart rate → phenylephrine.',
       ] },
       { title: 'Then: find the cause', items: [
         'Ask the surgeon: bleeding? Pressing on the vena cava? Pneumoperitoneum? Traction?',
@@ -509,7 +509,7 @@ export const CRISES = [
       ] },
       { title: 'If not improving', items: [
         'Adrenaline IV in small boluses.',
-        'Start a noradrenaline infusion.',
+        'Your consultant may start a noradrenaline infusion.',
         'Arterial line, 12-lead ECG, blood gas (haemoglobin, lactate).',
         'Systolic below `50 mmHg` or no pulse: start CPR ([cardiac arrest](#/crisis/cardiac-arrest)).',
       ] },
@@ -526,7 +526,7 @@ export const CRISES = [
       'Vasopressors buy time; they do not fix bleeding. Look at the field, the suction and the swabs.',
       'Ephedrine has worked less each time and `30 mg` has not fixed it: stop and look for a cause.',
       'Low blood pressure with high airway pressure or a rash: think anaphylaxis.',
-      'At NTFGH the E-drug tray holds phenylephrine, ephedrine, atropine and sometimes adrenaline: bring it out for every case.',
+      'At NTFGH the E-drug tray holds phenylephrine, ephedrine, atropine and sometimes adrenaline: bring it out for every case. In elective lists draw them up only when your consultant asks, or when you need one now.',
     ],
     after: [
       'Hand over what happened and what worked to the post-anaesthesia care unit (PACU), high dependency (HD) or ICU.',
@@ -610,14 +610,14 @@ export const CRISES = [
         'Stop or reduce the likely drug (remifentanil, dexmedetomidine).',
       ] },
       { title: 'Then', items: [
-        'Atropine from the E-drug tray: `0.6 mg` IV, repeated every 3–5 min up to `3 mg`.',
+        'Atropine from the emergency drug (E-drug) tray: `0.6 mg` IV, repeated every 3–5 min up to `3 mg`.',
         'Slow but not dangerous: glycopyrrolate is an option (slower onset).',
         'Low blood pressure as well: ephedrine.',
         '12-lead ECG: heart block?',
       ] },
       { title: 'If not improving', items: [
-        'Adrenaline: `10 mcg` boluses or an infusion.',
-        'External (transcutaneous) pacing: pads on, demand mode, rate `70`, raise the current until each spike gives a pulse.',
+        'Adrenaline: `10 mcg` boluses; an infusion if your consultant decides.',
+        'External (transcutaneous) pacing, with your consultant: pads on, demand mode, rate `70`, raise the current until each spike gives a pulse.',
         'Think: high spinal, high potassium, myocardial infarction, raised intracranial pressure, hypothermia, beta-blocker or calcium channel blocker overdose.',
       ] },
     ],
@@ -630,7 +630,7 @@ export const CRISES = [
     ],
     pitfalls: [
       'A vagal slowing usually stops when the surgeon stops. If it keeps coming back, give atropine before the next pull.',
-      'Pacemaker patient slowing during diathermy: the device may be sensing the diathermy and holding back. Ask the surgeon to stop. A magnet over a pacemaker usually makes it pace at a fixed rate; a magnet over an implantable defibrillator stops shocks but does not change pacing.',
+      'Pacemaker patient slowing during diathermy: the device may be sensing the diathermy and holding back. Ask the surgeon to stop. A magnet over a pacemaker usually makes it pace at a fixed rate; a magnet over an implantable defibrillator stops shocks but does not change pacing, so put external defibrillator pads on. Your consultant decides on the magnet.',
       'At NTFGH a cardiac device magnet is kept in the OT control room (ask the nurse in charge).',
     ],
     after: [
@@ -659,27 +659,27 @@ export const CRISES = [
         'Sinus tachycardia is a sign, not a diagnosis. Treat the cause: light anaesthesia or pain, bleeding, hypoxia, high CO2, drugs, anaphylaxis, sepsis, malignant hyperthermia.',
       ] },
       { title: 'Danger signs: unstable', items: [
-        'Synchronised shock, up to 3 attempts. An awake patient needs sedation or anaesthesia first.',
+        'Synchronised shock, led by your consultant, up to 3 attempts. An awake patient needs sedation or anaesthesia first.',
         'Shocks fail: amiodarone `300 mg` IV over 10–20 min, then shock again.',
       ] },
       { title: 'No danger signs: stable', items: [
         'Regular narrow: vagal manoeuvre if awake, then adenosine `6 mg`, `12 mg`, `18 mg` rapid IV with a flush.',
-        'Irregular narrow (atrial fibrillation): slow the rate with a beta-blocker, or amiodarone if the heart is failing.',
+        'Irregular narrow (atrial fibrillation): your consultant slows the rate with a beta-blocker, or amiodarone if the heart is failing.',
         'Regular broad (VT): amiodarone `300 mg` IV over 10–60 min.',
         'Torsades de pointes: magnesium `2 g` IV over 10 min.',
-        'Check and correct potassium (aim `4–5 mmol/L`), magnesium and calcium.',
+        'Check and correct potassium (aim `4–5 mmol/L`), magnesium and calcium. Potassium chloride goes in a bag on a pump, never as a bolus.',
       ] },
     ],
     doses: [
       { label: 'Adenosine', text: '`6 mg` rapid IV into a large vein with a `20 mL` saline flush; then `12 mg`; then `18 mg`.', drug: 'adenosine' },
       { label: 'Amiodarone', text: 'Stable: `300 mg` IV over 10–60 min, in 5% glucose. After failed shocks: `300 mg` over 10–20 min. Then `900 mg` over 24 h.', drug: 'amiodarone' },
       { label: 'Esmolol', text: '`0.5 mg/kg` IV over 1 min, or `10–20 mg` boluses (`10 mg/mL`).', drug: 'esmolol' },
-      { label: 'Magnesium', text: '`2 g` IV over 10 min for torsades or low magnesium.', drug: 'magnesium' },
+      { label: 'Magnesium', text: '`2 g` IV over 10 min for torsades or low magnesium, diluted (for example in `100 mL` saline); never 50% neat.', drug: 'magnesium' },
       { label: 'Synchronised shock', text: 'Biphasic: broad complex `120–150 J`; flutter or regular narrow `70–120 J`; atrial fibrillation start high (up to the maximum). Up to 3 attempts.' },
     ],
     pitfalls: [
       'Under anaesthesia most fast rates are sinus and have a cause: light anaesthesia, bleeding, hypoxia, high CO2. Don\'t treat the number with a beta-blocker before you have found it.',
-      'Adenosine: warn an awake patient (a brief awful feeling); avoid it in severe asthma. Lower doses after a heart transplant.',
+      'Adenosine: warn an awake patient (a brief awful feeling); avoid it in severe asthma. Lower doses after a heart transplant. Never in an irregular broad rhythm, which may be atrial fibrillation with Wolff–Parkinson–White: it can cause ventricular fibrillation.',
       'Broad and regular is VT until proven otherwise.',
       'Make sure the defibrillator is set to synchronised mode for every shock, or it may fire on the T wave.',
     ],
@@ -899,6 +899,8 @@ export const CRISES = [
       'Insulin causes hypoglycaemia: check glucose before, then every 30–60 min for at least 6 h.',
       'Calcium and bicarbonate together form a solid: flush between them or use separate lines.',
       'Calcium chloride burns if it leaks: use a large vein or a central line.',
+      'Insulin is a high-alert drug: draw it from the vial with an insulin syringe, write "units" in full, and have a second person check. `10 units` is only `0.1 mL`.',
+      'No suxamethonium: it raises the potassium further. If the patient needs intubating, your consultant uses rocuronium.',
     ],
     after: [
       'Recheck potassium at 1, 2, 4 and 6 h, and glucose as above.',
@@ -939,7 +941,7 @@ export const CRISES = [
       ] },
     ],
     doses: [
-      { label: 'Naloxone IV', text: '`400 mcg` made up to `10 mL` saline (`40 mcg/mL`): give `40–100 mcg` (`1–2.5 mL`) every 2 min. Respiratory arrest: `400 mcg` at once.', drug: 'naloxone' },
+      { label: 'Naloxone IV', text: '`400 mcg` made up to `10 mL` saline (`40 mcg/mL`): give `40 mcg` (`1 mL`) every 2 min. Not breathing: ventilate and give `400 mcg` at once.', drug: 'naloxone' },
       { label: 'Naloxone IM', text: 'No IV: `400 mcg` IM; repeat after 2–3 min if needed.', drug: 'naloxone' },
       { label: 'Naloxone infusion', text: 'Each hour, two-thirds of the total dose that worked, in saline; adjust to breathing and sedation.', drug: 'naloxone' },
       { label: 'Flumazenil', text: 'Benzodiazepine reversal, only with your consultant: `200 mcg` IV, then `100 mcg` every minute, up to `1 mg`.', drug: 'flumazenil' },
@@ -1087,7 +1089,7 @@ export const CRISES = [
       ] },
     ],
     doses: [
-      { label: 'Propofol', text: 'To keep the patient asleep once the volatile stops: `0.5–1 mg/kg` IV, then an infusion of `4–10 mg/kg/h` (or TCI). Less if the blood pressure is low.', drug: 'propofol' },
+      { label: 'Propofol', text: 'To keep the patient asleep once the volatile stops: `0.5–1 mg/kg` IV, then an infusion of `4–10 mg/kg/h`, or a target-controlled infusion (TCI) pump. Less if the blood pressure is low.', drug: 'propofol' },
     ],
     pitfalls: [
       'A self-inflating bag with a mask and a full portable oxygen cylinder must be in every theatre: check at the start of the list.',
