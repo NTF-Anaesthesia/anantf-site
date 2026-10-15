@@ -2,7 +2,7 @@
 // Top: a "Do this first" emergency card with the doses (product label and QRH side by side).
 // Then a problem picker and one panel per problem. Decision trees live in js/troubleshooting/trees.js.
 // Doses: only product labels (emc SmPC) or the Association of Anaesthetists QRH, each cited where it appears.
-// Tiers: every panel, and every block inside it, carries a learning tier (1 MO, 2 Resident, 3 Advanced).
+// Tiers: every panel, and every block inside it, carries a learning tier (1 MO, 2 Resident, 3 Consultant).
 import { el, callout, table, cite, announce, tier, keyPoints, registerSearch, details } from '../ui.js?v=1';
 import { createTree, treeOutline, numberCites } from '../troubleshooting/tree.js';
 import { redirectGuide } from '../troubleshooting/redirect.js';
@@ -73,8 +73,15 @@ function emergencyCard() {
     'High or total spinal. Oxygen, call help, treat pressure and rate, secure the airway if failing, then keep the patient asleep.', '#ts-high-spinal', 'High or total spinal');
   m('d', 'No pulse, or unresponsive',
     `Start CPR, call the arrest team and follow the ALS algorithm. Severe or refractory hypotension or slow heart before arrest: adrenaline ${D('1 µg/kg')} (adult ${D('10–100 µg')}), the QRH dose. Think of local anaesthetic toxicity.`, '#cx-last', 'LAST: emergency steps');
-  card.append(mini, dosesTable());
-  card.append(callout('key', {
+  // The full dose table and the "Which column?" note: open on wide screens, one tap away on phones, so the card's
+  // steps and the four "what to give" boxes fit on a phone screen. Printing always opens it.
+  const more = details({ id: 'ts-first-more', summary: 'Dose table: product label and QRH side by side', open: !matchMedia('(max-width: 760px)').matches });
+  more.classList.add('ts-first-more');
+  const moreBody = more.querySelector('.sp-details-body');
+  window.addEventListener('beforeprint', () => { more.open = true; });
+  card.append(mini, more);
+  moreBody.append(dosesTable());
+  moreBody.append(callout('key', {
     title: 'Which column?',
     body: `<p>The drugs agree; only the ranges differ. The label column is the licensed range for routine use. The QRH column is the range printed for a high-block emergency (QRH 3-11). <strong>Routine hypotension or a slow rate: start with the label dose and titrate. High block or a failing circulation: use the QRH range.</strong> Reassess every 1–2 minutes. If the rate is slow, prefer ephedrine and an antimuscarinic to phenylephrine. Why each drug acts as it does: <a href="#ph-pressors">Vasopressors</a>.</p>`,
   }));
@@ -82,7 +89,7 @@ function emergencyCard() {
 }
 
 // ---------------------------------------------------------------- reusable blocks
-const pearl = (title, body) => tier(callout('key', { title: `Advanced pearl: ${title}`, body: `<p>${body}</p>` }), 3);
+const pearl = (title, body) => tier(callout('key', { title: `Consultant pearl: ${title}`, body: `<p>${body}</p>` }), 3);
 const t2note = (kind, title, body) => tier(callout(kind, { title, body }), 2);
 const t1note = (kind, title, body) => tier(callout(kind, { title, body }), 1);
 const tbl = (opts, t) => tier(table(opts), t);
@@ -539,7 +546,7 @@ export function mount(root) {
     select(id, { record: location.hash === `#${id}` });
     if (location.hash === `#${id}`) {
       e.preventDefault();
-      panels.get(id).scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      panels.get(id).scrollIntoView({ block: 'start', behavior: 'instant' });
       panels.get(id).querySelector('.ts-panel-h').focus({ preventScroll: true });
     }
   }

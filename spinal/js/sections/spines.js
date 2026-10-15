@@ -1,5 +1,5 @@
 // Difficult backs: one problem picker, the canonical paramedian approach (#sx-paramedian), Taylor (L5-S1) and when to stop.
-// Tiers: 1 MO, 2 Resident, 3 Advanced (see ../TIERS.md). No doses, and no citations in this section.
+// Tiers: 1 MO, 2 Resident, 3 Consultant (see ../TIERS.md). No doses, and no citations in this section.
 import { el, callout, steps, table, tier, keyPoints, segmented, figure, announce } from '../ui.js?v=1';
 import { buildPanels } from '../spines/panels.js?v=1';
 import { paramedianFigure } from '../spines/paramedian.js?v=1';
@@ -11,7 +11,7 @@ const T = tier;
 const UL = (items) => el('ul', { class: 'sx-list' }, ...items.map((h) => el('li', { html: h })));
 const P = (html, cls) => el('p', { html, class: cls });
 const G = (n, title, items) => T(el('div', { class: 'sx-grp' }, el('p', { class: 'sx-sub', text: title }), UL(items)), n);
-const PEARL = (title, html) => T(callout('key', { title: `Advanced pearl: ${title}`, body: `<p>${html}</p>` }), 3);
+const PEARL = (title, html) => T(callout('key', { title: `Consultant pearl: ${title}`, body: `<p>${html}</p>` }), 3);
 
 function part(id, title, ...children) {
   return el('section', { class: 'sx-part', id, 'aria-labelledby': `${id}-h` }, el('h3', { id: `${id}-h`, class: 'sx-h', text: title }), ...children);

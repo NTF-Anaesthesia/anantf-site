@@ -140,8 +140,8 @@ export async function coverageGroups(cov) {
   return out;
 }
 function coverageChips(groups, bid) {
-  const box = el('div', { class: 'ra-cov-chips', role: 'group', 'aria-label': 'What this injection covers' });
-  box.append(el('p', { class: 'ra-cov-chips-k', text: 'What this covers' }));
+  const box = el('div', { class: 'ra-cov-chips', role: 'group', 'aria-label': 'What this block covers' });
+  box.append(el('p', { class: 'ra-cov-chips-k', text: 'What this block covers' }));
   const names = { covers: 'Blocked', variable: 'Variable', spares: 'Spared' };
   let any = false;
   for (const k of ['covers', 'variable', 'spares']) {
@@ -291,8 +291,8 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     keyItems.forEach((it) => dl.append(el('div', {}, el('dt', { text: it.short }), el('dd', { text: it.label }))));
     cap.append(dl);
   }
-  const touchHint = structs.size ? ' Tap a structure on the image or in the list to highlight it.' : '';
-  cap.append(el('p', { class: 'tb-scan-note', text: diagramOnly ? `Schematic section drawn by this page, not to scale. Use the arrow keys on the image to step through.${touchHint}` : `Simulated image drawn by this page, not a patient scan. Use the arrow keys on the image, or swipe it, to step through.${touchHint}` }));
+  cap.append(el('p', { class: 'tb-scan-note', text: diagramOnly ? 'Schematic section drawn by this page, not to scale. Use the arrow keys on the image to step through.' : 'Simulated image drawn by this page, not a patient scan. Use the arrow keys on the image to step through.' }));
+  cap.append(el('p', { class: 'tb-scan-note', text: `On a phone, swipe the image left or right to change step.${structs.size ? ' Tap a structure on the image or in the list to highlight it.' : ''}` }));
   fig.append(head, grid, cap);
   host.append(fig);
 

@@ -62,77 +62,6 @@
     "credit": "Ege E et al. Interventional Pain Medicine 2022, Fig. 2. CC BY 4.0. Cropped; labels on the image are the authors'."
   },
   {
-    "file": "scp-2.jpg",
-    "block": "scp",
-    "blockId": "scp",
-    "page": "head-neck/cervical/",
-    "articleTitle": "Anesthetic Management for Carotid Endarterectomy Using Superficial and Intermediate Cervical Plexus Block: A Case Report",
-    "authors": "Thangaraj R, Selvaraj V",
-    "journal": "Cureus",
-    "year": 2026,
-    "doi": "10.7759/cureus.109662",
-    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13294705/",
-    "pmcid": "PMC13294705",
-    "licence": "CC BY 4.0",
-    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
-    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License CC-BY 4.0., which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
-    "figure": "Figure 2, panel B",
-    "caption": "Intermediate cervical plexus block: local anaesthetic spreading under sternocleidomastoid, lateral to the carotid, at the level of C4.",
-    "originalCaption": "Ultrasound images of both superficial (A) and intermediate (B) cervical plexus block. C4 TP, C4 transverse process; CCA, common carotid artery; EJV, external jugular vein; IJV, internal jugular vein; LA, local anesthetic; SCM, sternocleidomastoid",
-    "alt": "Transverse ultrasound of the neck at C4 showing sternocleidomastoid, the internal jugular vein and common carotid artery, with the needle and blue-shaded local anaesthetic deep to sternocleidomastoid",
-    "orientation": {
-      "left": "Posterior",
-      "right": "Anterior"
-    },
-    "burnedInLabels": "Panel letter B; Posterior, Anterior, SCM, IJV, CCA, Needle, LA spread, C4, C4 TP; blue shading of the local anaesthetic",
-    "labels": [
-      {
-        "text": "Sternocleidomastoid",
-        "elementId": null,
-        "kind": "muscle",
-        "x": 0.26,
-        "y": 0.4
-      },
-      {
-        "text": "Internal jugular vein",
-        "elementId": null,
-        "kind": "vein",
-        "x": 0.27,
-        "y": 0.78,
-        "tx": 0.1,
-        "ty": 0.62
-      },
-      {
-        "text": "Common carotid artery",
-        "elementId": null,
-        "kind": "artery",
-        "x": 0.46,
-        "y": 0.66,
-        "tx": 0.47,
-        "ty": 0.9
-      },
-      {
-        "text": "Local anaesthetic",
-        "elementId": null,
-        "kind": "point",
-        "x": 0.665,
-        "y": 0.55,
-        "tx": 0.55,
-        "ty": 0.12
-      },
-      {
-        "text": "C4 transverse process",
-        "elementId": null,
-        "kind": "bone",
-        "x": 0.78,
-        "y": 0.86,
-        "tx": 0.6,
-        "ty": 0.97
-      }
-    ],
-    "credit": "Thangaraj R, Selvaraj V. Cureus 2026, Figure 2 panel B. CC BY 4.0. Cropped to one panel; labels and shading on the image are the authors'."
-  },
-  {
     "file": "dcp-1.jpg",
     "block": "dcp",
     "blockId": "dcp",
@@ -148,7 +77,7 @@
     "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
     "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
     "figure": "Figure 1, panel B",
-    "caption": "Deep and intermediate cervical plexus blocks at C4: needle path 1 goes deep to the C4 transverse process area; path 2 stops under sternocleidomastoid.",
+    "caption": "Cervical plexus block at C4, needle from the lateral side: path 2 (intermediate) stops on the fascia just deep to sternocleidomastoid; path 1 (which the authors call deep) goes further, to the plane between middle scalene and levator scapulae.",
     "originalCaption": "Ultrasound-guided cervical plexus block. (A) Position of the ultrasound probe and puncture site at the carotid bifurcation. (B) Ultrasound image of the deep (1st) and intermediate (2nd) cervical plexus block. SCM: sternocleidomastoid muscle; LCM: longus colli muscle; LCapM: longus capitis muscle; MSM: middle scalene muscle; ESM: elevator scapulae muscle; IJV: internal jugular vein; CA: carotid artery bifurcation; C4: C4 vertebra transverse process.",
     "alt": "Transverse ultrasound at C4 showing sternocleidomastoid, the carotid bifurcation, longus capitis and longus colli, the C4 transverse process, middle scalene and levator scapulae, with two dashed needle paths from the lateral side",
     "orientation": {
@@ -357,7 +286,7 @@
         "elementId": null,
         "kind": "artery",
         "x": 0.46,
-        "y": 0.53,
+        "y": 0.575,
         "tx": 0.62,
         "ty": 0.36
       },

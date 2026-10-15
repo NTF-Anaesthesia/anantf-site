@@ -389,7 +389,7 @@ async function boot() {
     const direct = chapterById.get(id0) || chapterById.get(ALIAS[id0]) || document.getElementById(id0)?.closest('.sp-chapter');
     if (direct) showChapter(direct); else if (!id0) showChapter(chapterById.get('ch-home'));
   }
-  const loaded = await Promise.allSettled(mods.map((m) => import(`./sections/${m}.js?v=1`)));
+  const loaded = await Promise.allSettled(mods.map((m) => import(`./sections/${m}.js?v=2`)));
   // Register every module's refs before any mount, so cross-section citations resolve.
   loaded.forEach((r, i) => {
     if (r.status !== 'fulfilled') return;

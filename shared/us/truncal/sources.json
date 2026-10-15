@@ -202,7 +202,7 @@
         "text": "Needle path",
         "elementId": null,
         "kind": "point",
-        "x": 0.62,
+        "x": 0.67,
         "y": 0.38,
         "tx": 0.8,
         "ty": 0.3
@@ -258,8 +258,8 @@
         "text": "Needle",
         "elementId": null,
         "kind": "point",
-        "x": 0.55,
-        "y": 0.43,
+        "x": 0.57,
+        "y": 0.47,
         "tx": 0.7,
         "ty": 0.3
       },
@@ -1008,7 +1008,7 @@
         "elementId": null,
         "kind": "point",
         "x": 0.42,
-        "y": 0.4,
+        "y": 0.45,
         "tx": 0.73,
         "ty": 0.07
       }

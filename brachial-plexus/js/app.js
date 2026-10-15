@@ -7,6 +7,9 @@ import {
   ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED,
   BLOCK_SUMMARY, BLOCK_SUMMARY_ALL, DISCLAIMER, blockStatus,
 } from './data.js';
+import {
+  applyLevel, getLevel, onLevel, tierMax, relaxFor, mountLevelControl, mountLevelPicker, hiddenHint, withScrollAnchor,
+} from '../../shared/regional/js/levels.js?v=20261015';
 
 window.bpBus = bus; // handy for debugging in the console
 
@@ -81,6 +84,7 @@ for (const c of chipDefs) {
     const g = document.createElement('span');
     g.className = 'chip-group-label';
     g.id = 'chip-group-advanced';
+    g.dataset.tier = '3';
     g.textContent = c.group;
     chipsEl.append(g);
     continue;
@@ -89,12 +93,64 @@ for (const c of chipDefs) {
   b.type = 'button';
   b.className = c.advanced ? 'chip chip--advanced' : 'chip';
   b.dataset.block = c.id || '';
+  if (c.advanced) b.dataset.tier = '3';
   b.innerHTML = `<span class="chip-main">${esc(c.label)}</span><span class="chip-sub">${esc(c.sub)}</span>`;
   if (c.advanced) b.setAttribute('aria-describedby', 'chip-group-advanced');
   b.addEventListener('click', () => bus.emit('block', { id: c.id, source: 'app' }));
   chipsEl.append(b);
 }
+// Phones and narrow windows: the same choice as a disclosure menu in the sticky bar.
+const menuBtn = $('#bp-block-btn');
+const menuPanel = $('#bp-block-panel');
+const menuList = $('#bp-block-list');
+for (const c of chipDefs) {
+  const li = document.createElement('li');
+  if (c.group) {
+    li.className = 'bp-blockmenu-group';
+    li.dataset.tier = '3';
+    li.setAttribute('aria-hidden', 'true');
+    li.textContent = c.group;
+    menuList.append(li);
+    continue;
+  }
+  if (c.advanced) li.dataset.tier = '3';
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'bp-blockmenu-item';
+  b.dataset.block = c.id || '';
+  b.innerHTML = `<span class="bp-blockmenu-main">${esc(c.label)}${c.advanced ? ' <span class="adv-tag">Advanced</span>' : ''}</span><span class="bp-blockmenu-sub">${esc(c.sub)}</span>`;
+  b.addEventListener('click', () => { closeMenu(true); bus.emit('block', { id: c.id, source: 'app' }); });
+  li.append(b);
+  menuList.append(li);
+}
+function openMenu() {
+  menuPanel.hidden = false;
+  menuBtn.setAttribute('aria-expanded', 'true');
+  (menuList.querySelector('[aria-pressed="true"]') || menuList.querySelector('button'))?.focus({ preventScroll: true });
+}
+function closeMenu(focusBtn = false) {
+  if (menuPanel.hidden) return;
+  menuPanel.hidden = true;
+  menuBtn.setAttribute('aria-expanded', 'false');
+  if (focusBtn) menuBtn.focus({ preventScroll: true });
+}
+menuBtn.addEventListener('click', () => (menuPanel.hidden ? openMenu() : closeMenu()));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menuPanel.hidden) { e.preventDefault(); closeMenu(true); } });
+document.addEventListener('pointerdown', (e) => { if (!menuPanel.hidden && !$('#bp-blockmenu').contains(e.target)) closeMenu(); });
+menuPanel.addEventListener('keydown', (e) => {
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  const items = [...menuPanel.querySelectorAll('button, a')].filter((n) => n.getClientRects().length);
+  const i = items.indexOf(document.activeElement);
+  const j = (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+  e.preventDefault(); items[j]?.focus();
+});
+
 function syncChips() {
+  const cur = BLOCKS[bus.state.block];
+  $('#bp-block-cur').textContent = cur ? shortBlockName(cur) : 'None';
+  for (const b of menuList.querySelectorAll('.bp-blockmenu-item')) {
+    b.setAttribute('aria-pressed', (b.dataset.block || null) === (bus.state.block || null) ? 'true' : 'false');
+  }
   for (const b of chipsEl.querySelectorAll('.chip')) {
     const on = (b.dataset.block || null) === (bus.state.block || null);
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -115,7 +171,7 @@ function syncChips() {
 
 // ---------------------------------------------------------------- share
 // Light mode only: the page is pinned with <html data-theme="light">.
-$('#btn-share').addEventListener('click', async () => {
+async function copyLink() {
   const status = $('#share-status');
   clearTimeout(hashTimer);
   writeHash();
@@ -131,6 +187,14 @@ $('#btn-share').addEventListener('click', async () => {
   status.textContent = ok ? 'Link copied' : 'Copy the address bar to share this view';
   $('#btn-share span').textContent = ok ? 'Copied' : 'Copy link';
   setTimeout(() => { $('#btn-share span').textContent = 'Copy link'; status.textContent = ''; }, 2200);
+  return ok;
+}
+$('#btn-share').addEventListener('click', copyLink);
+$('#btn-share-menu').addEventListener('click', async () => {
+  const ok = await copyLink();
+  const t = $('#btn-share-menu span');
+  t.textContent = ok ? 'Link copied' : 'Copy the address bar to share';
+  setTimeout(() => { t.textContent = 'Copy link to this view'; closeMenu(true); }, 900);
 });
 
 // ---------------------------------------------------------------- collapsible panels

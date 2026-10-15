@@ -138,8 +138,8 @@
     "doi": "10.7759/cureus.36374",
     "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10113177/",
     "pmcid": "PMC10113177",
-    "licence": "CC BY (Creative Commons Attribution License; version not stated)",
-    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licence": "CC BY 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
     "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
     "figure": "Figure 2",
     "caption": "Supra-inguinal fascia iliaca view: the 'bow-tie' of sartorius and internal oblique, with the needle aimed under the fascia iliaca.",
@@ -193,7 +193,8 @@
         "tx": 0.3,
         "ty": 0.12
       }
-    ]
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/3.0/."
   },
   {
     "file": "fib-2.jpg",
@@ -529,8 +530,8 @@
       {
         "text": "Femoral artery",
         "kind": "artery",
-        "x": 0.64,
-        "y": 0.6,
+        "x": 0.63,
+        "y": 0.53,
         "tx": 0.56,
         "ty": 0.7
       },
@@ -722,7 +723,7 @@
     "doi": "10.3390/jcm15166410",
     "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13513714/",
     "pmcid": "PMC13513714",
-    "licence": "CC BY (Creative Commons Attribution License; version not stated)",
+    "licence": "CC BY 4.0",
     "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
     "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license.",
     "figure": "Figure 2b",
@@ -759,10 +760,11 @@
       {
         "text": "Needle",
         "kind": "point",
-        "x": 0.27,
-        "y": 0.39
+        "x": 0.22,
+        "y": 0.42
       }
-    ]
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/4.0/."
   },
   {
     "file": "genicular-1.jpg",
@@ -776,8 +778,8 @@
     "doi": "10.7759/cureus.44550",
     "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10544945/",
     "pmcid": "PMC10544945",
-    "licence": "CC BY (Creative Commons Attribution License; version not stated)",
-    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licence": "CC BY 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
     "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
     "figure": "Figure 1A",
     "caption": "Superomedial genicular nerve block: the needle reaches the bone beside the genicular artery where the femoral shaft meets the medial condyle.",
@@ -821,7 +823,8 @@
         "tx": 0.76,
         "ty": 0.32
       }
-    ]
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/3.0/."
   },
   {
     "file": "genicular-2.jpg",
@@ -835,8 +838,8 @@
     "doi": "10.7759/cureus.44550",
     "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10544945/",
     "pmcid": "PMC10544945",
-    "licence": "CC BY (Creative Commons Attribution License; version not stated)",
-    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licence": "CC BY 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
     "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
     "figure": "Figure 1B",
     "caption": "Superolateral genicular nerve block: local anaesthetic is laid on the femur near the genicular artery, above the lateral condyle.",
@@ -859,8 +862,8 @@
       {
         "text": "Local anaesthetic",
         "kind": "point",
-        "x": 0.42,
-        "y": 0.43,
+        "x": 0.6,
+        "y": 0.44,
         "tx": 0.4,
         "ty": 0.52
       },
@@ -888,7 +891,8 @@
         "tx": 0.44,
         "ty": 0.22
       }
-    ]
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/3.0/."
   },
   {
     "file": "obturator-1.jpg",
@@ -969,7 +973,7 @@
     "doi": "10.1155/2017/7023750",
     "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5322453/",
     "pmcid": "PMC5322453",
-    "licence": "CC BY (Creative Commons Attribution License; version not stated)",
+    "licence": "CC BY 4.0",
     "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
     "licenceQuote": "This is an open access article distributed under the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.",
     "figure": "Figure 3(a)",
@@ -1022,7 +1026,8 @@
         "x": 0.5,
         "y": 0.92
       }
-    ]
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/4.0/."
   },
   {
     "file": "popliteal-1.jpg",
@@ -1087,7 +1092,7 @@
     "doi": "10.3389/fmed.2025.1516874",
     "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12318936/",
     "pmcid": "PMC12318936",
-    "licence": "CC BY (Creative Commons Attribution License; version not stated)",
+    "licence": "CC BY 4.0",
     "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
     "licenceQuote": "This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.",
     "figure": "FIGURE 1B",
@@ -1120,7 +1125,8 @@
         "x": 0.7,
         "y": 0.2
       }
-    ]
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/4.0/."
   },
   {
     "file": "ankle-1.jpg",
@@ -1449,7 +1455,7 @@
         "text": "Tibia",
         "kind": "bone",
         "x": 0.3,
-        "y": 0.8
+        "y": 0.72
       }
     ]
   },
@@ -1481,8 +1487,8 @@
       {
         "text": "Sciatic nerve",
         "kind": "nerve",
-        "x": 0.56,
-        "y": 0.54,
+        "x": 0.5,
+        "y": 0.5,
         "tx": 0.66,
         "ty": 0.62
       },

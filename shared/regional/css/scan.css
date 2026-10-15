@@ -119,3 +119,4 @@
 .ra-your-fig[hidden]{display:none}
 .ra-your-img{display:block;max-width:100%;max-height:60vh;background:#000}
 .ra-your-cap{display:flex;align-items:center;gap:10px;font-size:14px;color:#55534d;padding-top:6px}
+.tb-app .tb-scan.is-real-view .ra-scan-legend{display:none}

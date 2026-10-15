@@ -2,7 +2,7 @@
 // Bupivacaine doses: "Typical" = the department's usual practice, supplied by Dr Koh Wenjun (Oct 2026); no manufacturer range is shown.
 // Prilocaine: product-label doses from `refs` below. Chloroprocaine removed (not stocked).
 // ASRA 2025 anticoagulation values were read in the full text (Kopp 2025) and live in ../technique/anticoag-data.js.
-// Tiers: 1 MO, 2 Resident, 3 Advanced (see ../TIERS.md). Citations: major guidelines only; labels only in dose lines.
+// Tiers: 1 MO, 2 Resident, 3 Consultant (see ../TIERS.md). Citations: major guidelines only; labels only in dose lines.
 import { el, cite, callout, steps, table, tabs, segmented, figure, details, onResize, whenVisible, tier, keyPoints, registerSearch } from '../ui.js?v=1';
 import { sittingSvg, lateralSvg, approachSvg, needlesSvg, timelineSvg } from '../technique/figures.js';
 import { anticoagLookup, checklist, spreadFactors, blockCheck } from '../technique/widgets.js';
@@ -90,7 +90,7 @@ const UL = (items, cls) => el('ul', { class: cls || 'tq-list' }, ...items.map((t
 // A tagged group of blocks (for example a heading with its list).
 const G = (n, ...children) => T(el('div', { class: 'tq-grp' }, ...children), n);
 // An advanced pearl: a key-point box labelled in its title.
-const PEARL = (title, html) => T(callout('key', { title: `Advanced pearl: ${title}`, body: `<p>${html}</p>` }), 3);
+const PEARL = (title, html) => T(callout('key', { title: `Consultant pearl: ${title}`, body: `<p>${html}</p>` }), 3);
 const card = (title, items, cls) => el('div', { class: `tq-card ${cls}` }, el('p', { class: 'tq-card-h', text: title }), UL(items));
 const ANSWER = (title, items) => el('div', { class: 'tq-answer' }, el('p', { class: 'tq-answer-h', text: title }), UL(items));
 

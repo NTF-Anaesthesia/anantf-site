@@ -1,0 +1,281 @@
+[
+  {
+    "file": "t-rsb-1.jpg",
+    "keyFile": "t-rsb-1-key.jpg",
+    "blockId": "rsb",
+    "page": "truncal/abdominal-wall/",
+    "view": "Transverse, at the lateral edge of rectus abdominis",
+    "orientation": {
+      "left": "Medial",
+      "right": "Lateral"
+    },
+    "labels": [
+      {
+        "text": "Rectus abdominis",
+        "kind": "muscle",
+        "x": 0.192,
+        "y": 0.31
+      },
+      {
+        "text": "Posterior rectus sheath",
+        "kind": "fascia",
+        "x": 0.2,
+        "y": 0.438
+      },
+      {
+        "text": "Linea semilunaris",
+        "kind": "fascia",
+        "x": 0.442,
+        "y": 0.305
+      },
+      {
+        "text": "External oblique",
+        "kind": "muscle",
+        "x": 0.919,
+        "y": 0.149
+      },
+      {
+        "text": "Internal oblique",
+        "kind": "muscle",
+        "x": 0.792,
+        "y": 0.332
+      },
+      {
+        "text": "Transversus abdominis",
+        "kind": "muscle",
+        "x": 0.852,
+        "y": 0.644
+      },
+      {
+        "text": "Peritoneum",
+        "kind": "other",
+        "x": 0.538,
+        "y": 0.499
+      }
+    ],
+    "caption": "Rectus sheath block: hydrodissect to open the potential space between the rectus muscle and the posterior rectus sheath.",
+    "source": "From the department's regional anaesthesia teaching material"
+  },
+  {
+    "file": "t-tap-1.jpg",
+    "keyFile": "t-tap-1-key.jpg",
+    "blockId": "tap",
+    "page": "truncal/abdominal-wall/",
+    "view": "Transverse, mid-axillary line (lateral TAP)",
+    "orientation": {
+      "left": "Posterior",
+      "right": "Anterior"
+    },
+    "labels": [
+      {
+        "text": "Subcutaneous tissue",
+        "kind": "other",
+        "x": 0.627,
+        "y": 0.028
+      },
+      {
+        "text": "External oblique",
+        "kind": "muscle",
+        "x": 0.627,
+        "y": 0.246
+      },
+      {
+        "text": "Internal oblique",
+        "kind": "muscle",
+        "x": 0.62,
+        "y": 0.4
+      },
+      {
+        "text": "Transversus abdominis plane (target)",
+        "kind": "target",
+        "x": 0.6,
+        "y": 0.585
+      },
+      {
+        "text": "Transversus abdominis",
+        "kind": "muscle",
+        "x": 0.57,
+        "y": 0.65
+      },
+      {
+        "text": "Peritoneum",
+        "kind": "other",
+        "x": 0.62,
+        "y": 0.69
+      }
+    ],
+    "caption": "Lateral TAP block: hydrodissect to open the plane between internal oblique and transversus abdominis.",
+    "source": "From the department's regional anaesthesia teaching material"
+  },
+  {
+    "file": "t-esp-1.jpg",
+    "keyFile": "t-esp-1-key.jpg",
+    "blockId": "esp",
+    "page": "truncal/back/",
+    "view": "Parasagittal, over the transverse processes (T4 to T6)",
+    "orientation": {
+      "left": "Cephalad",
+      "right": "Caudad"
+    },
+    "labels": [
+      {
+        "text": "Trapezius",
+        "kind": "muscle",
+        "x": 0.584,
+        "y": 0.129
+      },
+      {
+        "text": "Rhomboid major (upper thoracic levels)",
+        "kind": "muscle",
+        "x": 0.653,
+        "y": 0.237
+      },
+      {
+        "text": "Erector spinae",
+        "kind": "muscle",
+        "x": 0.564,
+        "y": 0.382
+      },
+      {
+        "text": "Erector spinae plane",
+        "kind": "target",
+        "x": 0.807,
+        "y": 0.535
+      },
+      {
+        "text": "T4 transverse process",
+        "kind": "bone",
+        "x": 0.055,
+        "y": 0.669
+      },
+      {
+        "text": "T5 transverse process",
+        "kind": "bone",
+        "x": 0.517,
+        "y": 0.625
+      },
+      {
+        "text": "T6 transverse process",
+        "kind": "bone",
+        "x": 0.98,
+        "y": 0.625
+      },
+      {
+        "text": "Intertransverse tissue complex",
+        "kind": "fascia",
+        "x": 0.276,
+        "y": 0.669
+      },
+      {
+        "text": "Intertransverse tissue complex",
+        "kind": "fascia",
+        "x": 0.823,
+        "y": 0.651
+      }
+    ],
+    "caption": "Erector spinae plane block: aim for T5, advance until the needle tip contacts the transverse process, then lift erector spinae off it and hydrodissect the plane.",
+    "source": "From the department's regional anaesthesia teaching material"
+  },
+  {
+    "file": "t-pvb-1.jpg",
+    "keyFile": "t-pvb-1-key.jpg",
+    "blockId": "pvb",
+    "page": "truncal/back/",
+    "view": "Parasagittal, in-plane, between two transverse processes",
+    "orientation": {
+      "left": "Cephalad",
+      "right": "Caudad"
+    },
+    "labels": [
+      {
+        "text": "Trapezius",
+        "kind": "muscle",
+        "x": 0.573,
+        "y": 0.087
+      },
+      {
+        "text": "Erector spinae",
+        "kind": "muscle",
+        "x": 0.579,
+        "y": 0.304
+      },
+      {
+        "text": "Transverse process",
+        "kind": "bone",
+        "x": 0.27,
+        "y": 0.47
+      },
+      {
+        "text": "Superior costotransverse ligament",
+        "kind": "fascia",
+        "x": 0.492,
+        "y": 0.652
+      },
+      {
+        "text": "Pleura",
+        "kind": "pleura",
+        "x": 0.479,
+        "y": 0.881
+      }
+    ],
+    "caption": "Paravertebral block (sagittal, in-plane): feel the pop through the superior costotransverse ligament and deposit below it; the pleura should be pushed down.",
+    "source": "From the department's regional anaesthesia teaching material"
+  },
+  {
+    "file": "t-pvbt-1.jpg",
+    "keyFile": "t-pvbt-1-key.jpg",
+    "blockId": "pvbt",
+    "page": "truncal/back/",
+    "view": "Transverse, in-plane, at the tip of the transverse process",
+    "orientation": {
+      "left": "Medial",
+      "right": "Lateral"
+    },
+    "labels": [
+      {
+        "text": "Trapezius",
+        "kind": "muscle",
+        "x": 0.694,
+        "y": 0.1
+      },
+      {
+        "text": "Erector spinae",
+        "kind": "muscle",
+        "x": 0.432,
+        "y": 0.307
+      },
+      {
+        "text": "Transverse process",
+        "kind": "bone",
+        "x": 0.286,
+        "y": 0.521
+      },
+      {
+        "text": "External intercostal muscle",
+        "kind": "muscle",
+        "x": 0.9,
+        "y": 0.46
+      },
+      {
+        "text": "Internal intercostal membrane",
+        "kind": "fascia",
+        "x": 0.917,
+        "y": 0.521
+      },
+      {
+        "text": "Paravertebral space",
+        "kind": "target",
+        "x": 0.519,
+        "y": 0.614
+      },
+      {
+        "text": "Pleura",
+        "kind": "pleura",
+        "x": 0.75,
+        "y": 0.62
+      }
+    ],
+    "caption": "Paravertebral block (transverse, in-plane): deposit below the internal intercostal membrane, which is continuous with the superior costotransverse ligament.",
+    "source": "From the department's regional anaesthesia teaching material"
+  }
+]
