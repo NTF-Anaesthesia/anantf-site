@@ -203,3 +203,51 @@ export function mergeById(bankQuestions, incoming, today = '') {
 }
 
 export const bankJSON = questions => JSON.stringify({ kind: KIND, version: 1, questions: questions.map(clean) }, null, 1) + '\n';
+
+// ---- drawing and searching (shared by the qbank app and the Baby MO test) ----
+export function shuffle(list, rng = Math.random) {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+// One sitting of a paper, from resolvePaper(...).pool and .settings:
+//  1. every must-ask question (a random few if there are more than fit);
+//  2. settings.hardCount hard ones (fewer if the paper has fewer);
+//  3. the rest at random from the standard ones (leftover hard ones only if standard ones run out).
+// Then shuffled, so must-ask and hard questions are mixed in. Questions keep their own choice order.
+export function drawPaper(pool, settings = PAPER_DEFAULTS, rng = Math.random) {
+  const count = Math.max(1, (settings.count ?? PAPER_DEFAULTS.count) | 0);
+  const hardWanted = Math.max(0, (settings.hardCount ?? PAPER_DEFAULTS.hardCount) | 0);
+  const must = shuffle(pool.filter(q => q.must), rng).slice(0, count);
+  const rest = pool.filter(q => !q.must);
+  const hard = shuffle(rest.filter(q => q.level === 'hard'), rng);
+  const std = shuffle(rest.filter(q => q.level !== 'hard'), rng);
+  let slots = count - must.length;
+  const hardHave = must.filter(q => q.level === 'hard').length;
+  const takeHard = Math.min(Math.max(hardWanted - hardHave, 0), hard.length, slots);
+  const picked = hard.slice(0, takeHard); slots -= takeHard;
+  const fromStd = std.slice(0, slots); slots -= fromStd.length;
+  return shuffle([...must, ...picked, ...fromStd, ...hard.slice(takeHard, takeHard + slots)], rng);
+}
+
+// Does a question match a search? Every word must appear somewhere in the stem, choices, explanation or topics.
+const fold = s => str(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+export function matchesQuery(q, query) {
+  const words = fold(query).split(/\s+/).filter(Boolean);
+  if (!words.length) return true;
+  const hay = fold([q.stem, ...(q.options || []), q.explain, ...(q.topics || [])].join('\n'));
+  return words.every(w => hay.includes(w));
+}
+
+// The questions a learner may see: ready ones only (never drafts or archived), from the bank and any extra sources.
+// A later list never replaces an id already taken.
+export function readyQuestions(...lists) {
+  const seen = new Set(), out = [];
+  for (const list of lists) for (const raw of list || []) {
+    const q = clean(raw);
+    if (!q.id || seen.has(q.id) || !isReady(q)) continue;
+    seen.add(q.id); out.push(q);
+  }
+  return out;
+}

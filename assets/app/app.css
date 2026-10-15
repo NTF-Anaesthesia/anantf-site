@@ -253,7 +253,10 @@ a.app-card:active,button.app-card:active{background:var(--app-pressed);transform
 .app-choice.is-incorrect{background:var(--app-bad-bg);box-shadow:inset 0 0 0 2px var(--app-bad)}
 .app-choice.is-incorrect .app-choice-letter{background:var(--app-bad);color:#fff;box-shadow:none}
 .app-choice.is-incorrect .app-choice-tag{color:var(--app-bad)}
-.app-choice.is-dimmed{opacity:.6}
+/* dimmed (the choices that were neither picked nor right): recede by shape and colour, never by opacity, so the text
+   keeps 4.5:1 (60% opacity gave about 4:1). Muted text, no fill, a hairline border, a faint letter ring. */
+.app-choice.is-dimmed{background:transparent;box-shadow:inset 0 0 0 1px var(--app-line);color:var(--app-muted)}
+.app-choice.is-dimmed .app-choice-letter{color:var(--app-muted);box-shadow:inset 0 0 0 1.5px var(--app-line)}
 .app-choices.is-locked .app-choice{cursor:default;transform:none}
 .app-choice.is-correct{animation:app-pop var(--app-d-med) var(--app-ease-out)}
 .app-choice.is-incorrect{animation:app-nudge 300ms var(--app-ease)}

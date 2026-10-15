@@ -53,6 +53,30 @@ t('suggestion text and issue link carry the question and the change', () => {
   assert.match(txt, /Suggested by: Dr Test/); assert.match(txt, /B\. b {2}\(answer\)/);
   assert.match(B.suggestionIssueUrl(q, { comment: 'x' }, 'Dr Test'), /^https:\/\/github\.com\/NTF-Anaesthesia\/anantf-site\/issues\/new\?title=Question%20edit/);
 });
+t('drawPaper: every must-ask, the hard count, then standard ones, no repeats', () => {
+  let seed = 7; const rng = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const pool = Array.from({ length: 30 }, (_, i) => ({ id: 'q' + i, must: i < 3, level: i >= 3 && i < 10 ? 'hard' : 'standard' }));
+  const got = B.drawPaper(pool, { count: 12, hardCount: 4 }, rng);
+  assert.equal(got.length, 12); assert.equal(new Set(got.map(q => q.id)).size, 12);
+  for (const id of ['q0', 'q1', 'q2']) assert.ok(got.some(q => q.id === id));
+  assert.equal(got.filter(q => q.level === 'hard').length, 4);
+  assert.equal(B.drawPaper(pool.slice(0, 5), { count: 20 }, rng).length, 5, 'a short pool gives a shorter sitting');
+  assert.equal(B.drawPaper(pool.filter(q => q.level === 'hard'), { count: 6, hardCount: 1 }, rng).length, 6, 'leftover hard ones fill in');
+});
+t('shuffle keeps every item and does not change the input', () => {
+  const a = [1, 2, 3, 4, 5]; const s = B.shuffle(a);
+  assert.deepEqual([...s].sort(), a); assert.deepEqual(a, [1, 2, 3, 4, 5]);
+});
+t('matchesQuery searches stem, choices, explanation and topics; every word must match', () => {
+  const q = B.clean({ id: 'qsearch1', stem: 'Which drug reverses rocuronium?', options: ['Sugammadex', 'Neostigmine'], explain: 'Encapsulation', topics: ['Pharmacology'] });
+  assert.ok(B.matchesQuery(q, 'sugammadex')); assert.ok(B.matchesQuery(q, 'ROCURONIUM encaps')); assert.ok(B.matchesQuery(q, 'pharmacology'));
+  assert.ok(B.matchesQuery(q, '  ')); assert.ok(!B.matchesQuery(q, 'rocuronium propofol'));
+});
+t('readyQuestions: only active, complete questions; the first copy of an id wins', () => {
+  const ok = { id: 'qready01', stem: 'A ready question', options: ['a', 'b'], answer: 0, status: 'active' };
+  const r = B.readyQuestions([ok, { ...ok, id: 'qdraft02', status: 'draft' }, { ...ok, id: 'qarch003', status: 'archived' }, { ...ok, id: 'qnoans04', answer: null }], [{ ...ok, stem: 'Other source, same id' }]);
+  assert.deepEqual(r.map(q => q.id), ['qready01']); assert.equal(r[0].stem, 'A ready question');
+});
 t('the real bank and papers pass the check', () => {
   const dir = new URL('../', import.meta.url).pathname;
   const c = B.checkBank(JSON.parse(fs.readFileSync(dir + 'bank/questions.json', 'utf8')));
