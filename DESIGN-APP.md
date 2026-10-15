@@ -121,6 +121,8 @@ All in `app.css`, all shown in `specimen.html`.
   segments, one row, 44px. Selected: a raised surface thumb with wine 600 text. Radios give arrow-key use for free.
 - **Switch** `input[type=checkbox][role=switch].app-switch`, 51×31, wine when on, knob stretches while pressed. Put
   it in a `label.app-row` so the whole row toggles.
+- **Radio rows** `label.app-row > input[type=radio]` in a section: use instead of a segmented control when there
+  are more than 4 options or any label is long (a segmented control holds 2 to 4 short ones).
 - **Chips** `.app-chips > button.app-chip[aria-pressed]`, optional `.app-chip-count`. One row that scrolls
   sideways and bleeds to the screen edge; 36px pill drawn inside a 44px target. On: blush, wine border, tick. After a label on the
   same line use `.app-chips--inline` (bleeds right only). Don't put the site's older `.chip` class on the same
@@ -197,3 +199,11 @@ push becomes a plain swap. No confetti, no sounds, no looping animation.
 - Don't use teal, blue or purple as interface colours, or recolour clinical codes.
 - Don't put more than five tabs in the tab bar, or more than four segments in a control.
 - Don't use hover-only affordances, spinners, emoji, or text under 12px.
+
+## Kit notes from adopting apps (15 Oct 2026)
+
+- The bar title is hidden (not only faded) until the large title scrolls away; add `.app-bar--instant` to the bar for
+  one frame when the screen changes. Back labels truncate at 44vw and the bar title at 34vw, so neither wraps.
+- The `hidden` attribute always hides a kit component (for example a tab bar hidden during a test).
+- Clinical callouts, step lists, tables and monitor strips are app-specific: build them in the app's CSS from the kit's
+  tokens rather than adding one-off components here.
