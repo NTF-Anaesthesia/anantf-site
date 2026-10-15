@@ -71,7 +71,7 @@ export function mountDiagram(container, ctx) {
   hint.className = 'px-dg-hint';
   const zoomBtn = document.createElement('button');
   zoomBtn.type = 'button';
-  zoomBtn.className = 'px-v3-btn px-dg-zoom';
+  zoomBtn.className = 'px-v3-btn px-dg-zoom app-btn app-btn--outline app-btn--compact';
   tools.append(hint, zoomBtn);
   const scroller = document.createElement('div');
   scroller.className = 'px-dg-scroll';

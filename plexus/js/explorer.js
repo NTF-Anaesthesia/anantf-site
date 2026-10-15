@@ -137,6 +137,7 @@ function ensureCss() {
     l.dataset.pxCss = key;
     document.head.append(l);
   };
+  add('app', '../../assets/app/app.css');
   add('plexus', `../css/plexus.css?v=${V}`);
   add('levels', '../../shared/regional/css/levels.css?v=20261015');
   add('status', '../../shared/regional/css/status.css?v=20261015');
@@ -204,11 +205,14 @@ function mountFrame(host, opts) {
 }
 
 let seq = 0;
+let touchHooked = false;
 
 export function mountExplorer(host, opts = {}) {
   if (!host) throw new Error('mountExplorer needs a host element');
   if (!opts.inline && !hasThreeImportMap()) return mountFrame(host, opts);
   ensureCss();
+  // iOS ignores :active press states (app kit) without a touch listener.
+  if (!touchHooked) { touchHooked = true; document.addEventListener('touchstart', () => {}, { passive: true }); }
   const n = ++seq;
   const pid = (s) => `px${n}-${s}`;
 
@@ -220,7 +224,7 @@ export function mountExplorer(host, opts = {}) {
   if (ownBar) {
     bar = document.createElement('div');
     bar.className = 'px-ex-bar';
-    bar.innerHTML = `<div class="px-tabs" role="group" aria-label="Plexus"></div><div class="px-blockrow"><span class="blockbar-label" id="${pid('blk')}">Block</span><div class="chips" role="group" aria-labelledby="${pid('blk')}"></div></div>`;
+    bar.innerHTML = `<fieldset class="px-tabs app-segmented"><legend>Plexus</legend></fieldset><div class="px-blockrow"><span class="blockbar-label" id="${pid('blk')}">Block</span><div class="chips app-chips app-chips--inline" role="group" aria-labelledby="${pid('blk')}"></div></div>`;
     root.append(bar);
   }
   const tabsHost = opts.tabsHost || bar.querySelector('.px-tabs');
@@ -298,16 +302,23 @@ export function mountExplorer(host, opts = {}) {
   const changed = () => { if (!destroyed) opts.onChange?.(snapshot()); };
 
   // ---------------------------------------------------------------- tabs and chips
+  // Segmented control (app kit): one radio per plexus in a fieldset, so arrow keys come free.
   function renderTabs(activeId) {
-    tabsHost.replaceChildren(...PLEXUSES.map((p) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'px-tab';
-      b.textContent = p.tab;
-      b.dataset.plexus = p.id;
-      b.setAttribute('aria-pressed', String(p.id === activeId));
-      b.addEventListener('click', () => { if (!current || current.id !== p.id) loadPlexus(p.id, {}); });
-      return b;
+    const legend = tabsHost.querySelector(':scope > legend');
+    tabsHost.replaceChildren(...(legend ? [legend] : []), ...PLEXUSES.map((p) => {
+      const l = document.createElement('label');
+      l.className = 'app-seg';
+      l.dataset.plexus = p.id;
+      const r = document.createElement('input');
+      r.type = 'radio';
+      r.name = pid('plexus');
+      r.value = p.id;
+      r.checked = p.id === activeId;
+      r.addEventListener('change', () => { if (r.checked && (!current || current.id !== p.id)) loadPlexus(p.id, {}); });
+      const t = document.createElement('span');
+      t.textContent = p.tab;
+      l.append(r, t);
+      return l;
     }));
   }
 
@@ -317,7 +328,7 @@ export function mountExplorer(host, opts = {}) {
     const mk = (id, label) => {
       const b = document.createElement('button');
       b.type = 'button';
-      b.className = 'chip';
+      b.className = 'app-chip';
       b.dataset.block = id || '';
       b.innerHTML = `<span class="chip-main">${esc(label)}</span>`;
       if (id) b.title = data.blocks[id].name || label;
@@ -331,7 +342,7 @@ export function mountExplorer(host, opts = {}) {
   }
   function syncChips() {
     const blk = current?.bus.state.block || '';
-    chipsHost.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.block === blk)));
+    chipsHost.querySelectorAll('.app-chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.block === blk)));
   }
 
   function renderLegend() {

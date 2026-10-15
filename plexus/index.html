@@ -11,68 +11,41 @@
 <script type="importmap">
 {"imports":{"three":"../shared/vendor/three-r160/build/three.module.min.js","three/addons/":"../shared/vendor/three-r160/examples/jsm/"}}
 </script>
-<link rel="modulepreload" href="js/bus.js">
+<link rel="modulepreload" href="js/explorer.js?v=20261015"><link rel="modulepreload" href="js/bus.js?v=20261015">
 <link rel="stylesheet" href="../assets/couture-app.css?v=20261010-ra"><link rel="stylesheet" href="../assets/navigation.css?v=20261007-framing"><link rel="stylesheet" href="../assets/site-shell.css?v=20261007-framing"><script defer src="../assets/navigation.js?v=20261008"></script><link rel="stylesheet" href="../assets/header-nav.css?v=20261008">
 <link rel="stylesheet" href="../assets/app/app.css">
-<link rel="stylesheet" href="css/plexus.css?v=2">
+<link rel="stylesheet" href="../shared/regional/css/levels.css?v=20261015">
+<link rel="stylesheet" href="../shared/regional/css/status.css?v=20261015">
+<link rel="stylesheet" href="css/plexus.css?v=20261015">
 </head>
-<body class="plexus-app px"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../airway.html">Airway</a><a href="../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="../exams/">MMed Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<body class="plexus-app px ra-app"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../airway.html">Airway</a><a href="../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="../exams/">MMed Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="top" id="top">
-  <div class="top-inner">
-    <div class="brand">
-      <p class="org">Regional anaesthesia</p>
-      <h1>Cervical, lumbar and sacral plexuses</h1>
-    </div>
-    <div class="top-tools">
-      <button type="button" class="tool-btn" id="btn-share" aria-describedby="share-status">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>
-        <span>Copy link</span>
-      </button>
-      <span id="share-status" class="sr-status" role="status" aria-live="polite"></span>
-    </div>
-  </div>
-  <nav class="blockbar" aria-label="Choose a plexus and a block">
-    <div class="blockbar-inner px-bar">
+<div class="px-appbar" id="px-bar">
+  <div class="px-appbar-inner">
+    <a class="px-home" id="px-home" href="../regional.html" aria-label="Back to Regional anaesthesia"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Regional</span></a>
+    <button type="button" class="px-pick" id="px-pick" aria-expanded="false" aria-controls="px-picker"><span class="px-pick-text"><span class="px-pick-k" id="px-pick-plexus">Plexus</span><span class="px-pick-v" id="px-pick-block">Pick a block</span></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+    <nav class="px-picker" id="px-picker" aria-label="Choose a plexus and a block">
       <fieldset class="px-tabs app-segmented" id="plexus-tabs"><legend>Plexus</legend></fieldset>
       <div class="px-blockrow">
         <span class="blockbar-label" id="blockbar-label">Block</span>
         <div class="chips app-chips app-chips--inline" role="group" aria-labelledby="blockbar-label" id="block-chips"></div>
       </div>
-    </div>
-  </nav>
-</header>
-
-<main id="main">
-  <p class="intro" id="intro"></p>
-  <div class="px-legend" id="legend" hidden></div>
-
-  <div class="stage">
-    <section class="panel panel-3d" id="sec-3d" aria-labelledby="h-3d">
-      <div class="panel-head">
-        <h2 id="h-3d">3D anatomy</h2>
-        <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="body-3d"><span class="sr-only">Show or hide 3D anatomy</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-      </div>
-      <div class="panel-body" id="body-3d"><div class="mount mount-3d" id="mount-3d"></div></div>
-    </section>
-
-    <section class="panel panel-diagram" id="sec-diagram" aria-labelledby="h-diagram">
-      <div class="panel-head">
-        <h2 id="h-diagram">Plexus diagram</h2>
-        <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="body-diagram"><span class="sr-only">Show or hide the plexus diagram</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-      </div>
-      <div class="panel-body" id="body-diagram"><div class="mount mount-diagram" id="mount-diagram"></div></div>
-    </section>
+      <button type="button" class="px-menu-share" id="btn-share-menu" aria-describedby="share-status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span>Copy link to this view</span></button>
+    </nav>
+    <button type="button" class="tool-btn px-share" id="btn-share" aria-describedby="share-status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span>Copy link</span></button>
+    <span id="share-status" class="sr-status" role="status" aria-live="polite"></span>
+    <div class="px-bar-level" id="px-level"></div>
   </div>
+</div>
 
-  <section class="panel panel-info" id="sec-info" aria-labelledby="h-info">
-    <div class="panel-head">
-      <h2 id="h-info">Details</h2>
-      <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="info"><span class="sr-only">Show or hide details</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-    </div>
-    <div class="panel-body px-info" id="info" aria-live="polite"></div>
-  </section>
+<header class="px-head" id="top">
+  <p class="px-org">Regional anaesthesia · Anatomy in 3D</p>
+  <h1>Cervical, lumbar and sacral plexuses</h1>
+  <div id="px-level-picker"></div>
+</header>
+<main id="main">
+  <div id="explorer"></div>
 </main>
 
 <section class="foot" aria-label="Teaching information and licences">
@@ -80,12 +53,12 @@
     <p class="disclaimer">For teaching only. Not for clinical decision-making. Anatomy varies between patients.</p>
     <p id="model-credit">3D anatomy derived from <a href="https://www.z-anatomy.com/">Z-Anatomy</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>), based on BodyParts3D © DBCLS (CC BY-SA 2.1 JP). Modified: right side extracted, simplified, and some nerve paths drawn for teaching. The model files are shared under CC BY-SA 4.0. 3D rendering uses <a href="https://threejs.org/">three.js</a> (MIT).</p>
     <p id="data-credit"></p>
-    <p>Created by Dr Koh Wenjun, NTF Anaesthesia.</p>
-    <p><a href="https://anantf.com/">Back to anantf.com</a></p>
+    <p class="px-credit">Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia.</p>
+    <p class="px-back"><a href="https://anantf.com/">Back to anantf.com</a></p>
   </div>
 </section>
 
-<script type="module" src="js/app.js"></script>
+<script type="module" src="js/app.js?v=20261015"></script>
 <noscript><p class="noscript">This teaching app needs JavaScript to run.</p></noscript>
 <footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer></body>
 </html>
