@@ -19,7 +19,7 @@ function orbit({ id, title, view, tenon = false, injections, steps, probe }) {
     { id: 'floor', kind: 'bone', label: 'Orbital floor', short: 'Floor', shape: L(1.4, [47, 2], [45, 14], [39, 29], [30, 45.5]), at: [44.2, 17], lab: [38.6, 41.4],
       desc: 'The orbital floor: the peribulbar needle goes straight back parallel to it.' },
     { id: 'globe', kind: 'fluid', label: 'Globe', shape: E(G.cx, G.cy, G.r, G.r), at: [17, 13], lab: [15, 11.5],
-      desc: 'The globe: axial length about 25 mm (12–35 mm). Long eyes (myopia) are easier to perforate.' },
+      desc: 'The globe: axial length about 24 mm (roughly 20–35 mm). Long eyes (myopia, over 25 mm) are easier to perforate.' },
     { id: 'lens', kind: 'cartilage', label: 'Lens', nolabel: true, shape: E(G.cx, 4.6, 4.4, 1.8) },
     { id: 'sr', kind: 'muscle', label: 'Superior rectus', short: 'SR', shape: P([12.3, 13.6], [14, 13], [24, 44.6], [22.8, 45]), at: [16.6, 24], lab: [9.5, 23],
       desc: 'One of the four recti that form the muscle cone.' },
@@ -45,7 +45,7 @@ function orbit({ id, title, view, tenon = false, injections, steps, probe }) {
     orient: { left: 'Superior (roof)', right: 'Inferior (floor)', marker: 'right' },
     alt: 'The globe is at the top, the optic nerve runs down the middle to the orbital apex, with the superior rectus on the left and the inferior rectus on the right forming the muscle cone.',
     layers: [{ id: 'fat', kind: 'fat-deep', label: 'Orbital fat', short: 'Fat', bottom: 60, at: [8, 6], lab: [6, 5],
-      desc: 'The globe and muscle cone take up about 7 ml; the rest is fat.' }],
+      desc: 'The globe takes up about 7 ml of the 30 ml orbit; muscles, nerves and vessels take some more, and the rest is fat.' }],
     shapes, injections, steps, probe, probeInset: headProbeInset,
   };
 }

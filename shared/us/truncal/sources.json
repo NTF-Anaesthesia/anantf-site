@@ -15,7 +15,7 @@
     "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
     "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
     "figure": "Fig. 10, panel A",
-    "caption": "Erector spinae plane block at T4: the needle tip sits under erector spinae on the transverse process, with local anaesthetic lifting the muscle off the bone.",
+    "caption": "ESP catheter lying between erector spinae and the T4 transverse process, with local anaesthetic lifting the muscle off the bone.",
     "originalCaption": "A ESPB: the needle is advanced with an in-plane approach in caudo-cranial direction to reach the interfascial plane between the transverse process and the erector spinae muscle. B Ultrasound visualization of the ESPB catheter between the ESM and the transverse process. ESM, erector spinae muscle; LA, local anesthetic; N, needle; T4, transverse process",
     "alt": "Parasagittal ultrasound over the T4 transverse process during an erector spinae plane block, with the needle and local anaesthetic deep to erector spinae",
     "orientation": null,
@@ -54,13 +54,15 @@
         "shape": [[0.27, 0.43], [0.31, 0.385], [0.38, 0.365], [0.46, 0.365], [0.52, 0.385], [0.5, 0.42], [0.45, 0.445], [0.38, 0.45], [0.31, 0.455]]
       },
       {
-        "text": "Needle",
+        "text": "Catheter",
         "elementId": null,
-        "kind": "point",
-        "x": 0.56,
-        "y": 0.28,
-        "tx": 0.5,
-        "ty": 0.31,
+        "kind": "other",
+        "x": 0.68,
+        "y": 0.4,
+        "tx": 0.72,
+        "ty": 0.47,
+        "desc": "The ESP catheter, lying in the plane between erector spinae and the transverse process.",
+        "block": true,
         "line": [[0.82, 0.41], [0.53, 0.385]]
       },
       {
@@ -80,7 +82,6 @@
         "shape": [[0, 0.155], [0.3, 0.165], [0.5, 0.17], [0.7, 0.175], [1, 0.16], [1, 0.265], [0.8, 0.27], [0.6, 0.27], [0.4, 0.27], [0.2, 0.265], [0, 0.255]]
       }
     ],
-    "needle": [[0.82, 0.41], [0.53, 0.385]],
     "la": [[0.27, 0.43], [0.31, 0.385], [0.38, 0.365], [0.46, 0.365], [0.52, 0.385], [0.5, 0.42], [0.45, 0.445], [0.38, 0.45], [0.31, 0.455]],
     "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 10 panel A. CC BY 4.0. Cropped; labels on the image are the authors'."
   },
@@ -207,7 +208,8 @@
         "shape": [[0, 0.13], [0.5, 0.13], [1, 0.13], [1, 0.56], [0.9, 0.555], [0.82, 0.56], [0.76, 0.6], [0.6, 0.62], [0.4, 0.62], [0.27, 0.63], [0.24, 0.6], [0.18, 0.575], [0.08, 0.57], [0, 0.585]]
       },
       {
-        "text": "Superior costotransverse ligament / internal intercostal membrane",
+        "text": "SCTL / internal intercostal membrane",
+        "desc": "Superior costotransverse ligament (SCTL) and internal intercostal membrane: the needle passes through it into the paravertebral space.",
         "elementId": null,
         "kind": "fascia",
         "x": 0.52,
@@ -242,10 +244,10 @@
         "text": "Needle path",
         "elementId": null,
         "kind": "point",
-        "x": 0.67,
-        "y": 0.38,
-        "tx": 0.8,
-        "ty": 0.3,
+        "x": 0.561,
+        "y": 0.469,
+        "tx": 0.658,
+        "ty": 0.551,
         "line": [[0.96, 0.12], [0.235, 0.755]]
       }
     ],
@@ -303,10 +305,10 @@
         "text": "Needle",
         "elementId": null,
         "kind": "point",
-        "x": 0.57,
-        "y": 0.47,
-        "tx": 0.7,
-        "ty": 0.3,
+        "x": 0.574,
+        "y": 0.514,
+        "tx": 0.513,
+        "ty": 0.403,
         "line": [[0.97, 0.235], [0.31, 0.7]]
       },
       {
@@ -435,8 +437,10 @@
         "text": "Needle",
         "elementId": null,
         "kind": "point",
-        "x": 0.76,
-        "y": 0.28,
+        "x": 0.726,
+        "y": 0.422,
+        "tx": 0.603,
+        "ty": 0.305,
         "line": [[0.9, 0.02], [0.61, 0.69]]
       },
       {
@@ -509,11 +513,11 @@
         "text": "Needle",
         "elementId": null,
         "kind": "point",
-        "x": 0.44,
-        "y": 0.47,
-        "tx": 0.46,
-        "ty": 0.53,
-        "line": [[0.6, 0.363], [0.355, 0.558]]
+        "x": 0.471,
+        "y": 0.466,
+        "tx": 0.531,
+        "ty": 0.594,
+        "line": [[0.6, 0.363], [0.385, 0.535]]
       },
       {
         "text": "4th rib",
@@ -526,7 +530,7 @@
         "line": [[0.22, 0.82], [0.3, 0.78], [0.4, 0.745], [0.5, 0.75], [0.62, 0.785], [0.75, 0.83], [0.88, 0.86]]
       }
     ],
-    "needle": [[0.6, 0.363], [0.355, 0.558]],
+    "needle": [[0.6, 0.363], [0.385, 0.535]],
     "la": [[0.08, 0.425], [0.2, 0.405], [0.33, 0.415], [0.44, 0.44], [0.4, 0.48], [0.34, 0.52], [0.25, 0.53], [0.17, 0.5], [0.1, 0.47]],
     "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 5 panel B. CC BY 4.0. Cropped; labels on the image are the authors'."
   },
@@ -706,8 +710,10 @@
         "text": "Needle",
         "elementId": null,
         "kind": "point",
-        "x": 0.58,
-        "y": 0.24,
+        "x": 0.507,
+        "y": 0.279,
+        "tx": 0.551,
+        "ty": 0.387,
         "line": [[0.71, 0.17], [0.44, 0.315]]
       },
       {
@@ -779,10 +785,10 @@
         "text": "Needle",
         "elementId": null,
         "kind": "point",
-        "x": 0.53,
-        "y": 0.53,
-        "tx": 0.63,
-        "ty": 0.43,
+        "x": 0.598,
+        "y": 0.502,
+        "tx": 0.545,
+        "ty": 0.391,
         "line": [[0.76, 0.4], [0.49, 0.57]]
       },
       {
@@ -931,10 +937,10 @@
         "text": "Needle",
         "elementId": null,
         "kind": "point",
-        "x": 0.25,
-        "y": 0.58,
-        "tx": 0.15,
-        "ty": 0.55,
+        "x": 0.338,
+        "y": 0.646,
+        "tx": 0.36,
+        "ty": 0.534,
         "line": [[0.0, 0.52], [0.47, 0.695]]
       },
       {
@@ -1016,14 +1022,6 @@
         "tx": 0.4,
         "ty": 0.45,
         "line": [[0.02, 0.38], [0.15, 0.37], [0.3, 0.34], [0.45, 0.35], [0.6, 0.34], [0.75, 0.3], [0.98, 0.26]]
-      },
-      {
-        "text": "Liver",
-        "elementId": null,
-        "kind": "organ",
-        "x": 0.3,
-        "y": 0.8,
-        "shape": [[0.02, 0.6], [0.3, 0.6], [0.6, 0.6], [0.98, 0.58], [0.98, 0.97], [0.02, 0.97]]
       }
     ],
     "credit": "He J et al. Frontiers in Pain Research 2024, Figure 1 panel D. CC BY 4.0. Cropped; labels on the image are the authors'."
@@ -1089,10 +1087,10 @@
         "text": "Needle tip",
         "elementId": null,
         "kind": "point",
-        "x": 0.59,
-        "y": 0.52,
-        "tx": 0.4,
-        "ty": 0.62,
+        "x": 0.744,
+        "y": 0.312,
+        "tx": 0.623,
+        "ty": 0.244,
         "line": [[0.99, 0.0], [0.58, 0.52]]
       }
     ],
@@ -1201,10 +1199,10 @@
         "text": "Needle path",
         "elementId": null,
         "kind": "point",
-        "x": 0.42,
-        "y": 0.45,
-        "tx": 0.73,
-        "ty": 0.07,
+        "x": 0.501,
+        "y": 0.388,
+        "tx": 0.558,
+        "ty": 0.511,
         "line": [[0.995, 0.025], [0.172, 0.63]]
       }
     ],
@@ -1288,10 +1286,10 @@
         "text": "Needle tip",
         "elementId": null,
         "kind": "point",
-        "x": 0.51,
-        "y": 0.59,
-        "tx": 0.62,
-        "ty": 0.7,
+        "x": 0.68,
+        "y": 0.428,
+        "tx": 0.619,
+        "ty": 0.258,
         "line": [[0.92, 0.17], [0.52, 0.6]]
       }
     ],
@@ -1378,7 +1376,7 @@
         "kind": "point",
         "x": 0.57,
         "y": 0.75,
-        "line": [[0.42, 0.75], [0.5, 0.748], [0.6, 0.748], [0.68, 0.752]]
+        "line": [[0.48, 0.755], [0.55, 0.752], [0.6, 0.752], [0.65, 0.755]]
       }
     ],
     "note": "Photograph of the ultrasound screen; the original caption marks the injection site but does not name the QL approach.",
@@ -1453,10 +1451,10 @@
         "text": "Needle path",
         "elementId": null,
         "kind": "point",
-        "x": 0.6,
-        "y": 0.22,
-        "tx": 0.78,
-        "ty": 0.15,
+        "x": 0.55,
+        "y": 0.29,
+        "tx": 0.655,
+        "ty": 0.417,
         "line": [[0.7, 0.05], [0.45, 0.45]]
       },
       {

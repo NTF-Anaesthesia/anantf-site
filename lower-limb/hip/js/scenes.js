@@ -24,7 +24,7 @@ export const SCENES = {
     shapes: [
       { id: 'ft', kind: 'fat-deep', label: 'Femoral triangle fat', nolabel: true, shape: P([0, 6.4], [12, 6.6], [17, 9], [12.5, 14.6], [10, 20], [4, 22.5], [0, 22.5]), echo: 0.3 },
       { id: 'pect', kind: 'muscle', label: 'Pectineus', short: 'Pect', desc: 'Pectineus lies medially on the pubic ramus.', stri: -20, echo: 0.16, shape: P([0, 22.6], [6, 22], [11, 24.5], [14.5, 30], [12, 34.5], [6, 36.5], [0, 38.8]), at: [5, 29], lab: [5, 29] },
-      { id: 'sart', kind: 'muscle', label: 'Sartorius', short: 'Sart', stri: 0, echo: 0.17, shape: P([33, 7.2], [42, 7.2], [50, 7.4], [50, 13.4], [44, 12.6], [37, 10]), at: [44, 9.8], lab: [44, 9.8] },
+      { id: 'sart', kind: 'muscle', label: 'Sartorius', short: 'Sart', desc: 'The needle passes through sartorius first, then fascia iliaca.', stri: 0, echo: 0.17, shape: P([33, 7.2], [42, 7.2], [50, 7.4], [50, 13.4], [44, 12.6], [37, 10]), at: [44, 9.8], lab: [44, 9.8] },
       { id: 'rf', kind: 'tendon', label: 'Rectus femoris tendon', short: 'RF', shape: E(44.5, 20.6, 4.2, 1.3, 12), nolabel: true },
       { id: 'tendon', kind: 'tendon', label: 'Psoas tendon', short: 'Tendon', desc: 'A bright oval in the groove between the two bony landmarks, under the much larger, darker iliopsoas muscle belly.', echo: 0.8, shape: E(26.2, 32.9, 3.8, 1.6, -4), at: [26.2, 32.6], lab: [36.5, 36.8] },
       { id: 'fv', kind: 'vein', label: 'Femoral vein', short: 'FV', shape: E(-0.6, 15.8, 4.2, 3.4), nolabel: true },
@@ -123,7 +123,7 @@ export const SCENES = {
       { id: 'fa', kind: 'artery', label: 'Femoral artery', short: 'FA', desc: 'The femoral sheath holds the artery and vein; the nerve is outside the sheath, behind fascia iliaca.', shape: E(10, 13.3, 3.9, 3.7), at: [10, 10.5], lab: [10, 4] },
       { id: 'fnh', kind: 'connective', label: 'Epineurium', nolabel: true, echo: 0.62, shape: P([14.6, 16.5], [18, 14], [22.9, 15.1], [21.8, 17.7], [16.6, 17.9]) },
       { id: 'fn', kind: 'nerve', label: 'Femoral nerve', short: 'FN', ids: ['lumbar:n-femoral'], desc: 'The target: a flattened hyperechoic oval or triangle on iliopsoas, deep to fascia iliaca.', shape: [E(16.6, 16.5, 1.25, 0.85), E(18.9, 15.5, 1.3, 0.8), E(21.2, 16, 1, 0.75), E(19.2, 16.95, 1, 0.6)], at: [18.6, 16.2], lab: [19, 21] },
-      { id: 'head', kind: 'bone', label: 'Femoral head', short: 'Head',
+      { id: 'head', kind: 'bone', label: 'Femoral head', short: 'Head', desc: 'The femoral head, deep to iliopsoas.',
         shape: L(1.2, [21, 39], [26, 35.8], [31, 34.2], [36, 33.8], [41, 34.4], [46, 36.2], [50, 38]), at: [36, 33.8], lab: [38, 38.6] },
     ],
     target: { at: [22.8, 15.6], r: 2 },

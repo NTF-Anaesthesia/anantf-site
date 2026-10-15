@@ -68,7 +68,7 @@ export function doses(texts) {
 export const allTextOf = (r, { forDoses = false } = {}) => [
   ...Object.values(r?.text || {}),
   ...Object.entries(r?.extra || {}).filter(([k]) => !(forDoses && k.startsWith('~'))).map(([, v]) => v),
-  ...Object.values(r?.scans || {}).flatMap((v) => Object.values(v).flat()),
+  ...Object.values(r?.scans || {}).flatMap((v) => Object.entries(v).filter(([k]) => !(forDoses && k.startsWith('~'))).flatMap(([, t]) => t)),
 ];
 
 // ------------------------------------------------------------------ server + browser
@@ -301,8 +301,10 @@ export async function stepScans(page, isPhone) {
             if (!on) offscreen.push(`${sid}/${v}`);
           }
         }
-        out[sid][v] = texts;
+        out[sid][v === 'real' ? '~real' : v] = texts; // the Real view repeats the same step text: lines only, not doses
       }
+      // back to the first view, so the page text captured afterwards shows each scan as it opens (with its overlay)
+      if (views.length > 1) await page.evaluate(({ sid, v }) => document.querySelector(`#${CSS.escape(sid)} .tb-seg-btn[data-v="${v}"]`)?.click(), { sid, v: views[0] });
     }
   }
   return { scans: out, offscreen };

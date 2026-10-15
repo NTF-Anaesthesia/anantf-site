@@ -96,7 +96,7 @@ export const SCENES = {
       { id: 'deep', kind: 'fat-deep', label: 'Intermuscular fat', nolabel: true, echo: 0.3, edge: 0, bottom: 44 },
     ],
     lines: [
-      { id: 'fl', kind: 'fascia', label: 'Fascia lata', short: 'FL', amp: 0.85, w: 0.4, pts: [[0, 7.6], [22, 7.2], [45, 6.8]], at: [41, 6.9], lab: [41, 3.6] },
+      { id: 'fl', kind: 'fascia', label: 'Fascia lata', short: 'FL', desc: 'Fascia lata, over sartorius.', amp: 0.85, w: 0.4, pts: [[0, 7.6], [22, 7.2], [45, 6.8]], at: [41, 6.9], lab: [41, 3.6] },
       { id: 'vam', kind: 'ligament', label: 'Vastoadductor membrane', short: 'VAM', desc: 'A bright line from vastus medialis to adductor magnus, deep to sartorius, roofing the artery.', amp: 0.9, w: 0.55,
         pts: [[9, 22.6], [13, 21.6], [18, 20.8], [23, 20.6], [28, 21], [32, 21.8]], at: [14, 21.4], lab: [7.5, 17.4] },
     ],

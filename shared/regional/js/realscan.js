@@ -13,12 +13,16 @@
 //
 // Image shape (a sources.json entry is converted to this; scene.realScans uses it directly):
 //   { src, credit, licence?, licenceUrl?, sourceUrl?, orientation?: 'text' | {left, right}, alt?, caption?,
-//     needle?: [[x,y]…], la?: [[x,y]…],
+//     needle?: [[x,y]…], la?: [[x,y]…], authorLabels?: boolean,
 //     labels: [{ text, x, y, tx?, ty?, kind?, desc?, block?, shape?: [[x,y]…], line?: [[x,y]…], ids?, elementId? }] }
 //   x, y: the point on the structure; tx, ty: where the label pill sits (a leader line joins them). All fractions of
 //   the image width / height (0–1). shape: a polygon drawn as a semi-transparent fill in the clinical colour; line:
 //   an open line (fascia, bone cortex, pleura, needle path). needle: the needle path the authors show; la: where the
 //   local anaesthetic goes. Labels with the same text are one structure.
+//   authorLabels: the image already carries the authors' own labels (sources.json `burnedInLabels`, unless the entry
+//   sets `authorLabels: false`, e.g. when the authors used only numbers). Our pills would sit on top of theirs, so
+//   such images show a pill only for the structure that is tapped or picked in the colour key.
+//   On a narrow image (< 420 px) with more than 6 pills, only the block-view structures keep their pills.
 //
 // API (frozen names kept from WP0):
 //   REAL_SCANS                         block id -> [image…]
@@ -89,6 +93,7 @@ export function fromSource(e, dir = e._dir) {
     sourceUrl: e.articleUrl || (e.doi ? `https://doi.org/${e.doi}` : null),
     orientation: e.orientation, alt: e.alt, caption: e.caption,
     labels: e.labels || [], needle: e.needle, la: e.la, injection: e.injection, file: e.file,
+    authorLabels: e.authorLabels ?? !!e.burnedInLabels,
   };
 }
 export function loadRealScans(blockId, scene) {
@@ -203,7 +208,9 @@ export function mountRealScan(host, images, opts = {}) {
   const status = mk('p', 'ra-rs-status', 'Loading the scan…');
   box.append(img, svg, pills, status);
   const name = mk('div', 'ra-rs-name'); name.setAttribute('aria-live', 'polite'); name.hidden = true;
-  media.append(box, name);
+  const hint = mk('p', 'ra-rs-hint', 'The labels in the image are the authors\u2019. Tap the scan, or a name in the key, to see what each structure is.');
+  hint.hidden = true;
+  media.append(box, name, hint);
   const keyWrap = mk('div', 'ra-rs-keywrap');
   const keyHead = mk('div', 'ra-rs-keyhead');
   const keyTitle = mk('p', 'ra-rs-keyk', 'Colour key');
@@ -322,6 +329,7 @@ export function mountRealScan(host, images, opts = {}) {
     const s = sel && structs.find((x) => x.key === sel);
     name.textContent = '';
     name.hidden = !s;
+    hint.hidden = !!s || !list[i]?.authorLabels || !structs.length || !labelsOn;
     if (!s) return;
     const sw2 = mk('span', `ra-rs-sw ra-rs-sw--${s.kind}`); sw2.setAttribute('aria-hidden', 'true'); sw2.style.setProperty('--c', COLOURS[s.kind] || COLOURS.other);
     const row = mk('div', 'ra-rs-name-row');
@@ -372,14 +380,19 @@ export function mountRealScan(host, images, opts = {}) {
     pills.textContent = ''; gLead.textContent = '';
     box.classList.toggle('is-nolabels', !labelsOn);
     if (!labelsOn || !W || !H) return;
+    const im = list[i] || {};
+    let shown = structs.filter((s) => s.labels.some((l) => Number.isFinite(l.x) && Number.isFinite(l.y)));
+    if (im.authorLabels) shown = shown.filter((s) => s.key === sel); // the authors' own labels are on the image
+    else if (W < 420 && shown.reduce((n, s) => n + (s.special ? 1 : s.labels.length), 0) > 6) shown = shown.filter((s) => s.block || s.key === sel);
     const items = [];
-    for (const s of structs) {
+    for (const s of shown) {
       for (const l of s.labels) {
         if (!Number.isFinite(l.x) || !Number.isFinite(l.y)) continue;
-        const p = btn(`ra-rs-pill${on.has(s.key) || sel === s.key ? ' is-on' : ''}${sel === s.key ? ' is-sel' : ''}`, s.special ? s.key : l.text);
+        const p = btn(`ra-rs-pill${on.has(s.key) || sel === s.key ? ' is-on' : ''}${sel === s.key ? ' is-sel' : ''}`);
+        p.append(mk('span', 'ra-rs-pill-t', s.special ? s.key : l.text));
         p.style.setProperty('--c', COLOURS[s.kind] || COLOURS.other);
         p.setAttribute('aria-pressed', String(sel === s.key));
-        p.addEventListener('click', (e) => { e.stopPropagation(); select(sel === s.key ? null : s.key); });
+        p.dataset.k = s.key; // a tap is handled by the box (below), so taps on the pill's enlarged edge can reach the shape under it
         pills.append(p);
         items.push({ p, l, s, cx: (l.tx ?? l.x) * W, cy: (l.ty ?? l.y) * H });
         if (s.special) break; // one pill for the needle / LA
@@ -453,7 +466,22 @@ export function mountRealScan(host, images, opts = {}) {
 
   // ---------------------------------------------------------------- tap on the image: name the structure under the finger
   box.addEventListener('click', (e) => {
-    if (e.target.closest('.ra-rs-pill')) return;
+    const pill = e.target.closest('.ra-rs-pill');
+    if (pill) {
+      // On the pill itself (or from the keyboard): that pill's structure. On its invisible enlarged edge: whatever
+      // drawn structure lies under the finger, falling back to the pill's own.
+      const pr = pill.getBoundingClientRect();
+      const onPill = e.detail === 0 || (e.clientX >= pr.left && e.clientX <= pr.right && e.clientY >= pr.top && e.clientY <= pr.bottom);
+      const k = pill.dataset.k;
+      const under = onPill ? null : hitAt(e);
+      const pick = under ? under.key : k;
+      select(sel === pick ? null : pick);
+      return;
+    }
+    const best = hitAt(e);
+    select(best && best.key !== sel ? best.key : null);
+  });
+  function hitAt(e) {
     const r = box.getBoundingClientRect();
     const fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
     let best = null, bestScore = Infinity;
@@ -466,8 +494,8 @@ export function mountRealScan(host, images, opts = {}) {
         if (d < tol) { const sc = d * 1e-3; if (sc < bestScore) { best = s; bestScore = sc; } } // lines win over the area they sit on
       }
     }
-    select(best && best.key !== sel ? best.key : null);
-  });
+    return best;
+  }
   fig.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && sel) { e.preventDefault(); e.stopPropagation(); select(null); return; }
     if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && e.target.closest('.ra-rs-key, .ra-rs-pick')) {
@@ -502,8 +530,12 @@ export function mountRealScan(host, images, opts = {}) {
     const links = [];
     if (im.licenceUrl) { const a = mk('a', null, 'Licence'); a.href = im.licenceUrl; links.push(a); }
     if (im.sourceUrl) { const a = mk('a', null, 'Source'); a.href = im.sourceUrl; links.push(a); }
-    for (const a of links) { a.rel = 'noopener'; a.target = '_blank'; cr.append(' ', a); }
     cap.append(cr);
+    if (links.length) { // own row, so each link is a full-size tap target without stretching the credit's lines
+      const row = mk('p', 'ra-rs-links');
+      for (const a of links) { a.rel = 'noopener'; a.target = '_blank'; row.append(a); }
+      cap.append(row);
+    }
   }
   function paint() {
     const im = list[i];
@@ -522,7 +554,10 @@ export function mountRealScan(host, images, opts = {}) {
     measure(); update();
   }
   img.addEventListener('load', () => {
-    if (img.naturalWidth && img.naturalHeight) box.style.setProperty('--ar', `${img.naturalWidth} / ${img.naturalHeight}`);
+    if (img.naturalWidth && img.naturalHeight) {
+      box.style.setProperty('--ar', `${img.naturalWidth} / ${img.naturalHeight}`);
+      box.style.setProperty('--nw', `${img.naturalWidth}px`); // small sources are not blown up past 1.5x (realscan.css)
+    }
     box.classList.remove('is-loading'); status.hidden = true;
     requestAnimationFrame(() => { measure(); paintFills(); paintLabels(); });
   });
@@ -540,7 +575,7 @@ export function mountRealScan(host, images, opts = {}) {
   requestAnimationFrame(() => { if (measure()) update(); });
   return {
     el: fig, show, next: () => show(i + 1), prev: () => show(i - 1),
-    setLabels(v) { labelsOn = !!v; paintLabels(); },
+    setLabels(v) { labelsOn = !!v; paintLabels(); paintName(); },
     setInjection(id) {
       const before = list;
       injection = id || null; filterList();

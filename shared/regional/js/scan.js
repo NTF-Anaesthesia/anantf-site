@@ -207,9 +207,15 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   const viewSeg = el('div', { class: 'tb-seg tb-scan-views', role: 'group', 'aria-label': 'Image type' });
   const vBtn = (v, label) => el('button', { type: 'button', class: 'tb-seg-btn', dataset: { v }, 'aria-pressed': 'false', text: label, on: { click: () => setView(v) } });
   const vUs = diagramOnly ? null : vBtn('us', 'Ultrasound');
-  const vDia = diagramOnly ? null : vBtn('dia', 'Diagram');
-  let vReal = realList.length ? vBtn('real', 'Real') : null;
-  [vUs, vDia, vReal].forEach((b) => b && viewSeg.append(b));
+  let vDia = diagramOnly ? null : vBtn('dia', 'Diagram');
+  let vReal = null;
+  [vUs, vDia].forEach((b) => b && viewSeg.append(b));
+  // A diagram-only scene with real scans gets a "Diagram" button too, so there is something to switch back to.
+  function addReal() {
+    if (diagramOnly && !vDia) { vDia = vBtn('dia', 'Diagram'); viewSeg.append(vDia); }
+    vReal = vBtn('real', 'Real'); viewSeg.append(vReal);
+  }
+  if (realList.length) addReal();
   const labBtn = el('button', { type: 'button', class: 'tb-seg-btn tb-scan-labbtn', 'aria-pressed': 'true', text: 'Labels', on: { click: () => setLabels(!st.labels) } });
   const testable = [...structs.values()].filter((s) => s.items.some((it) => geo.has(it)));
   const testBtn = testable.length >= 3 ? el('button', { type: 'button', class: 'tb-btn ra-scan-testbtn', dataset: { tier: '2' }, text: 'Test me', 'aria-label': 'Test me: find the structures with the labels hidden', on: { click: () => startTest() } }) : null;
@@ -218,7 +224,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   // Real scans from shared/us/<region>/sources.json arrive later; the "Real" button appears when they do.
   if (!realList.length) loadRealScans(bid, scene).then((list) => {
     if (!list.length || vReal) return;
-    realList = list; vReal = vBtn('real', 'Real'); viewSeg.append(vReal);
+    realList = list; addReal();
     if (!viewSeg.isConnected && viewSeg.children.length > 1) ctrls.prepend(viewSeg);
     paintPanel();
   });
@@ -877,6 +883,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     for (const [b, v] of [[vUs, 'us'], [vDia, 'dia'], [vReal, 'real']]) if (b) b.setAttribute('aria-pressed', String(st.view === v));
     if (injSeg) [...injSeg.children].forEach((b, i) => b.setAttribute('aria-pressed', String(i === st.inj)));
     playBtn.textContent = st.playing ? 'Pause' : (st.step === 3 && st.t >= stepDur(3) ? 'Replay' : 'Play');
+    playBtn.hidden = st.view === 'real'; // the real scan is a still image: Back and Next step the text
     stage.classList.toggle('is-us', st.view === 'us');
     stage.classList.toggle('is-real', st.view === 'real');
     covHost.hidden = !(st.step === 3 && covHost.childElementCount);
@@ -897,6 +904,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     if (v === 'real' && !realList.length) return;
     if (v !== 'real' && diagramOnly) v = 'dia';
     if (v === 'real' && st.test) stopTest();
+    if (v === 'real') st.playing = false;
     st.view = v; startShimmer();
     const real = v === 'real';
     box.hidden = real; realHost.hidden = !real;
