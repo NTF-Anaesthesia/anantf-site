@@ -12,15 +12,20 @@ let seq = 0;
 
 /** A labelled number box. */
 function field(id, label, unit, value = '', attrs = '') {
-  return `<label for="${id}">${label}${unit ? ` <span class="muted">${unit}</span>` : ''}<input id="${id}" type="number" inputmode="decimal" value="${value ?? ''}" ${attrs}></label>`;
+  return `<label class="app-field" for="${id}"><span class="app-field-label">${label}${unit ? ` <span class="app-muted">${unit}</span>` : ''}</span><input class="app-input" id="${id}" type="number" inputmode="decimal" value="${value ?? ''}" ${attrs}></label>`;
 }
-/** A row of buttons that act as one choice (radio); `stack` puts long options one under another. */
+/** A labelled drop-down list. */
+function select(id, label, options, value) {
+  return `<label class="app-field" for="${id}"><span class="app-field-label">${label}</span><select class="app-input" id="${id}">${options.map(([v, t]) => `<option value="${esc(v)}"${String(v) === String(value) ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select></label>`;
+}
+/** One choice from 2 to 4 short options (a segmented control); `stack` makes a list of radio rows for long options. */
 function seg(name, legend, opts, value, stack = false) {
-  return `<fieldset class="seg"><legend>${legend}</legend><div class="segrow${stack ? ' stack' : ''}">${opts.map(([v, t]) => `<label class="segopt"><input type="radio" name="${name}" value="${esc(v)}"${String(v) === String(value) ? ' checked' : ''}><span>${t}</span></label>`).join('')}</div></fieldset>`;
+  if (stack) return `<fieldset class="ticks"><legend>${legend}</legend><ul class="app-list">${opts.map(([v, t]) => `<li><label class="app-row"><input type="radio" name="${name}" value="${esc(v)}"${String(v) === String(value) ? ' checked' : ''}><span class="app-row-body"><span class="app-row-title">${t}</span></span></label></li>`).join('')}</ul></fieldset>`;
+  return `<fieldset class="app-segmented"><legend>${legend}</legend>${opts.map(([v, t]) => `<label class="app-seg"><input type="radio" name="${name}" value="${esc(v)}"${String(v) === String(value) ? ' checked' : ''}><span>${t}</span></label>`).join('')}</fieldset>`;
 }
-/** Yes/no items as tick boxes, under a legend screen readers announce. */
+/** Yes/no items as tick boxes in a grouped list, under a legend screen readers announce. */
 function ticks(name, legend, items) {
-  return `<fieldset class="ticks"><legend class="visually-hidden">${esc(legend)}</legend>${items.map(([k, t]) => `<label class="tick"><input type="checkbox" name="${name}" value="${k}"><span>${md(t)}</span></label>`).join('')}</fieldset>`;
+  return `<fieldset class="ticks"><legend class="app-sr">${esc(legend)}</legend><ul class="app-list">${items.map(([k, t]) => `<li><label class="app-row"><input type="checkbox" name="${name}" value="${k}"><span class="app-row-body"><span class="app-row-title">${md(t)}</span></span></label></li>`).join('')}</ul></fieldset>`;
 }
 const val = (host, name) => host.querySelector(`input[name="${name}"]:checked`)?.value ?? null;
 const checked = (host, name) => Object.fromEntries([...host.querySelectorAll(`input[name="${name}"]`)].map(i => [i.value, i.checked]));
@@ -33,44 +38,44 @@ export const TOOLS = {
   weights: {
     title: 'Weight, BMI and dosing weights', group: 'dosing',
     summary: 'BMI, ideal, lean and adjusted body weight from weight, height and sex.',
-    form: p => `<div class="three">${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}${field(`${p}h`, 'Height', 'cm', P().height, 'min="100" max="250"')}${seg(`${p}s`, 'Sex', sexOpts, P().sex)}</div>`,
+    form: p => `<div class="mo-fields three">${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}${field(`${p}h`, 'Height', 'cm', P().height, 'min="100" max="250"')}${seg(`${p}s`, 'Sex', sexOpts, P().sex)}</div>`,
     calc: (h, p) => {
       const w = C.bodyWeights({ weight: num(h.querySelector(`#${p}w`).value), height: num(h.querySelector(`#${p}h`).value), sex: val(h, `${p}s`) });
-      if (w.tbw == null) return '<p class="muted">Enter the weight.</p>';
-      if (w.bmi == null) return '<p class="muted">Add height and sex.</p>';
+      if (w.tbw == null) return '<p class="app-muted">Enter the weight.</p>';
+      if (w.bmi == null) return '<p class="app-muted">Add height and sex.</p>';
       const band = w.bmi < 18.5 ? 'underweight' : w.bmi < 25 ? 'normal' : w.bmi < 30 ? 'overweight' : w.bmi < 40 ? 'obese' : 'severely obese (40 or more)';
-      return `<dl class="result"><dt>BMI</dt><dd><b>${fmt(w.bmi)}</b> kg/m² <span class="muted">${band}</span></dd><dt>Ideal body weight</dt><dd><b>${fmt(w.ibw)}</b> kg</dd><dt>Lean body weight</dt><dd><b>${fmt(w.lbw)}</b> kg</dd><dt>Adjusted body weight</dt><dd><b>${fmt(w.abw)}</b> kg</dd></dl>${w.warnings.map(x => `<p class="warn-text">${esc(x)}</p>`).join('')}<p class="muted small">Ideal: Devine. Lean: Janmahasatian. Adjusted: ideal + 0.4 × (total − ideal). See [obesity](#/learn/patients/obesity) for which drug uses which weight.</p>`;
+      return `<dl class="result"><dt>BMI</dt><dd><b>${fmt(w.bmi)}</b> kg/m² <span class="app-muted">${band}</span></dd><dt>Ideal body weight</dt><dd><b>${fmt(w.ibw)}</b> kg</dd><dt>Lean body weight</dt><dd><b>${fmt(w.lbw)}</b> kg</dd><dt>Adjusted body weight</dt><dd><b>${fmt(w.abw)}</b> kg</dd></dl>${w.warnings.map(x => `<p class="warn-text">${esc(x)}</p>`).join('')}<p class="app-muted app-small">Ideal: Devine. Lean: Janmahasatian. Adjusted: ideal + 0.4 × (total − ideal). See [obesity](#/learn/patients/obesity) for which drug uses which weight.</p>`;
     },
   },
 
   rsi: {
     title: 'RSI drug sheet', group: 'dosing',
     summary: 'Pre-calculated doses and volumes for a rapid sequence induction.',
-    form: p => `<div class="three">${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}${field(`${p}h`, 'Height', 'cm', P().height, 'min="100" max="250"')}${seg(`${p}s`, 'Sex', sexOpts, P().sex)}</div>
-      ${seg(`${p}ind`, 'Induction agent', [['propofol', 'Propofol'], ['ketamine', 'Ketamine'], ['etomidate', 'Etomidate'], ['thiopentone', 'Thiopentone']], 'propofol')}
+    form: p => `<div class="mo-fields three">${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}${field(`${p}h`, 'Height', 'cm', P().height, 'min="100" max="250"')}${seg(`${p}s`, 'Sex', sexOpts, P().sex)}</div>
+      ${select(`${p}ind`, 'Induction agent', [['propofol', 'Propofol'], ['ketamine', 'Ketamine'], ['etomidate', 'Etomidate'], ['thiopentone', 'Thiopentone']], 'propofol')}
       ${seg(`${p}nmb`, 'Muscle relaxant', [['suxamethonium', 'Suxamethonium'], ['rocuronium', 'Rocuronium']], 'suxamethonium')}`,
     calc: (h, p) => {
       const w = C.bodyWeights({ weight: num(h.querySelector(`#${p}w`).value), height: num(h.querySelector(`#${p}h`).value), sex: val(h, `${p}s`) });
-      if (w.tbw == null) return '<p class="muted">Enter the weight.</p>';
+      if (w.tbw == null) return '<p class="app-muted">Enter the weight.</p>';
       const pick = (id, label = 'RSI') => { const d = drugById[id]; if (!d) return ''; const dose = d.doses.find(x => x.label === label) || d.doses.find(x => x.per); return dose ? `<li class="rsi-row">${labelChip(d)}<div><strong>${esc(d.name)}</strong><ul class="doses">${doseLine(d, dose, w)}</ul></div></li>` : ''; };
       const nmb = val(h, `${p}nmb`);
-      return `<ul class="dtable">${pick(val(h, `${p}ind`))}${pick('fentanyl')}${pick(nmb)}${nmb === 'rocuronium' ? pick('sugammadex', 'Immediate reversal') : ''}</ul>
-      <p class="muted small">Doses are a starting point your consultant will adjust: less for the elderly, frail or shocked. Check each syringe against the label with a second person.</p>`;
+      return `<ul class="dtable">${pick(h.querySelector(`#${p}ind`).value)}${pick('fentanyl')}${pick(nmb)}${nmb === 'rocuronium' ? pick('sugammadex', 'Immediate reversal') : ''}</ul>
+      <p class="app-muted app-small">Doses are a starting point your consultant will adjust: less for the elderly, frail or shocked. Check each syringe against the label with a second person.</p>`;
     },
   },
 
   'la-max': {
     title: 'Local anaesthetic maximum dose', group: 'dosing',
     summary: 'The most local anaesthetic for this patient, in mg and in mL at a given strength.',
-    form: p => `<div class="three">${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}${field(`${p}h`, 'Height', 'cm', P().height, 'min="100" max="250"')}${seg(`${p}s`, 'Sex', sexOpts, P().sex)}</div>
-      <label for="${p}d">Drug<select id="${p}d">${Object.entries(C.LA).map(([k, v]) => `<option value="${k}">${esc(v.name)}</option>`).join('')}</select></label>
-      ${seg(`${p}pc`, 'Strength', [['0.25', '0.25%'], ['0.375', '0.375%'], ['0.5', '0.5%'], ['1', '1%'], ['2', '2%']], '0.5')}`,
+    form: p => `<div class="mo-fields three">${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}${field(`${p}h`, 'Height', 'cm', P().height, 'min="100" max="250"')}${seg(`${p}s`, 'Sex', sexOpts, P().sex)}</div>
+      ${select(`${p}d`, 'Drug', Object.entries(C.LA).map(([k, v]) => [k, v.name]))}
+      ${select(`${p}pc`, 'Strength', [['0.25', '0.25%'], ['0.375', '0.375%'], ['0.5', '0.5%'], ['0.75', '0.75%'], ['1', '1%'], ['2', '2%']], '0.5')}`,
     calc: (h, p) => {
       const w = C.bodyWeights({ weight: num(h.querySelector(`#${p}w`).value), height: num(h.querySelector(`#${p}h`).value), sex: val(h, `${p}s`) });
-      const r = C.laMax({ drug: h.querySelector(`#${p}d`).value, w, percent: num(val(h, `${p}pc`)) });
-      if (!r) return '<p class="muted">Enter the weight.</p>';
+      const r = C.laMax({ drug: h.querySelector(`#${p}d`).value, w, percent: num(h.querySelector(`#${p}pc`).value) });
+      if (!r) return '<p class="app-muted">Enter the weight.</p>';
       const d = C.LA[h.querySelector(`#${p}d`).value];
-      return `<dl class="result"><dt>Maximum</dt><dd><b>${fmt(r.mg)} mg</b>${r.capped ? ` <span class="muted">(the ${d.cap} mg ceiling)</span>` : ''}</dd><dt>At ${esc(val(h, `${p}pc`))}%</dt><dd><b>${fmt(r.ml)} mL</b> <span class="muted">(${fmt(r.mgml)} mg/mL)</span></dd><dt>Based on</dt><dd>${d.mgkg} mg/kg × ${fmt(r.kg)} kg ${r.basis === 'LBW' ? 'lean body weight (BMI 30 or more)' : 'total body weight'}</dd></dl>
+      return `<dl class="result"><dt>Maximum</dt><dd><b>${fmt(r.mg)} mg</b>${r.capped ? ` <span class="app-muted">(the ${d.cap} mg ceiling)</span>` : ''}</dd><dt>At ${esc(h.querySelector(`#${p}pc`).value)}%</dt><dd><b>${fmt(r.ml)} mL</b> <span class="app-muted">(${fmt(r.mgml)} mg/mL)</span></dd><dt>Based on</dt><dd>${d.mgkg} mg/kg × ${fmt(r.kg)} kg ${r.basis === 'LBW' ? 'lean body weight (BMI 30 or more)' : 'total body weight'}</dd></dl>
       <div class="callout warn" role="note"><p class="callout-t">Caution</p><ul><li>Doses of different local anaesthetics add up: if you use two, the total must stay under the limit.</li><li>This is a ceiling, not a target. Use the least that works; take more care in the elderly, frail, and in heart, liver or kidney disease.</li><li>Know the signs of toxicity and where the lipid is: [local anaesthetic toxicity](#/crisis/last).</li></ul></div>`;
     },
   },
@@ -80,13 +85,13 @@ export const TOOLS = {
     summary: 'Turn a dose (mcg/kg/min, U/h) into mL/h at the standard strength, and back.',
     form: p => {
       const opts = INFUSIONS.filter(x => drugById[x.id]).map(x => `<option value="${x.id}">${esc(drugById[x.id].name)}</option>`).join('');
-      return `${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}<label for="${p}d">Drug<select id="${p}d">${opts}</select></label>
-      <p class="muted small" id="${p}conc"></p>
-      <div class="two">${field(`${p}dose`, 'Dose', `<span id="${p}unit"></span>`, '', 'min="0" step="any"')}${field(`${p}rate`, 'Rate', 'mL/h', '', 'min="0" step="any"')}</div>`;
+      return `${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}<label class="app-field" for="${p}d"><span class="app-field-label">Drug</span><select class="app-input" id="${p}d">${opts}</select></label>
+      <p class="app-muted app-small" id="${p}conc"></p>
+      <div class="mo-fields">${field(`${p}dose`, 'Dose', `<span id="${p}unit"></span>`, '', 'min="0" step="any"')}${field(`${p}rate`, 'Rate', 'mL/h', '', 'min="0" step="any"')}</div>`;
     },
     calc: (h, p, ev) => {
       const id = h.querySelector(`#${p}d`).value, spec = INFUSIONS.find(x => x.id === id), d = drugById[id], ic = d?.infusionConc || d?.conc;
-      if (!spec || !ic) return '<p class="muted">Choose a drug.</p>';
+      if (!spec || !ic) return '<p class="app-muted">Choose a drug.</p>';
       h.querySelector(`#${p}unit`).textContent = spec.unit;
       h.querySelector(`#${p}conc`).innerHTML = `Standard strength: ${md(d.infusionPrep || d.prep || '')} → <span class="v">${fmt(ic.value)} ${esc(ic.unit)}</span>`;
       const weight = num(h.querySelector(`#${p}w`).value), dose = h.querySelector(`#${p}dose`), rate = h.querySelector(`#${p}rate`);
@@ -95,43 +100,43 @@ export const TOOLS = {
       if (ev?.target === dose || ev?.target === rate) h.dataset.from = ev.target === dose ? 'dose' : 'rate';
       const args = { unit: spec.unit, weight, conc: ic };
       const needsKg = spec.unit.includes('/kg/');
-      if (needsKg && !C.okNum(weight, 0.5, 400)) { if (h.dataset.from === 'dose') rate.value = ''; else if (h.dataset.from === 'rate') dose.value = ''; return '<p class="muted">Enter the weight.</p>'; }
+      if (needsKg && !C.okNum(weight, 0.5, 400)) { if (h.dataset.from === 'dose') rate.value = ''; else if (h.dataset.from === 'rate') dose.value = ''; return '<p class="app-muted">Enter the weight.</p>'; }
       if (h.dataset.from === 'rate') { const r = num(rate.value), x = r == null ? null : C.infusionDose({ ...args, rate: r }); dose.value = x == null ? '' : C.nice(x); }
       else if (h.dataset.from === 'dose') { const d0 = num(dose.value), x = d0 == null ? null : C.infusionRate({ ...args, dose: d0 }); rate.value = x == null ? '' : C.nice(x); }
       const lo = C.infusionRate({ ...args, dose: spec.range[0] }), hi = C.infusionRate({ ...args, dose: spec.range[1] });
-      return `<p>Usual range <span class="v">${spec.range[0]}–${spec.range[1]} ${esc(spec.unit)}</span> = <b>${range(lo, hi)} mL/h</b>${spec.unit.includes('/kg/') ? ` for ${fmt(weight)} kg` : ''}.</p>${spec.note ? `<p class="muted small">${md(spec.note)}</p>` : ''}`;
+      return `<p>Usual range <span class="v">${spec.range[0]}–${spec.range[1]} ${esc(spec.unit)}</span> = <b>${range(lo, hi)} mL/h</b>${spec.unit.includes('/kg/') ? ` for ${fmt(weight)} kg` : ''}.</p>${spec.note ? `<p class="app-muted app-small">${md(spec.note)}</p>` : ''}`;
     },
   },
 
   fluids: {
     title: 'Maintenance fluids and fasting deficit', group: 'fluids',
     summary: 'The 4-2-1 rule, and the deficit after fasting.',
-    form: p => `<div class="two">${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}${field(`${p}f`, 'Hours fasted', 'h', '', 'min="0" max="72" step="0.5"')}</div>`,
+    form: p => `<div class="mo-fields">${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="1" max="400" step="0.1"')}${field(`${p}f`, 'Hours fasted', 'h', '', 'min="0" max="72" step="0.5"')}</div>`,
     calc: (h, p) => {
       const w = num(h.querySelector(`#${p}w`).value), m = C.maintenance421(w);
-      if (m == null) return '<p class="muted">Enter the weight.</p>';
+      if (m == null) return '<p class="app-muted">Enter the weight.</p>';
       const hrs = num(h.querySelector(`#${p}f`).value), def = C.fastingDeficit(w, hrs);
-      return `<dl class="result"><dt>Maintenance</dt><dd><b>${fmt(m)} mL/h</b> <span class="muted">(${fmt(m * 24)} mL a day)</span></dd>${def != null ? `<dt>Fasting deficit</dt><dd><b>${fmt(def)} mL</b> <span class="muted">${fmt(m)} × ${fmt(hrs)} h</span></dd>` : ''}</dl>
-      <p class="muted small">4 mL/kg/h for the first 10 kg, 2 for the next 10, 1 for each kg after that. Adults who drank clear fluids until 2 hours before rarely have a real deficit; replace losses and give maintenance, not the whole sum at once.</p>`;
+      return `<dl class="result"><dt>Maintenance</dt><dd><b>${fmt(m)} mL/h</b> <span class="app-muted">(${fmt(m * 24)} mL a day)</span></dd>${def != null ? `<dt>Fasting deficit</dt><dd><b>${fmt(def)} mL</b> <span class="app-muted">${fmt(m)} × ${fmt(hrs)} h</span></dd>` : ''}</dl>
+      <p class="app-muted app-small">4 mL/kg/h for the first 10 kg, 2 for the next 10, 1 for each kg after that. Adults who drank clear fluids until 2 hours before rarely have a real deficit; replace losses and give maintenance, not the whole sum at once.</p>`;
     },
   },
 
   abl: {
     title: 'Allowable blood loss', group: 'fluids',
     summary: 'How much blood can be lost before reaching a chosen haematocrit.',
-    form: p => `${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="0.5" max="400" step="0.1"')}<label for="${p}g">Patient<select id="${p}g">${Object.entries(C.BLOOD_VOLUME).map(([k, v]) => `<option value="${k}"${k === (P().sex === 'f' ? 'woman' : 'man') ? ' selected' : ''}>${esc(v.label)} (${v.mlkg} mL/kg)</option>`).join('')}</select></label>
-      <div class="two">${field(`${p}a`, 'Starting haematocrit', '%', '', 'min="10" max="70" step="0.5"')}${field(`${p}b`, 'Lowest acceptable', '%', '', 'min="10" max="70" step="0.5"')}</div>`,
+    form: p => `${field(`${p}w`, 'Weight', 'kg', P().weight, 'min="0.5" max="400" step="0.1"')}<label class="app-field" for="${p}g"><span class="app-field-label">Patient</span><select class="app-input" id="${p}g">${Object.entries(C.BLOOD_VOLUME).map(([k, v]) => `<option value="${k}"${k === (P().sex === 'f' ? 'woman' : 'man') ? ' selected' : ''}>${esc(v.label)} (${v.mlkg} mL/kg)</option>`).join('')}</select></label>
+      <div class="mo-fields">${field(`${p}a`, 'Starting haematocrit', '%', '', 'min="10" max="70" step="0.5"')}${field(`${p}b`, 'Lowest acceptable', '%', '', 'min="10" max="70" step="0.5"')}</div>`,
     calc: (h, p) => {
       const r = C.abl({ weight: num(h.querySelector(`#${p}w`).value), group: h.querySelector(`#${p}g`).value, hctStart: num(h.querySelector(`#${p}a`).value), hctTarget: num(h.querySelector(`#${p}b`).value) });
-      if (!r) return '<p class="muted">Enter the weight and both haematocrits.</p>';
-      return `<dl class="result"><dt>Blood volume</dt><dd><b>${fmt(r.ebv)} mL</b></dd><dt>Allowable loss</dt><dd><b>${fmt(r.abl)} mL</b></dd></dl><p class="muted small">ABL = blood volume × (start − lowest) ÷ start. Haemoglobin works in place of haematocrit. A guide only: watch the patient, the surgery and the trend.</p>`;
+      if (!r) return '<p class="app-muted">Enter the weight and both haematocrits.</p>';
+      return `<dl class="result"><dt>Blood volume</dt><dd><b>${fmt(r.ebv)} mL</b></dd><dt>Allowable loss</dt><dd><b>${fmt(r.abl)} mL</b></dd></dl><p class="app-muted app-small">ABL = blood volume × (start − lowest) ÷ start. Haemoglobin works in place of haematocrit. A guide only: watch the patient, the surgery and the trend.</p>`;
     },
   },
 
   convert: {
     title: 'Percent, ratio and mg/mL', group: 'dosing',
     summary: '1% = 10 mg/mL; 1:1000 = 1 mg/mL. Convert either way.',
-    form: p => `<div class="two">${field(`${p}pc`, 'Percent strength', '%', '', 'min="0" step="any"')}${field(`${p}r`, 'Ratio 1 in', '', '', 'min="1" step="any"')}</div>`,
+    form: p => `<div class="mo-fields">${field(`${p}pc`, 'Percent strength', '%', '', 'min="0" step="any"')}${field(`${p}r`, 'Ratio 1 in', '', '', 'min="1" step="any"')}</div>`,
     calc: (h, p) => {
       const pc = num(h.querySelector(`#${p}pc`).value), r = num(h.querySelector(`#${p}r`).value);
       const lines = [];
@@ -151,7 +156,7 @@ export const TOOLS = {
     form: p => ticks(`${p}i`, 'STOP-BANG: tick each one that applies', [['snore', '**S**nore loudly (heard through a closed door)'], ['tired', '**T**ired, fatigued or sleepy in the day'], ['observed', '**O**bserved to stop breathing or choke in sleep'], ['pressure', 'High blood **p**ressure, treated or not'], ['bmi', '**B**MI over 35'], ['age', '**A**ge over 50'], ['neck', '**N**eck circumference over 40 cm'], ['male', 'Male **g**ender']]),
     calc: (h, p) => {
       const r = C.stopBang(checked(h, `${p}i`));
-      return `<p class="score-line"><b>${r.score} of 8</b>: <span class="band ${r.band}">${r.band} risk</span> of moderate to severe sleep apnoea</p><p class="muted small">0–2 low, 3–4 intermediate, 5–8 high. Also high if 2 or more of the first four plus male, BMI over 35 or a large neck. Tell your consultant about intermediate or high scores: they change the plan for opioids, sedation and where the patient goes after.</p>`;
+      return `<p class="score-line"><b>${r.score} of 8</b>: <span class="band ${r.band}">${r.band} risk</span> of moderate to severe sleep apnoea</p><p class="app-muted app-small">0–2 low, 3–4 intermediate, 5–8 high. Also high if 2 or more of the first four plus male, BMI over 35 or a large neck. Tell your consultant about intermediate or high scores: they change the plan for opioids, sedation and where the patient goes after.</p>`;
     },
   },
 
@@ -161,7 +166,7 @@ export const TOOLS = {
     form: p => ticks(`${p}i`, 'PONV risk factors: tick each one that applies', [['female', 'Female'], ['nonSmoker', 'Non-smoker'], ['history', 'Past PONV or motion sickness'], ['opioids', 'Opioids likely after surgery']]),
     calc: (h, p) => {
       const r = C.apfel(checked(h, `${p}i`));
-      return `<p class="score-line"><b>${r.score} of 4</b>: about <b>${r.risk}%</b> risk of PONV</p><p class="muted small">Risk with 0, 1, 2, 3, 4 factors: 10, 21, 39, 61, 79%. More factors, more prevention: see [PONV](#/learn/pacu/ponv).</p>`;
+      return `<p class="score-line"><b>${r.score} of 4</b>: about <b>${r.risk}%</b> risk of PONV</p><p class="app-muted app-small">Risk with 0, 1, 2, 3, 4 factors: 10, 21, 39, 61, 79%. More factors, more prevention: see [PONV](#/learn/pacu/ponv).</p>`;
     },
   },
 
@@ -171,7 +176,7 @@ export const TOOLS = {
     form: p => ticks(`${p}i`, 'Cardiac risk factors: tick each one that applies', [['surgery', 'High-risk surgery: inside the chest or abdomen, or vascular above the groin'], ['ihd', 'Ischaemic heart disease'], ['hf', 'Heart failure'], ['cvd', 'Stroke or TIA'], ['insulin', 'Diabetes treated with insulin'], ['creatinine', 'Creatinine over `177 µmol/L`']]),
     calc: (h, p) => {
       const r = C.rcri(checked(h, `${p}i`));
-      return `<p class="score-line"><b>${r.score} point${r.score === 1 ? '' : 's'}</b>: about <b>${r.risk}%</b> risk of heart attack, cardiac arrest or death within 30 days</p><p class="muted small">Risks by points (0, 1, 2, 3 or more): 3.9, 6.0, 10.1, 15%. A score of 1 or more, or poor effort tolerance, is worth a word with your consultant.</p>`;
+      return `<p class="score-line"><b>${r.score} point${r.score === 1 ? '' : 's'}</b>: about <b>${r.risk}%</b> risk of heart attack, cardiac arrest or death within 30 days</p><p class="app-muted app-small">Risks by points (0, 1, 2, 3 or more): 3.9, 6.0, 10.1, 15%. A score of 1 or more, or poor effort tolerance, is worth a word with your consultant.</p>`;
     },
   },
 
@@ -181,24 +186,24 @@ export const TOOLS = {
     form: p => ALDRETE.map(([k, t, o]) => seg(`${p}${k}`, t, o.map((x, i) => [i, `${i}: ${x}`]), null, true)).join(''),
     calc: (h, p) => {
       const r = C.aldrete(Object.fromEntries(ALDRETE.map(([k]) => [k, val(h, `${p}${k}`) == null ? null : +val(h, `${p}${k}`)])));
-      if (!r.complete) return '<p class="muted">Score all five.</p>';
-      return `<p class="score-line"><b>${r.score} of 10</b>: ${r.ready ? '<span class="band low">meets the score for discharge</span>' : '<span class="band high">not ready</span>'}</p><p class="muted small">Also needed: pain and nausea controlled, no bleeding, the anaesthetic chart and orders complete, and at least 30 minutes in PACU. The score is one part of the decision, not all of it.</p>`;
+      if (!r.complete) return '<p class="app-muted">Score all five.</p>';
+      return `<p class="score-line"><b>${r.score} of 10</b>: ${r.ready ? '<span class="band low">meets the score for discharge</span>' : '<span class="band high">not ready</span>'}</p><p class="app-muted app-small">Also needed: pain and nausea controlled, no bleeding, the anaesthetic chart and orders complete, and at least 30 minutes in PACU. The score is one part of the decision, not all of it.</p>`;
     },
   },
 
   paeds: {
     title: "Children's quick sheet", group: 'dosing',
     summary: 'Weight estimate, tube and airway sizes and key doses by age.',
-    form: p => `<div class="two">${field(`${p}y`, 'Age', 'years', '', 'min="1" max="14" step="1"')}${field(`${p}m`, 'or age under 1', 'months', '', 'min="0" max="11" step="1"')}</div>${field(`${p}w`, 'Weight if known', 'kg', '', 'min="0.5" max="80" step="0.1"')}`,
+    form: p => `<div class="mo-fields">${field(`${p}y`, 'Age', 'years', '', 'min="1" max="14" step="1"')}${field(`${p}m`, 'or age under 1', 'months', '', 'min="0" max="11" step="1"')}</div>${field(`${p}w`, 'Weight if known', 'kg', '', 'min="0.5" max="80" step="0.1"')}`,
     calc: (h, p) => {
       const years = num(h.querySelector(`#${p}y`).value), months = num(h.querySelector(`#${p}m`).value);
       const est = C.paedsWeight({ months, years });
       const w = num(h.querySelector(`#${p}w`).value) ?? est;
-      if (!C.okNum(w, 0.5, 80)) return '<p class="muted">Enter the age or the weight.</p>';
+      if (!C.okNum(w, 0.5, 80)) return '<p class="app-muted">Enter the age or the weight.</p>';
       const t = years != null ? C.paedsTube(years) : null;
       // per-kg dose with an adult ceiling: "10 mcg/kg = 150 mcg" or "= 1 mg (adult maximum)"
       const kg = (x, cap, unit) => { const v = x * w; return cap != null && v > cap ? `${fmt(cap)} ${unit} (adult maximum)` : `${fmt(v)} ${unit}`; };
-      return `<dl class="result"><dt>Weight</dt><dd><b>${fmt(w)} kg</b>${num(h.querySelector(`#${p}w`).value) == null ? ' <span class="muted">estimated</span>' : ''}</dd>
+      return `<dl class="result"><dt>Weight</dt><dd><b>${fmt(w)} kg</b>${num(h.querySelector(`#${p}w`).value) == null ? ' <span class="app-muted">estimated</span>' : ''}</dd>
         ${t ? `<dt>Tracheal tube</dt><dd>cuffed <b>${fmt(t.cuffed)}</b> mm, uncuffed ${fmt(t.uncuffed)} mm; oral length about <b>${fmt(t.oral)} cm</b> at the lips</dd>` : ''}
         <dt>LMA size</dt><dd><b>${C.lmaSize(w)}</b></dd>
         <dt>Maintenance</dt><dd>${fmt(C.maintenance421(w))} mL/h</dd></dl>
@@ -210,23 +215,23 @@ export const TOOLS = {
         <tr><th scope="row">Glucose for low sugar</th><td>2 mL/kg of 10% = <b>${kg(2, 200, 'mL')}</b></td></tr>
         <tr><th scope="row">Defibrillation</th><td>4 J/kg = <b>${kg(4, 200, 'J')}</b></td></tr>
         <tr><th scope="row">Paracetamol</th><td>15 mg/kg = <b>${kg(15, 1000, 'mg')}</b></td></tr></tbody></table>
-        <p class="muted small">Weight estimate (APLS): under 1 year (0.5 × months) + 4; 1–5 years (2 × age) + 8; 6–12 years (3 × age) + 7. Weigh the child whenever you can. Children are anaesthetised with a consultant: use this to prepare and to check.</p>`;
+        <p class="app-muted app-small">Weight estimate (APLS): under 1 year (0.5 × months) + 4; 1–5 years (2 × age) + 8; 6–12 years (3 × age) + 7. Weigh the child whenever you can. Children are anaesthetised with a consultant: use this to prepare and to check.</p>`;
     },
   },
 
   premed: {
     title: 'Premed summary', group: 'builders',
     summary: 'Turn your pre-op review into a short summary to tell your consultant.',
-    form: p => `<p class="muted small">Do not type names or record numbers here. Nothing is saved.</p>
-      ${PREMED.map(([k, t, ph]) => `<label for="${p}${k}">${t}<textarea id="${p}${k}" rows="${k === 'pmh' || k === 'plan' ? 3 : 1}" placeholder="${esc(ph)}"></textarea></label>`).join('')}`,
+    form: p => `<p class="app-muted app-small">Do not type names or record numbers here. Nothing is saved.</p>
+      ${PREMED.map(([k, t, ph]) => `<label class="app-field" for="${p}${k}"><span class="app-field-label">${t}</span><textarea class="app-input" id="${p}${k}" rows="${k === 'pmh' || k === 'plan' ? 3 : 1}" placeholder="${esc(ph)}"></textarea></label>`).join('')}`,
     calc: (h, p) => builderOut(h, p, PREMED),
   },
 
   handover: {
     title: 'PACU handover', group: 'builders',
     summary: 'The handover to the PACU team, in the order they expect it.',
-    form: p => `<p class="muted small">Do not type names or record numbers here. Nothing is saved.</p>
-      ${HANDOVER.map(([k, t, ph]) => `<label for="${p}${k}">${t}<textarea id="${p}${k}" rows="1" placeholder="${esc(ph)}"></textarea></label>`).join('')}`,
+    form: p => `<p class="app-muted app-small">Do not type names or record numbers here. Nothing is saved.</p>
+      ${HANDOVER.map(([k, t, ph]) => `<label class="app-field" for="${p}${k}"><span class="app-field-label">${t}</span><textarea class="app-input" id="${p}${k}" rows="1" placeholder="${esc(ph)}"></textarea></label>`).join('')}`,
     calc: (h, p) => builderOut(h, p, HANDOVER),
   },
 };
@@ -273,9 +278,9 @@ const HANDOVER = [
 
 function builderOut(h, p, fields) {
   const lines = fields.map(([k, t]) => [t, h.querySelector(`#${p}${k}`).value.trim()]).filter(([, v]) => v);
-  if (!lines.length) return '<p class="muted">Fill in what you know; the summary builds here.</p>';
+  if (!lines.length) return '<p class="app-muted">Fill in what you know; the summary builds here.</p>';
   const text = lines.map(([t, v]) => `${t}: ${v}`).join('\n');
-  return `<pre class="built" id="${p}text">${esc(text)}</pre><div class="row"><button type="button" class="btn" data-copy="${p}text">Copy</button></div>`;
+  return `<pre class="built" id="${p}text">${esc(text)}</pre><div class="app-btn-row"><button type="button" class="app-btn app-btn--outline app-btn--compact" data-copy="${p}text">Copy</button></div>`;
 }
 
 /** Draw a tool into host. */

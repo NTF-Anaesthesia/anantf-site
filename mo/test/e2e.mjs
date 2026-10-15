@@ -67,19 +67,20 @@ const oneRow = async sel => {
 try {
   await step('home', async () => {
     await go('');
-    assert.match(await text('h1'), /MO guide/);
-    assert.equal(await page.locator('#nav a').count(), 5);
-    await oneRow('#nav'); await noSideScroll('home');
+    assert.equal(await text('h1'), 'Learn');
+    assert.equal(await page.locator('.app-tab').count(), 5);
+    assert.equal(await page.getAttribute('.app-tab[aria-current=page]', 'href'), '#/learn');
+    await oneRow('.app-tabbar-inner'); await noSideScroll('home');
     assert.match(await page.content(), /noindex/);
     await shot('home'); await axe('home');
   });
 
   await step('learn: modules and every topic renders', async () => {
     await go('#/learn'); await axe('learn'); await shot('learn');
-    assert.equal(await page.locator('.rows a').count(), MODULES.length);
+    assert.equal(await page.locator('a.app-row[href^="#/learn/"]').count(), MODULES.length);
     for (const m of MODULES) {
       await go(`#/learn/${m.id}`);
-      assert.equal(await page.locator('ol.topics > li').count(), m.topics.length, m.id);
+      assert.equal(await page.locator(`a.app-row[href^="#/learn/${m.id}/"]`).count(), m.topics.length, m.id);
       for (const t of m.topics) {
         await go(`#/learn/${m.id}/${t.id}`);
         assert.equal(await text('h1'), t.title, `${m.id}/${t.id} title`);
@@ -108,7 +109,7 @@ try {
     const hit = MODULES.flatMap(m => m.topics.map(t => ({ m, t, b: t.blocks.find(x => x.t === 'check') }))).find(x => x.b);
     if (!hit) return;
     await go(`#/learn/${hit.m.id}/${hit.t.id}`);
-    await page.locator(`fieldset[data-check="${hit.b.id}"] label.tick`).first().click();
+    await page.locator(`fieldset[data-check="${hit.b.id}"] label.app-row`).first().click();
     await go(`#/learn/${hit.m.id}/${hit.t.id}`);
     assert.equal(await page.locator(`fieldset[data-check="${hit.b.id}"] input`).first().isChecked(), true);
     assert.match(await text(`fieldset[data-check="${hit.b.id}"] .check-count`), /^1 of/);
@@ -122,7 +123,7 @@ try {
     await f.locator('button[type=submit]').click();
     assert.match(await f.locator('.qfb').innerText(), /Choose an answer/);
     const q = hit.b.items[0], ans = Array.isArray(q.answer) ? q.answer : [q.answer];
-    for (const a of ans) await f.locator('label.qopt').nth(a).click();
+    for (const a of ans) await f.locator('label.app-choice').nth(a).click();
     await f.locator('button[type=submit]').click();
     assert.match(await f.locator('.qfb').innerText(), /^Right\./);
     await axe('quiz answered');
@@ -131,23 +132,24 @@ try {
   await step('drugs: weight works out doses and volumes', async () => {
     await go('#/drugs'); await axe('drugs, no weight');
     await page.click('#patient-edit'); await page.fill('#p-weight', '70'); await page.fill('#p-height', '175');
-    await page.locator('.segopt', { hasText: /^Male$/ }).click();
+    await page.locator('.app-seg', { hasText: /^Male$/ }).click();
     await page.click('#patient-form button[type=submit]');
     assert.match(await text('#patient-sum'), /70 kg/);
     await go('#/drugs/propofol');
     const t = await text('.drugcard');
     assert.match(t, /70–140 mg/); assert.match(t, /7–14 mL/);
     assert.equal(await text('h1'), 'Propofol');
+    assert.ok(await page.locator('.app-bar.is-collapsed').count() === 0, 'bar collapsed at the top of the page');
     await shot('drug'); await axe('drug card');
     // a short adult: ideal-weight doses use her ideal weight, not her total weight
     await page.click('#patient-edit'); await page.fill('#p-weight', '90'); await page.fill('#p-height', '148');
-    await page.locator('.segopt', { hasText: /^Female$/ }).click(); await page.click('#patient-form button[type=submit]');
+    await page.locator('.app-seg', { hasText: /^Female$/ }).click(); await page.click('#patient-form button[type=submit]');
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'patient-edit', 'focus stays on the panel');
     await page.waitForFunction(() => /90 kg/.test(document.querySelector('#announce')?.textContent || ''));
     assert.match(await text('.patient'), /Ideal 41\.5 kg/);
     await page.click('#patient-edit'); await page.click('#p-clear');
     await page.click('#patient-edit'); await page.fill('#p-weight', '70'); await page.fill('#p-height', '175');
-    await page.locator('.segopt', { hasText: /^Male$/ }).click(); await page.click('#patient-form button[type=submit]');
+    await page.locator('.app-seg', { hasText: /^Male$/ }).click(); await page.click('#patient-form button[type=submit]');
     await go('#/drugs');
     await page.fill('#drug-q', 'propo');
     assert.equal(await page.locator('#drug-list .dtable > li').count(), DRUGS.filter(d => /propo/i.test(d.name + (d.aka || []).join(' '))).length || 1);
@@ -155,7 +157,7 @@ try {
   });
 
   await step('every drug card renders with a weight', async () => {
-    for (const d of DRUGS) { await go(`#/drugs/${d.id}`); assert.equal(await text('.drugcard h1'), d.name); assert.doesNotMatch(await text('.drugcard'), /NaN|undefined|Infinity/, d.id); }
+    for (const d of DRUGS) { await go(`#/drugs/${d.id}`); assert.equal(await text('h1'), d.name); assert.doesNotMatch(await text('.drugcard'), /NaN|undefined|Infinity/, d.id); }
   });
 
   await step('calculators: every tool draws; fluids and LA maximum work', async () => {
@@ -167,20 +169,27 @@ try {
     await axe('fluids');
     await go('#/tools/la-max');
     await page.fill('form.tool input[type=number] >> nth=0', '60'); await page.fill('form.tool input[type=number] >> nth=1', '');
-    await page.selectOption('form.tool select', 'bupivacaine');
-    await page.locator('.segopt', { hasText: '0.5%' }).click();
+    await page.selectOption('form.tool select >> nth=0', 'bupivacaine');
+    await page.selectOption('form.tool select >> nth=1', '0.5');
     assert.match(await text('.tool-out'), /120 mg/); assert.match(await text('.tool-out'), /24 mL/);
     await shot('la-max'); await axe('la-max');
+    await go('#/tools/rsi');
+    await page.fill('form.tool input[type=number] >> nth=0', '70');
+    assert.match(await text('.tool-out'), /Propofol/);
+    await page.selectOption('form.tool select', 'ketamine');
+    assert.match(await text('.tool-out'), /Ketamine/);
+    await go('#/practice/scenario/first-induction');
+    assert.equal(await page.locator('.app-tabbar').isVisible(), false, 'tab bar hidden in a practice session');
     await go('#/tools/stopbang');
-    for (const i of [0, 1, 2]) await page.locator('form.tool label.tick').nth(i).click();
+    for (const i of [0, 1, 2]) await page.locator('form.tool label.app-row').nth(i).click();
     assert.match(await text('.tool-out'), /3 of 8/);
     await go('#/tools/aldrete'); await axe('aldrete');
-    await noClip('.segopt span');
+    await noClip('.app-row-title');
   });
 
   await step('crisis cards', async () => {
     await go('#/crisis'); await axe('crisis list');
-    assert.equal(await page.locator('.crisis-rows a').count(), CRISES.length);
+    assert.equal(await page.locator('a.app-row[href^="#/crisis/"]').count(), CRISES.length);
     for (const c of CRISES) { await go(`#/crisis/${c.id}`); assert.equal(await text('h1'), c.title); assert.match(await text('.callfirst'), /Call for help/); await noSideScroll(c.id); }
     if (CRISES[0]) { await go(`#/crisis/${CRISES[0].id}`); await shot('crisis'); await axe('crisis card'); }
   });
@@ -192,8 +201,8 @@ try {
         if (await page.locator('#scen-again').count()) break;
         if (await page.locator('#scen-next').count()) { await page.click('#scen-next'); continue; }
         const node = await page.evaluate(() => null);
-        const choices = page.locator('.scen .choice');
-        const texts = await choices.allInnerTexts();
+        const choices = page.locator('.scen .app-choice');
+        const texts = (await choices.allInnerTexts()).map(t => t.replace(/^[A-H]\s*/, '').trim());
         // find the current node by its choices and pick the first good one
         const cur = Object.values(s.nodes).find(x => x.choices && x.choices.length === texts.length && x.choices.every((c, i) => texts[i].trim().length && c.text.replace(/\*\*|`/g, '').replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').trim() === texts[i].trim()));
         assert.ok(cur, `${s.id}: could not find the node on screen`);
@@ -215,9 +224,9 @@ try {
 
   await step('practice hub, drawer game, progress, search, about', async () => {
     await go('#/practice'); await axe('practice'); await shot('practice');
-    await go('#/practice/drawers'); await page.locator('.choices .choice').first().click(); assert.match(await text('main'), /2 of 8/); await axe('drawers');
+    await go('#/practice/drawers'); await page.locator('.app-choices .app-choice').first().click(); assert.match(await text('main'), /2 of 8/); await axe('drawers');
     await go('#/progress'); await axe('progress'); await shot('progress');
-    await go('#/search?q=propofol'); assert.ok(await page.locator('#sres .rows li').count() > 0); await axe('search');
+    await go('#/search?q=propofol'); assert.ok(await page.locator('#sres .app-row').count() > 0); await axe('search');
     await page.fill('#sq', 'epinephrine'); await page.waitForTimeout(300);
     if (DRUGS.some(d => d.id === 'adrenaline')) assert.match(await text('#sres'), /Adrenaline/);
     await go('#/about'); await axe('about'); assert.match(await text('main'), /Get the latest version/);
@@ -238,7 +247,7 @@ try {
 
   await step('skip link moves focus to the content without leaving the screen', async () => {
     await go('#/learn');
-    await page.focus('.mo-skip'); await page.keyboard.press('Enter');
+    await page.focus('.app-skip'); await page.keyboard.press('Enter');
     assert.equal(await text('h1'), 'Learn');
     assert.equal(await page.evaluate(() => document.activeElement?.tagName), 'H1');
   });

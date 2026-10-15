@@ -8,7 +8,8 @@ owner's instruction (PR #103, 15 Oct 2026): live, unlisted, at anantf.com/mo/. T
 - Engine, reviewed and fixed; all tests pass (calc, content, version, e2e, pwa).
 - All content written and checked: every module had an author, a clinical check and a teaching check; drugs and crisis
   cards had numbers and safety checks; figures were rendered and looked at.
-- Version 1 merged (PR #103), then the remaining checks in a second PR (15 Oct 2026).
+- Version 1 merged (PR #103), then the remaining checks in a second PR (#108).
+- Restyled onto the phone-app kit (`DESIGN-APP.md`, `assets/app/app.css`) on the owner's go-ahead (15 Oct 2026).
 
 ## Not done yet
 
