@@ -228,13 +228,13 @@
 .bpus-chip-sm { border: 1px solid var(--us-border); background: var(--us-surface); border-radius: 0; padding: 3px 10px; font-size: 0.85rem; cursor: pointer; min-height: 32px; }
 .bpus-chip-sm:hover { border-color: var(--us-accent); }
 .bpus-pearls { margin-top: 10px; }
-.bpus-pearls summary { cursor: pointer; font-weight: 650; min-height: 32px; display: list-item; }
+.bpus-pearls summary { cursor: pointer; font-weight: 650; min-height: 44px; display: list-item; padding: 10px 0; }
 
 /* ---------- legend ---------- */
 .bpus-legend { margin-top: 12px; }
 .bpus-legend-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
 .bpus-chip {
-  width: 100%; display: flex; align-items: center; gap: 8px; text-align: left; padding: 6px 10px; min-height: 40px;
+  width: 100%; display: flex; align-items: center; gap: 8px; text-align: left; padding: 6px 10px; min-height: 44px;
   background: var(--us-bg); border: 1px solid var(--us-border); border-radius: 0; cursor: pointer;
 }
 .bpus-chip:hover, .bpus-chip.is-hl { border-color: var(--us-hl); box-shadow: 0 0 0 2px color-mix(in srgb, var(--us-hl) 40%, transparent); }

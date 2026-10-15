@@ -1,0 +1,261 @@
+[
+  {
+    "file": "t-popliteal-1.jpg",
+    "keyFile": "t-popliteal-1-key.jpg",
+    "blockId": "popliteal",
+    "page": "lower-limb/foot-ankle/",
+    "view": "Transverse scan of the popliteal fossa at the sciatic bifurcation",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "labels": [
+      {
+        "text": "Tibial nerve",
+        "kind": "nerve",
+        "x": 0.473,
+        "y": 0.288
+      },
+      {
+        "text": "Common peroneal nerve",
+        "kind": "nerve",
+        "x": 0.577,
+        "y": 0.218
+      },
+      {
+        "text": "Popliteal artery",
+        "kind": "artery",
+        "x": 0.399,
+        "y": 0.741
+      },
+      {
+        "text": "Popliteal vein",
+        "kind": "vein",
+        "x": 0.522,
+        "y": 0.54
+      },
+      {
+        "text": "Biceps femoris",
+        "kind": "muscle",
+        "x": 0.873,
+        "y": 0.436
+      },
+      {
+        "text": "Semimembranosus",
+        "kind": "muscle",
+        "x": 0.162,
+        "y": 0.569
+      },
+      {
+        "text": "Paraneural (Vloka’s) sheath",
+        "kind": "fascia",
+        "x": 0.5,
+        "y": 0.165
+      },
+      {
+        "text": "Semitendinosus",
+        "kind": "muscle",
+        "x": 0.149,
+        "y": 0.138
+      },
+      {
+        "text": "Femoral condyle",
+        "kind": "bone",
+        "x": 0.93,
+        "y": 0.975
+      },
+      {
+        "text": "Target: inside the paraneural sheath",
+        "kind": "target",
+        "x": 0.565,
+        "y": 0.3
+      }
+    ],
+    "caption": "Popliteal sciatic block: the tibial and common peroneal nerves sit together inside the paraneural (Vloka’s) sheath, superficial to the popliteal vein and artery; place the local anaesthetic inside the sheath.",
+    "source": "From the department's regional anaesthesia teaching material"
+  },
+  {
+    "file": "t-adductor-canal-1.jpg",
+    "keyFile": "t-adductor-canal-1-key.jpg",
+    "blockId": "adductor-canal",
+    "page": "lower-limb/knee/",
+    "view": "Transverse scan of the mid-thigh at the adductor canal",
+    "orientation": {
+      "left": "posteromedial",
+      "right": "anterolateral"
+    },
+    "labels": [
+      {
+        "text": "Superficial femoral artery",
+        "kind": "artery",
+        "x": 0.523,
+        "y": 0.439
+      },
+      {
+        "text": "Superficial femoral vein",
+        "kind": "vein",
+        "x": 0.534,
+        "y": 0.619
+      },
+      {
+        "text": "Saphenous nerve",
+        "kind": "nerve",
+        "x": 0.625,
+        "y": 0.367
+      },
+      {
+        "text": "Sartorius",
+        "kind": "muscle",
+        "x": 0.54,
+        "y": 0.166
+      },
+      {
+        "text": "Vastus medialis",
+        "kind": "muscle",
+        "x": 0.884,
+        "y": 0.607
+      },
+      {
+        "text": "Adductor magnus",
+        "kind": "muscle",
+        "x": 0.255,
+        "y": 0.607
+      },
+      {
+        "text": "Vasoadductor membrane",
+        "kind": "fascia",
+        "x": 0.399,
+        "y": 0.401
+      },
+      {
+        "text": "Target: lateral to the artery, deep to sartorius",
+        "kind": "target",
+        "x": 0.64,
+        "y": 0.411
+      }
+    ],
+    "caption": "Adductor canal block: deposit the local anaesthetic lateral to the superficial femoral artery and deep to sartorius, where the saphenous nerve lies; going more distally spares more of vastus medialis.",
+    "source": "From the department's regional anaesthesia teaching material"
+  },
+  {
+    "file": "t-femoral-1-key.jpg",
+    "keyFile": "t-femoral-1-key.jpg",
+    "blockId": "femoral",
+    "page": "lower-limb/hip/",
+    "view": "Transverse scan at the inguinal crease",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "labels": [
+      {
+        "text": "Femoral artery",
+        "kind": "artery",
+        "x": 0.369,
+        "y": 0.28
+      },
+      {
+        "text": "Femoral vein",
+        "kind": "vein",
+        "x": 0.15,
+        "y": 0.342
+      },
+      {
+        "text": "Iliopsoas",
+        "kind": "muscle",
+        "x": 0.648,
+        "y": 0.656
+      },
+      {
+        "text": "Fascia lata",
+        "kind": "fascia",
+        "x": 0.641,
+        "y": 0.066
+      },
+      {
+        "text": "Fascia iliaca",
+        "kind": "fascia",
+        "x": 0.746,
+        "y": 0.155
+      },
+      {
+        "text": "Femoral nerve",
+        "kind": "nerve",
+        "x": 0.551,
+        "y": 0.335
+      },
+      {
+        "text": "Pectineus",
+        "kind": "muscle",
+        "x": 0.103,
+        "y": 0.702
+      },
+      {
+        "text": "Target: under fascia iliaca, lateral to the nerve",
+        "kind": "target",
+        "x": 0.635,
+        "y": 0.289
+      }
+    ],
+    "caption": "Femoral nerve block: find the flattened femoral nerve under fascia iliaca, lateral to the femoral artery; puncture fascia iliaca lateral to the nerve and watch the local anaesthetic spread around it like a doughnut.",
+    "source": "From the department's regional anaesthesia teaching material",
+    "note": "No clean (unpainted) version of this scan in the deck; only the colour-coded image is available."
+  },
+  {
+    "file": "t-fib-1.jpg",
+    "keyFile": "t-fib-1-key.jpg",
+    "blockId": "fib",
+    "page": "lower-limb/hip/",
+    "view": "Parasagittal scan above the inguinal ligament, over the AIIS (the bow-tie view)",
+    "orientation": {
+      "left": "cephalad",
+      "right": "caudad"
+    },
+    "labels": [
+      {
+        "text": "Deep circumflex iliac artery",
+        "kind": "artery",
+        "x": 0.458,
+        "y": 0.199
+      },
+      {
+        "text": "Iliacus",
+        "kind": "muscle",
+        "x": 0.756,
+        "y": 0.388
+      },
+      {
+        "text": "Fascia iliaca",
+        "kind": "fascia",
+        "x": 0.77,
+        "y": 0.123
+      },
+      {
+        "text": "Internal oblique",
+        "kind": "muscle",
+        "x": 0.303,
+        "y": 0.086
+      },
+      {
+        "text": "Peritoneum",
+        "kind": "other",
+        "x": 0.137,
+        "y": 0.437
+      },
+      {
+        "text": "Anterior inferior iliac spine (AIIS)",
+        "kind": "bone",
+        "x": 0.788,
+        "y": 0.913
+      },
+      {
+        "text": "Target: under fascia iliaca, cephalad to the hump",
+        "kind": "target",
+        "x": 0.545,
+        "y": 0.217
+      }
+    ],
+    "caption": "Supra-inguinal fascia iliaca block: find the AIIS with iliacus over it and the bow-tie of sartorius and internal oblique, identify the deep circumflex iliac artery on fascia iliaca, then pierce fascia iliaca cephalad to the hump and hydrodissect so the local anaesthetic spreads under fascia iliaca and the artery.",
+    "source": "From the department's regional anaesthesia teaching material"
+  }
+]
