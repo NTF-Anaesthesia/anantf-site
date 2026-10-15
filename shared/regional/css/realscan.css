@@ -1,0 +1,147 @@
+/* Regional anaesthesia engine: the "Real" scan view and its colour-key overlay (js/realscan.js, OVERLAY-SPEC).
+   Linked by realscan.js after scan.css. DESIGN.md: paper, ink, one wine accent, square edges, nothing under 12px.
+   The overlay colours are the clinical code and are never recoloured to the brand: nerve yellow, artery red,
+   vein blue, muscle wine-brown, fascia orange, bone tan, LA / target cyan, needle coral. */
+
+.ra-rs{--rs-maxh:66vh;container-type:inline-size;margin:0;min-width:0;
+  font-family:var(--tb-sans,'NTF Sans',Inter,Arial,sans-serif);color:var(--tb-ink,#272722);touch-action:auto}
+.tb-scan.is-phone .ra-rs{--rs-maxh:58vh}
+.ra-rs [hidden]{display:none !important}
+
+/* ------------------------------------------------------------------ several images: a small picker */
+.ra-rs-pick{display:flex;gap:8px;margin:0 0 10px;overflow-x:auto;scrollbar-width:none;padding:2px}
+.ra-rs-pick::-webkit-scrollbar{display:none}
+.ra-rs-thumb{position:relative;flex:none;width:68px;height:50px;padding:0;border:1px solid var(--tb-line-strong,#8f8574);border-radius:0;background:#000;cursor:pointer;overflow:hidden}
+.ra-rs-thumb img{display:block;width:100%;height:100%;object-fit:cover;opacity:.7}
+.ra-rs-thumb[aria-pressed=true]{outline:3px solid var(--tb-wine,#633d3c);outline-offset:-1px}
+.ra-rs-thumb[aria-pressed=true] img{opacity:1}
+.ra-rs-thumb-n{position:absolute;left:0;bottom:0;min-width:20px;padding:1px 5px;background:#272722;color:#fffaf0;font:600 12px/1.3 var(--tb-sans,Inter,Arial,sans-serif)}
+.ra-rs-thumb[aria-pressed=true] .ra-rs-thumb-n{background:var(--tb-wine,#633d3c)}
+.ra-rs-thumb:focus-visible{outline:3px solid var(--tb-wine,#633d3c);outline-offset:2px}
+
+/* ------------------------------------------------------------------ image + key: key below (phones), beside (wide) */
+.ra-rs-main{display:flex;flex-direction:column;gap:10px;min-width:0}
+.ra-rs-media{display:flex;flex-direction:column;gap:8px;min-width:0}
+
+/* The box always has the image's own shape, so overlay fractions land on the right pixels. */
+/* --nw (the image's natural width, set on load) stops a small source being blown up past 1.5x and going soft. */
+.ra-rs-box{--ar:4 / 3;position:relative;aspect-ratio:var(--ar);width:min(100%, calc(var(--rs-maxh) * var(--ar)), calc(var(--nw, 4000px) * 1.5));margin:0 auto;
+  background:#000;overflow:hidden;line-height:0;-webkit-tap-highlight-color:transparent;cursor:pointer;-webkit-user-select:none;user-select:none}
+.ra-rs-img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:fill;-webkit-user-drag:none}
+.ra-rs-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.ra-rs-pills{position:absolute;inset:0;pointer-events:none;line-height:1.2}
+.ra-rs-status{position:absolute;inset:auto 0 0 0;margin:0;padding:10px 12px;color:#fffaf0;font-size:14px;line-height:1.4;background:rgba(0,0,0,.6)}
+.ra-rs-box.is-loading .ra-rs-pills,.ra-rs-box.is-loading .ra-rs-svg{visibility:hidden}
+
+/* Fills and lines (pixel-space SVG, redrawn on resize) */
+.ra-rs-st{opacity:0;transition:opacity .2s ease}
+.ra-rs-st.is-on{opacity:1}
+.ra-rs-st.is-on.is-dim{opacity:.5}
+.ra-rs-poly{fill:var(--c);fill-opacity:var(--fo,.45);stroke:var(--c);stroke-width:1.5;stroke-linejoin:round}
+.ra-rs-halo{fill:none;stroke:rgba(0,0,0,.55);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.ra-rs-line{fill:none;stroke:var(--c);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ra-rs-line.is-needle{stroke-dasharray:9 6}
+.ra-rs-tip{fill:var(--c);stroke:rgba(0,0,0,.55);stroke-width:1}
+.ra-rs-st.is-sel .ra-rs-poly{fill-opacity:calc(var(--fo,.45) + .15);stroke-width:3;stroke:#fffaf0;paint-order:stroke}
+.ra-rs-st.is-sel .ra-rs-line{stroke-width:4.5}
+.ra-rs-st.is-sel .ra-rs-halo{stroke:#fffaf0;stroke-opacity:.85;stroke-width:8}
+
+/* Label pills with leader lines; the border carries the structure's colour, and the text names it */
+.ra-rs-pill{position:absolute;left:0;top:0;pointer-events:auto;margin:0;padding:4px 8px;min-height:26px;max-width:min(62%,240px);
+  border:1.5px solid var(--c,#d8d4cc);border-radius:0;background:rgba(18,18,16,.84);color:#fffaf0;
+  font:500 13px/1.2 var(--tb-sans,'NTF Sans',Inter,Arial,sans-serif);text-align:center;white-space:nowrap;cursor:pointer}
+.ra-rs-pill-t{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+/* A 44 px tall tap target; a tap on this invisible edge goes to the drawn shape under it, if any (realscan.js). */
+.ra-rs-pill::after{content:"";position:absolute;inset:-10px -4px}
+.ra-rs-pill.is-on{box-shadow:inset 5px 0 0 var(--c);padding-left:12px}
+.ra-rs-pill.is-sel{background:#fffaf0;color:#272722;border-width:2px;box-shadow:inset 5px 0 0 var(--c),0 0 0 2px rgba(0,0,0,.5)}
+.ra-rs-pill:focus-visible{outline:2px solid #fffaf0;outline-offset:2px}
+.ra-rs-box.has-sel .ra-rs-pill:not(.is-sel){opacity:.75}
+.ra-rs-lead-halo{stroke:rgba(0,0,0,.6);stroke-width:3.5}
+.ra-rs-lead-l{stroke:rgba(255,250,240,.92);stroke-width:1.5}
+.ra-rs-lead.is-on .ra-rs-lead-l{stroke:var(--c)}
+.ra-rs-lead-dot{fill:var(--c);stroke:#000;stroke-width:1}
+.ra-rs-box.is-nolabels .ra-rs-leads{display:none}
+@container (max-width: 420px){ .ra-rs-pill{font-size:12px;padding:3px 6px;min-height:24px} .ra-rs-pill.is-on{padding-left:10px} }
+
+/* Images that carry the authors' own labels: a one-line hint until something is picked */
+.tb-app main .ra-rs-hint,.ra-rs-hint{margin:0;font-size:14px;line-height:1.45;color:var(--tb-muted,#55534d);max-width:70ch}
+
+/* Name of the tapped structure */
+.ra-rs-name{padding:2px 12px 6px;background:var(--tb-inset,#eee9df);border-left:3px solid var(--tb-wine,#633d3c);font-size:16px;line-height:1.5}
+.ra-rs-name p,.tb-app main .ra-rs-name p{margin:0}
+.ra-rs-name-t{display:flex;align-items:center;gap:8px}
+.ra-rs-name-d{color:var(--tb-ink-soft,#504e47);font-size:15px;max-width:68ch}
+.ra-rs-name-row{display:flex;flex-wrap:wrap;align-items:center;gap:0 16px}
+.ra-rs-name-row .ra-rs-name-t{flex:1 1 auto;min-height:44px}
+.ra-rs-name-row .ra-rs-name-x{margin-left:auto}
+.ra-rs-name-3d{display:inline-flex;align-items:center;min-height:44px;font-weight:500;color:var(--tb-wine,#633d3c)}
+.ra-rs-name-x{min-height:44px;padding:4px 0;border:0;background:none;color:var(--tb-wine,#633d3c);font:500 15px/1.2 var(--tb-sans,Inter,Arial,sans-serif);text-decoration:underline;cursor:pointer}
+.ra-rs-name-x:focus-visible{outline:2px solid var(--tb-wine,#633d3c);outline-offset:2px}
+
+/* ------------------------------------------------------------------ key list */
+.ra-rs-keywrap{display:flex;flex-direction:column;gap:6px;min-width:0}
+.ra-rs-keyhead{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px}
+.tb-app main .ra-rs-keyk,.ra-rs-keyk{margin:0;font:400 12px/1.6 var(--tb-mono,ui-monospace,monospace);text-transform:uppercase;letter-spacing:.08em;color:var(--tb-muted,#55534d)}
+.ra-rs-switch{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:4px 0 4px 8px;border:0;background:none;color:var(--tb-ink,#272722);font:500 14px/1 var(--tb-sans,Inter,Arial,sans-serif);cursor:pointer}
+.ra-rs-switch-track{position:relative;width:38px;height:22px;border:1.5px solid var(--tb-line-strong,#8f8574);border-radius:11px;background:var(--tb-paper,#f7f5ef);transition:background .15s}
+.ra-rs-switch-track::after{content:"";position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:var(--tb-line-strong,#8f8574);transition:transform .15s}
+.ra-rs-switch[aria-pressed=true] .ra-rs-switch-track{background:var(--tb-wine,#633d3c);border-color:var(--tb-wine,#633d3c)}
+.ra-rs-switch[aria-pressed=true] .ra-rs-switch-track::after{transform:translateX(16px);background:#fffaf0}
+.ra-rs-switch-t{min-width:2em;text-align:left}
+.ra-rs-switch:focus-visible{outline:2px solid var(--tb-wine,#633d3c);outline-offset:2px}
+
+.tb-app main ul.ra-rs-key,.ra-rs-key{display:flex;flex-wrap:nowrap;gap:6px;margin:0;padding:0 0 2px;list-style:none;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent)}
+.ra-rs-key::-webkit-scrollbar{display:none}
+.tb-app main .ra-rs-key>li,.ra-rs-key>li{margin:0;max-width:none;flex:none}
+.ra-rs-key li:last-child{padding-right:24px}
+.ra-rs-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:4px 11px;border:1px solid var(--tb-line-strong,#8f8574);border-radius:0;
+  background:var(--tb-paper,#f7f5ef);color:var(--tb-ink,#272722);font:500 14px/1.25 var(--tb-sans,Inter,Arial,sans-serif);cursor:pointer;text-align:left;white-space:nowrap}
+.ra-rs-chip:hover{border-color:var(--tb-wine,#633d3c);background:var(--tb-hover,#e9e5dc)}
+.ra-rs-chip[aria-pressed=true]{background:var(--tb-wine,#633d3c);border-color:var(--tb-wine,#633d3c);color:var(--tb-ivory,#fffaf0)}
+.ra-rs-chip:focus-visible{outline:2px solid var(--tb-wine,#633d3c);outline-offset:2px}
+.ra-rs-chip--cmd{font-weight:600}
+.ra-rs-chip.is-sel:not([aria-pressed=true]){border-color:var(--tb-wine,#633d3c);box-shadow:inset 0 0 0 1px var(--tb-wine,#633d3c)}
+.ra-rs-sw{flex:none;display:inline-block;width:14px;height:14px;background:var(--c);border:1px solid rgba(0,0,0,.4)}
+.ra-rs-sw.is-line{height:5px;width:18px}
+.ra-rs-sw--needle{background:repeating-linear-gradient(90deg,var(--c) 0 5px,transparent 5px 8px);border-color:transparent}
+.ra-rs-sw--muscle{opacity:.85}
+.ra-rs-chip[aria-pressed=true] .ra-rs-sw{box-shadow:0 0 0 1.5px var(--tb-ivory,#fffaf0)}
+
+/* Wide: the key list sits beside the image (after the base rules so it wins) */
+@container (min-width: 640px){
+  .ra-rs-main{display:grid;grid-template-columns:minmax(0,1fr) 210px;align-items:start;gap:16px}
+  .tb-app main ul.ra-rs-key,.ra-rs-key{flex-direction:column;flex-wrap:nowrap;overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .ra-rs-key .ra-rs-chip{width:100%}
+  .ra-rs-key li:last-child{padding-right:0}
+}
+
+/* ------------------------------------------------------------------ caption and credit line */
+.ra-rs-cap{padding:10px 0 0;font-size:14px;line-height:1.5;color:var(--tb-ink-soft,#504e47);-webkit-user-select:text;user-select:text}
+.tb-app main .ra-rs-cap p,.ra-rs-cap p{margin:0 0 4px;max-width:70ch}
+.ra-rs-orient{font:400 13px/1.5 var(--tb-mono,ui-monospace,monospace);color:var(--tb-muted,#55534d)}
+.ra-rs-orient-sep{color:var(--tb-line-strong,#8f8574)}
+.ra-rs-text{color:var(--tb-ink,#272722);font-size:15px}
+.ra-rs-credit{color:var(--tb-muted,#55534d);font-size:13px}
+.ra-rs-credit-k{font-weight:600}
+.tb-app main .ra-rs-cap .ra-rs-links,.ra-rs-links{display:flex;flex-wrap:wrap;gap:0 20px;margin:0}
+.ra-rs-links a{display:inline-flex;align-items:center;min-height:44px;color:var(--tb-wine,#633d3c);text-decoration:underline;font-size:14px}
+.ra-rs-links a:focus-visible{outline:2px solid var(--tb-wine,#633d3c);outline-offset:2px}
+
+/* ------------------------------------------------------------------ your own scan (shown on this device only) */
+.ra-rs-your{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-top:10px;padding-top:10px;border-top:1px solid var(--tb-line,#d7d2c8)}
+.ra-rs-your-file{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.ra-rs-your-file:focus-visible+.ra-rs-your-pick{outline:2px solid var(--tb-wine,#633d3c);outline-offset:2px}
+.tb-app main .ra-rs-your-note,.ra-rs-your-note{margin:0;font-size:14px;color:var(--tb-muted,#55534d);flex:1 1 220px}
+.ra-rs-your-fig{flex:1 0 100%;margin:6px 0 0}
+.ra-rs-your-img{display:block;max-width:100%;max-height:60vh;background:#000}
+.ra-rs-your-cap{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--tb-muted,#55534d);padding-top:6px}
+
+/* The real scan is a still image: Play is hidden there (scan.js), so Back and Next share the row */
+.tb-app .tb-scan.is-real-view .tb-scan-nav{grid-template-columns:1fr 1fr}
+.tb-scan-nav .tb-btn[hidden]{display:none}
+
+@media (prefers-reduced-motion: reduce){
+  .ra-rs-st,.ra-rs-switch-track,.ra-rs-switch-track::after{transition:none}
+}

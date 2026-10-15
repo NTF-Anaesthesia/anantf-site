@@ -227,7 +227,28 @@ describe(SCENES, {
   'Transversus thoracis': 'The thin dark band lying on the pleura.',
   'Internal thoracic artery': 'About 1–1.5 cm lateral to the sternal border, between the internal intercostal muscles and transversus thoracis. Find it with colour Doppler before needling.',
   'Internal thoracic vein': 'The internal thoracic vessels run between the intercostal muscles and transversus thoracis.',
+  'Lateral pectoral nerve': 'Runs with the pectoral branch of the thoracoacromial artery in the interpectoral plane, where PECS I blocks it.',
+  'Sternum (lateral edge)': 'The probe’s medial end sits on the sternal edge; keep the needle path and tip about 2 cm from it.',
 }, {
-  sap: { 'Serratus anterior': 'Under latissimus dorsi, on the ribs.' },
-  pecs: { 'Serratus anterior': 'On the 3rd and 4th ribs, under pectoralis minor.' },
+  sap: {
+    'Serratus anterior': 'Under latissimus dorsi, on the ribs.',
+    'Subcutaneous fat': 'From the skin down: subcutaneous fat, then latissimus dorsi.',
+    'Intercostal muscles': 'Between the ribs, with the pleura sliding below.',
+    'Pleura': 'Sliding below the ribs and intercostal muscles.',
+    '4th rib': 'Round bright top with a black shadow.',
+    '5th rib': 'Round bright top with a black shadow. The deep injection aims at its top: a backstop between the needle and the pleura.',
+  },
+  pecs: {
+    'Serratus anterior': 'On the 3rd and 4th ribs, under pectoralis minor.',
+    'Pectoralis major': 'Superficial. The interpectoral plane (PECS I) lies under it.',
+    'Pectoralis minor': 'Wrapped by the clavipectoral fascia: the interpectoral plane is above it, the pectoserratus plane below it.',
+    'Pleura': 'Deep to the ribs and the intercostal muscles.',
+    '3rd rib': 'Serratus anterior lies on the 3rd and 4th ribs.',
+    '4th rib': 'Stage 2 aims at the top of the 4th rib, so the needle points at bone, not the intercostal space.',
+  },
+  parasternal: {
+    'Pectoralis major': 'Superficial: the superficial plane lies between pectoralis major and the intercostal muscles.',
+    'Intercostal muscles': 'The internal thoracic vessels run between the intercostal muscles and transversus thoracis.',
+    'Pleura': 'Transversus thoracis is the thin dark band lying on it; only millimetres below the deep plane.',
+  },
 });

@@ -15,6 +15,26 @@ const GAUSS = new Float32Array(65536), RAYL = new Float32Array(65536);
   for (let i = 0; i < 65536; i += 2) { const m = Math.sqrt(-2 * Math.log(r() || 1e-9)), th = 6.283185 * r(); GAUSS[i] = m * Math.cos(th); GAUSS[i + 1] = m * Math.sin(th); }
   for (let i = 0; i < 65536; i++) RAYL[i] = Math.sqrt(-2 * Math.log(r() || 1e-9));
 }
+// The look, tuned against the statistics of modern high-frequency linear-probe scans (dark, crisp, high contrast, fine lateral
+// speckle; about a third of the field near-black, a few per cent very bright). Distances in mm.
+const LOOK = {
+  sy: 0.17, sx: 0.24,           // speckle PSF sigma: axial, lateral at the focus (lateral is wider, so the grain streaks sideways)
+  spy: 0.11,                    // axial blur of specular reflectors (fascia, bone, needle): kept thin so lines stay crisp
+  cs: 2.8,                      // specular gain relative to diffuse scatter
+  looks: 2,                     // compounded speckle realisations
+  srk: 0.6, srx: 0.45, sry: 0.3, // speckle reduction: mix and smoothing kernel (edge-preserving, see renderBMode)
+  iw: 1.4, dr: 28,              // log compression: reference intensity and dynamic range (dB); scene.dr overrides dr
+  // grey map after log compression (input 0-1 -> output 0-1): a dark toe so fluid, fat and shadow are truly black,
+  // even mid-tones, and a soft shoulder above the last point so fascia and bone stay bright without clipping flat
+  curve: [[0, 0], [0.2, 0.008], [0.363, 0.065], [0.436, 0.14], [0.51, 0.21], [0.6, 0.3], [0.73, 0.44], [0.92, 0.6], [1, 0.67]],
+  knee: 0.3,
+  att: 0.36,                    // attenuation over the image depth (scene.att overrides)
+  near: 0.5, nearW: 0.05,       // bright near field (skin and dermis), decaying over this fraction of the depth
+  enh: 0.16,                    // posterior enhancement under fluid per mm (scene.enh overrides)
+  noise: 0.016,                 // electronic noise floor
+  skin: 0.85, skinSp: 0.12, derm: 0.4, // entry echo, its specular part, and the thin dermis band
+  mDens: 1.8, mLen: [1, 4.5], mS0: 0.25, mS1: 0.5, mSp: 0.22, // muscle striations: density factor, length, echo range, specular part
+};
 const cache = new Map();
 const gray = (v) => { const c = Math.round(clamp(v) * 255); return `rgb(${c},${c},${c})`; };
 function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
@@ -145,7 +165,7 @@ function paintRegion(C, kind, path, box, o = {}) {
       const base = o.echo ?? 0.14;
       C.e.fillStyle = gray(base); C.e.fill(path); C.sp.fillStyle = '#000'; C.sp.fill(path);
       speckleFill(C, path, box, 0.1, [1.2, 3.5], base * 0.7, base * 1.35);
-      strands(C, path, box, o.dens ?? 0.4, o.stri ?? 0, o.striJit ?? 10, o.len || [0.6, 3], 0.3, 0.62, o.sAmp ?? 0.22, [0.08, 0.16]);
+      strands(C, path, box, (o.dens ?? 0.4) * LOOK.mDens, o.stri ?? 0, o.striJit ?? 10, o.len || LOOK.mLen, LOOK.mS0, LOOK.mS1, o.sAmp ?? LOOK.mSp, [0.08, 0.16]);
       speckleFill(C, path, box, (o.dens ?? 0.5) * 0.3, [0.05, 0.12], 0.3, 0.5);
       break;
     }
@@ -317,12 +337,12 @@ function* renderBMode(C, W, H, scene, PX, res) {
   const eD = C.e.getImageData(0, 0, W, H).data, sD = C.sp.getImageData(0, 0, W, H).data;
   const aD = C.at.getImageData(0, 0, W, H).data, bD = C.hb.getImageData(0, 0, W, H).data;
   const psf = scene.psf || 1, focus = scene.focus ?? scene.depth * 0.4;
-  const sy = 0.08 * PX * psf;
-  const ky2 = gaussKernel(Math.max(0.5, sy), 2), ky1 = gaussKernel(Math.max(0.5, sy * 1.2), 1);
+  const sy = LOOK.sy * PX * psf;
+  const ky2 = gaussKernel(Math.max(0.5, sy), 2), ky1 = gaussKernel(Math.max(0.5, LOOK.spy * PX * psf), 1);
   const kc = new Map(); const rowKernels = [];
   for (let y = 0; y < H; y++) {
     const z = y / PX;
-    const sx = Math.max(0.5, 0.16 * PX * psf * (1 + 1.1 * Math.abs(z - focus) / scene.depth + 0.25 * z / scene.depth));
+    const sx = Math.max(0.5, LOOK.sx * PX * psf * (1 + 1.1 * Math.abs(z - focus) / scene.depth + 0.25 * z / scene.depth));
     const key = Math.round(sx * 4);
     if (!kc.has(key)) { const radii = boxRadii(key / 4); kc.set(key, { radii, l2: 1 / Math.sqrt(boxSumSq(radii)) }); }
     rowKernels.push(kc.get(key));
@@ -338,7 +358,7 @@ function* renderBMode(C, W, H, scene, PX, res) {
   const sp2 = new Float32Array(N);
   for (let y = 0; y < H; y++) blurRow(sp, sp2, tmpRow, y * W, W, rowKernels[y].radii, 1);
   yield;
-  const CS = 2.4, LOOKS = 2, ampOut = new Float32Array(N), rIm = new Float32Array(N), rRe = new Float32Array(N);
+  const CS = LOOK.cs, LOOKS = LOOK.looks, ampOut = new Float32Array(N), rIm = new Float32Array(N), rRe = new Float32Array(N);
   for (let look = 0; look < LOOKS; look++) {
     let re = new Float32Array(N), im = new Float32Array(N);
     let sd = (hashStr(scene.id + look) | 1) >>> 0;
@@ -349,11 +369,27 @@ function* renderBMode(C, W, H, scene, PX, res) {
     for (let i = 0; i < N; i++) { const r = rRe[i] + sp2[i] * CS, q = rIm[i]; ampOut[i] += Math.sqrt(r * r + q * q) / LOOKS; }
     yield;
   }
+  // Speckle reduction (as a scanner's speckle filter does): mix the envelope with a smoothed copy, so the grain
+  // stays fine but loses the salt-and-pepper contrast of raw Rayleigh speckle. Structures wider than the kernel survive.
+  {
+    const sm = convV(ampOut, W, H, gaussKernel(Math.max(0.5, LOOK.sry * PX), 1)), sm2 = new Float32Array(N), rr = boxRadii(Math.max(0.5, LOOK.srx * PX));
+    for (let y = 0; y < H; y++) blurRow(sm, sm2, tmpRow, y * W, W, rr, 1);
+    yield;
+    // Edge-preserving: the smoothed value is rescaled by the local tissue structure (echo map plus specular
+    // reflectors, without speckle), so fascicles, vessel walls and fascia keep their contrast.
+    const st = new Float32Array(N); for (let i = 0; i < N; i++) st[i] = eD[i * 4] * (0.8 / 255) + sp2[i] * CS;
+    const stS1 = convV(st, W, H, gaussKernel(Math.max(0.5, LOOK.sry * PX), 1)), stS = new Float32Array(N);
+    for (let y = 0; y < H; y++) blurRow(stS1, stS, tmpRow, y * W, W, rr, 1);
+    const stP1 = convV(st, W, H, ky1), stP = new Float32Array(N), pr = boxRadii(Math.max(0.5, LOOK.sx * 0.6 * PX));
+    for (let y = 0; y < H; y++) blurRow(stP1, stP, tmpRow, y * W, W, pr, 1);
+    for (let i = 0; i < N; i++) { const tgt = sm2[i] * (stP[i] + 0.01) / (stS[i] + 0.01); ampOut[i] += (tgt - ampOut[i]) * LOOK.srk; }
+    yield;
+  }
   // Attenuation walk down each column. Bone (hb channel) blocks the beam: within a fraction of a millimetre of
   // its surface the column goes black, and once shadowed it stays shadowed to the bottom of the image, so
   // nothing deeper (pleura, lung, other lines) shows through.
   const G = new Float32Array(N);
-  const dz = 1 / PX, kE = scene.enh ?? 0.1, kS = 0.55, relax = Math.exp(-dz / 6), HFLOOR = 0.006;
+  const dz = 1 / PX, kE = scene.enh ?? LOOK.enh, kS = 0.55, relax = Math.exp(-dz / 6), HFLOOR = 0.006;
   const soft = new Float32Array(W).fill(1), hard = new Float32Array(W).fill(1);
   const eTab = new Float32Array(256);
   for (let a = 0; a < 256; a++) eTab[a] = a > 140 ? Math.exp(kE * ((a - 128) / 127) * dz) : a < 116 ? Math.exp(-kS * ((128 - a) / 128) * dz * 4) : 0;
@@ -374,17 +410,19 @@ function* renderBMode(C, W, H, scene, PX, res) {
   for (let y = 0; y < H; y++) blurRow(G, G2, tmpRow, y * W, W, gr, 1);
   yield;
   const out = new ImageData(W, H), o = out.data;
-  const IW = 2.5, DR = scene.dr ?? 40, GAM = 2.2, LUTN = 6144, LSs = LUTN / 6, lut = new Uint8ClampedArray(LUTN);
-  for (let j = 0; j < LUTN; j++) { const v = 1 + (20 * Math.log10(Math.max(1e-6, (j + 0.5) / LSs) / IW)) / DR; lut[j] = v <= 0 ? 0 : v >= 1 ? 255 : Math.round(Math.pow(v, GAM) * 255); }
-  const zf = focus, fw = 0.25 * scene.depth, att = scene.att ?? (0.36 / scene.depth);
+  const IW = LOOK.iw, DR = scene.dr ?? LOOK.dr, LUTN = 6144, LSs = LUTN / 6, lut = new Uint8ClampedArray(LUTN);
+  const CV = LOOK.curve;
+  const gmap = (v) => { const L = CV[CV.length - 1]; if (v >= L[0]) return L[1] + (1 - L[1]) * (1 - Math.exp(-(v - L[0]) / LOOK.knee)); let k = 1; while (k < CV.length - 1 && CV[k][0] < v) k++; const [a0, b0] = CV[k - 1], [a1, b1] = CV[k]; return b0 + (b1 - b0) * clamp((v - a0) / (a1 - a0)); };
+  for (let j = 0; j < LUTN; j++) { const v = 1 + (20 * Math.log10(Math.max(1e-6, (j + 0.5) / LSs) / IW)) / DR; lut[j] = v <= 0 ? 0 : Math.round(gmap(v) * 255); }
+  const zf = focus, fw = 0.25 * scene.depth, att = scene.att ?? (LOOK.att / scene.depth);
   let sn = (hashStr(scene.id + 'noise') | 1) >>> 0;
   for (let y = 0; y < H; y++) {
     const z = y / PX;
-    const dg = (scene.gain ?? 1) * Math.exp(-att * z) * (1 + 0.12 * Math.exp(-(((z - zf) / fw) ** 2)));
+    const dg = (scene.gain ?? 1) * Math.exp(-att * z) * (1 + 0.12 * Math.exp(-(((z - zf) / fw) ** 2))) * (1 + LOOK.near * Math.exp(-z / (LOOK.nearW * scene.depth)));
     for (let x = 0; x < W; x++) {
       const i = y * W + x;
       sn ^= sn << 13; sn ^= sn >>> 17; sn ^= sn << 5;
-      const I = ampOut[i] * G2[i] * dg + 0.016 * RAYL[sn & 0xffff];
+      const I = ampOut[i] * G2[i] * dg + LOOK.noise * RAYL[sn & 0xffff];
       const c = lut[Math.min(LUTN - 1, (I * LSs) | 0)];
       o[i * 4] = c; o[i * 4 + 1] = c; o[i * 4 + 2] = Math.min(255, c * 1.02 + 1); o[i * 4 + 3] = 255;
     }
@@ -425,9 +463,9 @@ function* buildSteps(scene) {
   for (const ln of g.lines) if (ln.kind !== 'label') paintLine(C, ln, g.H);
   for (const st of g.shapes) if (late.has(st.kind)) paintShape(C, st);
   // Skin: bright entry echo, thin dark dermis band.
-  C.e.fillStyle = gray(0.5); C.e.fillRect(0, 0, g.W, g.skin);
-  C.e.fillStyle = gray(0.2); C.e.fillRect(0, g.skin * 0.45, g.W, g.skin * 0.2);
-  C.sp.fillStyle = '#000'; C.sp.fillRect(0, 0, g.W, g.skin);
+  C.e.fillStyle = gray(LOOK.skin); C.e.fillRect(0, 0, g.W, g.skin);
+  C.e.fillStyle = gray(LOOK.derm); C.e.fillRect(0, g.skin * 0.45, g.W, g.skin * 0.2);
+  C.sp.fillStyle = gray(LOOK.skinSp); C.sp.fillRect(0, 0, g.W, g.skin);
   specStroke(C, [[0, 0.08], [g.W, 0.08]], 0.9, 0.14, { floor: 1, eAmp: 0.6 });
   specStroke(C, [[0, g.skin], [g.W * 0.5, g.skin + 0.05], [g.W, g.skin]], 0.6, 0.15, { floor: 1, wav: 0.03, eAmp: 0.5 });
   yield;

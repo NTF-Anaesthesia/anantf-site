@@ -53,6 +53,14 @@ function writeHash() {
     if (bus.state.selected) p.set('el', bus.state.selected);
     if (currentTab !== 'ultrasound') p.set('tab', currentTab);
     const s = p.toString();
+    // Keep the "Open in Anatomy in 3D" link on the same block and nerve.
+    const out = document.getElementById('bp-open-3d');
+    if (out) {
+      const q = new URLSearchParams({ plexus: 'brachial' });
+      if (bus.state.selected) q.set('el', bus.state.selected);
+      if (bus.state.block) q.set('block', bus.state.block);
+      out.href = `../plexus/#${q}`;
+    }
     const url = location.pathname + location.search + (s ? `#${s}` : '');
     if (url !== location.pathname + location.search + location.hash) history.replaceState(null, '', url);
   }, 80);

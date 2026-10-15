@@ -14,27 +14,38 @@ const arc = (r, a0, a1, n = 24) => Array.from({ length: n + 1 }, (_, i) => {
 
 function orbit({ id, title, view, tenon = false, injections, steps, probe }) {
   const shapes = [
-    { id: 'roof', kind: 'bone', label: 'Orbital roof', short: 'Roof', shape: L(1.4, [1.5, 1], [3.6, 14], [9.5, 30], [19.5, 45.5]), at: [4.4, 17], lab: [5, 38] },
-    { id: 'floor', kind: 'bone', label: 'Orbital floor', short: 'Floor', shape: L(1.4, [47, 2], [45, 14], [39, 29], [30, 45.5]), at: [44.2, 17], lab: [38.6, 41.4] },
-    { id: 'globe', kind: 'fluid', label: 'Globe', shape: E(G.cx, G.cy, G.r, G.r), at: [17, 13], lab: [15, 11.5] },
+    { id: 'roof', kind: 'bone', label: 'Orbital roof', short: 'Roof', shape: L(1.4, [1.5, 1], [3.6, 14], [9.5, 30], [19.5, 45.5]), at: [4.4, 17], lab: [5, 38],
+      desc: 'The roof of the orbit, a pyramid about 40–50 mm deep, its axis pointing back and medially to the apex.' },
+    { id: 'floor', kind: 'bone', label: 'Orbital floor', short: 'Floor', shape: L(1.4, [47, 2], [45, 14], [39, 29], [30, 45.5]), at: [44.2, 17], lab: [38.6, 41.4],
+      desc: 'The orbital floor: the peribulbar needle goes straight back parallel to it.' },
+    { id: 'globe', kind: 'fluid', label: 'Globe', shape: E(G.cx, G.cy, G.r, G.r), at: [17, 13], lab: [15, 11.5],
+      desc: 'The globe: axial length about 24 mm (roughly 20–35 mm). Long eyes (myopia, over 25 mm) are easier to perforate.' },
     { id: 'lens', kind: 'cartilage', label: 'Lens', nolabel: true, shape: E(G.cx, 4.6, 4.4, 1.8) },
-    { id: 'sr', kind: 'muscle', label: 'Superior rectus', short: 'SR', shape: P([12.3, 13.6], [14, 13], [24, 44.6], [22.8, 45]), at: [16.6, 24], lab: [9.5, 23] },
-    { id: 'ir', kind: 'muscle', label: 'Inferior rectus', short: 'IR', shape: P([34, 13], [35.7, 13.6], [26.4, 45], [25.2, 44.6]), at: [33.2, 21], lab: [41.6, 21.5] },
-    { id: 'on', kind: 'nerve', label: 'Optic nerve', short: 'ON', shape: P([22.3, 23.4], [25.7, 23.4], [25.3, 46], [22.7, 46]), at: [24, 34], lab: [24, 42] },
+    { id: 'sr', kind: 'muscle', label: 'Superior rectus', short: 'SR', shape: P([12.3, 13.6], [14, 13], [24, 44.6], [22.8, 45]), at: [16.6, 24], lab: [9.5, 23],
+      desc: 'One of the four recti that form the muscle cone.' },
+    { id: 'ir', kind: 'muscle', label: 'Inferior rectus', short: 'IR', shape: P([34, 13], [35.7, 13.6], [26.4, 45], [25.2, 44.6]), at: [33.2, 21], lab: [41.6, 21.5],
+      desc: 'One of the four recti that form the muscle cone.' },
+    { id: 'on', kind: 'nerve', label: 'Optic nerve', short: 'ON', shape: P([22.3, 23.4], [25.7, 23.4], [25.3, 46], [22.7, 46]), at: [24, 34], lab: [24, 42],
+      desc: 'The optic nerve, inside the muscle cone with the ophthalmic artery.' },
     { id: 'oa', kind: 'artery', label: 'Ophthalmic artery', short: 'OA', nolabel: true, shape: E(21.4, 38, 0.7, 0.7) },
-    { id: 'cone', kind: 'label', label: 'Intraconal space (muscle cone)', short: 'Intraconal', outline: false, shape: E(28.4, 31, 1, 1), at: [28.6, 30.6], lab: [24, 28.4] },
-    { id: 'extra', kind: 'label', label: 'Extraconal space', short: 'Extraconal', outline: false, shape: E(40, 21, 1, 1), at: [40, 24], lab: [40, 26.6] },
+    { id: 'cone', kind: 'label', label: 'Intraconal space (muscle cone)', short: 'Intraconal', outline: false, shape: E(28.4, 31, 1, 1), at: [28.6, 30.6], lab: [24, 28.4],
+      desc: 'Retrobulbar: the intraconal fat at the back of the globe.' },
+    { id: 'extra', kind: 'label', label: 'Extraconal space', short: 'Extraconal', outline: false, shape: E(40, 21, 1, 1), at: [40, 24], lab: [40, 26.6],
+      desc: 'Peribulbar: the extraconal fat beyond the equator.' },
   ];
   if (tenon) {
-    shapes.push({ id: 'tenon', kind: 'fascia', label: 'Tenon’s capsule', short: 'Tenon’s', shape: L(0.35, ...arc(G.r + 1, -12, 192)), at: [G.cx + 9.4, 21.4], lab: [41.6, 15.6] });
-    shapes.push({ id: 'sts', kind: 'label', label: 'Sub-Tenon’s space', short: 'Sub-Tenon’s', outline: false, shape: E(G.cx - 9, G.cy + 8, 0.5, 0.5), at: [G.cx - 8.5, G.cy + 8], lab: [8.4, 30.5] });
+    shapes.push({ id: 'tenon', kind: 'fascia', label: 'Tenon’s capsule', short: 'Tenon’s', shape: L(0.35, ...arc(G.r + 1, -12, 192)), at: [G.cx + 9.4, 21.4], lab: [41.6, 15.6],
+      desc: 'Tenon’s capsule is a thin layer around the globe.' });
+    shapes.push({ id: 'sts', kind: 'label', label: 'Sub-Tenon’s space', short: 'Sub-Tenon’s', outline: false, shape: E(G.cx - 9, G.cy + 8, 0.5, 0.5), at: [G.cx - 8.5, G.cy + 8], lab: [8.4, 30.5],
+      desc: 'The potential space between the capsule and the sclera.' });
   }
   return {
     id, title, image: 'diagram', width: 48, depth: 48, focus: 20, skin: 0.6, view,
     stepTitles: ['Landmarks', 'Identify', 'Needle', 'Inject'],
     orient: { left: 'Superior (roof)', right: 'Inferior (floor)', marker: 'right' },
     alt: 'The globe is at the top, the optic nerve runs down the middle to the orbital apex, with the superior rectus on the left and the inferior rectus on the right forming the muscle cone.',
-    layers: [{ id: 'fat', kind: 'fat-deep', label: 'Orbital fat', short: 'Fat', bottom: 60, at: [8, 6], lab: [6, 5] }],
+    layers: [{ id: 'fat', kind: 'fat-deep', label: 'Orbital fat', short: 'Fat', bottom: 60, at: [8, 6], lab: [6, 5],
+      desc: 'The globe takes up about 7 ml of the 30 ml orbit; muscles, nerves and vessels take some more, and the rest is fat.' }],
     shapes, injections, steps, probe, probeInset: headProbeInset,
   };
 }

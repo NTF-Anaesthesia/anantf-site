@@ -24,91 +24,40 @@
 .px .noscript { padding: 16px; }
 .px .px-muted { color: var(--muted); }
 
-/* ------------------------------------------------------------ app bar (one sticky bar; the site header scrolls away) */
+/* ------------------------------------------------------------ app bar: the regional app's bar (shared/regional/css/regional.css,
+   tb- classes, built in index.html). The explorer's own toolbar (plexus tabs and block chips) sits at the top of main. */
 body.px.ra-app .ntf-header { position: static; }
-.px .px-appbar { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 1px solid var(--border); }
-.px .px-appbar-inner { position: relative; max-width: 1600px; margin: 0 auto; padding: 4px 16px; display: flex; align-items: center; gap: 8px; min-height: 54px; }
-.px .px-home { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; min-height: 44px; padding: 0 12px 0 8px; border: 1px solid var(--line-strong); background: var(--bg); color: var(--text); font-size: 15px; font-weight: 500; line-height: 1; text-decoration: none; }
-.px .px-home:hover { border-color: var(--primary); background: var(--hover); color: var(--text); }
-.px .px-home svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
-.px .px-pick { display: none; align-items: center; justify-content: space-between; gap: 8px; flex: 1 1 auto; min-width: 0; min-height: 44px; padding: 3px 10px 3px 12px; border: 1px solid var(--line-strong); border-radius: 0; background: var(--bg); cursor: pointer; text-align: left; }
-.px .px-pick:hover, .px .px-pick[aria-expanded="true"] { border-color: var(--primary); background: var(--hover); }
-.px .px-pick-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
-.px .px-pick-k { font: 400 12px/1.3 'NTF Mono', ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.px .px-pick-v { font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.px .px-pick svg { width: 18px; height: 18px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .15s; }
-.px .px-pick[aria-expanded="true"] svg { transform: rotate(180deg); }
-.px .px-picker { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; flex: 1 1 auto; min-width: 0; }
-.px .px-menu-share { display: none; }
-.px .px-share { flex-shrink: 0; }
-.px .px-bar-level { flex-shrink: 0; display: flex; margin-left: auto; }
-.px .tool-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 14px; border: 1px solid var(--line-strong); border-radius: 0; background: var(--bg); color: var(--text); cursor: pointer; font-size: 15px; font-weight: 500; }
-.px .tool-btn:hover { background: var(--hover); border-color: var(--primary); }
-.px .tool-btn.is-done, .px .px-menu-share.is-done { background: var(--blush); border-color: var(--primary); }
-.px .tool-btn svg, .px .px-menu-share svg { width: 18px; height: 18px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-/* Plexus switcher: the app kit's segmented control (radios in a fieldset). */
-.px .px-tabs.app-segmented { margin: 0; flex: 0 0 auto; min-width: 300px; }
-.px .px-tabs .app-seg span { padding: 0 18px; font-size: var(--app-t-subhead); }
+.px .tb-bar .tb-chlist a[aria-current=page] { color: var(--text); border-bottom-color: var(--primary); font-weight: 500; }
+@media (max-width: 600px) { .px .px-cur-block { display: none; } }
+.px .tb-sres-none { padding: 10px 12px; color: var(--muted); font-size: 15px; }
+.px .px-ex-bar .chips.app-chips { flex-wrap: wrap; overflow-x: visible; margin-inline: 0; padding-inline: 0; }
+/* Plexus switcher: the app kit's segmented control (radios in a fieldset). Block chips: the kit's pill chips. */
+.px .px-tabs.app-segmented { margin: 0; flex: 0 0 auto; min-width: 360px; }
+.px .px-tabs .app-seg span { padding: 0 14px; font-size: var(--app-t-subhead); }
 .px .px-blockrow { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1 1 320px; }
 .px .blockbar-label { font: 400 12px/1.3 'NTF Mono', ui-monospace, monospace; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); flex-shrink: 0; }
-/* Block chips: the app kit's pill chips (one scrolling row on phones, wrapping where there is room). */
 .px .chips.app-chips { gap: var(--app-s2); min-width: 0; margin-block: 0; }
 .px .app-chip { background: transparent; border: 0; }
 .px .app-chip .chip-main { font: inherit; }
-.px .px-appbar .chips.app-chips, .px .px-ex-bar .chips.app-chips { flex-wrap: wrap; overflow-x: visible; margin-inline: 0; padding-inline: 0; }
 @media (max-width: 759px) {
   .px .px-ex-bar .chips.app-chips { flex-wrap: nowrap; overflow-x: auto; margin-inline: 0 calc(-1 * var(--app-gutter)); padding-inline: 0 var(--app-gutter); }
   .px .px-ex-bar .px-tabs.app-segmented { width: 100%; min-width: 0; }
   .px .px-ex-bar .px-blockrow { flex-basis: 100%; }
 }
 
-/* Below 900px the plexus tabs and block chips move into a menu under one "Plexus / block" button. */
-@media (max-width: 899px) {
-  .px .px-pick { display: inline-flex; }
-  .px .px-picker { position: absolute; top: 100%; left: 0; right: 0; z-index: 55; display: block; max-width: 100vw; overflow-y: auto; overscroll-behavior: contain;
-    padding: 14px 16px 16px; background: var(--bg); border-bottom: 1px solid var(--line-strong); box-shadow: 0 10px 18px rgba(39, 39, 34, .10); }
-  .px .px-picker.is-closed { display: none; }
-  .px .px-picker .px-tabs { width: 100%; min-width: 0; margin-bottom: 14px; }
-  .px .px-picker .px-blockrow { display: block; }
-  .px .px-picker .blockbar-label { display: block; margin-bottom: 8px; }
-  .px .px-picker .app-chip { white-space: normal; text-align: left; }
-  .px .px-menu-share { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 14px; padding: 0 12px; border: 1px solid var(--border); border-radius: 0; background: var(--surface-2); cursor: pointer; font-size: 15px; }
-  .px .px-share { display: none; }
-}
-@media (max-width: 599px) {
-  .px .px-appbar-inner { gap: 6px; }
-  .px .px-home { padding: 0; min-width: 44px; justify-content: center; }
-  .px .px-home span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .px .px-bar-level .ra-level-btn { padding: 0 6px; }
-  .px .px-pick { gap: 4px; padding: 3px 6px 3px 10px; }
-  .px .px-pick svg { width: 16px; height: 16px; }
-}
-/* 900px and wider: row 1 home, plexus tabs, copy link, level; row 2 every block chip (wrapping). */
-@media (min-width: 900px) {
-  .px .px-appbar-inner { display: grid; grid-template-columns: auto auto minmax(0, 1fr) auto auto; grid-template-areas: "home tabs . share level" "blocks blocks blocks blocks blocks"; gap: 6px 10px; padding-top: 6px; padding-bottom: 8px; }
-  .px .px-home { grid-area: home; }
-  .px .px-picker { display: contents; }
-  .px .px-tabs { grid-area: tabs; }
-  .px .px-blockrow { grid-area: blocks; }
-  .px .px-share { grid-area: share; }
-  .px .px-bar-level { grid-area: level; margin-left: 0; }
-}
-@media (min-width: 900px) and (max-width: 1239px) {
-  .px .px-share { width: 44px; padding: 0; justify-content: center; }
-  .px .px-share span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-}
-
-/* Page heading */
-.px .px-head { max-width: 1600px; margin: 0 auto; padding: 20px 16px 0; }
-.px .px-head + main { padding-top: 14px; }
-.px .px-org { margin: 0 0 6px; font: 400 12px/1.4 'NTF Mono', ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.px h1 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.1 'NTF Serif', Georgia, serif; letter-spacing: -.03em; text-wrap: balance; }
+/* Page heading (inside main, in the regional pages' hero style) */
+.px .px-head { padding: 8px 0 6px; }
+.px main .px-head h1 { margin: 0 0 12px; font: 400 clamp(30px, 4vw, 46px)/1.12 'NTF Serif', Georgia, serif; letter-spacing: -.03em; text-wrap: balance; max-width: 30ch; }
+.px .px-head .tb-lead { margin-bottom: 10px; }
+.px .px-head .tb-credit { margin-bottom: 4px; }
 #px-level-picker:empty { display: none; }
+.px .px-more { margin: 12px 0 0; font-size: 15px; }
 
 /* ------------------------------------------------------------ layout */
-.px main, .px .foot-inner { max-width: 1600px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+/* main and the footer use the site container, like the bar and the other regional pages */
 .px main { padding-top: 16px; padding-bottom: 32px; }
 .px main [id] { scroll-margin-top: calc(var(--px-bar) + 8px); }
+.px .tb-foot.foot { padding: 0; }
 .px .intro { margin: 0 0 12px; color: var(--muted); max-width: 68ch; font-size: 16px; line-height: 1.6; }
 .px .intro:empty { display: none; }
 .px .px-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin: 0 0 12px; padding: 8px 12px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--surface-2); font-size: 15px; }
@@ -128,7 +77,8 @@ body.px.ra-app .ntf-header { position: static; }
 
 .px .stage { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-bottom: 14px; }
 @media (min-width: 900px) {
-  .px .stage { grid-template-columns: minmax(0, 55fr) minmax(0, 45fr); align-items: start; }
+  /* Equal halves: in the site container (about 1130px) the diagram panel is then wide enough (520px+) to show whole. */
+  .px .stage { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
 }
 .px .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 0; min-width: 0; }
 .px .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 6px 4px 14px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
@@ -198,7 +148,7 @@ body.px.ra-app .ntf-header { position: static; }
 .px .px-dg.is-narrow .px-dg-tools { display: flex; }
 .px .px-dg-hint { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
 .px .px-dg-scroll { overflow-x: auto; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y; }
-.px .px-dg-svg { display: block; width: 100%; min-width: 560px; height: auto; font-family: var(--font); }
+.px .px-dg-svg { display: block; width: 100%; min-width: 520px; height: auto; font-family: var(--font); }
 .px .px-dg.is-narrow:not(.is-zoomed) .px-dg-svg { min-width: 0; }
 .px .px-dg-svg .col-head { fill: var(--text); font-weight: 700; }
 .px .px-dg-svg .col-sub { fill: var(--muted); }
@@ -301,34 +251,24 @@ body.px .ntf-footer .ntf-copyright { font-size: 13px; }
 .px .px-ex-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin: 0 0 12px; }
 
 /* ------------------------------------------------------------ embedded (iframe on a block page: ?embed=1) */
-body.px-embed .ntf-header, body.px-embed .ntf-footer, body.px-embed .px-head, body.px-embed #px-level-picker,
-body.px-embed .skip, body.px-embed .px-share, body.px-embed .px-menu-share, body.px-embed .px-back { display: none !important; }
+body.px-embed .ntf-header, body.px-embed .ntf-footer, body.px-embed .ntf-crumbs, body.px-embed .px-head, body.px-embed #px-level-picker,
+body.px-embed .tb-skip, body.px-embed #tb-share, body.px-embed #tb-search-open, body.px-embed .tb-chmenu-extra, body.px-embed .px-back, body.px-embed .px-credit { display: none !important; }
 body.px-embed main { padding-top: 10px; padding-bottom: 12px; }
 body.px-embed .foot-inner { padding-top: 10px; padding-bottom: 12px; font-size: 13px; }
-body.px-embed .px-home.is-out span { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
-body.px-embed .px-home.is-out { padding: 0 12px; }
+body.px-embed .tb-bar-home.is-out span { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+body.px-embed .tb-bar-home.is-out { padding: 0 12px; }
 /* The block page sizes the frame to this content, so nothing here may depend on the frame's own height (no vh). */
 body.px-embed .px .intro { display: none; }
 body.px-embed .px .mount-3d { height: 380px; min-height: 0; max-height: none; }
 @media (min-width: 900px) { body.px-embed .px .mount-3d { height: 520px; } }
 
 @media print {
-  .px .px-appbar, .px .px-v3-bar, .px .px-dg-tools, .px .collapse-btn { display: none !important; }
+  .px .tb-bar, .px .px-v3-bar, .px .px-dg-tools, .px .collapse-btn { display: none !important; }
 }
 
 /* ---------------------------------------------------------------- app kit (DESIGN-APP.md, assets/app/app.css)
    Controls follow the shared phone-app kit: segmented plexus switcher, pill chips, rounded buttons, panels and menus,
    press feedback. 3D views, diagrams, anatomy and block-status colours are unchanged. */
-.px .px-home, .px .px-pick, .px .tool-btn, .px .px-menu-share { border-radius: var(--app-r-md); transition: transform var(--app-d-press) var(--app-ease); }
-.px .px-home, .px .px-pick, .px .tool-btn { border-color: var(--app-control); background: var(--app-surface); }
-.px .px-home:active, .px .px-pick:active, .px .tool-btn:active, .px .px-menu-share:active { transform: scale(.97); background: var(--app-pressed); }
-.px .px-appbar { background: var(--app-paper); box-shadow: 0 .5px 0 var(--app-line); border-bottom: 0; }
-
-/* Level control (shared/regional/js/levels.js) shaped like the kit's segmented control; the chosen level stays filled wine. */
-.px .px-bar-level .ra-level-seg, .px .px-ex-bar .ra-level-seg { border: 0; border-radius: 10px; background: var(--app-fill); overflow: hidden; }
-.px .px-bar-level .ra-level-btn { border-left: 0; border-radius: 10px; font-size: var(--app-t-subhead); }
-.px .px-bar-level .ra-level-btn[aria-pressed="true"] { box-shadow: inset 0 0 0 3px var(--app-fill); font-weight: 600; }
-.px .px-bar-level .ra-level-back { border: 0; border-radius: var(--app-r-md); }
 
 .px .panel { border: 0; border-radius: var(--app-r-lg); background: var(--app-surface); overflow: hidden; }
 .px .panel-head { border-bottom: 1px solid var(--app-line); background: var(--app-surface); }
@@ -348,9 +288,6 @@ body.px-embed .px .mount-3d { height: 380px; min-height: 0; max-height: none; }
 .px .px-v3-menu { border: 0; border-radius: var(--app-r-md); background: var(--app-surface); box-shadow: var(--app-shadow-float); padding: 6px 0; overflow: hidden; }
 .px .px-v3-check { border-radius: var(--app-r-xs); }
 
-@media (max-width: 899px) {
-  .px .px-picker { border-bottom: 0; box-shadow: var(--app-shadow-float); border-radius: 0 0 var(--app-r-lg) var(--app-r-lg); }
-}
 @media (max-width: 759px) {
   .px .stage { padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right); }
 }

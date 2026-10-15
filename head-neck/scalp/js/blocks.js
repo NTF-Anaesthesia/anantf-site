@@ -42,6 +42,8 @@ export const BLOCKS = [
       covers: 'The whole scalp, one side per set of injections',
     },
     intro: (() => { const d = document.createElement('div'); d.append(scalpPointsFigure()); return d.innerHTML; })(),
+    // Schematic section of the temple (the two hardest sites); no ultrasound.
+    scene: SCENES.temple,
     position: '<p>Supine, before the head is fixed in pins, or with the head turned to reach the back. Block both sides for a bifrontal or midline incision.</p>',
     equipment: [
       'Fine needle (25–27G), long enough to fan along the superior nuchal line',

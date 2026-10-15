@@ -23,7 +23,7 @@ import { prepare, anchorOf, spreadProfile, tentProfile, warpY, planeDelta, yAt, 
 import { buildBMode, buildBModeAsync, isBuilt, shadowDepthAt } from './bmode.js';
 import { buildDiagram, COL } from './diagram.js';
 import { probeInset, areaWords, coverageMap } from './dermatomes.js';
-import { realScansFor, mountRealScan, ensureScanCss } from './realscan.js';
+import { realScansFor, loadRealScans, mountRealScan, ensureScanCss } from './realscan.js';
 import { STATUS, DENSITY_STATUS, LA, ensureStatusCss } from './status.js';
 
 ensureScanCss();
@@ -166,7 +166,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   const bid = blockId || scene.id;
   const injections = scene.injections || [];
   const diagramOnly = scene.image === 'diagram'; // landmark blocks: a schematic section, no simulated ultrasound
-  const realList = realScansFor(bid, scene);
+  let realList = realScansFor(bid, scene);
   const stepTitles = STEPS.map((s, i) => scene.stepTitles?.[i] || s.title);
   const st = {
     step: 0, t: 0, view: diagramOnly ? 'dia' : 'us', labels: true, inj: 0, playing: false, visible: false, raf: 0, last: 0,
@@ -207,14 +207,27 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   const viewSeg = el('div', { class: 'tb-seg tb-scan-views', role: 'group', 'aria-label': 'Image type' });
   const vBtn = (v, label) => el('button', { type: 'button', class: 'tb-seg-btn', dataset: { v }, 'aria-pressed': 'false', text: label, on: { click: () => setView(v) } });
   const vUs = diagramOnly ? null : vBtn('us', 'Ultrasound');
-  const vDia = diagramOnly ? null : vBtn('dia', 'Diagram');
-  const vReal = realList.length ? vBtn('real', 'Real') : null;
-  [vUs, vDia, vReal].forEach((b) => b && viewSeg.append(b));
+  let vDia = diagramOnly ? null : vBtn('dia', 'Diagram');
+  let vReal = null;
+  [vUs, vDia].forEach((b) => b && viewSeg.append(b));
+  // A diagram-only scene with real scans gets a "Diagram" button too, so there is something to switch back to.
+  function addReal() {
+    if (diagramOnly && !vDia) { vDia = vBtn('dia', 'Diagram'); viewSeg.append(vDia); }
+    vReal = vBtn('real', 'Real'); viewSeg.append(vReal);
+  }
+  if (realList.length) addReal();
   const labBtn = el('button', { type: 'button', class: 'tb-seg-btn tb-scan-labbtn', 'aria-pressed': 'true', text: 'Labels', on: { click: () => setLabels(!st.labels) } });
   const testable = [...structs.values()].filter((s) => s.items.some((it) => geo.has(it)));
   const testBtn = testable.length >= 3 ? el('button', { type: 'button', class: 'tb-btn ra-scan-testbtn', dataset: { tier: '2' }, text: 'Test me', 'aria-label': 'Test me: find the structures with the labels hidden', on: { click: () => startTest() } }) : null;
   const ctrls = el('div', { class: 'tb-scan-ctrls' }, ...(viewSeg.children.length > 1 ? [viewSeg] : []), labBtn);
   head.append(titleEl, ctrls);
+  // Real scans from shared/us/<region>/sources.json arrive later; the "Real" button appears when they do.
+  if (!realList.length) loadRealScans(bid, scene).then((list) => {
+    if (!list.length || vReal) return;
+    realList = list; addReal();
+    if (!viewSeg.isConnected && viewSeg.children.length > 1) ctrls.prepend(viewSeg);
+    paintPanel();
+  });
   let injSeg = null, injWrap = null;
   if (injections.length > 1) {
     injSeg = el('div', { class: 'tb-seg tb-scan-inj', role: 'group', 'aria-label': 'Injection point' });
@@ -870,6 +883,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     for (const [b, v] of [[vUs, 'us'], [vDia, 'dia'], [vReal, 'real']]) if (b) b.setAttribute('aria-pressed', String(st.view === v));
     if (injSeg) [...injSeg.children].forEach((b, i) => b.setAttribute('aria-pressed', String(i === st.inj)));
     playBtn.textContent = st.playing ? 'Pause' : (st.step === 3 && st.t >= stepDur(3) ? 'Replay' : 'Play');
+    playBtn.hidden = st.view === 'real'; // the real scan is a still image: Back and Next step the text
     stage.classList.toggle('is-us', st.view === 'us');
     stage.classList.toggle('is-real', st.view === 'real');
     covHost.hidden = !(st.step === 3 && covHost.childElementCount);
@@ -890,6 +904,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     if (v === 'real' && !realList.length) return;
     if (v !== 'real' && diagramOnly) v = 'dia';
     if (v === 'real' && st.test) stopTest();
+    if (v === 'real') st.playing = false;
     st.view = v; startShimmer();
     const real = v === 'real';
     box.hidden = real; realHost.hidden = !real;
@@ -900,7 +915,8 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
       realView = mountRealScan(realHost, realList, {
         labels: st.labels,
         base: document.baseURI,
-        onPick: (l) => { const k = l.elementId || (l.ids || [])[0]; info.hidden = false; info.textContent = ''; info.append(el('p', { class: 'ra-scan-info-t' }, el('strong', { text: l.text }))); const href = k && anatomyHref(k.includes(':') ? k : `brachial:${k}`); if (href) info.append(el('div', { class: 'ra-scan-info-row' }, el('a', { class: 'ra-scan-info-3d', href, text: 'See in 3D →' }))); },
+        injection: injections[st.inj]?.id,
+        linkFor: (l) => { const k = l.elementId || (l.ids || [])[0]; return k ? anatomyHref(k.includes(':') ? k : `brachial:${k}`) : null; },
       });
     }
     if (testBtn) testBtn.hidden = real;
@@ -912,6 +928,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     st.inj = clamp(i, 0, injections.length - 1);
     if (st.step < 2) st.step = 2;
     st.t = 0; startShimmer(); buildOverlay(); paintPanel(); kick(); draw();
+    realView?.setInjection(injections[st.inj]?.id);
     announce(`${injections[st.inj].label || ''} selected`);
   }
   function togglePlay() {

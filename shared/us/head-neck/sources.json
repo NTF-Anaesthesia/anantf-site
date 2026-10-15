@@ -29,7 +29,90 @@
         "elementId": null,
         "kind": "muscle",
         "x": 0.45,
-        "y": 0.17
+        "y": 0.17,
+        "shape": [
+          [
+            0,
+            0.155
+          ],
+          [
+            0.1,
+            0.13
+          ],
+          [
+            0.2,
+            0.11
+          ],
+          [
+            0.35,
+            0.1
+          ],
+          [
+            0.5,
+            0.1
+          ],
+          [
+            0.6,
+            0.11
+          ],
+          [
+            0.68,
+            0.14
+          ],
+          [
+            0.73,
+            0.19
+          ],
+          [
+            0.735,
+            0.215
+          ],
+          [
+            0.7,
+            0.235
+          ],
+          [
+            0.66,
+            0.272
+          ],
+          [
+            0.6,
+            0.305
+          ],
+          [
+            0.52,
+            0.335
+          ],
+          [
+            0.42,
+            0.332
+          ],
+          [
+            0.33,
+            0.325
+          ],
+          [
+            0.26,
+            0.332
+          ],
+          [
+            0.2,
+            0.355
+          ],
+          [
+            0.15,
+            0.383
+          ],
+          [
+            0.08,
+            0.397
+          ],
+          [
+            0,
+            0.4
+          ]
+        ],
+        "block": true
       },
       {
         "text": "Internal jugular vein",
@@ -38,7 +121,69 @@
         "x": 0.31,
         "y": 0.41,
         "tx": 0.2,
-        "ty": 0.33
+        "ty": 0.33,
+        "shape": [
+          [
+            0.15,
+            0.45
+          ],
+          [
+            0.18,
+            0.39
+          ],
+          [
+            0.24,
+            0.355
+          ],
+          [
+            0.3,
+            0.345
+          ],
+          [
+            0.36,
+            0.35
+          ],
+          [
+            0.41,
+            0.37
+          ],
+          [
+            0.435,
+            0.41
+          ],
+          [
+            0.43,
+            0.46
+          ],
+          [
+            0.405,
+            0.495
+          ],
+          [
+            0.37,
+            0.5
+          ],
+          [
+            0.33,
+            0.48
+          ],
+          [
+            0.29,
+            0.462
+          ],
+          [
+            0.24,
+            0.458
+          ],
+          [
+            0.19,
+            0.47
+          ],
+          [
+            0.16,
+            0.475
+          ]
+        ]
       },
       {
         "text": "Carotid artery",
@@ -47,7 +192,73 @@
         "x": 0.26,
         "y": 0.65,
         "tx": 0.42,
-        "ty": 0.72
+        "ty": 0.72,
+        "shape": [
+          [
+            0.35,
+            0.615
+          ],
+          [
+            0.344,
+            0.672
+          ],
+          [
+            0.325,
+            0.72
+          ],
+          [
+            0.298,
+            0.752
+          ],
+          [
+            0.265,
+            0.763
+          ],
+          [
+            0.232,
+            0.752
+          ],
+          [
+            0.205,
+            0.72
+          ],
+          [
+            0.186,
+            0.672
+          ],
+          [
+            0.18,
+            0.615
+          ],
+          [
+            0.186,
+            0.558
+          ],
+          [
+            0.205,
+            0.51
+          ],
+          [
+            0.232,
+            0.478
+          ],
+          [
+            0.265,
+            0.467
+          ],
+          [
+            0.298,
+            0.478
+          ],
+          [
+            0.325,
+            0.51
+          ],
+          [
+            0.344,
+            0.558
+          ]
+        ]
       },
       {
         "text": "Needle path",
@@ -59,7 +270,17 @@
         "ty": 0.36
       }
     ],
-    "credit": "Ege E et al. Interventional Pain Medicine 2022, Fig. 2. CC BY 4.0. Cropped; labels on the image are the authors'."
+    "credit": "Ege E et al. Interventional Pain Medicine 2022, Fig. 2. CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "needle": [
+      [
+        1.0,
+        0.124
+      ],
+      [
+        0.735,
+        0.233
+      ]
+    ]
   },
   {
     "file": "dcp-1.jpg",
@@ -91,14 +312,334 @@
         "elementId": null,
         "kind": "muscle",
         "x": 0.49,
-        "y": 0.17
+        "y": 0.17,
+        "shape": [
+          [
+            0.08,
+            0.08
+          ],
+          [
+            0.92,
+            0.08
+          ],
+          [
+            0.92,
+            0.325
+          ],
+          [
+            0.75,
+            0.32
+          ],
+          [
+            0.6,
+            0.315
+          ],
+          [
+            0.45,
+            0.305
+          ],
+          [
+            0.36,
+            0.3
+          ],
+          [
+            0.3,
+            0.275
+          ],
+          [
+            0.24,
+            0.235
+          ],
+          [
+            0.18,
+            0.205
+          ],
+          [
+            0.12,
+            0.19
+          ],
+          [
+            0.08,
+            0.185
+          ]
+        ]
+      },
+      {
+        "text": "Longus capitis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.23,
+        "y": 0.5,
+        "shape": [
+          [
+            0.12,
+            0.47
+          ],
+          [
+            0.2,
+            0.455
+          ],
+          [
+            0.3,
+            0.46
+          ],
+          [
+            0.36,
+            0.475
+          ],
+          [
+            0.35,
+            0.52
+          ],
+          [
+            0.3,
+            0.54
+          ],
+          [
+            0.2,
+            0.56
+          ],
+          [
+            0.12,
+            0.555
+          ]
+        ]
+      },
+      {
+        "text": "Longus colli",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.23,
+        "y": 0.65,
+        "shape": [
+          [
+            0.12,
+            0.585
+          ],
+          [
+            0.2,
+            0.575
+          ],
+          [
+            0.3,
+            0.555
+          ],
+          [
+            0.35,
+            0.565
+          ],
+          [
+            0.36,
+            0.65
+          ],
+          [
+            0.32,
+            0.7
+          ],
+          [
+            0.22,
+            0.72
+          ],
+          [
+            0.12,
+            0.71
+          ]
+        ]
+      },
+      {
+        "text": "Middle scalene",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.63,
+        "y": 0.41,
+        "shape": [
+          [
+            0.565,
+            0.395
+          ],
+          [
+            0.76,
+            0.395
+          ],
+          [
+            0.77,
+            0.45
+          ],
+          [
+            0.73,
+            0.5
+          ],
+          [
+            0.67,
+            0.52
+          ],
+          [
+            0.62,
+            0.5
+          ],
+          [
+            0.595,
+            0.45
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Levator scapulae",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.84,
+        "y": 0.47,
+        "shape": [
+          [
+            0.78,
+            0.4
+          ],
+          [
+            0.92,
+            0.4
+          ],
+          [
+            0.92,
+            0.62
+          ],
+          [
+            0.85,
+            0.6
+          ],
+          [
+            0.79,
+            0.53
+          ],
+          [
+            0.77,
+            0.46
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "C4 transverse process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.46,
+        "y": 0.62,
+        "line": [
+          [
+            0.36,
+            0.535
+          ],
+          [
+            0.4,
+            0.505
+          ],
+          [
+            0.44,
+            0.495
+          ],
+          [
+            0.48,
+            0.47
+          ],
+          [
+            0.52,
+            0.435
+          ],
+          [
+            0.56,
+            0.435
+          ],
+          [
+            0.59,
+            0.47
+          ],
+          [
+            0.62,
+            0.565
+          ],
+          [
+            0.67,
+            0.585
+          ],
+          [
+            0.71,
+            0.58
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Prevertebral fascia",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.45,
+        "y": 0.342,
+        "tx": 0.4,
+        "ty": 0.43,
+        "block": true,
+        "line": [
+          [
+            0.33,
+            0.35
+          ],
+          [
+            0.45,
+            0.342
+          ],
+          [
+            0.6,
+            0.342
+          ],
+          [
+            0.75,
+            0.355
+          ],
+          [
+            0.92,
+            0.365
+          ]
+        ]
       },
       {
         "text": "Internal jugular vein",
         "elementId": null,
         "kind": "vein",
         "x": 0.13,
-        "y": 0.22
+        "y": 0.23,
+        "shape": [
+          [
+            0.08,
+            0.19
+          ],
+          [
+            0.12,
+            0.195
+          ],
+          [
+            0.15,
+            0.205
+          ],
+          [
+            0.175,
+            0.225
+          ],
+          [
+            0.18,
+            0.245
+          ],
+          [
+            0.16,
+            0.262
+          ],
+          [
+            0.12,
+            0.266
+          ],
+          [
+            0.08,
+            0.26
+          ]
+        ]
       },
       {
         "text": "Carotid bifurcation",
@@ -107,42 +648,73 @@
         "x": 0.25,
         "y": 0.32,
         "tx": 0.33,
-        "ty": 0.42
-      },
-      {
-        "text": "Longus capitis",
-        "elementId": null,
-        "kind": "muscle",
-        "x": 0.23,
-        "y": 0.5
-      },
-      {
-        "text": "Longus colli",
-        "elementId": null,
-        "kind": "muscle",
-        "x": 0.23,
-        "y": 0.65
-      },
-      {
-        "text": "C4 transverse process",
-        "elementId": null,
-        "kind": "bone",
-        "x": 0.46,
-        "y": 0.62
-      },
-      {
-        "text": "Middle scalene",
-        "elementId": null,
-        "kind": "muscle",
-        "x": 0.63,
-        "y": 0.41
-      },
-      {
-        "text": "Levator scapulae",
-        "elementId": null,
-        "kind": "muscle",
-        "x": 0.84,
-        "y": 0.47
+        "ty": 0.42,
+        "shape": [
+          [
+            0.317,
+            0.38
+          ],
+          [
+            0.312,
+            0.41
+          ],
+          [
+            0.296,
+            0.435
+          ],
+          [
+            0.273,
+            0.452
+          ],
+          [
+            0.245,
+            0.458
+          ],
+          [
+            0.217,
+            0.452
+          ],
+          [
+            0.194,
+            0.435
+          ],
+          [
+            0.178,
+            0.41
+          ],
+          [
+            0.173,
+            0.38
+          ],
+          [
+            0.178,
+            0.35
+          ],
+          [
+            0.194,
+            0.325
+          ],
+          [
+            0.217,
+            0.308
+          ],
+          [
+            0.245,
+            0.302
+          ],
+          [
+            0.273,
+            0.308
+          ],
+          [
+            0.296,
+            0.325
+          ],
+          [
+            0.312,
+            0.35
+          ]
+        ]
       },
       {
         "text": "Intermediate injection (2)",
@@ -151,7 +723,8 @@
         "x": 0.635,
         "y": 0.33,
         "tx": 0.62,
-        "ty": 0.22
+        "ty": 0.22,
+        "block": true
       },
       {
         "text": "Deep injection (1)",
@@ -160,10 +733,21 @@
         "x": 0.8,
         "y": 0.4,
         "tx": 0.82,
-        "ty": 0.57
+        "ty": 0.57,
+        "block": true
       }
     ],
-    "credit": "Vega Colón M et al. Healthcare 2022, Figure 1 panel B. CC BY 4.0. Cropped to the ultrasound panel; labels and needle paths on the image are the authors'."
+    "credit": "Vega Colón M et al. Healthcare 2022, Figure 1 panel B. CC BY 4.0. Cropped to the ultrasound panel; labels and needle paths on the image are the authors'.",
+    "needle": [
+      [
+        0.9,
+        0.11
+      ],
+      [
+        0.635,
+        0.33
+      ]
+    ]
   },
   {
     "file": "sln-1.jpg",
@@ -191,22 +775,145 @@
     "burnedInLabels": "1 (hyoid), 2 (thyroid cartilage), arrowhead (thyrohyoid membrane); scanner depth scale cropped",
     "labels": [
       {
+        "text": "Thyrohyoid muscle",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.29,
+        "tx": 0.42,
+        "ty": 0.12,
+        "shape": [
+          [
+            0.4,
+            0.39
+          ],
+          [
+            0.4,
+            0.3
+          ],
+          [
+            0.5,
+            0.255
+          ],
+          [
+            0.6,
+            0.21
+          ],
+          [
+            0.7,
+            0.175
+          ],
+          [
+            0.8,
+            0.145
+          ],
+          [
+            0.88,
+            0.125
+          ],
+          [
+            0.86,
+            0.18
+          ],
+          [
+            0.78,
+            0.222
+          ],
+          [
+            0.7,
+            0.268
+          ],
+          [
+            0.6,
+            0.318
+          ],
+          [
+            0.5,
+            0.356
+          ],
+          [
+            0.42,
+            0.385
+          ]
+        ]
+      },
+      {
         "text": "Hyoid bone",
         "elementId": null,
         "kind": "bone",
         "x": 0.24,
         "y": 0.43,
         "tx": 0.2,
-        "ty": 0.62
+        "ty": 0.62,
+        "line": [
+          [
+            0.19,
+            0.47
+          ],
+          [
+            0.22,
+            0.43
+          ],
+          [
+            0.27,
+            0.4
+          ],
+          [
+            0.33,
+            0.385
+          ],
+          [
+            0.38,
+            0.39
+          ],
+          [
+            0.41,
+            0.41
+          ]
+        ]
       },
       {
         "text": "Thyroid cartilage",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.9,
         "y": 0.25,
         "tx": 0.86,
-        "ty": 0.42
+        "ty": 0.42,
+        "shape": [
+          [
+            0.85,
+            0.21
+          ],
+          [
+            0.9,
+            0.18
+          ],
+          [
+            0.95,
+            0.16
+          ],
+          [
+            1.0,
+            0.15
+          ],
+          [
+            1.0,
+            0.42
+          ],
+          [
+            0.94,
+            0.41
+          ],
+          [
+            0.88,
+            0.36
+          ],
+          [
+            0.85,
+            0.28
+          ]
+        ]
       },
       {
         "text": "Thyrohyoid membrane",
@@ -215,19 +922,38 @@
         "x": 0.59,
         "y": 0.35,
         "tx": 0.6,
-        "ty": 0.55
-      },
-      {
-        "text": "Thyrohyoid muscle",
-        "elementId": null,
-        "kind": "muscle",
-        "x": 0.5,
-        "y": 0.29,
-        "tx": 0.42,
-        "ty": 0.12
+        "ty": 0.55,
+        "line": [
+          [
+            0.4,
+            0.4
+          ],
+          [
+            0.5,
+            0.368
+          ],
+          [
+            0.6,
+            0.33
+          ],
+          [
+            0.7,
+            0.28
+          ],
+          [
+            0.78,
+            0.235
+          ],
+          [
+            0.85,
+            0.2
+          ]
+        ],
+        "block": true
       }
     ],
-    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 11. CC BY 4.0. Cropped; numbers and arrowhead on the image are the authors'; the thyrohyoid muscle label is ours."
+    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 11. CC BY 4.0. Cropped; numbers and arrowhead on the image are the authors'; the thyrohyoid muscle label is ours.",
+    "authorLabels": false
   },
   {
     "file": "sln-2.jpg",
@@ -261,7 +987,25 @@
         "x": 0.08,
         "y": 0.62,
         "tx": 0.12,
-        "ty": 0.86
+        "ty": 0.86,
+        "line": [
+          [
+            0.0,
+            0.5
+          ],
+          [
+            0.05,
+            0.48
+          ],
+          [
+            0.1,
+            0.49
+          ],
+          [
+            0.15,
+            0.53
+          ]
+        ]
       },
       {
         "text": "Thyrohyoid membrane",
@@ -270,16 +1014,93 @@
         "x": 0.32,
         "y": 0.61,
         "tx": 0.3,
-        "ty": 0.9
+        "ty": 0.9,
+        "line": [
+          [
+            0.17,
+            0.625
+          ],
+          [
+            0.27,
+            0.6
+          ],
+          [
+            0.35,
+            0.585
+          ],
+          [
+            0.42,
+            0.565
+          ],
+          [
+            0.5,
+            0.525
+          ],
+          [
+            0.55,
+            0.495
+          ]
+        ],
+        "block": true
       },
       {
-        "text": "Superior laryngeal nerve",
+        "text": "Thyroid cartilage",
         "elementId": null,
-        "kind": "nerve",
-        "x": 0.42,
-        "y": 0.57,
-        "tx": 0.52,
-        "ty": 0.82
+        "kind": "cartilage",
+        "x": 0.82,
+        "y": 0.52,
+        "tx": 0.84,
+        "ty": 0.66,
+        "shape": [
+          [
+            0.53,
+            0.45
+          ],
+          [
+            0.6,
+            0.37
+          ],
+          [
+            0.7,
+            0.33
+          ],
+          [
+            0.8,
+            0.31
+          ],
+          [
+            0.9,
+            0.3
+          ],
+          [
+            1.0,
+            0.3
+          ],
+          [
+            1.0,
+            0.46
+          ],
+          [
+            0.9,
+            0.47
+          ],
+          [
+            0.8,
+            0.48
+          ],
+          [
+            0.7,
+            0.49
+          ],
+          [
+            0.6,
+            0.5
+          ],
+          [
+            0.55,
+            0.49
+          ]
+        ]
       },
       {
         "text": "Superior laryngeal artery",
@@ -288,25 +1109,167 @@
         "x": 0.46,
         "y": 0.575,
         "tx": 0.62,
-        "ty": 0.36
+        "ty": 0.36,
+        "shape": [
+          [
+            0.477,
+            0.545
+          ],
+          [
+            0.476,
+            0.555
+          ],
+          [
+            0.473,
+            0.563
+          ],
+          [
+            0.468,
+            0.569
+          ],
+          [
+            0.462,
+            0.571
+          ],
+          [
+            0.456,
+            0.569
+          ],
+          [
+            0.451,
+            0.563
+          ],
+          [
+            0.448,
+            0.555
+          ],
+          [
+            0.447,
+            0.545
+          ],
+          [
+            0.448,
+            0.535
+          ],
+          [
+            0.451,
+            0.527
+          ],
+          [
+            0.456,
+            0.521
+          ],
+          [
+            0.462,
+            0.519
+          ],
+          [
+            0.468,
+            0.521
+          ],
+          [
+            0.473,
+            0.527
+          ],
+          [
+            0.476,
+            0.535
+          ]
+        ]
       },
       {
-        "text": "Thyroid cartilage",
+        "text": "Superior laryngeal nerve",
         "elementId": null,
-        "kind": "bone",
-        "x": 0.82,
-        "y": 0.52,
-        "tx": 0.84,
-        "ty": 0.66
+        "kind": "nerve",
+        "x": 0.42,
+        "y": 0.57,
+        "tx": 0.52,
+        "ty": 0.82,
+        "shape": [
+          [
+            0.431,
+            0.548
+          ],
+          [
+            0.43,
+            0.559
+          ],
+          [
+            0.426,
+            0.569
+          ],
+          [
+            0.42,
+            0.576
+          ],
+          [
+            0.413,
+            0.578
+          ],
+          [
+            0.406,
+            0.576
+          ],
+          [
+            0.4,
+            0.569
+          ],
+          [
+            0.396,
+            0.559
+          ],
+          [
+            0.395,
+            0.548
+          ],
+          [
+            0.396,
+            0.537
+          ],
+          [
+            0.4,
+            0.527
+          ],
+          [
+            0.406,
+            0.52
+          ],
+          [
+            0.413,
+            0.518
+          ],
+          [
+            0.42,
+            0.52
+          ],
+          [
+            0.426,
+            0.527
+          ],
+          [
+            0.43,
+            0.537
+          ]
+        ]
       },
       {
         "text": "Needle",
         "elementId": null,
-        "kind": "point",
+        "kind": "needle",
         "x": 0.77,
         "y": 0.2,
         "tx": 0.62,
-        "ty": 0.12
+        "ty": 0.12,
+        "line": [
+          [
+            0.815,
+            0.04
+          ],
+          [
+            0.765,
+            0.295
+          ]
+        ]
       }
     ],
     "credit": "Shan T et al. International Journal of Surgery 2026, Figure 1 panel C. CC BY-SA 4.0 (reuse must keep the same licence). Cropped to the panel without the photo inset; labels and arrows on the image are the authors'."
@@ -339,11 +1302,41 @@
       {
         "text": "Thyroid cartilage",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.05,
         "y": 0.11,
         "tx": 0.1,
-        "ty": 0.32
+        "ty": 0.32,
+        "shape": [
+          [
+            0,
+            0.07
+          ],
+          [
+            0.05,
+            0.075
+          ],
+          [
+            0.09,
+            0.09
+          ],
+          [
+            0.11,
+            0.12
+          ],
+          [
+            0.1,
+            0.143
+          ],
+          [
+            0.05,
+            0.146
+          ],
+          [
+            0,
+            0.146
+          ]
+        ]
       },
       {
         "text": "Cricothyroid membrane",
@@ -352,37 +1345,159 @@
         "x": 0.17,
         "y": 0.155,
         "tx": 0.22,
-        "ty": 0.42
+        "ty": 0.42,
+        "line": [
+          [
+            0.1,
+            0.138
+          ],
+          [
+            0.17,
+            0.137
+          ],
+          [
+            0.24,
+            0.14
+          ],
+          [
+            0.29,
+            0.145
+          ]
+        ],
+        "block": true
       },
       {
         "text": "Cricoid cartilage",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.36,
         "y": 0.12,
         "tx": 0.42,
-        "ty": 0.32
+        "ty": 0.32,
+        "shape": [
+          [
+            0.29,
+            0.153
+          ],
+          [
+            0.31,
+            0.1
+          ],
+          [
+            0.36,
+            0.07
+          ],
+          [
+            0.42,
+            0.075
+          ],
+          [
+            0.47,
+            0.11
+          ],
+          [
+            0.5,
+            0.19
+          ],
+          [
+            0.42,
+            0.178
+          ],
+          [
+            0.35,
+            0.163
+          ]
+        ]
       },
       {
         "text": "Tracheal rings",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.7,
         "y": 0.18,
         "tx": 0.72,
-        "ty": 0.38
+        "ty": 0.38,
+        "shape": [
+          [
+            0.52,
+            0.2
+          ],
+          [
+            0.57,
+            0.175
+          ],
+          [
+            0.64,
+            0.175
+          ],
+          [
+            0.71,
+            0.2
+          ],
+          [
+            0.72,
+            0.255
+          ],
+          [
+            0.65,
+            0.245
+          ],
+          [
+            0.58,
+            0.228
+          ],
+          [
+            0.53,
+            0.215
+          ]
+        ]
       },
       {
         "text": "Air-mucosa line",
         "elementId": null,
-        "kind": "point",
+        "kind": "pleura",
         "x": 0.55,
         "y": 0.24,
         "tx": 0.55,
-        "ty": 0.55
+        "ty": 0.55,
+        "line": [
+          [
+            0.0,
+            0.15
+          ],
+          [
+            0.1,
+            0.148
+          ],
+          [
+            0.29,
+            0.155
+          ],
+          [
+            0.42,
+            0.18
+          ],
+          [
+            0.5,
+            0.203
+          ],
+          [
+            0.6,
+            0.235
+          ],
+          [
+            0.7,
+            0.262
+          ],
+          [
+            0.77,
+            0.27
+          ]
+        ]
       }
     ],
-    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 10 panel a. CC BY 4.0. Cropped to one panel; numbers and arrowhead on the image are the authors'."
+    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 10 panel a. CC BY 4.0. Cropped to one panel; numbers and arrowhead on the image are the authors'.",
+    "authorLabels": false
   },
   {
     "file": "ttb-2.jpg",
@@ -407,25 +1522,92 @@
     "burnedInLabels": "Arrow (cricothyroid membrane); scanner text and depth scale cropped",
     "labels": [
       {
-        "text": "Cricothyroid membrane",
+        "text": "Air-mucosa line",
         "elementId": null,
-        "kind": "fascia",
+        "kind": "pleura",
         "x": 0.49,
         "y": 0.18,
         "tx": 0.49,
-        "ty": 0.07
+        "ty": 0.07,
+        "line": [
+          [
+            0.25,
+            0.25
+          ],
+          [
+            0.3,
+            0.222
+          ],
+          [
+            0.35,
+            0.2
+          ],
+          [
+            0.42,
+            0.186
+          ],
+          [
+            0.48,
+            0.181
+          ],
+          [
+            0.55,
+            0.184
+          ],
+          [
+            0.62,
+            0.196
+          ],
+          [
+            0.68,
+            0.216
+          ],
+          [
+            0.74,
+            0.25
+          ]
+        ],
+        "block": true,
+        "desc": "The bright line where air in the larynx meets the mucosa. The cricothyroid membrane lies just superficial to it: this is where the scalpel or cannula goes."
       },
       {
         "text": "Reverberation artefact",
         "elementId": null,
-        "kind": "point",
+        "kind": "shadow",
         "x": 0.47,
         "y": 0.45,
         "tx": 0.25,
-        "ty": 0.6
+        "ty": 0.6,
+        "shape": [
+          [
+            0.36,
+            0.23
+          ],
+          [
+            0.6,
+            0.23
+          ],
+          [
+            0.66,
+            0.4
+          ],
+          [
+            0.66,
+            0.7
+          ],
+          [
+            0.4,
+            0.7
+          ],
+          [
+            0.36,
+            0.4
+          ]
+        ]
       }
     ],
-    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 5. CC BY 4.0. Cropped; the arrow on the image is the authors'."
+    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 5. CC BY 4.0. Cropped; the arrow on the image is the authors'.",
+    "authorLabels": false
   },
   {
     "file": "gon-1.jpg",
@@ -456,7 +1638,61 @@
         "x": 0.27,
         "y": 0.39,
         "tx": 0.25,
-        "ty": 0.3
+        "ty": 0.3,
+        "shape": [
+          [
+            0.17,
+            0.38
+          ],
+          [
+            0.3,
+            0.375
+          ],
+          [
+            0.5,
+            0.38
+          ],
+          [
+            0.6,
+            0.39
+          ],
+          [
+            0.68,
+            0.42
+          ],
+          [
+            0.85,
+            0.42
+          ],
+          [
+            0.95,
+            0.38
+          ],
+          [
+            0.95,
+            0.47
+          ],
+          [
+            0.8,
+            0.49
+          ],
+          [
+            0.65,
+            0.475
+          ],
+          [
+            0.5,
+            0.455
+          ],
+          [
+            0.35,
+            0.445
+          ],
+          [
+            0.2,
+            0.45
+          ]
+        ]
       },
       {
         "text": "Obliquus capitis inferior",
@@ -465,7 +1701,46 @@
         "x": 0.36,
         "y": 0.6,
         "tx": 0.3,
-        "ty": 0.72
+        "ty": 0.72,
+        "shape": [
+          [
+            0.2,
+            0.475
+          ],
+          [
+            0.4,
+            0.475
+          ],
+          [
+            0.55,
+            0.495
+          ],
+          [
+            0.7,
+            0.515
+          ],
+          [
+            0.85,
+            0.525
+          ],
+          [
+            0.8,
+            0.65
+          ],
+          [
+            0.6,
+            0.72
+          ],
+          [
+            0.4,
+            0.72
+          ],
+          [
+            0.25,
+            0.65
+          ]
+        ],
+        "block": true
       },
       {
         "text": "Greater occipital nerve",
@@ -474,7 +1749,73 @@
         "x": 0.47,
         "y": 0.49,
         "tx": 0.62,
-        "ty": 0.58
+        "ty": 0.58,
+        "shape": [
+          [
+            0.5,
+            0.474
+          ],
+          [
+            0.497,
+            0.482
+          ],
+          [
+            0.49,
+            0.49
+          ],
+          [
+            0.478,
+            0.494
+          ],
+          [
+            0.465,
+            0.496
+          ],
+          [
+            0.452,
+            0.494
+          ],
+          [
+            0.44,
+            0.49
+          ],
+          [
+            0.433,
+            0.482
+          ],
+          [
+            0.43,
+            0.474
+          ],
+          [
+            0.433,
+            0.466
+          ],
+          [
+            0.44,
+            0.458
+          ],
+          [
+            0.452,
+            0.454
+          ],
+          [
+            0.465,
+            0.452
+          ],
+          [
+            0.478,
+            0.454
+          ],
+          [
+            0.49,
+            0.458
+          ],
+          [
+            0.497,
+            0.466
+          ]
+        ]
       }
     ],
     "credit": "Skinner C, Kumar S. Cureus 2021, Figure 1. CC BY. Cropped; labels on the image are the authors'."
@@ -505,20 +1846,111 @@
     "burnedInLabels": "Panel letter B; GON with dashed line, OCI, C2 SP, Lateral, Medial; small white arrows",
     "labels": [
       {
-        "text": "Greater occipital nerve",
-        "elementId": null,
-        "kind": "nerve",
-        "x": 0.3,
-        "y": 0.54,
-        "tx": 0.42,
-        "ty": 0.38
-      },
-      {
         "text": "Obliquus capitis inferior",
         "elementId": null,
         "kind": "muscle",
         "x": 0.41,
-        "y": 0.73
+        "y": 0.73,
+        "shape": [
+          [
+            0.05,
+            0.62
+          ],
+          [
+            0.2,
+            0.6
+          ],
+          [
+            0.35,
+            0.59
+          ],
+          [
+            0.45,
+            0.58
+          ],
+          [
+            0.55,
+            0.565
+          ],
+          [
+            0.65,
+            0.55
+          ],
+          [
+            0.75,
+            0.6
+          ],
+          [
+            0.8,
+            0.72
+          ],
+          [
+            0.7,
+            0.8
+          ],
+          [
+            0.5,
+            0.82
+          ],
+          [
+            0.3,
+            0.8
+          ],
+          [
+            0.1,
+            0.78
+          ],
+          [
+            0.05,
+            0.72
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Semispinalis capitis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.22,
+        "y": 0.33,
+        "shape": [
+          [
+            0.0,
+            0.2
+          ],
+          [
+            0.3,
+            0.2
+          ],
+          [
+            0.5,
+            0.23
+          ],
+          [
+            0.6,
+            0.3
+          ],
+          [
+            0.6,
+            0.42
+          ],
+          [
+            0.5,
+            0.465
+          ],
+          [
+            0.3,
+            0.47
+          ],
+          [
+            0.1,
+            0.48
+          ],
+          [
+            0,
+            0.48
+          ]
+        ]
       },
       {
         "text": "C2 spinous process",
@@ -527,7 +1959,72 @@
         "x": 0.89,
         "y": 0.47,
         "tx": 0.7,
-        "ty": 0.62
+        "ty": 0.62,
+        "line": [
+          [
+            0.74,
+            0.43
+          ],
+          [
+            0.8,
+            0.38
+          ],
+          [
+            0.86,
+            0.35
+          ],
+          [
+            0.93,
+            0.35
+          ],
+          [
+            1.0,
+            0.37
+          ]
+        ]
+      },
+      {
+        "text": "Greater occipital nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.3,
+        "y": 0.54,
+        "tx": 0.42,
+        "ty": 0.38,
+        "shape": [
+          [
+            0.12,
+            0.53
+          ],
+          [
+            0.18,
+            0.505
+          ],
+          [
+            0.28,
+            0.5
+          ],
+          [
+            0.36,
+            0.51
+          ],
+          [
+            0.4,
+            0.535
+          ],
+          [
+            0.36,
+            0.565
+          ],
+          [
+            0.25,
+            0.575
+          ],
+          [
+            0.15,
+            0.565
+          ]
+        ]
       }
     ],
     "credit": "Kılınç A, Karaoğlan M. Journal of Oral & Facial Pain and Headache 2025, Fig. 1 panel B. CC BY 4.0. Cropped to the ultrasound panel; labels and arrows on the image are the authors'."
@@ -562,23 +2059,74 @@
         "elementId": null,
         "kind": "muscle",
         "x": 0.29,
-        "y": 0.48
+        "y": 0.48,
+        "shape": [
+          [
+            0,
+            0.42
+          ],
+          [
+            0.2,
+            0.37
+          ],
+          [
+            0.4,
+            0.38
+          ],
+          [
+            0.48,
+            0.45
+          ],
+          [
+            0.47,
+            0.6
+          ],
+          [
+            0.3,
+            0.62
+          ],
+          [
+            0.1,
+            0.6
+          ],
+          [
+            0,
+            0.58
+          ]
+        ]
       },
       {
         "text": "Orbicularis oculi",
         "elementId": null,
         "kind": "muscle",
         "x": 0.85,
-        "y": 0.31
-      },
-      {
-        "text": "Supraorbital nerve",
-        "elementId": null,
-        "kind": "nerve",
-        "x": 0.518,
-        "y": 0.63,
-        "tx": 0.66,
-        "ty": 0.52
+        "y": 0.31,
+        "shape": [
+          [
+            0.55,
+            0.22
+          ],
+          [
+            1.0,
+            0.2
+          ],
+          [
+            1.0,
+            0.42
+          ],
+          [
+            0.8,
+            0.42
+          ],
+          [
+            0.6,
+            0.37
+          ],
+          [
+            0.55,
+            0.3
+          ]
+        ]
       },
       {
         "text": "Supraorbital foramen",
@@ -587,7 +2135,160 @@
         "x": 0.55,
         "y": 0.77,
         "tx": 0.25,
-        "ty": 0.8
+        "ty": 0.8,
+        "shape": [
+          [
+            0.49,
+            0.69
+          ],
+          [
+            0.63,
+            0.69
+          ],
+          [
+            0.6,
+            0.74
+          ],
+          [
+            0.58,
+            0.763
+          ],
+          [
+            0.54,
+            0.74
+          ],
+          [
+            0.5,
+            0.705
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Frontal bone",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.25,
+        "y": 0.685,
+        "tx": 0.2,
+        "ty": 0.78,
+        "line": [
+          [
+            0,
+            0.68
+          ],
+          [
+            0.25,
+            0.685
+          ],
+          [
+            0.45,
+            0.69
+          ],
+          [
+            0.5,
+            0.705
+          ],
+          [
+            0.54,
+            0.74
+          ],
+          [
+            0.58,
+            0.763
+          ],
+          [
+            0.6,
+            0.74
+          ],
+          [
+            0.63,
+            0.7
+          ],
+          [
+            0.8,
+            0.7
+          ],
+          [
+            1,
+            0.7
+          ]
+        ]
+      },
+      {
+        "text": "Supraorbital nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.518,
+        "y": 0.63,
+        "tx": 0.66,
+        "ty": 0.52,
+        "shape": [
+          [
+            0.565,
+            0.668
+          ],
+          [
+            0.563,
+            0.681
+          ],
+          [
+            0.556,
+            0.693
+          ],
+          [
+            0.546,
+            0.7
+          ],
+          [
+            0.535,
+            0.703
+          ],
+          [
+            0.524,
+            0.7
+          ],
+          [
+            0.514,
+            0.693
+          ],
+          [
+            0.507,
+            0.681
+          ],
+          [
+            0.505,
+            0.668
+          ],
+          [
+            0.507,
+            0.655
+          ],
+          [
+            0.514,
+            0.643
+          ],
+          [
+            0.524,
+            0.636
+          ],
+          [
+            0.535,
+            0.633
+          ],
+          [
+            0.546,
+            0.636
+          ],
+          [
+            0.556,
+            0.643
+          ],
+          [
+            0.563,
+            0.655
+          ]
+        ]
       }
     ],
     "credit": "Wu WT et al. Diagnostics 2022, Figure 7. CC BY 4.0. Cropped to the ultrasound image; labels and arrowhead on the image are the authors'."
@@ -619,7 +2320,45 @@
         "elementId": null,
         "kind": "muscle",
         "x": 0.275,
-        "y": 0.35
+        "y": 0.35,
+        "shape": [
+          [
+            0,
+            0.26
+          ],
+          [
+            0.3,
+            0.27
+          ],
+          [
+            0.55,
+            0.3
+          ],
+          [
+            0.7,
+            0.33
+          ],
+          [
+            0.75,
+            0.36
+          ],
+          [
+            0.6,
+            0.38
+          ],
+          [
+            0.4,
+            0.4
+          ],
+          [
+            0.2,
+            0.4
+          ],
+          [
+            0,
+            0.38
+          ]
+        ]
       },
       {
         "text": "Supraorbital foramen",
@@ -628,16 +2367,124 @@
         "x": 0.63,
         "y": 0.72,
         "tx": 0.45,
-        "ty": 0.85
+        "ty": 0.85,
+        "shape": [
+          [
+            0.4,
+            0.53
+          ],
+          [
+            0.78,
+            0.52
+          ],
+          [
+            0.75,
+            0.6
+          ],
+          [
+            0.72,
+            0.69
+          ],
+          [
+            0.66,
+            0.745
+          ],
+          [
+            0.58,
+            0.755
+          ],
+          [
+            0.52,
+            0.71
+          ],
+          [
+            0.46,
+            0.62
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Frontal bone",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.2,
+        "y": 0.49,
+        "tx": 0.15,
+        "ty": 0.6,
+        "line": [
+          [
+            0,
+            0.47
+          ],
+          [
+            0.2,
+            0.49
+          ],
+          [
+            0.36,
+            0.52
+          ],
+          [
+            0.42,
+            0.56
+          ],
+          [
+            0.48,
+            0.64
+          ],
+          [
+            0.54,
+            0.73
+          ],
+          [
+            0.6,
+            0.76
+          ],
+          [
+            0.68,
+            0.74
+          ],
+          [
+            0.72,
+            0.68
+          ],
+          [
+            0.75,
+            0.58
+          ],
+          [
+            0.78,
+            0.52
+          ],
+          [
+            0.85,
+            0.49
+          ],
+          [
+            1,
+            0.45
+          ]
+        ]
       },
       {
         "text": "Needle path",
         "elementId": null,
-        "kind": "point",
+        "kind": "needle",
         "x": 0.765,
         "y": 0.51,
         "tx": 0.86,
-        "ty": 0.66
+        "ty": 0.66,
+        "line": [
+          [
+            1.0,
+            0.37
+          ],
+          [
+            0.765,
+            0.51
+          ]
+        ]
       }
     ],
     "credit": "Lin TY et al. Life 2025, Figure 1 panel B. CC BY 4.0. Cropped to the ultrasound panel without the photo inset; labels and arrow on the image are the authors'."
@@ -672,30 +2519,107 @@
         "elementId": null,
         "kind": "muscle",
         "x": 0.28,
-        "y": 0.46
+        "y": 0.46,
+        "shape": [
+          [
+            0.05,
+            0.5
+          ],
+          [
+            0.2,
+            0.43
+          ],
+          [
+            0.4,
+            0.42
+          ],
+          [
+            0.55,
+            0.45
+          ],
+          [
+            0.6,
+            0.5
+          ],
+          [
+            0.55,
+            0.54
+          ],
+          [
+            0.4,
+            0.53
+          ],
+          [
+            0.25,
+            0.51
+          ],
+          [
+            0.1,
+            0.55
+          ]
+        ]
       },
       {
         "text": "Levator labii superioris",
         "elementId": null,
         "kind": "muscle",
         "x": 0.73,
-        "y": 0.35
+        "y": 0.35,
+        "shape": [
+          [
+            0.55,
+            0.32
+          ],
+          [
+            1.0,
+            0.3
+          ],
+          [
+            1.0,
+            0.48
+          ],
+          [
+            0.85,
+            0.47
+          ],
+          [
+            0.7,
+            0.45
+          ],
+          [
+            0.58,
+            0.42
+          ]
+        ]
       },
       {
         "text": "Orbicularis oculi",
         "elementId": null,
         "kind": "muscle",
         "x": 0.87,
-        "y": 0.2
-      },
-      {
-        "text": "Infraorbital nerve",
-        "elementId": null,
-        "kind": "nerve",
-        "x": 0.775,
-        "y": 0.5,
-        "tx": 0.88,
-        "ty": 0.44
+        "y": 0.2,
+        "shape": [
+          [
+            0.6,
+            0.12
+          ],
+          [
+            1.0,
+            0.1
+          ],
+          [
+            1.0,
+            0.28
+          ],
+          [
+            0.8,
+            0.3
+          ],
+          [
+            0.62,
+            0.26
+          ]
+        ]
       },
       {
         "text": "Infraorbital foramen",
@@ -704,7 +2628,168 @@
         "x": 0.74,
         "y": 0.56,
         "tx": 0.5,
-        "ty": 0.7
+        "ty": 0.7,
+        "shape": [
+          [
+            0.68,
+            0.53
+          ],
+          [
+            0.74,
+            0.5
+          ],
+          [
+            0.8,
+            0.51
+          ],
+          [
+            0.85,
+            0.56
+          ],
+          [
+            0.85,
+            0.6
+          ],
+          [
+            0.75,
+            0.615
+          ],
+          [
+            0.67,
+            0.6
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Maxilla",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.3,
+        "y": 0.52,
+        "tx": 0.25,
+        "ty": 0.62,
+        "line": [
+          [
+            0.04,
+            0.575
+          ],
+          [
+            0.15,
+            0.545
+          ],
+          [
+            0.25,
+            0.52
+          ],
+          [
+            0.35,
+            0.52
+          ],
+          [
+            0.45,
+            0.535
+          ],
+          [
+            0.55,
+            0.55
+          ],
+          [
+            0.62,
+            0.55
+          ],
+          [
+            0.67,
+            0.6
+          ],
+          [
+            0.75,
+            0.615
+          ],
+          [
+            0.85,
+            0.6
+          ],
+          [
+            0.95,
+            0.6
+          ]
+        ]
+      },
+      {
+        "text": "Infraorbital nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.775,
+        "y": 0.5,
+        "tx": 0.88,
+        "ty": 0.44,
+        "shape": [
+          [
+            0.805,
+            0.535
+          ],
+          [
+            0.803,
+            0.55
+          ],
+          [
+            0.796,
+            0.563
+          ],
+          [
+            0.786,
+            0.572
+          ],
+          [
+            0.775,
+            0.575
+          ],
+          [
+            0.764,
+            0.572
+          ],
+          [
+            0.754,
+            0.563
+          ],
+          [
+            0.747,
+            0.55
+          ],
+          [
+            0.745,
+            0.535
+          ],
+          [
+            0.747,
+            0.52
+          ],
+          [
+            0.754,
+            0.507
+          ],
+          [
+            0.764,
+            0.498
+          ],
+          [
+            0.775,
+            0.495
+          ],
+          [
+            0.786,
+            0.498
+          ],
+          [
+            0.796,
+            0.507
+          ],
+          [
+            0.803,
+            0.52
+          ]
+        ]
       }
     ],
     "credit": "Wu WT et al. Diagnostics 2022, Figure 13. CC BY 4.0. Cropped to the ultrasound image; labels and arrowhead on the image are the authors'."
@@ -736,7 +2821,37 @@
         "elementId": null,
         "kind": "muscle",
         "x": 0.8,
-        "y": 0.53
+        "y": 0.53,
+        "shape": [
+          [
+            0.45,
+            0.52
+          ],
+          [
+            0.65,
+            0.5
+          ],
+          [
+            1.0,
+            0.48
+          ],
+          [
+            1.0,
+            0.6
+          ],
+          [
+            0.85,
+            0.64
+          ],
+          [
+            0.7,
+            0.66
+          ],
+          [
+            0.55,
+            0.62
+          ]
+        ]
       },
       {
         "text": "Infraorbital foramen",
@@ -745,16 +2860,112 @@
         "x": 0.67,
         "y": 0.72,
         "tx": 0.45,
-        "ty": 0.82
+        "ty": 0.82,
+        "shape": [
+          [
+            0.6,
+            0.7
+          ],
+          [
+            0.65,
+            0.69
+          ],
+          [
+            0.72,
+            0.7
+          ],
+          [
+            0.76,
+            0.72
+          ],
+          [
+            0.73,
+            0.76
+          ],
+          [
+            0.68,
+            0.78
+          ],
+          [
+            0.63,
+            0.75
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Maxilla",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.3,
+        "y": 0.67,
+        "tx": 0.25,
+        "ty": 0.78,
+        "line": [
+          [
+            0,
+            0.64
+          ],
+          [
+            0.2,
+            0.66
+          ],
+          [
+            0.4,
+            0.675
+          ],
+          [
+            0.55,
+            0.69
+          ],
+          [
+            0.6,
+            0.72
+          ],
+          [
+            0.65,
+            0.78
+          ],
+          [
+            0.7,
+            0.79
+          ],
+          [
+            0.73,
+            0.77
+          ],
+          [
+            0.76,
+            0.72
+          ],
+          [
+            0.8,
+            0.69
+          ],
+          [
+            1,
+            0.67
+          ]
+        ]
       },
       {
         "text": "Needle path",
         "elementId": null,
-        "kind": "point",
+        "kind": "needle",
         "x": 0.81,
         "y": 0.67,
         "tx": 0.9,
-        "ty": 0.8
+        "ty": 0.8,
+        "line": [
+          [
+            1.0,
+            0.57
+          ],
+          [
+            0.81,
+            0.67
+          ]
+        ]
       }
     ],
     "credit": "Lin TY et al. Life 2025, Figure 1 panel C. CC BY 4.0. Cropped to the ultrasound panel without the photo inset; labels and arrow on the image are the authors'."
@@ -789,7 +3000,33 @@
         "elementId": null,
         "kind": "muscle",
         "x": 0.15,
-        "y": 0.37
+        "y": 0.37,
+        "shape": [
+          [
+            0,
+            0.3
+          ],
+          [
+            0.25,
+            0.33
+          ],
+          [
+            0.3,
+            0.38
+          ],
+          [
+            0.3,
+            0.45
+          ],
+          [
+            0.15,
+            0.435
+          ],
+          [
+            0,
+            0.415
+          ]
+        ]
       },
       {
         "text": "Depressor labii inferioris",
@@ -798,23 +3035,66 @@
         "x": 0.47,
         "y": 0.34,
         "tx": 0.4,
-        "ty": 0.2
+        "ty": 0.2,
+        "shape": [
+          [
+            0.3,
+            0.36
+          ],
+          [
+            0.45,
+            0.37
+          ],
+          [
+            0.6,
+            0.39
+          ],
+          [
+            0.68,
+            0.42
+          ],
+          [
+            0.6,
+            0.45
+          ],
+          [
+            0.45,
+            0.45
+          ],
+          [
+            0.32,
+            0.44
+          ]
+        ]
       },
       {
         "text": "Depressor anguli oris",
         "elementId": null,
         "kind": "muscle",
         "x": 0.8,
-        "y": 0.3
-      },
-      {
-        "text": "Mental nerve",
-        "elementId": null,
-        "kind": "nerve",
-        "x": 0.57,
-        "y": 0.46,
-        "tx": 0.72,
-        "ty": 0.52
+        "y": 0.3,
+        "shape": [
+          [
+            0.62,
+            0.24
+          ],
+          [
+            1.0,
+            0.24
+          ],
+          [
+            1.0,
+            0.45
+          ],
+          [
+            0.8,
+            0.42
+          ],
+          [
+            0.66,
+            0.38
+          ]
+        ]
       },
       {
         "text": "Mental foramen",
@@ -823,7 +3103,156 @@
         "x": 0.56,
         "y": 0.5,
         "tx": 0.38,
-        "ty": 0.75
+        "ty": 0.75,
+        "shape": [
+          [
+            0.36,
+            0.485
+          ],
+          [
+            0.45,
+            0.47
+          ],
+          [
+            0.6,
+            0.46
+          ],
+          [
+            0.7,
+            0.47
+          ],
+          [
+            0.66,
+            0.52
+          ],
+          [
+            0.55,
+            0.53
+          ],
+          [
+            0.44,
+            0.53
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Mandible",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.15,
+        "y": 0.44,
+        "tx": 0.12,
+        "ty": 0.55,
+        "line": [
+          [
+            0,
+            0.42
+          ],
+          [
+            0.15,
+            0.44
+          ],
+          [
+            0.3,
+            0.465
+          ],
+          [
+            0.38,
+            0.5
+          ],
+          [
+            0.45,
+            0.53
+          ],
+          [
+            0.6,
+            0.535
+          ],
+          [
+            0.8,
+            0.54
+          ],
+          [
+            1.0,
+            0.59
+          ]
+        ]
+      },
+      {
+        "text": "Mental nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.57,
+        "y": 0.46,
+        "tx": 0.72,
+        "ty": 0.52,
+        "shape": [
+          [
+            0.605,
+            0.48
+          ],
+          [
+            0.602,
+            0.49
+          ],
+          [
+            0.595,
+            0.498
+          ],
+          [
+            0.583,
+            0.503
+          ],
+          [
+            0.57,
+            0.505
+          ],
+          [
+            0.557,
+            0.503
+          ],
+          [
+            0.545,
+            0.498
+          ],
+          [
+            0.538,
+            0.49
+          ],
+          [
+            0.535,
+            0.48
+          ],
+          [
+            0.538,
+            0.47
+          ],
+          [
+            0.545,
+            0.462
+          ],
+          [
+            0.557,
+            0.457
+          ],
+          [
+            0.57,
+            0.455
+          ],
+          [
+            0.583,
+            0.457
+          ],
+          [
+            0.595,
+            0.462
+          ],
+          [
+            0.602,
+            0.47
+          ]
+        ]
       }
     ],
     "credit": "Wu WT et al. Diagnostics 2022, Figure 20. CC BY 4.0. Cropped to the ultrasound image; labels and arrowhead on the image are the authors'."
@@ -857,7 +3286,41 @@
         "x": 0.3,
         "y": 0.52,
         "tx": 0.2,
-        "ty": 0.62
+        "ty": 0.62,
+        "line": [
+          [
+            0,
+            0.525
+          ],
+          [
+            0.1,
+            0.515
+          ],
+          [
+            0.2,
+            0.505
+          ],
+          [
+            0.3,
+            0.515
+          ],
+          [
+            0.4,
+            0.54
+          ],
+          [
+            0.5,
+            0.575
+          ],
+          [
+            0.6,
+            0.615
+          ],
+          [
+            0.63,
+            0.63
+          ]
+        ]
       },
       {
         "text": "Mental foramen",
@@ -866,16 +3329,57 @@
         "x": 0.65,
         "y": 0.68,
         "tx": 0.48,
-        "ty": 0.82
+        "ty": 0.82,
+        "shape": [
+          [
+            0.6,
+            0.62
+          ],
+          [
+            0.66,
+            0.64
+          ],
+          [
+            0.72,
+            0.68
+          ],
+          [
+            0.72,
+            0.74
+          ],
+          [
+            0.68,
+            0.76
+          ],
+          [
+            0.64,
+            0.72
+          ],
+          [
+            0.6,
+            0.66
+          ]
+        ],
+        "block": true
       },
       {
         "text": "Needle path",
         "elementId": null,
-        "kind": "point",
+        "kind": "needle",
         "x": 0.79,
         "y": 0.71,
         "tx": 0.88,
-        "ty": 0.86
+        "ty": 0.86,
+        "line": [
+          [
+            1.0,
+            0.6
+          ],
+          [
+            0.805,
+            0.72
+          ]
+        ]
       }
     ],
     "credit": "Lin TY et al. Life 2025, Figure 1 panel D. CC BY 4.0. Cropped to the ultrasound panel without the photo inset; the label and arrow on the image are the authors'."

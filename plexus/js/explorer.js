@@ -1,9 +1,9 @@
-// Cervical, lumbar and sacral plexus explorer: 3D anatomy + linked plexus diagram + details, for one plexus at a time.
+// Plexus explorer (cervical, brachial, lumbar and sacral): 3D anatomy + linked plexus diagram + details, one plexus at a time.
 // Used by this app's own page (plexus/index.html via app.js) and by the regional block pages ("Anatomy in 3D" card).
 //
 //   mountExplorer(host, opts) -> controller (synchronous; controller.ready resolves once the first plexus has loaded)
 //
-//   opts.plexus     'cervical' | 'lumbar' | 'sacral' (default cervical)
+//   opts.plexus     'cervical' | 'brachial' | 'lumbar' | 'sacral' (default cervical)
 //   opts.block      block id within that plexus (optional)
 //   opts.el         element id to select (optional)
 //   opts.tabsHost   element to render the plexus tabs into (default: a toolbar at the top of the explorer)
@@ -23,11 +23,12 @@
 
 import { createBus } from './bus.js?v=20261015';
 import { STATUS_ORDER } from '../../shared/regional/js/status.js?v=20261015';
-import { countHidden, onLevel, setLevel, getLevel, LEVELS } from '../../shared/regional/js/levels.js?v=20261015';
+import { countHidden, onLevel, setLevel, getLevel, relaxFor, tierMax, LEVELS } from '../../shared/regional/js/levels.js?v=20261015';
 
-const V = '20261015';
+const V = '20261015d';
 export const PLEXUSES = [
   { id: 'cervical', tab: 'Cervical', name: 'Cervical plexus' },
+  { id: 'brachial', tab: 'Brachial', name: 'Brachial plexus' },
   { id: 'lumbar', tab: 'Lumbar', name: 'Lumbar plexus' },
   { id: 'sacral', tab: 'Sacral', name: 'Sacral plexus' },
 ];
@@ -37,10 +38,10 @@ export const validPlexusId = (id) => PLEXUSES.some((p) => p.id === id);
 const STATUS_LABEL = { target: 'Target', covers: 'Covers', variable: 'Variable', spares: 'Spares' };
 const STATUS_TEXT = { target: 'Target of the injection', covers: 'Reliably blocked', variable: 'Sometimes blocked', spares: 'Usually spared' };
 const KIND_LABEL = {
-  root: 'Root (anterior ramus)', trunk: 'Trunk', division: 'Division', branch: 'Branch',
+  root: 'Root (anterior ramus)', trunk: 'Trunk', division: 'Division', cord: 'Cord', branch: 'Branch',
   terminal: 'Terminal nerve', related: 'Related nerve, not part of this plexus',
 };
-const GROUP_TITLE = { root: 'Roots (anterior rami)', trunk: 'Trunks', division: 'Divisions', branch: 'Branches', terminal: 'Terminal nerves', related: 'Related nerves (not part of this plexus)', other: 'Other' };
+const GROUP_TITLE = { root: 'Roots (anterior rami)', trunk: 'Trunks', division: 'Divisions', cord: 'Cords', branch: 'Branches', terminal: 'Terminal nerves', related: 'Related nerves (not part of this plexus)', other: 'Other' };
 const FALLBACK_LEVEL_COLOURS = ['#1f6f8b', '#8c4f9f', '#2f7d32', '#b45309', '#a3123a', '#4b5563', '#0f766e', '#7c2d12', '#334155'];
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -287,7 +288,18 @@ export function mountExplorer(host, opts = {}) {
     hint.hidden = k === 0;
     if (k) hint.querySelector('span').textContent = `${k} ${k === 1 ? 'item' : 'items'} hidden at ${LEVELS[getLevel()].name} level`;
   };
-  const offLevel = onLevel(paintHint);
+  // Advanced blocks (brachial) are Consultant level, as in the brachial plexus app. Reaching one from outside the chips
+  // (a link, search, a "Blocks that reach it" chip) shows it for this view only; choosing a lower level afterwards
+  // falls back to the core block it is a variant of (relatedTo), as the brachial app does.
+  const relaxForBlock = (bid) => {
+    if (current && bid && current.data.blocks[bid]?.advanced) relaxFor(chipsHost.querySelector(`[data-block="${CSS.escape(bid)}"]`));
+  };
+  const offLevel = onLevel(() => {
+    const blk = current?.bus.state.block;
+    const b = blk && current.data.blocks[blk];
+    if (b?.advanced && tierMax() < 3) current.bus.emit('block', { id: b.relatedTo && current.data.blocks[b.relatedTo] ? b.relatedTo : null, source: 'level' });
+    paintHint();
+  });
 
   function snapshot() {
     if (!current) return { plexus: null, block: null, el: null };
@@ -332,6 +344,8 @@ export function mountExplorer(host, opts = {}) {
       b.dataset.block = id || '';
       b.innerHTML = `<span class="chip-main">${esc(label)}</span>`;
       if (id) b.title = data.blocks[id].name || label;
+      // Advanced variants (brachial plexus) are Consultant level, as in the brachial plexus app.
+      if (id && data.blocks[id].advanced) b.dataset.tier = '3';
       b.setAttribute('aria-pressed', String((bus.state.block || null) === (id || null)));
       b.addEventListener('click', () => { bus.emit('block', { id: id || null, source: 'chips' }); opts.onBlockPick?.(id || null); });
       return b;
@@ -343,6 +357,14 @@ export function mountExplorer(host, opts = {}) {
   function syncChips() {
     const blk = current?.bus.state.block || '';
     chipsHost.querySelectorAll('.app-chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.block === blk)));
+    // Phones: the chips are one sideways-scrolling row; bring the chosen one into view (row only, never the page).
+    const on = blk && chipsHost.querySelector(`.app-chip[data-block="${CSS.escape(blk)}"]`);
+    if (on && chipsHost.scrollWidth > chipsHost.clientWidth + 1) {
+      requestAnimationFrame(() => {
+        const r = chipsHost.getBoundingClientRect(); const c = on.getBoundingClientRect();
+        if (c.left < r.left || c.right > r.right) chipsHost.scrollLeft += c.left - r.left - (r.width - c.width) / 2;
+      });
+    }
   }
 
   function renderLegend() {
@@ -354,13 +376,13 @@ export function mountExplorer(host, opts = {}) {
   }
 
   // ---------------------------------------------------------------- info panel
-  function elChip(id, st) {
+  function elChip(id, st, side = false) {
     const { data } = current;
     const e = data.elements[id];
     if (!e) return `<span class="px-chip is-text">${esc(id)}</span>`;
     const cls = st ? ` st-${st}` : '';
     const pressed = current.bus.state.selected === id;
-    return `<button type="button" class="px-chip${cls}" data-select="${esc(id)}" aria-pressed="${pressed}">${esc(e.name || id)}</button>`;
+    return `<button type="button" class="px-chip${cls}" data-select="${esc(id)}" aria-pressed="${pressed}">${esc(e.name || id)}${side ? '<span class="px-chip-sub">side effect</span>' : ''}</button>`;
   }
   function levelBadges(roots) {
     return roots.map((r) => {
@@ -376,7 +398,7 @@ export function mountExplorer(host, opts = {}) {
     const lists = STATUS_ORDER.filter((k) => b[k].length).map((k) => `
       <div class="px-list">
         <h4>${statusSwatch(k)}${esc(STATUS_LABEL[k])}</h4>
-        <div class="px-chips">${b[k].map((id) => elChip(id, k)).join('')}</div>
+        <div class="px-chips">${b[k].map((id) => elChip(id, k, (b.sideEffects || []).includes(id))).join('')}</div>
       </div>`).join('');
     // Tier 1 (MO): the block, its summary (which carries the safety points) and what it reaches. Tier 2: the technique note.
     return `
@@ -386,6 +408,7 @@ export function mountExplorer(host, opts = {}) {
         ${b.summary ? `<p>${esc(b.summary)}</p>` : ''}
         ${b.landmarks ? `<div class="px-tiered" data-tier="2">${BADGE(2)}<p><strong>Target:</strong> ${esc(b.landmarks)}</p></div>` : ''}
         ${lists ? `<div class="px-lists">${lists}</div>` : ''}
+        ${b.more?.href ? `<p class="px-more"><a href="${esc(new URL(b.more.href, current.ctx.baseUrl).href)}">${esc(b.more.text || 'More about this block')} <span aria-hidden="true">→</span></a></p>` : ''}
       </article>`;
   }
 
@@ -394,11 +417,13 @@ export function mountExplorer(host, opts = {}) {
     const e = data.elements[id];
     if (!e) return '';
     const source = nerves?.elements?.[id]?.source;
-    const in3d = !!nerves?.elements?.[id];
+    const meshes = data.model?.meshes;
+    const in3d = meshes ? Object.values(meshes).includes(id) : !!nerves?.elements?.[id];
     const reach = data.blockOrder.map((bid) => [bid, ctx.status(bid, id)]).filter(([, st]) => st && st !== 'spares');
     const spared = data.blockOrder.filter((bid) => ctx.status(bid, id) === 'spares');
     const parents = e.parents.map((p) => elChip(p)).join('');
     const kids = data.order.filter((x) => data.elements[x].parents.includes(id)).map((c) => elChip(c)).join('');
+    const sparedLine = (ids, attr, lead) => (ids.length ? `<p class="px-muted"${attr}>${esc(lead || 'Usually spared by')}: ${ids.map((bid) => esc(data.blocks[bid].short || data.blocks[bid].name || bid)).join(', ')}.</p>` : '');
     const row = (label, val) => (val ? `<div><dt>${esc(label)}</dt><dd>${val}</dd></div>` : '');
     return `
       <article class="px-card px-el-card">
@@ -413,8 +438,9 @@ export function mountExplorer(host, opts = {}) {
         </dl>
         <div class="px-reach">
           <h4>Blocks that reach it</h4>
-          ${reach.length ? `<div class="px-chips">${reach.map(([bid, st]) => `<button type="button" class="px-chip st-${st}" data-block="${esc(bid)}" aria-pressed="${current.bus.state.block === bid}">${esc(data.blocks[bid].short || data.blocks[bid].name || bid)}<span class="px-chip-sub">${esc(STATUS_LABEL[st].toLowerCase())}</span></button>`).join('')}</div>` : '<p class="px-muted">None of the blocks listed here.</p>'}
-          ${spared.length ? `<p class="px-muted">Usually spared by: ${spared.map((bid) => esc(data.blocks[bid].short || data.blocks[bid].name || bid)).join(', ')}.</p>` : ''}
+          ${reach.length ? `<div class="px-chips">${reach.map(([bid, st]) => `<button type="button" class="px-chip st-${st}"${data.blocks[bid].advanced ? ' data-tier="3"' : ''} data-block="${esc(bid)}" aria-pressed="${current.bus.state.block === bid}">${esc(data.blocks[bid].short || data.blocks[bid].name || bid)}<span class="px-chip-sub">${esc(STATUS_LABEL[st].toLowerCase())}${(data.blocks[bid].sideEffects || []).includes(id) ? ' (side effect)' : ''}</span></button>`).join('')}</div>` : '<p class="px-muted">None of the blocks listed here.</p>'}
+          ${sparedLine(spared.filter((bid) => !data.blocks[bid].advanced), '')}
+          ${sparedLine(spared.filter((bid) => data.blocks[bid].advanced), ' data-tier="3"', spared.some((bid) => !data.blocks[bid].advanced) ? 'Also usually spared by' : '')}
         </div>
         ${e.notes ? `<div class="px-tiered" data-tier="2">${BADGE(2)}<p>${esc(e.notes)}</p></div>` : ''}
         ${source === 'reconstructed' ? '<p class="px-note">Path drawn for teaching; not in Z-Anatomy.</p>' : ''}
@@ -427,7 +453,7 @@ export function mountExplorer(host, opts = {}) {
     const { data } = current;
     const groups = {};
     for (const id of data.order) { const k = data.elements[id].kind || 'other'; (groups[k] ||= []).push(id); }
-    const kinds = ['root', 'trunk', 'division', 'branch', 'terminal', 'related', 'other'].filter((k) => groups[k]);
+    const kinds = ['root', 'trunk', 'division', 'cord', 'branch', 'terminal', 'related', 'other'].filter((k) => groups[k]);
     return `
       <article class="px-card px-overview">
         <p class="px-kicker">${esc(data.name)}</p>
@@ -542,9 +568,12 @@ export function mountExplorer(host, opts = {}) {
     }
 
     bus.on('select', () => { renderInfo(); changed(); });
-    bus.on('block', () => { syncChips(); renderLegend(); renderInfo(); changed(); });
+    bus.on('block', (p) => { if (p?.source !== 'level') relaxForBlock(bus.state.block); syncChips(); renderLegend(); renderInfo(); changed(); });
 
-    if (want.block && data.blocks[want.block]) bus.emit('block', { id: want.block, source: 'url', instant: true });
+    if (want.block && data.blocks[want.block]) {
+      // A link to an advanced block shows it at any level, for this view only (the saved level is unchanged).
+      bus.emit('block', { id: want.block, source: 'url', instant: true });
+    }
     if (want.el && data.elements[want.el]) bus.emit('select', { id: want.el, source: 'url', instant: true });
     renderInfo();
     changed();

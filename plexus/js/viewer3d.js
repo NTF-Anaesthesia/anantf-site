@@ -6,6 +6,10 @@
 // Coordinate frame: data files use Z-Anatomy world coordinates (metres, Z up,
 // -Y anterior, +X patient's left). The GLBs were exported Y-up, so a world point
 // [x, y, z] is new THREE.Vector3(x, z, -y) here.
+//
+// Brachial plexus (data.model.frame === 'gltf'): the nerves are named meshes in a second GLB (data.model.nerveGlb,
+// mesh name -> element id in data.model.meshes) instead of polylines, and points in the data are in the GLB's own
+// Y-up frame. data.model.mirrorX shows that left-sided model as a right side (x -> -x), as the brachial app does.
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
@@ -55,6 +59,10 @@ export function mountViewer(container, ctx) {
   const nerveEls = (ctx.nerves && ctx.nerves.elements) || {};
   const elements = data.elements || {};
   const views = data.views || {};
+  const gltfFrame = data.model?.frame === 'gltf';
+  const mirror = gltfFrame && !!data.model?.mirrorX;
+  // Data point -> three.js point.
+  const toV = gltfFrame ? (p) => new THREE.Vector3(mirror ? -p[0] : p[0], p[1], p[2]) : w2t;
 
   // ---------------------------------------------------------------- DOM
   const root = h('div', 'px-v3');
@@ -112,7 +120,7 @@ export function mountViewer(container, ctx) {
   canvasHost.appendChild(canvas);
   canvas.setAttribute('tabindex', '0');
   canvas.setAttribute('role', 'img');
-  canvas.setAttribute('aria-label', `3D model of the right ${String(data.name || 'plexus').toLowerCase()} with surrounding bones, muscles and vessels. Use the arrow keys to pan; use the diagram or the list below to select nerves.`);
+  canvas.setAttribute('aria-label', `3D model of the right ${String(data.name || 'plexus').toLowerCase()} with surrounding ${data.model?.context || 'bones, muscles and vessels'}. Use the arrow keys to pan; use the diagram or the list below to select nerves.`);
 
   const labelRenderer = new CSS2DRenderer({ element: labelHost });
   const scene = new THREE.Scene();
@@ -141,6 +149,7 @@ export function mountViewer(container, ctx) {
   // ---------------------------------------------------------------- nerves
   const nerveRoot = new THREE.Group();
   nerveRoot.name = 'nerves';
+  if (mirror) nerveRoot.scale.x = -1;
   scene.add(nerveRoot);
   const labelObjs = [];
   const objs = new Map(); // id -> { group, mat, base, mid }
@@ -238,6 +247,13 @@ export function mountViewer(container, ctx) {
     if (o.halo) return o.halo;
     const g = new THREE.Group();
     for (const { curve, segs } of o.curves) g.add(new THREE.Mesh(track(new THREE.TubeGeometry(curve, Math.max(6, segs >> 1), o.r * 1.9, 10, false)), haloMat));
+    // Mesh nerves (brachial): the same surface pushed out along its normals.
+    for (const m of o.meshes || []) {
+      const geo = track(m.geometry.clone());
+      const pos = geo.attributes.position; const nor = geo.attributes.normal;
+      if (pos && nor) for (let i = 0; i < pos.count; i++) pos.setXYZ(i, pos.getX(i) + nor.getX(i) * 0.0016, pos.getY(i) + nor.getY(i) * 0.0016, pos.getZ(i) + nor.getZ(i) * 0.0016);
+      g.add(new THREE.Mesh(geo, haloMat));
+    }
     g.renderOrder = 1;
     o.group.add(g);
     o.halo = g;
@@ -296,7 +312,7 @@ export function mountViewer(container, ctx) {
     const dist = Math.min(controls.maxDistance * 0.95, Math.max(fitH, fitW) * 1.05);
     flyTo(new THREE.Vector3(c.x, c.y, c.z + dist), c, instant);
   }
-  function flyToView(v, instant) { flyTo(w2t(v.position), w2t(v.target), instant); }
+  function flyToView(v, instant) { flyTo(toV(v.position), toV(v.target), instant); }
   function setView(k, instant) {
     if (validView(views[k])) flyToView(views[k], instant);
     else fitToBox(instant);
@@ -340,6 +356,9 @@ export function mountViewer(container, ctx) {
     raf = 0;
     if (destroyed) return;
     const a = stepAnim(now);
+    // three r160 clamps the target round the cursor each update; with the cursor at the origin some targets flip in
+    // the last bit every frame, so the camera never "settles". Measuring from the target itself keeps it exact.
+    controls.cursor.copy(controls.target);
     const moved = controls.update();
     if (width > 0 && height > 0) {
       renderer.render(scene, camera);
@@ -437,7 +456,7 @@ export function mountViewer(container, ctx) {
     }
     // Block marker.
     const b = block && data.blocks?.[block];
-    if (b && isPt(b.marker)) { marker.position.copy(w2t(b.marker)); marker.visible = true; } else marker.visible = false;
+    if (b && isPt(b.marker)) { marker.position.copy(toV(b.marker)); marker.visible = true; } else marker.visible = false;
     updateLabels();
     requestRender();
   }
@@ -466,6 +485,9 @@ export function mountViewer(container, ctx) {
     raycaster.setFromCamera(ndc, camera);
     const hits = raycaster.intersectObjects(pickables.filter((p) => p.parent?.visible !== false), false);
     if (!hits.length) return null;
+    // Real nerve meshes (brachial): the brachial nerves lie a few millimetres apart, so take the front-most surface hit,
+    // as the brachial app does. The tolerance below is only for the thick pick proxies around drawn tubes.
+    if (data.model?.nerveGlb) return hits[0].object.userData.id || null;
     // Near-equal hits (within 1.5 cm of the nearest): prefer one in the selected nerve's lineage, then the thinnest.
     const near = hits.filter((x) => x.distance <= hits[0].distance + 0.015 && x.object.userData.id);
     const sel = bus.state.selected;
@@ -568,9 +590,13 @@ export function mountViewer(container, ctx) {
       const want = `exp_${data.id}`;
       const sc = (gltf.scenes || []).find((x) => x.name === want) || gltf.scene || gltf.scenes?.[0];
       if (!sc) { status.textContent = 'The 3D context model is empty.'; return; }
+      const cats = data.model?.cats || {};
+      const skip = [];
       sc.traverse((o) => {
         if (!o.isMesh) return;
-        const cat = extra(o, 'cat') || 'bone';
+        const named = cats[o.name] ?? cats[String(o.name).replace(/_/g, ' ')];
+        if (named === 'skip') { skip.push(o); return; }
+        const cat = extra(o, 'cat') || named || 'bone';
         const hidden = Number(extra(o, 'hidden')) === 1;
         if (o.geometry && !o.geometry.attributes.normal) o.geometry.computeVertexNormals();
         o.material = matFor(cat);
@@ -579,10 +605,14 @@ export function mountViewer(container, ctx) {
         layerMeshes[layer].push(o);
         if (o.geometry) disposables.push(o.geometry);
       });
+      skip.forEach((o) => { o.geometry?.dispose(); o.removeFromParent(); });
       modelRoot = sc;
-      scene.add(sc);
-      bbox.setFromObject(sc);
+      if (mirror) { modelRoot = new THREE.Group(); modelRoot.scale.x = -1; modelRoot.add(sc); }
+      scene.add(modelRoot);
+      bbox.setFromObject(modelRoot);
       bbox.union(new THREE.Box3().setFromObject(nerveRoot));
+      // Hide layer toggles this model has nothing for (the brachial model has no muscles).
+      for (const k of ['muscles', 'covering', 'vessels']) if (!layerMeshes[k].length && layerBtns[k]) layerBtns[k].hidden = true;
       // Dispose the other scenes the file carries, without adding them.
       (gltf.scenes || []).forEach((x) => {
         if (x === sc) return;
@@ -600,9 +630,81 @@ export function mountViewer(container, ctx) {
   } else {
     status.hidden = true;
   }
-  if (!objs.size) {
+  if (!objs.size && !data.model?.nerveGlb) {
     status.hidden = false;
     status.textContent = glbPath ? 'Loading 3D model… (nerve paths for this plexus are not available yet)' : 'Nerve paths for this plexus are not available yet.';
+  }
+
+  // ---------------------------------------------------------------- nerves as named meshes (brachial)
+  if (data.model?.nerveGlb) {
+    const map = data.model.meshes || {};
+    loader.load(new URL(data.model.nerveGlb, ctx.baseUrl || document.baseURI).href, (gltf) => {
+      if (destroyed) return;
+      const sc = gltf.scene || gltf.scenes?.[0];
+      if (!sc) return;
+      sc.updateMatrixWorld(true);
+      const relatedMat = track(new THREE.MeshStandardMaterial({ color: RELATED.clone(), roughness: 0.5, metalness: 0.02 }));
+      const meshes = [];
+      sc.traverse((m) => { if (m.isMesh) meshes.push(m); });
+      for (const m of meshes) {
+        const key = String(m.name).replace(/_/g, ' ');
+        const id = Object.prototype.hasOwnProperty.call(map, key) ? map[key] : map[m.name];
+        if (m.geometry && !m.geometry.attributes.normal) m.geometry.computeVertexNormals();
+        if (m.geometry) disposables.push(m.geometry);
+        m.geometry?.applyMatrix4(m.matrixWorld);
+        m.position.set(0, 0, 0); m.quaternion.identity(); m.scale.set(1, 1, 1);
+        m.removeFromParent();
+        if (!id || !elements[id]) { m.material = relatedMat; nerveRoot.add(m); continue; }
+        let o = objs.get(id);
+        if (!o) {
+          const base = elements[id].kind === 'related' ? RELATED : NERVE;
+          const mat = track(new THREE.MeshStandardMaterial({ color: base.clone(), roughness: 0.42, metalness: 0.05, emissive: 0x000000 }));
+          const group = new THREE.Group();
+          group.userData.id = id;
+          nerveRoot.add(group);
+          o = { group, mat, base, mid: null, first: null, curves: [], meshes: [], r: 0.002, halo: null };
+          objs.set(id, o);
+        }
+        m.material = o.mat;
+        m.userData.id = id;
+        m.geometry.computeBoundingBox();
+        const sz = m.geometry.boundingBox.getSize(new THREE.Vector3());
+        m.userData.r = Math.max(0.0008, Math.min(sz.x, sz.y, sz.z) / 2);
+        o.group.add(m);
+        o.meshes.push(m);
+        pickables.push(m);
+      }
+      nerveRoot.updateMatrixWorld(true);
+      for (const [id, o] of objs) {
+        if (!o.meshes) continue;
+        // Mid point: centre of the largest piece. Roots: their medial (spinal) end carries the level label.
+        let best = null; let bestLen = -1;
+        for (const m of o.meshes) { const l = m.geometry.boundingBox.getSize(new THREE.Vector3()).length(); if (l > bestLen) { bestLen = l; best = m; } }
+        o.mid = best.geometry.boundingBox.getCenter(new THREE.Vector3()).applyMatrix4(nerveRoot.matrixWorld);
+        if (elements[id].kind === 'root') {
+          const pos = best.geometry.attributes.position;
+          let minI = 0;
+          for (let i = 1; i < pos.count; i++) if (pos.getX(i) < pos.getX(minI)) minI = i;
+          o.first = new THREE.Vector3().fromBufferAttribute(pos, minI).applyMatrix4(nerveRoot.matrixWorld);
+          const lab = h('div', 'px-v3-labwrap');
+          lab.append(h('span', 'px-v3-label is-root', elements[id].short || elements[id].name || id));
+          const lo = new CSS2DObject(lab);
+          lo.position.copy(o.first);
+          lo.center.set(mirror ? -0.1 : 1.1, 0.5);
+          scene.add(lo);
+          labelObjs.push(lo);
+          o.label = lo;
+        }
+      }
+      if (bbox.isEmpty()) bbox.setFromObject(nerveRoot); else bbox.union(new THREE.Box3().setFromObject(nerveRoot));
+      refresh();
+      if (bus.state.selected && !userMoved) frameOn(bus.state.selected, true);
+    }, undefined, (err) => {
+      if (destroyed) return;
+      console.warn('[viewer3d] nerve model failed to load', err);
+      status.hidden = false;
+      status.textContent = 'The nerves could not be loaded. The diagram still works.';
+    });
   }
 
   let userMoved = false;
