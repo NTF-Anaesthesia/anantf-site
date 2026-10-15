@@ -1,7 +1,7 @@
 // Back: anatomy chapter (paravertebral space, counting levels, A–E label exercise), the landmark paravertebral
 // stepper, and the level table. All figures are original schematic drawings (SVG).
-import { el, sv, fill, keyPoints, callout, table, registerSearch, announce, reducedMotion } from '../../shared/js/ui.js';
-import { OUTLINE } from '../../shared/js/dermatomes.js';
+import { el, sv, fill, keyPoints, callout, table, registerSearch, announce, reducedMotion } from '../../../shared/regional/js/ui.js';
+import { OUTLINE } from '../../../shared/regional/js/dermatomes.js';
 
 const NERVE = '#f2c230', NERVE_EDGE = '#8a6a00', ART = '#c0392b', VEIN = '#2f63b0';
 const BONE = '#ece2cc', BONE_EDGE = '#9c8a64', MUSCLE = '#d49a88', MUSCLE_EDGE = '#a8695a', PLEURA = '#5b6f99', LIG = '#7c6845';

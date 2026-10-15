@@ -1,9 +1,9 @@
-// Knee blocks: block data (schema: ../../../truncal/shared/DATA.md, "Block schema"; leg figures: ../../shared/LEG.md).
+// Knee blocks: block data (schema: ../../../shared/regional/DATA.md, "Block schema"; leg figures: ../../shared/LEG.md).
 // Adductor canal doses are Dr Chew Shi Hao's (the owner's decision). iPACK, genicular and obturator doses are taken
 // from the literature and standard texts; their sources are in the notes file, not on the page. No citations on the page.
-import { mountScan } from '../../../truncal/shared/js/scan.js';
-import { el } from '../../../truncal/shared/js/ui.js';
-import { legCoverageMap } from '../../shared/js/leg.js';
+import { mountScan } from '../../../shared/regional/js/scan.js';
+import { el } from '../../../shared/regional/js/ui.js';
+import { legCoverageMap } from '../../../shared/regional/js/figures/leg.js';
 import { animFigure } from '../../shared/js/anim.js';
 import { SCENES } from './scenes.js';
 

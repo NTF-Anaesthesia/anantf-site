@@ -1,8 +1,8 @@
 // Scalp and occipital: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../../truncal/shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
 // nothing is traced from published images.
-import { E, PS, L } from '../../../truncal/shared/js/scene.js';
-import { headProbeInset } from '../../shared/js/head.js';
+import { E, PS, L } from '../../../shared/regional/js/scene.js';
+import { headProbeInset } from '../../../shared/regional/js/figures/head.js';
 
 export const SCENES = {
   // Right side, at C2: probe along obliquus capitis inferior from the C2 spinous process to the C1 transverse process.

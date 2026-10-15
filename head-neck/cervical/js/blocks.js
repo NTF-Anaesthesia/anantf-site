@@ -1,5 +1,5 @@
-// Cervical plexus: block data (schema: ../../../truncal/shared/DATA.md, "Block schema").
-import { headCoverageMap } from '../../shared/js/head.js';
+// Cervical plexus: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
+import { headCoverageMap } from '../../../shared/regional/js/figures/head.js';
 import { SCENES } from './scenes.js';
 
 export const BLOCKS = [

@@ -1,6 +1,6 @@
-// Hip blocks: block data (schema: ../../../truncal/shared/DATA.md, "Block schema"; leg figures: ../../shared/LEG.md).
+// Hip blocks: block data (schema: ../../../shared/regional/DATA.md, "Block schema"; leg figures: ../../shared/LEG.md).
 // Doses for these four blocks are Dr Chew Shi Hao's (the owner's decision). Text is plain, with no citations.
-import { legCoverageMap } from '../../shared/js/leg.js';
+import { legCoverageMap } from '../../../shared/regional/js/figures/leg.js';
 import { animFigure } from '../../shared/js/anim.js';
 import { SCENES } from './scenes.js';
 

@@ -1,5 +1,5 @@
 /* lower-limb/ landing page: additions to ../truncal/landing.css (four page cards, rapid-fire rules, motor cost list,
-   region headings in the operation chooser, and the leg coverage map from shared/js/leg.js). */
+   region headings in the operation chooser, and the leg coverage map from ../shared/regional/js/figures/leg.js). */
 .ll-cards{grid-template-columns:repeat(4,minmax(0,1fr));gap:26px}
 .tb-res-grid--text{grid-template-columns:minmax(0,1fr)}
 
@@ -30,7 +30,7 @@
 .ll-miss li::marker{color:#a12a1c}
 .ll-more{margin-top:14px;border-top:1px solid var(--line);padding-top:4px}
 
-/* Coverage map from shared/js/leg.js (truncal.css and lowerlimb.css are not loaded on this page). */
+/* Coverage map from ../shared/regional/js/figures/leg.js (regional.css and lowerlimb.css are not loaded on this page). */
 .tb-app .tb-cov{margin:0;max-width:440px}
 .tb-app .tb-cov-stage{border:1px solid var(--line);background:#fbf9f4;padding:8px}
 .tb-app .ll-cov-views{display:grid;gap:6px;align-items:start}

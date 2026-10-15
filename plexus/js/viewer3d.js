@@ -14,7 +14,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
 import { STATUS_COLOURS } from './diagram.js';
 
-const DRACO_PATH = new URL('../../brachial-plexus/vendor/three/examples/jsm/libs/draco/gltf/', import.meta.url).href;
+const DRACO_PATH = new URL('../../shared/vendor/three-r160/examples/jsm/libs/draco/gltf/', import.meta.url).href;
 const SOURCE = '3d';
 
 const CAT_STYLE = {

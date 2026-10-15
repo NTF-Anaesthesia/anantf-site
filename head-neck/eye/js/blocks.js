@@ -1,4 +1,4 @@
-// Eye: block data (schema: ../../../truncal/shared/DATA.md, "Block schema").
+// Eye: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
 import { SCENES } from './scenes.js';
 
 const EYE_LAST = 'Even a small volume injected into an artery or under the optic nerve sheath reaches the brain: monitor ECG, blood pressure and oxygen saturation, keep talking to the patient, and have resuscitation equipment ready.';

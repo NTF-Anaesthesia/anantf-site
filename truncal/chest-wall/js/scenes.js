@@ -1,11 +1,11 @@
 // Chest wall: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
 // nothing is traced from published images.
 //
 // Ribs and the sternum are solid bone shapes: the engine lights only their upper (probe-facing) surface and puts
 // everything beneath them in acoustic shadow, including the pleura. The pleura is a full-width line (it runs under
 // the ribs, as in life); the engine keeps the pleural-sliding shimmer out of the rib shadows.
-import { E, P, spline } from '../../shared/js/scene.js';
+import { E, P, spline } from '../../../shared/regional/js/scene.js';
 
 // ---------------------------------------------------------------- helpers
 const r1 = (v) => Math.round(v * 100) / 100;

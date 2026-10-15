@@ -2,8 +2,8 @@
 // leg and on a mid-thigh cross-section, and count the local anaesthetic dose against a weight-based ceiling), and the
 // whole-limb "block combinations" chapter. Doses: Dr Chew Shi Hao's for his blocks; literature doses for the sciatic,
 // posterior femoral cutaneous and obturator blocks (sources in the notes file). Prefix th-.
-import { el, sv, fill, keyPoints, callout, table, details, registerSearch, announce } from '../../../truncal/shared/js/ui.js';
-import { legFigure, legViewsFigure } from '../../shared/js/leg.js';
+import { el, sv, fill, keyPoints, callout, table, details, registerSearch, announce } from '../../../shared/regional/js/ui.js';
+import { legFigure, legViewsFigure } from '../../../shared/regional/js/figures/leg.js';
 import { thighSection } from './anatomy.js';
 
 const MAX_MG_KG = 3; // ropivacaine: a commonly used ceiling; local policy and the patient decide
@@ -306,7 +306,7 @@ export function renderAmputation(sec) {
       'Treatment of established pain: multimodal and neuropathic agents, mirror therapy and rehabilitation; a six-day perineural infusion reduced established phantom pain at four weeks in one trial; targeted muscle reinnervation for neuroma-related pain.',
     ] },
   ];
-  // Same markup as the block chapters' exam corner (truncal/shared/js/block.js), so both look alike.
+  // Same markup as the block chapters' exam corner (shared/regional/js/block.js), so both look alike.
   const exSec = el('section', { class: 'tb-bsec tb-bsec--exam tb-bsec--examcorner', id: 'th-amp-exam', 'aria-labelledby': 'th-amp-exam-h' });
   exSec.append(el('h3', { id: 'th-amp-exam-h', text: 'Exam corner' }));
   const list = el('div', { class: 'tb-exam' });

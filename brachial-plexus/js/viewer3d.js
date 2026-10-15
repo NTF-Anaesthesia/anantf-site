@@ -540,7 +540,7 @@ export function mount(containerEl, bus, options = {}) {
     // (same coordinate frame). When it loads, it replaces the single fused "Nerve"
     // mesh so each segment can be picked and coloured.
     splitUrl: 'model/brachial-plexus-v3-nerves-split.glb',
-    dracoPath: new URL('../vendor/three/examples/jsm/libs/draco/gltf/', import.meta.url).href,
+    dracoPath: new URL('../../shared/vendor/three-r160/examples/jsm/libs/draco/gltf/', import.meta.url).href,
     ...options,
   };
 

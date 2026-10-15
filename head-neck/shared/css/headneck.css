@@ -1,4 +1,4 @@
-/* Head and neck blocks: styles on top of the truncal shell (../../truncal/shared/css/truncal.css). Prefix hn-. */
+/* Head and neck blocks: styles on top of the truncal shell (../../shared/regional/css/regional.css). Prefix hn-. */
 /* Coverage map: one small figure per view, names in HTML (not in the SVG) so they stay at 14px on a phone. */
 .tb-app .hn-cov-views{display:grid;gap:8px;grid-template-columns:repeat(3,minmax(0,1fr))}
 .tb-app .hn-cov-views--1{grid-template-columns:minmax(0,220px)}

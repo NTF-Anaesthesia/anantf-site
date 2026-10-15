@@ -190,6 +190,18 @@ async function chapterOverflow(page) {
   return bad;
 }
 
+/** Read text until two reads 150 ms apart agree (panels re-render after a click; slow under load). */
+async function stableText(page, fn) {
+  let prev = await page.evaluate(fn);
+  for (let i = 0; i < 12; i++) {
+    await page.waitForTimeout(150);
+    const now = await page.evaluate(fn);
+    if (now === prev) return now;
+    prev = now;
+  }
+  return prev;
+}
+
 /** Brachial plexus: every block x every tab. */
 async function brachialText(page) {
   const out = {};
@@ -200,7 +212,7 @@ async function brachialText(page) {
     for (const t of ['ultrasound', 'guide', 'coverage']) {
       await page.evaluate((t) => document.getElementById(`tab-${t}`)?.click(), t);
       await page.waitForTimeout(150);
-      out[`${b}/${t}`] = await page.evaluate(() => { document.querySelectorAll('#sec-tabs details').forEach((d) => { d.open = true; }); return document.getElementById('sec-tabs')?.innerText || ''; });
+      out[`${b}/${t}`] = await stableText(page, () => { document.querySelectorAll('#sec-tabs details').forEach((d) => { d.open = true; }); return document.getElementById('sec-tabs')?.innerText || ''; });
     }
   }
   return out;
@@ -217,7 +229,7 @@ async function plexusText(page) {
     for (const b of blocks) {
       await page.evaluate((b) => document.querySelector(`button[data-block="${b}"]`)?.click(), b);
       await page.waitForTimeout(150);
-      out[`${px}/${b || 'none'}`] = await page.evaluate(() => document.getElementById('sec-info')?.innerText || '');
+      out[`${px}/${b || 'none'}`] = await stableText(page, () => document.getElementById('sec-info')?.innerText || '');
     }
   }
   return out;

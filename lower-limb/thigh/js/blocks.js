@@ -1,9 +1,9 @@
-// Thigh page: block data (schema: ../../../truncal/shared/DATA.md, "Block schema"; leg figures: ../../shared/LEG.md).
+// Thigh page: block data (schema: ../../../shared/regional/DATA.md, "Block schema"; leg figures: ../../shared/LEG.md).
 // The proximal sciatic block is new to the section (not one of Dr Chew Shi Hao's seven): its dose comes from the
 // literature and standard texts (sources in the notes file, not on the page). Text is plain, with no citations.
-import { el, table } from '../../../truncal/shared/js/ui.js';
-import { mountScan } from '../../../truncal/shared/js/scan.js';
-import { legCoverageMap } from '../../shared/js/leg.js';
+import { el, table } from '../../../shared/regional/js/ui.js';
+import { mountScan } from '../../../shared/regional/js/scan.js';
+import { legCoverageMap } from '../../../shared/regional/js/figures/leg.js';
 import { SCENES } from './scenes.js';
 
 // A row of buttons that swaps between several scan viewers (mounted on first use).

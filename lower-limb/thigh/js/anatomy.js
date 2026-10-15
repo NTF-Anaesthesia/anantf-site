@@ -2,8 +2,8 @@
 // an interactive "levels" figure, who supplies the thigh) and the mid-thigh cross-section used by the amputation
 // planner. Original schematic drawings (SVG), not traced from any published figure. Clinical colours: nerves yellow,
 // arteries red, veins blue, local anaesthetic blue. Prefix th-.
-import { el, sv, fill, keyPoints, callout, table, registerSearch, announce } from '../../../truncal/shared/js/ui.js';
-import { legViewsFigure } from '../../shared/js/leg.js';
+import { el, sv, fill, keyPoints, callout, table, registerSearch, announce } from '../../../shared/regional/js/ui.js';
+import { legViewsFigure } from '../../../shared/regional/js/figures/leg.js';
 
 const NERVE = '#e2b21c', NERVE_EDGE = '#7a5c00', ART = '#c0392b', VEIN = '#2f5d9e', LA = '#2c74b3';
 const INK = '#272722', MUTED = '#55534d', BONE = '#f6f0e2', BONE_EDGE = '#8f7f5c', MUSCLE = '#d49a88', MUSCLE_EDGE = '#a8695a';

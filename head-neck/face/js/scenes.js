@@ -1,8 +1,8 @@
 // Face: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
 // The three superficial trigeminal blocks share one layout: skin, a thin muscle layer, and a bright bone surface with a
 // gap where the foramen (or notch) is, the nerve coming out of it with its artery. Original geometry, typical adult depths.
-import { E, L } from '../../../truncal/shared/js/scene.js';
-import { headProbeInset } from '../../shared/js/head.js';
+import { E, L } from '../../../shared/regional/js/scene.js';
+import { headProbeInset } from '../../../shared/regional/js/figures/head.js';
 
 function foramenScene({ id, title, view, muscle, muscleShort, bone, gapLabel, nerve, nerveShort, artery, arteryShort, fat, mus, boneY, probe, steps }) {
   const gx = 15, gw = 3.2;

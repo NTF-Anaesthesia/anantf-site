@@ -1,5 +1,5 @@
 // Chest wall page: wires the shared shell to this page's chapters and data.
-import { bootPage } from '../../shared/js/shell.js';
+import { bootPage } from '../../../shared/regional/js/shell.js';
 import { BLOCKS } from './blocks.js';
 import { renderAnatomy } from './anatomy.js';
 

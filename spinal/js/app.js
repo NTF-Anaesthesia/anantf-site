@@ -1,17 +1,26 @@
 // spinal/ page controller: chapters + routing, search, share, levels, section mounts, references, deep links.
+// Levels come from the shared regional level system (../../shared/regional/js/levels.js, plan §5): MO / Resident /
+// Consultant, cumulative, saved as 'ra-level' (spinal's old 'spinal-level' / 'spinal-tier' migrate once), plus the
+// "Pearls only" digest at Consultant level. The specifier below must stay identical in every spinal module that imports
+// levels.js (search.js), so they share one module instance.
 import { $, $$, el, announce } from './ui.js?v=1';
 import { registerRefs, finalise } from './refs.js?v=1';
-import { attachSearch, buildIndex } from './search.js?v=3';
+import { attachSearch, buildIndex } from './search.js?v=4';
+import {
+  applyLevel, getLevel, onLevel, mountLevelControl, mountLevelPicker, relaxFor as relaxLevel,
+  getPearlsOnly, setPearlsOnly, hiddenHint,
+} from '../../shared/regional/js/levels.js?v=20261015';
 
 
 // Light mode only: the page is pinned with <html data-theme="light">.
+applyLevel(); // before anything mounts, so hidden tiers never flash
 
-// ---------------------------------------------------------------- copy link
+// ---------------------------------------------------------------- copy link (bar button; on phones a row in the chapter menu)
 const shareBtn = $('#sp-share');
+const menuShareBtn = $('#sp-menu-share');
 let shareTimer = 0;
-shareBtn?.addEventListener('click', async () => {
+async function copyLink(btn) {
   const status = $('#sp-share-status');
-  const span = shareBtn.querySelector('span');
   let ok = false;
   try { await navigator.clipboard.writeText(location.href); ok = true; } catch {
     try {
@@ -20,11 +29,18 @@ shareBtn?.addEventListener('click', async () => {
       document.body.append(ta); ta.select(); ok = document.execCommand('copy'); ta.remove();
     } catch { ok = false; }
   }
-  status.textContent = ok ? 'Link copied' : 'Copy the address bar to share this page';
-  span.textContent = ok ? 'Copied' : 'Copy link';
+  if (status) status.textContent = ok ? 'Link copied' : 'Copy the address bar to share this page';
+  const span = btn.querySelector('span');
+  if (span) span.textContent = ok ? (btn === shareBtn ? 'Copied' : 'Link copied') : (btn === shareBtn ? 'Copy link' : 'Copy link to this page');
   clearTimeout(shareTimer);
-  shareTimer = setTimeout(() => { span.textContent = 'Copy link'; status.textContent = ''; }, 2200);
-});
+  shareTimer = setTimeout(() => {
+    const s1 = shareBtn?.querySelector('span'); if (s1) s1.textContent = 'Copy link';
+    const s2 = menuShareBtn?.querySelector('span'); if (s2) s2.textContent = 'Copy link to this page';
+    if (status) status.textContent = '';
+  }, 2200);
+}
+shareBtn?.addEventListener('click', () => copyLink(shareBtn));
+menuShareBtn?.addEventListener('click', () => copyLink(menuShareBtn));
 
 // ---------------------------------------------------------------- chapters
 const chapters = $$('main .sp-chapter');
@@ -47,14 +63,73 @@ chapters.forEach((c, i) => {
   c.append(pager);
 });
 
-const chSelect = $('#sp-chselect');
+// Bar: wide screens show the chapters inline; narrower screens (or when they don't fit) a "Chapter" disclosure menu
+// clamped to the viewport. The menu also carries "Copy link" on phones and the way back to the Regional hub.
+const bar = $('#sp-bar');
+const chlist = $('#sp-chlist');
+const menuWrap = $('#sp-chmenu-wrap');
+const menuBtn = $('#sp-chmenu-btn');
+const menu = $('#sp-chmenu');
+const menuCur = $('#sp-chmenu-cur');
+const HOME_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7M6 9.5V20h12V9.5M10 20v-5.5h4V20"/></svg>';
+const BACK_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
+const REGION = { href: '../regional.html', short: 'Regional', label: 'Regional anaesthesia' };
+const SHORT = Object.fromEntries($$('#sp-chlist a').map((a) => [a.dataset.ch, a.textContent.trim()]));
+
+function fitBelowBar(panel) {
+  const bottom = Math.max(0, bar.getBoundingClientRect().bottom);
+  panel.style.maxHeight = `${Math.max(200, Math.round(window.innerHeight - bottom - 12))}px`;
+}
+function closeMenu(refocus = false) {
+  if (!menu || menu.hidden) return;
+  menu.hidden = true;
+  menuBtn.setAttribute('aria-expanded', 'false');
+  if (refocus) menuBtn.focus();
+}
+if (menu && menuBtn) {
+  menuBtn.addEventListener('click', () => {
+    if (!menu.hidden) { closeMenu(); return; }
+    menu.hidden = false;
+    menuBtn.setAttribute('aria-expanded', 'true');
+    fitBelowBar(menu);
+    ($('a[aria-current]', menu) || $('a', menu)).focus();
+  });
+  menu.addEventListener('click', (e) => { if (e.target.closest('a')) closeMenu(); });
+  menuWrap.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.hidden) { e.preventDefault(); closeMenu(true); return; }
+    if (menu.hidden || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
+    const items = $$('a,button', menu).filter((n) => n.getClientRects().length);
+    const i = items.indexOf(document.activeElement);
+    e.preventDefault();
+    const n = e.key === 'Home' ? 0 : e.key === 'End' ? items.length - 1 : Math.min(items.length - 1, Math.max(0, i + (e.key === 'ArrowDown' ? 1 : -1)));
+    items[n]?.focus();
+  });
+  menuWrap.addEventListener('focusout', (e) => { if (!menuWrap.contains(e.relatedTarget)) closeMenu(); });
+  document.addEventListener('pointerdown', (e) => { if (!menuWrap.contains(e.target)) closeMenu(); });
+}
+// Wide screens show the chapters inline; if they don't fit next to the tools, fall back to the menu.
+function fitChapters() {
+  if (!bar || !chlist) return;
+  bar.classList.remove('sp-bar--menu');
+  if (chlist.getClientRects().length && chlist.scrollWidth > chlist.clientWidth + 1) bar.classList.add('sp-bar--menu');
+}
+window.addEventListener('resize', fitChapters);
+document.fonts?.ready?.then(fitChapters);
+
 function paintChapterNav() {
-  $$('#sp-chlist a').forEach((a) => {
+  $$('#sp-chlist a, #sp-chmenu a[data-ch]').forEach((a) => {
     if (a.dataset.ch === current?.id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
-  if (chSelect && current) chSelect.value = current.id;
+  if (menuCur) menuCur.textContent = !current || current.id === 'ch-home' ? 'Hub' : (SHORT[current.id] || current.dataset.title);
+  // Home: on a chapter it goes to the hub; on the hub it goes back to the Regional anaesthesia page.
   const home = $('#sp-home-link');
-  if (home) home.toggleAttribute('hidden', current?.id === 'ch-home');
+  if (!home) return;
+  const atHub = current?.id === 'ch-home';
+  home.href = atHub ? REGION.href : '#ch-home';
+  home.setAttribute('aria-label', atHub ? `Back to ${REGION.label}` : 'Back to the hub');
+  home.innerHTML = `${atHub ? BACK_ICON : HOME_ICON}<span></span>`;
+  home.querySelector('span').textContent = atHub ? REGION.short : 'Hub';
+  home.classList.toggle('sp-bar-home--back', atHub);
 }
 
 function kickResize() {
@@ -74,31 +149,9 @@ function showChapter(ch) {
   return true;
 }
 
-chSelect?.addEventListener('change', () => { location.hash = chSelect.value; });
-
 // ---------------------------------------------------------------- level (tier)
-// Levels: '1' MO only, '2' MO + Resident, 'adv' Advanced pearls only (a digest per section), 'all' everything.
-const LEVELS = {
-  1: { name: 'MO', tier: 1, hint: 'MO: MOPEX level. Showing what you need for your first supervised spinals.' },
-  2: { name: 'Resident', tier: 2, hint: 'Resident: everything up to the MMed exam (MO and Resident).' },
-  adv: { name: 'Advanced', tier: 3, hint: 'Advanced: subspecialty detail and consultant pearls only, collected section by section.' },
-  all: { name: 'All', tier: 3, hint: 'All: everything on the page, from MO basics to consultant pearls.' },
-};
-const controls = $('#sp-controls');
-const levelBtns = controls ? $$('.sp-level-btn', controls) : [];
-const store = {
-  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
-  set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage may be blocked */ } },
-};
-const level = () => (LEVELS[document.body.dataset.level] ? document.body.dataset.level : 'all');
-const tierMax = () => LEVELS[level()].tier;
-
-function paintControls() {
-  const lv = level();
-  levelBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.level === lv)));
-  const hint = $('#sp-level-hint');
-  if (hint) hint.textContent = LEVELS[lv].hint;
-}
+// MO = tier 1, Resident = tiers 1-2, Consultant = everything (levels.js sets body[data-level] and body[data-tier-max]).
+// "Pearls only" (Consultant level only, never saved): each section shows a digest of its tier-3 blocks instead.
 
 /** Text that says where a pearl comes from: the open panel or tab, and the nearest heading above it. */
 function contextFor(node, section) {
@@ -117,7 +170,7 @@ function contextFor(node, section) {
   return [...new Set(parts)].filter(Boolean).join(' · ');
 }
 
-/** Build (or rebuild) the Advanced digest: every tier-3 block in a section, copied into one list. */
+/** Build (or rebuild) the "Pearls only" digest: every tier-3 block in a section, copied into one list. */
 function buildDigests() {
   $$('main .sp-section').forEach((sec) => {
     if (sec.id === 'references' || sec.id === 'card') return;
@@ -125,11 +178,11 @@ function buildDigests() {
     const items = $$('[data-tier="3"]', sec).filter((n) => !n.parentElement.closest('[data-tier="3"]'));
     const box = el('div', { class: 'sp-adv-digest' });
     if (!items.length) {
-      box.append(el('p', { class: 'sp-adv-empty', text: 'No Advanced material in this section. Choose All or Resident to read it.' }));
+      box.append(el('p', { class: 'sp-adv-empty', text: 'No consultant pearls in this section. Turn off Pearls only to read it.' }));
     } else {
       items.forEach((n) => {
         const copy = n.cloneNode(true);
-        copy.removeAttribute('data-tier');
+        [copy, ...copy.querySelectorAll('[data-tier]')].forEach((x) => x.removeAttribute('data-tier'));
         [copy, ...copy.querySelectorAll('[id]')].forEach((x) => x.removeAttribute('id'));
         copy.querySelectorAll('[aria-controls],[aria-labelledby],[aria-describedby]').forEach((x) => {
           x.removeAttribute('aria-controls'); x.removeAttribute('aria-labelledby'); x.removeAttribute('aria-describedby');
@@ -143,59 +196,60 @@ function buildDigests() {
   });
 }
 
-/** Keep the heading the reader is looking at where it was while content above it appears or disappears. */
-function withScrollAnchor(change) {
-  const line = window.innerHeight * 0.3;
-  const heads = $$('main h2, main h3').filter((h) => h.getClientRects().length);
-  let anchor = null;
-  for (const h of heads) if (h.getBoundingClientRect().top <= line) anchor = h;
-  anchor = anchor || heads.find((h) => h.getBoundingClientRect().top > 0) || null;
-  const before = anchor ? anchor.getBoundingClientRect().top : 0;
-  change();
-  if (anchor && anchor.getClientRects().length) {
-    const delta = anchor.getBoundingClientRect().top - before;
-    if (Math.abs(delta) > 1) window.scrollBy({ top: delta, behavior: 'instant' });
-  } else {
-    const sec = anchor?.closest('.sp-section');
-    if (sec) window.scrollTo({ top: window.scrollY + sec.getBoundingClientRect().top - line, behavior: 'instant' });
+// Per chapter, under the kicker: "n items hidden at MO level · Show all" (MO and Resident), or the
+// "Pearls only" switch (Consultant, in chapters that have consultant pearls).
+const chapterTools = []; // {chapter, hint, pearls, btn, note}
+let pearlsOn = false;
+function paintPearls() {
+  const atCon = getLevel() === 'consultant';
+  chapterTools.forEach((t) => {
+    if (!t.pearls) return;
+    t.pearls.hidden = !atCon || !t.chapter.querySelector('[data-tier="3"]');
+    t.btn.setAttribute('aria-pressed', String(getPearlsOnly()));
+    t.note.textContent = getPearlsOnly()
+      ? 'Showing only the consultant pearls, section by section.'
+      : 'Show just the consultant pearls in this chapter.';
+  });
+}
+function togglePearls() {
+  const on = !getPearlsOnly();
+  if (on && document.body.dataset.spReady) buildDigests();
+  pearlsOn = on;
+  setPearlsOnly(on);
+}
+function addChapterTools(chapter) {
+  const hint = hiddenHint(chapter, { label: 'in this chapter' });
+  const t = { chapter, hint };
+  const row = el('div', { class: 'sp-ch-tools' }, hint);
+  if (chapter.id !== 'ch-card' && chapter.id !== 'ch-refs') {
+    t.btn = el('button', { type: 'button', class: 'sp-pearls-btn', 'aria-pressed': 'false', on: { click: togglePearls } }, 'Pearls only');
+    t.note = el('span', { class: 'sp-pearls-note' });
+    t.pearls = el('p', { class: 'sp-pearls', hidden: true }, t.btn, t.note);
+    row.append(t.pearls);
   }
+  chapterTools.push(t);
+  chapter.querySelector(':scope > .sp-ch-kicker')?.after(row);
 }
+chapters.forEach((c) => { if (c.id !== 'ch-home') addChapterTools(c); });
 
-function applyFilters({ lv = level() } = {}, { save = true, say = false, keepView = true } = {}) {
-  const change = () => {
-    if (lv === 'adv' && document.body.dataset.spReady) buildDigests();
-    document.body.dataset.level = lv;
-    document.body.dataset.tierMax = String(LEVELS[lv].tier);
-    paintControls();
-  };
-  if (keepView && document.body.dataset.spReady) withScrollAnchor(change); else change();
-  if (save) store.set('spinal-level', lv);
-  if (say) announce(`Level ${LEVELS[lv].name}. ${LEVELS[lv].hint}`);
-}
+onLevel((lv) => {
+  // Leaving Consultant ends "Pearls only" (it is never remembered).
+  if (lv !== 'consultant' && pearlsOn) { pearlsOn = false; setPearlsOnly(false, { announce: false }); return; }
+  if (lv === 'consultant') pearlsOn = getPearlsOnly();
+  paintPearls();
+  fitChapters();
+  kickResize();
+});
 
-{
-  const saved = store.get('spinal-level');
-  const legacy = { 1: '1', 2: '2', 3: 'all' }[store.get('spinal-tier')];
-  const lv = LEVELS[saved] ? saved : (legacy || 'all');
-  document.body.dataset.level = lv;
-  document.body.dataset.tierMax = String(LEVELS[lv].tier);
-  paintControls();
-  if (controls) controls.hidden = false;
-  levelBtns.forEach((b) => b.addEventListener('click', () => applyFilters({ lv: b.dataset.level }, { say: true })));
-}
+mountLevelControl($('#sp-bar-level'));
+mountLevelPicker($('#sp-level-picker'));
 
-/** A deep link to something the current filters hide: relax the filters just enough to show it. */
+/** A deep link or search result to something the current level hides: show it for this view only (never saved). */
 function relaxFor(target) {
   if (!target) return false;
-  let need = 1;
-  for (let p = target; p; p = p.parentElement) if (p.dataset?.tier) need = Math.max(need, Number(p.dataset.tier) || 1);
-  let lv = level();
-  if (lv === 'adv') { if (!target.closest('.sp-adv-digest,#references,#card,.sp-hub') && !target.matches('.sp-chapter,.sp-section,h2,.sp-kicker')) lv = 'all'; }
-  else if (need > tierMax()) lv = need === 2 ? '2' : 'all';
-  if (lv === level()) return false;
-  applyFilters({ lv }, { keepView: false, save: false }); // a deep link never overwrites the saved level
-  announce('Level changed to show the linked item.');
-  return true;
+  // In "Pearls only" the ward card, references, hub and chapter or section headings stay visible: no need to relax.
+  if (getPearlsOnly() && (target.closest('.sp-adv-digest,#references,#card,.sp-hub') || target.matches('.sp-chapter,.sp-section,h2,.sp-ch-kicker'))) return false;
+  return relaxLevel(target);
 }
 
 // ---------------------------------------------------------------- deep links
@@ -222,7 +276,6 @@ const decode = (h) => { try { return decodeURIComponent((h || '').replace(/^#/, 
 
 async function goToHash(hash, { initial = false } = {}) {
   let id = decode(hash);
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!id) id = 'ch-home';
   if (ALIAS[id] && !document.getElementById(id)) id = ALIAS[id];
 
@@ -257,7 +310,8 @@ async function goToHash(hash, { initial = false } = {}) {
   if (!target || !isShown(target)) return;
   // Wait a frame so layout from reveal() is settled.
   requestAnimationFrame(() => {
-    target.scrollIntoView({ block: 'start', behavior: initial || changed || reduce ? 'instant' : 'smooth' });
+    // Never a smooth programmatic scroll: the chapters are very long, and a smooth jump across them is slow and janky.
+    target.scrollIntoView({ block: 'start', behavior: 'instant' });
     if (!initial) {
       if (!target.matches('a,button,input,select,textarea,summary,[tabindex]')) target.setAttribute('tabindex', '-1');
       target.focus({ preventScroll: true });
@@ -358,7 +412,10 @@ async function boot() {
   });
   await Promise.allSettled(mounts);
   try { finalise(); } catch (err) { console.error('[spinal] references failed', err); }
-  if (level() === 'adv') buildDigests();
+  if (getPearlsOnly()) buildDigests();
+  chapterTools.forEach((t) => t.hint.refresh?.());
+  paintPearls();
+  fitChapters();
   try { buildIndex(); } catch (err) { console.error('[spinal] search index failed', err); }
   document.body.classList.remove('sp-booting');
   document.body.classList.add('sp-chapters-on');

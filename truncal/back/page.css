@@ -1,4 +1,4 @@
-/* Back page: anatomy figures, A–E exercise and landmark stepper (prefix bk-). Shared styles: ../shared/css/truncal.css */
+/* Back page: anatomy figures, A–E exercise and landmark stepper (prefix bk-). Shared styles: ../../shared/regional/css/regional.css */
 .tb-app .bk-fig{margin:24px 0 8px}
 .tb-app main .bk-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
 .tb-app .bk-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}

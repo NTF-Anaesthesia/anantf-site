@@ -1,9 +1,9 @@
 // Hip blocks: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../../truncal/shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths
 // (slim to average build, right side); nothing is traced from published images. Probe insets use the leg figure
-// (../../shared/js/leg.js). Every view has medial (or cranial) on screen left and the needle entering from screen right.
-import { E, P, L } from '../../../truncal/shared/js/scene.js';
-import { legProbeInset } from '../../shared/js/leg.js';
+// (../../../shared/regional/js/figures/leg.js). Every view has medial (or cranial) on screen left and the needle entering from screen right.
+import { E, P, L } from '../../../shared/regional/js/scene.js';
+import { legProbeInset } from '../../../shared/regional/js/figures/leg.js';
 
 export const SCENES = {
   // ------------------------------------------------------------------ PENG

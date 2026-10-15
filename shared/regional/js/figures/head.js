@@ -1,5 +1,5 @@
 // Head and neck blocks: original, simplified head and neck figures for coverage maps, probe insets and
-// injection-point diagrams. Drop-in partners of the truncal dermatome map (../../truncal/shared/js/dermatomes.js):
+// injection-point diagrams. Drop-in partners of the truncal dermatome map (../dermatomes.js):
 //   headCoverageMap(coverage, {id, title}) -> <figure class="tb-cov"> (pass as coverage.map in a block)
 //   headProbeInset(probe, opts)            -> small head SVG with the probe or the needle entry points (scene.probeInset)
 //   headFigure(view, {zones, points, density}) -> one view as an SVG, for anatomy chapters
@@ -7,8 +7,8 @@
 // right side, face to the viewer's right), 'back' (patient's right on the viewer's right), 'airway' (midline
 // sagittal section, face to the viewer's right). Zones are schematic areas of skin or mucosa supplied by one nerve.
 // Density is shown three ways (fill strength, pattern, words), never by colour alone, as on the truncal maps.
-import { el, sv } from '../../../truncal/shared/js/ui.js';
-import { DENSITY } from '../../../truncal/shared/js/dermatomes.js';
+import { el, sv } from '../ui.js';
+import { DENSITY } from '../dermatomes.js';
 
 const CX = 100;
 

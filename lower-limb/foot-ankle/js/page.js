@@ -1,5 +1,5 @@
-// Foot and ankle blocks page: wires the shared regional shell (truncal/shared) to this page's chapters and data.
-import { bootPage } from '../../../truncal/shared/js/shell.js';
+// Foot and ankle blocks page: wires the shared regional shell (shared/regional) to this page's chapters and data.
+import { bootPage } from '../../../shared/regional/js/shell.js';
 import { BLOCKS } from './blocks.js';
 import { renderAnatomy, renderPlan } from './anatomy.js';
 

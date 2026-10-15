@@ -1,7 +1,7 @@
 // Abdominal wall: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
 // nothing is traced from published images.
-import { E, P, PS, L } from '../../shared/js/scene.js';
+import { E, P, PS, L } from '../../../shared/regional/js/scene.js';
 
 const tapSteps = {
   scan: '<p>Probe transverse in the <strong>mid-axillary line</strong>, between the costal margin and the iliac crest. Or start at the lateral edge of rectus (linea semilunaris) and slide laterally until three muscle layers appear.</p>',

@@ -1,13 +1,15 @@
-# Truncal blocks: shared engine, data schema and page wiring
+# Regional blocks: shared engine, data schema and page wiring
 
-Everything in `truncal/shared/` is used by all three region pages (`truncal/back/`, `truncal/chest-wall/`,
-`truncal/abdominal-wall/`). **Pages do not edit `shared/`**: they supply data. `truncal/abdominal-wall/` is the
+Everything in `shared/regional/` (moved from `truncal/shared/` on 15 Oct 2026) is used by the truncal pages
+(`truncal/back/`, `truncal/chest-wall/`, `truncal/abdominal-wall/`), the head and neck pages and the lower-limb pages.
+**Pages do not edit `shared/regional/`**: they supply data. `truncal/abdominal-wall/` is the
 reference implementation: copy its structure.
 
 ```
-truncal/shared/
-  css/truncal.css     all shared styles (prefix tb-). Page-only styles go in <page>/page.css with a page prefix.
-  js/shell.js         bootPage(config): hub, chapters, hash routing, sticky bar, search, copy link, pager
+shared/regional/
+  css/regional.css    all shared styles (prefix tb-; was truncal.css). Page-only styles go in <page>/page.css with a page prefix.
+  js/shell.js         bootPage(config): hub, chapters, hash routing, the one sticky app bar (home, chapter menu, search,
+                      copy link, MO · Res · Con level control), level hints, search, pager
   js/block.js         renderBlock(block, host): one block chapter from a data object (called by the shell)
   js/scan.js          mountScan(host, scene, {blockId}): the interactive scan viewer (called by block.js)
   js/scene.js         scene geometry, shape constructors E/P/PS/L, LA spread and tissue warp
@@ -17,9 +19,19 @@ truncal/shared/
   js/refs.js          cite() / citeEl(): kept for old data, render nothing (no sources or references on these pages)
   js/search.js        page search + synonyms (addSynonyms via config.synonyms)
   js/ui.js            el, sv, fill, callout, keyPoints, steps, stepper, table, details, registerSearch, …
+  js/levels.js        MO / Resident / Consultant level system (getLevel, setLevel, onLevel, mountLevelControl, …)
+  js/status.js        block-status colours and line styles (target, covers, variable, spares), shared with
+                      brachial-plexus/ and plexus/; css/status.css holds the same tokens as CSS variables
+  js/registry.js      block id → {title, region, url, aliases, anatomy3d?, watch?} across all regions
+  js/realscan.js      the "Real" scan view (open-licence images with label pills)
+  js/figures/         head.js (head and neck figures), leg.js (lower-limb figures)
+  css/levels.css      level control and tier hiding (body[data-tier-max] hides [data-tier] above it)
 ```
 
-Static ES modules, no build step, no CDN. Import with relative paths, e.g. `../../shared/js/shell.js`.
+The old paths (`truncal/shared/js/*.js`, `truncal/shared/css/truncal.css`, `head-neck/shared/js/head.js`,
+`lower-limb/shared/js/leg.js`) are one-line re-export shims so cached pages keep working. Don't import through them.
+
+Static ES modules, no build step, no CDN. Import with relative paths, e.g. `../../../shared/regional/js/shell.js` from `truncal/<page>/js/`.
 
 ---
 
@@ -37,12 +49,12 @@ breadcrumb (`<span aria-current="page">Chest wall</span>`), and `page.css` if yo
   each patient."** and the credit **"Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>,
   NTF Anaesthesia"**, link back to `../`), then `ntf-footer`
 - `<body class="tb-app">`, stylesheets `../../assets/navigation.css`, `site-shell.css`, `header-nav.css`,
-  `../shared/css/truncal.css`, and `<script type="module" src="js/page.js?v=1"></script>`
+  `../../shared/regional/css/regional.css?v=20261015`, and `<script type="module" src="js/page.js?v=20261015"></script>`
 
 ## 2. `js/page.js`: `bootPage(config)`
 
 ```js
-import { bootPage } from '../../shared/js/shell.js';
+import { bootPage } from '../../../shared/regional/js/shell.js';
 import { BLOCKS } from './blocks.js';
 bootPage({
   title: 'Chest wall blocks',                       // hub h1 and chapter kickers
@@ -56,8 +68,29 @@ bootPage({
   ],
   synonyms: [['sap', 'serratus']],                 // optional extra search synonym rows
   hubExtra: '<p>optional HTML appended to the hub</p>',
+  // App shell options (all optional):
+  backLabel: 'See all lower-limb blocks and the operation chooser',  // hub link back to the region landing
+  backShort: 'Lower-limb blocks',                   // bar Home label on the hub (default: the breadcrumb's last link)
+  backHref: '../',                                  // region landing (default: the breadcrumb's last link)
+  home: '/blocks/',                                 // the front door link; false = none (default: on once /blocks/ is live)
+  credit: 'Created by …',                           // hub credit line, HTML; false = none
+  level: true,                                      // false = no level control, no tier hiding, no hints
 });
 ```
+
+- **Defaults.** `backLabel` defaults to "See all <breadcrumb parent, lower case> and the block chooser"; `credit`
+  defaults to "Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia"
+  (exported as `DEFAULT_CREDIT`). Don't patch the hub link text from page code (the old `fixHubBack()`): set `backLabel`.
+- **One sticky bar.** Inside app pages the site header scrolls away (`body.tb-app .ntf-header{position:static}`) and only
+  `#tb-bar` sticks (56 px; CSS variable `--ra-bar` on `:root`). Deep-link targets land just below it
+  (`scroll-padding-top` / `scroll-margin-top: calc(var(--ra-bar) + 8px)`); stick your own sticky things at
+  `top: var(--ra-bar)`. Programmatic jumps never smooth-scroll.
+- **Bar contents.** Home (on a chapter: this page's hub; on the hub: ← the region landing, `backShort`), Chapter ▾
+  (inline links at ≥ 1240 px when they fit, else the menu), Search, Copy link (on phones ≤ 600 px it moves into the
+  chapter menu, which then spans the bar width), and the level control. The chapter menu also lists the region landing
+  and (when set) the front door. On phones the breadcrumb collapses to one "← <region>" line.
+- **Chapter `tier`.** `{ id, title, …, tier: 3 }` tags the chapter, its hub entry and its menu entries; a link or search
+  result into it relaxes the level for that view.
 
 - A chapter has either `block` (rendered by `renderBlock`) or `render(sec)` (your own content; you add the `h2`), or both.
 - **Headings.** Author every chapter as **h2 title > h3 > h4** (as now). After it renders, the shell gives the chapter
@@ -86,15 +119,53 @@ bootPage({
   - `#<blockId>-step-scan`, `#<blockId>-step-identify`, `#<blockId>-step-needle`, `#<blockId>-step-inject`
   - `#<blockId>-inj-<injectionId>` (selects that injection, e.g. `#ql-inj-ql3`)
 - Section ids made by the block renderer: `#<id>-position`, `-equipment`, `-landmarks`, `-approach`, `-sonoanatomy`,
-  `-target`, `-dose`, `-coverage`, `-complications`, `-pearls`, `-exam`, `-<sectionId>` (extra sections),
-  `-scan` (the viewer), `-covmap`, `-exam-1…`.
+  `-target`, `-dose`, `-coverage`, `-anatomy3d`, `-watch` (`-watch-anim` is the disclosure), `-complications`,
+  `-pearls`, `-exam`, `-<sectionId>` (extra sections), `-scan` (the viewer), `-covmap`, `-exam-1…`.
+- A deep link to content the reader's level hides shows it for that view (see §2b).
 - Cross-page links: `../back/#esp-step-needle` etc.
 - Ready signal for tests: `body[data-tb-ready="true"]`; event `tb-ready`; `tb-chapter` fires on chapter change.
+
+## 2b. Levels (MO / Resident / Consultant)
+
+`shared/regional/js/levels.js` (styles in `css/levels.css`, imported by `regional.css`). Levels are cumulative:
+MO shows tier 1, Resident tiers 1–2, Consultant everything. Any element may carry `data-tier="1|2|3"`; untagged
+elements always show. The reader's choice is saved in `localStorage['ra-level']` (spinal's old keys migrate once) and
+never goes in the URL. With nothing saved the level is **Consultant** (everything shows).
+
+The shell: mounts the control in the bar, shows a one-time "How much detail do you want?" picker on the hub, adds a
+"n items hidden at MO level in this chapter · Show all" line under each chapter's header (Show all raises the level for
+this view only), and relaxes the level (never saved, with a "Back to MO" button) when a deep link or a search result
+points at hidden content. Search lists hidden matches with "(Resident)" / "(Consultant)" after the chapter name.
+
+API (frozen): `getLevel()`, `setLevel(l, {save})`, `onLevel(fn) → unsubscribe`, `mountLevelControl(host)`,
+`relaxFor(el)`, `withScrollAnchor(fn)`, `countHidden(root)`, `applyLevel()`; helpers `tierOf(el)`, `tierMax()`,
+`hasChosenLevel()`, `mountLevelPicker(host)`, `hiddenHint(root)`, `tierBadge(t)`, `TIER_NAMES`.
+
+**Default tiers in `renderBlock`** (so blocks are tiered with no data edits):
+
+| Tier | Sections |
+|---|---|
+| 1 MO | header, summary, "Use it for", at a glance, `rapid`, `intro`, scan viewer, position, equipment, **dose box + LAST line**, **complications**, the **first 3 pearls**, `warning`, any section with `safety: true`, extra sections titled "Contraindications…" |
+| 2 Resident | landmarks, approach, sonoanatomy, target, coverage, Anatomy in 3D, Watch the animation, remaining pearls, exam corner, other extra `sections[]` |
+| 3 Consultant | extra sections with id `consultant`, `frontier`, `catheter(s)`, `nerve-stim…`, `landmark(s)`, `approaches`, `alt`, or titled "Consultant corner", "Frontier…", "Catheters", "Nerve stimulat…", "Alternative: …", "Landmark technique…", "Before ultrasound: landmark…" |
+
+Overrides, in data:
+- `tiers: { approach: 1, exam: 3 }` on a block changes a top-level section's tier.
+- `{ id, title, html, tier: 3 }` or `safety: true` on an extra section.
+- Any section value or list item may be `{ tier: n, html }` (or `{ safety: true, html }`) instead of a plain string:
+  a pearl `{ safety: true, html: '…' }` is promoted to MO. Plain strings inherit their section's tier.
+- `exam: [{ q, points, tier: 3 }]`.
+- **Safety rule:** `dose` and `complications` are always tier 1, whatever the data says (enforced in `block.js` and by
+  `test/regional/levels.mjs`). Region pages may promote, never demote, safety content.
+
+Badges ("Resident", "Consultant") are added by the engine on the first section of each run of that tier, as their own
+line above the heading. Long prose sections at tier 2–3 (more than 3 paragraphs, prose only) keep their first paragraph
+and fold the rest into a "Read more: <title>" disclosure; deep links and search open it.
 
 ## 3. Block schema (`renderBlock`)
 
 All text fields are **trusted HTML strings** (or arrays of HTML strings rendered as a list). Don't add citations:
-`cite()` from `shared/js/refs.js` still exists but renders nothing.
+`cite()` from `shared/regional/js/refs.js` still exists but renders nothing.
 
 | Field | Type | Rendered as |
 |---|---|---|
@@ -112,7 +183,11 @@ All text fields are **trusted HTML strings** (or arrays of HTML strings rendered
 | `coverage` | Coverage (§5) | map + "Covers" + Mechanism + "How dense, how reliable" + "What it misses" |
 | `complications` | HTML or HTML[] | section |
 | `pearls` | HTML[] | "Practical pearls" list |
-| `sections` | `[{id, title, html, render(sec)}]` | extra sections, inserted before the exam corner |
+| `sections` | `[{id, title, html, render(sec), tier?, safety?}]` | extra sections, inserted before the exam corner |
+| `rapid` | HTML or HTML[] | "The 20-second version" key box under the header (tier 1) |
+| `tiers` | `{key: 1\|2\|3}` | override the default tier of a top-level section (see §2b) |
+| `anatomy3d` | `{plexus, block?, el?}` or `{app: 'brachial-plexus', block, el?, tab?}`; `false` = none | "Anatomy in 3D" card: a link to `/plexus/#plexus=…&block=…` (or `/brachial-plexus/#block=…&tab=…`) and, for `plexus`, an "Open here" button that imports `plexus/js/explorer.js` (`mountExplorer`) only when tapped. Falls back to `registry.js` (`getBlock(id).anatomy3d`) when absent |
+| `watch` | `{anim, variant?, caption?, label?}`; `false` = none | "Watch it done" disclosure for Dr Chew Shi Hao's animation (`lower-limb/anim/?embed=1#anim/variant`). The iframe is made on first open and removed on close; one per page. Falls back to `registry.js` |
 | `exam` | `[{source, q, points[], id?}]` | Exam corner; `source` is the exam name only ("MMed OSCE 2025", "Practice question"), no provenance in brackets; `points` sit in a "Model answer points" disclosure |
 
 Doses: keep the values as they are. Paravertebral: **0.3–0.5%** ropivacaine.
@@ -124,7 +199,7 @@ Units are **millimetres**. `x` runs across the screen from the left edge (0 … 
 the same data, so labels, needle and spread line up.
 
 ```js
-import { E, P, PS, L } from '../../shared/js/scene.js';
+import { E, P, PS, L } from '../../../shared/regional/js/scene.js';
 {
   id: 'cw-sap',                    // unique across the site (cache key) — prefix with your page: bk-, cw-, aw-
   title: 'Serratus anterior: …',   // viewer heading
@@ -279,7 +354,7 @@ front, viewer-right on the back. Band centres at the midline: T2 62, T4 96 (nipp
 tip on the back), T10 188 (umbilicus), T12 220, L1 240. Flank edge ≈ x 40/130 at the waist; ASIS (50, 236).
 `angle` 0 = transverse probe, 90 = parasagittal; negative angles rotate anticlockwise.
 
-## 6. Other helpers (`shared/js/ui.js`, `bmode.js`)
+## 6. Other helpers (`shared/regional/js/ui.js`, `bmode.js`)
 `stepper({steps:[{short, title, body}], idPrefix, scrollTo, onStep(i), label})` → `{el, go(i), keys(el), current}`: the
 scan viewer's step-through look for your own figures (step buttons `#<idPrefix>-step-<n>` are deep links, Back / Next,
 `onStep` redraws your figure, `keys(fig)` adds left/right arrow keys). Optional; local steppers keep working.
@@ -288,7 +363,7 @@ scan viewer's step-through look for your own figures (step buttons `#<idPrefix>-
 `el(tag, attrs, …children)`, `sv(tag, attrs, parent)`, `fill(node, html)`, `callout('key'|'warn'|'pearl'|'note',
 {title, body})`, `keyPoints([…])`, `steps([{title, body}])`, `table({head, rows, caption, stack})` (cells: HTML or
 `{th:true, html}`), `details({summary, body})`, `registerSearch([{title, text, id}])` for text inside SVG/canvas.
-Use `tb-` classes from `truncal.css`; prefix page-only classes (`bk-`, `cw-`, `aw-`).
+Use `tb-` classes from `regional.css`; prefix page-only classes (`bk-`, `cw-`, `aw-`).
 
 ## 7. Checklist before handing over
 - `python3 -m http.server` from the repo root; open `/truncal/<page>/`.
@@ -297,10 +372,10 @@ Use `tb-` classes from `truncal.css`; prefix page-only classes (`bk-`, `cw-`, `a
 - Anatomy: layer order superficial → deep; `orient` words match the needle direction text.
 
 ## 8. Hooks for other sections (used by `head-neck/`)
-The engine is also used by `head-neck/`, which imports these modules by relative path (`../../../truncal/shared/js/…`).
+The engine is also used by `head-neck/`, which imports these modules by relative path (`../../../shared/regional/js/…`).
 Changes here affect both sections: check `head-neck/` pages too. Three opt-in fields, ignored when absent:
 - `coverage.map`: a function with the same arguments as `coverageMap(coverage, {id, title})` that returns the map
-  figure (e.g. `headCoverageMap` from `head-neck/shared/js/head.js`), or `false` for no map (text only).
+  figure (e.g. `headCoverageMap` from `shared/regional/js/figures/head.js`), or `false` for no map (text only).
 - `scene.probeInset`: a function with the same arguments as `probeInset(probe, opts)` for a different body outline;
   `probe.key` renames the "Probe" caption (e.g. "Needle entry").
 - `scene.image: 'diagram'`: a schematic section with no simulated ultrasound (landmark blocks such as eye blocks); the

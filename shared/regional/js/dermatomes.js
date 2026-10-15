@@ -3,6 +3,9 @@
 //   probeInset({view, x, y, angle, label}) -> small torso SVG showing where the probe sits
 // Density is shown three ways (fill strength, pattern, words), never by colour alone. Schema: DATA.md ("coverage").
 import { el, sv } from './ui.js';
+import { coverageFills, ensureStatusCss } from './status.js';
+
+ensureStatusCss();
 
 export const LEVELS = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12', 'L1'];
 // Midline centre (y) of each band on the front figure; viewBox per figure is 170 x 300, midline x = 85.
@@ -83,17 +86,12 @@ function levelRange(spec) {
 }
 
 let patSeq = 0;
+// Fills follow the shared status tokens (status.js): dense and moderate = covered (green, solid / stippled),
+// patchy = variable (orange, hatched). The legend swatches match through .tb-cov--st in status.css.
 function defs(svg) {
   patSeq += 1;
-  const id = (n) => `tbd-${n}-${patSeq}`;
-  const d = sv('defs', {}, svg);
-  const h = sv('pattern', { id: id('hatch'), width: 6, height: 6, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, d);
-  sv('rect', { width: 6, height: 6, fill: 'rgba(44,116,179,.32)' }, h);
-  sv('line', { x1: 0, y1: 0, x2: 0, y2: 6, stroke: '#1d4f7c', 'stroke-width': 2 }, h);
-  const p = sv('pattern', { id: id('dots'), width: 6, height: 6, patternUnits: 'userSpaceOnUse' }, d);
-  sv('rect', { width: 6, height: 6, fill: 'rgba(44,116,179,.12)' }, p);
-  sv('circle', { cx: 3, cy: 3, r: 1.1, fill: '#1d4f7c' }, p);
-  return { dense: '#2c74b3', moderate: `url(#${id('hatch')})`, patchy: `url(#${id('dots')})`, clip: id('clip') };
+  const f = coverageFills(svg, 'tbd');
+  return { dense: f.dense, moderate: f.moderate, patchy: f.patchy, clip: `tbd-clip-${patSeq}` };
 }
 
 function figureSvg(view, cov, fills, { labels = true } = {}) {
@@ -141,6 +139,18 @@ function figureSvg(view, cov, fills, { labels = true } = {}) {
   return g;
 }
 
+const ZONE_WORDS = {
+  midline: 'midline', anterior: 'front', anterolateral: 'front and flank', lateral: 'flank', posterior: 'back', all: 'front, flank and back',
+  'front-mid': 'paramedian front', 'front-ant': 'front', 'front-lat': 'flank', 'back-med': 'back, medial', 'back-lat': 'back, lateral',
+};
+/** Short words for one coverage area of a torso map, e.g. "T10–T12, front and flank" (coverage chips in the scan viewer). */
+export function areaWords(area) {
+  const lv = levelRange(area.levels || []);
+  const range = lv.length > 1 ? `${lv[0]}–${lv[lv.length - 1]}` : (lv[0] || '');
+  const zones = (area.zones || ['all']).map((z) => ZONE_WORDS[z] || z).join(', ');
+  return [range, zones].filter(Boolean).join(', ');
+}
+
 const LANDMARK_KEY = 'Landmarks: nipple T4, xiphoid T6, umbilicus T10, inguinal ligament L1; inferior angle of the scapula T7, vertebra prominens C7.';
 
 /**
@@ -149,7 +159,7 @@ const LANDMARK_KEY = 'Landmarks: nipple T4, xiphoid T6, umbilicus T10, inguinal 
  *             summary, mechanism, density (text), caption}
  */
 export function coverageMap(cov, { id, title } = {}) {
-  const fig = el('figure', { class: 'tb-cov', id });
+  const fig = el('figure', { class: 'tb-cov tb-cov--st', id });
   const svg = sv('svg', { viewBox: '0 0 370 330', class: 'tb-cov-svg', role: 'img' });
   const fills = defs(svg);
   const front = figureSvg('front', cov, fills); front.setAttribute('transform', 'translate(10 24)'); svg.append(front);

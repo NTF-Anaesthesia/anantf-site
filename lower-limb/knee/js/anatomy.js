@@ -1,8 +1,8 @@
 // Knee page: anatomy chapter (the femoral nerve's branches down the thigh, the four quadrants of the anterior capsule,
 // the popliteal plexus at the back, and the skin). Original schematic drawings (SVG), not traced from any published figure.
 // Clinical colours: nerves yellow, arteries red, veins blue, local anaesthetic blue.
-import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../../truncal/shared/js/ui.js';
-import { legViewsFigure } from '../../shared/js/leg.js';
+import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../../shared/regional/js/ui.js';
+import { legViewsFigure } from '../../../shared/regional/js/figures/leg.js';
 
 const NERVE = '#e2b21c', NERVE_EDGE = '#7a5c00', ART = '#c0392b', VEIN = '#2f5d9e', LA = '#2c74b3';
 const INK = '#272722', MUTED = '#55534d', BONE = '#efe5cf', BONE_EDGE = '#9c8a64', MUSCLE = '#d8a796', MUSCLE_EDGE = '#a8695a';

@@ -1,7 +1,7 @@
 /* head-neck/ landing page: additions to ../truncal/landing.css (cards for five pages, the head coverage map). */
 .hn-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
 .tb-res-grid--text{grid-template-columns:minmax(0,1fr)}
-/* Coverage map from shared/js/head.js (the truncal shell styles are not loaded here). */
+/* Coverage map from ../shared/regional/js/figures/head.js (the truncal shell styles are not loaded here). */
 .tb-app .tb-cov{margin:0;max-width:440px}
 .tb-app .tb-cov-stage{border:1px solid var(--line);background:#fbf9f4;padding:8px}
 .tb-app .hn-cov-views{display:grid;gap:8px;grid-template-columns:repeat(2,minmax(0,1fr))}

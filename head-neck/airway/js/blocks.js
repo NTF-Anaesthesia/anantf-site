@@ -1,5 +1,5 @@
-// Airway: block data (schema: ../../../truncal/shared/DATA.md, "Block schema").
-import { headCoverageMap } from '../../shared/js/head.js';
+// Airway: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
+import { headCoverageMap } from '../../../shared/regional/js/figures/head.js';
 import { SCENES } from './scenes.js';
 
 const LIDO = 'All the lidocaine counts: sprays, nebuliser, blocks and transtracheal injection together. Keep the total within 9 mg/kg (adults; 4.5 mg/kg in children).';

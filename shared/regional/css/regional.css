@@ -1,7 +1,9 @@
-/* Truncal blocks: shared styles for truncal/<page>/ (shell, components, block chapters, scan viewer, coverage map).
+/* Regional anaesthesia app: shared styles for the engine pages (truncal/, head-neck/, lower-limb/): app bar, components,
+   block chapters, scan viewer, coverage map. Level control and tier hiding: levels.css (imported below).
    Design: DESIGN.md (paper, ink, one wine accent, square, hairlines, light only). Prefix: tb-.
    Teaching colours (nerves yellow, arteries red, veins blue, LA blue, ultrasound greys) are clinical codes. */
 
+@import url('levels.css?v=20261015');
 @font-face{font-family:'NTF Serif';src:url('../../../fonts/fraunces-roman.woff2') format('woff2');font-weight:300 600;font-display:swap}
 @font-face{font-family:'NTF Serif';src:url('../../../fonts/fraunces-italic.woff2') format('woff2');font-style:italic;font-weight:300 600;font-display:swap}
 @font-face{font-family:'NTF Sans';src:url('../../../fonts/inter.woff2') format('woff2');font-weight:300 700;font-display:swap}
@@ -15,13 +17,16 @@ body.tb-app{
   --tb-danger:#a12a1c;--tb-danger-bg:#fbebe7;--tb-warn:#7a4f00;--tb-warn-bg:#fbf1db;
   --tb-la:#2c74b3;--tb-la-dark:#1d4f7c;--tb-la-bg:#e3eef7;
   --tb-serif:'NTF Serif','Fraunces',Georgia,serif;--tb-sans:'NTF Sans',Inter,Arial,sans-serif;--tb-mono:'NTF Mono','JetBrains Mono',ui-monospace,Menlo,monospace;
-  --tb-header-h:92px;
+  --tb-header-h:0px; /* the site header scrolls away inside the app (one sticky bar); kept for older page CSS */
   margin:0;background:var(--tb-paper);color:var(--tb-ink);font:17px/1.65 var(--tb-sans);
   -webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden;
 }
-html:has(body.tb-app){color-scheme:light;scroll-padding-top:160px;background:#f7f5ef}
-@media (max-width:900px){html:has(body.tb-app){scroll-padding-top:144px}body.tb-app{--tb-header-h:80px}}
-@media (prefers-reduced-motion:no-preference){html:has(body.tb-app){scroll-behavior:smooth}}
+/* --ra-bar: height of the one sticky app bar. Deep-link targets land just below it. */
+:root:has(body.tb-app){--ra-bar:56px}
+html:has(body.tb-app){color-scheme:light;scroll-padding-top:calc(var(--ra-bar) + 8px);background:#f7f5ef}
+.tb-app :is(main [id],.tb-chapter){scroll-margin-top:calc(var(--ra-bar) + 8px)}
+/* One sticky bar inside app pages: the site header scrolls away with the page (scoped to app pages only). */
+body:is(.tb-app,.ra-app) .ntf-header{position:static}
 
 /* ------------------------------------------------------------------ base */
 .tb-app *,.tb-app *::before,.tb-app *::after{box-sizing:border-box}
@@ -41,6 +46,8 @@ html:has(body.tb-app){color-scheme:light;scroll-padding-top:160px;background:#f7
 .tb-app main :is(p,li,dd){max-width:68ch}
 .tb-app main :is(ul,ol):not([class]){padding-left:1.3em}
 .tb-app main li:not([class])+li{margin-top:6px}
+/* component lists are grids or rows: no list spacing (it pushed the first tile and the first step button 6px higher) */
+.tb-app main :is(.tb-tiles,.tb-scan-steps,.tb-stepper-steps,.tb-hubch,.tb-sresults,.tb-layers,.tb-chmenu-list,.tb-chmenu-extra,.tb-ind-list)>li:not([class])+li{margin-top:0}
 .tb-app main :is(ul,ol):not([class]) li::marker{color:var(--tb-muted)}
 .tb-app main strong{font-weight:600}
 .tb-app :is(code,.tb-mono){font-family:var(--tb-mono);font-size:.92em}
@@ -59,6 +66,12 @@ html:has(body.tb-app){color-scheme:light;scroll-padding-top:160px;background:#f7
 .tb-app .ntf-crumbs a{color:var(--tb-muted);display:inline-flex;align-items:center;min-height:44px}
 .tb-app .ntf-crumbs [aria-current=page]{color:var(--tb-ink)}
 .tb-app .ntf-crumbs a:focus-visible{outline:2px solid var(--tb-wine);outline-offset:2px}
+/* phones: one line back to the region ("← Lower-limb blocks") */
+@media (max-width:600px){
+  .tb-app .ntf-crumbs>span,.tb-app .ntf-crumbs>a:not(:last-of-type){display:none}
+  .tb-app .ntf-crumbs>a:last-of-type{display:inline-flex;gap:6px;color:var(--tb-ink);font-size:14px;text-decoration:none}
+  .tb-app .ntf-crumbs>a:last-of-type::before{content:'←';color:var(--tb-wine)}
+}
 .tb-app .tb-prose>:last-child{margin-bottom:0}
 .tb-app .tb-mount-error,.tb-app .tb-noscript{font-size:15px;color:var(--tb-danger);background:var(--tb-danger-bg);border-left:3px solid var(--tb-danger);padding:12px 16px;max-width:68ch}
 
@@ -75,8 +88,10 @@ html:has(body.tb-app){color-scheme:light;scroll-padding-top:160px;background:#f7
 .tb-app .tb-tool svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 
 /* ------------------------------------------------------------------ sticky bar */
-.tb-app .tb-bar{position:sticky;top:var(--tb-header-h);z-index:50;background:rgba(247,245,239,.97);border-bottom:1px solid var(--tb-line)}
-.tb-app .tb-bar-inner{display:flex;align-items:center;gap:8px;min-height:56px;padding-block:6px}
+.tb-app .tb-bar{position:sticky;top:0;z-index:50;background:var(--tb-paper);border-bottom:1px solid var(--tb-line)}
+.tb-app .tb-bar-inner{position:relative;display:flex;align-items:center;gap:8px;min-height:55px;padding-block:4px}
+.tb-app .tb-bar-level{flex-shrink:0;display:flex}
+.tb-app .tb-bar-home--back svg{stroke-width:1.9}
 .tb-app .tb-bar-home{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 8px;border:1px solid var(--tb-line-strong);color:var(--tb-ink);font:500 15px/1 var(--tb-sans);text-decoration:none;flex-shrink:0;background:var(--tb-paper)}
 .tb-app .tb-bar-home svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .tb-app .tb-bar-home[hidden]{display:none}
@@ -94,7 +109,7 @@ html:has(body.tb-app){color-scheme:light;scroll-padding-top:160px;background:#f7
 .tb-app .tb-chmenu-cur{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tb-app .tb-chmenu-caret{flex-shrink:0;width:8px;height:8px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:translateY(-2px) rotate(45deg)}
 .tb-app .tb-chmenu-btn[aria-expanded=true] .tb-chmenu-caret{transform:translateY(2px) rotate(-135deg)}
-.tb-app .tb-chmenu-panel{position:absolute;left:0;top:calc(100% + 4px);z-index:60;width:max(100%,min(360px,calc(100vw - 32px)));max-height:min(70vh,560px);overflow-y:auto;background:var(--tb-paper);border:1px solid var(--tb-line-strong);border-top:2px solid var(--tb-wine);box-shadow:0 12px 24px rgba(0,0,0,.14)}
+.tb-app .tb-chmenu-panel{position:absolute;left:0;top:calc(100% + 4px);z-index:60;width:max(100%,min(360px,calc(100vw - 32px)));max-width:calc(100vw - 16px);max-height:min(70vh,560px);overflow-y:auto;background:var(--tb-paper);border:1px solid var(--tb-line-strong);border-top:2px solid var(--tb-wine);box-shadow:0 12px 24px rgba(0,0,0,.14)}
 .tb-app .tb-chmenu-panel[hidden]{display:none}
 .tb-app .tb-chmenu-list{list-style:none;margin:0;padding:4px 0}
 .tb-app .tb-chmenu-list li{margin:0}
@@ -102,13 +117,33 @@ html:has(body.tb-app){color-scheme:light;scroll-padding-top:160px;background:#f7
 .tb-app .tb-chmenu-list a:hover{background:var(--tb-hover)}
 .tb-app .tb-chmenu-list a:focus-visible{outline-offset:-3px;background:var(--tb-hover)}
 .tb-app .tb-chmenu-list a[aria-current=page]{background:var(--tb-blush);box-shadow:inset 3px 0 0 var(--tb-wine);font-weight:500}
-@media (min-width:1240px){.tb-app .tb-chlist{display:flex}.tb-app .tb-chmenu{display:none}.tb-app .tb-chnav{justify-content:center}}
+/* extra rows under the chapter list: copy link (phones only), the region landing, the front door */
+.tb-app .tb-chmenu-extra{list-style:none;margin:0;padding:4px 0;border-top:1px solid var(--tb-line)}
+.tb-app .tb-chmenu-extra li{margin:0}
+.tb-app .tb-chmenu-act{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:8px 14px;border:0;background:none;color:var(--tb-ink);font:15px/1.35 var(--tb-sans);text-align:left;text-decoration:none;cursor:pointer}
+.tb-app .tb-chmenu-act:hover{background:var(--tb-hover)}
+.tb-app .tb-chmenu-act:focus-visible{outline-offset:-3px;background:var(--tb-hover)}
+.tb-app .tb-chmenu-act svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:var(--tb-wine);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tb-app .tb-chmenu-share-li{display:none}
+@media (min-width:1240px){.tb-app .tb-bar:not(.tb-bar--menu) .tb-chlist{display:flex}.tb-app .tb-bar:not(.tb-bar--menu) .tb-chmenu{display:none}.tb-app .tb-chnav{justify-content:center}}
 .tb-app .tb-bar-btn{flex-shrink:0;padding:0 14px;font-weight:400}
 @media (max-width:1239px){.tb-app .tb-bar-btn{width:44px;padding:0}.tb-app .tb-bar-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}}
-@media (max-width:420px){.tb-app .tb-bar-inner{gap:6px}.tb-app .tb-bar-home span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.tb-app .tb-bar-home{padding:0;min-width:44px;justify-content:center}}
+/* phones: home (icon), chapter menu, search, level. Copy link moves into the chapter menu; the menu spans the bar. */
+@media (max-width:600px){
+  .tb-app .tb-bar-inner{gap:6px}
+  .tb-app .tb-bar-home span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .tb-app .tb-bar-home{padding:0;min-width:44px;justify-content:center}
+  .tb-app #tb-share{display:none}
+  .tb-app .tb-chmenu-share-li{display:block}
+  .tb-app .tb-chmenu{position:static}
+  .tb-app .tb-chmenu-panel{left:var(--site-gutter,16px);right:var(--site-gutter,16px);width:auto;max-width:none}
+  .tb-app .tb-chmenu-btn{padding:0 10px}
+  .tb-app .tb-bar-level .ra-level-btn{padding:0 6px}
+}
+@media (max-width:480px){.tb-app .tb-chmenu-k{display:none}}
 
 /* search */
-.tb-app .tb-sheet{position:fixed;z-index:56;left:0;right:0;top:calc(var(--tb-header-h) + 57px);max-height:calc(100vh - var(--tb-header-h) - 80px);overflow-y:auto;background:var(--tb-paper);border-bottom:2px solid var(--tb-wine);box-shadow:0 12px 24px rgba(0,0,0,.12)}
+.tb-app .tb-sheet{position:absolute;z-index:56;left:0;right:0;top:100%;max-height:calc(100dvh - var(--ra-bar) - 12px);overflow-y:auto;overscroll-behavior:contain;background:var(--tb-paper);border-bottom:2px solid var(--tb-wine);box-shadow:0 12px 24px rgba(0,0,0,.12)}
 .tb-app .tb-sheet[hidden]{display:none}
 .tb-app .tb-sheet-inner{padding-block:12px 16px}
 .tb-app .tb-search-row{display:flex;gap:8px;align-items:stretch}
@@ -124,6 +159,7 @@ html:has(body.tb-app){color-scheme:light;scroll-padding-top:160px;background:#f7
 .tb-app .tb-sres-t{display:block;font:500 15px/1.35 var(--tb-sans)}
 .tb-app .tb-sres-c{display:block;font:400 12px/1.6 var(--tb-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--tb-wine)}
 .tb-app .tb-sres-s{display:block;font-size:14px;line-height:1.5;color:var(--tb-muted)}
+.tb-app .tb-sres-tier{text-transform:none;letter-spacing:0;color:var(--tb-muted)}
 .tb-app .tb-sres mark{background:var(--tb-warn-bg);color:var(--tb-ink);padding:0 1px}
 .tb-app .tb-sres-none{padding:12px;color:var(--tb-muted);background:var(--tb-paper);border:1px solid var(--tb-line);list-style:none;font-size:15px}
 
@@ -150,7 +186,10 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app main .tb-hubch a:hover,.tb-app main .tb-hubch a:focus-visible{background:var(--tb-hover)}
 .tb-app .tb-hubch-t{font:500 16px/1.35 var(--tb-sans)}
 .tb-app .tb-hubch-d{font-size:14px;line-height:1.45;color:var(--tb-muted)}
-.tb-app .tb-hub-back{margin-top:28px;font-size:15px}
+.tb-app .tb-hub-back{margin-top:28px;font-size:15px;line-height:1.4}
+.tb-app main .tb-hub-back a{display:inline-block;padding-block:11px;line-height:22px}
+/* inline links in the credit lines: at least 24px tall to tap */
+.tb-app :is(.tb-credit,.tb-foot) a{padding-block:4px}
 .tb-app .tb-pager{display:grid;grid-template-columns:1fr;gap:8px;margin:44px 0 8px;padding-top:20px;border-top:1px solid var(--tb-line-strong)}
 @media (min-width:700px){.tb-app .tb-pager{grid-template-columns:1fr auto 1fr}}
 .tb-app main a.tb-pager-a{display:flex;flex-direction:column;justify-content:center;min-height:56px;padding:8px 14px;border:1px solid var(--tb-line-strong);background:var(--tb-paper);color:var(--tb-ink);text-decoration:none}
@@ -367,3 +406,26 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app .tb-stepper{display:grid;gap:12px}
 .tb-app main .tb-stepper-steps{margin:0}
 .tb-app .tb-stepper-nav{grid-template-columns:1fr 1fr}
+
+/* ------------------------------------------------------------------ level hints, long sections, 3D card, animation */
+.tb-app main .ra-hidden-hint{max-width:72ch}
+.tb-app main .ra-tier-badge{margin:0 0 8px}
+.tb-app .tb-bsec>.ra-tier-badge+:is(h2,h3){margin-top:0}
+.tb-app .ra-more{margin-top:8px}
+.tb-app .ra-more>summary{font-size:15px;color:var(--tb-wine)}
+.tb-app .ra-a3d{padding:14px 16px;background:var(--tb-inset);border-left:3px solid var(--tb-wine);max-width:72ch}
+.tb-app .ra-a3d-lead{margin:0 0 12px;font-size:16px}
+.tb-app .ra-a3d-actions{display:flex;flex-wrap:wrap;gap:8px}
+.tb-app main .ra-a3d-actions a.tb-btn{text-decoration:none;color:var(--tb-ink)}
+.tb-app .ra-a3d-host{margin-top:12px;min-height:200px;background:var(--tb-paper);border:1px solid var(--tb-line)}
+.tb-app .ra-a3d-host[hidden]{display:none}
+.tb-app .ra-a3d-loading{margin:0;padding:16px;color:var(--tb-muted);font-size:15px}
+.tb-app .ra-watch{max-width:none}
+.tb-app .ra-watch-fig{margin:0}
+.tb-app .ra-watch-frame{display:block;width:100%;height:520px;border:1px solid var(--tb-line);background:var(--tb-paper)}
+.tb-app .ra-watch-cap{margin-top:8px;font-size:14px;color:var(--tb-muted)}
+@media print{.tb-app .ra-watch,.tb-app .ra-a3d-actions{display:none!important}}
+/* "Back to MO" after a deep link raised the level: below 1024px it hangs under the bar's right edge, so the bar keeps its layout */
+@media (max-width:1023px){
+  .tb-app .tb-bar-level .ra-level-back{position:absolute;top:calc(100% + 1px);right:var(--site-gutter,16px);z-index:55;border-top:0;box-shadow:0 6px 12px rgba(0,0,0,.08)}
+}

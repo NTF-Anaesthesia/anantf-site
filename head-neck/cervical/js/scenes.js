@@ -1,8 +1,8 @@
 // Cervical plexus: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../../truncal/shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
-// nothing is traced from published images. Probe insets use the head figure (../../shared/js/head.js).
-import { E, P, PS, L } from '../../../truncal/shared/js/scene.js';
-import { headProbeInset } from '../../shared/js/head.js';
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
+// nothing is traced from published images. Probe insets use the head figure (../../../shared/regional/js/figures/head.js).
+import { E, P, PS, L } from '../../../shared/regional/js/scene.js';
+import { headProbeInset } from '../../../shared/regional/js/figures/head.js';
 
 export const SCENES = {
   // Right neck, transverse at the midpoint of the posterior border of sternocleidomastoid (about C4).

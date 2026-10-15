@@ -1,9 +1,9 @@
-// Foot and ankle blocks: block data (schema: ../../../truncal/shared/DATA.md, "Block schema"; leg figures:
+// Foot and ankle blocks: block data (schema: ../../../shared/regional/DATA.md, "Block schema"; leg figures:
 // ../../shared/LEG.md). Popliteal and ankle doses are Dr Chew Shi Hao's (the owner's decision); the below-knee saphenous
 // doses come from the literature (sources in the notes file, not on the page). Text is plain, with no citations.
-import { el } from '../../../truncal/shared/js/ui.js';
-import { mountScan } from '../../../truncal/shared/js/scan.js';
-import { legCoverageMap } from '../../shared/js/leg.js';
+import { el } from '../../../shared/regional/js/ui.js';
+import { mountScan } from '../../../shared/regional/js/scan.js';
+import { legCoverageMap } from '../../../shared/regional/js/figures/leg.js';
 import { animFigure } from '../../shared/js/anim.js';
 import { SCENES } from './scenes.js';
 import { ankleSection } from './anatomy.js';

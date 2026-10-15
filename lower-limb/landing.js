@@ -1,7 +1,7 @@
 /* Lower-limb blocks landing page: "Which block for which operation" chooser.
    Doses are the ones used on the block pages (Dr Chew Shi Hao's for his blocks; literature doses for the newer ones).
    No sources or references are shown on the page (as on the truncal and head and neck pages). */
-import { legCoverageMap } from './shared/js/leg.js';
+import { legCoverageMap } from '../shared/regional/js/figures/leg.js';
 
 /* Where each block lives: [href, link text, page name]. */
 const L = {

@@ -1,10 +1,10 @@
 // Foot and ankle blocks: ultrasound and landmark scenes (millimetres; x across the screen from the left, y = depth
-// from the skin). Schema: ../../../truncal/shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical
+// from the skin). Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical
 // adult depths and sizes (slim to average build, right leg); nothing is traced from published images. Probe insets use
-// the leg figure (../../shared/js/leg.js). In every view the needle enters from screen right, the probe marker is on
+// the leg figure (../../../shared/regional/js/figures/leg.js). In every view the needle enters from screen right, the probe marker is on
 // the needle side, and both ends of the image are named.
-import { E, P, L } from '../../../truncal/shared/js/scene.js';
-import { legProbeInset } from '../../shared/js/leg.js';
+import { E, P, L } from '../../../shared/regional/js/scene.js';
+import { legProbeInset } from '../../../shared/regional/js/figures/leg.js';
 
 // A closed ring of points (for a thin membrane drawn as an open polyline that closes on itself).
 const ring = (cx, cy, rx, ry, n = 28) => Array.from({ length: n + 1 }, (_, i) => {

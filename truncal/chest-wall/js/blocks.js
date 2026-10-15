@@ -1,4 +1,4 @@
-// Chest wall: block data (schema: ../../shared/DATA.md, "Block schema").
+// Chest wall: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
 import { SCENES } from './scenes.js';
 
 

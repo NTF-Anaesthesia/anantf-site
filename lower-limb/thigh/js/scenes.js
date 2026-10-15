@@ -1,11 +1,11 @@
 // Thigh page: ultrasound scenes for the proximal sciatic approaches and the posterior femoral cutaneous nerve
-// (millimetres; x across the screen from the left, y = depth from the skin). Schema: ../../../truncal/shared/DATA.md
+// (millimetres; x across the screen from the left, y = depth from the skin). Schema: ../../../shared/regional/DATA.md
 // ("Scene schema"). Geometry is original, laid out from typical adult depths and sizes (slim to average build, right
 // leg); nothing is traced from published images. These are curvilinear-probe views (coarser speckle, deeper field).
 // In every view the needle enters from screen right, the probe marker is on the needle side, and both ends of the
 // image are named.
-import { E, P, L } from '../../../truncal/shared/js/scene.js';
-import { legProbeInset } from '../../shared/js/leg.js';
+import { E, P, L } from '../../../shared/regional/js/scene.js';
+import { legProbeInset } from '../../../shared/regional/js/figures/leg.js';
 
 const ring = (cx, cy, rx, ry, n = 28) => Array.from({ length: n + 1 }, (_, i) => {
   const a = (i / n) * Math.PI * 2;

@@ -1,5 +1,5 @@
 // Truncal blocks: small DOM helpers shared by the shell, the block renderer and page modules.
-// Every component uses `tb-*` classes styled in shared/css/truncal.css.
+// Every component uses `tb-*` classes styled in shared/regional/css/regional.css.
 
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));

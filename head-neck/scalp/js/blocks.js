@@ -1,5 +1,5 @@
-// Scalp and occipital: block data (schema: ../../../truncal/shared/DATA.md, "Block schema").
-import { headCoverageMap, viewsFigure } from '../../shared/js/head.js';
+// Scalp and occipital: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
+import { headCoverageMap, viewsFigure } from '../../../shared/regional/js/figures/head.js';
 import { SCENES } from './scenes.js';
 
 /** The seven injection sites, numbered to match the key. */

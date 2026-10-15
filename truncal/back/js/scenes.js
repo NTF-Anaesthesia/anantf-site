@@ -1,7 +1,7 @@
 // Back: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
 // nothing is traced from published images.
-import { E, PS, L } from '../../shared/js/scene.js';
+import { E, PS, L } from '../../../shared/regional/js/scene.js';
 
 // Square-shouldered transverse process (sharp polygon): flat posterior surface, squared corners.
 const tp = (x0, x1, top, bot) => PS([x0, top + 0.5], [x0 + 0.6, top], [x1 - 0.6, top], [x1, top + 0.5], [x1, bot], [x0, bot]);

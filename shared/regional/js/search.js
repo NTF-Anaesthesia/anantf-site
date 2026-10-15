@@ -1,6 +1,9 @@
-// Truncal blocks: page search. Indexes the text of every chapter (plus registerSearch items) and lists matches.
+// Regional anaesthesia app: page search. Indexes the text of every chapter (plus registerSearch items) and lists matches.
 // Synonyms: each row is a group of terms that mean the same thing to a reader. Pages may add rows with addSynonyms().
+// Level-aware: content the reader's level hides is still found, tagged "(Resident)" / "(Consultant)"; opening it goes
+// through the shell's hash routing, which relaxes the level for that view without saving it (levels.js relaxFor).
 import { $, $$, el, getSearchExtras } from './ui.js';
+import { tierOf, tierMax, TIER_NAMES } from './levels.js';
 
 const SYN = [
   ['tap', 'transversus abdominis plane', 'transversus abdominis', 'tap block'],
@@ -65,7 +68,7 @@ export function buildIndex() {
     const chTitle = chapter.dataset.title || '';
     let head = null;
     for (const node of $$(TEXT, chapter)) {
-      if (node.closest('.tb-pager,.tb-sr,[aria-hidden="true"],script,style,.tb-scan-stage')) continue;
+      if (node.closest('.tb-pager,.tb-sr,.ra-sr,[aria-hidden="true"],script,style,.tb-scan-stage,.ra-tier-badge,.ra-hidden-hint,.ra-level-picker')) continue;
       const text = (node.textContent || '').replace(/\s+/g, ' ').trim();
       if (text.length < 3) continue;
       const isHead = node.matches(HEAD);
@@ -74,12 +77,12 @@ export function buildIndex() {
       if (!isHead && target && (/^(ch-|mount-)/.test(target.id) || target.tagName === 'SECTION') && head && chapter.contains(head)) target = head;
       if (!target) continue;
       const title = isHead ? text : (head ? head.textContent.replace(/\s+/g, ' ').trim() : chTitle);
-      out.push({ title, text: isHead ? '' : text, id: target.id, chapter: chTitle, head: isHead, tl: norm(title), xl: norm(isHead ? '' : text) });
+      out.push({ title, text: isHead ? '' : text, id: target.id, chapter: chTitle, head: isHead, tl: norm(title), xl: norm(isHead ? '' : text), tier: Math.max(tierOf(node), tierOf(target)) });
     }
   }
   for (const x of getSearchExtras()) {
     const t = document.getElementById(x.id);
-    out.push({ title: x.title, text: x.text, id: x.id, chapter: t?.closest('.tb-chapter')?.dataset.title || '', head: !x.text, tl: norm(x.title), xl: norm(x.text) });
+    out.push({ title: x.title, text: x.text, id: x.id, chapter: t?.closest('.tb-chapter')?.dataset.title || '', head: !x.text, tl: norm(x.title), xl: norm(x.text), tier: t ? tierOf(t) : 1 });
   }
   entries = out;
   builtAt = Date.now();
@@ -148,10 +151,12 @@ export function attachSearch(input, list, { onPick, onEscape } = {}) {
     const res = runSearch(q);
     if (!res.length) { list.append(el('li', { class: 'tb-sres-none', text: 'No results. Try another word, for example a block, a muscle or an operation.' })); say('No results'); return; }
     say(`${res.length} result${res.length === 1 ? '' : 's'}`);
+    const max = tierMax();
     for (const r of res) {
+      const hidden = r.tier > max;
       const a = el('a', { class: 'tb-sres', href: `#${r.id}` },
         el('span', { class: 'tb-sres-t', text: r.title }),
-        el('span', { class: 'tb-sres-c', text: r.chapter }),
+        el('span', { class: 'tb-sres-c' }, r.chapter, hidden ? el('span', { class: 'tb-sres-tier', text: ` (${TIER_NAMES[r.tier]})` }) : null),
         el('span', { class: 'tb-sres-s' }, snippet(r.head && !r.text ? r.title : (r.text || r.title), r.units)));
       a.addEventListener('click', () => onPick?.());
       list.append(el('li', {}, a));

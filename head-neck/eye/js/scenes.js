@@ -1,10 +1,10 @@
 // Eye: schematic sections of the orbit for the landmark eye blocks (no ultrasound: scene.image = 'diagram').
 // The orbit is drawn as a sagittal section turned on its side so that depth into the orbit runs down the screen:
 // the front of the eye is at the top, the orbital apex at the bottom, the roof on the left and the floor on the right.
-// Millimetres; schema ../../../truncal/shared/DATA.md. Original geometry from typical adult dimensions (axial length
+// Millimetres; schema ../../../shared/regional/DATA.md. Original geometry from typical adult dimensions (axial length
 // about 24 mm, orbit about 45 mm deep); nothing is traced from published images.
-import { E, P, L } from '../../../truncal/shared/js/scene.js';
-import { headProbeInset } from '../../shared/js/head.js';
+import { E, P, L } from '../../../shared/regional/js/scene.js';
+import { headProbeInset } from '../../../shared/regional/js/figures/head.js';
 
 const G = { cx: 24, cy: 12.2, r: 11.8 };             // globe
 const arc = (r, a0, a1, n = 24) => Array.from({ length: n + 1 }, (_, i) => {

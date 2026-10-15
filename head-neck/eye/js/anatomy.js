@@ -1,5 +1,5 @@
 // Eye: anatomy, topical anaesthesia and comparison chapters.
-import { el, fill, table, callout, keyPoints, registerSearch } from '../../../truncal/shared/js/ui.js';
+import { el, fill, table, callout, keyPoints, registerSearch } from '../../../shared/regional/js/ui.js';
 
 export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'ey-anat-h', text: 'Anatomy: the orbit and its nerves' }));

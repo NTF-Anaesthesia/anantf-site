@@ -1,6 +1,6 @@
 /* Head and neck blocks landing page: "Which block for which operation" chooser.
    No sources or references are shown (as on the truncal pages). */
-import { headCoverageMap } from './shared/js/head.js';
+import { headCoverageMap } from '../shared/regional/js/figures/head.js';
 
 /* Where each block lives: page + chapter (or element) anchor. */
 const BLOCK_LINKS = {

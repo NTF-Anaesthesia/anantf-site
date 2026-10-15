@@ -1,6 +1,6 @@
 // Lower-limb blocks: original, schematic drawings of the right lower limb for coverage maps, probe insets and
-// anatomy figures. Drop-in partners of the truncal dermatome map (../../../truncal/shared/js/dermatomes.js), like
-// head-neck/shared/js/head.js:
+// anatomy figures. Drop-in partners of the truncal dermatome map (../dermatomes.js), like
+// figures/head.js:
 //   legCoverageMap(coverage, {id, title})   -> <figure class="tb-cov ll-cov"> (pass as coverage.map in a block)
 //   legProbeInset(probe, opts)              -> small limb SVG with the probe or the needle entry points (scene.probeInset)
 //   legFigure(view, {zones, density, points, labels, tint}) -> one view as an <svg>, for anatomy chapters
@@ -9,8 +9,8 @@
 // top of the foot, toes at the top, medial on the viewer's left; an addition to LEG.md for the foot zones).
 // Zones are schematic areas of skin (cutaneous) or deep structures (joint and bone, drawn as outlined, cross-hatched
 // glyphs labelled "deep"). Density is shown by fill strength, pattern and words, never by colour alone.
-import { el, sv } from '../../../truncal/shared/js/ui.js';
-import { DENSITY } from '../../../truncal/shared/js/dermatomes.js';
+import { el, sv } from '../ui.js';
+import { DENSITY } from '../dermatomes.js';
 
 // ---------------------------------------------------------------- geometry helpers
 function smooth(pts, closed = true) {

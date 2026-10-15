@@ -1,25 +1,25 @@
 # Lower-limb blocks: section notes and the leg figure API
 
-The lower-limb section (`lower-limb/`) runs on the shared regional engine in `truncal/shared/` (see
-`truncal/shared/DATA.md`). Pages supply data; they do not edit `truncal/shared/`. Lower-limb extras live here:
+The lower-limb section (`lower-limb/`) runs on the shared regional engine in `shared/regional/` (see
+`shared/regional/DATA.md`). Pages supply data; they do not edit `shared/regional/`. Lower-limb extras live here:
 
 ```
 lower-limb/shared/
-  js/leg.js        leg figures: coverage maps, probe insets, anatomy figures (this file's API)
+  js/leg.js        shim only: the leg figures moved to shared/regional/js/figures/leg.js (this file's API)
   js/anim.js       animFigure(slug): Dr Chew Shi Hao's animated block demonstrations, embedded from lower-limb/anim/
-  css/lowerlimb.css  section styles (prefix ll-), loaded after truncal.css
+  css/lowerlimb.css  section styles (prefix ll-), loaded after shared/regional/css/regional.css
 lower-limb/anim/   frozen copy of his animation engine and block modules, shown in embed mode inside an iframe
 ```
 
 Pages: `lower-limb/index.html` (landing and operation chooser), `hip/`, `knee/`, `foot-ankle/`, `thigh/`.
 Each page copies the truncal page template (`truncal/abdominal-wall/index.html`) with paths one level deeper for the
-engine (`../../truncal/shared/…`), breadcrumbs **Resources / Regional anaesthesia / Lower-limb blocks / <Page>**, and the
+engine (`../../shared/regional/…`), breadcrumbs **Resources / Regional anaesthesia / Lower-limb blocks / <Page>**, and the
 credit **"Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia"**.
 
-## leg.js API (drop-in partners of the truncal dermatome functions, like `head-neck/shared/js/head.js`)
+## leg.js API (drop-in partners of the truncal dermatome functions, like `shared/regional/js/figures/head.js`)
 
 ```js
-import { legCoverageMap, legProbeInset, legFigure, LANDMARKS, ZONES } from '../../shared/js/leg.js';
+import { legCoverageMap, legProbeInset, legFigure, LANDMARKS, ZONES } from '../../../shared/regional/js/figures/leg.js';
 coverage: { map: legCoverageMap, side: 'unilateral', views: ['front','back'],   // views optional (default: those used)
             areas: [{ zones: ['femoral-ant', 'saphenous'], density: 'dense' },
                     { zones: ['knee-ant'], density: 'moderate' }],

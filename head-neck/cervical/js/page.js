@@ -1,5 +1,5 @@
 // Cervical plexus page: wires the shared truncal shell to this page's chapters and data.
-import { bootPage } from '../../../truncal/shared/js/shell.js';
+import { bootPage } from '../../../shared/regional/js/shell.js';
 import { BLOCKS } from './blocks.js';
 import { renderAnatomy } from './anatomy.js';
 
