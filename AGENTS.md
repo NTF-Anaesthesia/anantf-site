@@ -47,6 +47,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `truncal/` | Truncal blocks: landing page with the "which block for which operation" chooser, and `back/`, `chest-wall/`, `abdominal-wall/` pages on a shared engine in `truncal/shared/` (see `truncal/shared/DATA.md`) | No (unlisted; card on Regional) |
 | `head-neck/` | Head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the truncal engine (`truncal/shared/`) plus head figures in `head-neck/shared/js/head.js` | No (unlisted; card on Regional, link from Airway) |
 | `babymo/` | Baby MO test: the department's MCQ test for new medical officers (MOs enter a name and a shared passphrase; faculty edit questions and see results in the app). Own Firebase project `ntf-mo-portal`; start with `babymo/NOTES.md`. The real question bank is not in this repo | No (unlisted) |
+| `mo/` | MO guide: the practical learning app for new medical officers (handbook and beyond: learn topics, drug doses by weight, crisis cards, calculators, scenarios, flashcards; progress on the phone only). Start with `mo/NOTES.md`; content format in `mo/CONTENT.md` | No (unlisted) |
 | `lower-limb/` | Lower-limb blocks: landing page with the operation chooser, and `hip/`, `knee/`, `foot-ankle/`, `thigh/` pages on the truncal engine (`truncal/shared/`) plus leg figures and the embedded animations in `lower-limb/shared/` (see `lower-limb/shared/LEG.md`). Created by Dr Koh Wenjun and Dr Chew Shi Hao | No (unlisted; card on Regional) |
 | `lower-limb/anim/` | Dr Chew Shi Hao's animated block demonstrations (his engine and block modules, shown inside the lower-limb pages in an iframe) | No |
 | `popliteal-animation/` | Archived copy of Dr Chew Shi Hao's original popliteal block page (frozen; do not edit) | No (unlisted) |
@@ -72,12 +73,13 @@ warning colours) are never recoloured to the brand.
   and drop "draft" from its breadcrumb.
 
 - The main navigation is Airway, Regional Anaesthesia, POCUS and MMed Exam Prep. Don't add department, recruitment or handbook pages back.
-- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `popliteal-animation/` or `babymo/` from the homepage, and keep their
+- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `popliteal-animation/`, `babymo/` or `mo/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
 - `babymo/` is an installable app (service worker): after changing any file listed in `SHELL` in `babymo/sw.js` (pages, scripts, styles, manifest, icons) run `node babymo/tools/stamp.mjs`, or phones keep the old files (`node babymo/test/version.test.mjs` checks). Its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/version.test.mjs`, `node babymo/test/e2e.mjs`, `node babymo/test/pwa.e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit the real question bank, names or results.
-- Every installable app (one with a service worker, today `babymo/`) ends its settings or start page with two lines of small
+- `mo/` (the MO guide) is an installable app too: after changing any file in `mo/` (content included) run `node mo/tools/stamp.mjs`, which rewrites the offline file lists and `VERSION` in `mo/sw.js` (`node mo/test/version.test.mjs` checks). Its tests are `node mo/test/calc.test.mjs`, `node mo/test/content.test.mjs`, `node mo/test/version.test.mjs`, `node mo/test/e2e.mjs` and `node mo/test/pwa.e2e.mjs`. Its content is data (`mo/js/content/`, `mo/js/data/`; format in `mo/CONTENT.md`); keep the handbook's administrative sections, names and phone numbers out of it.
+- Every installable app (one with a service worker, today `babymo/` and `mo/`) ends its settings or start page with two lines of small
   muted text (owner, 14 Oct 2026, as on anawj.com): `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
   read from the app's cache name) and a `Not updating? Get the latest version` button that checks for signal, then
   removes only that app's service worker and caches and reloads, never touching saved answers or sign-in.
@@ -127,6 +129,10 @@ The AC guide, its redirect, editing tools and public links were removed at the o
 On 14 October 2026 the department pages (About us, Why join us, For clinical fellows), the Senior resident guide and the
 encrypted MOPEX / MO handbook (`mopex/`, `tools/encrypt-mopex.mjs`) were removed at Dr Chew Shi Hao's request: department
 and recruitment content belongs on ntfgh.com.sg, and the handbook belongs on the intranet. Do not restore them unless explicitly requested.
+
+The MO guide (`mo/`, added at the owner's request on 15 Oct 2026) teaches the handbook's clinical content as a learning
+app; it is not the handbook. The handbook's administrative sections (rosters, leave, MC, who to email), names and phone
+numbers stay on the intranet and must not be added to it.
 
 ## Claude Code–Codex handovers
 
