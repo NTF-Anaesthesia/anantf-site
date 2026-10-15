@@ -139,3 +139,10 @@ dialog{border:1px solid var(--line-strong);padding:1.3rem;max-width:min(28rem,92
 /* app version and "Get the latest version", at the foot of the start page and Settings */
 .appver{margin-top:2.5rem;border-top:1px solid var(--line);padding-top:.6rem;color:var(--muted);font-size:14px;line-height:1.5}.appver p{margin:.2rem 0}
 .appver .link{font-size:14px;color:var(--muted);text-decoration-color:var(--line-strong);min-height:44px}.appver .link:disabled{opacity:.6;cursor:default}
+/* phones: no grey flash on tap, no double-tap zoom delay */
+html{-webkit-tap-highlight-color:transparent}
+a,button,label,select,summary,.chip,.btn{touch-action:manipulation}
+/* a row that must stay on one line gets smaller type before it ever wraps (big phone text sizes, narrow phones) */
+.row.one>*{font-size:clamp(11px,3.3vw,14px);padding-left:.25rem;padding-right:.25rem}
+.row.one .btn{padding-left:.25rem;padding-right:.25rem}
+#nav a{font-size:clamp(11px,3.6vw,14px);padding-left:.2rem;padding-right:.2rem}
