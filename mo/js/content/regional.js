@@ -170,7 +170,7 @@ export default {
           { t: 'p', text: 'These are the handbook\'s risks for a spinal or epidural. Counsel for every technique that might be used, and promise none: the anaesthetist on the day decides with the patient ([counselling](#/learn/preop/counselling)).' },
         ] },
         { t: 'h', text: 'The drugs' },
-        { t: 'p', text: 'The usual drug is heavy (hyperbaric) bupivacaine 0.5%. It is heavier than CSF, so it sinks, and the patient\'s position after the injection shapes the block. The dose (usually `2–3 mL`, less in the elderly and frail) is your consultant's choice. Some use plain bupivacaine 0.5% for a frail patient with a hip fracture.' },
+        { t: 'p', text: 'The usual drug is heavy (hyperbaric) bupivacaine 0.5%. It is heavier than CSF, so it sinks, and the patient\'s position after the injection shapes the block. The dose (usually `2–3 mL`, less in the elderly and frail) is your consultant\'s choice. Some consultants use plain bupivacaine 0.5% for a frail patient with a hip fracture.' },
         { t: 'callout', kind: 'stop', title: 'The right drug into the spine', text: 'A wrong drug in the spine cannot be taken back. Whatever the drug:', items: [
           'It comes from a single-use ampoule meant for spinal use.',
           'It is drawn up through a filter needle.',
