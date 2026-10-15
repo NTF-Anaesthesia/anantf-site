@@ -98,6 +98,12 @@
       <button class="app-btn app-btn--plain" type="button">Plain</button>
       <button class="app-btn app-btn--secondary app-btn--compact" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 21V4M6 4h11l-2.5 4L17 12H6"/></svg>Flag</button>
     </div>
+    <div class="app-btn-row" role="toolbar" aria-label="Small toolbar buttons">
+      <button class="app-btn app-btn--outline app-btn--small" type="button">Front</button>
+      <button class="app-btn app-btn--outline app-btn--small" type="button">Side</button>
+      <button class="app-btn app-btn--outline app-btn--small" type="button">Top</button>
+      <button class="app-btn app-btn--plain app-btn--small" type="button">Reset</button>
+    </div>
   </section>
 
   <!-- Choices -->
@@ -161,6 +167,14 @@
       <button class="app-chip" type="button" aria-pressed="false">Paediatrics <span class="app-chip-count">9</span></button>
       <button class="app-chip" type="button" aria-pressed="false">Pharmacology <span class="app-chip-count">30</span></button>
       <button class="app-chip" type="button" aria-pressed="false">Equipment <span class="app-chip-count">6</span></button>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;min-width:0">
+      <span style="flex:none;font-size:15px;font-weight:600">Block</span>
+      <div class="app-chips app-chips--inline" role="group" aria-label="Block (inline chips)" style="min-width:0;flex:1">
+        <button class="app-chip" type="button" aria-pressed="true">Interscalene</button>
+        <button class="app-chip" type="button" aria-pressed="false">Supraclavicular</button>
+        <button class="app-chip" type="button" aria-pressed="false">Axillary</button>
+      </div>
     </div>
   </section>
 
