@@ -14,8 +14,8 @@
 //   attemptCounts/{key}             { n, updatedAt }                     (key = <cohort-slug>__<name-key>; sittings started; an MO can only raise it by 1, up to config/test maxAttempts)
 // config/test also has optional maxAttempts (default 2) and hardCount (from the paper when missing).
 // The questions are NOT in Firebase any more (15 Oct 2026): they come from the shared bank, ../qbank/bank/questions.json,
-// and the paper ../qbank/papers/babymo.json. The rules still allow the old questions and config/topics paths; the
-// app no longer reads or writes them (removing them from the rules is a separate change the owner pastes in).
+// and the paper ../qbank/papers/babymo.json. The rules no longer allow the old questions and config/topics paths
+// (closed to everyone since the owner pasted the 15 Oct 2026 rules).
 
 import { FIREBASE_CONFIG } from './firebase-config.js';
 

@@ -73,3 +73,6 @@ refuses everyone, so the test cannot be used.
 - Faculty who can read the Sessions list can see the current passphrase (it is stored in each login). That is accepted;
   the passphrase is a shared door code, not a secret.
 - The questions are not in Firebase: they come from the question bank (`qbank/`) in this repo.
+- Old projects (before 15 Oct 2026) may still hold a `questions` collection and a `config/topics` document from when
+  questions were edited in the app. The rules now close both; delete them in Firestore (Data tab: the `questions`
+  collection's ⋮ menu → Delete collection; `config` → `topics` → Delete document). Results are not affected.
