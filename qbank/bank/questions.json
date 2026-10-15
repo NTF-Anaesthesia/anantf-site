@@ -298,7 +298,7 @@
   },
   {
    "id": "q0oehvu6",
-   "stem": "You are reviewing a 50 year old male for elective spine surgery in PEC. He has some recent URTI 3 weeks ago. What is your main differential diagnosis?",
+   "stem": "You are reviewing a 50 year old male for elective spine surgery in PEC. He has some recent URTI 3 weeks ago. His ECG is shown below. What is your main differential diagnosis?",
    "options": [
     "Hyperkalaemia",
     "Myocardial ischaemia",
@@ -306,15 +306,15 @@
     "Right bundle branch block"
    ],
    "answer": 2,
-   "explain": "Brugada pattern: a right bundle branch block-like pattern with coved ST elevation of 2 mm or more in V1–V2. It matters before anaesthesia because fever, some drugs and electrolyte changes can trigger ventricular arrhythmias, so the patient needs a cardiology review. This question needs an ECG picture before it can go back in the test.",
+   "explain": "Brugada pattern: in V1 and V2 the ST segment rises 2 mm or more from the end of the QRS and slopes down in a \"coved\" shape into an inverted T wave (type 1, the diagnostic pattern). It can look like right bundle branch block, but RBBB has an rSR' without the coved ST elevation. It matters before anaesthesia because fever, some drugs (for example sodium channel blockers and high-dose propofol) and electrolyte changes can trigger ventricular arrhythmias, so the patient needs a cardiology review before elective surgery. ECG: PeaBrainC, Wikimedia Commons, CC BY-SA 4.0.",
    "topics": [
     "Cardiac"
    ],
    "level": "hard",
-   "status": "draft",
-   "image": "",
+   "status": "active",
+   "image": "img/brugada-type1-v1-v3.jpg",
    "source": "Baby MO alternate paper Q15",
-   "review": "Needs an ECG picture: the Word file's ECG came from a website with a watermark and is not used here. Add an ECG the department owns, and reword to \"What does this ECG show?\" (the recent URTI is not relevant to Brugada).",
+   "review": "",
    "updated": "2026-10-15"
   },
   {
