@@ -157,6 +157,41 @@ export default {
         { t: 'p', text: "Many go to HD or ICU, some still intubated: extubation is the consultant's decision. Hand over what was found, the fluids and blood given, the last blood gas, the drugs running and the analgesia plan." },
         { t: 'callout', kind: 'local', text: "From the handbook: patients going to HD are taken there by the primary anaesthetic MO, and still need a discharge note from the post-anaesthesia care unit (PACU). If a patient may need HD or ICU, your senior makes that call: don't decide alone." },
         { t: 'scenario', id: 'rsi-appendix' },
+        { t: 'quiz', id: 'cases-laparotomy-q', items: [
+          {
+            q: "A septic man with a perforated bowel is on the table. His BP is `95/50` and his heart rate `125` before induction. How do you prepare so that the induction does not catch you out?",
+            options: [
+              "Your consultant in the room, an arterial line if possible, smaller doses given slowly, and a vasopressor drawn up and in your hand",
+              "The usual induction doses, then run in a litre of fluid afterwards",
+              "Induce first, then set up the arterial line while the surgeon starts",
+              "Induce with propofol alone to avoid giving too many drugs",
+            ],
+            answer: 0,
+            explain: "He is holding his BP up by tightening his vessels. Induction and positive pressure ventilation take that away within a minute, so the vasopressor and the monitoring must be ready before the drugs go in, not after. Fluid helps but is too slow to catch a sudden fall.",
+          },
+          {
+            q: "Which of these is usually avoided for pain relief after an emergency laparotomy?",
+            options: [
+              "Regular paracetamol",
+              "An anti-inflammatory such as parecoxib",
+              "Rectus sheath catheters",
+              "An opioid patient-controlled analgesia (PCA) with monitoring",
+            ],
+            answer: 1,
+            explain: "These patients often have kidney injury, bleeding risk and sepsis, all made worse by anti-inflammatories. Paracetamol, rectus sheath catheters and a monitored opioid PCA are the usual building blocks; your consultant plans the mix.",
+          },
+          {
+            q: "Why is nitrous oxide avoided when the bowel is obstructed or distended?",
+            options: [
+              "It expands gas-filled spaces, so the bowel swells further",
+              "It lowers the blood pressure",
+              "It stops muscle relaxants working",
+              "It cannot be used with a tracheal tube",
+            ],
+            answer: 0,
+            explain: "Nitrous oxide moves into gas pockets faster than nitrogen moves out, so a closed gas-filled space grows. A distended bowel can then swell enough to make closing the abdomen harder.",
+          },
+        ] },
         { t: 'links', items: [
           { text: 'Rapid sequence induction', href: '#/learn/induction/rsi' },
           { text: 'The sick emergency patient', href: '#/learn/emergencies/sick-patient' },
@@ -208,7 +243,7 @@ export default {
         { t: 'crisis', id: 'hypotension' },
         { t: 'h', text: 'Delirium' },
         { t: 'list', items: [
-          "Avoid midazolam and other benzodiazepines, pethidine, and drugs such as hyoscine that cross into the brain.",
+          "Avoid midazolam and other benzodiazepines, pethidine, and drugs such as hyoscine (a travel-sickness patch) that cross into the brain.",
           "Keep sedation light or none, and avoid deep anaesthesia.",
           "Good pain relief (the block, paracetamol, small opioid doses), oxygen, and no long spells of low BP.",
           "Glasses, hearing aids and dentures back in the post-anaesthesia care unit (PACU); use the patient's name; involve the family.",
@@ -292,7 +327,7 @@ export default {
           ['Blood loss', 'Small with a tourniquet; more into the drain afterwards', 'More than a knee: check the Hb afterwards'],
         ], caption: 'IPACK: infiltration between the popliteal artery and the capsule of the knee, for the back of the knee.' },
         { t: 'h', text: 'The spinal' },
-        { t: 'p', text: "Usually bupivacaine `10–15 mg`, heavy or plain as your consultant chooses. Some consultants add a small dose of intrathecal morphine for longer pain relief. It can slow the breathing many hours later (up to about 24 h) and causes itch, nausea and urinary retention, so the ward follows the post-spinal instructions (Epic smartphrase POSTSPINAL). Sedation, if any, is light: the patient still answers when spoken to. Ask your senior the sedation plan before drawing anything up." },
+        { t: 'p', text: "Usually bupivacaine `10–15 mg`, heavy or plain as your consultant chooses. Some consultants add a small dose of intrathecal morphine for longer pain relief. It can slow the breathing many hours later (up to about 24 h) and causes itch, nausea and urinary retention, so the ward follows the post-spinal instructions (the ready-made Epic text, smartphrase `POSTSPINAL`). Sedation, if any, is light: the patient still answers when spoken to. Ask your senior the sedation plan before drawing anything up." },
         { t: 'h', text: 'The tourniquet' },
         { t: 'steps', items: [
           { title: 'Before it goes up.', text: "The antibiotic is fully given, ideally a few minutes before inflation: once the tourniquet is up, it cannot reach the leg." },
@@ -318,6 +353,41 @@ export default {
           "Block done and documented; total local anaesthetic counted ([calculator](#/tools/la-max))",
           "Tourniquet time and pressure on the chart",
           "Warming on; pressure points and eyes checked",
+        ] },
+        { t: 'quiz', id: 'cases-joints-q', items: [
+          {
+            q: "The surgeon asks for the tourniquet to be inflated on a knee replacement, and the cefazolin has not been given. What do you do?",
+            options: [
+              "Tell the surgeon and give it now, then let them inflate once it is in",
+              "Give it after the tourniquet is up: it will reach the knee anyway",
+              "Skip it and give it at the end of the case",
+              "Inject it into the foot below the tourniquet",
+            ],
+            answer: 0,
+            explain: "Once the tourniquet is up, blood stops reaching the leg, and so does the antibiotic. It needs to be in the circulation a few minutes before inflation. Say it out loud: the surgeon can wait a minute.",
+          },
+          {
+            q: "Two ampoules sit on the tray before a spinal: bupivacaine heavy and tranexamic acid. What is the safest habit?",
+            options: [
+              "Keep tranexamic acid off the spinal tray, and read every ampoule label before anything goes into the back",
+              "Lay both out together so the spinal is quicker to set up",
+              "Rely on the ampoule colours to tell them apart",
+              "Draw up both, label the syringes later",
+            ],
+            answer: 0,
+            explain: "Tranexamic acid injected into the spinal space causes seizures and can kill. Mix-ups happen when similar ampoules sit side by side, so separate them physically and read each label aloud.",
+          },
+          {
+            q: "An hour into a knee replacement under spinal, the heart rate and BP creep up although the patient looks comfortable. What is the likely cause, and what do you do?",
+            options: [
+              "Tourniquet pain: tell your consultant, who may deepen the sedation or treat it",
+              "A high spinal: sit him up",
+              "Anaphylaxis: give adrenaline",
+              "Bleeding: start blood at once",
+            ],
+            answer: 0,
+            explain: "After `45–60 min` the tourniquet is painful even under a good spinal, and the heart rate and BP rise. Tell your consultant and tell the surgeon the time. A high spinal would lower the BP, and bleeding is small under a tourniquet.",
+          },
         ] },
         { t: 'links', items: [
           { text: 'Knee blocks', href: '../lower-limb/knee/' },
@@ -640,7 +710,7 @@ export default {
         ] },
         { t: 'h', text: 'Cataract and other eye cases' },
         { t: 'list', items: [
-          "Can the patient lie flat and still for `20–30 min`, follow instructions and not cough? If not (back pain, breathlessness, tremor, confusion, claustrophobia), tell your consultant at the premed, not on the day.",
+          "Can the patient lie flat and still for `30–45 min`, follow instructions and not cough? If not (back pain, breathlessness, tremor, confusion, claustrophobia), tell your consultant at the premed, not on the day.",
           "Monitoring: ECG, SpO2 and BP, with air or oxygen flowing under the drapes so the patient does not feel smothered.",
           "Agree a signal (a raised hand or a squeeze) for when they need to speak or cough.",
           "Sedation, if any, is tiny: a drowsy patient may startle and move during delicate eye surgery. Ask your senior the plan before drawing anything up.",
