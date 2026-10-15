@@ -195,7 +195,7 @@ export function mountViewer(container, ctx) {
   const layerMeshes = { bones: [], muscles: [], covering: [], vessels: [], other: [] };
   const layerBtns = {};
   for (const l of LAYERS) {
-    const b = h('button', 'px-v3-btn px-v3-toggle', l.label);
+    const b = h('button', 'px-v3-btn px-v3-toggle app-chip', l.label);
     b.type = 'button';
     b.setAttribute('aria-pressed', String(l.on));
     b.addEventListener('click', () => {
@@ -216,12 +216,12 @@ export function mountViewer(container, ctx) {
   const validView = (v) => v && isPt(v.target) && isPt(v.position);
   const viewKeys = Object.keys(views).filter((k) => validView(views[k]));
   for (const k of viewKeys) {
-    const b = h('button', 'px-v3-btn', views[k].label || k[0].toUpperCase() + k.slice(1));
+    const b = h('button', 'px-v3-btn app-btn app-btn--outline app-btn--compact', views[k].label || k[0].toUpperCase() + k.slice(1));
     b.type = 'button';
     b.addEventListener('click', () => setView(k));
     viewGroup.appendChild(b);
   }
-  const resetBtn = h('button', 'px-v3-btn', 'Reset');
+  const resetBtn = h('button', 'px-v3-btn app-btn app-btn--plain app-btn--compact', 'Reset');
   resetBtn.type = 'button';
   resetBtn.addEventListener('click', () => {
     if (bus.state.block && validView(data.blocks?.[bus.state.block]?.view)) flyToView(data.blocks[bus.state.block].view);

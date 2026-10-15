@@ -114,17 +114,26 @@ function makeCtx(data, nerves, bus) {
   return { data, nerves, bus, lineage, status, levelColour, rootsLabel, name };
 }
 
+// iOS ignores :active press states without a touch listener (app kit).
+document.addEventListener('touchstart', () => {}, { passive: true });
+
 // ------------------------------------------------------------------ chrome
 function renderTabs(activeId) {
-  ui.tabs.replaceChildren(...PLEXUSES.map((p) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'px-tab';
-    b.textContent = p.tab;
-    b.setAttribute('aria-pressed', String(p.id === activeId));
-    if (p.id === activeId) b.setAttribute('aria-current', 'page');
-    b.addEventListener('click', () => { if (!current || current.id !== p.id) loadPlexus(p.id, {}); });
-    return b;
+  // Segmented control (app kit): one radio per plexus, arrow keys come free.
+  const legend = ui.tabs.querySelector('legend');
+  ui.tabs.replaceChildren(...(legend ? [legend] : []), ...PLEXUSES.map((p) => {
+    const l = document.createElement('label');
+    l.className = 'app-seg';
+    const r = document.createElement('input');
+    r.type = 'radio';
+    r.name = 'plexus';
+    r.value = p.id;
+    r.checked = p.id === activeId;
+    r.addEventListener('change', () => { if (r.checked && (!current || current.id !== p.id)) loadPlexus(p.id, {}); });
+    const t = document.createElement('span');
+    t.textContent = p.tab;
+    l.append(r, t);
+    return l;
   }));
 }
 
@@ -134,7 +143,7 @@ function renderChips() {
   const mk = (id, label, sub) => {
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = 'chip';
+    b.className = 'app-chip';
     b.dataset.block = id || '';
     b.innerHTML = `<span class="chip-main">${esc(label)}</span>${sub ? `<span class="chip-sub">${esc(sub)}</span>` : ''}`;
     b.setAttribute('aria-pressed', String((bus.state.block || null) === (id || null)));
@@ -156,7 +165,7 @@ function renderChips() {
 }
 function syncChips() {
   const blk = current?.bus.state.block || '';
-  ui.chips.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.block === blk)));
+  ui.chips.querySelectorAll('.app-chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.block === blk)));
 }
 
 function renderLegend() {
