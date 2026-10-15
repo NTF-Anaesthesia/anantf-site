@@ -495,7 +495,8 @@ async function viewQuestions() {
       <p class="row one"><b id="selcount">${S.sel.size} ticked</b><button id="selall" class="btn" aria-label="Tick all ${list.length} shown">Tick all</button><button id="selnone" class="btn">Clear</button></p>
       <p class="row one"><span class="muted small">Mark as</span><button class="btn primary" data-bulk="active">In the test</button><button class="btn" data-bulk="draft">Draft</button><button class="btn" data-bulk="archived">Archived</button></p>
       <p class="row one"><button class="btn" data-bulk="must1">Must ask</button><button class="btn" data-bulk="must0" aria-label="Not must-ask">Not must</button><button class="btn" data-bulk="hard">Hard</button><button class="btn" data-bulk="std" aria-label="Ordinary, not hard">Ordinary</button></p>
-      <p class="row one"><span class="muted small">Topic</span><button class="btn" data-bulk="addtopic">Add to topic…</button><button class="btn" data-bulk="rmtopic">Take out…</button></p></div>` : ''}
+      <p class="row one"><span class="muted small">Topic</span><button class="btn" data-bulk="addtopic">Add to topic…</button><button class="btn" data-bulk="rmtopic">Take out…</button></p>
+      <p class="row one"><button id="seldup" class="btn">Tick duplicates</button>${S.role === 'admin' ? '<button id="seldel" class="btn danger">Delete ticked…</button>' : ''}</p></div>` : ''}
     ${list.length ? `<ul class="qlist${S.selMode ? ' selecting' : ''}">${list.map(q => `<li>${S.selMode ? `<label class="selrow"><input type="checkbox" data-sel="${esc(q.id)}"${S.sel.has(q.id) ? ' checked' : ''}><span class="selbody">` : `<a href="#/faculty/q/${esc(q.id)}">`}<span class="badge ${q.status}">${L.STATUS_LABEL[q.status]}</span>${q.must ? '<span class="badge must">Must ask</span>' : ''}${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${L.problems(q, 'active').length && q.status === 'active' ? '<span class="badge bad">Incomplete</span>' : ''}<span class="qs">${esc(q.stem.length > 150 ? q.stem.slice(0, 150) + '…' : q.stem)}</span><span class="qm">${q.topics.length ? esc(q.topics.join(', ')) + ' · ' : ''}${q.answer >= 0 ? 'Answer ' + L.LETTERS[q.answer] : 'No answer yet'}${q.image ? ' · picture' : ''}</span>${S.selMode ? '</span></label>' : '</a>'}</li>`).join('')}</ul>` : `<p class="empty">${all.length ? 'No questions match.' : 'No questions yet. Tap “+ New question”, or “Paste many” to add a whole paper at once.'}</p>`}`, 'Questions');
   $('#qs').addEventListener('input', ev => { f.search = ev.target.value; clearTimeout(viewQuestions.t); viewQuestions.t = setTimeout(async () => { await viewQuestions(); const el = $('#qs'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }, 250); });
   $('#app').querySelectorAll('.chip[data-s]').forEach(b => b.addEventListener('click', () => { f.status = b.dataset.s; viewQuestions(); }));
@@ -506,7 +507,30 @@ async function viewQuestions() {
   $('#selall')?.addEventListener('click', () => { list.forEach(q => S.sel.add(q.id)); viewQuestions(); });
   $('#selnone')?.addEventListener('click', () => { S.sel.clear(); viewQuestions(); });
   $('#app').querySelectorAll('[data-bulk]').forEach(b => b.addEventListener('click', () => bulkChange(b.dataset.bulk, b)));
+  $('#seldup')?.addEventListener('click', () => tickDuplicates());
+  $('#seldel')?.addEventListener('click', ev => bulkDelete(ev.currentTarget));
   $('#qt')?.addEventListener('change', ev => { f.topic = ev.target.value; viewQuestions(); });
+}
+
+// Questions with the same wording (say, after a backup was restored twice): tick every copy except the newest one.
+function tickDuplicates() {
+  const groups = new Map();
+  for (const q of S.questions) { const k = q.stem.toLowerCase().replace(/\s+/g, ' ').trim(); if (k) (groups.get(k) || groups.set(k, []).get(k)).push(q); }
+  S.sel = new Set();
+  for (const g of groups.values()) g.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(1).forEach(q => S.sel.add(q.id));
+  toast(S.sel.size ? `${S.sel.size} older cop${S.sel.size === 1 ? 'y' : 'ies'} ticked. Check them, then use Delete ticked (the newest copy of each is kept).` : 'No duplicates found.', 7000);
+  S.q.status = 'all';
+  viewQuestions();
+}
+async function bulkDelete(btn) {
+  const ids = [...S.sel];
+  if (!ids.length) return toast('Tick some questions first.');
+  if (!await ask(`Delete ${ids.length} question${ids.length > 1 ? 's' : ''} for good?`, '<p>They disappear from the bank and their version history. Results already saved keep their own copy of the question. Archive them instead if you might want them back.</p>', 'Delete', true)) return;
+  let done = 0, failed = 0;
+  await busy(btn, async () => { for (const id of ids) { try { await api.deleteQuestion(id); S.sel.delete(id); done++; } catch { failed++; } } });
+  S.loaded.q = false;
+  toast(`${done} deleted.${failed ? ` ${failed} could not be deleted; try again.` : ''}`, 7000);
+  viewQuestions();
 }
 
 const BULK = {
