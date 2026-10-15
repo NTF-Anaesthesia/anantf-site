@@ -16,6 +16,9 @@ import { el, cite, tier, keyPoints, callout } from '../ui.js?v=1';
 | 2 | Resident | up to the MMed exam | why the block spreads higher in pregnancy-like states (reasoning); viva points; guideline detail |
 | 3 | Consultant | subspecialty and consultant pearls | fine needle-handling tips for a calcified spine; limits of the evidence |
 
+Safety actions (what to do now, when to stop, what to check on the ward) are always tier 1, so an MO sees them.
+Tiers may be promoted to meet this rule but never demoted.
+
 The level explanation lives once, on the hub (ch-home). Don't repeat it in chapters.
 Badges ("Resident", "Consultant") are drawn by CSS (base.css) on the first block of a run only: never on tier-1 blocks,
 on a block nested in or straight after a block of the same tier, on table cells, key points or the ward card list.

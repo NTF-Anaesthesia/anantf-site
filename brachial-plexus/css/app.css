@@ -25,20 +25,6 @@
   --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0b1017; --surface: #121a24; --surface-2: #17212d; --text: #e6ebf2; --muted: #a3b0c2;
-    --border: #2a3646; --primary: #8aa4ff; --primary-hover: #a9bcff; --primary-soft: #1d2a4a; --on-primary: #0b1017;
-    --focus: #9db4ff; --st-spares: #7b8798; --warn-bg: #2a1d0e; --warn-border: #9a5b14; --adv-bg: #2e1f5e; --adv-text: #d4c8ff; --adv-soft: #1a1530; --adv-border: #4c3a8a;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .4); color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #0b1017; --surface: #121a24; --surface-2: #17212d; --text: #e6ebf2; --muted: #a3b0c2;
-  --border: #2a3646; --primary: #8aa4ff; --primary-hover: #a9bcff; --primary-soft: #1d2a4a; --on-primary: #0b1017;
-  --focus: #9db4ff; --st-spares: #7b8798; --warn-bg: #2a1d0e; --warn-border: #9a5b14; --adv-bg: #2e1f5e; --adv-text: #d4c8ff; --adv-soft: #1a1530; --adv-border: #4c3a8a;
-  --shadow: 0 1px 2px rgba(0, 0, 0, .4); color-scheme: dark;
-}
 
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 72px; }
@@ -163,7 +149,7 @@ main { padding-top: 14px; padding-bottom: 32px; }
 .id-chip.st-covers { border-left: 4px solid var(--st-covers); }
 .id-chip.st-variable { border-left: 4px dashed var(--st-variable); }
 .id-chip.st-spares { border-left: 4px dotted var(--st-spares); color: var(--muted); }
-@media (pointer: coarse) { .id-chip { min-height: 44px; } }
+@media (pointer: coarse), (max-width: 899px) { .id-chip { min-height: 44px; } }
 .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--st-spares); flex-shrink: 0; }
 .dot.st-target { background: var(--st-target); box-shadow: 0 0 0 2px var(--st-halo); }
 .dot.st-variable { background: transparent; border: 2px dashed var(--st-variable); }
@@ -225,6 +211,12 @@ main { padding-top: 14px; padding-bottom: 32px; }
   .mount-3d { height: clamp(360px, 62vh, 560px); }
   .tabpanel { padding: 10px; }
   .tabs [role="tab"] { padding: 12px 12px 10px; flex: 1; }
+}
+/* Small phones: the three tabs share the width so none is clipped. */
+@media (max-width: 400px) {
+  .tabbar { padding: 0 4px; }
+  .tabs { gap: 0; }
+  .tabs [role="tab"] { padding: 12px 6px 10px; font-size: 15px; flex: 1 1 auto; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }

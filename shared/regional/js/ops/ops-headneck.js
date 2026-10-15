@@ -11,7 +11,7 @@
      groups   [{label, items: [{name, blocks: [LINKS key], why?}]}]; a label starting "Not" is shown as not recommended
      notes    [{text}]
    Links are relative to the region folder (REGION.path); blockHref(key, base) adds a base. */
-import { headCoverageMap } from '../figures/head.js';
+import { headCoverageMap } from '../figures/head.js?v=20261015'; // same URL as the head-neck pages: one module instance
 
 export const REGION = { id: 'head-neck', title: 'Head and neck blocks', path: 'head-neck/' };
 

@@ -3,7 +3,7 @@
 // Level-aware: content the reader's level hides is still found, tagged "(Resident)" / "(Consultant)"; opening it goes
 // through the shell's hash routing, which relaxes the level for that view without saving it (levels.js relaxFor).
 import { $, $$, el, getSearchExtras } from './ui.js';
-import { tierOf, tierMax, TIER_NAMES } from './levels.js';
+import { tierOf, tierMax, TIER_NAMES } from './levels.js?v=20261015'; // same URL as brachial-plexus, plexus, spinal and /blocks/: one level state per page
 
 const SYN = [
   ['tap', 'transversus abdominis plane', 'transversus abdominis', 'tap block'],
@@ -56,6 +56,7 @@ function parse(q) {
 }
 
 let entries = [];
+let nid = 0; // ids given to tiered text nodes (module-wide, so a rebuilt index never reuses one)
 let builtAt = 0;
 const HEAD = 'h1,h2,h3,h4,summary';
 const TEXT = 'h1,h2,h3,h4,p,li,td,th,summary,figcaption,dt,dd';
@@ -76,6 +77,9 @@ export function buildIndex() {
       let target = isHead ? node : (node.closest('[id]') || head);
       if (!isHead && target && (/^(ch-|mount-)/.test(target.id) || target.tagName === 'SECTION') && head && chapter.contains(head)) target = head;
       if (!target) continue;
+      // The matched text is tagged above its link target (a Resident pearl under a section heading): link to the text
+      // itself, so opening the result relaxes the level enough to show it (shell goToHash -> relaxFor(target)).
+      if (!isHead && tierOf(node) > tierOf(target)) { nid += 1; if (!node.id) node.id = `srch-n-${nid}`; target = node; }
       const title = isHead ? text : (head ? head.textContent.replace(/\s+/g, ' ').trim() : chTitle);
       out.push({ title, text: isHead ? '' : text, id: target.id, chapter: chTitle, head: isHead, tl: norm(title), xl: norm(isHead ? '' : text), tier: Math.max(tierOf(node), tierOf(target)) });
     }

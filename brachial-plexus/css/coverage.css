@@ -35,60 +35,6 @@
   gap: 12px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .cv {
-    --cv-text: #e5e9f0;
-    --cv-muted: #a7b0bd;
-    --cv-bg: #11161d;
-    --cv-surface: #18202a;
-    --cv-border: #2c3644;
-    --cv-skin: #262d37;
-    --cv-skin-line: #9aa5b4;
-    --cv-ctx: #5b6573;
-    --cv-accent: #6ea8ff;
-    --cv-accent-ink: #0b1220;
-    --cv-cov: #5b9cff;
-    --cv-cov-line: #a9c9ff;
-    --cv-var-bg: #4a3415;
-    --cv-var-fg: #f0a050;
-    --cv-var-ink: #f6bf7f;
-    --cv-spare: #1b222c;
-    --cv-spare-line: #7d8898;
-    --cv-hl: #fde68a;
-    --cv-focus: #fbbf24;
-    --cv-danger: #ff8a7a;
-    --cv-ok: #6fd39a;
-    --cv-tip-bg: #e5e9f0;
-    --cv-tip-fg: #11161d;
-    --cv-nerve-alpha: 0.82;
-  }
-}
-:root[data-theme="dark"] .cv {
-  --cv-text: #e5e9f0;
-  --cv-muted: #a7b0bd;
-  --cv-bg: #11161d;
-  --cv-surface: #18202a;
-  --cv-border: #2c3644;
-  --cv-skin: #262d37;
-  --cv-skin-line: #9aa5b4;
-  --cv-ctx: #5b6573;
-  --cv-accent: #6ea8ff;
-  --cv-accent-ink: #0b1220;
-  --cv-cov: #5b9cff;
-  --cv-cov-line: #a9c9ff;
-  --cv-var-bg: #4a3415;
-  --cv-var-fg: #f0a050;
-  --cv-var-ink: #f6bf7f;
-  --cv-spare: #1b222c;
-  --cv-spare-line: #7d8898;
-  --cv-hl: #fde68a;
-  --cv-focus: #fbbf24;
-  --cv-danger: #ff8a7a;
-  --cv-ok: #6fd39a;
-  --cv-tip-bg: #e5e9f0;
-  --cv-tip-fg: #11161d;
-  --cv-nerve-alpha: 0.82;
-}
 
 .cv *, .cv *::before, .cv *::after { box-sizing: border-box; }
 .cv-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -192,8 +138,6 @@
 .cv-pill.st-covers { background: var(--cv-cov); color: #fff; }
 .cv-pill.st-variable { background: var(--cv-var-bg); color: var(--cv-var-ink); box-shadow: inset 0 0 0 1px var(--cv-var-fg); }
 .cv-pill.st-spares { background: transparent; color: var(--cv-muted); box-shadow: inset 0 0 0 1px var(--cv-spare-line); }
-:root[data-theme="dark"] .cv .cv-pill.st-covers { color: #0b1220; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cv .cv-pill.st-covers { color: #0b1220; } }
 
 .cv-sum h3 { font-size: 1.05rem; margin: 0 0 4px; }
 .cv-sum h4, .cv-listsec h4 { font-size: 0.95rem; margin: 12px 0 4px; }
@@ -205,10 +149,12 @@
 .cv-phren--variable { border-color: var(--cv-var-fg); }
 .cv-phren--variable .cv-dot { background: var(--cv-var-fg); }
 .cv-spared, .cv-supp { margin: 0; padding-left: 1.1em; }
-.cv-spared li, .cv-supp li { margin: 3px 0; font-size: 0.92rem; }
+.cv-spared li, .cv-supp li { margin: 6px 0; font-size: 0.92rem; }
 .cv-spared li.st-spares::marker { color: var(--cv-spare-line); }
 .cv-spared li.st-variable::marker { color: var(--cv-var-fg); }
-.cv-linkbtn { display: inline-block; min-height: 28px; background: none; border: 0; padding: 2px 0; cursor: pointer; font-weight: 600; text-decoration: underline; text-decoration-color: var(--cv-border); text-underline-offset: 3px; }
+/* 44 px tap target: negative block margins keep the tall button from opening gaps between lines; ::after widens short names. */
+.cv-linkbtn { position: relative; display: inline-flex; align-items: center; vertical-align: middle; min-height: 44px; margin: -8px 0; background: none; border: 0; padding: 2px 0; cursor: pointer; font-weight: 600; text-decoration: underline; text-decoration-color: var(--cv-border); text-underline-offset: 3px; }
+.cv-linkbtn::after { content: ''; position: absolute; top: 0; bottom: 0; left: -6px; right: -6px; }
 .cv-linkbtn:hover, .cv-linkbtn.is-hl { text-decoration-color: currentColor; color: var(--cv-accent); }
 .cv-other { font-size: 0.85rem; color: var(--cv-muted); margin: 8px 0 0; }
 

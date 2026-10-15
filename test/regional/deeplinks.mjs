@@ -223,7 +223,8 @@ async function main() {
   // 8. Shims: 200 + same exports as the module they point at.
   const shimDir = path.join(ROOT, 'truncal/shared/js');
   const shims = fs.existsSync(shimDir) ? fs.readdirSync(shimDir).filter((f) => f.endsWith('.js')).map((f) => [`truncal/shared/js/${f}`, `shared/regional/js/${f}`]) : [];
-  shims.push(['head-neck/shared/js/head.js', 'shared/regional/js/figures/head.js'], ['lower-limb/shared/js/leg.js', 'shared/regional/js/figures/leg.js']);
+  // head.js is imported with ?v= everywhere (head-neck pages, scan.js, ops-headneck.js): compare with that instance.
+  shims.push(['head-neck/shared/js/head.js', 'shared/regional/js/figures/head.js?v=20261015'], ['lower-limb/shared/js/leg.js', 'shared/regional/js/figures/leg.js']);
   {
     const { ctx, page } = await openContext(browser, { vp: '1440' });
     try {

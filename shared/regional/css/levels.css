@@ -44,6 +44,7 @@ body[data-tier-max="2"] [data-tier="3"]{display:none!important}
 .ra-hidden-hint button{min-height:44px;padding:0 4px;border:0;background:none;color:var(--ra-lv-wine);font:inherit;font-weight:500;
   text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .ra-hidden-hint[hidden]{display:none}
+.ra-hidden-hint.is-relaxed{border-left-color:var(--ra-lv-wine);color:var(--ra-lv-ink)}
 
 /* ---- first-visit picker (one screen; /blocks/ and the first page visited) */
 .ra-level-picker{max-width:640px;margin:16px 0 24px;padding:20px 16px;border:1px solid var(--ra-lv-line);background:var(--ra-lv-paper)}

@@ -82,6 +82,12 @@ body.ra-app {
   .bp-level .ra-level-btn { padding: 0 6px; }
 }
 @media (max-width: 480px) { .bp-blockmenu-k { display: none; } }
+/* Small phones (360–400 px): keep the longest name ("Supraclavicular") whole in the block menu. */
+@media (max-width: 400px) {
+  .bp-bar-inner { gap: 4px; }
+  .bp-blockmenu-btn { gap: 6px; padding: 0 8px; }
+  .bp-blockmenu-cur { font-size: 15px; letter-spacing: -.01em; }
+}
 /* "Back to MO" after a link raised the level: it hangs under the bar's right edge so the bar keeps its layout. */
 .bp-level .ra-level-back { position: absolute; top: calc(100% + 6px); right: 0; z-index: 55; box-shadow: 0 6px 12px rgba(0, 0, 0, .08); }
 

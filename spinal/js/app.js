@@ -75,8 +75,8 @@ const HOME_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 
 const BACK_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
 const REGION = { href: '../regional.html', short: 'Regional', label: 'Regional anaesthesia' };
 const SHORT = Object.fromEntries($$('#sp-chlist a').map((a) => [a.dataset.ch, a.textContent.trim()]));
-// Phones: the chapter button is about 70px wide, so a few chapters get a shorter name there.
-const PHONE_SHORT = { 'ch-backs': 'Backs/US', 'ch-exam': 'Exam', 'ch-refs': 'Refs' };
+// Phones: the chapter name has about 70px at 360px wide, so a few chapters get a shorter name there.
+const PHONE_SHORT = { 'ch-pharm': 'Drugs', 'ch-backs': 'Backs/US', 'ch-trouble': 'Trouble', 'ch-complications': 'Aftercare', 'ch-exam': 'Exam', 'ch-refs': 'Refs' };
 const narrow = matchMedia('(max-width: 420px)');
 narrow.addEventListener?.('change', () => paintChapterNav());
 
@@ -201,7 +201,7 @@ function buildDigests() {
 }
 
 // Per chapter, under the kicker: "n items hidden at MO level · Show all" (MO and Resident), or the
-// "Pearls only" switch (Consultant, in chapters that have consultant pearls).
+// "Pearls only" switch (Consultant, in chapters that have consultant pearls), under the chapter's first heading.
 const chapterTools = []; // {chapter, hint, pearls, btn, note}
 let pearlsOn = false;
 function paintPearls() {
@@ -224,15 +224,18 @@ function togglePearls() {
 function addChapterTools(chapter) {
   const hint = hiddenHint(chapter, { label: 'in this chapter' });
   const t = { chapter, hint };
-  const row = el('div', { class: 'sp-ch-tools' }, hint);
+  // The hidden-count hint is chapter-wide, so it sits under the chapter kicker.
+  chapter.querySelector(':scope > .sp-ch-kicker')?.after(el('div', { class: 'sp-ch-tools' }, hint));
   if (chapter.id !== 'ch-card' && chapter.id !== 'ch-refs') {
     t.btn = el('button', { type: 'button', class: 'sp-pearls-btn', 'aria-pressed': 'false', on: { click: togglePearls } }, 'Pearls only');
     t.note = el('span', { class: 'sp-pearls-note' });
     t.pearls = el('p', { class: 'sp-pearls', hidden: true }, t.btn, t.note);
-    row.append(t.pearls);
+    // The "Pearls only" switch goes under the chapter's first heading, so it reads as part of this chapter.
+    const h = chapter.querySelector(':scope > .sp-section > h2');
+    if (h) h.after(el('div', { class: 'sp-ch-tools sp-ch-tools--pearls' }, t.pearls));
+    else chapter.querySelector(':scope > .sp-ch-tools')?.append(t.pearls);
   }
   chapterTools.push(t);
-  chapter.querySelector(':scope > .sp-ch-kicker')?.after(row);
 }
 chapters.forEach((c) => { if (c.id !== 'ch-home') addChapterTools(c); });
 
@@ -393,7 +396,7 @@ async function boot() {
     const direct = chapterById.get(id0) || chapterById.get(ALIAS[id0]) || document.getElementById(id0)?.closest('.sp-chapter');
     if (direct) showChapter(direct); else if (!id0) showChapter(chapterById.get('ch-home'));
   }
-  const loaded = await Promise.allSettled(mods.map((m) => import(`./sections/${m}.js?v=2`)));
+  const loaded = await Promise.allSettled(mods.map((m) => import(`./sections/${m}.js?v=3`)));
   // Register every module's refs before any mount, so cross-section citations resolve.
   loaded.forEach((r, i) => {
     if (r.status !== 'fulfilled') return;

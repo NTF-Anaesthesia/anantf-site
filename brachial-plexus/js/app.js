@@ -14,6 +14,8 @@ import {
 window.bpBus = bus; // handy for debugging in the console
 
 const $ = (sel, root = document) => root.querySelector(sel);
+/** A pearl is a string or {safety: true, html} (a safety pearl, always shown at MO level). Text only: escaped on render. */
+const pearlText = (x) => (typeof x === 'string' ? x : x?.html ?? '');
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const LEVEL_NAME = Object.fromEntries(LEVELS.map((l) => [l.id, l.name]));
 LEVEL_NAME.collateral = 'Collateral branch';
@@ -228,8 +230,8 @@ async function mountModule(name, path, containerSel, ...args) {
 // ---------------------------------------------------------------- tabs
 const tabButtons = TABS.map((t) => $(`#tab-${t}`));
 const lazy = {
-  ultrasound: () => mountModule('ultrasound', './ultrasound.js?v=20261015', '#mount-ultrasound'),
-  coverage: () => mountModule('coverage', './coverage.js?v=20261015', '#mount-coverage', { heading: false }),
+  ultrasound: () => mountModule('ultrasound', './ultrasound.js?v=20261015b', '#mount-ultrasound'),
+  coverage: () => mountModule('coverage', './coverage.js?v=20261015b', '#mount-coverage', { heading: false }),
   guide: () => renderGuide(),
 };
 const mounted = new Set();
@@ -416,7 +418,7 @@ function blockHTML(b) {
       ${list(b.complications)}
 
       <h4>Pearls</h4>
-      <ul>${(b.pearls || []).map((x, i) => `<li${i >= 3 ? ' data-tier="2"' : ''}>${esc(x)}</li>`).join('')}</ul>
+      <ul>${(b.pearls || []).map((x, i) => `<li${i >= 3 && !x.safety ? ' data-tier="2"' : ''}>${esc(pearlText(x))}</li>`).join('')}</ul>
 
       <div data-tier="2">
       <h4>Exam questions</h4>
@@ -490,7 +492,7 @@ guideEl.addEventListener('pointerout', (e) => {
 });
 
 // ---------------------------------------------------------------- levels (MO / Resident / Consultant)
-// MO: the core blocks, set-up, the five steps, complications and the first pearls. Resident adds coverage, the
+// MO: the core blocks, set-up, the five steps, complications, the first pearls and safety pearls. Resident adds coverage, the
 // remaining pearls, exam questions and the comparison table. Consultant adds the advanced blocks and "why choose".
 const blockChip = (id) => chipsEl.querySelector(`.chip[data-block="${CSS.escape(id || '')}"]`);
 /** An advanced block opened by a link or a button: show it for this visit even at MO or Resident level. */
@@ -521,6 +523,6 @@ relaxForBlock(initial.block);
 syncChips();
 // Web fonts change chip widths; re-run so the active chip stays in view on phones.
 document.fonts?.ready?.then(() => syncChips()).catch(() => {});
-mountModule('viewer3d', './viewer3d.js?v=20261015', '#mount-3d');
-mountModule('diagram', './diagram.js?v=20261015', '#mount-diagram');
+mountModule('viewer3d', './viewer3d.js?v=20261015b', '#mount-3d');
+mountModule('diagram', './diagram.js?v=20261015b', '#mount-diagram');
 selectTab(initial.tab || 'ultrasound');

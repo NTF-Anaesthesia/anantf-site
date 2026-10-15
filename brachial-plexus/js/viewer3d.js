@@ -27,7 +27,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import {
   ELEMENTS, ELEMENT_ORDER, LEVELS, BLOCKS, getPathway, blockStatus,
 } from './data.js';
-import { colourFor, CORD_COLOURS } from './diagram.js?v=20261015';
+import { colourFor, CORD_COLOURS } from './diagram.js?v=20261015b';
 import { STATUS_COLOURS, LA } from '../../shared/regional/js/status.js?v=20261015';
 
 const SOURCE = 'viewer3d';

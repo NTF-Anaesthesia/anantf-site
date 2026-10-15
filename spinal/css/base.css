@@ -370,7 +370,7 @@ body.spinal-app main :is([data-tier="2"],[data-tier="3"]):not(td,th,tr,tbody,the
 
 /* "Pearls only" (Consultant level): each section shows only its digest of consultant pearls (built by app.js). */
 .spinal-app .sp-adv-digest{display:none}
-body.spinal-app[data-pearls-only="true"] main .sp-section:not(#references):not(#card) > :not(.sp-kicker,h2,.sp-adv-digest){display:none!important}
+body.spinal-app[data-pearls-only="true"] main .sp-section:not(#references):not(#card) > :not(.sp-kicker,h2,.sp-adv-digest,.sp-ch-tools){display:none!important}
 body.spinal-app[data-pearls-only="true"] .sp-adv-digest{display:block}
 .spinal-app .sp-adv-digest{max-width:860px}
 .spinal-app .sp-adv-item{margin:0 0 22px}
@@ -391,6 +391,7 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
 .spinal-app .sp-chapter>.sp-section+.sp-section{border-top:1px solid var(--sp-line-strong);padding-top:48px}
 .spinal-app .sp-ch-tools{max-width:860px}
 .spinal-app .sp-ch-tools .ra-hidden-hint{margin:12px 0 0}
+.spinal-app .sp-ch-tools--pearls .sp-pearls{margin:0 0 20px}
 .spinal-app .sp-pearls{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:12px 0 0;max-width:none;color:var(--sp-muted);font-size:15px;line-height:1.4}
 .spinal-app .sp-pearls[hidden]{display:none}
 .spinal-app .sp-pearls-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--sp-line-strong);border-radius:0;background:var(--sp-surface);color:var(--sp-ink);font:500 15px/1.2 var(--sp-sans);cursor:pointer}
@@ -458,6 +459,9 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
 }
 @media (max-width:480px){.spinal-app .sp-chmenu-k{display:none}}
 @media (max-width:420px){.spinal-app .sp-chmenu-btn{font-size:14px;padding:0 6px 0 9px}}
+/* Phones: a 16px side gutter (as the regional block pages) and tighter bar gaps, so the chapter name has room. */
+@media (max-width:480px){:root:has(body.spinal-app){--site-gutter:16px}}
+@media (max-width:400px){.spinal-app .sp-bar-inner,.spinal-app .sp-chnav{gap:4px}.spinal-app .sp-chmenu-btn{gap:4px;padding:0 4px 0 6px}}
 /* The level control's palette is the spinal one; "Back to MO" (after a deep link raised the level) hangs under the bar
    below 1024px, so the bar keeps its layout. */
 .spinal-app .sp-bar-level .ra-level-k{color:var(--sp-muted)}

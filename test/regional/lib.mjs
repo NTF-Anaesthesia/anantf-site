@@ -63,7 +63,13 @@ export function doses(texts) {
   return Object.fromEntries(Object.entries(out).sort(([a], [b]) => a.localeCompare(b)));
 }
 /** All the text a page run captured (chapters, app panels, scan step text). */
-export const allTextOf = (r) => [...Object.values(r?.text || {}), ...Object.values(r?.extra || {}), ...Object.values(r?.scans || {}).flatMap((v) => Object.values(v).flat())];
+// Keys starting with "~" hold extra views of text already counted (e.g. one ultrasound view at a time): they count for
+// line presence but not for dose-string counts, so the counts stay comparable with the baseline.
+export const allTextOf = (r, { forDoses = false } = {}) => [
+  ...Object.values(r?.text || {}),
+  ...Object.entries(r?.extra || {}).filter(([k]) => !(forDoses && k.startsWith('~'))).map(([, v]) => v),
+  ...Object.values(r?.scans || {}).flatMap((v) => Object.values(v).flat()),
+];
 
 // ------------------------------------------------------------------ server + browser
 export async function ensureServer() {
@@ -177,7 +183,9 @@ export function parityAllow() {
   const lines = (p) => [...(a['*']?.missing || []), ...(a[p]?.missing || [])].map((x) => (typeof x === 'string' ? x : x.line));
   const patterns = (p) => [...(a['*']?.missingPatterns || []), ...(a[p]?.missingPatterns || [])].map((x) => new RegExp(typeof x === 'string' ? x : x.re));
   const doseKeys = (p) => ({ ...(a['*']?.doses || {}), ...(a[p]?.doses || {}) });
-  return { lines, patterns, doseKeys };
+  // A rename allows a missing line only when the renamed line is on the page: {from: regex, to: replacement}.
+  const renames = (p) => [...(a['*']?.renames || []), ...(a[p]?.renames || [])].map((x) => ({ re: new RegExp(x.from, 'g'), to: x.to }));
+  return { lines, patterns, doseKeys, renames };
 }
 
 /**
@@ -191,11 +199,19 @@ export function compareText(pageId, baseCapture, nowCapture) {
   const al = new Set(allow.lines(pageId));
   const ap = allow.patterns(pageId);
   const missingAll = [...baseLines].filter((l) => !nowLines.has(l));
-  const allowed = missingAll.filter((l) => al.has(l) || ap.some((re) => re.test(l)));
+  const rn = allow.renames(pageId);
+  const nowLower = new Set([...nowLines].map((l) => l.toLowerCase())); // CSS text-transform changes case in innerText
+  const renamed = (l) => {
+    // Apply every matching rename (in order) and see whether the result is on the page now.
+    let x = l;
+    for (const r of rn) { r.re.lastIndex = 0; if (r.re.test(x)) { r.re.lastIndex = 0; x = x.replace(r.re, r.to); } }
+    return x !== l && (nowLines.has(x) || nowLower.has(x.toLowerCase()));
+  };
+  const allowed = missingAll.filter((l) => al.has(l) || ap.some((re) => re.test(l)) || renamed(l));
   const missing = missingAll.filter((l) => !allowed.includes(l));
   const added = [...nowLines].filter((l) => !baseLines.has(l));
   const d0 = baseCapture?.doses || doses(allTextOf(baseCapture));
-  const d1 = doses(allTextOf(nowCapture));
+  const d1 = doses(allTextOf(nowCapture, { forDoses: true }));
   const okKeys = allow.doseKeys(pageId);
   const keys = new Set([...Object.keys(d0), ...Object.keys(d1)]);
   const doseDiff = [...keys].filter((k) => d0[k] !== d1[k] && !(k in okKeys)).map((k) => `${k}: ${d0[k] || 0}→${d1[k] || 0}`);
@@ -208,8 +224,8 @@ export const FORCE_CSS = '.tb-chapter,.sp-chapter{display:block!important}';
 /** Text of each chapter / section with every chapter shown and every <details> open. */
 export async function captureText(page) {
   await page.addStyleTag({ content: FORCE_CSS });
-  return page.evaluate(() => {
-    document.querySelectorAll('details').forEach((d) => { d.open = true; });
+  const text = await page.evaluate(() => {
+    document.querySelectorAll('details:not(.ra-watch)').forEach((d) => { d.open = true; });
     const SEL = '.tb-chapter, .sp-chapter, main section[id], main [role=tabpanel]';
     const root = document.querySelector('main') || document.body;
     const secs = [...root.querySelectorAll(SEL)].filter((e) => !e.parentElement.closest(SEL));
@@ -226,6 +242,19 @@ export async function captureText(page) {
     if (foot && !root.contains(foot)) out._foot = foot.innerText;
     return out;
   });
+  // "Watch it done" disclosures build their caption (and iframe) when opened, one at a time: open each, read, close.
+  const watches = await page.evaluate(() => [...document.querySelectorAll('details.ra-watch[id]')].map((d) => d.id));
+  for (const id of watches) {
+    text[`_watch_${id}`] = await page.evaluate(async (id) => {
+      const d = document.getElementById(id);
+      d.open = true;
+      await new Promise((r) => setTimeout(r, 120));
+      const t = d.innerText;
+      d.open = false;
+      return t;
+    }, id);
+  }
+  return text;
 }
 
 /** Read text until two reads 150 ms apart agree (panels re-render after a click; slow under load). */
@@ -290,6 +319,29 @@ export async function brachialText(page) {
       await page.evaluate((t) => document.getElementById(`tab-${t}`)?.click(), t);
       await page.waitForTimeout(150);
       out[`${b}/${t}`] = await stableText(page, () => { document.querySelectorAll('#sec-tabs details').forEach((d) => { d.open = true; }); return document.getElementById('sec-tabs')?.innerText || ''; });
+      if (t !== 'ultrasound') continue;
+      // Views shown one at a time (phones: Simulated / Diagram / Real scan segmented control): read each, and every real image.
+      const views = await page.evaluate(() => [...document.querySelectorAll('#sec-tabs button[aria-pressed]')].filter((x) => /^(Simulated|Diagram|Real scan|Real)$/.test(x.textContent.trim()) && x.getClientRects().length).map((x) => x.textContent.trim()));
+      const viewPressed = await page.evaluate(() => [...document.querySelectorAll('#sec-tabs button[aria-pressed="true"]')].filter((x) => /^(Simulated|Diagram|Real scan|Real)$/.test(x.textContent.trim())).map((x) => x.textContent.trim()));
+      for (const v of views) {
+        await page.evaluate((v) => [...document.querySelectorAll('#sec-tabs button[aria-pressed]')].find((x) => x.textContent.trim() === v)?.click(), v);
+        await page.waitForTimeout(150);
+        if (await page.evaluate((v) => [...document.querySelectorAll('#sec-tabs button[aria-pressed]')].find((x) => x.textContent.trim() === v)?.getAttribute('aria-pressed') !== 'true', v)) {
+          await page.evaluate((v) => [...document.querySelectorAll('#sec-tabs button[aria-pressed]')].find((x) => x.textContent.trim() === v)?.click(), v);
+          await page.waitForTimeout(150);
+        }
+        for (let k = 0; k < 8; k++) {
+          out[`~${b}/${t}/${v}/${k}`] = await stableText(page, () => document.getElementById('sec-tabs')?.innerText || '');
+          const moved = await page.evaluate(() => { const n = [...document.querySelectorAll('#sec-tabs button')].find((x) => /^Next/.test(x.textContent.trim()) && x.closest('figure, [class*="real"]') && x.getClientRects().length && !x.disabled); if (!n) return false; n.click(); return true; });
+          if (!moved) break;
+          await page.waitForTimeout(120);
+        }
+      }
+      // Restore the views that were on.
+      for (const v of views) {
+        const want = viewPressed.includes(v);
+        await page.evaluate(({ v, want }) => { const x = [...document.querySelectorAll('#sec-tabs button[aria-pressed]')].find((y) => y.textContent.trim() === v); if (x && (x.getAttribute('aria-pressed') === 'true') !== want) x.click(); }, { v, want });
+      }
     }
   }
   return out;
@@ -309,6 +361,9 @@ export async function plexusText(page) {
       out[`${px}/${b || 'none'}`] = await stableText(page, () => document.getElementById('sec-info')?.innerText || '');
     }
   }
+  // Layer toggles live in a "Layers" menu: open it so its items are captured with the rest of the page.
+  await page.evaluate(() => { const b = [...document.querySelectorAll('button[aria-expanded="false"]')].find((x) => /^Layers/.test(x.textContent.trim())); b?.click(); });
+  await page.waitForTimeout(150);
   return out;
 }
 

@@ -17,6 +17,7 @@
 .tb-app .bk-quiz{display:grid;gap:16px;margin-top:8px}
 .tb-app .bk-quiz-form{display:grid;gap:10px}
 .tb-app .bk-quiz-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:6px 12px;align-items:center}
+.tb-app .bk-quiz-k{display:flex;align-items:center;min-height:44px;min-width:44px;cursor:pointer}
 .tb-app .bk-quiz-letter{display:inline-flex;width:32px;height:32px;border-radius:50%;background:var(--tb-wine);color:var(--tb-ivory);align-items:center;justify-content:center;font:600 15px/1 var(--tb-sans)}
 .tb-app .bk-quiz-sel{min-height:44px;width:100%;max-width:360px;padding:8px 10px;border:1px solid var(--tb-control);border-radius:0;background:var(--tb-paper);color:var(--tb-ink);font:15px/1.3 var(--tb-sans)}
 .tb-app .bk-quiz-res{grid-column:2;font-size:15px;min-height:0}

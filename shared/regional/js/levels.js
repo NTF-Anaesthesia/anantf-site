@@ -17,7 +17,9 @@
 // Helpers added in WP1 (additive):
 //   hasChosenLevel()                -> true once the reader picked a level (or one was migrated)
 //   mountLevelPicker(host, opts)    -> first-visit "Choose your level" card (null when already chosen or dismissed)
-//   hiddenHint(root, opts)          -> "n items hidden at MO level · Show all" line that keeps itself up to date
+//   hiddenHint(root, opts)          -> "n items hidden at MO level · Show all" line that keeps itself up to date; while a
+//                                      deep link has raised the level it reads "Showing … content for this view · Back to MO"
+//                                      (in the page flow; opts.relaxed=false turns that off)
 //   tierBadge(tier)                 -> <p class="ra-tier-badge"> "Resident" / "Consultant" (null for tier 1)
 //   TIER_NAMES                      -> {1:'MO', 2:'Resident', 3:'Consultant'}
 //
@@ -263,9 +265,23 @@ export function hiddenHint(root, opts = {}) {
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.textContent = 'Show all';
-  btn.addEventListener('click', () => setLevel('consultant', { save: false }));
+  // Two jobs: "n items hidden · Show all", and while a deep link or search result has raised the level for this view,
+  // "Showing Consultant content for this link · Back to MO" (in the page flow, so it never covers text).
+  btn.addEventListener('click', () => {
+    if (state.relaxed) { const s = savedLevel() || DEFAULT_LEVEL; setLevel(s, { save: !!savedLevel() }); }
+    else setLevel('consultant', { save: false });
+  });
   box.append(text, btn);
   const paint = () => {
+    if (state.relaxed && opts.relaxed !== false) {
+      box.hidden = false;
+      box.classList.add('is-relaxed');
+      text.textContent = `Showing ${LEVELS[state.relaxed].name} content for this view. Your saved level is unchanged.`;
+      btn.textContent = `Back to ${LEVELS[savedLevel() || DEFAULT_LEVEL].name}`;
+      return;
+    }
+    box.classList.remove('is-relaxed');
+    btn.textContent = 'Show all';
     const n = countHidden(root);
     box.hidden = n === 0;
     if (n) text.textContent = `${n} ${n === 1 ? 'item' : 'items'} hidden at ${LEVELS[getLevel()].name} level${opts.label ? ` ${opts.label}` : ''}`;
@@ -289,7 +305,24 @@ export function mountLevelPicker(host, opts = {}) {
   box.innerHTML = '<h2 id="ra-level-picker-h">How much detail do you want?</h2><p>Choose once; every regional block page remembers it on this device. Change it at any time with the Level buttons at the top.</p>';
   const ul = document.createElement('ul');
   ul.className = 'ra-level-picker-list';
-  const done = (l) => { store.set(PICKER_KEY, l || 'dismissed'); box.remove(); opts.onDone?.(l); };
+  const done = (l) => {
+    store.set(PICKER_KEY, l || 'dismissed');
+    // The focused button is about to go: move keyboard and screen-reader focus to the bar's level control
+    // (the pressed button), or else to the heading before the card, so the reader keeps their place.
+    const hadFocus = box.contains(document.activeElement);
+    box.remove();
+    if (hadFocus) {
+      const lv = getLevel();
+      const btn = [...document.querySelectorAll(`.ra-level-btn[data-level="${lv}"]`)].find((b) => b.getClientRects().length);
+      let to = btn || null;
+      if (!to) {
+        to = host?.querySelector?.('h1,h2') || document.querySelector('main h1');
+        if (to && !to.hasAttribute('tabindex')) to.setAttribute('tabindex', '-1');
+      }
+      to?.focus({ preventScroll: true });
+    }
+    opts.onDone?.(l);
+  };
   LEVEL_IDS.forEach((id) => {
     const li = document.createElement('li');
     li.className = 'ra-level-picker-item';

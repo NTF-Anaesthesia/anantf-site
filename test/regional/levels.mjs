@@ -17,7 +17,8 @@
 //   6. spinal's old spinal-level / spinal-tier keys migrate once;
 //   7. a deep link (and a search result) to tier-2/3 content relaxes the level for that view without saving it, with a
 //      "Back to …" button that restores it;
-//   8. spinal "Pearls only" appears only at Consultant and shows the digest.
+//   8. spinal "Pearls only" appears only at Consultant and shows the digest;
+//   9. the first-visit picker shows once, and a choice in it sets and saves the level.
 
 import {
   args, BASE, ENGINE_PAGES, LEVEL_PAGES, FORCE_CSS, listArg, launch, openContext, waitReady, pool, reporter,
@@ -34,9 +35,14 @@ async function load(browser, url, opts = {}) {
   const o = await openContext(browser, { vp: opts.vp || '390', level: opts.level || null, storage: opts.storage || null });
   await o.page.goto(BASE + url, { waitUntil: 'domcontentloaded', timeout: 30000 });
   await waitReady(o.page, { idle: opts.idle ?? false });
+  // spinal tags its content after it builds (body[data-sp-ready]); checking earlier finds nothing tagged
+  await o.page.waitForFunction(() => !document.body.classList.contains('spinal-app') || document.body.dataset.spReady === 'true', null, { timeout: 15000 }).catch(() => {});
   await o.page.waitForTimeout(300);
   return o;
 }
+// "Back to MO" after a relax: the bar button (wide screens and some apps) or, on phones, the chapter's in-flow hint line
+// ("Showing Consultant content for this view · Back to MO"), which never covers text.
+const BACK_SEL = '.ra-level-back:visible, .ra-hidden-hint.is-relaxed:not([hidden]) button:visible';
 const errorsOf = (log) => [...new Set([...log.pageErrors, ...log.console])];
 const ls = (page, k = 'ra-level') => page.evaluate((k) => { try { return localStorage.getItem(k); } catch { return 'blocked'; } }, k);
 const bodyLevel = (page) => page.evaluate(() => ({ level: document.body.dataset.level || null, max: document.body.dataset.tierMax || null, relaxed: document.body.dataset.levelRelaxed === 'true', pearls: document.body.dataset.pearlsOnly === 'true' }));
@@ -71,8 +77,10 @@ async function controlCheck(browser, p, vp) {
 }
 
 // ------------------------------------------------------------------ 2–4. hiding, hints, safety
+/** Plexus tags its notes only once a block or element is selected: test it with a selection. */
+const LEVEL_URL = { 'plexus/': 'plexus/#plexus=lumbar&block=peng' };
 async function hidingCheck(browser, p, level) {
-  const { ctx, page, log } = await load(browser, p, { level });
+  const { ctx, page, log } = await load(browser, LEVEL_URL[p] || p, { level });
   try {
     await page.addStyleTag({ content: FORCE_CSS });
     const s = await page.evaluate((max) => {
@@ -113,7 +121,8 @@ async function hintsCheck(browser, p) {
       const hints = [...document.querySelectorAll('.ra-hidden-hint')];
       const res = [];
       for (const h of hints) {
-        const root = h.closest(CH) || document.body;
+        // a chapter's hint counts its whole chapter (spinal puts it under the chapter's first section heading)
+        const root = h.closest('.tb-chapter, .sp-chapter') || h.closest(CH) || document.body;
         const m = (h.textContent || '').match(/(\d+)\s+items?\s+hidden/);
         res.push({ root: root.id || root.className, said: h.hidden ? 0 : (m ? Number(m[1]) : null), real: count(root), hidden: h.hidden });
       }
@@ -135,7 +144,7 @@ async function hintsCheck(browser, p) {
       if (b.level !== 'consultant') why.push(`"Show all" left the level at ${b.level}`);
       if (!b.relaxed) why.push('"Show all" did not mark the view as relaxed');
       if (await ls(page) !== 'mo') why.push(`"Show all" changed the saved level to ${await ls(page)}`);
-      const back = await page.evaluate(() => { const b = [...document.querySelectorAll('.ra-level-back')].find((x) => x.getClientRects().length); return b ? b.textContent.trim() : null; });
+      const back = await page.evaluate(() => { const b = [...document.querySelectorAll('.ra-level-back, .ra-hidden-hint.is-relaxed button')].find((x) => x.getClientRects().length); return b ? b.textContent.trim() : null; });
       if (!/MO/.test(back || '')) why.push(`no visible "Back to MO" button after Show all (got ${JSON.stringify(back)})`);
     } else if (s.res.some((h) => h.said > 0) || s.missing.length) why.push('no visible "Show all" button at MO');
     return { ok: !why.length, why: why.join('; '), n: s.res.length, hub: s.hub };
@@ -161,6 +170,8 @@ async function safetyCheck(browser, p) {
           const box = document.getElementById(`${b.id}-dose-box`);
           const last = box?.querySelector('.tb-dose-last');
           if (!box) out.push(`${b.id}: dose box not rendered`);
+          // The tier of the box and everything around it (its section, its chapter), whatever the CSS says.
+          else if (tierUp(box) > 1) out.push(`${b.id}: dose box sits inside tier-${tierUp(box)} content${ch?.dataset.tier ? ` (chapter ${ch.id} is tier ${ch.dataset.tier})` : ''}`);
           else if (!seen(box)) out.push(`${b.id}: dose box hidden at MO (tier ${tierUp(box)}${ch?.dataset.tier ? `, chapter ${ch.id} is tier ${ch.dataset.tier}` : ''})`);
           if (box && (!last || !seen(last))) out.push(`${b.id}: LAST line missing or hidden at MO`);
           const inner = box ? [...box.querySelectorAll('[data-tier]')].filter((n) => Number(n.dataset.tier) > 1) : [];
@@ -170,6 +181,7 @@ async function safetyCheck(browser, p) {
           checked++;
           const sec = document.getElementById(`${b.id}-complications`);
           if (!sec) out.push(`${b.id}: complications not rendered`);
+          else if (tierUp(sec) > 1) out.push(`${b.id}: complications sit inside tier-${tierUp(sec)} content`);
           else if (!seen(sec)) out.push(`${b.id}: complications hidden at MO (tier ${tierUp(sec)})`);
           else {
             const hid = [...sec.querySelectorAll('*')].filter((n) => n.textContent.trim() && getComputedStyle(n).display === 'none' && !n.closest('details:not([open]) > :not(summary)'));
@@ -181,13 +193,28 @@ async function safetyCheck(browser, p) {
           if (wrap && !seen(wrap)) out.push(`${b.id}: scan viewer hidden at MO (tier ${tierUp(wrap)})`);
         }
       }
-      return { out, checked, blocks: (BLOCKS || []).length };
+      // Dose strings in tiered free-form content (chapters and sections not built from BLOCKS). Plan §5 puts these
+      // section types above MO on purpose: exam, related blocks, landmark alternatives, consultant, frontier,
+      // catheters, nerve stimulation, approach comparisons, deep V2/V3, and the engine's tier-2 section keys (target and
+      // deposition, coverage, sonoanatomy). Anything else is listed for review.
+      const DOSE = /\d+(?:\.\d+)?\s*(?:mg\/kg|mL|ml|mg|%)/;
+      // (plus the engine's default tier-2 section keys: target, coverage, sonoanatomy)
+      const PLANNED = /exam|related|landmark|consultant|frontier|catheter|approach|alt|nerve-?stim|deep|-(target|coverage|sonoanatomy)$/i;
+      const free = [];
+      document.querySelectorAll('[data-tier="2"],[data-tier="3"]').forEach((n) => {
+        if (n.parentElement?.closest('[data-tier="2"],[data-tier="3"]')) return; // the top-most tagged node only
+        const where = [n.id, n.closest('section[id]')?.id, n.closest('.tb-chapter')?.id].filter(Boolean);
+        if (where.some((id) => PLANNED.test(id))) return;
+        const m = (n.textContent || '').match(DOSE);
+        if (m) free.push(`${where[0] || n.tagName.toLowerCase()} [tier ${n.dataset.tier}]: "${m[0]}" in "${n.textContent.replace(/\s+/g, ' ').trim().slice(0, 60)}…"`);
+      });
+      return { out, checked, blocks: (BLOCKS || []).length, free };
     }, p);
     if (s.err) return { ok: false, why: s.err };
     const why = [...s.out];
     if (!s.checked) why.push('no block with a dose or complications found');
     if (errorsOf(log).length) why.push(`errors: ${errorsOf(log).slice(0, 2).join(' | ')}`);
-    return { ok: !why.length, why: why.join('\n'), checked: s.checked, blocks: s.blocks };
+    return { ok: !why.length, why: why.join('\n'), checked: s.checked, blocks: s.blocks, free: s.free };
   } finally { await ctx.close(); }
 }
 
@@ -215,8 +242,9 @@ async function relaxCheck(browser, p) {
       if (TIER[b.level] < t) why.push(`level only raised to ${b.level}`);
       if (await ls(page) !== 'mo') why.push(`saved level changed to ${await ls(page)}`);
       if (await page.evaluate(() => /level=/.test(location.href))) why.push('level put in the URL');
-      const back = page.locator('.ra-level-back:visible').first();
+      const back = page.locator(BACK_SEL).first();
       if (await back.count()) {
+        await back.scrollIntoViewIfNeeded().catch(() => {});
         await back.click();
         await page.waitForTimeout(250);
         const b2 = await bodyLevel(page);
@@ -273,11 +301,17 @@ async function brachialRelax(browser) {
   const { ctx, page, log } = await load(browser, 'brachial-plexus/#block=costoclavicular', { level: 'mo', idle: true });
   try {
     await page.waitForTimeout(600);
-    const s = await page.evaluate(() => { const c = document.querySelector('#block-chips [data-block="costoclavicular"]'); return { chip: !!c && c.getClientRects().length > 0, pressed: c?.getAttribute('aria-pressed') }; });
+    // On phones the chips sit in a collapsed block menu, so check the selection (pressed chip, select value or menu
+    // label), not whether the chip is on screen.
+    const s = await page.evaluate(() => {
+      const c = document.querySelector('#block-chips [data-block="costoclavicular"]');
+      const sel = [...document.querySelectorAll('select')].some((x) => x.value === 'costoclavicular');
+      const label = [...document.querySelectorAll('button[aria-expanded], .bp-block-cur, [class*="block"] [class*="cur"]')].some((n) => /costoclavicular/i.test(n.textContent));
+      return { chip: !!c, pressed: c?.getAttribute('aria-pressed'), sel, label, hash: location.hash };
+    });
     const b = await bodyLevel(page);
     const why = [];
-    if (!s.chip) why.push('costoclavicular chip not shown');
-    if (s.pressed !== 'true') why.push(`chip aria-pressed=${s.pressed}`);
+    if (!(s.pressed === 'true' || s.sel || s.label)) why.push(`costoclavicular not selected (chip ${s.chip ? `aria-pressed=${s.pressed}` : 'missing'}, no select or menu label shows it; hash ${s.hash})`);
     if (!b.relaxed) why.push(`view not relaxed (level ${b.level})`);
     if (await ls(page) !== 'mo') why.push('saved level changed');
     if (errorsOf(log).length) why.push(`errors: ${errorsOf(log).slice(0, 2).join(' | ')}`);
@@ -315,6 +349,34 @@ async function persistence(browser) {
     if (errorsOf(log).length) steps.push({ name: 'persistence run without errors', ok: false, why: errorsOf(log).slice(0, 3).join(' | ') });
   } catch (err) { steps.push({ name: 'persistence run', ok: false, why: String(err.message || err).split('\n')[0] }); } finally { await ctx.close(); }
   return steps;
+}
+
+// ------------------------------------------------------------------ first-visit picker
+async function picker(browser) {
+  const out = [];
+  for (const p of ['truncal/back/', 'spinal/', 'brachial-plexus/', 'plexus/']) {
+    if (!PAGES.includes(p)) continue;
+    const o = await openContext(browser, { vp: '390', dismissPicker: false });
+    try {
+      await o.page.goto(BASE + p, { waitUntil: 'domcontentloaded' });
+      await waitReady(o.page, { idle: false });
+      const why = [];
+      const box = o.page.locator('.ra-level-picker');
+      if (!(await box.count()) || !(await box.first().isVisible())) why.push('no visible "How much detail do you want?" picker on a first visit');
+      else {
+        await box.first().locator('button', { hasText: 'Resident' }).first().click();
+        await o.page.waitForTimeout(250);
+        if ((await bodyLevel(o.page)).level !== 'resident') why.push('choosing Resident in the picker did not set the level');
+        if (await ls(o.page) !== 'resident') why.push('picker choice not saved');
+        if (await box.count() && await box.first().isVisible()) why.push('picker still shown after a choice');
+        await o.page.reload(); await waitReady(o.page, { idle: false });
+        if (await o.page.locator('.ra-level-picker:visible').count()) why.push('picker shown again after reload');
+      }
+      if (errorsOf(o.log).length) why.push(`errors: ${errorsOf(o.log).slice(0, 2).join(' | ')}`);
+      out.push({ name: `first-visit level picker on ${p}`, ok: !why.length, why: why.join('; ') });
+    } finally { await o.ctx.close(); }
+  }
+  return out;
 }
 
 // ------------------------------------------------------------------ 6. migration from spinal's keys
@@ -378,7 +440,13 @@ async function main() {
   const hj = PAGES.flatMap((p) => ['mo', 'resident', 'consultant'].map((l) => [p, l]));
   const hr = await pool(hj, W, ([p, l]) => hidingCheck(browser, p, l), ([p, l]) => `hiding ${p} ${l}`);
   hj.forEach(([p, l], i) => R.check(`${l}: ${p} hides tiers above ${TIER[l]}${hr[i]?.tagged != null ? ` (${hr[i].tagged} tagged)` : ''}`, hr[i]?.ok, hr[i]?.why || hr[i]?.error));
-  for (const p of PAGES) { const i = hj.findIndex(([q, l]) => q === p && l === 'mo'); if (hr[i]?.ok && !hr[i].tagged) R.fail(`${p}: has tiered content`, 'no [data-tier] elements at all (levels not wired)'); }
+  for (const p of PAGES) {
+    const i = hj.findIndex(([q, l]) => q === p && l === 'mo');
+    if (!hr[i]?.ok || hr[i].tagged) continue;
+    // plexus: plan §5 tags block and element notes tier 2; until WP5 wires it the page relies on its hint text (warning only)
+    if (p === 'plexus/') R.warn(`${p}: no tiered content with ${LEVEL_URL[p]}`, 'block / element notes are not tagged data-tier=2 yet (WP5)');
+    else R.fail(`${p}: has tiered content`, 'no [data-tier] elements at all (levels not wired)');
+  }
 
   const ir = await pool(PAGES, W, (p) => hintsCheck(browser, p), (p) => `hints ${p}`);
   PAGES.forEach((p, i) => {
@@ -387,7 +455,10 @@ async function main() {
   });
 
   const sr = await pool(ENGINE, W, (p) => safetyCheck(browser, p), (p) => `safety ${p}`);
-  ENGINE.forEach((p, i) => R.check(`SAFETY at MO: dose box, LAST line, complications and scan on ${p}${sr[i]?.checked ? ` (${sr[i].blocks} blocks)` : ''}`, sr[i]?.ok, sr[i]?.why || sr[i]?.error));
+  ENGINE.forEach((p, i) => {
+    R.check(`SAFETY at MO: dose box, LAST line, complications and scan on ${p}${sr[i]?.checked ? ` (${sr[i].blocks} blocks)` : ''}`, sr[i]?.ok, sr[i]?.why || sr[i]?.error);
+    if (sr[i]?.free?.length) R.warn(`${p}: ${sr[i].free.length} dose string(s) in tiered content outside the plan's tier-2/3 section types (owner to review)`, sr[i].free.slice(0, 8).join('\n     '));
+  });
   if (PAGES.includes('spinal/')) {
     const { ctx, page } = await load(browser, 'spinal/', { level: 'mo' });
     await page.addStyleTag({ content: FORCE_CSS });
@@ -409,6 +480,7 @@ async function main() {
   if (!ONLY || ['truncal/back/', 'spinal/', 'brachial-plexus/', 'plexus/'].some((p) => ONLY.includes(p))) {
     for (const x of await persistence(browser)) R.check(x.name, x.ok, x.why);
     for (const x of await migration(browser)) R.check(x.name, x.ok, x.why);
+    for (const x of await picker(browser)) R.check(x.name, x.ok, x.why);
   }
   if (PAGES.includes('spinal/')) for (const x of await pearls(browser)) R.check(x.name, x.ok, x.why);
 

@@ -143,6 +143,23 @@ async function main() {
     const p = pagePath.replace(/^\//, '').replace(/index\.html$/, '');
     if (!fs.existsSync(path.join(ROOT, p, p.endsWith('/') || !p ? 'index.html' : ''))) return `no page /${p}`;
     if (!hash) return null;
+    // State hashes of the brachial-plexus and plexus apps (#block=…&el=…&tab=…, #plexus=…&block=…&el=…) name app state,
+    // not element ids: check them against the apps' own data.
+    if (hash.includes('=')) {
+      const q = new URLSearchParams(hash);
+      if (p === 'brachial-plexus/') {
+        if (q.get('block') && !D.brachial?.blocks.includes(q.get('block'))) return `no brachial block "${q.get('block')}"`;
+        if (q.get('el') && !D.brachial?.elements.includes(q.get('el'))) return `no brachial element "${q.get('el')}"`;
+        return null;
+      }
+      if (p === 'plexus/') {
+        const px = D.plexus?.[q.get('plexus')];
+        if (!px) return `no plexus "${q.get('plexus')}"`;
+        if (q.get('block') && !px.blocks?.[q.get('block')]) return `no ${q.get('plexus')} block "${q.get('block')}"`;
+        if (q.get('el') && !px.elements?.[q.get('el')]) return `no ${q.get('plexus')} element "${q.get('el')}"`;
+        return null;
+      }
+    }
     const ids = await idsOf(p);
     if (ids.has(hash) || (hash.startsWith('op-') && LANDINGS.includes(p))) return null;
     return `no element #${hash} on /${p}`;

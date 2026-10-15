@@ -13,7 +13,7 @@
 //   cd <repo> && python3 -m http.server 8765
 //
 // What it does on each page, at 390x844 (touch, DPR 2) and 1440x900:
-//   - loads it as a first-time visitor, waits for the app to boot, records console errors, page errors, responses
+//   - loads it with no saved level (first-visit picker dismissed), waits for the app to boot, records console errors, page errors, responses
 //     >= 400, failed requests and every three.js / GLB / Draco request;
 //   - checks horizontal overflow on the first screen, with the chapter menu open, and on every chapter;
 //   - steps every scan through its 4 steps in each image type (Ultrasound / Diagram / Real) and records the step text
@@ -70,7 +70,7 @@ async function metrics(page, isPhone) {
       const r = e.getBoundingClientRect();
       const inline = e.tagName === 'A' && getComputedStyle(e).display === 'inline';
       const min = inline ? 24 : 44;
-      if (Math.min(r.width, r.height) < min - 0.5) { tiny++; if (tinyEx.length < 5) tinyEx.push(`${e.tagName.toLowerCase()}#${e.id || ''}.${String(e.className).split(' ')[0]} ${Math.round(r.width)}x${Math.round(r.height)}`); }
+      if (Math.min(r.width, r.height) < min - 0.5) { tiny++; if (tinyEx.length < 5) tinyEx.push(`${e.tagName.toLowerCase()}#${e.id || ''}.${String(e.className?.baseVal ?? e.className).split(' ')[0]} "${(e.getAttribute('aria-label') || e.textContent || '').trim().slice(0, 20)}" ${Math.round(r.width)}x${Math.round(r.height)}`); }
     }
     // Sticky/fixed bars that stay at the top once the reader has scrolled (skip links and off-screen things excluded).
     const y0 = scrollY;
@@ -143,6 +143,8 @@ async function plexusCanvas(page) {
 async function runPage(browser, p, vp) {
   const ctx = await browser.newContext({ ...VIEWPORTS[vp], reducedMotion: 'reduce' });
   await ctx.addInitScript(() => {
+    // Picker dismissed (levels.mjs tests it), no level saved: the default Consultant view, comparable with the baseline.
+    try { if (!sessionStorage.getItem('__ra_seeded')) { localStorage.setItem('ra-level-picker', 'dismissed'); sessionStorage.setItem('__ra_seeded', '1'); } } catch { /* blocked */ }
     const mark = () => { if (!window.__raReadyAt) window.__raReadyAt = performance.now(); };
     document.addEventListener('tb-ready', mark); window.addEventListener('tb-ready', mark);
     new MutationObserver((_, o) => { if (document.body?.dataset.tbReady === 'true') { mark(); o.disconnect(); } }).observe(document, { subtree: true, attributes: true, attributeFilter: ['data-tb-ready'] });
@@ -157,8 +159,11 @@ async function runPage(browser, p, vp) {
     await waitReady(page);
     if (SHOTS) { fs.mkdirSync(SHOTS, { recursive: true }); await page.screenshot({ path: path.join(SHOTS, `${slug(p)}-${vp}.png`) }); }
     res.metrics = await metrics(page, vp === '390');
+    res.credit = await page.evaluate(() => {
+      const t = document.body.innerText.replace(/\s+/g, ' ');
+      return { line: /Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia/.test(t), link: !!document.querySelector('a[href^="https://chewshihao.com"]'), frca: /FRCA/.test(t) };
+    });
     res.threeEarly = [...new Set(log.three)];
-    if (!WRITE) res.axe = await axeCheck(page);
     const mb = page.locator('#tb-chmenu-btn');
     if (await mb.count() && await mb.isVisible()) { await mb.click(); await page.waitForTimeout(150); res.menuOverflow = await overflowNow(page); await page.keyboard.press('Escape'); }
     const isEngine = await page.evaluate(() => !!document.querySelector('.tb-chapter[id^="ch-"]'));
@@ -172,8 +177,14 @@ async function runPage(browser, p, vp) {
       res.animFramesAfterScans = await page.evaluate(() => document.querySelectorAll('iframe[src*="/anim/"]').length);
     }
     if (p === 'brachial-plexus/') res.extra = await brachialText(page);
-    if (p === 'plexus/') { res.extra = await plexusText(page); if (!WRITE) res.canvas = await plexusCanvas(page); }
+    if (p === 'plexus/') res.extra = await plexusText(page);
+    // Failures after this point come from the capture itself (it opens and closes each "Watch" iframe): not counted.
+    res.failedBeforeCapture = log.failed.length;
     res.text = await captureText(page);
+    if (p === 'plexus/' && !WRITE) res.canvas = await plexusCanvas(page);
+    // axe last: it re-fetches @import'ed stylesheets relative to the page (404s that are axe's, not the page's).
+    res.cut = { console: log.console.length, pageErrors: log.pageErrors.length, bad: log.bad.length };
+    if (!WRITE) res.axe = await axeCheck(page);
   } catch (err) {
     res.error = String(err.message || err).split('\n')[0];
   }
@@ -183,10 +194,10 @@ async function runPage(browser, p, vp) {
 }
 
 function summarise(r) {
-  const allText = allTextOf(r);
+  const allText = allTextOf(r, { forDoses: true });
   return {
     status: r.status, error: r.error || null,
-    console: r.log.console, pageErrors: r.log.pageErrors, bad: r.log.bad, failed: r.log.failed, three: [...new Set(r.log.three)],
+    console: r.log.console.slice(0, r.cut?.console ?? r.log.console.length), pageErrors: r.log.pageErrors.slice(0, r.cut?.pageErrors ?? r.log.pageErrors.length), bad: r.log.bad.slice(0, r.cut?.bad ?? r.log.bad.length), failed: r.log.failed.slice(0, r.failedBeforeCapture ?? r.log.failed.length), three: [...new Set(r.log.three)],
     overflow: r.metrics?.overflow ?? null, menuOverflow: r.menuOverflow ?? null, chapterOverflow: r.chapterOverflow || {},
     scanOffscreen: r.scanOffscreen || [],
     polish: r.metrics ? { smallText: r.metrics.smallText, smallTextEx: r.metrics.smallTextEx, smallTargets: r.metrics.smallTargets, smallTargetsEx: r.metrics.smallTargetsEx, stickyTop: r.metrics.stickyTop, stickyEx: r.metrics.stickyEx, barHeight: r.metrics.barHeight, readyMs: r.metrics.readyMs } : null,
@@ -244,6 +255,15 @@ async function main() {
     if (s.overflow && !(b?.overflow)) problems.push(`horizontal overflow ${s.overflow}px`);
     if (r.menuOverflow && !(b?.menuOverflow)) problems.push(`overflow with chapter menu open ${r.menuOverflow}px`);
     const nco = Object.keys(s.chapterOverflow).filter((k) => !(b?.chapterOverflow || {})[k]); if (nco.length) problems.push(`overflow in chapters: ${nco.map((k) => `${k} ${s.chapterOverflow[k]}px`).join(', ')}`);
+    if (r.page !== 'regional.html' && r.credit && !(r.credit.line && r.credit.link)) problems.push(`credit line missing: want "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" with Dr Chew Shi Hao linked to https://chewshihao.com/ (line ${r.credit.line ? 'ok' : 'missing'}, link ${r.credit.link ? 'ok' : 'missing'})`);
+    if (r.credit?.frca) problems.push('page text says "FRCA" (say exam / MMed)');
+    // The same module under two URLs (e.g. levels.js and levels.js?v=…) runs twice: shared state (level, search) splits.
+    const byPath = {};
+    for (const u of r.log.requests || []) { const m2 = u.match(/^\/?(shared\/regional\/js\/[\w/.-]+\.js)(\?.*)?$/); if (m2) (byPath[m2[1]] ||= new Set()).add(m2[2] || ''); }
+    const dups = Object.entries(byPath).filter(([, q]) => q.size > 1).map(([f, q]) => `${f} as ${[...q].map((x) => x || '(no query)').join(' and ')}`);
+    const stateDups = dups.filter((d) => /\/(levels|ui|search|registry|status|shell|scan|head|leg)\.js /.test(d)); // figures/head.js and leg.js keep pattern counters
+    if (stateDups.length) problems.push(`stateful engine module loaded twice (two instances): ${stateDups.join('; ')}`);
+    if (dups.length > stateDups.length) notes.push(`modules loaded under two URLs: ${dups.filter((d) => !stateDups.includes(d)).join('; ')}`);
     if (m.serviceWorkers) problems.push(`a service worker is registered (${m.serviceWorkers}); regional pages must not register one (§11.8)`);
     // three.js only on brachial-plexus/ and plexus/ (and after "Open here", which the smoke never taps).
     if (!['brachial-plexus/', 'plexus/'].includes(r.page) && (r.threeAfterScans || r.threeEarly || []).length) problems.push(`three.js / GLB requested without "Open here": ${(r.threeAfterScans || r.threeEarly).join(', ')}`);

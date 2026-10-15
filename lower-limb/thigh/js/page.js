@@ -27,7 +27,7 @@ bootPage({
   chapters: [
     { id: 'ch-anatomy', title: 'Anatomy: the sciatic nerve and who supplies the thigh', short: 'Anatomy', desc: 'From the pelvis to the knee, level by level; the posterior femoral cutaneous nerve; the five nerves of the thigh.', render: renderAnatomy },
     { id: 'ch-sciatic', title: 'Subgluteal sciatic block', short: 'Sciatic', desc: 'The gluteal crease, with transgluteal, parasacral and anterior approaches and the posterior femoral cutaneous nerve.', block: byId.sciatic },
-    { id: 'ch-amputation', title: 'Amputation planner', short: 'Amputation', desc: 'Above- and below-knee amputation under nerve blocks in the sick patient: which nerves, what dose, catheters and phantom pain.', render: renderAmputation, tier: 2 },
+    { id: 'ch-amputation', title: 'Amputation planner', short: 'Amputation', desc: 'Above- and below-knee amputation under nerve blocks in the sick patient: which nerves, what dose, catheters and phantom pain.', render: renderAmputation },
     { id: 'ch-combinations', title: 'Block combinations for the whole lower limb', short: 'Combinations', desc: 'Operation, blocks and total dose for every lower-limb operation, linked to each block.', render: renderCombinations },
   ],
   synonyms: [

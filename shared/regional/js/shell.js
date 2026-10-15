@@ -5,12 +5,12 @@
 import { $, $$, el, fill, announce } from './ui.js';
 import { attachSearch, buildIndex, addSynonyms } from './search.js';
 import { renderBlock } from './block.js';
-import { applyLevel, mountLevelControl, mountLevelPicker, hiddenHint, relaxFor, onLevel } from './levels.js';
+import { applyLevel, mountLevelControl, mountLevelPicker, hiddenHint, relaxFor, onLevel, tierOf, tierMax, setLevel, getLevel, LEVELS, TIER_NAMES } from './levels.js?v=20261015'; // same URL as brachial-plexus, plexus, spinal and /blocks/: one level state per page
 
 /** Site root, from this module's URL (works at any page depth and on a local server). */
 const ROOT = new URL('../../../', import.meta.url).href;
 /** The /blocks/ front door (WP11). Set to true once /blocks/ is live, so every page links to it by default. */
-const FRONT_DOOR_READY = false;
+const FRONT_DOOR_READY = true;
 export const DEFAULT_CREDIT = 'Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia';
 
 const ICON = {
@@ -73,9 +73,11 @@ function crumbParent() {
 /** Shorter placeholder for phones: the first two examples only ("Search, e.g. ESP, SCTL, T7, dose" → "Search, e.g. ESP, SCTL"). */
 const shortPlaceholder = (p) => { const parts = String(p).split(','); return parts.length > 3 ? parts.slice(0, 3).join(',') : p; };
 
-/** Insert the "n items hidden at MO level · Show all" hint near the top of a chapter (only if it has tiered content). */
+/**
+ * Insert the "n items hidden at MO level · Show all" hint near the top of a chapter. It hides itself when nothing is
+ * hidden; while a deep link has raised the level it reads "Showing … content for this view · Back to MO".
+ */
 function addHint(sec) {
-  if (!sec.querySelector('[data-tier="2"],[data-tier="3"]')) return;
   const hint = hiddenHint(sec, { label: 'in this chapter' });
   const after = sec.querySelector(':scope > .tb-bhead') || sec.querySelector(':scope > h1') || sec.querySelector(':scope > .tb-ch-kicker');
   if (after) after.after(hint); else sec.prepend(hint);
@@ -133,6 +135,8 @@ export async function bootPage(cfg) {
   const tierAttr = (c) => (c.tier === 2 || c.tier === 3 ? { 'data-tier': String(c.tier) } : {});
   chs.forEach((c) => hubCh.append(el('li', tierAttr(c), el('a', { href: `#${c.id}` }, el('span', { class: 'tb-hubch-t', text: c.title }), c.desc ? el('span', { class: 'tb-hubch-d', text: c.desc }) : null))));
   hubIn.append(hubCh);
+  // At MO (or Resident) some chapters drop out of this list: say so, with "Show all".
+  if (useLevel) hubCh.before(hiddenHint(hubCh, { label: 'in this list', relaxed: false }));
   if (cfg.hubExtra) { const x = el('div', { class: 'tb-hub-extra' }); fill(x, typeof cfg.hubExtra === 'function' ? cfg.hubExtra() : cfg.hubExtra); hubIn.append(x); }
   const back = el('p', { class: 'tb-hub-back' }, el('a', { href: backHref }, `${backLabel} `, el('span', { 'aria-hidden': 'true', text: '→' })));
   if (home) back.append(el('br'), el('a', { href: home }, 'All regional blocks ', el('span', { 'aria-hidden': 'true', text: '→' })));
@@ -161,7 +165,10 @@ export async function bootPage(cfg) {
   });
   // Extra rows under the chapters: copy link (phones: the bar has no room for it), the region landing, the front door.
   const menuShare = el('button', { type: 'button', class: 'tb-chmenu-act tb-chmenu-share', html: `${ICON.link}<span>Copy link to this page</span>` });
+  // Very narrow phones: search moves from the bar into this menu, so the bar has room to name the chapter.
+  const menuSearch = el('button', { type: 'button', class: 'tb-chmenu-act tb-chmenu-search', html: `${ICON.search}<span>Search this page</span>` });
   const menuExtra = el('ul', { class: 'tb-chmenu-extra' },
+    el('li', { class: 'tb-chmenu-search-li' }, menuSearch),
     el('li', { class: 'tb-chmenu-share-li' }, menuShare),
     el('li', {}, el('a', { class: 'tb-chmenu-act', href: backHref, html: `${ICON.back}<span></span>` })),
     home ? el('li', {}, el('a', { class: 'tb-chmenu-act', href: home, html: `${ICON.home}<span>All regional blocks</span>` })) : null);
@@ -180,6 +187,7 @@ export async function bootPage(cfg) {
   });
   menu.addEventListener('click', (e) => { if (e.target.closest('a')) closeMenu(); });
   menuShare.addEventListener('click', () => { copyLink(menuShare); });
+  menuSearch.addEventListener('click', () => { closeMenu(); openSearch(); });
   chmenu.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && !menu.hidden) { e.preventDefault(); closeMenu(true); return; }
     if (menu.hidden || !['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) return;
@@ -245,6 +253,31 @@ export async function bootPage(cfg) {
   window.addEventListener('resize', fitChapters);
   document.fonts?.ready?.then(fitChapters);
 
+  // ------------------------------------------------------------ level stub
+  // The reader lowers the level while reading a chapter that level hides: say so in place (no blank page).
+  const stubTitle = el('h1', { class: 'tb-ch-title', tabindex: '-1' });
+  const stubText = el('p', { class: 'tb-lead tb-lead--small' });
+  const stubShow = el('button', { type: 'button', class: 'tb-btn tb-btn--primary' });
+  const stub = el('div', { class: 'ra-ch-stub', id: 'ra-ch-stub', hidden: true },
+    el('p', { class: 'tb-ch-kicker', text: 'Hidden at your level' }), stubTitle, stubText,
+    el('div', { class: 'ra-ch-stub-actions' }, stubShow, el('a', { class: 'tb-btn', href: '#ch-home', text: 'Back to the hub' })));
+  main.append(stub);
+  stubShow.addEventListener('click', () => {
+    const t = current ? tierOf(current) : 1;
+    setLevel({ 1: 'mo', 2: 'resident', 3: 'consultant' }[t] || 'consultant', { save: false, anchor: false });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  });
+  function syncStub() {
+    if (!useLevel) return;
+    const t = current && current !== hub ? tierOf(current) : 1;
+    const hide = t > tierMax();
+    stub.hidden = !hide;
+    if (!hide) return;
+    stubTitle.textContent = current.dataset.title || '';
+    stubText.textContent = `This chapter is ${TIER_NAMES[t]} level, so the ${LEVELS[getLevel()].name} level hides it. Show it for this view (your saved level stays the same), or go back to the hub.`;
+    stubShow.textContent = `Show it (${TIER_NAMES[t]})`;
+  }
+
   // ------------------------------------------------------------ routing
   const chapters = [hub, ...chs.map((c) => sections.get(c.id))];
   const byId = new Map(chapters.map((c) => [c.id, c]));
@@ -267,6 +300,7 @@ export async function bootPage(cfg) {
     document.body.dataset.chapter = ch.id;
     document.title = ch.id === 'ch-home' ? BASE_TITLE : `${ch.dataset.title} — ${BASE_TITLE}`;
     paintNav();
+    syncStub();
     document.dispatchEvent(new CustomEvent('tb-chapter', { detail: { id: ch.id } }));
     kickResize();
     return true;
@@ -313,7 +347,7 @@ export async function bootPage(cfg) {
     const stop = () => { cancelled = true; };
     const evs = ['wheel', 'touchstart', 'keydown', 'mousedown'];
     evs.forEach((e) => window.addEventListener(e, stop, { once: true, passive: true }));
-    const pad = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    const pad = (parseFloat(getComputedStyle(t).scrollMarginTop) || 0) + (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0);
     [400, 900].forEach((ms, i, all) => setTimeout(() => {
       if (!cancelled && Math.abs(t.getBoundingClientRect().top - pad) > 24) t.scrollIntoView({ block: 'start', behavior: 'instant' });
       if (i === all.length - 1) evs.forEach((e) => window.removeEventListener(e, stop));
@@ -378,6 +412,6 @@ export async function bootPage(cfg) {
   await goToHash(location.hash, { initial: true });
   fitChapters();
   // A level change shows or hides content: canvases and the chapter list re-measure.
-  if (useLevel) onLevel(() => { kickResize(); fitChapters(); });
+  if (useLevel) onLevel(() => { syncStub(); kickResize(); fitChapters(); });
   kickResize();
 }

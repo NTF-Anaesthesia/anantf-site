@@ -102,7 +102,7 @@ export function anatomyHref(id) {
 const cap1 = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 const figureMods = {
   legCoverageMap: () => import('./figures/leg.js'),
-  headCoverageMap: () => import('./figures/head.js'),
+  headCoverageMap: () => import('./figures/head.js?v=20261015'), // same URL as the head-neck pages: one module instance
 };
 async function zoneNamer(cov) {
   const load = cov.map && figureMods[cov.map.name];
@@ -177,7 +177,9 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   st.built = !!bmodeImg;
 
   // ---------------------------------------------------------------- structures (chips, hit test, highlight)
-  const labelled = [...g.layers, ...g.lines, ...g.shapes].filter((it) => it.label);
+  // Items marked nolabel:true (internal names such as "Space for the nerve") are drawn but never named to the reader:
+  // they stay out of the image labels, the chip legend, the hit test and "Test me".
+  const labelled = [...g.layers, ...g.lines, ...g.shapes].filter((it) => it.label && !it.nolabel);
   const structs = new Map(); // label text -> {key, items[], desc, ids[], kind}
   for (const it of labelled) {
     const key = it.label;
@@ -220,7 +222,9 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     injWrap = el('div', { class: 'tb-scan-injwrap' }, el('p', { class: 'tb-scan-injlab', text: scene.injectionLabel || 'Injection point' }), injSeg);
   }
 
-  const stage = el('div', { class: 'tb-scan-stage', tabindex: '0', role: 'img' });
+  // An interactive viewer (arrow keys change step, tapping selects a structure), not a static picture.
+  const stageHint = el('p', { class: 'tb-sr', id: `${bid}-scan-hint`, text: `Use the left and right arrow keys to change step.${structs.size ? ' The structures in this view are listed as buttons next to the image.' : ''}` });
+  const stage = el('div', { class: 'tb-scan-stage', tabindex: '0', role: 'group', 'aria-roledescription': diagramOnly ? 'diagram viewer' : 'ultrasound viewer', 'aria-describedby': stageHint.id });
   const box = el('div', { class: 'tb-scan-box' });
   const canvas = el('canvas', { 'aria-hidden': 'true' });
   const overlay = sv('svg', { class: 'tb-scan-ov', 'aria-hidden': 'true' });
@@ -293,7 +297,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   }
   cap.append(el('p', { class: 'tb-scan-note', text: diagramOnly ? 'Schematic section drawn by this page, not to scale. Use the arrow keys on the image to step through.' : 'Simulated image drawn by this page, not a patient scan. Use the arrow keys on the image to step through.' }));
   cap.append(el('p', { class: 'tb-scan-note', text: `On a phone, swipe the image left or right to change step.${structs.size ? ' Tap a structure on the image or in the list to highlight it.' : ''}` }));
-  fig.append(head, grid, cap);
+  fig.append(head, grid, cap, stageHint);
   host.append(fig);
 
   /** Phones: image + steps in the sticky column; everything else scrolls. Wider: steps beside the image. */
@@ -301,7 +305,9 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     col.append(stage);
     if (st.phone) {
       col.append(stepList);
-      panel.append(...[testBar, legend, info, injWrap, stepText, covHost, nav, probeFig].filter(Boolean));
+      // The step text comes straight after the sticky image and step buttons, so tapping a step (or opening a step
+      // deep link) shows its teaching text on screen; the legend, injection points and probe follow it.
+      panel.append(...[testBar, info, stepText, nav, legend, injWrap, covHost, probeFig].filter(Boolean));
     } else {
       col.append(...[legend, info].filter(Boolean));
       panel.append(...[testBar, injWrap, stepList, stepText, covHost, nav, probeFig].filter(Boolean));
@@ -341,8 +347,9 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   let labelEls = [];
   let targetEl = null; let popEl = null; let hiG = null; let hiEls = [];
   let obstacles = [];
-  const RULER_W = 28; // keep labels clear of the depth ruler on the right
+  const RULER_W = 32; // keep labels clear of the depth ruler on the right (its numbers and "cm" are 28px wide, plus 4px)
   function buildOverlay() {
+    if (!st.size) return; // not measured yet (e.g. a scan mounted in a chapter that is not shown): measure() builds it
     overlay.textContent = '';
     const { cssW, cssH, px, narrow } = st.size;
     overlay.dataset.view = st.view;

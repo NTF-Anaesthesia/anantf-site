@@ -90,7 +90,7 @@ ui.panel.addEventListener('focusout', (e) => {
 
 function paintPick(s) {
   ui.pickPlexus.textContent = s.plexusTab || PLEXUSES.find((p) => p.id === s.plexus)?.tab || '';
-  ui.pickBlock.textContent = s.blockShort || 'Choose a block';
+  ui.pickBlock.textContent = s.blockShort || 'Pick a block';
   ui.pick.setAttribute('aria-label', `${s.plexusName || 'Plexus'}${s.blockName ? `, ${s.blockName}` : ', no block chosen'}. Change plexus or block`);
 }
 

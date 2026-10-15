@@ -344,9 +344,25 @@ export function mountViewer(container, ctx) {
     if (width > 0 && height > 0) {
       renderer.render(scene, camera);
       labelRenderer.render(scene, camera);
-      nudgeLabels();
     }
-    if (a || moved) requestRender();
+    if (a || moved) { clearNudge(); requestRender(); } else scheduleNudge();
+  }
+
+  // The collision nudge reads label boxes (a forced layout), so it runs only once the camera has settled,
+  // never on every frame of an orbit or a camera flight. While the camera moves, labels sit unnudged.
+  let nudgeTimer = 0; let nudged = false;
+  function scheduleNudge() {
+    if (nudgeTimer || destroyed) return;
+    nudgeTimer = setTimeout(() => { nudgeTimer = 0; if (!destroyed && !anim && width > 0 && height > 0) nudgeLabels(); }, 120);
+  }
+  function clearNudge() {
+    clearTimeout(nudgeTimer); nudgeTimer = 0;
+    if (!nudged) return;
+    nudged = false;
+    for (const lo of labelObjs) {
+      const inner = lo.element.firstElementChild;
+      if (inner && inner.style.transform) { inner.style.transform = ''; inner.classList.remove('is-nudged'); }
+    }
   }
 
   // Root labels: push overlapping labels apart vertically (the label keeps a short leader to its root).
@@ -375,6 +391,7 @@ export function mountViewer(container, ctx) {
       }
       it.inner.style.transform = dy ? `translateY(${Math.round(dy)}px)` : '';
       it.inner.classList.toggle('is-nudged', dy > 0.5);
+      if (dy) nudged = true;
       placed.push({ left: it.left, right: it.right, top: it.top + dy, bottom: it.bottom + dy });
     }
   }
@@ -599,6 +616,7 @@ export function mountViewer(container, ctx) {
     destroy() {
       destroyed = true;
       cancelAnimationFrame(raf);
+      clearTimeout(nudgeTimer);
       ro.disconnect();
       offs.forEach((f) => f());
       canvas.removeEventListener('pointerdown', onDown);

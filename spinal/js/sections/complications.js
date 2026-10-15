@@ -338,7 +338,7 @@ function high() {
       ],
     }), 2),
     T(P('Causes: too large a dose for the patient, a hyperbaric drug with the head down or a pregnancy-like state (<a href="#tq-spread-h">spread factors</a>), subdural placement, or an epidural top-up or large injection after an intended spinal. The reverse order matters too: a spinal given after a failed epidural, or a repeat spinal after a failed one, can spread much higher than expected. Short stature and obesity add to the risk. Treat it as an airway, breathing and circulation problem first, and tell the patient what is happening.'), 2),
-    T(P('Support breathing and circulation until the block recedes, which can take a couple of hours or more. Afterwards, talk to the patient: explain what happened and how they are, because it can be a frightening experience. Record it and tell the patient’s team.'), 2),
+    T(P('Support breathing and circulation until the block recedes, which can take a couple of hours or more. Afterwards, talk to the patient: explain what happened and how they are, because it can be a frightening experience. Record it and tell the patient’s team.'), 1),
   );
 }
 
@@ -403,7 +403,7 @@ function wrongRoute() {
     T(P(`<strong>Intrathecal vincristine</strong> is a devastating, usually fatal error. The safeguard is to supply vinca alkaloids for infusion in a minibag, never in a syringe.`), 2),
     T(P(`<strong>NRFit connectors</strong> (ISO 80369-6) are small-bore connectors for neuraxial and regional devices that will not mate with Luer, so an IV syringe or line cannot be connected to a spinal needle or epidural.${cite('iso80369-6')} The 2016 standard was replaced by a 2025 edition.`), 2),
     T(f.fig, 2),
-    T(P('<strong>If the wrong drug has gone intrathecal:</strong> stop, call for help at once, keep the patient monitored, and involve the ICU and neurosurgery early. Early CSF drainage or lavage is described for some drugs; this is a specialist decision made with neurosurgery and the poisons service, not a ward procedure. Keep the ampoules and syringes, and report the incident.'), 3),
+    T(P('<strong>If the wrong drug has gone intrathecal:</strong> stop, call for help at once, keep the patient monitored, and involve the ICU and neurosurgery early. Early CSF drainage or lavage is described for some drugs; this is a specialist decision made with neurosurgery and the poisons service, not a ward procedure. Keep the ampoules and syringes, and report the incident.'), 1),
     T(callout('pearl', {
       title: 'Consultant pearl: fix the system, not the person',
       body: '<p>Wrong-route errors keep happening to careful people. Reminders to "be vigilant" fail; physical barriers work. That means connectors that cannot mate, separate storage for IV-only drugs, and drugs supplied in forms that cannot reach the spinal needle. When you find a near miss, report it: the fix is usually in how drugs are stored and supplied.</p>',
@@ -490,7 +490,7 @@ function aftercare() {
         'Do not drive, sign legal papers or drink alcohol for the first day after sedation or if the legs feel odd.',
         'Document the drugs and dose, the number of attempts, any paraesthesia or bloody tap, the time the block wore off, and the advice given.',
       ])),
-    T(P(`Neurological checks of sensory and motor recovery should continue for at least ${N('24 h')} after a neuraxial block, and longer if the patient is at high risk (for example on antithrombotic drugs).${cite('esaic2022')}`), 2),
+    T(P(`Neurological checks of sensory and motor recovery should continue for at least ${N('24 h')} after a neuraxial block, and longer if the patient is at high risk (for example on antithrombotic drugs).${cite('esaic2022')}`), 1),
   );
 }
 

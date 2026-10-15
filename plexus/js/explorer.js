@@ -165,8 +165,31 @@ function mountFrame(host, opts) {
   frame.setAttribute('loading', 'eager');
   frame.setAttribute('allow', 'fullscreen');
   frame.src = url.href + hashOf(st);
-  frame.style.cssText = 'display:block;width:100%;height:min(88vh,920px);border:1px solid #d7d2c8;background:#f7f5ef';
+  // The frame is sized to its content (same origin), so it never scrolls on its own: a vertical swipe anywhere
+  // outside the 3D canvas scrolls the block page, and the reader cannot get stuck inside a full-screen frame.
+  // Until the content is measured (or if it cannot be), it is capped well below the viewport height.
+  frame.style.cssText = 'display:block;width:100%;height:min(70vh,640px);border:1px solid #d7d2c8;background:#f7f5ef';
+  frame.setAttribute('scrolling', 'no');
   host.append(frame);
+  let sizeObs = null;
+  const fit = () => {
+    try {
+      const body = frame.contentDocument?.body;
+      if (!body) return;
+      const h = Math.ceil(body.getBoundingClientRect().height);
+      if (h > 80) frame.style.height = `${h + 2}px`;
+    } catch { /* cross-origin: keep the capped height */ }
+  };
+  frame.addEventListener('load', () => {
+    try {
+      const body = frame.contentDocument?.body;
+      if (!body) return;
+      sizeObs?.disconnect();
+      sizeObs = new (frame.contentWindow.ResizeObserver || ResizeObserver)(() => fit());
+      sizeObs.observe(body);
+      fit();
+    } catch { frame.removeAttribute('scrolling'); }
+  });
   const ready = new Promise((res) => frame.addEventListener('load', () => res(), { once: true }));
   const go = (s) => { st = { ...st, ...s }; try { frame.contentWindow.location.hash = hashOf(st); } catch { frame.src = url.href + hashOf(st); } };
   return {
@@ -176,7 +199,7 @@ function mountFrame(host, opts) {
     setBlock: (id) => go({ block: id || null }),
     select: (id) => go({ el: id || null }),
     clear: () => go({ block: null, el: null }),
-    destroy: () => frame.remove(),
+    destroy: () => { try { sizeObs?.disconnect(); } catch { /* frame already gone */ } frame.remove(); },
   };
 }
 

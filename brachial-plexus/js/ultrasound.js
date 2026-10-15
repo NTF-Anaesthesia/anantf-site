@@ -1882,7 +1882,7 @@ export function mount(containerEl, bus) {
       const d = el('details', { class: 'bpus-pearls' }, info);
       el('summary', { text: 'Pearls' }, d);
       const ul = el('ul', { class: 'bpus-list' }, d);
-      for (const p of b.pearls) el('li', { text: p }, ul);
+      for (const p of b.pearls) el('li', { text: typeof p === 'string' ? p : p.html }, ul);
     }
     idStatus.textContent = st.step === 4 ? 'Cyan = local anaesthetic' : st.step === 3 ? 'Dashed = needle path' : scene.sides.join(' ⇄ ');
   }

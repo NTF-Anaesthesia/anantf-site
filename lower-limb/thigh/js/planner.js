@@ -5,6 +5,7 @@
 import { el, sv, fill, keyPoints, callout, table, details, registerSearch, announce } from '../../../shared/regional/js/ui.js';
 import { legFigure, legViewsFigure } from '../../../shared/regional/js/figures/leg.js';
 import { thighSection } from './anatomy.js?v=20261015';
+import { tierBadge } from '../../../shared/regional/js/levels.js?v=20261015'; // same URL as the shell: one level state per page
 
 const MAX_MG_KG = 3; // ropivacaine: a commonly used ceiling; local policy and the patient decide
 const WINE = '#633d3c';
@@ -214,6 +215,15 @@ ${warns.map((w) => `<p class="th-plan-warn" role="note">${w}</p>`).join('')}<div
 }
 
 // ================================================================== amputation chapter
+// The chapter is tier 1 (MO) so the planner, the dose ceiling and the lipid line always show; its background,
+// catheter and exam parts are Resident and its consultant and frontier layers Consultant, as on the block chapters.
+const tierPart = (host, tier, badge = true) => {
+  const box = el('div', { class: 'th-amp-part', 'data-tier': String(tier) });
+  if (badge) { const b = tierBadge(tier); if (b) box.append(b); }
+  host.append(box);
+  return box;
+};
+
 export function renderAmputation(sec) {
   sec.append(el('h2', { id: 'th-amp-h', text: 'Amputation planner: above and below the knee under nerve blocks' }));
   sec.append(fill(el('p', { class: 'tb-lead' }), 'The patient is often the sickest on the list: septic, on dual antiplatelets or anticoagulants, with a poor heart. Nerve blocks keep the blood pressure where it is and avoid the airway and the spine. The price is <strong>more needles, more milligrams and a plan for every nerve</strong>.'));
@@ -226,8 +236,9 @@ export function renderAmputation(sec) {
     'Ask the surgeon to place a catheter in the sciatic nerve sheath before dividing it.',
   ], { title: 'Rapid fire' }));
 
-  sec.append(el('h3', { id: 'th-amp-who', text: 'Who, and why blocks' }));
-  sec.append(fill(el('div', { class: 'tb-prose' }), `<ul>
+  const who = tierPart(sec, 2);
+  who.append(el('h3', { id: 'th-amp-who', text: 'Who, and why blocks' }));
+  who.append(fill(el('div', { class: 'tb-prose' }), `<ul>
 <li><strong>The patient</strong>: diabetic, vasculopathic, often septic from wet gangrene; ischaemic heart disease and heart failure; renal impairment; on antiplatelets or anticoagulants after failed revascularisation; high opioid use for ischaemic rest pain. Surgery is source control: it rarely waits.</li>
 <li><strong>Spinal</strong> is excellent when allowed, but sepsis, dual antiplatelets or anticoagulation often rule it out. <strong>General anaesthesia</strong> in a septic patient with a poor heart risks haemodynamic collapse.</li>
 <li><strong>Peripheral nerve blocks</strong> keep the circulation stable, are compatible with most anticoagulation at superficial sites, and give hours of analgesia afterwards. In a Singapore series of ASA IV patients having above-knee amputation under blocks, about nine in ten needed no conversion to general or spinal anaesthesia; nearly all had some sedation, and those given only femoral and sciatic blocks needed more of it than those who also had the obturator (and LFCN) blocked.</li>
@@ -259,22 +270,24 @@ export function renderAmputation(sec) {
   sec.append(el('h3', { id: 'th-amp-tq', text: 'Tourniquets' }));
   sec.append(fill(el('div', { class: 'tb-prose' }), '<p>Vascular surgeons often amputate without a tourniquet; orthopaedic and trauma surgeons often use one. Tourniquet pain is a deep, ischaemic pain that builds with time; it needs <strong>all the nerves of the limb blocked above the cuff</strong> (sciatic, femoral, obturator, and the skin under the cuff) and even then is tolerated only for a limited period. For a below-knee amputation under a popliteal block, a <strong>calf or no tourniquet</strong> fits the block; a thigh cuff does not. The <a href="../foot-ankle/#fa-anat-tq">tourniquet guide</a> on the foot and ankle page has more.</p>'));
 
-  sec.append(el('h3', { id: 'th-amp-catheters', text: 'Catheters and phantom limb pain' }));
-  sec.append(fill(el('div', { class: 'tb-prose' }), `<p><strong>Three kinds of pain</strong> follow an amputation: <strong>wound (residual limb) pain</strong>, which settles with healing; <strong>phantom sensations</strong>, which nearly everyone has; and <strong>phantom limb pain</strong>, pain felt in the missing part. About <strong>six in ten</strong> amputees report phantom pain at some point. Risk factors: severe pain before the amputation, a more proximal (above-knee) amputation, persistent stump pain, a lower-limb amputation and early phantom sensations. Mechanisms run from the cut nerve (neuroma, ectopic firing) through spinal sensitisation to cortical reorganisation.</p>
+  const cath = tierPart(sec, 2);
+  cath.append(el('h3', { id: 'th-amp-catheters', text: 'Catheters and phantom limb pain' }));
+  cath.append(fill(el('div', { class: 'tb-prose' }), `<p><strong>Three kinds of pain</strong> follow an amputation: <strong>wound (residual limb) pain</strong>, which settles with healing; <strong>phantom sensations</strong>, which nearly everyone has; and <strong>phantom limb pain</strong>, pain felt in the missing part. About <strong>six in ten</strong> amputees report phantom pain at some point. Risk factors: severe pain before the amputation, a more proximal (above-knee) amputation, persistent stump pain, a lower-limb amputation and early phantom sensations. Mechanisms run from the cut nerve (neuroma, ectopic firing) through spinal sensitisation to cortical reorganisation.</p>
 <ul>
 <li><strong>Perineural catheters</strong> (most often placed by the surgeon in the sciatic or tibial nerve sheath, infusing for several days): pooled studies show <strong>lower pain scores</strong> after surgery; the opioid-sparing effect disappears when only randomised trials are counted; there is <strong>no demonstrated effect</strong> on phantom pain, chronic stump pain or mortality. Low risk, cheap, and patients are comfortable: worth doing, but don’t promise to prevent phantom pain.</li>
 <li>A double-blind trial of perineural levobupivacaine 0.125% (a 10 ml bolus, then 8 ml an hour for four days) after above- and below-knee amputation found no difference in phantom pain at six months, but was underpowered; high early morphine use went with worse phantom pain later. A large UK multicentre trial of surgeon-placed catheters (several hundred patients) has been recruiting; results are awaited.</li>
 <li><strong>Pre-emptive epidural</strong> analgesia started the day before and continued after amputation did not prevent phantom or stump pain in a randomised trial.</li>
 <li><strong>Treating established phantom pain</strong>: a six-day ambulatory perineural infusion of ropivacaine (sciatic and femoral, or brachial plexus) reduced established phantom pain a month later in a multicentre placebo-controlled trial, with little benefit left at a year.</li>
 <li>For the ward: regular paracetamol, an NSAID only if the kidneys allow, opioid by need (not by habit), and early pain team input. Gabapentinoids have not been shown to prevent phantom pain. Address pain before the operation: it is the strongest risk factor you can still change.</li></ul>`));
-  sec.append(details({
+  cath.append(details({
     id: 'th-amp-cath-how', summary: 'How a surgeon-placed sciatic catheter is usually set up',
     body: '<p>Before the sciatic nerve is divided, the surgeon passes a catheter (an epidural catheter works) into the <strong>nerve sheath</strong>, proximally for several centimetres, and brings it out through the skin away from the wound. A bolus (for example 10 ml of 0.125–0.25% bupivacaine-family local anaesthetic) is given before the end of the operation, then an infusion of a few millilitres an hour of a dilute solution for three to five days. Count it in the daily dose, label it clearly as a perineural line, and agree who removes it.</p>',
   }));
 
   // Deeper layers as the block chapters show them: a section with its heading, the body in a collapsed disclosure.
-  const layer = (id, title, summary, html) => {
-    const s = el('section', { class: `tb-bsec tb-bsec--${id.replace('th-amp-', '')}`, id, 'aria-labelledby': `${id}-h` });
+  const layer = (id, title, summary, html, badge) => {
+    const s = el('section', { class: `tb-bsec tb-bsec--${id.replace('th-amp-', '')}`, id, 'aria-labelledby': `${id}-h`, 'data-tier': '3' });
+    if (badge) s.append(tierBadge(3));
     s.append(el('h3', { id: `${id}-h`, text: title }));
     s.append(details({ summary, body: html }));
     sec.append(s);
@@ -285,7 +298,7 @@ export function renderAmputation(sec) {
 <li><strong>Bilateral amputations</strong>: block and operate on one side at a time, and do the second side’s blocks only when the dose allows; or use a different anaesthetic for the second side.</li>
 <li><strong>Oedema and infection</strong> make the image poor and spread unpredictable: use the stimulator as well, scan away from infected tissue, and prefer levels above the infection.</li>
 <li><strong>Delirium, mortality and goals of care</strong>: thirty-day mortality after major amputation is high (in the Singapore series, about one in eight at 30 days and nearly half at a year). Blocks avoid opioid-heavy recovery, which helps with delirium; agree ceilings of care before the day.</li>
-</ul>`);
+</ul>`, true);
   layer('th-amp-frontier', 'Frontier: what’s new', 'Four things that are new or being tested', `<ul>
 <li><strong>Targeted muscle reinnervation</strong>: surgeons join the cut nerve end to a motor branch of a nearby muscle instead of letting it form a neuroma. In a small randomised trial in amputees with established neuroma or phantom pain, it was favoured over excising and burying the nerve; it is increasingly done at the primary amputation. <strong>Regenerative peripheral nerve interfaces</strong> (the nerve end wrapped in a small free muscle graft) are an alternative nerve-end operation; they were not part of that trial.</li>
 <li><strong>Percutaneous peripheral nerve stimulation</strong> of the sciatic and femoral nerves for 60 days reduced chronic post-amputation pain in a small placebo-controlled trial, with benefit at 12 months in most of those treated.</li>
@@ -319,7 +332,8 @@ export function renderAmputation(sec) {
     ] },
   ];
   // Same markup as the block chapters' exam corner (shared/regional/js/block.js), so both look alike.
-  const exSec = el('section', { class: 'tb-bsec tb-bsec--exam tb-bsec--examcorner', id: 'th-amp-exam', 'aria-labelledby': 'th-amp-exam-h' });
+  const exSec = el('section', { class: 'tb-bsec tb-bsec--exam tb-bsec--examcorner', id: 'th-amp-exam', 'aria-labelledby': 'th-amp-exam-h', 'data-tier': '2' });
+  exSec.append(tierBadge(2));
   exSec.append(el('h3', { id: 'th-amp-exam-h', text: 'Exam corner' }));
   const list = el('div', { class: 'tb-exam' });
   qs.forEach((x, i) => {

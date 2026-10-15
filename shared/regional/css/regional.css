@@ -23,7 +23,9 @@ body.tb-app{
 }
 /* --ra-bar: height of the one sticky app bar. Deep-link targets land just below it. */
 :root:has(body.tb-app){--ra-bar:56px}
-html:has(body.tb-app){color-scheme:light;scroll-padding-top:calc(var(--ra-bar) + 8px);background:#f7f5ef}
+/* Deep-link targets land 8px below the bar. Only scroll-margin is used: an html scroll-padding as well would add up
+   and land targets a whole bar height too low. */
+html:has(body.tb-app){color-scheme:light;scroll-padding-top:0;background:#f7f5ef}
 .tb-app :is(main [id],.tb-chapter){scroll-margin-top:calc(var(--ra-bar) + 8px)}
 /* One sticky bar inside app pages: the site header scrolls away with the page (scoped to app pages only). */
 body:is(.tb-app,.ra-app) .ntf-header{position:static}
@@ -124,7 +126,7 @@ body:is(.tb-app,.ra-app) .ntf-header{position:static}
 .tb-app .tb-chmenu-act:hover{background:var(--tb-hover)}
 .tb-app .tb-chmenu-act:focus-visible{outline-offset:-3px;background:var(--tb-hover)}
 .tb-app .tb-chmenu-act svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:var(--tb-wine);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.tb-app .tb-chmenu-share-li{display:none}
+.tb-app :is(.tb-chmenu-share-li,.tb-chmenu-search-li){display:none}
 @media (min-width:1240px){.tb-app .tb-bar:not(.tb-bar--menu) .tb-chlist{display:flex}.tb-app .tb-bar:not(.tb-bar--menu) .tb-chmenu{display:none}.tb-app .tb-chnav{justify-content:center}}
 .tb-app .tb-bar-btn{flex-shrink:0;padding:0 14px;font-weight:400}
 @media (max-width:1239px){.tb-app .tb-bar-btn{width:44px;padding:0}.tb-app .tb-bar-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}}
@@ -140,7 +142,16 @@ body:is(.tb-app,.ra-app) .ntf-header{position:static}
   .tb-app .tb-chmenu-btn{padding:0 10px}
   .tb-app .tb-bar-level .ra-level-btn{padding:0 6px}
 }
-@media (max-width:480px){.tb-app .tb-chmenu-k{display:none}}
+@media (max-width:480px){
+  .tb-app .tb-chmenu-k{display:none}
+  /* the chapter name may take two lines, so the bar still says where you are */
+  .tb-app .tb-chmenu-cur{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;font-size:14px;line-height:1.2;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}
+}
+/* very narrow phones: search moves into the chapter menu, which gives the chapter name the room */
+@media (max-width:374px){
+  .tb-app #tb-search-open{display:none}
+  .tb-app .tb-chmenu-search-li{display:block}
+}
 
 /* search */
 .tb-app .tb-sheet{position:absolute;z-index:56;left:0;right:0;top:100%;max-height:calc(100dvh - var(--ra-bar) - 12px);overflow-y:auto;overscroll-behavior:contain;background:var(--tb-paper);border-bottom:2px solid var(--tb-wine);box-shadow:0 12px 24px rgba(0,0,0,.12)}
@@ -227,6 +238,8 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app .tb-table thead th{font:600 12px/1.4 var(--tb-sans);text-transform:uppercase;letter-spacing:.06em;color:var(--tb-ink-soft);background:var(--tb-inset);text-align:left;padding:12px 14px;border-bottom:1px solid var(--tb-line-strong)}
 .tb-app .tb-table :is(td,tbody th){padding:11px 14px;border-bottom:1px solid var(--tb-line);text-align:left;vertical-align:top}
 .tb-app .tb-table tbody th{font-weight:600}
+/* links in table cells jump to a block: at least 24px tall to tap */
+.tb-app .tb-table a{display:inline-block;min-height:24px;padding-block:2px}
 .tb-app .tb-table-scroll{overflow-x:auto}
 @media (max-width:640px){
   .tb-app .tb-table--stack,.tb-app .tb-table--stack :is(tbody,tr,td,tbody th){display:block;width:100%}
@@ -420,12 +433,27 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app .ra-a3d-host{margin-top:12px;min-height:200px;background:var(--tb-paper);border:1px solid var(--tb-line)}
 .tb-app .ra-a3d-host[hidden]{display:none}
 .tb-app .ra-a3d-loading{margin:0;padding:16px;color:var(--tb-muted);font-size:15px}
+.tb-app .ra-a3d-error{margin:0;padding:16px;font-size:15px;color:var(--tb-ink)}
+/* phones: the 3D card opens the explorer page (no embedded explorer in a narrow card) and sits flush */
+@media (max-width:600px){
+  .tb-app .ra-a3d{padding:12px;border-left-width:3px}
+  .tb-app .ra-a3d-open{display:none}
+}
+/* chapter hidden by a level the reader just chose */
+.tb-app .ra-ch-stub{padding-block:8px 32px}
+.tb-app .ra-ch-stub[hidden]{display:none}
+.tb-app .ra-ch-stub-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tb-app main .ra-ch-stub-actions a.tb-btn{text-decoration:none;color:var(--tb-ink)}
 .tb-app .ra-watch{max-width:none}
 .tb-app .ra-watch-fig{margin:0}
 .tb-app .ra-watch-frame{display:block;width:100%;height:520px;border:1px solid var(--tb-line);background:var(--tb-paper)}
-.tb-app .ra-watch-cap{margin-top:8px;font-size:14px;color:var(--tb-muted)}
+.tb-app .ra-watch-cap{margin-top:8px;font-size:15px;line-height:1.6;color:var(--tb-muted)}
+.tb-app main .ra-watch-cap a{display:inline-block;min-height:24px;padding-block:2px}
 @media print{.tb-app .ra-watch,.tb-app .ra-a3d-actions{display:none!important}}
-/* "Back to MO" after a deep link raised the level: below 1024px it hangs under the bar's right edge, so the bar keeps its layout */
+/* "Back to MO" after a deep link raised the level: below 1024px the bar has no room, and a popover would cover text,
+   so the chapter's hint line carries it in the page flow ("Showing Consultant content for this view · Back to MO") */
 @media (max-width:1023px){
-  .tb-app .tb-bar-level .ra-level-back{position:absolute;top:calc(100% + 1px);right:var(--site-gutter,16px);z-index:55;border-top:0;box-shadow:0 6px 12px rgba(0,0,0,.08)}
+  .tb-app .tb-bar-level .ra-level-back{display:none}
 }
+/* footer copyright: no text under 12px (the site footer sets 10px) */
+body.tb-app .ntf-footer .ntf-footer-identity>.ntf-copyright{font-size:12px}

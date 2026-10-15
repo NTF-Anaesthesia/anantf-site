@@ -1,1 +1,115 @@
-{}
+{
+  "_about": "Reviewed differences from the WP0 baseline (test/regional/parity.mjs and smoke.mjs). 'missing': lines that may disappear; 'missingPatterns': regexes for the same; 'renames': a missing line is allowed only if the line with {from} replaced by {to} is on the page; 'doses': dose strings whose count may change. Every entry says why and which plan item allows it. Never add an entry to make a clinical change pass.",
+  "*": {
+    "missing": [
+      {
+        "line": "See all truncal blocks and the block chooser →",
+        "why": "Plan §4: cfg.backLabel replaces the hard-coded truncal hub link that head-neck and lower-limb pages showed (or patched with fixHubBack)."
+      }
+    ]
+  },
+  "truncal/back/": {
+    "renames": [
+      {
+        "from": "^Back blocks$",
+        "to": "Back (paraspinal) blocks",
+        "why": "Plan §9 truncal row: title 'Back' → 'Back (paraspinal) blocks' (title only)."
+      },
+      {
+        "from": "BACK BLOCKS",
+        "to": "BACK (PARASPINAL) BLOCKS",
+        "why": "Same rename in the chapter kickers."
+      }
+    ]
+  },
+  "spinal/": {
+    "renames": [
+      {
+        "from": "the FRCA examines it",
+        "to": "the MMed exam tests it",
+        "why": "Owner rule: never say FRCA (WP3 rewording)."
+      },
+      {
+        "from": "for the FRCA$",
+        "to": "for the MMed exam",
+        "why": "Owner rule: never say FRCA (WP3 rewording)."
+      },
+      {
+        "from": "FRCA",
+        "to": "MMed",
+        "why": "Plan §9 spinal row and owner rule: never say FRCA; 'Exam (FRCA)' → 'Exam (MMed)'."
+      },
+      {
+        "from": "^Advanced pearl: ",
+        "to": "Consultant pearl: ",
+        "why": "Plan §5: spinal's tier-3 'Advanced' becomes Consultant."
+      },
+      {
+        "from": "mostly Resident and Advanced",
+        "to": "mostly Resident and Consultant",
+        "why": "Plan §5: Advanced → Consultant."
+      },
+      {
+        "from": " \\(tier 3\\)",
+        "to": "",
+        "why": "Internal tier label removed from reader-facing text (levels now come from the level control)."
+      }
+    ],
+    "missing": [
+      {
+        "line": "The buttons at the bottom of the screen set how much you see. Your choice is remembered on this device.",
+        "why": "Plan §5/§9: spinal's bottom dock removed for the bar's level control."
+      },
+      {
+        "line": "Consultant-level pearls and edge cases only.",
+        "why": "Plan §5/§9: dock option text; the Advanced digest becomes the 'Pearls only' toggle at Consultant."
+      },
+      {
+        "line": "Everything on the page.",
+        "why": "Plan §5/§9: dock option text removed with the dock."
+      },
+      {
+        "line": "Advanced",
+        "why": "Plan §5/§9: the dock's Advanced button (now Consultant + Pearls only)."
+      }
+    ]
+  },
+  "brachial-plexus/": {
+    "missing": [
+      {
+        "line": "SOURCES",
+        "why": "Owner rule (no citations on pages): brachial-plexus app.js keeps b.sources in data.js but no longer shows them (WP4)."
+      },
+      {
+        "line": "No block",
+        "why": "Plan §8 brachial: the duplicate block choosers in the ultrasound and coverage tabs became read-only labels synced to the one sticky selector (chip label)."
+      },
+      {
+        "line": "Overview",
+        "why": "Plan §8 brachial: same (chip label of the removed duplicate chooser)."
+      },
+      {
+        "line": "Blocked",
+        "why": "Plan §8 brachial: fewer overlays on the 3D canvas on phones, legend collapsed by default (legend item; the same word still labels coverage groups)."
+      },
+      {
+        "line": "Local anaesthetic",
+        "why": "Plan §8 brachial: 3D legend collapsed by default on phones (legend item)."
+      }
+    ],
+    "missingPatterns": [
+      {
+        "re": "^Author’s R1 teaching deck, slide \\d+",
+        "why": "Owner rule (no citations on pages): brachial-plexus app.js keeps b.sources in data.js but no longer shows them (WP4)."
+      },
+      {
+        "re": "^ASRA News \\(May 2020\\)\\. How I do it: retroclavicular",
+        "why": "Owner rule (no citations on pages): brachial-plexus app.js keeps b.sources in data.js but no longer shows them (WP4)."
+      },
+      {
+        "re": "^(Burckett-St Laurent D|Charbonneau J|Hebbard P|Kang R|Karmakar MK|Kim DH|Li JW, Songthamwat B)[^.]*\\. .*(19|20)\\d\\d",
+        "why": "Owner rule (no citations on pages): brachial-plexus app.js keeps b.sources in data.js but no longer shows them (WP4)."
+      }
+    ]
+  }
+}

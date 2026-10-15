@@ -401,11 +401,11 @@ export function mount(containerEl, bus) {
     `<li><svg width="28" height="12" aria-hidden="true"><line x1="3" y1="6" x2="25" y2="6" stroke-linecap="round" stroke-width="11" style="stroke:var(--bpd-m);stroke-opacity:.45"/></svg>The “M”</li>`,
     `<li class="grp bpd-lg-block" aria-hidden="true"></li>`,
     `<li class="hdr bpd-lg-block">Block:</li>`,
-    `<li class="bpd-lg-block"><svg width="28" height="14" aria-hidden="true"><line x1="5" y1="7" x2="23" y2="7" stroke-linecap="round" stroke-width="12" style="stroke:var(--bpd-band-edge)"/><line x1="5" y1="7" x2="23" y2="7" stroke-linecap="round" stroke-width="5" style="stroke:var(--bpd-text)"/></svg>Injection target</li>`,
-    `<li class="bpd-lg-block">${swatchLine('', 'stroke:var(--bpd-text)')}Reliably blocked</li>`,
+    `<li class="bpd-lg-block"><svg width="28" height="14" aria-hidden="true"><line x1="5" y1="7" x2="23" y2="7" stroke-linecap="round" stroke-width="12" style="stroke:var(--bpd-st-halo);stroke-opacity:.45"/><line x1="5" y1="7" x2="23" y2="7" stroke-linecap="round" stroke-width="5" style="stroke:var(--bpd-st-target)"/></svg>Injection target</li>`,
+    `<li class="bpd-lg-block">${swatchLine('', 'stroke:var(--bpd-st-covers)')}Reliably blocked</li>`,
     `<li class="bpd-lg-block">${swatchLine('', `stroke:url(#${uid}-hatch);stroke-width:7`)}Variable</li>`,
     `<li class="bpd-lg-block">${swatchLine('', 'stroke:var(--bpd-spared);stroke-dasharray:2 6')}<s>Spared</s></li>`,
-    `<li class="bpd-lg-block">${swatchLine('', 'stroke:var(--bpd-text);opacity:.28')}Not involved</li>`,
+    `<li class="bpd-lg-block">${swatchLine('', 'stroke:var(--bpd-neutral);opacity:.28')}Not involved</li>`,
   ].join('');
 
   // ---- Rendering ----

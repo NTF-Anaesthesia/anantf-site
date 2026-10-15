@@ -11,7 +11,7 @@ import { el, fill, callout } from './ui.js';
 import { mountScan } from './scan.js';
 import { coverageMap } from './dermatomes.js';
 import { prepare } from './scene.js';
-import { tierBadge } from './levels.js';
+import { tierBadge } from './levels.js?v=20261015'; // same URL as brachial-plexus, plexus, spinal and /blocks/: one level state per page
 import { getBlock } from './registry.js';
 
 export const LAST_LINE = 'Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks or when combining blocks.';
@@ -178,6 +178,9 @@ export function anatomyHref(a) {
   return `${ROOT}plexus/#${p}`;
 }
 
+/** Open inline explorers: only one lives on a page (each holds a WebGL context and the model). */
+const liveA3d = new Set();
+
 function anatomyCard(b, a, tier) {
   const href = anatomyHref(a);
   if (!href) return null;
@@ -189,26 +192,36 @@ function anatomyCard(b, a, tier) {
   actions.append(el('a', { class: 'tb-btn', href }, isPlexus ? 'Open the 3D explorer ' : 'Open the brachial plexus app ', el('span', { 'aria-hidden': 'true', text: '→' })));
   const host = el('div', { class: 'ra-a3d-host', hidden: true });
   if (isPlexus) {
-    // "Open here": the explorer (and three.js) is only fetched when this is tapped.
-    const open = el('button', { type: 'button', class: 'tb-btn', 'aria-expanded': 'false', text: 'Open here' });
+    // "Open here": the explorer (and three.js) is only fetched when this is tapped. Hidden on phones (≤600px), where
+    // the explorer page itself works better than an explorer inside a narrow card. Close unloads it.
+    const open = el('button', { type: 'button', class: 'tb-btn ra-a3d-open', 'aria-expanded': 'false', text: 'Open here' });
     let api = null;
     let busy = false;
+    const closer = { close() {
+      host.hidden = true; open.setAttribute('aria-expanded', 'false'); open.textContent = 'Open here';
+      try { api?.destroy?.(); } catch { /* already gone */ }
+      api = null; host.textContent = ''; liveA3d.delete(closer);
+    } };
     open.addEventListener('click', async () => {
+      if (!host.hidden) { closer.close(); return; }
       if (busy) return;
-      if (!host.hidden) { host.hidden = true; open.setAttribute('aria-expanded', 'false'); open.textContent = 'Open here'; try { api?.pause?.(); } catch { /* optional */ } return; }
+      [...liveA3d].forEach((c) => c.close());
+      liveA3d.add(closer);
       host.hidden = false; open.setAttribute('aria-expanded', 'true'); open.textContent = 'Close';
-      if (api) { try { api.resume?.(); } catch { /* optional */ } return; }
       busy = true;
       host.textContent = '';
       host.append(el('p', { class: 'ra-a3d-loading', role: 'status', text: 'Loading the 3D model…' }));
       try {
         const mod = await import(`${ROOT}plexus/js/explorer.js`);
         if (typeof mod.mountExplorer !== 'function') throw new Error('mountExplorer missing');
+        if (host.hidden) return; // closed while loading
         host.textContent = '';
         api = await mod.mountExplorer(host, { plexus: a.plexus, block: a.block, el: a.el });
+        if (host.hidden) closer.close();
       } catch (err) {
-        console.warn('[regional] inline 3D explorer unavailable; opening the explorer page instead', err);
-        location.href = href;
+        console.warn('[regional] inline 3D explorer unavailable', err);
+        host.textContent = '';
+        host.append(el('p', { class: 'ra-a3d-error', role: 'status' }, 'The 3D view could not load here. ', el('a', { href }, 'Open the 3D explorer ', el('span', { 'aria-hidden': 'true', text: '→' }))));
       } finally { busy = false; }
     });
     actions.append(open);
@@ -232,7 +245,7 @@ function listenAnimHeights() {
 }
 /** Only one animation iframe lives on a page: opening one closes (and unloads) any other. */
 function closeOtherWatches(keep) {
-  document.querySelectorAll('details.ra-watch[open]').forEach((d) => { if (d !== keep) d.open = false; });
+  document.querySelectorAll('details.ra-watch[open], details.ll-anim[open]').forEach((d) => { if (d !== keep) d.open = false; });
 }
 
 function watchCard(b, w, tier) {
