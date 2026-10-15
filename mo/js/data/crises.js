@@ -262,7 +262,7 @@ export const CRISES = [
       { title: 'Plan C: facemask', items: [
         'SGA fails: facemask with two people, an oral airway and `100%` oxygen.',
         'Mask works: wake the patient. Reverse rocuronium fully with sugammadex.',
-        'Mask fails and SpO2 is falling: this is CICO. Go to the [CICO card](#/crisis/cico).',
+        'Mask fails and SpO2 is falling: this is can\'t intubate, can\'t oxygenate (CICO). Go to the [CICO card](#/crisis/cico).',
       ] },
     ],
     doses: [
@@ -864,7 +864,7 @@ export const CRISES = [
     summary: 'High potassium: calcium to protect the heart, insulin and glucose to move it, then remove it.',
     recognise: [
       'Potassium `6.5 mmol/L` or more (severe), or any high potassium with ECG changes.',
-      'ECG: tall peaked T waves, flat or absent P waves, a wide QRS, a sine wave, slow rhythms, VT, VF or asystole.',
+      'ECG: tall peaked T waves, flat or absent P waves, a wide QRS, a sine wave, slow rhythms, ventricular tachycardia or fibrillation, asystole.',
       'In theatre: suxamethonium in someone at risk (burns, crush, immobility, nerve or muscle disease), kidney failure or a missed dialysis, a large transfusion, a tourniquet or clamp released, malignant hyperthermia, acidosis.',
     ],
     steps: [

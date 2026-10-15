@@ -251,7 +251,7 @@ export default {
           'The stress response switches off.',
           'Positive pressure ventilation squeezes the chest veins, so less blood returns to the heart.',
         ] },
-        { t: 'p', text: 'A slow circulation also changes how the drugs behave: they take longer to reach the brain, then hit harder when they arrive. Giving more too soon stacks the doses. Your consultant decides the doses and when to give more.' },
+        { t: 'p', text: 'A slow circulation also changes how the drugs behave: they take longer to reach the brain, then hit harder when they arrive. Giving more too soon stacks the doses. Your consultant decides the doses and when to give more. So in shock:' },
         { t: 'list', items: [
           '**Smaller doses** of the induction agent and opioid, given slowly. Propofol in shock is often `0.5–1 mg/kg` or less. Your consultant may choose ketamine (often `0.5–1 mg/kg` in shock) or etomidate (the low end of its range) instead, as they keep the BP steadier. Neither is risk-free: a patient whose stress response is exhausted can still drop their BP, and etomidate briefly suppresses the adrenal glands, a concern in sepsis.',
           '**The relaxant dose is not cut:** a slow circulation makes it work more slowly, so a full dose matters.',
