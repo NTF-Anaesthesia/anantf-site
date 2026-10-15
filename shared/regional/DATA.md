@@ -1,5 +1,8 @@
 # Regional blocks: shared engine, data schema and page wiring
 
+For the architecture, data flow, ultrasound look, how-tos, tests, ownership and backlog, start with
+[`ENGINE.md`](ENGINE.md). This file is the full data schema.
+
 Everything in `shared/regional/` (moved from `truncal/shared/` on 15 Oct 2026) is used by the truncal pages
 (`truncal/back/`, `truncal/chest-wall/`, `truncal/abdominal-wall/`), the head and neck pages and the lower-limb pages.
 **Pages do not edit `shared/regional/`**: they supply data. `truncal/abdominal-wall/` is the
