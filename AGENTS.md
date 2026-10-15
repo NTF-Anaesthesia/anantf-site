@@ -68,6 +68,8 @@ one wine accent, square edges, hairline rules, light only, readable sizes (body 
 warning colours) are never recoloured to the brand.
 Installable web apps (with a service worker or home-screen icon) follow `DESIGN-APP.md`, the phone-app version
 of the language, and use the shared kit `assets/app/app.css` (every component in `assets/app/specimen.html`).
+Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp every app that lists it (today
+`node mo/tools/stamp.mjs`; run each app's tests) in the same PR.
 
 ## Rules
 
