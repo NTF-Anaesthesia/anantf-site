@@ -887,7 +887,7 @@
       {
         "text": "Thyroid cartilage",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.9,
         "y": 0.25,
         "tx": 0.86,
@@ -1057,7 +1057,7 @@
       {
         "text": "Thyroid cartilage",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.82,
         "y": 0.52,
         "tx": 0.84,
@@ -1313,7 +1313,7 @@
       {
         "text": "Thyroid cartilage",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.05,
         "y": 0.11,
         "tx": 0.1,
@@ -1380,7 +1380,7 @@
       {
         "text": "Cricoid cartilage",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.36,
         "y": 0.12,
         "tx": 0.42,
@@ -1423,7 +1423,7 @@
       {
         "text": "Tracheal rings",
         "elementId": null,
-        "kind": "bone",
+        "kind": "cartilage",
         "x": 0.7,
         "y": 0.18,
         "tx": 0.72,
