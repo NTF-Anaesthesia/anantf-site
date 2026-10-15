@@ -1,7 +1,7 @@
 # MO guide status
 
-Paused on 15 Oct 2026 at the owner's request (usage limit). Pick up from here. PR: #103 (branch
-`claude/anaesthesia-learning-webapp-hp1twj`), open, **not merged**.
+Paused on 15 Oct 2026 at the owner's request (usage limit). Pick up from here. First version merged to main on the
+owner's instruction (PR #103, 15 Oct 2026): live, unlisted, at anantf.com/mo/. The remaining checks below go in a new PR.
 
 ## Done
 
@@ -32,7 +32,7 @@ Paused on 15 Oct 2026 at the owner's request (usage limit). Pick up from here. P
    cards, flashcards and scenarios: doses, thresholds, rules for baby MOs. Fix each one.
 3. **Run the final tests,** then stamp: `node mo/tools/stamp.mjs`. Take phone screenshots
    (`SHOTS=<dir> node mo/test/e2e.mjs`).
-4. **Update the PR description** to list the handbook discrepancies below for the owner. Then merge (squash) per
+4. **Open a new PR** with the fixes, listing the handbook discrepancies below for the owner. Merge it (squash) per
    AGENTS.md and report.
 5. **Optional:** a link from the Baby MO test start page to the guide. This needs `node babymo/tools/stamp.mjs` and the
    babymo tests.
