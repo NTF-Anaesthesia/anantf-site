@@ -1,37 +1,47 @@
-// Cervical, lumbar and sacral plexus teaching app: shell, URL state, block chips,
-// info panel. Each plexus is a data module (js/data/<id>.js) plus a nerve file.
+// Cervical, lumbar and sacral plexus teaching page: the app bar (home, plexus and block picker, copy link, level),
+// URL state (#plexus=…&el=…&block=…), the first-visit level picker and Escape. The explorer itself (3D, diagram,
+// details) is explorer.js, which block pages also use.
+//
+// ?embed=1 (used by explorer.js on pages without a three.js import map) shows the explorer alone, for an iframe.
 
-import { createBus } from './bus.js';
-import { STATUS_COLOURS, inkOn } from './diagram.js';
+import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015';
+import { applyLevel, mountLevelControl, mountLevelPicker } from '../../shared/regional/js/levels.js?v=20261015';
 
-const PLEXUSES = [
-  { id: 'cervical', tab: 'Cervical' },
-  { id: 'lumbar', tab: 'Lumbar' },
-  { id: 'sacral', tab: 'Sacral' },
-];
-const DEFAULT_PLEXUS = 'cervical';
-const STATUS_ORDER = ['target', 'covers', 'variable', 'spares'];
-const STATUS_LABEL = { target: 'Target', covers: 'Covers', variable: 'Variable', spares: 'Spares' };
-const STATUS_TEXT = { target: 'Target of the injection', covers: 'Reliably blocked', variable: 'Sometimes blocked', spares: 'Usually spared' };
-const KIND_LABEL = {
-  root: 'Root (anterior ramus)', trunk: 'Trunk', division: 'Division', branch: 'Branch',
-  terminal: 'Terminal nerve', related: 'Related nerve, not part of this plexus',
-};
-const GROUP_TITLE = { root: 'Roots (anterior rami)', trunk: 'Trunks', division: 'Divisions', branch: 'Branches', terminal: 'Terminal nerves', related: 'Related nerves (not part of this plexus)', other: 'Other' };
-const FALLBACK_LEVEL_COLOURS = ['#1f6f8b', '#8c4f9f', '#2f7d32', '#b45309', '#a3123a', '#4b5563', '#0f766e', '#7c2d12', '#334155'];
+// Where the Home button goes. Change here when the regional front door (/blocks/) is live.
+const HOME = { href: '../regional.html', label: 'Regional', aria: 'Back to Regional anaesthesia' };
 
 const $ = (id) => document.getElementById(id);
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const validPlexusId = (id) => PLEXUSES.some((p) => p.id === id) || /^_[a-z0-9-]+$/.test(id || '');
+const embed = new URLSearchParams(location.search).has('embed');
+if (embed) document.body.classList.add('px-embed');
+
+applyLevel();
 
 const ui = {
-  tabs: $('plexus-tabs'), chips: $('block-chips'), intro: $('intro'), legend: $('legend'),
-  mount3d: $('mount-3d'), mountDiagram: $('mount-diagram'), info: $('info'),
-  share: $('btn-share'), shareStatus: $('share-status'), credit: $('data-credit'),
+  bar: $('px-bar'), home: $('px-home'), pick: $('px-pick'), pickPlexus: $('px-pick-plexus'), pickBlock: $('px-pick-block'),
+  panel: $('px-picker'), tabs: $('plexus-tabs'), chips: $('block-chips'), share: $('btn-share'), shareMenu: $('btn-share-menu'),
+  shareStatus: $('share-status'), level: $('px-level'), mount: $('explorer'), credit: $('data-credit'), lead: $('px-lead'),
 };
 
-let current = null; // { id, data, nerves, bus, viewer, diagram, ctx }
-let loadToken = 0;
+// ------------------------------------------------------------------ home link
+if (embed) {
+  // In an iframe: the home button opens this view as the full page.
+  ui.home.href = location.pathname + location.hash;
+  ui.home.target = '_top';
+  ui.home.setAttribute('aria-label', 'Open the full plexus page');
+  ui.home.querySelector('span').textContent = 'Full page';
+  ui.home.classList.add('is-out');
+} else {
+  ui.home.href = HOME.href;
+  ui.home.setAttribute('aria-label', HOME.aria);
+  ui.home.querySelector('span').textContent = HOME.label;
+}
+
+// ------------------------------------------------------------------ level
+if (!embed) {
+  mountLevelControl(ui.level);
+  const pickerHost = $('px-level-picker');
+  if (pickerHost) mountLevelPicker(pickerHost, { onDone: () => pickerHost.remove() });
+} else ui.level.remove();
 
 // ------------------------------------------------------------------ URL state
 function readHash() {
@@ -39,343 +49,82 @@ function readHash() {
   const plexus = p.get('plexus');
   return { plexus: validPlexusId(plexus) ? plexus : DEFAULT_PLEXUS, el: p.get('el'), block: p.get('block') };
 }
-function writeHash() {
-  if (!current) return;
+function writeHash(s) {
+  if (!s.plexus) return;
   const p = new URLSearchParams();
-  p.set('plexus', current.id);
-  if (current.bus.state.selected) p.set('el', current.bus.state.selected);
-  if (current.bus.state.block) p.set('block', current.bus.state.block);
+  p.set('plexus', s.plexus);
+  if (s.el) p.set('el', s.el);
+  if (s.block) p.set('block', s.block);
   const next = `#${p.toString()}`;
   if (location.hash !== next) history.replaceState(null, '', next);
+  if (embed) ui.home.href = location.pathname + next;
 }
 
-// ------------------------------------------------------------------ data helpers
-function normalise(raw, id) {
-  if (!raw || typeof raw !== 'object') throw new Error('the data module has no default export');
-  const d = { ...raw };
-  d.id = d.id || id;
-  d.name = d.name || `${id} plexus`;
-  d.elements = d.elements && typeof d.elements === 'object' ? d.elements : {};
-  for (const [k, e] of Object.entries(d.elements)) {
-    if (!e || typeof e !== 'object') { delete d.elements[k]; continue; }
-    e.roots = Array.isArray(e.roots) ? e.roots : [];
-    e.parents = Array.isArray(e.parents) ? e.parents.filter((p) => d.elements[p]) : [];
-  }
-  const ids = Object.keys(d.elements);
-  d.order = [...(Array.isArray(d.order) ? d.order.filter((x) => d.elements[x]) : []), ...ids].filter((x, i, a) => a.indexOf(x) === i);
-  d.blocks = d.blocks && typeof d.blocks === 'object' ? d.blocks : {};
-  const bids = Object.keys(d.blocks);
-  d.blockOrder = [...(Array.isArray(d.blockOrder) ? d.blockOrder.filter((x) => d.blocks[x]) : []), ...bids].filter((x, i, a) => a.indexOf(x) === i);
-  for (const b of Object.values(d.blocks)) for (const k of STATUS_ORDER) b[k] = Array.isArray(b[k]) ? b[k] : [];
-  d.levels = Array.isArray(d.levels) ? d.levels : [];
-  d.levelColours = d.levelColours && typeof d.levelColours === 'object' ? d.levelColours : {};
-  d.views = d.views && typeof d.views === 'object' ? d.views : {};
-  d.model = d.model || {};
-  return d;
+// ------------------------------------------------------------------ picker menu (phones and tablets)
+const wide = window.matchMedia('(min-width: 900px)');
+function setMenu(open, { focus = false } = {}) {
+  const isOpen = !ui.panel.classList.contains('is-closed');
+  if (wide.matches) { ui.panel.classList.remove('is-closed'); ui.pick.setAttribute('aria-expanded', 'false'); return; }
+  if (open === isOpen) return;
+  ui.panel.classList.toggle('is-closed', !open);
+  ui.pick.setAttribute('aria-expanded', String(open));
+  document.body.classList.toggle('px-menu-open', open);
+  if (open) {
+    const top = Math.max(0, ui.bar.getBoundingClientRect().bottom);
+    ui.panel.style.maxHeight = `${Math.max(220, Math.round(window.innerHeight - top - 12))}px`;
+    (ui.panel.querySelector('[aria-pressed="true"]') || ui.panel.querySelector('button'))?.focus({ preventScroll: true });
+  } else if (focus) ui.pick.focus({ preventScroll: true });
 }
-
-function makeCtx(data, nerves, bus) {
-  const children = new Map();
-  for (const [id, e] of Object.entries(data.elements)) for (const p of e.parents) {
-    if (!children.has(p)) children.set(p, []);
-    children.get(p).push(id);
-  }
-  const lineageCache = new Map();
-  function lineage(id) {
-    if (lineageCache.has(id)) return lineageCache.get(id);
-    const out = new Set([id]);
-    const up = [id];
-    while (up.length) { const x = up.pop(); for (const p of data.elements[x]?.parents || []) if (!out.has(p)) { out.add(p); up.push(p); } }
-    const down = [id]; const seen = new Set([id]);
-    while (down.length) { const x = down.pop(); for (const c of children.get(x) || []) if (!seen.has(c)) { seen.add(c); out.add(c); down.push(c); } }
-    lineageCache.set(id, out);
-    return out;
-  }
-  function status(blockId, elId) {
-    const b = data.blocks[blockId];
-    if (!b) return null;
-    for (const k of STATUS_ORDER) if (b[k].includes(elId)) return k;
-    return null;
-  }
-  function levelColour(level) {
-    if (data.levelColours[level]) return data.levelColours[level];
-    const i = Math.max(0, data.levels.indexOf(level));
-    return FALLBACK_LEVEL_COLOURS[i % FALLBACK_LEVEL_COLOURS.length];
-  }
-  function rootsLabel(id) {
-    const r = data.elements[id]?.roots || [];
-    if (!r.length) return '';
-    if (r.length === 1) return r[0];
-    const idx = r.map((x) => data.levels.indexOf(x));
-    const contiguous = idx.every((v) => v >= 0) && idx.every((v, i) => i === 0 || v === idx[i - 1] + 1);
-    return contiguous ? `${r[0]}–${r[r.length - 1]}` : r.join(', ');
-  }
-  const name = (id) => data.elements[id]?.name || id;
-  return { data, nerves, bus, lineage, status, levelColour, rootsLabel, name };
-}
-
-// ------------------------------------------------------------------ chrome
-function renderTabs(activeId) {
-  ui.tabs.replaceChildren(...PLEXUSES.map((p) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'px-tab';
-    b.textContent = p.tab;
-    b.setAttribute('aria-pressed', String(p.id === activeId));
-    if (p.id === activeId) b.setAttribute('aria-current', 'page');
-    b.addEventListener('click', () => { if (!current || current.id !== p.id) loadPlexus(p.id, {}); });
-    return b;
-  }));
-}
-
-function renderChips() {
-  if (!current) { ui.chips.replaceChildren(); return; }
-  const { data, bus } = current;
-  const mk = (id, label, sub) => {
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'chip';
-    b.dataset.block = id || '';
-    b.innerHTML = `<span class="chip-main">${esc(label)}</span>${sub ? `<span class="chip-sub">${esc(sub)}</span>` : ''}`;
-    b.setAttribute('aria-pressed', String((bus.state.block || null) === (id || null)));
-    b.addEventListener('click', () => bus.emit('block', { id: id || null, source: 'chips' }));
-    return b;
-  };
-  const chips = [mk(null, 'None')];
-  for (const id of data.blockOrder) {
-    const b = data.blocks[id];
-    chips.push(mk(id, b.short || b.name || id));
-  }
-  ui.chips.replaceChildren(...chips);
-  if (!data.blockOrder.length) {
-    const s = document.createElement('span');
-    s.className = 'px-muted';
-    s.textContent = 'No blocks listed yet.';
-    ui.chips.appendChild(s);
-  }
-}
-function syncChips() {
-  const blk = current?.bus.state.block || '';
-  ui.chips.querySelectorAll('.chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.block === blk)));
-}
-
-function renderLegend() {
-  const blk = current?.bus.state.block;
-  if (!blk) { ui.legend.hidden = true; ui.legend.replaceChildren(); return; }
-  const b = current.data.blocks[blk];
-  ui.legend.hidden = false;
-  ui.legend.innerHTML = `<span class="px-legend-title">${esc(b.name || blk)}:</span>${STATUS_ORDER.map((k) => `<span class="px-key"><span class="px-swatch" style="background:${STATUS_COLOURS[k]}"></span>${esc(STATUS_TEXT[k])}</span>`).join('')}<span class="px-key"><span class="px-swatch is-dim"></span>Not affected</span>`;
-}
-
-// ------------------------------------------------------------------ info panel
-function elChip(id, st) {
-  const { data } = current;
-  const e = data.elements[id];
-  if (!e) return `<span class="px-chip is-text">${esc(id)}</span>`;
-  const cls = st ? ` st-${st}` : '';
-  const pressed = current.bus.state.selected === id;
-  return `<button type="button" class="px-chip${cls}" data-select="${esc(id)}" aria-pressed="${pressed}">${esc(e.short && e.short !== e.name ? `${e.name}` : e.name || id)}</button>`;
-}
-function levelBadges(roots) {
-  return roots.map((r) => {
-    const c = current.ctx.levelColour(r);
-    return `<span class="px-level" style="background:${esc(c)};color:${inkOn(c)}">${esc(r)}</span>`;
-  }).join('');
-}
-
-function blockCard(bid) {
-  const { data } = current;
-  const b = data.blocks[bid];
-  if (!b) return '';
-  const lists = STATUS_ORDER.filter((k) => b[k].length).map((k) => `
-    <div class="px-list">
-      <h4><span class="px-swatch" style="background:${STATUS_COLOURS[k]}"></span>${esc(STATUS_LABEL[k])}</h4>
-      <div class="px-chips">${b[k].map((id) => elChip(id, k)).join('')}</div>
-    </div>`).join('');
-  return `
-    <article class="px-card px-block-card">
-      <p class="px-kicker">Block</p>
-      <h3>${esc(b.name || bid)}</h3>
-      ${b.summary ? `<p>${esc(b.summary)}</p>` : ''}
-      ${b.landmarks ? `<p><strong>Target:</strong> ${esc(b.landmarks)}</p>` : ''}
-      ${lists ? `<div class="px-lists">${lists}</div>` : ''}
-    </article>`;
-}
-
-function elementCard(id) {
-  const { data, nerves, ctx } = current;
-  const e = data.elements[id];
-  if (!e) return '';
-  const source = nerves?.elements?.[id]?.source;
-  const in3d = !!nerves?.elements?.[id];
-  const reach = data.blockOrder.map((bid) => [bid, ctx.status(bid, id)]).filter(([, st]) => st && st !== 'spares');
-  const spared = data.blockOrder.filter((bid) => ctx.status(bid, id) === 'spares');
-  const parents = e.parents.map((p) => elChip(p)).join('');
-  const kids = data.order.filter((x) => data.elements[x].parents.includes(id)).map((c) => elChip(c)).join('');
-  const row = (label, val) => (val ? `<div><dt>${esc(label)}</dt><dd>${val}</dd></div>` : '');
-  return `
-    <article class="px-card px-el-card">
-      <p class="px-kicker">${esc(KIND_LABEL[e.kind] || e.kind || 'Nerve')}</p>
-      <h3>${esc(e.name || id)}</h3>
-      ${e.roots.length ? `<p class="px-roots"><span class="px-roots-label">Roots</span>${levelBadges(e.roots)}</p>` : ''}
-      <dl class="px-kv">
-        ${row('Motor', esc(e.motor))}
-        ${row('Sensory', esc(e.sensory))}
-        ${row('From', parents ? `<span class="px-chips">${parents}</span>` : '')}
-        ${row('Gives', kids ? `<span class="px-chips">${kids}</span>` : '')}
-      </dl>
-      ${e.notes ? `<p>${esc(e.notes)}</p>` : ''}
-      <div class="px-reach">
-        <h4>Blocks that reach it</h4>
-        ${reach.length ? `<div class="px-chips">${reach.map(([bid, st]) => `<button type="button" class="px-chip st-${st}" data-block="${esc(bid)}" aria-pressed="${current.bus.state.block === bid}">${esc(data.blocks[bid].short || data.blocks[bid].name || bid)}<span class="px-chip-sub"> ${esc(STATUS_LABEL[st].toLowerCase())}</span></button>`).join('')}</div>` : '<p class="px-muted">None of the blocks listed here.</p>'}
-        ${spared.length ? `<p class="px-muted">Usually spared by: ${spared.map((bid) => esc(data.blocks[bid].short || data.blocks[bid].name || bid)).join(', ')}.</p>` : ''}
-      </div>
-      ${source === 'reconstructed' ? '<p class="px-note">Path drawn for teaching; not in Z-Anatomy.</p>' : ''}
-      ${source === 'mixed' ? '<p class="px-note">Path partly drawn for teaching; partly from Z-Anatomy.</p>' : ''}
-      ${!in3d ? '<p class="px-note">Not shown in the 3D model.</p>' : ''}
-    </article>`;
-}
-
-function overviewCard() {
-  const { data } = current;
-  const groups = {};
-  for (const id of data.order) { const k = data.elements[id].kind || 'other'; (groups[k] ||= []).push(id); }
-  const kinds = ['root', 'trunk', 'division', 'branch', 'terminal', 'related', 'other'].filter((k) => groups[k]);
-  return `
-    <article class="px-card">
-      <p class="px-kicker">${esc(data.name)}</p>
-      <h3>Choose a nerve or a block</h3>
-      <p class="px-muted">Tap a nerve in the 3D model, the diagram or the list below. Choose a block above to see what it covers.</p>
-      ${kinds.map((k) => `<div class="px-list"><h4>${esc(GROUP_TITLE[k] || 'Other')}</h4><div class="px-chips">${groups[k].map((id) => elChip(id)).join('')}</div></div>`).join('')}
-    </article>`;
-}
-
-function renderInfo() {
-  if (!current) return;
-  const { selected, block } = current.bus.state;
-  const parts = [];
-  if (selected && current.data.elements[selected]) parts.push(elementCard(selected));
-  if (block && current.data.blocks[block]) parts.push(blockCard(block));
-  if (!parts.length) parts.push(overviewCard());
-  if (selected || block) parts.push('<p class="px-actions"><button type="button" class="px-link-btn" data-clear="1">Clear selection</button></p>');
-  ui.info.innerHTML = parts.join('');
-}
-
-ui.info.addEventListener('click', (ev) => {
-  if (!current) return;
-  const t = ev.target.closest('button');
-  if (!t) return;
-  if (t.dataset.select) current.bus.emit('select', { id: current.bus.state.selected === t.dataset.select ? null : t.dataset.select, source: 'info' });
-  else if (t.dataset.block) current.bus.emit('block', { id: current.bus.state.block === t.dataset.block ? null : t.dataset.block, source: 'info' });
-  else if (t.dataset.clear) { current.bus.emit('select', { id: null, source: 'info' }); current.bus.emit('block', { id: null, source: 'info' }); }
+const syncMode = () => { ui.panel.classList.toggle('is-closed', !wide.matches); ui.pick.setAttribute('aria-expanded', 'false'); document.body.classList.remove('px-menu-open'); };
+wide.addEventListener?.('change', syncMode);
+syncMode();
+ui.pick.addEventListener('click', () => setMenu(ui.panel.classList.contains('is-closed')));
+document.addEventListener('pointerdown', (e) => {
+  if (wide.matches || ui.panel.classList.contains('is-closed')) return;
+  if (!ui.panel.contains(e.target) && !ui.pick.contains(e.target)) setMenu(false);
+});
+ui.panel.addEventListener('focusout', (e) => {
+  if (wide.matches || !e.relatedTarget) return;
+  if (!ui.panel.contains(e.relatedTarget) && !ui.pick.contains(e.relatedTarget)) setMenu(false);
 });
 
-// ------------------------------------------------------------------ mounting
-function panelMessage(el, text) {
-  el.replaceChildren();
-  const p = document.createElement('p');
-  p.className = 'px-msg';
-  p.textContent = text;
-  el.appendChild(p);
+function paintPick(s) {
+  ui.pickPlexus.textContent = s.plexusTab || PLEXUSES.find((p) => p.id === s.plexus)?.tab || '';
+  ui.pickBlock.textContent = s.blockShort || 'Choose a block';
+  ui.pick.setAttribute('aria-label', `${s.plexusName || 'Plexus'}${s.blockName ? `, ${s.blockName}` : ', no block chosen'}. Change plexus or block`);
 }
 
-function teardown() {
-  if (!current) return;
-  try { current.viewer?.destroy(); } catch (err) { console.error(err); }
-  try { current.diagram?.destroy(); } catch (err) { console.error(err); }
-  current.bus.clear();
-  current = null;
-}
-
-async function loadPlexus(id, want) {
-  const token = ++loadToken;
-  teardown();
-  renderTabs(id);
-  ui.chips.replaceChildren();
-  ui.legend.hidden = true;
-  const label = PLEXUSES.find((p) => p.id === id)?.tab || id;
-  panelMessage(ui.mount3d, `Loading the ${label.toLowerCase()} plexus…`);
-  panelMessage(ui.mountDiagram, 'Loading the diagram…');
-  ui.info.innerHTML = '';
-  let data;
-  try {
-    const mod = await import(`./data/${id}.js`);
-    data = normalise(mod.default, id);
-  } catch (err) {
-    if (token !== loadToken) return;
-    console.warn(`[plexus] data module "${id}" failed to load`, err);
-    const msg = `The ${label.toLowerCase()} plexus could not be loaded. Try another plexus or reload the page.`;
-    panelMessage(ui.mount3d, msg);
-    panelMessage(ui.mountDiagram, msg);
-    ui.info.innerHTML = `<p class="px-msg">${esc(msg)}<br><span class="px-detail">Technical detail: ${esc(err?.message || err)}</span></p>`;
-    ui.intro.textContent = '';
-    history.replaceState(null, '', `#plexus=${encodeURIComponent(id)}`);
-    return;
-  }
-  let nerves = { elements: {} };
-  if (data.model.nerves) {
-    try {
-      const res = await fetch(new URL(data.model.nerves, document.baseURI).href);
-      if (res.ok) {
-        const j = await res.json();
-        if (j && typeof j.elements === 'object') nerves = j;
-      }
-    } catch (err) { console.warn('[plexus] nerve file failed to load', err); }
-  }
-  if (token !== loadToken) return;
-
-  const bus = createBus();
-  const ctx = makeCtx(data, nerves, bus);
-  current = { id, data, nerves, bus, ctx, viewer: null, diagram: null };
-  document.title = `${data.name} for regional anaesthesia`;
-  ui.intro.textContent = data.intro || '';
-  if (ui.credit) ui.credit.textContent = data.credits || '';
-  renderChips();
-
-  ui.mount3d.replaceChildren();
-  ui.mountDiagram.replaceChildren();
-  try {
-    const { mountViewer } = await import('./viewer3d.js');
-    if (token !== loadToken) return;
-    current.viewer = mountViewer(ui.mount3d, ctx);
-  } catch (err) {
-    console.error('[plexus] 3D viewer failed', err);
-    panelMessage(ui.mount3d, `The 3D view could not start (${err?.message || err}). The diagram still works.`);
-  }
-  try {
-    const { mountDiagram } = await import('./diagram.js');
-    if (token !== loadToken) return;
-    current.diagram = mountDiagram(ui.mountDiagram, ctx);
-  } catch (err) {
-    console.error('[plexus] diagram failed', err);
-    panelMessage(ui.mountDiagram, `The diagram could not be drawn (${err?.message || err}).`);
-  }
-
-  bus.on('select', () => { renderInfo(); writeHash(); });
-  bus.on('block', () => { syncChips(); renderLegend(); renderInfo(); writeHash(); });
-
-  if (want.block && data.blocks[want.block]) bus.emit('block', { id: want.block, source: 'url', instant: true });
-  if (want.el && data.elements[want.el]) bus.emit('select', { id: want.el, source: 'url' });
-  renderInfo();
-  writeHash();
-}
+// ------------------------------------------------------------------ explorer
+const first = readHash();
+const ex = mountExplorer(ui.mount, {
+  plexus: first.plexus, block: first.block, el: first.el,
+  tabsHost: ui.tabs, chipsHost: ui.chips, creditHost: ui.credit,
+  onChange(s) {
+    writeHash(s);
+    paintPick(s);
+    if (s.plexusName) document.title = `${s.plexusName}${s.blockName ? `: ${s.blockShort}` : ''} for regional anaesthesia`;
+  },
+  onBlockPick() { setMenu(false); },
+});
 
 window.addEventListener('hashchange', () => {
   const h = readHash();
-  if (!current || h.plexus !== current.id) { loadPlexus(h.plexus, h); return; }
-  const { data, bus } = current;
-  bus.emit('block', { id: h.block && data.blocks[h.block] ? h.block : null, source: 'url' });
-  bus.emit('select', { id: h.el && data.elements[h.el] ? h.el : null, source: 'url' });
+  ex.setPlexus(h.plexus, { block: h.block, el: h.el });
 });
 
 document.addEventListener('keydown', (ev) => {
-  if (ev.key !== 'Escape' || !current) return;
-  if (current.bus.state.selected) current.bus.emit('select', { id: null, source: 'key' });
+  if (ev.key !== 'Escape') return;
+  if (!wide.matches && !ui.panel.classList.contains('is-closed')) { setMenu(false, { focus: true }); return; }
+  if (ev.target.closest?.('input, textarea, select, .px-v3-menu')) return;
+  // Escape clears the selected nerve and the block together.
+  const s = ex.state();
+  if (s.el || s.block) ex.clear();
 });
 
-// ------------------------------------------------------------------ copy link, collapse
-ui.share?.addEventListener('click', async () => {
-  const url = location.href;
+// ------------------------------------------------------------------ copy link
+let shareTimer = 0;
+async function copyLink(btn) {
+  const url = location.href.replace(/[?&]embed=1/, '');
   let ok = false;
   try { await navigator.clipboard.writeText(url); ok = true; } catch {
     const ta = document.createElement('textarea');
@@ -385,20 +134,18 @@ ui.share?.addEventListener('click', async () => {
     ta.remove();
   }
   ui.shareStatus.textContent = ok ? 'Link copied' : 'Copy the address from the address bar';
-  ui.share.classList.toggle('is-done', ok);
-  const span = ui.share.querySelector('span');
-  if (span) { span.textContent = ok ? 'Link copied' : 'Copy link'; setTimeout(() => { span.textContent = 'Copy link'; ui.share.classList.remove('is-done'); }, 2000); }
-});
-
-document.querySelectorAll('.collapse-btn').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const open = btn.getAttribute('aria-expanded') !== 'false';
-    btn.setAttribute('aria-expanded', String(!open));
-    const body = document.getElementById(btn.getAttribute('aria-controls'));
-    if (body) body.hidden = open;
-    btn.closest('.panel')?.classList.toggle('is-collapsed', open);
-  });
-});
-
-const first = readHash();
-loadPlexus(first.plexus, first);
+  for (const b of [ui.share, ui.shareMenu]) b?.classList.remove('is-done');
+  btn.classList.toggle('is-done', ok);
+  const span = btn.querySelector('span');
+  const was = btn === ui.share ? 'Copy link' : 'Copy link to this view';
+  if (span) span.textContent = ok ? 'Link copied' : was;
+  clearTimeout(shareTimer);
+  shareTimer = setTimeout(() => {
+    ui.share.querySelector('span').textContent = 'Copy link';
+    ui.shareMenu.querySelector('span').textContent = 'Copy link to this view';
+    for (const b of [ui.share, ui.shareMenu]) b.classList.remove('is-done');
+    ui.shareStatus.textContent = '';
+  }, 2200);
+}
+ui.share.addEventListener('click', () => copyLink(ui.share));
+ui.shareMenu.addEventListener('click', () => copyLink(ui.shareMenu));

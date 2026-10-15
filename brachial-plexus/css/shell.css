@@ -100,7 +100,7 @@ body.ra-app {
 .ra-app .org { font-size: 13px !important; }
 body.ra-app .ntf-footer .ntf-copyright { font-size: 12px !important; }
 .ra-app .foot p { line-height: 1.75; }
-.ra-app .foot a { display: inline-block; padding: 4px 0; line-height: 1.2; }
+.ra-app .foot a { padding: 4px 0; }
 
 /* Credit line */
 .ra-app .foot .credit { color: var(--bp-ink); }

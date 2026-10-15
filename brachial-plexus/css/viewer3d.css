@@ -151,13 +151,15 @@
 }
 /* Small viewers (phones): the colour key collapses behind a 44px "Colours" button so the model stays visible. */
 .v3d-legend-toggle { display: none; }
-.v3d.is-compact .v3d-legend { pointer-events: auto; padding: 0; background: transparent; box-shadow: none; }
-.v3d.is-compact .v3d-legend-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border: 1px solid var(--v3d-border); border-radius: 0;
+@media (max-width: 600px) {
+.v3d .v3d-legend { pointer-events: auto; padding: 0; background: transparent; box-shadow: none; }
+.v3d .v3d-legend-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border: 1px solid var(--v3d-border); border-radius: 0;
   background: var(--v3d-panel); color: var(--v3d-fg); font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1; cursor: pointer; }
-.v3d.is-compact .v3d-legend-toggle::after { content: ''; width: 7px; height: 7px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-2px) rotate(45deg); }
-.v3d.is-compact .v3d-legend-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
-.v3d.is-compact .v3d-legend-list { margin-top: 4px; padding: 6px 8px; background: var(--v3d-panel); }
-.v3d.is-compact .v3d-legend-list[hidden] { display: none; }
+.v3d .v3d-legend-toggle::after { content: ''; width: 7px; height: 7px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.v3d .v3d-legend-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
+.v3d .v3d-legend-list { margin-top: 4px; padding: 6px 8px; background: var(--v3d-panel); }
+}
+.v3d .v3d-legend-list[hidden] { display: none; }
 .v3d-legend-toggle:focus-visible { outline: 3px solid var(--v3d-focus); outline-offset: 2px; }
 .v3d-legend-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 10px; }
 .v3d-legend-list li { display: inline-flex; align-items: center; gap: 5px; }

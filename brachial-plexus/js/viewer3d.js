@@ -579,12 +579,14 @@ export function mount(containerEl, bus, options = {}) {
 
   // Respond to small containers
   let legendOpen = false;
+  const phoneMq = window.matchMedia('(max-width: 600px)');
+  const onPhoneMq = () => { if (legend.childElementCount) updateLegend(); };
+  phoneMq.addEventListener?.('change', onPhoneMq);
   const legendListId = `v3d-key-${Math.random().toString(36).slice(2, 8)}`;
   const setCompact = (w) => {
     const c = w < 560;
     if (root.classList.contains('is-compact') === c) return;
     root.classList.toggle('is-compact', c);
-    if (legend.childElementCount) updateLegend();
     labelHost.querySelectorAll('.v3d-label--probe').forEach((d) => { d.textContent = c ? d.dataset.short : d.dataset.full; });
   };
 
@@ -1301,7 +1303,7 @@ export function mount(containerEl, bus, options = {}) {
     }
     const ul = el('ul', { class: 'v3d-legend-list', id: legendListId, 'aria-label': 'Colour key' });
     // Phones: the key is collapsed behind a "Colours" button until opened, so it does not cover the model.
-    const compact = root.classList.contains('is-compact');
+    const compact = phoneMq.matches;
     const tog = el('button', { type: 'button', class: 'v3d-legend-toggle', 'aria-expanded': String(!compact || legendOpen), 'aria-controls': legendListId }, 'Colours');
     tog.addEventListener('click', () => { legendOpen = !legendOpen; updateLegend(); legend.querySelector('.v3d-legend-toggle')?.focus(); requestRender(); });
     legend.append(tog);
@@ -1771,6 +1773,7 @@ export function mount(containerEl, bus, options = {}) {
         for (const b of blocked) {
           const rr = { l: r.l + dx, r: r.r + dx, t: r.t + dy, b: r.b + dy };
           if (overlaps(rr, b, 0) && b.t > o.height / 2) dy += b.t - rr.b - 4; // lift above the caption / chip
+          else if (overlaps(rr, b, 0) && b.b < o.height / 2 && b.l < o.width / 2) dy += b.b - rr.t + 4; // drop below the colour key
         }
         if (dx || dy) {
           it.d.style.transform += ` translate(${Math.round(dx)}px, ${Math.round(dy)}px)`;
@@ -2044,6 +2047,7 @@ export function mount(containerEl, bus, options = {}) {
   return {
     destroy() {
       destroyed = true;
+      phoneMq.removeEventListener?.('change', onPhoneMq);
       cancelAnimationFrame(rafId);
       cancelAnimationFrame(hoverRaf);
       clearTimeout(toastTimer);
