@@ -196,3 +196,8 @@
 @media (prefers-reduced-motion: reduce) {
   .px *, .px *::before, .px *::after { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Wide screens: let block chips wrap so every block is visible (phones keep the scrolling row). */
+@media (min-width: 760px) {
+  .px .chips { flex-wrap: wrap; overflow-x: visible; }
+}

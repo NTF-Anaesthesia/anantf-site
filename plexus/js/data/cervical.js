@@ -178,7 +178,7 @@ export default {
 
   // ---------------------------------------------------------------- diagram (original schematic)
   diagram: {
-    viewBox: [0, -60, 1200, 920],
+    viewBox: [0, -60, 1300, 920],
     columns: [
       { x0: 0, x1: 250, label: 'Anterior rami', sub: 'Leave foramina' },
       { x0: 250, x1: 470, label: 'Loops', sub: 'Deep to SCM' },
@@ -224,14 +224,14 @@ export default {
       'n-ansa': { d: ['M500 730 L880 730', 'M560 730 C600 730 620 700 660 700', 'M560 730 C600 730 620 760 660 760'], w: 's',
         label: { x: 890, y: 736, anchor: 'start', kind: 'term', text: 'Ansa cervicalis' } },
       'n-prevertebral': { d: ['M180 80 L205 52', 'M180 190 L205 162', 'M180 300 L205 272', 'M180 410 L205 382'], w: 's',
-        label: { x: 120, y: 40, anchor: 'start', kind: 'branch', text: 'Prevertebral' } },
+        label: { x: 212, y: 58, anchor: 'start', kind: 'branch', text: 'Prevertebral' } },
       'n-levator-scalene': { d: ['M110 300 L135 330', 'M110 410 L135 440'], w: 's',
         label: { x: 60, y: 466, anchor: 'start', kind: 'branch', text: 'Levator, scalenus medius' } },
       'n-to-scm-trapezius': { d: ['M292 390 C380 400 440 450 520 450 L600 450'], w: 's',
-        label: { x: 610, y: 478, anchor: 'start', kind: 'branch', text: 'To SCM, trapezius (join XI)' } },
+        label: { x: 520, y: 436, anchor: 'start', kind: 'branch', text: 'To SCM, trapezius (join XI)' } },
 
       // related nerves (greyed by the engine)
-      'rel-hypoglossal': { d: ['M330 46 L470 46'], w: 's', label: { x: 480, y: 52, anchor: 'start', kind: 'branch', text: 'Hypoglossal (XII)' } },
+      'rel-hypoglossal': { d: ['M410 46 L470 46'], w: 's', label: { x: 480, y: 52, anchor: 'start', kind: 'branch', text: 'Hypoglossal (XII)' } },
       'rel-accessory': { d: ['M600 450 L880 450'], w: 's', label: { x: 890, y: 456, anchor: 'start', kind: 'branch', text: 'Accessory (XI)' } },
       'rel-brachial': { d: ['M70 660 C200 660 280 655 340 650', 'M70 700 C200 700 280 660 340 652', 'M70 740 C200 740 290 665 340 654', 'M340 650 L380 650'],
         w: 's', label: { x: 18, y: 802, anchor: 'start', kind: 'branch', text: 'Brachial plexus (C6–T1)' } },
