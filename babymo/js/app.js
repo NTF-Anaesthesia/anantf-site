@@ -87,6 +87,8 @@ function setScreen({ head = '', body = '', toolbar = '', tabs = null, title = ''
   const y = window.scrollY;
   $('#view').innerHTML = `${head}<main class="app-main" id="app" tabindex="-1">${body}</main>`;
   curTab = tabs;
+  const bar = $('#view .app-bar');   // the kit: no title fade from the old screen's state
+  if (bar) { bar.classList.add('app-bar--instant'); requestAnimationFrame(() => requestAnimationFrame(() => bar.classList.remove('app-bar--instant'))); }
   $('#chrome').innerHTML = (savebar ? `<div class="bm-savebar">${savebar}</div>` : '') + (toolbar ? `<div class="app-toolbar" id="toolbar"><div class="app-toolbar-inner">${toolbar}</div></div>` : '') + (tabs ? tabBar(tabs) : '');
   document.body.classList.toggle('app-has-tabbar', !!tabs);
   document.body.classList.toggle('app-has-toolbar', !!toolbar);
