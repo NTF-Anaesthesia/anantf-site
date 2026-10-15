@@ -128,6 +128,8 @@ html{scroll-padding-top:24px}
 .tb-table thead th{font:500 12px/1.4 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--ink)}
 .tb-table :is(td,tbody th){text-align:left;padding:11px 12px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
 .tb-table tbody th{font-weight:600}
+.tb-app main .tb-table tbody th a{display:inline-block;min-height:24px;color:var(--ink);text-decoration-color:var(--line-strong)}
+.tb-app main .tb-table tbody th a:hover{color:var(--wine);text-decoration-color:var(--wine)}
 .tb-table td:nth-child(2),.tb-table td:nth-child(3){font-size:15px}
 
 .tb-epi{max-width:72ch}

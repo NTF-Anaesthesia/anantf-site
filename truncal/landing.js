@@ -84,6 +84,7 @@ function init() {
   const start = fromHash() || OPS[0];
   list.querySelector(`input[value="${start.id}"]`).checked = true;
   render(start, false);
+  if (start !== OPS[0] || fromHash()) requestAnimationFrame(() => $('#tb-res-title')?.scrollIntoView({ block: 'start', behavior: 'auto' }));
 
   // On one-column layouts the result sits below the list: bring it into view after a tap (not while arrowing
   // through the radios with the keyboard, which would scroll the group away).
