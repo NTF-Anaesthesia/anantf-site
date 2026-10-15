@@ -69,8 +69,8 @@ export default {
 
         { t: 'h', text: 'When something unusual happens' },
         { t: 'list', items: [
-          '**A difficult airway**: what was hard (mask, laryngoscopy, tube), the Cormack–Lehane grade, what worked (device, blade, bougie) and what did not. The patient is told and given an airway alert letter; your consultant leads this.',
-          '**A suspected allergic reaction**: the time of each drug, the signs, the treatment, and the times blood was taken for tryptase. Your consultant arranges the allergy referral.',
+          '**A difficult airway** ([Failed intubation](#/crisis/failed-intubation)): what was hard (mask, laryngoscopy, tube), the Cormack–Lehane grade, what worked (device, blade, bougie) and what did not. The patient is told and given an airway alert letter; your consultant leads this.',
+          '**A suspected allergic reaction** ([Anaphylaxis](#/crisis/anaphylaxis)): the time of each drug, the signs, the treatment, and the times blood was taken for tryptase. Your consultant arranges the allergy referral.',
           '**Any other event** (a drug error, a damaged tooth, an unplanned admission to the intensive care unit): see [When something goes wrong](#/learn/good/incidents).',
         ] },
 
@@ -195,9 +195,9 @@ export default {
         { t: 'steps', items: [
           { title: 'First aid.', text: 'Encourage the wound to bleed gently under running water and wash it with soap. Do not scrub or suck it. Rinse splashes to the eyes or mouth with plenty of water.' },
           { title: 'Tell your consultant.', text: 'Make sure the patient is safe and someone takes over, so you can go.' },
-          { title: 'Report it at once.', text: "Follow the hospital's needlestick injury protocol: it tells you where to go, day or night, and how blood is tested from you and, with consent, from the patient." },
+          { title: 'Report it at once.', text: "Go as soon as the patient is safe, day or night, to where the hospital's needlestick protocol sends you (your consultant or the emergency department can point you there). Blood is tested from you and, with the patient's consent, from the patient." },
           { title: 'Do not wait.', text: 'If the source might carry human immunodeficiency virus (HIV), preventive medicines (post-exposure prophylaxis) work best when started within hours. Know your own hepatitis B vaccination and antibody status.' },
-          { title: 'File an incident report', text: 'and go to every follow-up appointment.' },
+          { title: 'Afterwards.', text: 'File an incident report and go to every follow-up appointment.' },
         ] },
 
         { t: 'quiz', id: 'good-infection-q', items: [
@@ -358,6 +358,7 @@ export default {
           { text: 'Documentation and Epic', href: '#/learn/good/documentation' },
           { text: 'Looking after yourself', href: '#/learn/good/wellbeing' },
           { text: 'Crisis cards', href: '#/crisis' },
+          { text: 'Opioid overdose', href: '#/crisis/opioid-overdose', note: 'crisis card' },
         ] },
       ],
     },
@@ -570,7 +571,7 @@ export default {
         { t: 'h', text: 'Food, drink and breaks' },
         { t: 'list', items: [
           'Eat before the list, and keep a snack and a water bottle in the staff room (not in theatre).',
-          'The reliever (*) is there to give breaks. If you have not had one, ask your consultant or the OT coordinator (OTC).',
+          'The reliever (the doctor marked * on the roster) covers breaks. If you have not had one, ask your consultant or the OT coordinator (OTC: the consultant running the OT suite that day).',
           'In the post-anaesthesia care unit (PACU) you are present at all times; for an urgent break, tell the OTC and the advanced practice nurse (APN) first.',
         ] },
         { t: 'callout', kind: 'stop', text: 'Never leave an anaesthetised or sedated patient without a full handover to another anaesthetist who has agreed to take over. “I\'ll only be a minute” is not a handover.' },
@@ -599,7 +600,7 @@ export default {
         ] },
 
         { t: 'check', id: 'good-wellbeing-postcall', title: 'Before you go home post call', items: [
-          'Every patient handed over, and the remaining e-board cases pre-clerked.',
+          'Every patient handed over, and the remaining cases on the e-board (the electronic emergency list) pre-clerked.',
           'Something to eat and drink.',
           'Safe to drive? If not: a nap first, or a taxi or public transport.',
           'Anything from the night still on your mind? Tell your consultant or a colleague before you go.',

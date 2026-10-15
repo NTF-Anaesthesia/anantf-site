@@ -30,8 +30,9 @@ export default {
           ['Fentanyl', 'Lean', 'Obese patients are sensitive to opioids: titrate'],
           ['Suxamethonium', 'Total', 'More plasma cholinesterase and body water: too little gives poor intubating conditions'],
           ['Rocuronium', 'Ideal or lean', 'For rapid sequence induction (RSI), `1–1.2 mg/kg` (the handbook: `1 mg/kg` lean weight); your consultant chooses. Total weight gives a very long block'],
-          ['Sugammadex', 'Total', 'Too little risks the block coming back after theatre'],
+          ['Sugammadex', 'Total', 'Too little risks the block coming back after theatre (in severe obesity some consultants use adjusted weight: ask)'],
           ['Neostigmine', 'Total', '`0.05 mg/kg`, maximum `5 mg` (the department\'s usual adult dose is `2.5 mg`)'],
+          ['Ketamine, etomidate, thiopentone, morphine, oxycodone', 'Lean or ideal', 'Same reason as fentanyl: start low and titrate'],
           ['Local anaesthetics', 'Lean', 'The maximum dose does not rise with fat ([maximum dose tool](#/tools/la-max))'],
           ['Cefazolin', 'Total', '`2 g`; `3 g` at `120 kg` or more'],
         ] },
@@ -136,6 +137,20 @@ export default {
         ] },
         { t: 'callout', kind: 'warn', title: 'Oxygen hides hypoventilation', text: "On oxygen, a patient can keep a normal SpO2 while carbon dioxide climbs and they get drowsier. Look at the breathing rate and how rousable they are, not just the oximeter. Drowsy with slow breathing after opioids: see [opioid overdose](#/crisis/opioid-overdose)." },
         { t: 'scenario', id: 'pacu-drowsy' },
+        { t: 'quiz', id: 'patients-osa-q', items: [
+          {
+            q: "A man with known sleep apnoea has had a laparoscopic hernia repair and is snoring in PACU with SpO2 `96%` on oxygen. He rouses to voice, then drifts off again. What is the best next step?",
+            options: ["Leave him: the SpO2 is fine", "Sit him up, jaw thrust or put his own CPAP on, give no more opioid for now, and tell the PACU nurse and your consultant", "Give naloxone `400 mcg`", "Turn him flat to sleep it off"],
+            answer: 1,
+            explain: "Oxygen can keep the SpO2 normal while he obstructs and the carbon dioxide climbs. Open the airway, sit him up, use his CPAP and hold the opioids. Naloxone is for slow, shallow breathing that does not respond to these steps, and it also removes his pain relief.",
+          },
+          {
+            q: "STOP-BANG for a woman at the premed is `5`. What does that mean for you?",
+            options: ["Low risk: no action", "High risk of sleep apnoea: treat her as having it and tell your consultant", "She must have a sleep study before any anaesthetic", "She cannot have a general anaesthetic"],
+            answer: 1,
+            explain: "A score of 5 or more is high risk. You treat her as having OSA on the day (opioid-sparing plan, careful waking, a monitored first night if the surgery is major) and your consultant decides whether anything needs to be done first. Delaying for a sleep study is their call, not yours.",
+          },
+        ] },
         { t: 'links', items: [
           { text: 'STOP-BANG', href: '#/tools/stopbang', note: 'calculator' },
           { text: 'Obesity', href: '#/learn/patients/obesity' },
@@ -211,7 +226,7 @@ export default {
           "Patients with diabetes go **first on the list** where possible, so they fast for the shortest time: raise it with your consultant at the premed.",
           "Keep glucose at `6–10 mmol/L` (up to `12 mmol/L` is acceptable). Check it before the anaesthetic, every 1–2 hours in long cases, and in recovery.",
           "Glucose below `4 mmol/L` is hypoglycaemia: **treat it now**, then tell your consultant.",
-          "**SGLT2 inhibitors** (sodium–glucose co-transporter 2 inhibitors, the “-gliflozins”) stop 3 days before surgery (ertugliflozin 4): they cause diabetic ketoacidosis with a normal glucose.",
+          "**SGLT2 inhibitors** (sodium–glucose co-transporter 2 inhibitors, the “-gliflozins”) stop 3 days before surgery (ertugliflozin 4 days): they cause diabetic ketoacidosis with a normal glucose.",
           "Poorly controlled diabetes slows stomach emptying: the handbook lists it as a reason for a rapid sequence induction (RSI).",
         ] },
         { t: 'h', text: 'At the premed' },
@@ -271,7 +286,7 @@ export default {
             explain: "Treat hypoglycaemia first; your consultant will adjust the timing of the case. Gliclazide, a sulphonylurea, is a common cause in fasting patients: it should be omitted on the morning of surgery.",
           },
           {
-            q: "Which point to euglycaemic DKA in a patient on dapagliflozin? Choose all that apply.",
+            q: "Which of these point to euglycaemic DKA in a patient on dapagliflozin? Choose all that apply.",
             options: ["Nausea and vomiting", "A glucose always above `14 mmol/L`", "Raised blood ketones with a metabolic acidosis", "Abdominal pain", "Fast, deep breathing"],
             answer: [0, 2, 3, 4],
             explain: "The trap is the glucose: it can be normal or only mildly raised. Nausea, vomiting, abdominal pain and fast breathing, with ketones and acidosis on the blood gas, are the clues.",
@@ -301,7 +316,7 @@ export default {
       summary: 'Blood pressure, stents, heart failure, aortic stenosis, atrial fibrillation and cardiac devices.',
       blocks: [
         { t: 'key', items: [
-          "Ask about **effort tolerance**: more than 2 flights of stairs without stopping (about 4 metabolic equivalents) is reassuring.",
+          "Ask about **effort tolerance**: more than 2 flights of stairs without stopping (about 4 metabolic equivalents, METs) is reassuring.",
           "**High risk** (the handbook): a heart attack in the last 6 months, unstable angina, severe aortic or mitral stenosis, uncompensated heart failure. Tell your consultant.",
           "**Never stop antiplatelets after a recent coronary stent** without cardiology agreeing: stent thrombosis is often fatal.",
           "Severe aortic stenosis: avoid **low blood pressure and a fast heart rate**; treat a falling pressure early.",
@@ -373,6 +388,8 @@ export default {
           { text: 'Stopping blood thinners', href: '#/practice/cards/stopping', note: 'flashcards' },
           { text: 'Revised Cardiac Risk Index', href: '#/tools/rcri', note: 'calculator' },
           { text: 'When the circulation goes wrong', href: '#/learn/maintenance/problems-circulation' },
+          { text: 'Hypotension', href: '#/crisis/hypotension', note: 'crisis card' },
+          { text: 'Bradycardia', href: '#/crisis/bradycardia', note: 'crisis card' },
         ] },
       ],
     },
@@ -507,6 +524,20 @@ export default {
           ['Midazolam', 'Lasts longer', 'Lasts much longer; avoid in encephalopathy'],
         ] },
         { t: 'drug', id: 'atracurium' },
+        { t: 'quiz', id: 'patients-kidney-q', items: [
+          {
+            q: "A man on haemodialysis is booked for an elective AV fistula revision tomorrow morning. His potassium today is `6.2 mmol/L` and he missed his last dialysis. What do you do?",
+            options: ["Plan suxamethonium for the induction: it is quick", "Tell your consultant now: the case probably waits until he has been dialysed and the potassium is down", "Give calcium and go ahead", "Check the potassium again in a week"],
+            answer: 1,
+            explain: "Elective surgery is usually postponed at `6.0 mmol/L` or more, and the handbook wants dialysis the day before. Do not give suxamethonium with a high potassium. Never cancel on your own: tell your consultant, who decides.",
+          },
+          {
+            q: "An older woman with kidney failure needs analgesia after surgery. Which opioid is the worst choice?",
+            options: ["Fentanyl in small doses", "Oxycodone in smaller doses with longer gaps", "Pethidine", "Remifentanil by infusion, titrated"],
+            answer: 2,
+            explain: "Pethidine's metabolite builds up in kidney failure and causes seizures; it is also a poor choice in older patients (confusion). Morphine also needs great care (see the table). Fentanyl and remifentanil are preferred, in small doses.",
+          },
+        ] },
         { t: 'links', items: [
           { text: 'Muscle relaxants', href: '#/learn/maintenance/nmb' },
           { text: 'Reversal', href: '#/learn/emergence/reversal' },
@@ -572,6 +603,20 @@ export default {
         { t: 'p', text: "The handbook also lists raised intracranial and intraocular pressure as cautions for suxamethonium: ask your consultant." },
         { t: 'h', text: 'Bulbar palsy' },
         { t: 'p', text: "Weakness of the muscles of speech and swallowing (after a stroke, in motor neurone disease, myasthenia and others) means a weak cough and aspiration. Ask about choking on food and drink, a wet voice and chest infections. The consultant may choose a rapid sequence induction, and the patient needs a careful, fully awake extubation, upright recovery and chest physiotherapy." },
+        { t: 'quiz', id: 'patients-neuro-q', items: [
+          {
+            q: "A man with Parkinson's disease is nauseated in PACU. Which antiemetic should you NOT give?",
+            options: ["Ondansetron", "Dexamethasone", "Metoclopramide", "Domperidone"],
+            answer: 2,
+            explain: "Metoclopramide (like haloperidol, prochlorperazine and droperidol) blocks dopamine in the brain and makes Parkinson's worse. Ondansetron and dexamethasone are fine.",
+          },
+          {
+            q: "A boy with Duchenne muscular dystrophy is booked for a hernia repair. Which drug is the danger?",
+            options: ["Propofol", "Rocuronium", "Suxamethonium", "Fentanyl"],
+            answer: 2,
+            explain: "In muscular dystrophy, suxamethonium can cause severe hyperkalaemia and cardiac arrest. The consultant will plan total intravenous anaesthesia and avoid it.",
+          },
+        ] },
         { t: 'links', items: [
           { text: 'Allergies and anaesthetic family history', href: '#/learn/patients/allergy-history', note: 'malignant hyperthermia and suxamethonium apnoea' },
           { text: 'Muscle relaxants', href: '#/learn/maintenance/nmb' },
@@ -642,6 +687,20 @@ export default {
           "Check glucose in infants, small or sick children and after long fasts; neonates and small infants often get glucose in their maintenance fluid.",
           "Children lose heat fast: warm the room, use a warming blanket, cover the head, and measure the temperature.",
         ] },
+        { t: 'quiz', id: 'patients-children-q', items: [
+          {
+            q: "A `3-year-old` is having a cannula placed after gas induction. The heart rate falls from `120` to `70/min`. What is the first thing to think of and do?",
+            options: ["A vagal reflex: wait and watch", "Hypoxia: check the airway, give `100%` oxygen and tell your consultant at once", "Too much sevoflurane: turn it up less", "Normal for a sleeping child"],
+            answer: 1,
+            explain: "In a child, bradycardia means hypoxia until proven otherwise. Fix the oxygen first; atropine or other drugs come after, as the consultant directs.",
+          },
+          {
+            q: "Why must every dose in a child be checked with a second person?",
+            options: ["It is a hospital tradition", "Doses are worked out from the weight, so a small slip is a large overdose in a small body", "Children cannot tolerate drugs", "The calculators are unreliable"],
+            answer: 1,
+            explain: "Every dose is per kg and the margin is small. An arithmetic slip (a decimal point) can be a tenfold error. A second pair of eyes catches it before the syringe is given.",
+          },
+        ] },
         { t: 'links', items: [
           { text: "Children's quick sheet", href: '#/tools/paeds', note: 'calculator' },
           { text: 'Fasting', href: '#/learn/preop/fasting' },
@@ -699,6 +758,20 @@ export default {
         { t: 'callout', kind: 'warn', title: 'A pregnant woman who collapses', text: "Call for help and the obstetric team at once. During cardiopulmonary resuscitation (CPR), push the womb to her left by hand so blood can return to the heart ([cardiac arrest](#/crisis/cardiac-arrest))." },
         { t: 'h', text: 'After the birth' },
         { t: 'p', text: "The aspiration risk lasts a day or two after delivery. Breastfeeding mothers can feed as soon as they are awake and alert after a standard anaesthetic: the amount of drug in breast milk is tiny, and there is no need to express and discard milk." },
+        { t: 'quiz', id: 'patients-pregnancy-q', items: [
+          {
+            q: "A woman at 30 weeks is lying flat on the table for a spinal for caesarean section. She says she feels faint and sick and her BP is `80/40 mmHg`. What is the most likely cause, and the first fix?",
+            options: ["Allergic reaction: give adrenaline", "The womb pressing on the vena cava: tilt or wedge her to the left, and tell your consultant", "Pain: give morphine", "A high spinal: stop the case"],
+            answer: 1,
+            explain: "Lying flat squashes the vena cava after about 20 weeks, so blood cannot return to the heart. Left tilt fixes it quickly. After the spinal, phenylephrine treats the BP fall as your consultant directs.",
+          },
+          {
+            q: "Which painkiller group should be avoided in pregnancy, especially after 20 weeks?",
+            options: ["Paracetamol", "NSAIDs, including parecoxib", "Fentanyl", "Local anaesthetic"],
+            answer: 1,
+            explain: "NSAIDs can reduce the baby's kidney function from 20 weeks, and late in pregnancy can close the ductus arteriosus early.",
+          },
+        ] },
         { t: 'links', items: [
           { text: 'Rapid sequence induction', href: '#/learn/induction/rsi' },
           { text: 'Preoxygenation', href: '#/learn/induction/preoxygenation' },
