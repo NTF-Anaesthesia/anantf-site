@@ -122,7 +122,9 @@ All in `app.css`, all shown in `specimen.html`.
 - **Switch** `input[type=checkbox][role=switch].app-switch`, 51×31, wine when on, knob stretches while pressed. Put
   it in a `label.app-row` so the whole row toggles.
 - **Chips** `.app-chips > button.app-chip[aria-pressed]`, optional `.app-chip-count`. One row that scrolls
-  sideways and bleeds to the screen edge; 36px pill drawn inside a 44px target. On: blush, wine border, tick.
+  sideways and bleeds to the screen edge; 36px pill drawn inside a 44px target. On: blush, wine border, tick. After a label on the
+  same line use `.app-chips--inline` (bleeds right only). Don't put the site's older `.chip` class on the same
+  element: page CSS such as `assets/couture-app.css` paints a square fill behind the pill.
 - **Badges and pills** `.app-badge` (`--ink`, `--ok`, `--bad`, `--warn`), `.app-pill` (counters such as "Q 3/10",
   timers with `.app-mono`).
 - **Fields** `label.app-field > .app-field-label + .app-input`, `aria-invalid="true"` plus `.app-field-error`.
@@ -172,7 +174,7 @@ push becomes a plain swap. No confetti, no sounds, no looping animation.
 
 - WCAG 2.2 AA: text 4.5:1 (every token pair above passes), controls 3:1 against their background (control borders,
   switch track border).
-- Targets at least 44×44: rows 50, buttons 50 (compact 44), segments 44, chips 44, bar buttons 44, tabs 52.
+- Targets at least 44×44: rows 50, buttons 50 (compact 44; `--small` is 36 drawn, 44 to tap, for dense toolbars), segments 44, chips 44, bar buttons 44, tabs 52.
 - Focus visible on everything: 2px wine ring, 2px offset; inset inside rows and tabs.
 - Landmarks: `header` bar, `main`, `nav` tab bar with `aria-current="page"`. Icon buttons have `aria-label`;
   toggles use `aria-pressed`; switches `role="switch"`; the toast `role="status"`; sheets are labelled dialogs.
