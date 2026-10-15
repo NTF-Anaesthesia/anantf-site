@@ -5,6 +5,7 @@ import { DRUGS_MORE } from './drugs-more.js';
 
 export const DRUG_GROUPS = {
   induction: { name: 'Induction and sedation' },
+  inhalational: { name: 'Inhalational agents' },
   opioid: { name: 'Opioids' },
   nmb: { name: 'Muscle relaxants' },
   reversal: { name: 'Reversal' },
