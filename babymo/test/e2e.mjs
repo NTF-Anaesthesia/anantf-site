@@ -173,7 +173,10 @@ try {
   });
   await step('Results by question, its detail, by topic', async () => {
     await page.click('.app-seg:has-text("By question")'); await page.locator('#byquestion').waitFor();
-    assert.equal(await page.locator('#byquestion li').count(), N);
+    // one row per distinct question across every sitting (with more ready questions than a sitting holds, sittings differ)
+    const seen = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('mo-local-v2') || '{}'); return new Set((d.attempts || []).flatMap(a => (a.items || []).map(i => i.qid))).size; });
+    assert.ok(seen >= N && seen <= POOL.length, `distinct questions ${seen}`);
+    assert.equal(await page.locator('#byquestion li').count(), seen);
     await shot('11-results-question'); await axe('results by question');
     await page.click('#byquestion .app-row >> nth=0'); await page.locator('#picks').waitFor();
     assert.match(await text('#picks'), /Answer/i); assert.match(await text('#picks'), /chose/);
