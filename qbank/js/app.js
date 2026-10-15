@@ -68,6 +68,7 @@ function problemView() {
 }
 
 // ---------- small pieces ----------
+const decode = s => { try { return decodeURIComponent(s); } catch { return s; } };   // a mangled link must not stop the app
 const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
 const topicLine = q => (q.topics.length ? q.topics : ['General']).map(esc).join(' · ');
 const fmtDate = d => { if (!d) return ''; const t = new Date(d + (d.length === 10 ? 'T12:00' : '')); return t.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); };
@@ -159,7 +160,8 @@ function viewPractise() {
   $('#quick')?.addEventListener('click', quick);
   $('#resume')?.addEventListener('click', () => U.go('#/session'));
   $('#discard')?.addEventListener('click', () => {
-    const old = getSession(); db.del('session'); viewPractise();
+    const old = getSession(); if (!old) return;
+    db.del('session'); viewPractise();
     U.toast('Session discarded.', { action: 'Undo', onAction: () => { saveSession(old); viewPractise(); } });
   });
   $('#exam')?.addEventListener('click', examSheet);
@@ -260,6 +262,7 @@ const vt = d => (d === 'none-keep' ? 'none' : d);   // 'none-keep': redraw in pl
 function viewSession(dir) {
   const s = getSession();
   if (!s) { U.go('#/practise', { replace: true }); return; }
+  if (P.secondsLeft(s) === 0) { finish(true); return; }   // the time ran out while the app was closed
   s.pos = Math.min(Math.max(0, s.pos | 0), s.items.length - 1);
   const it = s.items[s.pos], q = it.q, exam = s.mode === 'exam', n = s.items.length;
   const answered = s.items.filter(i => i.picked != null).length;
@@ -338,7 +341,10 @@ function feedbackSheet(s) {
     foot: `<button type="button" class="btn btn-primary" id="fnext">${last ? 'See results' : 'Next question'}</button>`,
     onClose: () => $('#next')?.focus({ preventScroll: true }) });
   U.announce(title);
+  let going = false;
   sh.el.querySelector('#fnext').addEventListener('click', async () => {
+    if (going) return;   // a double tap moves one question, not two
+    going = true;
     await sh.close();
     const cur = getSession(); if (!cur) return;
     if (cur.pos < cur.items.length - 1) { cur.pos++; saveSession(cur); viewSession('push'); } else finish();
@@ -408,7 +414,7 @@ function viewSummary(id, params, dir) {
   const retry = s.items.filter(i => P.itemState(i) !== 'right' || i.flagged);
   const passLine = s.paper ? `<p><span class="badge ${sc.pass ? 'pass' : 'fail'}">${sc.pass ? 'Pass' : 'Not yet'}</span> <span class="small muted">Pass mark ${s.paper.passMark}%</span></p>` : '';
   const body = `<div class="score-head">${ring(sc.pct, first && !U.reduced())}<p class="score-line" style="margin:0">${sc.right} of ${sc.total}</p>
-      <p class="small muted" style="margin:0">${esc(s.label)} · ${s.mode === 'exam' ? 'Exam' : 'Practice'} · ${P.duration(s.finishedAt - s.startedAt)}${s.timeUp ? ' · time ran out' : ''}</p>${passLine}</div>
+      <p class="small muted" style="margin:0">${esc(s.label)}${(m => m === s.label ? '' : ' · ' + m)(s.mode === 'exam' ? 'Exam' : 'Practice')} · ${P.duration(s.finishedAt - s.startedAt)}${s.timeUp ? ' · time ran out' : ''}</p>${passLine}</div>
     <div class="group"><span class="kicker">By topic</span><ul class="rows">${P.sessionTopics(s).map(t => `<li><div class="row"><span class="row-main"><span class="row-title">${esc(t.topic)}</span></span><span class="row-trail">${t.right}/${t.total}${minibar(t.right / t.total)}</span></div></li>`).join('')}</ul></div>
     <span class="kicker section-head">Questions</span>
     <div class="pad">${U.chips('sfilter', [{ value: 'all', label: 'All' }, { value: 'wrong', label: `Wrong (${sc.wrong})` }, { value: 'flagged', label: `Flagged (${sc.flagged})` }, { value: 'unanswered', label: `Unanswered (${sc.unanswered})` }], [filter], 'Show')}</div>
@@ -469,7 +475,7 @@ function viewBrowse() {
   paint();
 }
 function viewBrowseTopic(topic) {
-  topic = decodeURIComponent(topic);
+  topic = decode(topic);
   const qs = S.pool.filter(q => P.inTopic(q, topic));
   frame({ title: topic, back: { label: 'Browse', to: '#/browse' }, tab: 'browse',
     body: qs.length ? `<div class="pad" style="padding-top:12px;padding-bottom:16px"><button type="button" class="btn btn-primary" id="pt">Practise this topic</button></div><ul class="rows">${qs.map(q => qRow(q)).join('')}</ul>`
@@ -509,7 +515,7 @@ function viewPapers() {
       ${S.papers.length ? `<ul class="rows">${S.papers.map(p => navRow({ href: `#/paper/${encodeURIComponent(p.paper.id)}`, title: esc(p.paper.title || p.paper.id), sub: `<span class="clamp2">${esc(p.paper.about || '')}</span>${paperFacts(p)}` })).join('')}</ul>` : '<div class="empty"><p>No papers yet.</p></div>'}` });
 }
 function viewPaper(id) {
-  const p = S.papers.find(x => x.paper.id === decodeURIComponent(id));
+  const p = S.papers.find(x => x.paper.id === decode(id));
   const back = { label: 'Papers', to: '#/papers' };
   if (!p) { frame({ title: 'Paper', back, tab: 'papers', body: '<div class="empty"><p>This paper is no longer here.</p></div>' }); return; }
   const r = p.resolved, n = Math.min(r.settings.count, r.pool.length);
@@ -554,7 +560,10 @@ function resetSheet() {
   const sh = U.openSheet({ title: 'Reset progress?', body: '<p>This clears your answers, flags, history and any open session on this phone. The questions are not affected.</p>',
     foot: '<div class="btn-row"><button type="button" class="btn btn-secondary" id="rcancel">Cancel</button><button type="button" class="btn btn-primary" id="rdo">Reset</button></div>' });
   sh.el.querySelector('#rcancel').addEventListener('click', () => sh.close());
+  let done = false;
   sh.el.querySelector('#rdo').addEventListener('click', async () => {
+    if (done) return;   // a second tap would save the already-empty state as the Undo copy
+    done = true;
     const keep = ['progress', 'flags', 'history', 'days', 'session'], saved = Object.fromEntries(keep.map(k => [k, db.get(k, null)]));
     keep.forEach(k => db.del(k));
     await sh.close(); viewProgress();

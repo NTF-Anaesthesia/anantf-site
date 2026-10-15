@@ -113,7 +113,8 @@ export function openSheet({ title, titleHtml = '', size = 'auto', body = '', foo
     el: dlg, body: dlg.querySelector('.sheet-body'), foot: dlg.querySelector('.sheet-foot'), depth: stack.length + 1, closed: false, waiters: [],
     close() {
       if (entry.closed) return Promise.resolve();
-      const p = new Promise(r => entry.waiters.push(r));
+      if (entry.closing) return entry.closing;   // a second tap while closing must not step back in history again
+      const p = entry.closing = new Promise(r => entry.waiters.push(r));
       if (history.state?.sheet === entry.depth) { history.back(); setTimeout(() => entry.remove(), 600); }   // popstate removes it; the timer is a safety net
       else entry.remove();
       return p;

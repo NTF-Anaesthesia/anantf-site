@@ -98,6 +98,18 @@ try {
     await page.click('#next'); await page.waitForFunction(() => document.querySelector('#navpill')?.textContent === 'Q 2/10');
   });
 
+  await step('a double tap on "Next question" moves one question and stays in the session', async () => {
+    const s = await sess();
+    await page.locator('.choice').nth(s.items[1].q.answer).click(); await sheet().waitFor();
+    await page.locator('#fnext').dblclick(); await sheetGone(); await page.waitForTimeout(300);
+    assert.equal(await page.evaluate(() => location.hash), '#/session');
+    assert.equal(await text('#navpill'), 'Q 3/10');
+    // put the second question back as it was (unanswered) for the steps below
+    await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('qbank.v1.session')); s.items[1].picked = null; delete s.items[1].at; s.pos = 1; localStorage.setItem('qbank.v1.session', JSON.stringify(s)); });
+    await page.reload(); await page.locator('#navpill').waitFor();
+    assert.equal(await text('#navpill'), 'Q 2/10');
+  });
+
   await step('flag, then a reload resumes exactly where it was', async () => {
     await page.click('#flag'); assert.equal(await page.getAttribute('#flag', 'aria-pressed'), 'true');
     const s = await sess(); assert.equal(s.items[1].flagged, true);
@@ -232,9 +244,11 @@ try {
     await page.click('a[href="#/topics"]'); await page.locator('[data-topic]').first().waitFor();
     await screen('topics');
     await page.click('#bar .back'); await page.locator('#quick').waitFor();
-    await page.click('a[href="#/list/missed"]'); await page.locator('#go').waitFor();
+    // the exam above draws at random, so it may have put the one missed question right again
     const pr = await store('progress'), missed = ready.filter(q => pr[q.id] && !pr[q.id].h.at(-1)[1]).length;
-    assert.equal(await text('#go'), `Practise these (${missed})`);
+    await page.click('a[href="#/list/missed"]');
+    if (missed) { await page.locator('#go').waitFor(); assert.equal(await text('#go'), `Practise these (${missed})`); }
+    else { await page.locator('.empty').waitFor(); assert.match(await text('.empty'), /Nothing missed yet/); }
     await screen('missed');
     await page.click('#bar .back'); await page.locator('#quick').waitFor();
   });
@@ -260,7 +274,10 @@ try {
     assert.equal(await page.locator('.choice.ok').count(), 1);
     assert.ok((await page.locator('.choice.ok').innerText()).includes(byId.get(detailId).options[byId.get(detailId).answer]));
     await screen('question-answer');
-    await page.click('#qflag'); await page.waitForFunction(() => document.querySelector('#qflag')?.getAttribute('aria-pressed') === 'true');
+    // an earlier random session may already have flagged this question: a tap toggles it either way
+    const was = await page.getAttribute('#qflag', 'aria-pressed');
+    await page.click('#qflag'); await page.waitForFunction(w => document.querySelector('#qflag')?.getAttribute('aria-pressed') === w, String(was !== 'true'));
+    if (was === 'true') { await page.click('#qflag'); await page.waitForFunction(() => document.querySelector('#qflag')?.getAttribute('aria-pressed') === 'true'); }
   });
 
   await step('suggest a change: edit, GitHub issue link and copy text', async () => {
