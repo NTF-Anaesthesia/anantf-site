@@ -114,7 +114,8 @@ All in `app.css`, all shown in `specimen.html`.
 - **Answer choices** `.app-choices > button.app-choice > .app-choice-letter + .app-choice-text (+ .app-choice-tag)`.
   At least 56px, text wraps and stays selectable. States: rest, pressed, `.is-selected` (blush, 2px wine, filled
   letter), `.is-correct` (green fill and border, a short pop), `.is-incorrect` (red, a short shake), `.is-answer`
-  (green border on surface: the right answer after a miss), `.is-dimmed` (60%). After feedback add
+  (green border on surface: the right answer after a miss), `.is-dimmed` (the rest: muted text, no fill, a
+  hairline border; never opacity, which took the text below 4.5:1). After feedback add
   `.is-locked` to the group. Always pair colour with words: the tag ("Yours", "Answer", "Correct") and the
   accessible name ("B, Thyromental distance, your answer, incorrect").
 - **Segmented control** `fieldset.app-segmented > legend + label.app-seg > input[type=radio] + span`. 2 to 4
