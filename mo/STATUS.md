@@ -1,15 +1,27 @@
 # MO guide status
 
-Paused on 15 Oct 2026 at the owner's request (usage limit). Pick up from here. First version merged to main on the
-owner's instruction (PR #103, 15 Oct 2026): live, unlisted, at anantf.com/mo/. The remaining checks below go in a new PR.
+Last updated 15 Oct 2026 (the MO guide session). Live and unlisted at anantf.com/mo/. No open PR, nothing half-done:
+pick up from "Not done yet" below.
 
-## Done
+## Recently done
 
-- Engine, reviewed and fixed; all tests pass (calc, content, version, e2e, pwa).
-- All content written and checked: every module had an author, a clinical check and a teaching check; drugs and crisis
-  cards had numbers and safety checks; figures were rendered and looked at.
-- Version 1 merged (PR #103), then the remaining checks in a second PR (#108).
-- Restyled onto the phone-app kit (`DESIGN-APP.md`, `assets/app/app.css`) on the owner's go-ahead (15 Oct 2026).
+- #103 first version: engine, calculators, 14 modules, drugs, crisis cards, scenarios, flashcards, offline install.
+- #108 the remaining clinical and teaching checks (crisis cards, figures, good, pacu, patients, regional, pain-aps, cases,
+  emergence, sedation, scenarios); extra quizzes; a scenario propofol dose made consistent with its debrief.
+- #115 restyle onto the phone-app kit (`DESIGN-APP.md`, `assets/app/app.css`): large titles, tab bar, grouped lists,
+  answer choices, confirm sheet. Learn is the home screen. Content and behaviour unchanged.
+
+## Decisions log
+
+- 15 Oct: admin parts of the handbook (rosters, leave, MC, who to email), names and phone numbers stay out (intranet).
+- 15 Oct: the guide teaches rocuronium for RSI as 1-1.2 mg/kg on ideal weight, quoting the handbook's lean-weight wording,
+  until the owner decides.
+- 15 Oct: owner approved moving the guide onto the app kit. The kit now has our fixes (bar title hidden until collapsed,
+  `.app-bar--instant`, `[hidden]` wins, long back labels truncate, radio rows documented) in `assets/app/app.css`.
+- 15 Oct: the regional pages are one app owned by the "Lower limb blocks" session (`shared/regional/ENGINE.md`). The
+  guide links to `../spinal/#tq-anticoag` and similar; if you add links from `mo/` into regional pages use `/blocks/` or
+  the block deep links (`page/#ch-<blockId>`) and tell that session so its deep-link test covers them. Don't reuse the
+  `ra-level` localStorage key (ours are `mo-guide:v1` and `mo-guide:patient`).
 
 ## Not done yet
 
@@ -25,7 +37,11 @@ owner's instruction (PR #103, 15 Oct 2026): live, unlisted, at anantf.com/mo/. T
    - scenario pacu-drowsy gives sugammadex 2 mg/kg after neostigmine (TOF ratio 0.6)
    - the needlestick pathway wording (where NTFGH sends staff)
    - some core topics run 1,200-1,400 words with quizzes; split into two screens?
-3. Optional: a link from the Baby MO test start page to the guide (needs `node babymo/tools/stamp.mjs`).
+3. Optional: a link from the Baby MO test start page to the guide (needs `node babymo/tools/stamp.mjs`; the Baby MO
+   session owns that app, so ask it).
+4. Small clean-up: drop `.mo-instant` and the `.app-back`, `.app-bar-title`, `.app-bar-btn` and `[hidden]` overrides at the
+   end of `mo/style.css` and `js/app.js`; the kit now has them (`.app-bar--instant`). Re-stamp (`node mo/tools/stamp.mjs`)
+   and run all `mo` tests afterwards.
 
 ## The handbook (source)
 
