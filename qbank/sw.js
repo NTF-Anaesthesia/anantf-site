@@ -1,7 +1,7 @@
 // Offline copy of the qbank app, so it opens from the home screen with no signal and practice keeps working.
 // Lessons from Baby MO, the MO guide and the anawj.com apps:
-//  - One cache per version, filled all at once on install (all or nothing): the app's files (SHELL), the fonts it uses
-//    (SITE) and the questions and papers (DATA). An install that fails leaves the working version in place.
+//  - One cache per version, filled all at once on install (all or nothing): the app's files (SHELL), the shared app kit
+//    and the fonts it loads (SITE: ../assets/app/app.css, ../fonts/) and the questions and papers (DATA). An install that fails leaves the working version in place.
 //  - VERSION, SHELL, SITE and DATA are written by tools/stamp.mjs (a hash of every file); test/version.test.mjs fails
 //    if they are stale.
 //  - The app's own files: cache first, so a page always runs on one version, never half old and half new.
@@ -10,10 +10,10 @@
 //  - A new version takes over by itself (skipWaiting) and never reloads the page: the page decides when it is safe.
 //  - Only this app's caches (prefix qbank-) are deleted.
 
-const VERSION = 'qbank-2026-10-15-0b3fa095';
+const VERSION = 'qbank-2026-10-15-f1638a11';
 const NET_WAIT = 2500; // ms before falling back to the cached questions
-const SHELL = ['./', 'icons/apple-touch-icon.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'index.html', 'js/app.js', 'js/bank.js', 'js/practice.js', 'manifest.webmanifest', 'ui/app.css', 'ui/ui.js'];
-const SITE = ['../fonts/fraunces-roman.woff2', '../fonts/inter.woff2', '../fonts/jetbrains-mono.woff2'];
+const SHELL = ['./', 'icons/apple-touch-icon.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'index.html', 'js/app.js', 'js/bank.js', 'js/practice.js', 'manifest.webmanifest', 'ui/qbank.css', 'ui/ui.js'];
+const SITE = ['../assets/app/app.css', '../fonts/fraunces-roman.woff2', '../fonts/inter.woff2', '../fonts/jetbrains-mono.woff2'];
 const DATA = ['bank/questions.json', 'papers.json', 'papers/babymo.json', 'sources.json'];
 
 self.addEventListener('install', e => {

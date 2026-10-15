@@ -1,6 +1,7 @@
 // Writes the offline file lists and a VERSION made from their contents into qbank/sw.js, and the list of papers into
 // qbank/papers.json, so a phone that has the app gets new files whenever any of them changes.
-//   SHELL: the app (page, manifest, icons, ui/, js/)   SITE: shared fonts it uses (outside this folder)
+//   SHELL: the app (page, manifest, icons, ui/, js/)   SITE: shared files it uses (outside this folder: the app kit
+//   ../assets/app/app.css and the fonts it loads)
 //   DATA:  the questions and papers (bank/, sources.json, papers.json, papers/, img/)
 // Run after changing anything in qbank/ (questions and papers included):
 //     node qbank/tools/stamp.mjs          rewrites papers.json, SHELL, SITE, DATA and VERSION
@@ -27,6 +28,8 @@ const rel = (from, ref) => posix(path.relative(dir, path.resolve(path.dirname(pa
 const site = new Set();
 for (const m of fs.readFileSync(path.join(dir, 'index.html'), 'utf8').matchAll(/(?:href|src)="(\.\.\/[^"]+\.(?:css|js|svg|png|woff2))"/g)) site.add(rel('index.html', m[1]));
 for (const f of shell.filter(f => f.endsWith('.css'))) for (const m of fs.readFileSync(path.join(dir, f), 'utf8').matchAll(/url\(\s*["']?([^"')]+\.(?:woff2|svg|png))["']?\s*\)/g)) if (!/^(data:|https?:)/.test(m[1])) site.add(rel(f, m[1]));
+// and what those outside files use in turn (the app kit's fonts)
+for (const f of [...site].filter(f => f.endsWith('.css'))) for (const m of fs.readFileSync(path.join(dir, f), 'utf8').matchAll(/url\(\s*["']?([^"')]+\.(?:woff2|svg|png))["']?\s*\)/g)) if (!/^(data:|https?:)/.test(m[1])) site.add(rel(f, m[1]));
 const siteList = [...site].filter(f => f.startsWith('../')).sort();
 const data = ['bank/questions.json', 'sources.json', 'papers.json', ...papers.map(p => `papers/${p}.json`), ...walk('img')].sort();
 for (const f of [...shell, ...siteList, ...data]) if (f !== 'papers.json' && !fs.existsSync(path.join(dir, f))) { console.error('missing ' + f); process.exit(1); }

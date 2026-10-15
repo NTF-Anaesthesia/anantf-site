@@ -25,7 +25,7 @@ The department's shared bank of MCQs: one format for every quiz on anantf.com. L
 | `tools/sheet.mjs` | Spreadsheet round trip: `export [file.csv]`, `import file.csv` (merges by id, deletes nothing) |
 | `test/bank.test.mjs` | Unit tests |
 | `index.html`, `manifest.webmanifest`, `icons/`, `sw.js` | The qbank app (see "The qbank app" below) |
-| `ui/app.css`, `ui/ui.js` | The shared phone-app look and building blocks (bars, tabs, sheets, toasts, controls, safe updates). Meant for the Baby MO test too: import by relative path, don't copy |
+| `ui/qbank.css`, `ui/ui.js` | The app's own pieces on top of the shared phone-app kit (`../assets/app/app.css`, `DESIGN-APP.md`): `qbank.css` holds only what the kit lacks (session bar, stepper, navigator dots, search field, stats, week, score layout), built from kit tokens; `ui.js` drives the kit's markup (router with history, sheets, toast, segmented controls, chips, steppers, the collapsing large title, View Transitions, safe updates) |
 | `js/app.js`, `js/practice.js` | The app's screens; practice logic (what to ask, sessions, scores, mastery), pure and unit-tested |
 | `papers.json` | The list of papers the app shows. Written by `tools/stamp.mjs`; don't edit. It sits outside `papers/` so `check.mjs` doesn't read it as a paper |
 | `tools/stamp.mjs` | `node qbank/tools/stamp.mjs`: writes `papers.json` and the offline lists and `VERSION` in `sw.js`. Run after any change in `qbank/` |
@@ -71,9 +71,8 @@ owner of its own items; the qbank app only reads them.
 
 ## The qbank app (anantf.com/qbank/, 15 Oct 2026)
 
-Practice for every learner: no sign-in, nothing sent anywhere. It follows the design spec of 15 Oct 2026 (one look for
-qbank and the Baby MO revamp) and `DESIGN.md`: square edges everywhere except true circles (letter badges, score ring,
-navigator dots, sheet grabber); the native feel comes from bars, sheets, safe areas, press feedback and motion.
+Practice for every learner: no sign-in, nothing sent anywhere. It is built on the shared phone-app kit, like the Baby MO
+test and the MO guide (see "Design" below).
 
 - **Tabs**: Practise (Start 10 questions, Resume card, By topic, Exam mode, My missed, Flagged, Custom practice),
   Browse (search, topic chips, topics, question detail with Show answer), Papers (each `papers/*.json`, sat as a timed
@@ -101,11 +100,33 @@ navigator dots, sheet grabber); the native feel comes from bars, sheets, safe ar
 - Small decisions made while building (differences from the spec): in Exam mode the flag button is in the bottom bar
   only (not also in the top bar), so there are never two identical buttons; the Custom and Exam sheets fit their content
   rather than opening at full height; the Exam minutes stepper moves one minute at a time (default one a question).
+- **"N questions ready"** on Practise is the questions a learner can actually get: `status: active` and complete
+  (`B.readyQuestions`, plus any `sources.json` files). Drafts never count. (A review once saw "16 ready" with 14 active in
+  the bank: the review harness had added two made-up active questions to the bank it served. The app was right; the e2e
+  test now checks the number equals the ready questions exactly.)
+
+### Design (moved onto the phone-app kit, 15 Oct 2026)
+
+- `index.html` loads `../assets/app/app.css` (the kit, `DESIGN-APP.md`, binding for installable apps) and then
+  `ui/qbank.css`. Use the kit's classes and tokens; add to `qbank.css` only what the kit lacks, from kit tokens, with
+  `qb-` names. Fonts come from the kit's `@font-face`. It matches the Baby MO test and the MO guide.
+- Shell: `html.app`, document scroll, a sticky `.app-bar` (a large title on the four tab screens that collapses into the
+  bar; a solid bar with the title and a back button on pushed screens), `.app-tabbar` at the foot. Sessions and results
+  hide the tab bar; an `.app-toolbar` holds Back / Flag / Next (exam), Explanation / Next (practice) or Done (results).
+- Components: grouped lists and rows with icon tiles; one accent card (Quick practice, or Resume when a session is open);
+  `.app-choice` with `is-selected` / `is-correct` / `is-incorrect` / `is-answer` / `is-dimmed` and a word tag (Correct,
+  Yours, Answer); segmented controls (radios); chips; `dialog.app-sheet` with grabber; the toast; the score ring; empty
+  states. Suggest a change marks the right answer by tapping a choice's letter (radios), not a six-segment control.
+- Motion: screen pushes use the kit's View Transitions (`html[data-nav]`); the bar, tab bar and toolbar have their own
+  transition names, so only the content slides. `main` clips sideways overflow, so phones never zoom out mid-slide.
+- At 320px a pushed screen's bar title may use 40vw and four segments use less padding, so words stay whole.
+- The kit is cached for offline use: `tools/stamp.mjs` puts `../assets/app/app.css` and the fonts it loads in `SITE`.
+  A change to `assets/app/` means re-stamping qbank too.
 
 ### Offline and updates
 
-- `sw.js` caches the app, its three fonts (`../fonts/`), the questions and the papers in one cache per version, all or
-  nothing. App files: cache first (one version at a time). Questions and papers: network first with a 2.5 s wait, so a
+- `sw.js` caches the app, the app kit and its three fonts (`../assets/app/app.css`, `../fonts/`), the questions and the
+  papers in one cache per version, all or nothing. App files: cache first (one version at a time). Questions and papers: network first with a 2.5 s wait, so a
   corrected question reaches phones without a new release; the app also fetches them again when it comes back to the
   front (at most once a minute) and redraws only if they changed and nothing is open.
 - **Safe updates** (as in Baby MO): a new version takes over by itself, but the page reloads only on a top-level tab with

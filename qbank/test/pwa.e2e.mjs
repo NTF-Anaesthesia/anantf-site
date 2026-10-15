@@ -50,7 +50,7 @@ try {
   await step('manifest, icons and page tags', async () => {
     const m = await (await fetch(BASE + 'manifest.webmanifest')).json();
     assert.equal(m.display, 'standalone'); assert.equal(m.start_url, './'); assert.equal(m.scope, './'); assert.ok(m.name && m.short_name);
-    assert.equal(m.theme_color, '#f7f5ef'); assert.equal(m.background_color, '#f7f5ef');
+    assert.equal(m.theme_color, '#f1ede4'); assert.equal(m.background_color, '#f1ede4');   // the kit's ground (DESIGN-APP.md)
     assert.ok(m.icons.some(i => i.sizes === '192x192') && m.icons.some(i => i.sizes === '512x512') && m.icons.some(i => i.purpose === 'maskable'));
     for (const i of m.icons) {
       const r = await fetch(BASE + i.src); assert.equal(r.status, 200, i.src);
@@ -72,10 +72,11 @@ try {
     for (const f of [...list('SHELL'), ...list('DATA')]) assert.ok(urls.includes('/qbank/' + (f === './' ? '' : f)), 'not cached: ' + f);
     for (const f of list('SITE')) assert.ok(urls.includes(new URL(f, BASE).pathname), 'not cached: ' + f);
     assert.ok(list('DATA').includes('bank/questions.json') && list('DATA').includes('papers/babymo.json'));
+    assert.ok(list('SITE').includes('../assets/app/app.css') && list('SITE').includes('../fonts/inter.woff2'), 'the app kit and its fonts are in the offline copy');
   });
   await step('Progress shows the app version and "Get the latest version"', async () => {
     const [, d, h] = SW0.match(/^qbank-(\d{4}-\d{2}-\d{2})-([0-9a-f]+)$/);
-    await page.click('.tab[data-tab=progress]'); await page.locator('#appver:not([hidden])').waitFor();
+    await page.click('.app-tab[data-tab=progress]'); await page.locator('#appver:not([hidden])').waitFor();
     assert.equal(await page.textContent('#appver'), `App version ${d} (${h})`);
     assert.equal(await page.textContent('#getlatest'), 'Not updating? Get the latest version');
   });
@@ -103,7 +104,7 @@ try {
     await page.goto(BASE + '#/practise'); await page.locator('#quick').waitFor();
     assert.equal(await page.locator('#offline').isVisible(), true);
     await page.click('#quick'); await page.locator('#navpill').waitFor();
-    await page.locator('.choice').first().click(); await page.locator('dialog[open]').waitFor();
+    await page.locator('.app-choice').first().click(); await page.locator('dialog[open]').waitFor();
     await ctx.setOffline(false);
     await page.goto(BASE + '#/practise'); await page.locator('#resume').waitFor();
     await page.click('#discard');
@@ -112,7 +113,7 @@ try {
     bankEdit = bank => { const q = bank.questions.find(x => x.status === 'active'); q.stem = 'Freshly corrected question text zebra'; return bank; };
     await page.goto(BASE + '#/browse'); await page.reload(); await page.locator('#find').waitFor();
     await page.fill('#find', 'zebra');
-    await page.waitForFunction(() => /^1 question/.test(document.querySelector('#blist .live-line')?.textContent || ''));
+    await page.waitForFunction(() => /^1 question/.test(document.querySelector('#blist .qb-count')?.textContent || ''));
     bankEdit = null;
     await page.fill('#find', '');
   });
@@ -130,20 +131,20 @@ try {
     swVersion = 'qbank-update1'; await update(); await activeVersion('qbank-update1');
     await sleep(1500);
     assert.equal(await page.evaluate(() => window.__marker), 2, 'reloaded in the middle of a session');
-    await page.locator('.choice').first().click(); await page.locator('dialog[open]').waitFor(); await sleep(500);
+    await page.locator('.app-choice').first().click(); await page.locator('dialog[open]').waitFor(); await sleep(500);
     assert.equal(await page.evaluate(() => window.__marker), 2, 'reloaded with a sheet open');
   });
   await step('...and offers "Update ready / Restart" at the next safe moment', async () => {
     await page.click('#fnext'); await page.locator('#navpill').waitFor();
     await page.click('#leave'); await page.click('#goaway');         // back on a top-level screen, nothing open
-    await page.locator('.toast', { hasText: 'Update ready' }).waitFor({ timeout: 5000 });
+    await page.locator('#toast.is-visible', { hasText: 'Update ready' }).waitFor({ timeout: 5000 });
     assert.equal(await page.evaluate(() => window.__marker), 2, 'reloaded without asking');
-    await page.locator('.toast button', { hasText: 'Restart' }).click();
+    await page.locator('#toast.is-visible .app-toast-action', { hasText: 'Restart' }).click();
     await reloaded(); await page.locator('#resume').waitFor();          // the open session survives the restart
     await page.click('#discard');
   });
   await step('an update does not reload while a search is half typed', async () => {
-    await page.click('.tab[data-tab=browse]'); await page.locator('#find').waitFor();
+    await page.click('.app-tab[data-tab=browse]'); await page.locator('#find').waitFor();
     await page.evaluate(() => { window.__marker = 3; });
     await page.click('#find'); await page.keyboard.type('airw');
     swVersion = 'qbank-update2'; await update(); await activeVersion('qbank-update2'); await sleep(1500);
@@ -151,7 +152,7 @@ try {
     assert.equal(await page.inputValue('#find'), 'airw');
   });
   await step('an update found while idle on a top-level screen applies by itself', async () => {
-    await page.goto(BASE + '#/papers'); await page.locator('main a.row[href="#/paper/babymo"]').waitFor();
+    await page.goto(BASE + '#/papers'); await page.locator('main a.app-row[href="#/paper/babymo"]').waitFor();
     await page.evaluate(() => { window.__marker = 4; });
     swVersion = 'qbank-update3'; await update(); await activeVersion('qbank-update3');
     await reloaded();

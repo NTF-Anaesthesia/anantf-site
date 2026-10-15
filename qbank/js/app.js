@@ -1,6 +1,7 @@
 // The qbank app (anantf.com/qbank/): practise the department's questions on a phone. No sign-in; progress stays on the
 // phone (localStorage, keys qbank.v1.*). Screens are hash routes (#/practise, #/q/<id>, ...). Design: qbank/NOTES.md and
-// the design spec; shared building blocks in ../ui/ui.js, question logic in bank.js and practice.js.
+// DESIGN-APP.md: the look is the shared phone-app kit (../assets/app/app.css) plus ui/qbank.css; ui/ui.js drives the kit's
+// markup (sheets, toast, controls, transitions); question logic is in bank.js and practice.js.
 import * as B from './bank.js';
 import * as P from './practice.js';
 import * as U from '../ui/ui.js';
@@ -41,29 +42,38 @@ async function load() {
   } catch (e) { S.error = e; }
 }
 
-// ---------- screen frame ----------
+// ---------- screen frame (the kit's bar, main, tab bar or toolbar) ----------
 const main = () => $('#main');
-function frame({ title, large = false, back = null, start = '', mid = '', end = '', extra = '', body = '', foot = '', tab = null, focus = false, keepScroll = false }) {
+// large: a top-level screen with a large title that collapses into the bar. Otherwise a pushed screen: solid bar with
+// its title (the h1) and a back button. focus: a session or results screen, full screen without the tab bar.
+// foot: the buttons of a bottom toolbar.
+function frame({ title, large = false, sub = '', back = null, start = '', mid = '', end = '', extra = '', body = '', foot = '', tab = null, focus = false, keepScroll = false, session = false }) {
   for (const f of S.cleanup.splice(0)) f();
-  document.body.classList.toggle('focus', !!focus);
+  const y = window.scrollY;
+  document.body.classList.toggle('qb-focus', !!focus);
+  document.body.classList.toggle('app-has-tabbar', !focus);
+  document.body.classList.toggle('app-has-toolbar', !!foot);
+  $('#tabbar').hidden = !!focus;
   const bar = $('#bar');
-  bar.className = 'bar' + (large ? '' : ' fixed');
-  $('#bar-start').innerHTML = back ? `<button type="button" class="back" data-parent="${esc(back.to)}">${icon.back()}<span>${esc(back.label)}</span></button>` : start;
-  $('#bar-mid').innerHTML = mid || (large ? `<div class="bar-title" aria-hidden="true">${esc(title)}</div>` : `<h1 class="bar-title" tabindex="-1">${esc(title)}</h1>`);
+  bar.className = 'app-bar app-bar--instant' + (large ? '' : ' app-bar--solid') + (session ? ' qb-session' : '');   // no title fade from the old screen's state
+  requestAnimationFrame(() => requestAnimationFrame(() => bar.classList.remove('app-bar--instant')));
+  $('#bar-start').innerHTML = back ? `<button type="button" class="app-bar-btn app-back" data-parent="${esc(back.to)}">${esc(back.label)}</button>` : start;
+  $('#bar-mid').innerHTML = mid || (large ? `<p class="app-bar-title" aria-hidden="true">${esc(title)}</p>` : `<h1 class="app-bar-title" tabindex="-1">${esc(title)}</h1>`);
   $('#bar-end').innerHTML = end;
   $('#bar-extra').innerHTML = extra;
-  const m = main(), top = m.scrollTop;
-  m.innerHTML = (large ? `<h1 class="large-title" tabindex="-1">${esc(title)}</h1>` : '') + body;
-  m.scrollTop = keepScroll ? top : 0;
-  $('#foot').innerHTML = foot;
-  $$('.tab').forEach(t => { if (t.dataset.tab === tab) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
+  const m = main();
+  m.className = 'app-main' + (large ? '' : ' qb-pushed');
+  m.innerHTML = (large ? `<h1 class="app-large-title" tabindex="-1">${esc(title)}</h1>${sub ? `<p class="app-large-sub">${sub}</p>` : ''}` : '') + body;
+  $('#foot').innerHTML = foot ? `<div class="app-toolbar" id="toolbar"><div class="app-toolbar-inner">${foot}</div></div>` : '';
+  $$('.app-tab').forEach(t => { if (t.dataset.tab === tab) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
   document.title = `${title} · Question bank`;
-  U.watchLargeTitle(m, bar);
-  $('#bar-start .back')?.addEventListener('click', e => U.back(e.currentTarget.dataset.parent));
+  window.scrollTo(0, keepScroll ? y : 0);
+  if (large) U.watchLargeTitle(bar);
+  $('#bar-start .app-back')?.addEventListener('click', e => U.back(e.currentTarget.dataset.parent));
 }
-const skeleton = () => `<div class="sk sk-title"></div>${'<div class="sk-row"><div class="sk" style="width:64%"></div></div>'.repeat(5)}`;
+const skeleton = () => `<span class="app-skeleton app-skeleton--title qb-sk-title"></span><ul class="app-list" aria-busy="true" aria-label="Loading">${'<li><div class="app-row"><span class="app-row-body"><span class="app-skeleton app-skeleton--line"></span><span class="app-skeleton app-skeleton--short"></span></span></div></li>'.repeat(5)}</ul>`;
 function problemView() {
-  frame({ title: 'Question bank', large: true, tab: null, body: `<div class="problem" role="alert"><p>Couldn't load the questions. Check your signal.</p><button type="button" class="btn btn-secondary" id="retry">Try again</button></div>` });
+  frame({ title: 'Question bank', large: true, tab: null, body: `<div class="app-panel" role="alert"><p class="app-text">Couldn't load the questions. Check your signal.</p><button type="button" class="app-btn app-btn--secondary app-btn--compact" id="retry">Try again</button></div>` });
   $('#retry').addEventListener('click', async () => { main().innerHTML = skeleton(); await load(); render(U.routeOf(), 'none'); });
 }
 
@@ -73,50 +83,57 @@ const plural = (n, one, many = one + 's') => `${n} ${n === 1 ? one : many}`;
 const topicLine = q => (q.topics.length ? q.topics : ['General']).map(esc).join(' · ');
 const fmtDate = d => { if (!d) return ''; const t = new Date(d + (d.length === 10 ? 'T12:00' : '')); return t.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); };
 const fmtWhen = t => new Date(t).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
-function qRow(q, href = `#/q/${q.id}`) {
+// One grouped-list row: a link (href), a button, or plain (still: true). The whole row is the target.
+function row({ href = '', id = '', title, sub = '', lead = '', value = '', trail = '', cls = '', clamp = false, chev, still = false, attrs = '' }) {
+  const tag = still ? 'div' : href ? 'a' : 'button';
+  const open = `<${tag} class="app-row ${cls}"${href && !still ? ` href="${href}"` : ''}${tag === 'button' ? ' type="button"' : ''}${id ? ` id="${id}"` : ''}${attrs}>`;
+  return `<li>${open}${lead}<span class="app-row-body"><span class="app-row-title${clamp ? ' qb-clamp' : ''}">${title}</span>${sub ? `<span class="app-row-sub">${sub}</span>` : ''}</span>${value !== '' ? `<span class="app-row-value">${value}</span>` : ''}${trail}${(chev ?? !still) ? U.chevron : ''}</${tag}></li>`;
+}
+const section = (header, inner, { footer = '', id = '', cls = '', h = 'h2' } = {}) => `<section class="app-section ${cls}">${header ? `<${h} class="app-section-header">${header}</${h}>` : ''}<ul class="app-list"${id ? ` id="${id}"` : ''}>${inner}</ul>${footer ? `<p class="app-section-footer">${footer}</p>` : ''}</section>`;
+const tile = U.tile;
+const badges = q => {
   const st = P.statusOf(progress(), q.id), fl = isFlagged(q.id);
-  const marks = [st === 'missed' ? '<span class="badge missed">Missed</span>' : '', fl ? '<span class="badge flag">Flagged</span>' : ''].join('');
-  return `<li><a class="row" href="${href}"><span class="row-main"><span class="row-title clamp2">${esc(q.stem)}</span><span class="row-sub">${topicLine(q)}</span></span>${marks ? `<span class="row-trail">${marks}</span>` : ''}<span class="chev" aria-hidden="true">›</span></a></li>`;
-}
-function navRow({ id = '', href = '', title, sub = '', trail = '', danger = false }) {
-  const inner = `<span class="row-main"><span class="row-title">${title}</span>${sub ? `<span class="row-sub">${sub}</span>` : ''}</span>${trail ? `<span class="row-trail">${trail}</span>` : ''}<span class="chev" aria-hidden="true">›</span>`;
-  return `<li>${href ? `<a class="row${danger ? ' danger' : ''}" href="${href}"${id ? ` id="${id}"` : ''}>${inner}</a>` : `<button type="button" class="row${danger ? ' danger' : ''}" id="${id}">${inner}</button>`}</li>`;
-}
-const minibar = share => `<span class="minibar" aria-hidden="true"><span style="width:${Math.round(share * 100)}%"></span></span>`;
-const imgHtml = q => q.image ? `<button type="button" class="q-img" data-zoom="${esc(q.image)}" aria-label="Enlarge the picture"><img src="${esc(q.image)}" alt="${esc(q.imageAlt || 'Picture for this question')}" loading="eager"></button>` : '';
+  return (st === 'missed' ? '<span class="app-badge app-badge--bad">Missed</span>' : '') + (fl ? '<span class="app-badge">Flagged</span>' : '');
+};
+const qRow = (q, href = `#/q/${q.id}`) => { const b = badges(q); return row({ href, title: esc(q.stem), clamp: true, sub: `<span class="qb-sub">${topicLine(q)}</span>${b ? `<span class="qb-badges">${b}</span>` : ''}` }); };
+const minibar = share => `<span class="qb-minibar" aria-hidden="true"><i style="width:${Math.round(share * 100)}%"></i></span>`;
+const imgHtml = q => q.image ? `<button type="button" class="qb-img" data-zoom="${esc(q.image)}" aria-label="Enlarge the picture"><img src="${esc(q.image)}" alt="${esc(q.imageAlt || 'Picture for this question')}" loading="eager"></button>` : '';
+const emptyCard = (svgIcon, title, text, button = '') => `<div class="app-card app-empty qb-empty"><span class="app-empty-icon" aria-hidden="true">${svgIcon}</span><p class="app-empty-title">${title}</p>${text ? `<p class="app-empty-text">${text}</p>` : ''}${button}</div>`;
+const suggestBtn = id => `<button type="button" class="app-btn app-btn--plain app-btn--compact qb-suggest" id="${id}">${icon.edit()}Suggest a change</button>`;
 
 // Choices. mode: 'pick' (practice, not yet answered), 'exam' (selectable), 'feedback' (after answering, or in review),
-// 'hidden' (detail, answer not shown), 'reveal' (detail, answer shown).
+// 'hidden' (detail, answer not shown), 'reveal' (detail, answer shown). Colour always comes with words: the tag and the
+// accessible name ("B, ..., your answer, incorrect").
 function choicesHtml(q, mode, picked) {
   const interactive = mode === 'pick' || mode === 'exam';
   const items = q.options.map((o, i) => {
     const L = P.letter(i);
-    let cls = '', badge = L, state = '', said = '';
-    if (mode === 'exam' && i === picked) { cls = 'sel'; said = ', selected'; }
+    let cls = '', badge = L, tag = '', said = '';
+    if (mode === 'exam' && i === picked) { cls = 'is-selected'; said = ', selected'; }
     if (mode === 'feedback') {
-      if (i === q.answer && i === picked) { cls = 'ok'; badge = icon.check(); state = 'Correct'; said = ', your answer, correct'; }
-      else if (i === picked) { cls = 'bad'; badge = icon.cross(); state = 'Your answer'; said = ', your answer, incorrect'; }
-      else if (i === q.answer) { cls = picked == null ? 'answer' : 'answer'; badge = icon.check(); state = 'Answer'; said = ', correct answer'; }
-      else cls = 'dim';
+      if (i === q.answer && i === picked) { cls = 'is-correct'; badge = icon.check(); tag = 'Correct'; said = ', your answer, correct'; }
+      else if (i === picked) { cls = 'is-incorrect'; badge = icon.cross(); tag = 'Yours'; said = ', your answer, incorrect'; }
+      else if (i === q.answer) { cls = 'is-answer'; badge = icon.check(); tag = 'Answer'; said = ', correct answer'; }
+      else cls = 'is-dimmed';
     }
     if (mode === 'reveal') {
-      if (i === q.answer) { cls = 'ok'; badge = icon.check(); state = 'Answer'; said = ', correct answer'; } else cls = 'dim';
+      if (i === q.answer) { cls = 'is-correct'; badge = icon.check(); tag = 'Answer'; said = ', correct answer'; } else cls = 'is-dimmed';
     }
-    const inner = `<span class="letter" aria-hidden="true">${badge}</span><span class="sr-only">${L}, </span><span class="ctext">${esc(o)}</span><span class="sr-only">${said}</span>${state ? `<span class="cstate" aria-hidden="true">${state}</span>` : ''}`;
+    const inner = `<span class="app-choice-letter" aria-hidden="true">${badge}</span><span class="app-choice-text"><span class="app-sr">${L}, </span>${esc(o)}<span class="app-sr">${said}</span></span>${tag ? `<span class="app-choice-tag" aria-hidden="true">${tag}</span>` : ''}`;
     return interactive
-      ? `<button type="button" class="choice ${cls}" data-i="${i}"${mode === 'exam' ? ` aria-pressed="${i === picked}"` : ''}>${inner}</button>`
-      : `<li class="choice ${cls}">${inner}</li>`;
+      ? `<button type="button" class="app-choice ${cls}" data-i="${i}"${mode === 'exam' ? ` aria-pressed="${i === picked}"` : ''}>${inner}</button>`
+      : `<li class="app-choice ${cls}">${inner}</li>`;
   }).join('');
-  return interactive ? `<div class="choices" role="group" aria-labelledby="stem">${items}</div>` : `<ul class="choices" aria-labelledby="stem">${items}</ul>`;
+  return interactive ? `<div class="app-choices" role="group" aria-labelledby="stem">${items}</div>` : `<ul class="app-choices is-locked qb-ro" aria-labelledby="stem">${items}</ul>`;
 }
 function questionHtml(q, mode, picked, { kicker = '' } = {}) {
-  return `<div class="q-wrap"><div class="q-kicker"><span class="kicker">${topicLine(q)}</span>${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${kicker}</div>
-    <p class="stem" id="stem">${esc(q.stem)}</p>${imgHtml(q)}${choicesHtml(q, mode, picked)}<div id="after"></div></div>`;
+  return `<div class="qb-q"><div class="qb-q-kicker"><span class="app-kicker">${topicLine(q)}</span>${q.level === 'hard' ? '<span class="app-badge app-badge--ink">Hard</span>' : ''}${kicker}</div>
+    <p class="qb-stem" id="stem">${esc(q.stem)}</p>${imgHtml(q)}${choicesHtml(q, mode, picked)}<div id="after"></div></div>`;
 }
-const explainHtml = q => `<div class="explain"><h2>Explanation</h2>${q.explain ? q.explain.split(/\n{2,}/).map(p => `<p>${esc(p)}</p>`).join('') : '<p class="muted">No explanation yet. If you know why, suggest one.</p>'}</div>`;
+const explainHtml = q => `<div class="app-panel qb-explain"><h2 class="app-kicker">Explanation</h2>${q.explain ? q.explain.split(/\n{2,}/).map(p => `<p>${esc(p)}</p>`).join('') : '<p class="app-muted">No explanation yet. If you know why, suggest one.</p>'}</div>`;
 function wireZoom(root = main()) {
   root.querySelectorAll('[data-zoom]').forEach(b => b.addEventListener('click', () => {
-    U.openSheet({ title: 'Picture', size: 'large', body: `<img src="${esc(b.dataset.zoom)}" alt="${esc(b.querySelector('img')?.alt || 'Picture for this question')}" style="width:100%;height:auto;display:block">` });
+    U.openSheet({ title: 'Picture', size: 'large', body: `<img class="qb-zoom" src="${esc(b.dataset.zoom)}" alt="${esc(b.querySelector('img')?.alt || 'Picture for this question')}">` });
   }));
 }
 
@@ -129,6 +146,7 @@ function begin(opts) {
   if (old) U.toast('Started a new session. The last one was closed.', { action: 'Undo', onAction: () => { saveSession(old); U.go('#/session', { replace: true }); render(U.routeOf(), 'none'); } });
   U.go('#/session');
 }
+const quickCount = () => Math.min(10, S.pool.length);
 const quick = () => begin({ kind: 'quick', label: 'Quick 10', questions: P.pickPractice(S.pool, progress(), 10) });
 function practiseTopic(t) {
   const pool = S.pool.filter(q => P.inTopic(q, t));
@@ -140,22 +158,24 @@ function viewPractise() {
   const s = getSession(), pr = progress(), fl = flags();
   const missed = S.pool.filter(q => P.statusOf(pr, q.id) === 'missed').length, flagged = S.pool.filter(q => fl[q.id]).length;
   const resume = s ? (() => {
-    const left = P.secondsLeft(s);
-    return `<div class="card" id="resume-card"><h2>Resume: Q ${s.pos + 1} of ${s.items.length} · ${esc(s.label)}</h2>
-      <p class="row-sub">${(a => a ? `${plural(a, 'answer')} kept` : 'Not started yet')(s.items.filter(i => i.picked != null).length)}${left != null ? ` · ${left ? P.clock(left) + ' left' : 'time is up'}` : ''}</p>
-      <div class="stack"><button type="button" class="btn btn-primary" id="resume">Resume</button><button type="button" class="btn-text" id="discard" style="justify-self:center">Discard</button></div></div>`;
+    const left = P.secondsLeft(s), kept = s.items.filter(i => i.picked != null).length;
+    return `<div class="app-card app-card--accent" id="resume-card"><p class="app-kicker">Resume</p><p class="app-card-title">Q ${s.pos + 1} of ${s.items.length} · ${esc(s.label)}</p>
+      <p class="app-small app-muted" style="margin:0">${kept ? `${plural(kept, 'answer')} kept` : 'Not started yet'}${left != null ? ` · ${left ? P.clock(left) + ' left' : 'time is up'}` : ''}</p>
+      <div class="app-card-actions"><button type="button" class="app-btn app-btn--plain" id="discard">Discard</button><button type="button" class="app-btn app-btn--primary" id="resume">Resume</button></div></div>`;
   })() : '';
-  const body = !S.pool.length ? '<div class="empty"><p>No questions are ready yet.</p></div>' : `${resume}
-    <div class="card"><h2>Quick practice</h2><p class="row-sub">Ten questions, mixing ones you haven't seen with ones you missed.</p>
-      <button type="button" class="btn ${s ? 'btn-secondary' : 'btn-primary'}" id="quick">Start 10 questions</button></div>
-    <div class="group"><span class="kicker">Practise by</span><ul class="rows">
-      ${navRow({ href: '#/topics', title: 'By topic', trail: String(P.topicsOf(S.pool).length) })}
-      ${navRow({ id: 'exam', title: 'Exam mode', sub: 'Timed, answers at the end' })}
-      ${navRow({ href: '#/list/missed', title: `My missed (${missed})` })}
-      ${navRow({ href: '#/list/flagged', title: `Flagged (${flagged})` })}
-      ${navRow({ id: 'custom', title: 'Custom practice', sub: 'Choose topics, how many and how' })}
-    </ul></div>
-    <p class="pad small muted">${plural(S.pool.length, 'question')} ready. Answers and progress stay on this phone.</p>`;
+  const n = quickCount();
+  // the number is the questions a learner can actually get: status active and complete (B.readyQuestions); drafts never count
+  const body = !S.pool.length ? emptyCard(icon.practise(), 'No questions yet', 'No questions are ready yet. Check again soon.') : `${resume}
+    <div class="app-card${s ? '' : ' app-card--accent'}" id="quick-card"><p class="app-kicker">Quick practice</p><p class="app-card-title">${plural(n, 'question')}, mixed</p>
+      <p class="app-small app-muted" style="margin:0">Ones you haven't seen and ones you missed come first.</p>
+      <div class="app-card-actions"><button type="button" class="app-btn ${s ? 'app-btn--secondary' : 'app-btn--primary'}" id="quick">Start ${plural(n, 'question')}</button></div></div>
+    ${section('Practise by', [
+      row({ href: '#/topics', title: 'By topic', lead: tile(icon.browse()), value: String(P.topicsOf(S.pool).length) }),
+      row({ id: 'exam', title: 'Exam mode', sub: 'Timed, answers at the end', lead: tile(icon.clock()) }),
+      row({ href: '#/list/missed', id: 'row-missed', title: 'My missed', lead: tile(icon.cross(), 'app-row-icon--bad'), value: String(missed) }),
+      row({ href: '#/list/flagged', id: 'row-flagged', title: 'Flagged', lead: tile(icon.flag(), 'app-row-icon--ink'), value: String(flagged) }),
+      row({ id: 'custom', title: 'Custom practice', sub: 'Choose topics, how many and how', lead: tile(icon.sliders()) }),
+    ].join(''), { footer: `<span id="ready-count">${plural(S.pool.length, 'question')} ready</span>. Answers and progress stay on this phone.` })}`;
   frame({ title: 'Practise', large: true, tab: 'practise', body });
   $('#quick')?.addEventListener('click', quick);
   $('#resume')?.addEventListener('click', () => U.go('#/session'));
@@ -173,10 +193,10 @@ function viewTopics() {
   const rows = P.topicsOf(S.pool).map(({ topic, count }) => {
     const qs = S.pool.filter(q => P.inTopic(q, topic));
     const unseen = qs.filter(q => P.statusOf(pr, q.id) === 'unseen').length, missed = qs.filter(q => P.statusOf(pr, q.id) === 'missed').length;
-    return `<li><button type="button" class="row" data-topic="${esc(topic)}"><span class="row-main"><span class="row-title">${esc(topic)}</span><span class="row-sub">${plural(count, 'question')} · ${unseen} unseen${missed ? ` · ${missed} missed` : ''}</span></span><span class="chev" aria-hidden="true">›</span></button></li>`;
+    return row({ title: esc(topic), sub: `${plural(count, 'question')} · ${unseen} unseen${missed ? ` · ${missed} missed` : ''}`, attrs: ` data-topic="${esc(topic)}"` });
   }).join('');
   frame({ title: 'By topic', back: { label: 'Practise', to: '#/practise' }, tab: 'practise',
-    body: `<p class="pad small muted" style="margin-top:12px">Tap a topic to start up to 10 of its questions.</p><ul class="rows">${rows}</ul>` });
+    body: section('Topics', rows, { footer: 'Tap a topic to start up to 10 of its questions.' }) });
   $$('[data-topic]').forEach(b => b.addEventListener('click', () => practiseTopic(b.dataset.topic)));
 }
 
@@ -185,8 +205,10 @@ function viewList(kind) {
   const qs = S.pool.filter(q => kind === 'missed' ? P.statusOf(pr, q.id) === 'missed' : fl[q.id]);
   const title = kind === 'missed' ? 'My missed' : 'Flagged';
   const body = qs.length
-    ? `<div class="pad" style="padding-top:12px;padding-bottom:16px"><button type="button" class="btn btn-primary" id="go">Practise these (${qs.length})</button></div><ul class="rows">${qs.map(q => qRow(q)).join('')}</ul>`
-    : `<div class="empty"><p>${kind === 'missed' ? 'Nothing missed yet.' : 'Nothing flagged yet. Flag a question during practice to find it here.'}</p><button type="button" class="btn btn-primary" id="quick">Start 10 questions</button></div>`;
+    ? `<div class="app-btn-stack qb-top-action"><button type="button" class="app-btn app-btn--primary app-btn--block" id="go">Practise these (${qs.length})</button></div>${section('', qs.map(q => qRow(q)).join(''))}`
+    : kind === 'missed'
+      ? emptyCard(icon.check(), 'Nothing missed yet', 'Questions you get wrong collect here, so you can try them again.', `<button type="button" class="app-btn app-btn--primary" id="quick">Start ${plural(quickCount(), 'question')}</button>`)
+      : emptyCard(icon.flag(), 'Nothing flagged yet', 'Flag a question during practice to find it here.', `<button type="button" class="app-btn app-btn--primary" id="quick">Start ${plural(quickCount(), 'question')}</button>`);
   frame({ title, back: { label: 'Practise', to: '#/practise' }, tab: 'practise', body });
   $('#go')?.addEventListener('click', () => begin({ kind, label: title, questions: B.shuffle(qs) }));
   $('#quick')?.addEventListener('click', quick);
@@ -199,12 +221,12 @@ function customSheet() {
   let topics = (saved.topics || []).filter(t => S.pool.some(q => P.inTopic(q, t)));
   let status = saved.status || 'all', count = P.COUNTS.includes(saved.count) ? saved.count : 10, mode = saved.mode || 'practice';
   const sh = U.openSheet({ title: 'Custom practice',
-    body: `<div class="field"><span class="label" id="ct-l">Topics</span><span class="hint">None chosen means every topic.</span>${U.chips('topics', topicOptions(), topics, 'Topics')}</div>
-      <div class="field"><span class="label">Questions</span>${U.seg('status', [{ value: 'all', label: 'All' }, { value: 'unseen', label: 'Unseen' }, { value: 'missed', label: 'Missed' }, { value: 'flagged', label: 'Flagged' }], status, 'Which questions')}</div>
-      <div class="setting"><span class="setting-label">How many</span>${U.stepper('count', 'How many questions', P.countLabel(count))}</div>
-      <div class="field" style="margin-top:8px"><span class="label">Mode</span>${U.seg('mode', [{ value: 'practice', label: 'Practice' }, { value: 'exam', label: 'Exam' }], mode, 'Mode')}
-      <span class="hint" id="mode-hint"></span></div>`,
-    foot: `<p class="live-line" id="match" role="status"></p><button type="button" class="btn btn-primary" id="cstart">Start</button>` });
+    body: `<h3 class="app-section-header qb-sheet-h">Topics</h3>${U.chips('topics', topicOptions(), topics, 'Topics')}<p class="app-section-footer qb-chips-foot">None chosen means every topic.</p>
+      <h3 class="app-section-header qb-sheet-h">Questions</h3>${U.seg('status', [{ value: 'all', label: 'All' }, { value: 'unseen', label: 'Unseen' }, { value: 'missed', label: 'Missed' }, { value: 'flagged', label: 'Flagged' }], status, 'Which questions')}
+      <ul class="app-list qb-sheet-list"><li>${U.stepper('count', 'How many', P.countLabel(count))}</li></ul>
+      <h3 class="app-section-header qb-sheet-h">Mode</h3>${U.seg('mode', [{ value: 'practice', label: 'Practice' }, { value: 'exam', label: 'Exam' }], mode, 'Mode')}
+      <p class="app-section-footer" id="mode-hint"></p>`,
+    foot: `<p class="qb-live" id="match" role="status"></p><button type="button" class="app-btn app-btn--primary app-btn--block" id="cstart">Start</button>` });
   const el = sh.el;
   const matching = () => P.filterPool(S.pool, { topics, status }, progress(), flags());
   const paint = () => {
@@ -218,8 +240,11 @@ function customSheet() {
   U.wireSeg(el, 'status', v => { status = v; paint(); });
   U.wireSeg(el, 'mode', v => { mode = v; paint(); });
   U.wireStepper(el, 'count', P.COUNTS, P.COUNTS.indexOf(count), v => { count = v; paint(); }, P.countLabel);
+  let going = false;
   el.querySelector('#cstart').addEventListener('click', () => {
+    if (going) return;
     const pool = matching(); if (!pool.length) { U.toast('No questions match. Choose more topics or All.'); return; }
+    going = true;
     const qs = P.pickPractice(pool, progress(), count);
     begin({ kind: 'custom', label: mode === 'exam' ? 'Custom exam' : 'Custom', mode, questions: qs, minutes: qs.length });
   });
@@ -231,11 +256,10 @@ function examSheet() {
   let topics = (saved.topics || []).filter(t => S.pool.some(q => P.inTopic(q, t)));
   let count = P.COUNTS.includes(saved.count) ? saved.count : 20, minutes = saved.minutes || 0, touched = !!saved.minutes;
   const sh = U.openSheet({ title: 'Exam mode',
-    body: `<p class="small muted">Timed. You can change answers and flag questions; you'll see the answers when you submit.</p>
-      <div class="setting"><span class="setting-label">Questions</span>${U.stepper('ecount', 'Number of questions', P.countLabel(count))}</div>
-      <div class="setting"><span class="setting-label">Minutes</span>${U.stepper('emin', 'Minutes', '')}</div>
-      <div class="field" style="margin-top:8px"><span class="label">Topics</span><span class="hint">None chosen means every topic.</span>${U.chips('etopics', topicOptions(), topics, 'Topics')}</div>`,
-    foot: `<p class="live-line" id="ematch" role="status"></p><button type="button" class="btn btn-primary" id="estart">Start exam</button>` });
+    body: `<p class="app-small app-muted qb-sheet-intro">Timed. You can change answers and flag questions; you'll see the answers when you submit.</p>
+      <ul class="app-list qb-sheet-list"><li>${U.stepper('ecount', 'Questions', P.countLabel(count))}</li><li>${U.stepper('emin', 'Minutes', '')}</li></ul>
+      <h3 class="app-section-header qb-sheet-h">Topics</h3>${U.chips('etopics', topicOptions(), topics, 'Topics')}<p class="app-section-footer qb-chips-foot">None chosen means every topic.</p>`,
+    foot: `<p class="qb-live" id="ematch" role="status"></p><button type="button" class="app-btn app-btn--primary app-btn--block" id="estart">Start exam</button>` });
   const el = sh.el;
   const pool = () => P.filterPool(S.pool, { topics }, progress(), flags());
   const n = () => { const p = pool().length; return count ? Math.min(count, p) : p; };
@@ -249,8 +273,11 @@ function examSheet() {
   };
   U.wireStepper(el, 'ecount', P.COUNTS, P.COUNTS.indexOf(count), v => { count = v; paint(); }, P.countLabel);
   U.wireChips(el, 'etopics', v => { topics = v; paint(); });
+  let going = false;
   el.querySelector('#estart').addEventListener('click', () => {
+    if (going) return;
     const p = pool(); if (!p.length) { U.toast('No questions match.'); return; }
+    going = true;
     begin({ kind: 'exam', label: 'Exam', mode: 'exam', questions: B.shuffle(p).slice(0, count || p.length), minutes });
   });
   paint();
@@ -269,25 +296,25 @@ function viewSession(dir) {
   const done = !exam && it.picked != null;
   const left = P.secondsLeft(s);
   const timer = left == null ? '' : s.timerHidden
-    ? `<button type="button" class="timer hidden-timer" id="timer">Show timer</button>`
-    : `<button type="button" class="timer${left < 300 ? ' warn' : ''}" id="timer" aria-label="Time left ${P.clock(left)}. Tap to hide">${P.clock(left)}</button>`;
-  const flagBtn = `<button type="button" class="iconbtn" id="flag" aria-pressed="${it.flagged}" aria-label="Flag this question">${it.flagged ? icon.flagOn() : icon.flag()}</button>`;
+    ? `<button type="button" class="app-bar-btn qb-timer is-hidden-time" id="timer">Show timer</button>`
+    : `<button type="button" class="app-bar-btn qb-timer${left < 300 ? ' is-low' : ''}" id="timer" aria-label="Time left ${P.clock(left)}. Tap to hide">${P.clock(left)}</button>`;
+  const flagBtn = `<button type="button" class="app-bar-btn qb-flag" id="flag" aria-pressed="${it.flagged}" aria-label="Flag this question">${it.flagged ? icon.flagOn() : icon.flag()}</button>`;
   const last = s.pos === n - 1;
   const foot = exam
-    ? `<div class="bottombar"><button type="button" class="btn btn-secondary" id="prev" aria-disabled="${s.pos === 0}">‹ Back</button><button type="button" class="btn btn-secondary" id="flag2" aria-pressed="${it.flagged}">${it.flagged ? 'Flagged' : 'Flag'}</button><button type="button" class="btn btn-primary" id="next">${last ? 'Finish' : 'Next ›'}</button></div>`
-    : done ? `<div class="bottombar"><button type="button" class="btn btn-secondary" id="why">Explanation</button><button type="button" class="btn btn-primary" id="next">${last ? 'See results' : 'Next ›'}</button></div>` : '';
+    ? `<button type="button" class="app-btn app-btn--outline" id="prev" aria-disabled="${s.pos === 0}">${icon.back()}Back</button><button type="button" class="app-btn app-btn--outline qb-flag-btn" id="flag2" aria-pressed="${it.flagged}">${it.flagged ? icon.flagOn() : icon.flag()}Flag</button><button type="button" class="app-btn app-btn--primary" id="next">${last ? 'Finish' : 'Next' + icon.forward()}</button>`
+    : done ? `<button type="button" class="app-btn app-btn--outline" id="why">Explanation</button><button type="button" class="app-btn app-btn--primary" id="next">${last ? 'See results' : 'Next' + icon.forward()}</button>` : '';
   const sessionTitle = `Question ${s.pos + 1} of ${n}`;
   U.transition(vt(dir), () => {
     frame({
-      title: sessionTitle, focus: true, keepScroll: dir === 'none-keep',
-      start: `<button type="button" class="iconbtn" id="leave" aria-label="Leave this session">${icon.close()}</button>`,
-      mid: `<button type="button" class="pill" id="navpill" aria-label="${sessionTitle}. Open the question list">Q ${s.pos + 1}/${n}</button>`,
+      title: sessionTitle, focus: true, session: true, keepScroll: dir === 'none-keep',
+      start: `<button type="button" class="app-bar-btn" id="leave" aria-label="Leave this session">${icon.close()}</button>`,
+      mid: `<button type="button" class="app-pill qb-qpill" id="navpill" aria-label="${sessionTitle}. Open the question list">${icon.grid()}<span>Q ${s.pos + 1}/${n}</span></button>`,
       end: timer + (exam ? '' : flagBtn),
-      extra: `<div class="progress" role="progressbar" aria-label="Questions answered" aria-valuemin="0" aria-valuemax="${n}" aria-valuenow="${answered}"><span style="width:${Math.round(answered / n * 100)}%"></span></div>`,
-      body: `<h1 class="sr-only">${sessionTitle} · ${esc(s.label)}</h1>${questionHtml(q, exam ? 'exam' : done ? 'feedback' : 'pick', it.picked)}`,
+      extra: `<progress class="app-progress qb-bar-progress" max="${n}" value="${answered}" aria-label="Questions answered: ${answered} of ${n}"></progress>`,
+      body: `<h1 class="app-sr">${sessionTitle} · ${esc(s.label)}</h1>${questionHtml(q, exam ? 'exam' : done ? 'feedback' : 'pick', it.picked)}`,
       foot,
     });
-    if (done) $('#after').innerHTML = explainHtml(q) + `<p style="margin-top:8px"><button type="button" class="btn-text" id="suggest">Suggest a change</button></p>`;
+    if (done) $('#after').innerHTML = explainHtml(q) + suggestBtn('suggest');
     wireSession(s);
   });
   // preload the next question's picture
@@ -296,7 +323,7 @@ function viewSession(dir) {
 function wireSession(s) {
   const it = s.items[s.pos], exam = s.mode === 'exam';
   const move = d => { const cur = getSession(); if (!cur) return; cur.pos = Math.min(cur.items.length - 1, Math.max(0, cur.pos + d)); saveSession(cur); viewSession(d > 0 ? 'push' : 'pop'); };
-  $$('.choice[data-i]').forEach(b => b.addEventListener('click', () => {
+  $$('.app-choice[data-i]').forEach(b => b.addEventListener('click', () => {
     const cur = getSession(); if (!cur) return;
     const ci = cur.items[cur.pos], i = Number(b.dataset.i);
     if (exam) { ci.picked = i; ci.at = Date.now(); saveSession(cur); viewSession('none-keep'); return; }
@@ -326,7 +353,7 @@ function wireSession(s) {
       const left = P.secondsLeft(cur), t = $('#timer');
       if (left <= 0) { clearInterval(timerId); finish(true); return; }
       if (left < 300 && !cur.warned) { cur.warned = true; saveSession(cur); U.announce('Less than 5 minutes left.'); }
-      if (t && !cur.timerHidden) { t.textContent = P.clock(left); t.classList.toggle('warn', left < 300); t.setAttribute('aria-label', `Time left ${P.clock(left)}. Tap to hide`); }
+      if (t && !cur.timerHidden) { t.textContent = P.clock(left); t.classList.toggle('is-low', left < 300); t.setAttribute('aria-label', `Time left ${P.clock(left)}. Tap to hide`); }
     }, 1000);
     S.cleanup.push(() => clearInterval(timerId));
   }
@@ -334,11 +361,10 @@ function wireSession(s) {
 function feedbackSheet(s) {
   const it = s.items[s.pos], q = it.q, right = it.picked === q.answer, last = s.pos === s.items.length - 1;
   const title = right ? 'Correct' : `Incorrect, answer ${P.letter(q.answer)}`;
-  const sh = U.openSheet({ title, size: 'medium', cls: 'feedback',
-    titleHtml: `<span class="verdict ${right ? 'ok' : 'bad'}">${right ? icon.check(22) : icon.cross(22)}<span>${esc(title)}</span></span>`,
-    body: `<p class="small">${right ? '' : `You chose ${P.letter(it.picked)}. `}The answer is <b>${P.letter(q.answer)}</b>: ${esc(q.options[q.answer])}</p>${explainHtml(q)}
-      <p style="margin-top:8px"><button type="button" class="btn-text" id="fsuggest">Suggest a change</button></p>`,
-    foot: `<button type="button" class="btn btn-primary" id="fnext">${last ? 'See results' : 'Next question'}</button>`,
+  const sh = U.openSheet({ title, cls: 'qb-feedback',
+    titleHtml: `<span class="qb-verdict ${right ? 'is-ok' : 'is-bad'}">${right ? icon.check() : icon.cross()}<span>${esc(title)}</span></span>`,
+    body: `<p class="app-text">${right ? '' : `You chose ${P.letter(it.picked)}. `}The answer is <b>${P.letter(q.answer)}</b>: ${esc(q.options[q.answer])}</p>${explainHtml(q)}${suggestBtn('fsuggest')}`,
+    foot: `<button type="button" class="app-btn app-btn--primary app-btn--block" id="fnext">${last ? 'See results' : 'Next question'}</button>`,
     onClose: () => $('#next')?.focus({ preventScroll: true }) });
   U.announce(title);
   let going = false;
@@ -352,8 +378,8 @@ function feedbackSheet(s) {
   sh.el.querySelector('#fsuggest').addEventListener('click', () => suggestSheet(live(q.id) || q));
 }
 function leaveSheet() {
-  const sh = U.openSheet({ title: 'Leave?', body: '<p>Your answers are kept. You can carry on from Practise.</p>',
-    foot: '<div class="btn-row"><button type="button" class="btn btn-secondary" id="stay">Keep going</button><button type="button" class="btn btn-primary" id="goaway">Leave</button></div>' });
+  const sh = U.openSheet({ title: 'Leave?', body: '<p class="app-text">Your answers are kept. You can carry on from Practise.</p>',
+    foot: '<div class="app-btn-row qb-foot-row"><button type="button" class="app-btn app-btn--outline" id="stay">Keep going</button><button type="button" class="app-btn app-btn--primary" id="goaway">Leave</button></div>' });
   sh.el.querySelector('#stay').addEventListener('click', () => sh.close());
   sh.el.querySelector('#goaway').addEventListener('click', () => U.go('#/practise'));
 }
@@ -361,12 +387,15 @@ function navigatorSheet() {
   const s = getSession(); if (!s) return;
   const dots = s.items.map((it, i) => {
     const st = [it.picked != null ? 'answered' : 'unanswered', it.flagged ? 'flagged' : '', i === s.pos ? 'current' : ''].filter(Boolean);
-    return `<button type="button" class="dot ${st.join(' ')}" data-n="${i}" aria-label="Question ${i + 1}, ${st.join(', ')}"${i === s.pos ? ' aria-current="step"' : ''}>${i + 1}</button>`;
+    const cls = [it.picked != null ? 'is-done' : '', it.flagged ? 'is-flag' : '', i === s.pos ? 'is-cur' : ''].filter(Boolean).join(' ');
+    return `<li><button type="button" class="qb-dot ${cls}" data-n="${i}" aria-label="Question ${i + 1}, ${st.join(', ')}"${i === s.pos ? ' aria-current="step"' : ''}>${i + 1}</button></li>`;
   }).join('');
   const sh = U.openSheet({ title: 'Questions', size: 'medium',
-    body: `<div class="navgrid">${dots}</div><div class="legend" aria-hidden="true"><span><i></i>Not answered</span><span><i class="answered"></i>Answered</span><span><i class="flagged"></i>Flagged</span><span><i class="current"></i>This one</span></div>` });
-  sh.el.querySelectorAll('.dot').forEach(d => d.addEventListener('click', async () => {
-    await sh.close(); const cur = getSession(); const n = Number(d.dataset.n), was = cur.pos; cur.pos = n; saveSession(cur); viewSession(n > was ? 'push' : n < was ? 'pop' : 'none-keep');
+    body: `<ul class="qb-navgrid">${dots}</ul><ul class="qb-legend" aria-hidden="true"><li><i></i>Not answered</li><li><i class="is-done"></i>Answered</li><li><i class="is-flag"></i>Flagged</li><li><i class="is-cur"></i>This one</li></ul>` });
+  let going = false;
+  sh.el.querySelectorAll('.qb-dot').forEach(d => d.addEventListener('click', async () => {
+    if (going) return; going = true;
+    await sh.close(); const cur = getSession(); if (!cur) return; const n = Number(d.dataset.n), was = cur.pos; cur.pos = n; saveSession(cur); viewSession(n > was ? 'push' : n < was ? 'pop' : 'none-keep');
   }));
 }
 function checkSheet() {
@@ -374,10 +403,10 @@ function checkSheet() {
   const firstUn = s.items.findIndex(i => i.picked == null), firstFl = s.items.findIndex(i => i.flagged);
   const line = sc.unanswered || sc.flagged ? [sc.unanswered ? `${sc.unanswered} unanswered` : '', sc.flagged ? `${sc.flagged} flagged` : ''].filter(Boolean).join(', ') : 'Every question answered.';
   const sh = U.openSheet({ title: 'Submit your answers?',
-    body: `<p class="score-line">${line}</p>
-      <div class="stack">${firstUn >= 0 ? `<button type="button" class="btn btn-secondary" data-goto="${firstUn}">Go to unanswered (${sc.unanswered})</button>` : ''}${firstFl >= 0 ? `<button type="button" class="btn btn-secondary" data-goto="${firstFl}">Go to flagged (${sc.flagged})</button>` : ''}</div>`,
-    foot: '<button type="button" class="btn btn-primary" id="submit">Submit</button>' });
-  sh.el.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', async () => { await sh.close(); const cur = getSession(); cur.pos = Number(b.dataset.goto); saveSession(cur); viewSession('pop'); }));
+    body: `<p class="qb-check-line">${line}</p>
+      <div class="app-btn-stack">${firstUn >= 0 ? `<button type="button" class="app-btn app-btn--secondary app-btn--block" data-goto="${firstUn}">Go to unanswered (${sc.unanswered})</button>` : ''}${firstFl >= 0 ? `<button type="button" class="app-btn app-btn--secondary app-btn--block" data-goto="${firstFl}">Go to flagged (${sc.flagged})</button>` : ''}</div>`,
+    foot: '<button type="button" class="app-btn app-btn--primary app-btn--block" id="submit">Submit</button>' });
+  sh.el.querySelectorAll('[data-goto]').forEach(b => b.addEventListener('click', async () => { await sh.close(); const cur = getSession(); if (!cur) return; cur.pos = Number(b.dataset.goto); saveSession(cur); viewSession('pop'); }));
   sh.el.querySelector('#submit').addEventListener('click', () => finish());
 }
 function finish(timeUp = false) {
@@ -397,33 +426,33 @@ function finish(timeUp = false) {
 
 // ---------- summary and review ----------
 const findDone = id => pastSessions().find(h => h.id === id);
-function ring(pct, animate) {
-  const r = 52, full = +(2 * Math.PI * r).toFixed(1), off = +(full * (1 - pct / 100)).toFixed(1);
-  return `<div class="ring${animate ? ' animate' : ''}" style="--full:${full}" role="img" aria-label="${pct} percent"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="track" cx="60" cy="60" r="${r}"/><circle class="fill" cx="60" cy="60" r="${r}" stroke-dasharray="${full}" stroke-dashoffset="${off}"/></svg><b aria-hidden="true">${pct}%</b></div>`;
-}
+const markOf = st => st === 'right' ? `<span class="qb-mark is-ok" aria-hidden="true">${icon.check()}</span>` : st === 'wrong' ? `<span class="qb-mark is-bad" aria-hidden="true">${icon.cross()}</span>` : `<span class="qb-mark is-none" aria-hidden="true">${icon.dash()}</span>`;
+const markWord = st => (st === 'right' ? 'Right' : st === 'wrong' ? 'Wrong' : 'Not answered');
 function viewSummary(id, params, dir) {
   const s = findDone(id);
   const fromProgress = params.get('from') === 'progress';
   const back = fromProgress ? { label: 'Progress', to: '#/progress' } : null;
-  if (!s) { frame({ title: 'Results', back: back || { label: 'Practise', to: '#/practise' }, focus: true, body: '<div class="empty"><p>This session is no longer on this phone.</p></div>' }); return; }
+  if (!s) { frame({ title: 'Results', back: back || { label: 'Practise', to: '#/practise' }, focus: true, body: emptyCard(icon.progress(), 'Not on this phone', 'This session is no longer on this phone.') }); return; }
   const sc = P.score(s), first = !s.ringShown;
   if (first) { db.set('history', pastSessions().map(h => h.id === id ? { ...h, ringShown: true } : h)); }
   const filter = S.summaryFilter?.id === id ? S.summaryFilter.f : 'all';
   const rows = s.items.map((it, n) => ({ it, n, st: P.itemState(it) })).filter(({ it, st }) => filter === 'all' || (filter === 'wrong' ? st === 'wrong' : filter === 'flagged' ? it.flagged : st === 'unanswered'));
-  const mark = st => st === 'right' ? `<span class="mark mark-ok">${icon.check(20)}<span class="sr-only">Right: </span></span>` : st === 'wrong' ? `<span class="mark mark-bad">${icon.cross(20)}<span class="sr-only">Wrong: </span></span>` : `<span class="mark mark-none">${icon.dash(20)}<span class="sr-only">Not answered: </span></span>`;
   const retry = s.items.filter(i => P.itemState(i) !== 'right' || i.flagged);
-  const passLine = s.paper ? `<p><span class="badge ${sc.pass ? 'pass' : 'fail'}">${sc.pass ? 'Pass' : 'Not yet'}</span> <span class="small muted">Pass mark ${s.paper.passMark}%</span></p>` : '';
-  const body = `<div class="score-head">${ring(sc.pct, first && !U.reduced())}<p class="score-line" style="margin:0">${sc.right} of ${sc.total}</p>
-      <p class="small muted" style="margin:0">${esc(s.label)}${(m => m === s.label ? '' : ' · ' + m)(s.mode === 'exam' ? 'Exam' : 'Practice')} · ${P.duration(s.finishedAt - s.startedAt)}${s.timeUp ? ' · time ran out' : ''}</p>${passLine}</div>
-    <div class="group"><span class="kicker">By topic</span><ul class="rows">${P.sessionTopics(s).map(t => `<li><div class="row"><span class="row-main"><span class="row-title">${esc(t.topic)}</span></span><span class="row-trail">${t.right}/${t.total}${minibar(t.right / t.total)}</span></div></li>`).join('')}</ul></div>
-    <span class="kicker section-head">Questions</span>
-    <div class="pad">${U.chips('sfilter', [{ value: 'all', label: 'All' }, { value: 'wrong', label: `Wrong (${sc.wrong})` }, { value: 'flagged', label: `Flagged (${sc.flagged})` }, { value: 'unanswered', label: `Unanswered (${sc.unanswered})` }], [filter], 'Show')}</div>
-    <ul class="rows" style="margin-top:8px">${rows.map(({ it, n, st }) => `<li><a class="row" href="#/review/${s.id}/${n}"><span class="row-main" style="display:flex;gap:10px;align-items:flex-start">${mark(st)}<span class="row-title clamp2">${esc(it.q.stem)}</span></span><span class="chev" aria-hidden="true">›</span></a></li>`).join('') || '<li class="empty">None.</li>'}</ul>`;
-  const foot = `<div class="bottombar" style="flex-direction:column;align-items:stretch">${retry.length ? `<button type="button" class="btn btn-primary" id="retry">Retry wrong and flagged (${retry.length})</button>` : ''}<button type="button" class="btn ${retry.length ? 'btn-secondary' : 'btn-primary'}" id="done">Done</button></div>`;
+  const meta = `${esc(s.label)}${(m => m === s.label ? '' : ' · ' + m)(s.mode === 'exam' ? 'Exam' : 'Practice')} · ${P.duration(s.finishedAt - s.startedAt)}${s.timeUp ? ' · time ran out' : ''}`;
+  const passLine = s.paper ? `<p class="qb-pass"><span class="app-badge ${sc.pass ? 'app-badge--ok' : 'app-badge--bad'}">${sc.pass ? 'Pass' : 'Not yet'}</span><span class="app-small app-muted">Pass mark ${s.paper.passMark}%</span></p>` : '';
+  const body = `<div class="app-card qb-result" id="score">${U.ring(sc.pct, `${sc.pct} percent`, s.paper ? (sc.pass ? 'Pass' : 'Not yet') : 'Right', !!(s.paper && sc.pass), first && !U.reduced())}
+      <div class="qb-result-text"><p class="qb-result-big">${sc.right} of ${sc.total}</p><p class="app-small app-muted" style="margin:0">${meta}</p>${passLine}</div></div>
+    ${retry.length ? `<div class="app-btn-stack qb-top-action"><button type="button" class="app-btn app-btn--primary app-btn--block" id="retry">Retry wrong and flagged (${retry.length})</button></div>` : ''}
+    ${section('By topic', P.sessionTopics(s).map(t => row({ still: true, title: esc(t.topic), value: `${t.right}/${t.total}`, trail: minibar(t.right / t.total) })).join(''))}
+    <h2 class="app-section-header qb-list-h">Questions</h2>
+    ${U.chips('sfilter', [{ value: 'all', label: 'All' }, { value: 'wrong', label: 'Wrong', count: sc.wrong }, { value: 'flagged', label: 'Flagged', count: sc.flagged }, { value: 'unanswered', label: 'Unanswered', count: sc.unanswered }], [filter], 'Show')}
+    ${rows.length ? section('', rows.map(({ it, n, st }) => row({ href: `#/review/${s.id}/${n}`, lead: markOf(st), title: `<span class="app-sr">${markWord(st)}: </span>${esc(it.q.stem)}`, clamp: true })).join(''), { cls: 'qb-after-chips' }) : `<p class="qb-none">None.</p>`}`;
+  const foot = `<button type="button" class="app-btn ${retry.length ? 'app-btn--outline' : 'app-btn--primary'}" id="done">Done</button>`;
   U.transition(vt(dir === 'replace' ? 'fade' : dir), () => {
     frame({ title: 'Results', back, focus: true, body, foot, keepScroll: dir === 'none-keep' });
     U.wireChips(main(), 'sfilter', v => { S.summaryFilter = { id, f: v[0] || 'all' }; viewSummary(id, params, 'none-keep'); }, { single: true });
-    $('#retry')?.addEventListener('click', () => begin({ kind: 'retry', label: 'Retry', questions: retry.map(i => live(i.q.id) || { ...i.q }) }));
+    let going = false;
+    $('#retry')?.addEventListener('click', () => { if (going) return; going = true; begin({ kind: 'retry', label: 'Retry', questions: retry.map(i => live(i.q.id) || { ...i.q }) }); });
     $('#done').addEventListener('click', () => fromProgress ? U.back('#/progress') : U.go('#/practise', { replace: true }));
   });
 }
@@ -432,13 +461,13 @@ function viewReview(id, n, dir) {
   if (!s || !s.items[n]) { U.go(`#/summary/${id}`, { replace: true }); return; }
   const it = s.items[n], total = s.items.length;
   const st = P.itemState(it);
-  const verdict = st === 'right' ? `<p class="verdict ok">${icon.check(20)}<span>Correct</span></p>` : st === 'wrong' ? `<p class="verdict bad">${icon.cross(20)}<span>Incorrect, answer ${P.letter(it.q.answer)}</span></p>` : `<p class="verdict">${icon.dash(20)}<span>Not answered. The answer is ${P.letter(it.q.answer)}</span></p>`;
+  const verdict = st === 'right' ? `<p class="qb-verdict is-ok">${icon.check()}<span>Correct</span></p>` : st === 'wrong' ? `<p class="qb-verdict is-bad">${icon.cross()}<span>Incorrect, answer ${P.letter(it.q.answer)}</span></p>` : `<p class="qb-verdict">${icon.dash()}<span>Not answered. The answer is ${P.letter(it.q.answer)}</span></p>`;
   const go = d => { const m = n + d; if (m < 0 || m >= total) return; S.nextDir = d > 0 ? 'push' : 'pop'; U.go(`#/review/${id}/${m}`, { replace: true }); };
   frame({ title: `${n + 1} of ${total}`, back: { label: 'Results', to: `#/summary/${id}` }, focus: true,
-    end: it.flagged ? '<span class="badge flag">Flagged</span>' : '',
-    body: `<div class="q-wrap" style="padding-bottom:0">${verdict}</div>${questionHtml(it.q, 'feedback', it.picked)}`,
-    foot: `<div class="bottombar"><button type="button" class="btn btn-secondary" id="rprev" aria-disabled="${n === 0}">‹ Previous</button><button type="button" class="btn btn-secondary" id="rnext" aria-disabled="${n === total - 1}">Next ›</button></div>` });
-  $('#after').innerHTML = explainHtml(it.q) + `<p style="margin-top:8px"><button type="button" class="btn-text" id="suggest">Suggest a change</button></p>`;
+    end: it.flagged ? '<span class="app-badge">Flagged</span>' : '',
+    body: `${verdict}${questionHtml(it.q, 'feedback', it.picked)}`,
+    foot: `<button type="button" class="app-btn app-btn--outline" id="rprev" aria-disabled="${n === 0}">${icon.back()}Previous</button><button type="button" class="app-btn app-btn--primary" id="rnext" aria-disabled="${n === total - 1}">Next${icon.forward()}</button>` });
+  $('#after').innerHTML = explainHtml(it.q) + suggestBtn('suggest');
   $('#suggest').addEventListener('click', () => suggestSheet(live(it.q.id) || it.q));
   $('#rprev').addEventListener('click', () => go(-1));
   $('#rnext').addEventListener('click', () => go(1));
@@ -456,17 +485,17 @@ function viewBrowse() {
   const tops = P.topicsOf(S.pool);
   if (S.browse.topic && !tops.some(t => t.topic === S.browse.topic)) S.browse.topic = '';
   frame({ title: 'Browse', large: true, tab: 'browse',
-    body: `<div class="search">${icon.search()}<input type="search" class="input" id="find" placeholder="Search questions" aria-label="Search questions, choices and explanations" enterkeyhint="search" autocomplete="off" value="${esc(S.browse.q)}"></div>
-      <div class="pad">${U.chips('btopic', [{ value: '', label: 'All topics' }, ...tops.map(t => ({ value: t.topic, label: t.topic }))], [S.browse.topic], 'Topic')}</div>
+    body: `<div class="qb-search">${icon.search()}<input type="search" class="qb-search-input" id="find" placeholder="Search questions" aria-label="Search questions, choices and explanations" enterkeyhint="search" autocomplete="off" value="${esc(S.browse.q)}"></div>
+      ${U.chips('btopic', [{ value: '', label: 'All topics' }, ...tops.map(t => ({ value: t.topic, label: t.topic }))], [S.browse.topic], 'Topic')}
       <div id="blist"></div>` });
   const paint = () => {
     const { q, topic } = S.browse, pr = progress();
     if (!q.trim() && !topic) {
-      $('#blist').innerHTML = `<span class="kicker section-head">Topics</span><ul class="rows">${tops.map(t => { const m = P.topicMastery(S.pool, pr, t.topic); return navRow({ href: `#/browse/t/${encodeURIComponent(t.topic)}`, title: esc(t.topic), sub: plural(t.count, 'question'), trail: minibar(m.share) + `<span class="sr-only">${m.right} of ${m.total} right last time</span>` }); }).join('')}</ul>`;
+      $('#blist').innerHTML = section('Topics', tops.map(t => { const m = P.topicMastery(S.pool, pr, t.topic); return row({ href: `#/browse/t/${encodeURIComponent(t.topic)}`, title: esc(t.topic), sub: plural(t.count, 'question'), trail: minibar(m.share) + `<span class="app-sr">${m.right} of ${m.total} right last time</span>` }); }).join(''), { footer: 'The bar shows how many you got right last time.' });
       return;
     }
     const hits = S.pool.filter(x => (!topic || P.inTopic(x, topic)) && B.matchesQuery(x, q));
-    $('#blist').innerHTML = `<p class="live-line pad" role="status" style="margin:8px 0">${plural(hits.length, 'question')}</p>${hits.length ? `<ul class="rows">${hits.map(x => qRow(x)).join('')}</ul>` : `<div class="empty"><p>No questions match${q.trim() ? ` “${esc(q.trim())}”` : ''}.</p></div>`}`;
+    $('#blist').innerHTML = `<p class="qb-count" role="status">${plural(hits.length, 'question')}</p>${hits.length ? section('', hits.map(x => qRow(x)).join('')) : emptyCard(icon.search(), 'No matches', `No questions match${q.trim() ? ` “${esc(q.trim())}”` : ''}. Try fewer words or another topic.`)}`;
   };
   let t = 0;
   $('#find').addEventListener('input', e => { clearTimeout(t); t = setTimeout(() => { S.browse.q = e.target.value; paint(); }, 150); });
@@ -478,27 +507,27 @@ function viewBrowseTopic(topic) {
   topic = decode(topic);
   const qs = S.pool.filter(q => P.inTopic(q, topic));
   frame({ title: topic, back: { label: 'Browse', to: '#/browse' }, tab: 'browse',
-    body: qs.length ? `<div class="pad" style="padding-top:12px;padding-bottom:16px"><button type="button" class="btn btn-primary" id="pt">Practise this topic</button></div><ul class="rows">${qs.map(q => qRow(q)).join('')}</ul>`
-      : '<div class="empty"><p>No questions in this topic yet.</p></div>' });
+    body: qs.length ? `<div class="app-btn-stack qb-top-action"><button type="button" class="app-btn app-btn--primary app-btn--block" id="pt">Practise this topic</button></div>${section(plural(qs.length, 'question'), qs.map(q => qRow(q)).join(''))}`
+      : emptyCard(icon.browse(), 'Nothing here yet', 'No questions in this topic yet.') });
   $('#pt')?.addEventListener('click', () => practiseTopic(topic));
 }
 function viewQuestion(id, params) {
   const q = live(id);
   const back = { label: 'Back', to: '#/browse' };
-  if (!q) { frame({ title: 'Question', back, tab: 'browse', body: '<div class="empty"><p>This question is no longer in the bank.</p></div>' }); return; }
+  if (!q) { frame({ title: 'Question', back, tab: 'browse', body: emptyCard(icon.browse(), 'Not in the bank', 'This question is no longer in the bank.') }); return; }
   const shown = S.reveal === id;
   const st = P.statusOf(progress(), id), fl = isFlagged(id);
-  const kicker = (st === 'missed' ? '<span class="badge missed">Missed</span>' : '') + (fl ? '<span class="badge flag">Flagged</span>' : '');
+  const kicker = (st === 'missed' ? '<span class="app-badge app-badge--bad">Missed</span>' : '') + (fl ? '<span class="app-badge">Flagged</span>' : '');
   frame({ title: 'Question', back, tab: 'browse', keepScroll: params.get('keep') === '1',
-    body: `<h2 class="sr-only">${esc(topicLine(q))}</h2>${questionHtml(q, shown ? 'reveal' : 'hidden', null, { kicker })}
-      <div class="group"><ul class="rows">
-        ${navRow({ id: 'qpt', title: 'Practise this topic', sub: esc((q.topics[0] || 'General')) })}
-        <li><button type="button" class="row" id="qflag" aria-pressed="${fl}"><span class="row-main"><span class="row-title">${fl ? 'Flagged' : 'Flag this question'}</span><span class="row-sub">${fl ? 'Tap to remove the flag' : 'Find it later under Flagged'}</span></span><span class="row-trail">${fl ? icon.flagOn() : icon.flag()}</span></button></li>
-        ${navRow({ id: 'qsuggest', title: 'Suggest a change', sub: 'Send a correction or comment to the owner' })}
-      </ul></div>` });
+    body: `<h2 class="app-sr">${esc(topicLine(q))}</h2>${questionHtml(q, shown ? 'reveal' : 'hidden', null, { kicker })}
+      ${section('', [
+        row({ id: 'qpt', title: 'Practise this topic', sub: esc(q.topics[0] || 'General'), lead: tile(icon.play()) }),
+        row({ id: 'qflag', title: fl ? 'Flagged' : 'Flag this question', sub: fl ? 'Tap to remove the flag' : 'Find it later under Flagged', lead: tile(fl ? icon.flagOn() : icon.flag(), 'app-row-icon--ink'), chev: false, attrs: ` aria-pressed="${fl}"` }),
+        row({ id: 'qsuggest', title: 'Suggest a change', sub: 'Send a correction or comment to the owner', lead: tile(icon.edit()) }),
+      ].join(''), { cls: 'qb-q-actions' })}` });
   $('#after').innerHTML = shown
-    ? explainHtml(q) + `<div class="meta-lines">${q.source ? `<p>Source: ${esc(q.source)}</p>` : ''}${q.updated ? `<p>Updated ${esc(fmtDate(q.updated))}</p>` : ''}</div>`
-    : `<div style="margin-top:16px"><button type="button" class="btn btn-secondary" id="show">Show answer</button></div>`;
+    ? explainHtml(q) + `<div class="qb-meta">${q.source ? `<p>Source: ${esc(q.source)}</p>` : ''}${q.updated ? `<p>Updated ${esc(fmtDate(q.updated))}</p>` : ''}</div>`
+    : `<button type="button" class="app-btn app-btn--secondary app-btn--block qb-show" id="show">Show answer</button>`;
   $('#show')?.addEventListener('click', () => { S.reveal = id; viewQuestion(id, new URLSearchParams('keep=1')); $('#stem')?.scrollIntoView({ block: 'nearest' }); U.announce(`The answer is ${P.letter(q.answer)}`); });
   $('#qpt').addEventListener('click', () => practiseTopic(q.topics[0] || 'General'));
   $('#qflag').addEventListener('click', () => { setFlag(id, !fl); viewQuestion(id, new URLSearchParams('keep=1')); U.toast(fl ? 'Flag removed.' : 'Flagged.'); $('#qflag')?.focus(); });
@@ -510,23 +539,24 @@ function viewQuestion(id, params) {
 // ---------- Papers ----------
 const paperFacts = ({ resolved: r }) => { const n = Math.min(r.settings.count, r.pool.length); return `${plural(n, 'question')} · ${r.settings.minutes} min`; };
 function viewPapers() {
-  frame({ title: 'Papers', large: true, tab: 'papers',
-    body: `<p class="lead">Timed papers, drawn the way the real test is. Practice only: try as often as you like.</p>
-      ${S.papers.length ? `<ul class="rows">${S.papers.map(p => navRow({ href: `#/paper/${encodeURIComponent(p.paper.id)}`, title: esc(p.paper.title || p.paper.id), sub: `<span class="clamp2">${esc(p.paper.about || '')}</span>${paperFacts(p)}` })).join('')}</ul>` : '<div class="empty"><p>No papers yet.</p></div>'}` });
+  frame({ title: 'Papers', large: true, tab: 'papers', sub: 'Timed papers, drawn the way the real test is. Practice only: try as often as you like.',
+    body: S.papers.length ? section('', S.papers.map(p => row({ href: `#/paper/${encodeURIComponent(p.paper.id)}`, title: esc(p.paper.title || p.paper.id), lead: tile(icon.papers()), sub: `<span class="qb-clamp">${esc(p.paper.about || '')}</span><span class="qb-facts">${paperFacts(p)}</span>` })).join('')) : emptyCard(icon.papers(), 'No papers yet', '') });
 }
 function viewPaper(id) {
   const p = S.papers.find(x => x.paper.id === decode(id));
   const back = { label: 'Papers', to: '#/papers' };
-  if (!p) { frame({ title: 'Paper', back, tab: 'papers', body: '<div class="empty"><p>This paper is no longer here.</p></div>' }); return; }
+  if (!p) { frame({ title: 'Paper', back, tab: 'papers', body: emptyCard(icon.papers(), 'Not here', 'This paper is no longer here.') }); return; }
   const r = p.resolved, n = Math.min(r.settings.count, r.pool.length);
   const past = pastSessions().filter(h => h.paper?.id === p.paper.id);
   frame({ title: p.paper.title || p.paper.id, back, tab: 'papers',
-    body: `<div class="q-wrap"><p>${esc(p.paper.about || '')}</p></div>
-      <div class="stats"><div class="stat"><b>${n}</b><span>questions</span></div><div class="stat"><b>${r.settings.minutes}</b><span>minutes</span></div><div class="stat"><b>${r.settings.passMark}%</b><span>to pass</span></div></div>
-      ${n < r.settings.count ? `<p class="pad small muted">${n} of the paper's ${r.settings.count} questions are ready so far, so this sitting is shorter.</p>` : ''}
-      <div class="pad" style="margin-bottom:16px">${n ? '<button type="button" class="btn btn-primary" id="pstart">Start paper</button>' : '<p class="muted">No questions in this paper are ready yet.</p>'}</div>
-      ${past.length ? `<span class="kicker section-head">Your attempts</span><ul class="rows">${past.map(h => { const sc = P.score(h); return navRow({ href: `#/summary/${h.id}?from=progress`, title: `${sc.right} of ${sc.total} · ${sc.pass ? 'Pass' : 'Not yet'}`, sub: esc(fmtWhen(h.finishedAt)) }); }).join('')}</ul>` : ''}` });
+    body: `<p class="app-text qb-about">${esc(p.paper.about || '')}</p>
+      <div class="app-card qb-stats"><div class="qb-stat"><b>${n}</b><span>questions</span></div><div class="qb-stat"><b>${r.settings.minutes}</b><span>minutes</span></div><div class="qb-stat"><b>${r.settings.passMark}%</b><span>to pass</span></div></div>
+      ${n < r.settings.count ? `<p class="app-small app-muted qb-note">${n} of the paper's ${r.settings.count} questions are ready so far, so this sitting is shorter.</p>` : ''}
+      ${n ? '<div class="app-btn-stack qb-top-action"><button type="button" class="app-btn app-btn--primary app-btn--block" id="pstart">Start paper</button></div>' : '<p class="app-muted">No questions in this paper are ready yet.</p>'}
+      ${past.length ? section('Your attempts', past.map(h => { const sc = P.score(h); return row({ href: `#/summary/${h.id}?from=progress`, title: `${sc.right} of ${sc.total}`, sub: esc(fmtWhen(h.finishedAt)), trail: `<span class="app-badge ${sc.pass ? 'app-badge--ok' : 'app-badge--bad'}">${sc.pass ? 'Pass' : 'Not yet'}</span>` }); }).join('')) : ''}` });
+  let going = false;
   $('#pstart')?.addEventListener('click', () => {
+    if (going) return; going = true;
     const s = P.paperSession(p.paper, r);
     const old = getSession(); saveSession(s);
     if (old) U.toast('Started the paper. The last session was closed.', { action: 'Undo', onAction: () => { saveSession(old); render(U.routeOf(), 'none'); } });
@@ -540,25 +570,26 @@ function viewProgress() {
   const hist = pastSessions();
   const ms = P.topicsOf(S.pool).map(x => P.topicMastery(S.pool, pr, x.topic));
   const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const settings = [
+    row({ id: 'reset', title: 'Reset progress on this phone', cls: 'app-row--danger', chev: false }),
+    !standalone && /iphone|ipad|ipod/i.test(navigator.userAgent) ? row({ still: true, title: '<span class="app-row-sub">To keep this on your phone: tap Share, then Add to Home Screen.</span>' }) : '',
+    !standalone && installEvent ? row({ id: 'install', title: 'Install this app on your phone', lead: tile(icon.download()) }) : '',
+  ].join('');
   frame({ title: 'Progress', large: true, tab: 'progress',
-    body: `<span class="kicker section-head" style="padding-top:0">This week</span>
-      <div class="week" role="list" aria-label="Days practised this week">${wk.map(d => `<span class="day${d.on ? ' on' : ''}${d.today ? ' today' : ''}" role="listitem"><i aria-hidden="true">${d.on ? icon.check(14) : ''}</i>${d.name}<span class="sr-only">${d.on ? ', practised' : ', not practised'}${d.today ? ', today' : ''}</span></span>`).join('')}</div>
-      <div class="stats"><div class="stat"><b>${t.answered}</b><span>answered</span></div><div class="stat"><b>${t.answered ? t.pct + '%' : '–'}</b><span>correct</span></div><div class="stat"><b>${t.seen}/${S.pool.length}</b><span>seen</span></div></div>
-      <div class="group"><span class="kicker">Topics</span><ul class="rows">${ms.map(m => `<li><a class="row" href="#/browse/t/${encodeURIComponent(m.topic)}"><span class="row-main"><span class="row-title">${esc(m.topic)}</span><span class="row-sub">${m.label}</span></span><span class="steps3" aria-hidden="true">${[0, 1, 2].map(i => `<span class="${i < [0, 2, 3][m.level] ? 'on' : ''}"></span>`).join('')}</span><span class="chev" aria-hidden="true">›</span></a></li>`).join('')}</ul>
-      <p class="pad small muted" style="margin:8px 0 12px">Mastered: at least 3 answers in the topic and the last 3 right.</p></div>
-      <div class="group"><span class="kicker">History</span><ul class="rows">${hist.length ? hist.map(h => { const sc = P.score(h); return navRow({ href: `#/summary/${h.id}?from=progress`, title: `${esc(h.label)} · ${sc.right} of ${sc.total}`, sub: `${h.mode === 'exam' ? 'Exam' : 'Practice'} · ${esc(fmtWhen(h.finishedAt))}` }); }).join('') : '<li><div class="row"><span class="row-main"><span class="row-sub">No sessions yet.</span></span></div></li>'}</ul></div>
-      <div class="group"><span class="kicker">Settings</span><ul class="rows">
-        ${navRow({ id: 'reset', title: 'Reset progress on this phone', danger: true })}
-        ${!standalone && /iphone|ipad|ipod/i.test(navigator.userAgent) ? '<li><div class="row"><span class="row-main"><span class="row-sub">To keep this on your phone: tap Share, then Add to Home Screen.</span></span></div></li>' : ''}
-        ${!standalone && installEvent ? navRow({ id: 'install', title: 'Install this app on your phone' }) : ''}
-      </ul>${U.versionBlock()}</div>` });
+    body: `<h2 class="app-section-header">This week</h2>
+      <div class="app-card qb-week-card"><div class="qb-week" role="list" aria-label="Days practised this week">${wk.map(d => `<span class="qb-day${d.on ? ' is-on' : ''}${d.today ? ' is-today' : ''}" role="listitem"><i aria-hidden="true">${d.on ? icon.check() : ''}</i>${d.name}<span class="app-sr">${d.on ? ', practised' : ', not practised'}${d.today ? ', today' : ''}</span></span>`).join('')}</div></div>
+      <div class="app-card qb-stats"><div class="qb-stat"><b>${t.answered}</b><span>answered</span></div><div class="qb-stat"><b>${t.answered ? t.pct + '%' : '–'}</b><span>correct</span></div><div class="qb-stat"><b>${t.seen}/${S.pool.length}</b><span>seen</span></div></div>
+      ${section('Topics', ms.map(m => row({ href: `#/browse/t/${encodeURIComponent(m.topic)}`, title: esc(m.topic), sub: m.label, trail: `<span class="qb-steps3" aria-hidden="true">${[0, 1, 2].map(i => `<i class="${i < [0, 2, 3][m.level] ? 'is-on' : ''}"></i>`).join('')}</span>` })).join(''), { footer: 'Mastered: at least 3 answers in the topic and the last 3 right.' })}
+      ${section('History', hist.length ? hist.map(h => { const sc = P.score(h); return row({ href: `#/summary/${h.id}?from=progress`, title: `${esc(h.label)} · ${sc.right} of ${sc.total}`, sub: `${h.mode === 'exam' ? 'Exam' : 'Practice'} · ${esc(fmtWhen(h.finishedAt))}` }); }).join('') : row({ still: true, title: '<span class="app-muted">No sessions yet.</span>' }))}
+      ${section('Settings', settings)}
+      ${U.versionBlock()}` });
   $('#reset').addEventListener('click', resetSheet);
   $('#install')?.addEventListener('click', async () => { installEvent.prompt(); await installEvent.userChoice.catch(() => {}); installEvent = null; viewProgress(); });
   U.wireVersion('qbank-');
 }
 function resetSheet() {
-  const sh = U.openSheet({ title: 'Reset progress?', body: '<p>This clears your answers, flags, history and any open session on this phone. The questions are not affected.</p>',
-    foot: '<div class="btn-row"><button type="button" class="btn btn-secondary" id="rcancel">Cancel</button><button type="button" class="btn btn-primary" id="rdo">Reset</button></div>' });
+  const sh = U.openSheet({ title: 'Reset progress?', body: '<p class="app-text">This clears your answers, flags, history and any open session on this phone. The questions are not affected.</p>',
+    foot: '<div class="app-btn-row qb-foot-row"><button type="button" class="app-btn app-btn--outline" id="rcancel">Cancel</button><button type="button" class="app-btn app-btn--danger" id="rdo">Reset</button></div>' });
   sh.el.querySelector('#rcancel').addEventListener('click', () => sh.close());
   let done = false;
   sh.el.querySelector('#rdo').addEventListener('click', async () => {
@@ -576,19 +607,19 @@ function suggestSheet(q) {
   const key = 'draft.' + q.id;
   const d = { mode: 'comment', comment: '', stem: q.stem, options: q.options.slice(), answer: q.answer, explain: q.explain || '', ...db.get(key, {}) };
   let name = db.get('name', '');
-  const optRows = () => d.options.map((o, i) => `<div class="option-row"><span class="letter" aria-hidden="true">${P.letter(i)}</span><textarea class="input" rows="1" data-opt="${i}" aria-label="Choice ${P.letter(i)}">${esc(o)}</textarea></div>`).join('');
-  const sh = U.openSheet({ title: 'Suggest a change', size: 'large', focus: '.sheet-head h2',
-    body: `<p class="small muted">The owner checks every suggestion before the question changes.</p>
-      <div class="field">${U.seg('smode', [{ value: 'comment', label: 'Comment' }, { value: 'edit', label: 'Edit' }], d.mode, 'What kind of change')}</div>
+  // each choice: tap its letter to mark it as the right answer (radio inputs underneath), then the text
+  const optRows = () => d.options.map((o, i) => `<div class="qb-opt-row"><label class="qb-opt-pick"><input type="radio" name="sanswer" value="${i}"${i === d.answer ? ' checked' : ''}><span class="qb-opt-letter" aria-hidden="true">${P.letter(i)}</span><span class="app-sr">${P.letter(i)} is the correct answer</span></label><textarea class="app-input qb-opt-input" rows="1" data-opt="${i}" aria-label="Choice ${P.letter(i)}">${esc(o)}</textarea></div>`).join('');
+  const sh = U.openSheet({ title: 'Suggest a change', size: 'large', focus: '.app-sheet-title',
+    body: `<p class="app-small app-muted qb-sheet-intro">The owner checks every suggestion before the question changes.</p>
+      ${U.seg('smode', [{ value: 'comment', label: 'Comment' }, { value: 'edit', label: 'Edit' }], d.mode, 'What kind of change')}
       <div id="edit-fields"${d.mode === 'edit' ? '' : ' hidden'}>
-        <div class="field"><label for="s-stem">Question</label><textarea class="input" id="s-stem" rows="2">${esc(d.stem)}</textarea></div>
-        <div class="field"><span class="label">Choices</span><div class="stack" id="s-opts">${optRows()}</div></div>
-        <div class="field"><span class="label">Correct answer</span><div id="s-ans">${U.seg('sanswer', d.options.map((_, i) => ({ value: String(i), label: P.letter(i) })), String(d.answer), 'Correct answer')}</div></div>
-        <div class="field"><label for="s-explain">Explanation</label><textarea class="input" id="s-explain" rows="2">${esc(d.explain)}</textarea></div>
+        <label class="app-field"><span class="app-field-label">Question</span><textarea class="app-input" id="s-stem" rows="2">${esc(d.stem)}</textarea></label>
+        <fieldset class="app-field qb-opts" data-seg="sanswer"><legend class="app-field-label">Choices. Tap a letter to mark the correct answer</legend>${optRows()}</fieldset>
+        <label class="app-field"><span class="app-field-label">Explanation</span><textarea class="app-input" id="s-explain" rows="2">${esc(d.explain)}</textarea></label>
       </div>
-      <div class="field"><label for="s-comment">Comment</label><textarea class="input" id="s-comment" rows="2" placeholder="What should change, and why (a reference helps)">${esc(d.comment)}</textarea></div>
-      <div class="field"><label for="s-name">Your name</label><input class="input" id="s-name" autocomplete="name" value="${esc(name)}"><span class="hint">Kept on this phone for next time.</span></div>`,
-    foot: `<button type="button" class="btn btn-primary" id="s-issue">Open GitHub issue</button><div class="btn-row"><button type="button" class="btn btn-secondary" id="s-copy">Copy text</button>${navigator.share ? '<button type="button" class="btn btn-secondary" id="s-share">Share</button>' : ''}</div>` });
+      <label class="app-field"><span class="app-field-label">Comment</span><textarea class="app-input" id="s-comment" rows="2" placeholder="What should change, and why (a reference helps)">${esc(d.comment)}</textarea></label>
+      <label class="app-field"><span class="app-field-label">Your name</span><input class="app-input" id="s-name" autocomplete="name" value="${esc(name)}" aria-describedby="s-name-hint"><span class="qb-hint" id="s-name-hint">Kept on this phone for next time.</span></label>`,
+    foot: `<button type="button" class="app-btn app-btn--primary app-btn--block" id="s-issue">Open GitHub issue</button><div class="app-btn-row qb-foot-row"><button type="button" class="app-btn app-btn--outline" id="s-copy">Copy text</button>${navigator.share ? '<button type="button" class="app-btn app-btn--outline" id="s-share">Share</button>' : ''}</div>` });
   const el = sh.el;
   el.querySelectorAll('textarea').forEach(U.autogrow);
   const save = () => db.set(key, d);
@@ -608,18 +639,22 @@ function suggestSheet(q) {
     return c;
   };
   const ready = () => { const c = change(); if (!c.comment.trim() && !c.question) { U.toast(d.mode === 'edit' ? 'Change the question or write a comment first.' : 'Write a comment first.'); el.querySelector('#s-comment').focus(); return null; } return c; };
-  const sent = async msg => { db.del(key); await sh.close(); U.toast(msg); };
+  let sending = false;
+  const sent = async msg => { sending = true; db.del(key); await sh.close(); U.toast(msg); };
   el.querySelector('#s-issue').addEventListener('click', () => {
+    if (sending) return;
     const c = ready(); if (!c) return;
     window.open(B.suggestionIssueUrl(q, c, name), '_blank', 'noopener');
     sent('Opened in GitHub.');
   });
   el.querySelector('#s-copy').addEventListener('click', async () => {
+    if (sending) return;
     const c = ready(); if (!c) return;
     if (await U.copyText(B.suggestionText(q, c, name))) sent('Copied. Send it to the owner.');
     else U.toast("Couldn't copy on this phone. Try Share or the GitHub issue.");
   });
   el.querySelector('#s-share')?.addEventListener('click', async () => {
+    if (sending) return;
     const c = ready(); if (!c) return;
     try { await navigator.share({ title: `Question edit: ${q.id}`, text: B.suggestionText(q, c, name) }); sent('Shared. Thank you.'); } catch { /* cancelled */ }
   });
@@ -671,12 +706,12 @@ function isSafe() {
 }
 
 // tabs: a tap switches without adding to the back history; tapping the current tab goes to its top
-$$('.tab').forEach(t => {
-  t.querySelector('[data-icon]').outerHTML = icon[t.dataset.tab]();
+$$('.app-tab').forEach(t => {
+  t.querySelector('[data-icon]').innerHTML = icon[t.dataset.tab]();
   t.addEventListener('click', e => {
     e.preventDefault();
     const href = t.getAttribute('href');
-    if (location.hash === href) { main().scrollTo({ top: 0, behavior: U.reduced() ? 'auto' : 'smooth' }); return; }
+    if (location.hash === href) { window.scrollTo({ top: 0, behavior: U.reduced() ? 'auto' : 'smooth' }); return; }
     U.go(href, { replace: true });
   });
 });
