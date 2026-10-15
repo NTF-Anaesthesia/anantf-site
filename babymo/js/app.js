@@ -37,10 +37,11 @@ function toast(msg, ms = 4000) {
   const t = $('#toast'); t.textContent = msg; t.classList.add('on');
   clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), ms);
 }
-function setView(html, title) {
+function setView(html, title, keep) {   // keep: redraw the same screen in place (no jump to the top, no focus move)
   clearInterval(timer); timer = null;
-  const app = $('#app'); app.innerHTML = html;
+  const y = window.scrollY, app = $('#app'); app.innerHTML = html;
   document.title = (title ? title + ' · ' : '') + 'Baby MO Portal';
+  if (keep) { window.scrollTo(0, y); return; }
   const h = app.querySelector('h1'); if (h) { h.tabIndex = -1; if (!setView.first) h.focus({ preventScroll: true }); }
   setView.first = false; window.scrollTo(0, 0);
 }
@@ -472,9 +473,11 @@ function askTopic(title, ok, topics, allowNew) {
   });
 }
 
-async function viewQuestions() {
-  setView('<h1>Questions</h1><p class="loading">Loading…</p>', 'Questions');
-  const all = await loadQuestions(true);
+// mode: (none) a fresh visit: loading screen and a new copy from the server; 'keep' redraw in place after a change, fetching again;
+// 'cache' redraw in place from what is already loaded (filters, ticking), so a tap never flashes or jumps.
+async function viewQuestions(mode) {
+  if (!mode) setView('<h1>Questions</h1><p class="loading">Loading…</p>', 'Questions');
+  const all = await loadQuestions(mode !== 'cache');
   const count = S.settings.count, usable = all.filter(L.isUsable).length, bs = L.bankSummary(all, S.settings);
   const f = S.q;
   const flagOk = q => !f.flag || (f.flag === 'must' ? q.must : f.flag === 'hard' ? q.level === 'hard' : !q.must && q.level !== 'hard');
@@ -497,19 +500,19 @@ async function viewQuestions() {
       <p class="row one"><button class="btn" data-bulk="must1">Must ask</button><button class="btn" data-bulk="must0" aria-label="Not must-ask">Not must</button><button class="btn" data-bulk="hard">Hard</button><button class="btn" data-bulk="std" aria-label="Ordinary, not hard">Ordinary</button></p>
       <p class="row one"><span class="muted small">Topic</span><button class="btn" data-bulk="addtopic">Add to topic…</button><button class="btn" data-bulk="rmtopic">Take out…</button></p>
       <p class="row one"><button id="seldup" class="btn">Tick duplicates</button>${S.role === 'admin' ? '<button id="seldel" class="btn danger">Delete ticked…</button>' : ''}</p></div>` : ''}
-    ${list.length ? `<ul class="qlist${S.selMode ? ' selecting' : ''}">${list.map(q => `<li>${S.selMode ? `<label class="selrow"><input type="checkbox" data-sel="${esc(q.id)}"${S.sel.has(q.id) ? ' checked' : ''}><span class="selbody">` : `<a href="#/faculty/q/${esc(q.id)}">`}<span class="badge ${q.status}">${L.STATUS_LABEL[q.status]}</span>${q.must ? '<span class="badge must">Must ask</span>' : ''}${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${L.problems(q, 'active').length && q.status === 'active' ? '<span class="badge bad">Incomplete</span>' : ''}<span class="qs">${esc(q.stem.length > 150 ? q.stem.slice(0, 150) + '…' : q.stem)}</span><span class="qm">${q.topics.length ? esc(q.topics.join(', ')) + ' · ' : ''}${q.answer >= 0 ? 'Answer ' + L.LETTERS[q.answer] : 'No answer yet'}${q.image ? ' · picture' : ''}</span>${S.selMode ? '</span></label>' : '</a>'}</li>`).join('')}</ul>` : `<p class="empty">${all.length ? 'No questions match.' : 'No questions yet. Tap “+ New question”, or “Paste many” to add a whole paper at once.'}</p>`}`, 'Questions');
-  $('#qs').addEventListener('input', ev => { f.search = ev.target.value; clearTimeout(viewQuestions.t); viewQuestions.t = setTimeout(async () => { await viewQuestions(); const el = $('#qs'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }, 250); });
-  $('#app').querySelectorAll('.chip[data-s]').forEach(b => b.addEventListener('click', () => { f.status = b.dataset.s; viewQuestions(); }));
-  $('#app').querySelectorAll('.chip[data-k]').forEach(b => b.addEventListener('click', () => { f.flag = b.dataset.k; viewQuestions(); }));
-  $('#selmode').addEventListener('click', () => { S.selMode = !S.selMode; if (!S.selMode) S.sel.clear(); viewQuestions(); });
+    ${list.length ? `<ul class="qlist${S.selMode ? ' selecting' : ''}">${list.map(q => `<li>${S.selMode ? `<label class="selrow"><input type="checkbox" data-sel="${esc(q.id)}"${S.sel.has(q.id) ? ' checked' : ''}><span class="selbody">` : `<a href="#/faculty/q/${esc(q.id)}">`}<span class="badge ${q.status}">${L.STATUS_LABEL[q.status]}</span>${q.must ? '<span class="badge must">Must ask</span>' : ''}${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${L.problems(q, 'active').length && q.status === 'active' ? '<span class="badge bad">Incomplete</span>' : ''}<span class="qs">${esc(q.stem.length > 150 ? q.stem.slice(0, 150) + '…' : q.stem)}</span><span class="qm">${q.topics.length ? esc(q.topics.join(', ')) + ' · ' : ''}${q.answer >= 0 ? 'Answer ' + L.LETTERS[q.answer] : 'No answer yet'}${q.image ? ' · picture' : ''}</span>${S.selMode ? '</span></label>' : '</a>'}</li>`).join('')}</ul>` : `<p class="empty">${all.length ? 'No questions match.' : 'No questions yet. Tap “+ New question”, or “Paste many” to add a whole paper at once.'}</p>`}`, 'Questions', !!mode);
+  $('#qs').addEventListener('input', ev => { f.search = ev.target.value; clearTimeout(viewQuestions.t); viewQuestions.t = setTimeout(async () => { await viewQuestions('cache'); const el = $('#qs'); el.focus(); el.setSelectionRange(el.value.length, el.value.length); }, 250); });
+  $('#app').querySelectorAll('.chip[data-s]').forEach(b => b.addEventListener('click', () => { f.status = b.dataset.s; viewQuestions('cache'); }));
+  $('#app').querySelectorAll('.chip[data-k]').forEach(b => b.addEventListener('click', () => { f.flag = b.dataset.k; viewQuestions('cache'); }));
+  $('#selmode').addEventListener('click', () => { S.selMode = !S.selMode; if (!S.selMode) S.sel.clear(); viewQuestions('cache'); });
   const showCount = () => { const el = $('#selcount'); if (el) el.textContent = `${S.sel.size} ticked`; };
   $('#app').querySelectorAll('[data-sel]').forEach(cb => cb.addEventListener('change', () => { cb.checked ? S.sel.add(cb.dataset.sel) : S.sel.delete(cb.dataset.sel); showCount(); }));
-  $('#selall')?.addEventListener('click', () => { list.forEach(q => S.sel.add(q.id)); viewQuestions(); });
-  $('#selnone')?.addEventListener('click', () => { S.sel.clear(); viewQuestions(); });
+  $('#selall')?.addEventListener('click', () => { list.forEach(q => S.sel.add(q.id)); viewQuestions('cache'); });
+  $('#selnone')?.addEventListener('click', () => { S.sel.clear(); viewQuestions('cache'); });
   $('#app').querySelectorAll('[data-bulk]').forEach(b => b.addEventListener('click', () => bulkChange(b.dataset.bulk, b)));
   $('#seldup')?.addEventListener('click', () => tickDuplicates());
   $('#seldel')?.addEventListener('click', ev => bulkDelete(ev.currentTarget));
-  $('#qt')?.addEventListener('change', ev => { f.topic = ev.target.value; viewQuestions(); });
+  $('#qt')?.addEventListener('change', ev => { f.topic = ev.target.value; viewQuestions('cache'); });
 }
 
 // Questions with the same wording (say, after a backup was restored twice): tick every copy except the newest one.
@@ -520,7 +523,7 @@ function tickDuplicates() {
   for (const g of groups.values()) g.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(1).forEach(q => S.sel.add(q.id));
   toast(S.sel.size ? `${S.sel.size} older cop${S.sel.size === 1 ? 'y' : 'ies'} ticked. Check them, then use Delete ticked (the newest copy of each is kept).` : 'No duplicates found.', 7000);
   S.q.status = 'all';
-  viewQuestions();
+  viewQuestions('keep');
 }
 async function bulkDelete(btn) {
   const ids = [...S.sel];
@@ -530,7 +533,7 @@ async function bulkDelete(btn) {
   await busy(btn, async () => { for (const id of ids) { try { await api.deleteQuestion(id); S.sel.delete(id); done++; } catch { failed++; } } });
   S.loaded.q = false;
   toast(`${done} deleted.${failed ? ` ${failed} could not be deleted; try again.` : ''}`, 7000);
-  viewQuestions();
+  viewQuestions('keep');
 }
 
 const BULK = {
@@ -565,7 +568,7 @@ async function bulkChange(kind, btn) {
   });
   S.sel = left; S.loaded.q = false;
   toast(`${done} ${said}.${same ? ` ${same} already were.` : ''}${skipped.length ? ` ${skipped.length} skipped because they are incomplete (fill in every choice and the answer first).` : ''}${failed ? ` ${failed} could not be saved; try again.` : ''}`, 9000);
-  viewQuestions();
+  viewQuestions('keep');
 }
 
 // ---------- faculty: question editor ----------
