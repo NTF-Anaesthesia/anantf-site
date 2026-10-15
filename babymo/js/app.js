@@ -515,12 +515,13 @@ async function viewQuestions(mode) {
   $('#qt')?.addEventListener('change', ev => { f.topic = ev.target.value; viewQuestions('cache'); });
 }
 
-// Questions with the same wording (say, after a backup was restored twice): tick every copy except the newest one.
+// Questions that open with the same words (say, after a backup was restored twice, even if one copy was reworded): tick every copy except the newest one.
 function tickDuplicates() {
-  const groups = new Map();
-  for (const q of S.questions) { const k = q.stem.toLowerCase().replace(/\s+/g, ' ').trim(); if (k) (groups.get(k) || groups.set(k, []).get(k)).push(q); }
-  S.sel = new Set();
-  for (const g of groups.values()) g.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).slice(1).forEach(q => S.sel.add(q.id));
+  const key = q => q.stem.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const same = (a, b) => a && b && (a === b || (Math.min(a.length, b.length) >= 25 && (a.startsWith(b) || b.startsWith(a) || a.slice(0, 60) === b.slice(0, 60))));
+  const qs = S.questions.map(q => ({ q, k: key(q) })).sort((a, b) => (b.q.updatedAt || 0) - (a.q.updatedAt || 0));   // newest first
+  S.sel = new Set(); const kept = [];
+  for (const x of qs) { if (kept.some(y => same(x.k, y.k))) S.sel.add(x.q.id); else kept.push(x); }
   toast(S.sel.size ? `${S.sel.size} older cop${S.sel.size === 1 ? 'y' : 'ies'} ticked. Check them, then use Delete ticked (the newest copy of each is kept).` : 'No duplicates found.', 7000);
   S.q.status = 'all';
   viewQuestions('keep');
