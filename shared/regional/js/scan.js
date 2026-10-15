@@ -23,7 +23,7 @@ import { prepare, anchorOf, spreadProfile, tentProfile, warpY, planeDelta, yAt, 
 import { buildBMode, buildBModeAsync, isBuilt, shadowDepthAt } from './bmode.js';
 import { buildDiagram, COL } from './diagram.js';
 import { probeInset, areaWords, coverageMap } from './dermatomes.js';
-import { realScansFor, mountRealScan, ensureScanCss } from './realscan.js';
+import { realScansFor, loadRealScans, mountRealScan, ensureScanCss } from './realscan.js';
 import { STATUS, DENSITY_STATUS, LA, ensureStatusCss } from './status.js';
 
 ensureScanCss();
@@ -166,7 +166,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   const bid = blockId || scene.id;
   const injections = scene.injections || [];
   const diagramOnly = scene.image === 'diagram'; // landmark blocks: a schematic section, no simulated ultrasound
-  const realList = realScansFor(bid, scene);
+  let realList = realScansFor(bid, scene);
   const stepTitles = STEPS.map((s, i) => scene.stepTitles?.[i] || s.title);
   const st = {
     step: 0, t: 0, view: diagramOnly ? 'dia' : 'us', labels: true, inj: 0, playing: false, visible: false, raf: 0, last: 0,
@@ -208,13 +208,20 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   const vBtn = (v, label) => el('button', { type: 'button', class: 'tb-seg-btn', dataset: { v }, 'aria-pressed': 'false', text: label, on: { click: () => setView(v) } });
   const vUs = diagramOnly ? null : vBtn('us', 'Ultrasound');
   const vDia = diagramOnly ? null : vBtn('dia', 'Diagram');
-  const vReal = realList.length ? vBtn('real', 'Real') : null;
+  let vReal = realList.length ? vBtn('real', 'Real') : null;
   [vUs, vDia, vReal].forEach((b) => b && viewSeg.append(b));
   const labBtn = el('button', { type: 'button', class: 'tb-seg-btn tb-scan-labbtn', 'aria-pressed': 'true', text: 'Labels', on: { click: () => setLabels(!st.labels) } });
   const testable = [...structs.values()].filter((s) => s.items.some((it) => geo.has(it)));
   const testBtn = testable.length >= 3 ? el('button', { type: 'button', class: 'tb-btn ra-scan-testbtn', dataset: { tier: '2' }, text: 'Test me', 'aria-label': 'Test me: find the structures with the labels hidden', on: { click: () => startTest() } }) : null;
   const ctrls = el('div', { class: 'tb-scan-ctrls' }, ...(viewSeg.children.length > 1 ? [viewSeg] : []), labBtn);
   head.append(titleEl, ctrls);
+  // Real scans from shared/us/<region>/sources.json arrive later; the "Real" button appears when they do.
+  if (!realList.length) loadRealScans(bid, scene).then((list) => {
+    if (!list.length || vReal) return;
+    realList = list; vReal = vBtn('real', 'Real'); viewSeg.append(vReal);
+    if (!viewSeg.isConnected && viewSeg.children.length > 1) ctrls.prepend(viewSeg);
+    paintPanel();
+  });
   let injSeg = null, injWrap = null;
   if (injections.length > 1) {
     injSeg = el('div', { class: 'tb-seg tb-scan-inj', role: 'group', 'aria-label': 'Injection point' });
@@ -900,7 +907,8 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
       realView = mountRealScan(realHost, realList, {
         labels: st.labels,
         base: document.baseURI,
-        onPick: (l) => { const k = l.elementId || (l.ids || [])[0]; info.hidden = false; info.textContent = ''; info.append(el('p', { class: 'ra-scan-info-t' }, el('strong', { text: l.text }))); const href = k && anatomyHref(k.includes(':') ? k : `brachial:${k}`); if (href) info.append(el('div', { class: 'ra-scan-info-row' }, el('a', { class: 'ra-scan-info-3d', href, text: 'See in 3D →' }))); },
+        injection: injections[st.inj]?.id,
+        linkFor: (l) => { const k = l.elementId || (l.ids || [])[0]; return k ? anatomyHref(k.includes(':') ? k : `brachial:${k}`) : null; },
       });
     }
     if (testBtn) testBtn.hidden = real;
@@ -912,6 +920,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     st.inj = clamp(i, 0, injections.length - 1);
     if (st.step < 2) st.step = 2;
     st.t = 0; startShimmer(); buildOverlay(); paintPanel(); kick(); draw();
+    realView?.setInjection(injections[st.inj]?.id);
     announce(`${injections[st.inj].label || ''} selected`);
   }
   function togglePlay() {
