@@ -316,7 +316,7 @@ export function mountExplorer(host, opts = {}) {
     if (!blk) { ui.legend.hidden = true; ui.legend.replaceChildren(); return; }
     const b = current.data.blocks[blk];
     ui.legend.hidden = false;
-    ui.legend.innerHTML = `<span class="px-legend-title">${esc(b.name || blk)}</span>${STATUS_ORDER.map((k) => `<span class="px-key">${statusSwatch(k)}${esc(STATUS_TEXT[k])}</span>`).join('')}<span class="px-key">${statusSwatch('none')}Not affected</span>`;
+    ui.legend.innerHTML = `<span class="px-legend-title">${esc(b.name || blk)}:</span>${STATUS_ORDER.map((k) => `<span class="px-key">${statusSwatch(k)}${esc(STATUS_TEXT[k])}</span>`).join('')}<span class="px-key">${statusSwatch('none')}Not affected</span>`;
   }
 
   // ---------------------------------------------------------------- info panel
@@ -398,7 +398,7 @@ export function mountExplorer(host, opts = {}) {
       <article class="px-card px-overview">
         <p class="px-kicker">${esc(data.name)}</p>
         <h3>Choose a nerve or a block</h3>
-        <p class="px-muted">Tap a nerve in the 3D model, the diagram or the list below. Choose a block to see what it covers.</p>
+        <p class="px-muted">Tap a nerve in the 3D model, the diagram or the list below. Choose a block above to see what it covers.</p>
         ${kinds.map((k) => `<div class="px-list"><h4>${esc(GROUP_TITLE[k] || 'Other')}</h4><div class="px-chips">${groups[k].map((id) => elChip(id)).join('')}</div></div>`).join('')}
       </article>`;
   }

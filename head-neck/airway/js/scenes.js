@@ -1,7 +1,7 @@
 // Airway: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
 // Schema: ../../../shared/regional/DATA.md ("Scene schema"). Original geometry from typical adult depths.
 import { E, P, L } from '../../../shared/regional/js/scene.js';
-import { headProbeInset } from '../../../shared/regional/js/figures/head.js';
+import { headProbeInset } from '../../../shared/regional/js/figures/head.js?v=20261015';
 
 export const SCENES = {
   // Right side, parasagittal over the thyrohyoid membrane, between the greater cornu of the hyoid and the thyroid cartilage.

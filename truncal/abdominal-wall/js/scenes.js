@@ -203,3 +203,37 @@ export const SCENES = {
     probe: { view: 'front', x: 58, y: 226, angle: -54, label: 'oblique, on the line from the right ASIS towards the umbilicus, just medial to the ASIS.' },
   },
 };
+
+// One-line descriptions for the scan viewer's "Structures in this view" legend (plan §7), matched by label.
+// Wording is taken from this page's own sonoanatomy, landmark and exam text; BY_SCENE overrides one scene.
+function describe(scenes, all, byScene = {}) {
+  for (const [key, sc] of Object.entries(scenes)) {
+    for (const it of [...(sc.layers || []), ...(sc.lines || []), ...(sc.shapes || [])]) {
+      const d = byScene[key]?.[it.label] ?? all[it.label];
+      if (d && !it.desc) it.desc = d;
+    }
+  }
+}
+
+describe(SCENES, {
+  'Transversus abdominis': 'Usually the thinnest and darkest layer.',
+  'Peritoneum': 'A bright line, with bowel sliding underneath.',
+  'Linea semilunaris': 'The lateral edge of rectus, where EO, IO and TA converge.',
+  'Rectus–TA plane': 'Between the back of rectus and TA, medial to the linea semilunaris, where the upper nerves enter.',
+  'Superior epigastric artery': 'Runs on the back of rectus.',
+  'Posterior rectus sheath': 'Absent below the arcuate line, so inject at or above the umbilicus.',
+  'Inferior epigastric artery': 'Runs on the back of rectus: use colour Doppler.',
+  'Inferior epigastric veins': 'Run on the back of rectus: use colour Doppler.',
+  'Quadratus lumborum': 'The lateral leaf of the shamrock, at the tip of the transverse process.',
+  'Psoas major': 'The anterior leaf of the shamrock.',
+  'L4 transverse process': 'Psoas in front, erector spinae behind and QL at its tip: the shamrock sign.',
+  'Ilioinguinal nerve': 'A small oval structure in the plane between IO and TA near the bone.',
+  'Iliohypogastric nerve': 'A small oval structure in the plane between IO and TA near the bone.',
+  'Deep circumflex iliac artery': 'Often close: use colour Doppler.',
+  'Iliac crest near the ASIS': 'The bright line of the iliac bone with its shadow.',
+}, {
+  subcostal: { 'Transversus abdominis': 'Medially, TA lies behind rectus.', 'Liver': 'Lies just deep to the peritoneum on the right.' },
+  ql: { 'Erector spinae': 'The posterior leaf of the shamrock.' },
+  tap: { 'IO–TA plane': 'Hydrodissect between IO and TA: the fluid lifts IO and pushes TA deep.' },
+  iih: { 'IO–TA plane': 'The IO–TA plane next to both nerves. Hydrodissect so the fluid surrounds them.' },
+});

@@ -1,6 +1,6 @@
 // Airway: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
-import { headCoverageMap } from '../../../shared/regional/js/figures/head.js';
-import { SCENES } from './scenes.js';
+import { headCoverageMap } from '../../../shared/regional/js/figures/head.js?v=20261015';
+import { SCENES } from './scenes.js?v=20261015';
 
 const LIDO = 'All the lidocaine counts: sprays, nebuliser, blocks and transtracheal injection together. Keep the total within 9 mg/kg (adults; 4.5 mg/kg in children).';
 
@@ -105,6 +105,8 @@ export const BLOCKS = [
     },
     position: '<p>Mouth open wide enough to see the base of the tonsillar pillars. Spray the mouth with lidocaine first.</p>',
     equipment: ['Tongue depressor or a laryngoscope blade', '22–25G needle, or ribbon gauze soaked in local anaesthetic'],
+    // No scan viewer: the landmark technique is the how-to, so it shows at MO level.
+    tiers: { landmarks: 1 },
     landmarksTitle: 'Technique',
     landmarks: `<p><strong>Intraoral.</strong> After topical spray, push the tongue to the other side with a tongue depressor. Insert the needle submucosally at the <strong>base of the posterior tonsillar pillar</strong> (or the anterior pillar), about 0.5 cm lateral to the side of the tongue where it meets the floor of the mouth. Aspirate, then inject <strong>2 ml of 2% lidocaine</strong>. Repeat on the other side.</p>
 <p><strong>Without a needle:</strong> hold gauze soaked in local anaesthetic firmly on the same spot for a few minutes. Safer (no risk of carotid injection) but less effective.</p>

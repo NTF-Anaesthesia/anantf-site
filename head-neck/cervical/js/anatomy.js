@@ -1,6 +1,6 @@
 // Cervical plexus: anatomy chapter. Original schematic drawings (../../../shared/regional/js/figures/head.js).
 import { el, fill, table, callout, registerSearch } from '../../../shared/regional/js/ui.js';
-import { viewsFigure } from '../../../shared/regional/js/figures/head.js';
+import { viewsFigure } from '../../../shared/regional/js/figures/head.js?v=20261015';
 
 export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'cp-anat-h', text: 'Anatomy: the cervical plexus' }));

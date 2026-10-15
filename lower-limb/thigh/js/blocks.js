@@ -4,7 +4,7 @@
 import { el, table } from '../../../shared/regional/js/ui.js';
 import { mountScan } from '../../../shared/regional/js/scan.js';
 import { legCoverageMap } from '../../../shared/regional/js/figures/leg.js';
-import { SCENES } from './scenes.js';
+import { SCENES } from './scenes.js?v=20261015';
 
 // A row of buttons that swaps between several scan viewers (mounted on first use).
 function scanSwitcher(sec, items, { label, idPrefix }) {
@@ -104,7 +104,7 @@ export const BLOCKS = [
       'Higher (transgluteal, parasacral) catches the back of the thigh; lower (popliteal) spares the hamstrings.',
       'Supine and can’t turn? Anterior approach, 6–8 cm deep, medial to the femoral vessels.',
       'A big nerve is slow: allow 20–30 minutes before you test.',
-      'Sciatic block for a knee replacement masks a peroneal palsy: discuss first.',
+      { safety: true, html: 'Sciatic block for a knee replacement masks a peroneal palsy: discuss first.' }, // safety: shown at MO level
     ],
     sections: [
       {

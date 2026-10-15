@@ -1,6 +1,6 @@
 // Scalp and occipital: anatomy chapter.
 import { el, fill, table, callout, registerSearch } from '../../../shared/regional/js/ui.js';
-import { viewsFigure } from '../../../shared/regional/js/figures/head.js';
+import { viewsFigure } from '../../../shared/regional/js/figures/head.js?v=20261015';
 
 export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'sc-anat-h', text: 'Anatomy: the nerves of the scalp' }));

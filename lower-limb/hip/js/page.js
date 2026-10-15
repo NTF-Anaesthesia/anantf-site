@@ -1,14 +1,17 @@
 // Hip blocks page: wires the shared regional shell (shared/regional) to this page's chapters and data.
 import { bootPage } from '../../../shared/regional/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy } from './anatomy.js';
-import { renderPathway } from './pathway.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy } from './anatomy.js?v=20261015';
+import { renderPathway } from './pathway.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Hip blocks',
   eyebrow: 'Regional anaesthesia · Lower-limb blocks',
+  backLabel: 'See all lower-limb blocks and the operation chooser',
+  backShort: 'Lower-limb blocks',
+  backHref: '../',
   lead: 'PENG, supra-inguinal fascia iliaca, femoral and LFCN blocks: which branch of the lumbar plexus each one catches, how to see it, and how to build the hip fracture pathway around them.',
   searchPlaceholder: 'Search, e.g. PENG, fascia iliaca, hemiarthroplasty, dose',
   tiles: [
@@ -42,11 +45,3 @@ bootPage({
     ['dcia', 'deep circumflex iliac artery'],
   ],
 });
-
-// The shared shell's hub link names the truncal section; point the words at this section instead.
-function fixHubBack() {
-  const a = document.querySelector('.tb-hub-back a');
-  if (a && /truncal/i.test(a.textContent)) a.firstChild.textContent = 'See all lower-limb blocks and the operation chooser ';
-}
-fixHubBack();
-document.addEventListener('tb-ready', fixHubBack);

@@ -208,8 +208,9 @@ function paintView(svg, view, { areas = [], side = 'unilateral', points = [] } =
   sv('path', { d: OUTLINE[view], fill: 'none', stroke: '#55534d', 'stroke-width': 1.3 }, svg);
   points.forEach((p) => {
     const g = sv('g', { class: 'hn-pt' }, svg);
-    sv('circle', { cx: p.at[0], cy: p.at[1], r: p.n ? 7 : 3.6, fill: '#633d3c', stroke: '#fffaf0', 'stroke-width': 1.4 }, g);
-    if (p.n) sv('text', { x: p.at[0], y: p.at[1] + 4, 'text-anchor': 'middle', 'font-size': 11, 'font-weight': 600, fill: '#fffaf0', 'font-family': 'NTF Sans, Inter, sans-serif', text: String(p.n) }, g);
+    // Numbered points: 14-unit numerals so they stay at 12px or more on a 360px phone (figure drawn at 0.76 scale).
+    sv('circle', { cx: p.at[0], cy: p.at[1], r: p.n ? 9 : 3.6, fill: '#633d3c', stroke: '#fffaf0', 'stroke-width': 1.4 }, g);
+    if (p.n) sv('text', { x: p.at[0], y: p.at[1] + 5, 'text-anchor': 'middle', 'font-size': 14, 'font-weight': 600, fill: '#fffaf0', 'font-family': 'NTF Sans, Inter, sans-serif', text: String(p.n) }, g);
     if (p.line) sv('path', { d: smooth(p.line, false), fill: 'none', stroke: '#633d3c', 'stroke-width': 2.2, 'stroke-dasharray': '5 3', 'stroke-linecap': 'round' }, g);
   });
 }

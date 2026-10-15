@@ -1,14 +1,17 @@
 // Thigh and amputation page: wires the shared regional shell (shared/regional) to this page's chapters and data.
 import { bootPage } from '../../../shared/regional/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy } from './anatomy.js';
-import { renderAmputation, renderCombinations } from './planner.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy } from './anatomy.js?v=20261015';
+import { renderAmputation, renderCombinations } from './planner.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Thigh and amputation blocks',
   eyebrow: 'Regional anaesthesia · Lower-limb blocks',
+  backLabel: 'See all lower-limb blocks and the operation chooser',
+  backShort: 'Lower-limb blocks',
+  backHref: '../',
   lead: 'The sciatic nerve high in the thigh, the posterior femoral cutaneous nerve beside it, and how to put the whole leg to sleep without a spinal: above- and below-knee amputations under nerve blocks, with the dose counted.',
   searchPlaceholder: 'Search, e.g. AKA, PFCN',
   tiles: [
@@ -24,7 +27,7 @@ bootPage({
   chapters: [
     { id: 'ch-anatomy', title: 'Anatomy: the sciatic nerve and who supplies the thigh', short: 'Anatomy', desc: 'From the pelvis to the knee, level by level; the posterior femoral cutaneous nerve; the five nerves of the thigh.', render: renderAnatomy },
     { id: 'ch-sciatic', title: 'Subgluteal sciatic block', short: 'Sciatic', desc: 'The gluteal crease, with transgluteal, parasacral and anterior approaches and the posterior femoral cutaneous nerve.', block: byId.sciatic },
-    { id: 'ch-amputation', title: 'Amputation planner', short: 'Amputation', desc: 'Above- and below-knee amputation under nerve blocks in the sick patient: which nerves, what dose, catheters and phantom pain.', render: renderAmputation },
+    { id: 'ch-amputation', title: 'Amputation planner', short: 'Amputation', desc: 'Above- and below-knee amputation under nerve blocks in the sick patient: which nerves, what dose, catheters and phantom pain.', render: renderAmputation, tier: 2 },
     { id: 'ch-combinations', title: 'Block combinations for the whole lower limb', short: 'Combinations', desc: 'Operation, blocks and total dose for every lower-limb operation, linked to each block.', render: renderCombinations },
   ],
   synonyms: [

@@ -2,7 +2,7 @@
 // Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
 // nothing is traced from published images.
 import { E, PS, L } from '../../../shared/regional/js/scene.js';
-import { headProbeInset } from '../../../shared/regional/js/figures/head.js';
+import { headProbeInset } from '../../../shared/regional/js/figures/head.js?v=20261015';
 
 export const SCENES = {
   // Right side, at C2: probe along obliquus capitis inferior from the C2 spinous process to the C1 transverse process.
@@ -21,9 +21,10 @@ export const SCENES = {
     shapes: [
       { id: 'c2sp', kind: 'bone', label: 'C2 spinous process', short: 'C2', shape: PS([0, 15.6], [3.4, 15], [5, 21], [5.6, 31], [0, 31]), at: [2.6, 16], lab: [6, 13.4] },
       { id: 'lam', kind: 'bone', label: 'C2 lamina', short: 'Lamina', shape: L(0.8, [6, 33.4], [20, 34], [34, 34.4]), lab: [18, 37.6] },
-      { id: 'c1', kind: 'bone', label: 'C1 transverse process', short: 'C1 TP', shape: PS([37.5, 32], [45, 31.6], [45, 35.4], [38, 35.6]), at: [41, 32], lab: [38.5, 36.2] },
+      { id: 'c1', kind: 'bone', label: 'C1 transverse process', short: 'C1 TP', shape: PS([37.5, 32], [45, 31.6], [45, 35.4], [38, 35.6]), at: [41, 32], lab: [39.6, 28.6] },
       { id: 'gon', kind: 'nerve', label: 'Greater occipital nerve', short: 'GON', shape: E(19, 21.6, 1.7, 1.1), lab: [14, 16.4] },
-      { id: 'va', kind: 'artery', label: 'Vertebral artery', short: 'VA', nolabel: true, shape: E(41.5, 38, 1.8, 1.6) },
+      // Deep to the lateral end of OCI, in the gap between the end of the C2 lamina and the C1 transverse process (not in its shadow).
+      { id: 'va', kind: 'artery', label: 'Vertebral artery', short: 'VA', shape: E(35.7, 36.3, 1.3, 1.2), lab: [30.5, 38.4] },
     ],
     target: { at: [19.5, 21], r: 2 },
     injections: [

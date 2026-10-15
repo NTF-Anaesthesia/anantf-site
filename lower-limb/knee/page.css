@@ -56,3 +56,5 @@
 .tb-app .kn-plan-tbl abbr{text-decoration:none;border-bottom:1px dotted currentColor;cursor:help;white-space:nowrap}
 /* single-view leg coverage maps: keep them a sensible height on a phone */
 .tb-app .ll-cov-views--1{max-width:240px;margin-left:auto;margin-right:auto}
+/* Phones: thinner figure padding so the 360-unit drawings keep their labels at 12px or more */
+@media (max-width:480px){.tb-app .kn-fig-stage,.tb-app .kn-plan-fig{padding:2px}}

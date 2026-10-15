@@ -4,8 +4,7 @@
 import { mountScan } from '../../../shared/regional/js/scan.js';
 import { el } from '../../../shared/regional/js/ui.js';
 import { legCoverageMap } from '../../../shared/regional/js/figures/leg.js';
-import { animFigure } from '../../shared/js/anim.js';
-import { SCENES } from './scenes.js';
+import { SCENES } from './scenes.js?v=20261015';
 
 // An extra scan viewer inside a block section (its own deep links: #<blockId>-step-…, #<blockId>-inj-…).
 function extraScan(scene, blockId) {
@@ -77,7 +76,7 @@ export const BLOCKS = [
       dose: 'Single shot: 10 ml of 0.4% ropivacaine (40 mg). TKR three targets: 25 ml of 0.2% (50 mg)',
       covers: 'Medial knee, leg and ankle (saphenous); anteromedial knee joint. Quadriceps largely spared.',
     },
-    intro: animFigure('adductor-canal', { variant: 'single', caption: 'Femoral triangle and adductor canal block. Tabs: find the apex by scanning, the single shot (with an intramuscular error and its fix), and the three-target technique for knee replacement.' }),
+    watch: { anim: 'adductor-canal', variant: 'single', caption: 'Femoral triangle and adductor canal block. Tabs: find the apex by scanning, the single shot (with an intramuscular error and its fix), and the three-target technique for knee replacement.', tier: 1 }, // Dr Chew Shi Hao's animation (lower-limb/anim/), loaded when opened
     scene: SCENES.ftb,
     position: '<p>Supine, the thigh <strong>abducted and externally rotated</strong> with the knee slightly bent (a pillow under the knee), so the anteromedial thigh faces you. Stand on the side to be blocked with the screen across the patient.</p>',
     equipment: [
@@ -285,7 +284,7 @@ export const BLOCKS = [
       'Fluid climbing around the tibial nerve = too superficial.',
       'iPACK for the back, adductor canal for the front: it never works alone.',
       'If the surgeon infiltrates the back of the knee, iPACK adds little.',
-      'Check and write down foot movement after the block.',
+      { safety: true, html: 'Check and write down foot movement after the block.' }, // safety: shown at MO level
     ],
     sections: [
       {
@@ -387,7 +386,7 @@ export const BLOCKS = [
       'Find the artery with Doppler: it marks the nerve.',
       'Bone first, then 1 mm back, then inject.',
       'SMGN under vastus medialis; SLGN under vastus lateralis; IMGN under the MCL.',
-      'The inferolateral target is close to the common peroneal nerve: usually left out.',
+      { safety: true, html: 'The inferolateral target is close to the common peroneal nerve: usually left out.' }, // safety: shown at MO level
       'No skin, no motor block: pair it with something for the incision.',
     ],
     sections: [
@@ -499,8 +498,8 @@ export const BLOCKS = [
       'Long, brief, massive: anterior division under longus, posterior under brevis.',
       'Proximal: deep to pectineus, on obturator externus, below the pubic ramus.',
       'Test the adductors, not the skin.',
-      'Spinal anaesthesia does not stop the obturator jerk.',
-      'For TURBT: block before the resection, not after the first jerk.',
+      { safety: true, html: 'Spinal anaesthesia does not stop the obturator jerk.' }, // safety: shown at MO level
+      { safety: true, html: 'For TURBT: block before the resection, not after the first jerk.' }, // safety: shown at MO level
       'Knee: the posterior division carries the branch to the back of the knee.',
     ],
     sections: [

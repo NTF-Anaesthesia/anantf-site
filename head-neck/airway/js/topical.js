@@ -1,6 +1,6 @@
 // Airway: anatomy and topical anaesthesia chapters.
 import { el, fill, table, callout, keyPoints, registerSearch } from '../../../shared/regional/js/ui.js';
-import { headCoverageMap } from '../../../shared/regional/js/figures/head.js';
+import { headCoverageMap } from '../../../shared/regional/js/figures/head.js?v=20261015';
 
 export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'aw-anat-h', text: 'Anatomy: sensory supply of the airway' }));

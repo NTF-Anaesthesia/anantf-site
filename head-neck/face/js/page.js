@@ -1,13 +1,16 @@
-// Face page: wires the shared truncal shell to this page's chapters and data.
+// Face page: wires the shared regional shell to this page's chapters and data.
 import { bootPage } from '../../../shared/regional/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy, renderDeep } from './anatomy.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy, renderDeep } from './anatomy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Face blocks',
   eyebrow: 'Regional anaesthesia · Head and neck',
+  backLabel: 'See all head and neck blocks and the operation chooser',
+  backShort: 'Head and neck blocks',
+  backHref: '../',
   lead: 'Blocks of the trigeminal nerve: supraorbital, supratrochlear, infraorbital and mental at the face, and the maxillary and mandibular nerves near the skull base.',
   searchPlaceholder: 'Search, e.g. cleft lip, infraorbital, chin',
   tiles: [
@@ -23,7 +26,7 @@ bootPage({
     { id: 'ch-so', title: 'Supraorbital and supratrochlear nerve blocks', short: 'Supraorbital', desc: 'Forehead and frontal scalp.', block: byId.so },
     { id: 'ch-io', title: 'Infraorbital nerve block', short: 'Infraorbital', desc: 'Cheek, side of the nose, upper lip.', block: byId.io },
     { id: 'ch-me', title: 'Mental nerve block', short: 'Mental', desc: 'Lower lip and chin.', block: byId.me },
-    { id: 'ch-deep', title: 'Maxillary and mandibular nerve blocks', short: 'V2 and V3', desc: 'Deep blocks near the skull base. For experienced hands.', render: renderDeep },
+    { id: 'ch-deep', title: 'Maxillary and mandibular nerve blocks', short: 'V2 and V3', desc: 'Deep blocks near the skull base. For experienced hands.', tier: 3, render: renderDeep },
   ],
   synonyms: [['ion', 'infraorbital'], ['son', 'supraorbital'], ['v2', 'maxillary'], ['v3', 'mandibular'], ['cleft', 'cleft lip palate']],
 });

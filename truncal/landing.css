@@ -19,6 +19,8 @@ html{scroll-padding-top:24px}
 .tb-app :is(a,button,summary,input,select,[tabindex]):focus-visible{outline:2px solid var(--wine);outline-offset:4px;border-radius:0}
 .tb-app main a,.tb-app .tb-foot a{color:var(--wine);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
 .tb-app main a:hover,.tb-app .tb-foot a:hover{text-decoration-thickness:2px;color:var(--wine-hover)}
+/* inline links in running text: pad the hit area to at least 24px tall */
+.tb-app :is(.tb-credit,.tb-foot) a{padding:3px 0}
 .tb-app main :is(h1,h2,h3,h4,p,ul,ol,dl,dd,figure){margin:0}
 .tb-app .ntf-crumbs{font:13px/1.6 var(--sans);color:var(--muted)}
 .tb-app .ntf-crumbs a{color:var(--muted);display:inline-flex;align-items:center;min-height:44px}
@@ -58,7 +60,7 @@ html{scroll-padding-top:24px}
 
 /* chooser */
 .tb-chooser{display:grid;grid-template-columns:270px minmax(0,1fr);gap:40px;align-items:start}
-.tb-ops{border:0;padding:0;margin:0;min-width:0;position:sticky;top:16px}
+.tb-ops{border:0;padding:0;margin:0;min-width:0;position:sticky;top:108px}
 .tb-ops-legend{font:500 12px/1.5 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0;margin:0 0 10px}
 .tb-ops-list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
 .tb-op{position:relative;display:flex;align-items:center;min-height:48px;padding:10px 14px 10px 16px;border-bottom:1px solid var(--line);font:15px/1.35 var(--sans);color:var(--ink);cursor:pointer;transition:background-color .15s}
@@ -70,7 +72,7 @@ html{scroll-padding-top:24px}
 
 .tb-result{min-width:0}
 .tb-status,.tb-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-.tb-res-title{font:400 34px/1.2 var(--serif);letter-spacing:-.02em;margin:0 0 18px!important;padding-top:4px;border-top:1px solid var(--ink)}
+.tb-res-title{scroll-margin-top:84px;font:400 34px/1.2 var(--serif);letter-spacing:-.02em;margin:0 0 18px!important;padding-top:4px;border-top:1px solid var(--ink)}
 .tb-res-title:focus{outline:none}
 .tb-brief{font:500 12px/1.4 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);border:1px solid var(--line-strong);padding:2px 7px;vertical-align:.4em}
 .tb-res-grid{display:grid;grid-template-columns:minmax(260px,330px) minmax(0,1fr);gap:36px;align-items:start}
@@ -128,7 +130,8 @@ html{scroll-padding-top:24px}
 .tb-table thead th{font:500 12px/1.4 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--ink)}
 .tb-table :is(td,tbody th){text-align:left;padding:11px 12px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
 .tb-table tbody th{font-weight:600}
-.tb-app main .tb-table tbody th a{display:inline-block;min-height:24px;color:var(--ink);text-decoration-color:var(--line-strong)}
+.tb-table tbody th:has(>a){padding-top:0;padding-bottom:0}
+.tb-app main .tb-table tbody th>a{display:inline-block;min-height:44px;padding:11px 0;color:var(--ink);text-decoration-color:var(--line-strong)}
 .tb-app main .tb-table tbody th a:hover{color:var(--wine);text-decoration-color:var(--wine)}
 .tb-table td:nth-child(2),.tb-table td:nth-child(3){font-size:15px}
 
@@ -167,6 +170,7 @@ html{scroll-padding-top:24px}
   .tb-table,.tb-table tbody,.tb-table tr,.tb-table td,.tb-table tbody th{display:block;width:100%}
   .tb-table tr{border-bottom:1px solid var(--line);padding:10px 0}
   .tb-table :is(td,tbody th){border:0;padding:2px 0}
+  .tb-app main .tb-table tbody th>a{padding:0;display:inline-flex;align-items:center}
   .tb-table td::before{display:inline-block;min-width:9.5em;font:500 12px/1.5 var(--sans);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
   .tb-table td:nth-child(2)::before{content:'Cover'}
   .tb-table td:nth-child(3)::before{content:'Single shot'}

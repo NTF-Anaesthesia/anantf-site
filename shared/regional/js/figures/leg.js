@@ -420,7 +420,8 @@ function paintView(g, view, opts = {}) {
   }
   if (opts.sides !== false) {
     const sg = sv('g', { 'aria-hidden': 'true' }, g);
-    (SIDES[view] || []).forEach(([t, x, y, anchor, rot]) => text(sg, x, y, t, { size: opts.sideSize || (rot ? 16 : 18), anchor, rot, fill: '#6b655b', weight: 500 }));
+    // Sizes chosen so the labels stay at 12px or more where a coverage map is drawn narrowest (phones, three views).
+    (SIDES[view] || []).forEach(([t, x, y, anchor, rot]) => text(sg, x, y, t, { size: opts.sideSize || (rot ? 17.5 : 18), anchor, rot, fill: '#6b655b', weight: 500 }));
   }
   (opts.points || []).forEach((pnt, i) => {
     const p = at(view, pnt.at || pnt); if (!p) return;
@@ -540,13 +541,15 @@ export function legProbeInset(probe = {}, opts = {}) {
   panels.forEach(({ v, list, box }) => {
     const inner = sv('svg', { x: ox, y: 0, width: box[2], height: box[3], viewBox: box.join(' '), overflow: 'hidden' }, svg);
     paintView(inner, v, { fills, sides: false, deepTags: false });
-    // Lat / Med at the top corners of the crop, in large type (the inset is drawn about 80–96 px wide).
+    // Lat / Med at the top corners of the crop, in large type. The inset is drawn 80–96 px wide, so a 160-unit leg
+    // view is scaled by 0.5–0.6: 25 units keeps the letters at 12.5 px or more on phones.
     const s = SIDES[v];
     if (s && !multi) {
       const tg = sv('g', {}, inner);
+      const k = 25;
       // A wider halo than the default: at this size the outline would otherwise show through the letters.
-      text(tg, box[0] + 3, box[1] + 22, s[0][0], { size: 22, anchor: 'start', fill: '#55534d', weight: 600 }).setAttribute('stroke-width', 7);
-      text(tg, box[0] + box[2] - 3, box[1] + 22, s[1][0], { size: 22, anchor: 'end', fill: '#55534d', weight: 600 }).setAttribute('stroke-width', 7);
+      text(tg, box[0] + 3, box[1] + k, s[0][0], { size: k, anchor: 'start', fill: '#55534d', weight: 600 }).setAttribute('stroke-width', 7.5);
+      text(tg, box[0] + box[2] - 3, box[1] + k, s[1][0], { size: k, anchor: 'end', fill: '#55534d', weight: 600 }).setAttribute('stroke-width', 7.5);
     }
     if (v === view0 && pos) {
       if (probe.needle) {

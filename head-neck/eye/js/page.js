@@ -1,13 +1,16 @@
-// Eye page: wires the shared truncal shell to this page's chapters and data.
+// Eye page: wires the shared regional shell to this page's chapters and data.
 import { bootPage } from '../../../shared/regional/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy, renderTopical } from './anatomy.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy, renderTopical } from './anatomy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Eye blocks',
   eyebrow: 'Regional anaesthesia · Head and neck',
+  backLabel: 'See all head and neck blocks and the operation chooser',
+  backShort: 'Head and neck blocks',
+  backHref: '../',
   lead: 'Peribulbar, retrobulbar, sub-Tenon’s and topical anaesthesia for eye surgery: how each works, which to choose, and how to manage the complications.',
   searchPlaceholder: 'Search, e.g. sub-Tenon, axial length, brainstem',
   tiles: [

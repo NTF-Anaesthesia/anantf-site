@@ -53,3 +53,5 @@
 
 /* Ankle block coverage: the foot views only, side by side rather than stacked full width. */
 .tb-app #ankle-coverage .ll-cov-views--1 .ll-cov-foot{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px;margin-inline:auto}
+/* Phones: thinner figure padding so the 360-unit drawings keep their labels at 12px or more */
+@media (max-width:480px){.tb-app .fa-fig-stage{padding:2px}}

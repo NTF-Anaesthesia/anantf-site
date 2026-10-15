@@ -290,7 +290,7 @@ export function mountDiagram(container, ctx) {
   function placeBandLabel(t, b) {
     let obstacles;
     try {
-      obstacles = [...gLabels.querySelectorAll('text'), ...gCols.querySelectorAll('text')].map((n) => n.getBBox()).filter((r) => r.width > 0);
+      obstacles = [...gLabels.querySelectorAll('text'), ...gCols.querySelectorAll('text'), ...gRegions.querySelectorAll('text'), ...gNotes.querySelectorAll('text')].map((n) => n.getBBox()).filter((r) => r.width > 0);
       const probe = t.getBBox();
       if (!probe.width) { needBand = true; return; }
     } catch { needBand = true; return; }

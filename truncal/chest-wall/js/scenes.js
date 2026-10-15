@@ -208,3 +208,26 @@ const parasternal = {
 };
 
 export const SCENES = { sap, pecs, parasternal };
+
+// One-line descriptions for the scan viewer's "Structures in this view" legend (plan §7), matched by label.
+// Wording is taken from this page's own sonoanatomy, landmark and exam text; BY_SCENE overrides one scene.
+function describe(scenes, all, byScene = {}) {
+  for (const [key, sc] of Object.entries(scenes)) {
+    for (const it of [...(sc.layers || []), ...(sc.lines || []), ...(sc.shapes || [])]) {
+      const d = byScene[key]?.[it.label] ?? all[it.label];
+      if (d && !it.desc) it.desc = d;
+    }
+  }
+}
+
+describe(SCENES, {
+  'Latissimus dorsi': 'Superficial and thick posteriorly.',
+  'Thoracodorsal artery': 'Runs in the plane between latissimus dorsi and serratus: it marks the superficial plane and is the vessel you could hit. Find it with colour Doppler.',
+  'Thoracoacromial artery, pectoral branch': 'Runs between the two pectoral muscles: it marks the interpectoral plane.',
+  'Transversus thoracis': 'The thin dark band lying on the pleura.',
+  'Internal thoracic artery': 'About 1–1.5 cm lateral to the sternal border, between the internal intercostal muscles and transversus thoracis. Find it with colour Doppler before needling.',
+  'Internal thoracic vein': 'The internal thoracic vessels run between the intercostal muscles and transversus thoracis.',
+}, {
+  sap: { 'Serratus anterior': 'Under latissimus dorsi, on the ribs.' },
+  pecs: { 'Serratus anterior': 'On the 3rd and 4th ribs, under pectoralis minor.' },
+});

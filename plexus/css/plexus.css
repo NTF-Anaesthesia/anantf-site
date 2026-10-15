@@ -95,7 +95,8 @@ body.px.ra-app .ntf-header { position: static; }
 }
 
 /* Page heading */
-.px .px-head { margin: 4px 0 14px; }
+.px .px-head { max-width: 1600px; margin: 0 auto; padding: 20px 16px 0; }
+.px .px-head + main { padding-top: 14px; }
 .px .px-org { margin: 0 0 6px; font: 400 12px/1.4 'NTF Mono', ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .px h1 { margin: 0; font: 400 clamp(28px, 4vw, 44px)/1.1 'NTF Serif', Georgia, serif; letter-spacing: -.03em; text-wrap: balance; }
 #px-level-picker:empty { display: none; }
@@ -267,7 +268,8 @@ body.px .ntf-footer .ntf-copyright { font-size: 13px; }
 .px .disclaimer { color: var(--text); font-weight: 600; }
 
 @media (max-width: 599px) {
-  .px .px-head { margin-bottom: 10px; }
+  .px .px-head { padding-top: 16px; }
+  .px .px-head + main { padding-top: 10px; }
   .px .px-kv { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .px .px-kv dd { margin-bottom: 6px; }
   .px .px-info { padding: 4px 14px 14px; }

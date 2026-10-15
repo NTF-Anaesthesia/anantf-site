@@ -196,8 +196,8 @@ function backKneeFigure() {
   lab(118, 176, 'iPACK', 'end', { 'font-size': 14, 'font-weight': 600, fill: '#1d4f7c', 'font-style': 'italic' });
   lab(100, 286, 'Popliteal plexus', 'start', { 'font-size': 12.5 });
   sv('path', { d: 'M150 274 L176 234', stroke: MUTED, 'stroke-width': 1, fill: 'none' }, svg);
-  lab(76, 206, 'Medial', 'middle', { 'font-size': 12, fill: MUTED }); lab(76, 220, 'condyle', 'middle', { 'font-size': 12, fill: MUTED });
-  lab(284, 206, 'Lateral', 'middle', { 'font-size': 12, fill: MUTED }); lab(284, 220, 'condyle', 'middle', { 'font-size': 12, fill: MUTED });
+  lab(76, 206, 'Medial', 'middle', { 'font-size': 12.5, fill: MUTED }); lab(76, 221, 'condyle', 'middle', { 'font-size': 12.5, fill: MUTED });
+  lab(284, 206, 'Lateral', 'middle', { 'font-size': 12.5, fill: MUTED }); lab(284, 221, 'condyle', 'middle', { 'font-size': 12.5, fill: MUTED });
   sideTags(svg, 'MEDIAL', 'LATERAL', H - 8, W);
   return svg;
 }

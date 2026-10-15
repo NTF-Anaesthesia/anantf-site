@@ -37,3 +37,5 @@
 /* Coverage maps here show one front view of the whole leg: cap the size so a hip-only map doesn't fill a phone screen. */
 .tb-app .ll-cov-views--1{max-width:170px;margin:0 auto}
 @media (min-width:1000px){.tb-app .ll-cov-views--1{max-width:200px}}
+/* Phones: thinner figure padding so the 360-unit drawings keep their labels at 12px or more */
+@media (max-width:480px){.tb-app .hp-fig-stage{padding:2px}}

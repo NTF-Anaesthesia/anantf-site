@@ -4,7 +4,7 @@
 // posterior femoral cutaneous and obturator blocks (sources in the notes file). Prefix th-.
 import { el, sv, fill, keyPoints, callout, table, details, registerSearch, announce } from '../../../shared/regional/js/ui.js';
 import { legFigure, legViewsFigure } from '../../../shared/regional/js/figures/leg.js';
-import { thighSection } from './anatomy.js';
+import { thighSection } from './anatomy.js?v=20261015';
 
 const MAX_MG_KG = 3; // ropivacaine: a commonly used ceiling; local policy and the patient decide
 const WINE = '#633d3c';
@@ -35,6 +35,7 @@ const BLOCKS = [
   { id: 'acb', name: 'Adductor canal (saphenous)', href: '../knee/#ch-adductor-canal', covers: { saph: 1 }, vol: 10, conc: 0.4 },
 ];
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
+const SCIATIC = ['tg', 'sg', 'ant', 'pop']; // alternative levels of the one sciatic nerve
 const VOLS = [5, 10, 15, 20, 25, 30, 40];
 const CONCS = [0.2, 0.375, 0.4, 0.5];
 
@@ -171,7 +172,18 @@ function planner() {
     xs.set(xsLevels, xsGaps);
     xsWrap.hidden = op.id === 'bka';
     // dose
-    const wt = Math.max(30, Math.min(150, +weight.value || 70));
+    // Weight: the planner counts 30–150 kg (lean). Say so when the box is empty or outside that range, rather than
+    // silently counting another weight.
+    const raw = String(weight.value).trim();
+    const typed = raw === '' ? NaN : Number(raw);
+    const wt = Number.isFinite(typed) && typed > 0 ? Math.max(30, Math.min(150, typed)) : 70;
+    const warns = [];
+    if (!Number.isFinite(typed) || typed <= 0) warns.push(`<strong>No weight entered.</strong> Counting for 70 kg: enter the patient’s lean weight.`);
+    else if (wt !== typed) warns.push(`<strong>${fmt(typed)} kg is outside the planner’s range (30–150 kg).</strong> Counting for ${fmt(wt)} kg: work out this patient’s ceiling separately.`);
+    weight.setAttribute('aria-invalid', String(warns.length > 0));
+    // Alternative sciatic approaches: one nerve, so one approach. Both doses still count.
+    const sciOn = SCIATIC.filter((id) => state.on[id]).map((id) => byId[id].name.replace(/^Sciatic, /, ''));
+    if (sciOn.length > 1) warns.push(`<strong>${sciOn.length} sciatic approaches are switched on</strong> (${sciOn.join(', ')}). They are alternative levels for the same nerve: choose one. Every dose switched on is counted.`);
     const max = wt * MAX_MG_KG;
     const frac = total / max;
     const nerveRows = status.map(({ k, v }) => {
@@ -186,14 +198,14 @@ function planner() {
     out.replaceChildren();
     fill(out, `<p class="th-plan-k">${op.title}</p>
 <ul class="th-st-list">${nerveRows}</ul>
-<div class="th-dose ${over ? 'is-over' : frac > 0.85 ? 'is-near' : ''}">
+${warns.map((w) => `<p class="th-plan-warn" role="note">${w}</p>`).join('')}<div class="th-dose ${over ? 'is-over' : frac > 0.85 ? 'is-near' : ''}">
   <p class="th-dose-l"><span>Total ropivacaine</span> <strong>${fmt(total)} mg</strong> <span class="th-dose-of">of ${fmt(max)} mg (${MAX_MG_KG} mg/kg × ${fmt(wt)} kg)</span></p>
   <div class="th-dose-bar" role="img" aria-label="${fmt(frac * 100)} percent of the ceiling"><span style="width:${barW}%"></span></div>
   <p class="th-dose-msg">${total === 0 ? 'Choose blocks to count the dose.' : over ? '<strong>Over the ceiling.</strong> Lower the volume or strength, drop a block, or replace part with a short-acting drug (and count that too).' : frac > 0.85 ? '<strong>Close to the ceiling.</strong> Leave nothing for surgical infiltration; consider a lower strength.' : 'Within the ceiling. Remember any surgical infiltration counts too.'}</p>
 </div>
 <p class="th-plan-note">${op.note}</p>${notes ? `<ul class="th-plan-bnotes">${notes}</ul>` : ''}`);
     out.classList.remove('th-anim-in'); void out.offsetWidth; out.classList.add('th-anim-in');
-    announce(`${op.name}: ${gaps.length ? `${gaps.length} gap${gaps.length > 1 ? 's' : ''}` : 'all nerves covered'}; total ${fmt(total)} milligrams`);
+    announce(`${op.name}: ${gaps.length ? `${gaps.length} gap${gaps.length > 1 ? 's' : ''}` : 'all nerves covered'}; total ${fmt(total)} milligrams${warns.length ? `. ${warns.length} warning${warns.length > 1 ? 's' : ''}` : ''}`);
   }
   applyPreset();
   wrap.append(fill(el('figcaption'), `Choose an operation: the suggested set loads; then switch blocks on and off and change the doses. The leg shows what is numb (solid = dense, dotted = patchy) and where the surgeon cuts. The ceiling used here is <strong>${MAX_MG_KG} mg/kg of ropivacaine</strong>, a commonly used figure: use lean weight, and aim lower in the frail, in heart failure and in liver disease. Toxicity from several blocks adds up. A teaching tool, not a prescription.`));

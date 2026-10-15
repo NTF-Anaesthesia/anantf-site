@@ -292,9 +292,9 @@ export function thighSection() {
   dot(278, 196, 3, 'obt', '', null);
   dot(160, 210, 8, 'sci', 'Sciatic', [106, 262], 'middle');
   dot(186, 262, 3.2, 'pfcn', 'PFCN', [236, 286]);
-  sv('text', { x: 6, y: 296, 'font-family': MONO, 'font-size': 12, fill: MUTED, text: 'LATERAL' }, svg);
-  sv('text', { x: 354, y: 296, 'text-anchor': 'end', 'font-family': MONO, 'font-size': 12, fill: MUTED, text: 'MEDIAL' }, svg);
-  sv('text', { x: 354, y: 14, 'text-anchor': 'end', 'font-family': MONO, 'font-size': 12, fill: MUTED, text: 'ANTERIOR ↑' }, svg);
+  sv('text', { x: 6, y: 296, 'font-family': MONO, 'font-size': 12.5, fill: MUTED, text: 'LATERAL' }, svg);
+  sv('text', { x: 354, y: 296, 'text-anchor': 'end', 'font-family': MONO, 'font-size': 12.5, fill: MUTED, text: 'MEDIAL' }, svg);
+  sv('text', { x: 354, y: 14, 'text-anchor': 'end', 'font-family': MONO, 'font-size': 12.5, fill: MUTED, text: 'ANTERIOR ↑' }, svg);
   /** set({key: level}) where level is 1 (blocked), 0.5 (patchy) or 0; gaps: keys needed but not covered */
   function set(levels, gaps = []) {
     svg.querySelectorAll('[data-n]').forEach((node) => {

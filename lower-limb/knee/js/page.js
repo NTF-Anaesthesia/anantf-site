@@ -1,14 +1,17 @@
 // Knee blocks page: wires the shared regional shell (shared/regional) to this page's chapters and data.
 import { bootPage } from '../../../shared/regional/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy } from './anatomy.js';
-import { renderStrategy } from './strategy.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy } from './anatomy.js?v=20261015';
+import { renderStrategy } from './strategy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Knee blocks',
   eyebrow: 'Regional anaesthesia · Lower-limb blocks',
+  backLabel: 'See all lower-limb blocks and the operation chooser',
+  backShort: 'Lower-limb blocks',
+  backHref: '../',
   lead: 'Femoral triangle and adductor canal, iPACK, genicular and obturator blocks: who supplies which part of the knee, how to reach each nerve without weakening the leg, and how to combine them for a knee replacement.',
   searchPlaceholder: 'Search, e.g. adductor canal, iPACK, TKR, TURBT, dose',
   tiles: [
@@ -45,11 +48,3 @@ bootPage({
     ['acl', 'anterior cruciate', 'cruciate ligament'],
   ],
 });
-
-// The shared shell's hub link names the truncal section; point the words at this section instead.
-function fixHubBack() {
-  const a = document.querySelector('.tb-hub-back a');
-  if (a && /truncal/i.test(a.textContent)) a.firstChild.textContent = 'See all lower-limb blocks and the operation chooser ';
-}
-fixHubBack();
-document.addEventListener('tb-ready', fixHubBack);

@@ -1,8 +1,7 @@
 // Hip blocks: block data (schema: ../../../shared/regional/DATA.md, "Block schema"; leg figures: ../../shared/LEG.md).
 // Doses for these four blocks are Dr Chew Shi Hao's (the owner's decision). Text is plain, with no citations.
 import { legCoverageMap } from '../../../shared/regional/js/figures/leg.js';
-import { animFigure } from '../../shared/js/anim.js';
-import { SCENES } from './scenes.js';
+import { SCENES } from './scenes.js?v=20261015';
 
 export const BLOCKS = [
   // ------------------------------------------------------------------ PENG
@@ -19,7 +18,7 @@ export const BLOCKS = [
       dose: '20 ml of 0.2% ropivacaine (40 mg). With an LFCN block: total 25 ml, 50 mg',
       covers: 'Anterior hip capsule (articular branches). No skin.',
     },
-    intro: animFigure('peng', { caption: 'PENG block: linear and curvilinear probes, and a negative example (tip short of the plane, in iliopsoas).' }),
+    watch: { anim: 'peng', caption: 'PENG block: linear and curvilinear probes, and a negative example (tip short of the plane, in iliopsoas).', tier: 1 }, // Dr Chew Shi Hao's animation (lower-limb/anim/), loaded when opened
     scene: SCENES.peng,
     position: '<p>Supine, hip in neutral. Stand on the side to be blocked, screen opposite. In a large patient, a pillow under the buttock and tape (or an assistant) to lift the abdominal fold keep the probe on the AIIS-to-eminence line.</p>',
     equipment: [
@@ -53,7 +52,7 @@ export const BLOCKS = [
       'PENG is for the joint, not the skin: add the LFCN for an anterior or lateral incision.',
       'Femoral artery at the medial edge of the screen: you are not going there.',
       'Stiff to inject on bone? The tip may be in periosteum, tendon or capsule (iliofemoral ligament): back 1 mm or turn the bevel.',
-      'Test quadriceps before the first walk. Motor sparing is likely, not certain.',
+      { safety: true, html: 'Test quadriceps before the first walk. Motor sparing is likely, not certain.' }, // safety: shown at MO level
     ],
     sections: [
       {
@@ -121,7 +120,7 @@ export const BLOCKS = [
       dose: '40 ml of 0.2% ropivacaine (80 mg), 5 ml aliquots',
       covers: 'Femoral nerve and LFCN: anterior and lateral thigh, anterior hip, femur, anterior knee; obturator sometimes, not reliable',
     },
-    intro: animFigure('fib', { caption: 'Supra-inguinal fascia iliaca: the scan from ASIS to AIIS to bow-tie, the in-plane block, and two common errors.' }),
+    watch: { anim: 'fib', caption: 'Supra-inguinal fascia iliaca: the scan from ASIS to AIIS to bow-tie, the in-plane block, and two common errors.', tier: 1 }, // Dr Chew Shi Hao's animation (lower-limb/anim/), loaded when opened
     scene: SCENES.fib,
     position: '<p>Supine, leg straight. Expose the groin from above the ASIS to the upper thigh. In a patient with a pannus, tape it cranially or have an assistant retract it.</p>',
     equipment: [
@@ -159,7 +158,7 @@ export const BLOCKS = [
       'Puncture the fascia cranial to the AIIS hump, then hydrodissect.',
       'Fascia must lift off iliacus. Pooling above it = failed block.',
       'The lateral thigh (LFCN) is your reliable early test.',
-      '“Fascia iliaca” is not motor sparing: the quadriceps will be weak.',
+      { safety: true, html: '“Fascia iliaca” is not motor sparing: the quadriceps will be weak.' }, // safety: shown at MO level
       'Obturator nerve: don’t promise it.',
     ],
     sections: [
@@ -261,7 +260,7 @@ export const BLOCKS = [
       dose: '15 ml of 0.4% ropivacaine (60 mg), 5 ml aliquots',
       covers: 'Anterior thigh, femur, anterior knee, medial leg strip',
     },
-    intro: animFigure('femoral', { caption: 'Femoral nerve block: in-plane, lateral to medial, and two needle errors (above fascia iliaca; into iliopsoas).' }),
+    watch: { anim: 'femoral', caption: 'Femoral nerve block: in-plane, lateral to medial, and two needle errors (above fascia iliaca; into iliopsoas).', tier: 1 }, // Dr Chew Shi Hao's animation (lower-limb/anim/), loaded when opened
     scene: SCENES.femoral,
     position: '<p>Supine, bed flat, hip extended with the leg slightly abducted. Expose the inguinal crease; tape a pannus up and away so the probe can reach the level above the profunda.</p>',
     equipment: [
@@ -298,7 +297,7 @@ export const BLOCKS = [
       'Two gives: fascia lata, then fascia iliaca.',
       'Don’t chase a full doughnut: a pool on one side is enough.',
       'Twitch you want: “dancing patella” (quadriceps). Sartorius alone is not enough.',
-      'A femoral block means a weak leg: falls precautions are part of the block.',
+      { safety: true, html: 'A femoral block means a weak leg: falls precautions are part of the block.' }, // safety: shown at MO level
     ],
     sections: [
       {
@@ -375,7 +374,7 @@ export const BLOCKS = [
       dose: '5 ml of 0.2% ropivacaine (10 mg): 1 ml test, then 2 ml aliquots',
       covers: 'Lateral thigh (variable; sometimes the anterior thigh too)',
     },
-    intro: animFigure('lfcn', { caption: 'LFCN block: finding and tracing the nerve, in-plane and out-of-plane approaches, and an intramuscular error.' }),
+    watch: { anim: 'lfcn', caption: 'LFCN block: finding and tracing the nerve, in-plane and out-of-plane approaches, and an intramuscular error.', tier: 1 }, // Dr Chew Shi Hao's animation (lower-limb/anim/), loaded when opened
     scene: SCENES.lfcn,
     position: '<p>Supine (lateral also works). Expose from the ASIS to the upper lateral thigh.</p>',
     equipment: [

@@ -2,92 +2,63 @@
 // Regional anaesthesia app: smoke test and content baseline (plan §10 WP0, §11.1).
 //
 //   node test/regional/smoke.mjs                 compare every regional page with test/regional/baseline/
+//   node test/regional/smoke.mjs --strict        also fail on the §11.1 polish targets (text, tap targets, one sticky
+//                                                bar ≤ 56 px, scan on screen after Next, axe, interactive < 2.5 s)
 //   node test/regional/smoke.mjs --baseline      (re)write the baseline (only before a change, never to make a test pass)
-//   options: --pages=truncal/back/,spinal/   --viewports=390,1440   --base=http://localhost:8765/
-//            --shots=<dir> (screenshots of each page's first screen)   --strict (also fail on the §11 polish checks)
+//   options: --pages=truncal/back/,spinal/   --viewports=390,1440   --base=http://localhost:8765/   --workers=4
+//            --shots=<dir> (screenshots of each page's first screen)   --json=<file>   --summary (polish table only)
+//            axe: set AXE=/path/to/axe.min.js (or install axe-core globally) to run the accessibility check
 //
 // Needs the global Playwright (chromium) and a static server on the repo root:
 //   cd <repo> && python3 -m http.server 8765
 //
 // What it does on each page, at 390x844 (touch, DPR 2) and 1440x900:
-//   - loads it, waits for the app to finish booting, records console errors, page errors, responses >= 400
-//     and failed requests;
+//   - loads it as a first-time visitor, waits for the app to boot, records console errors, page errors, responses
+//     >= 400, failed requests and every three.js / GLB / Draco request;
 //   - checks horizontal overflow on the first screen, with the chapter menu open, and on every chapter;
 //   - steps every scan through its 4 steps in each image type (Ultrasound / Diagram / Real) and records the step text
 //     and whether the image is still on screen after Next;
-//   - records the §11 polish metrics (text under 12px, small tap targets, sticky bars) as numbers;
-//   - captures the text of every chapter / section (all chapters shown, every <details> open), and every
-//     dose / volume / concentration string.
-// Compare mode fails on: new console or page errors, new responses >= 400 or failed requests, new horizontal
-// overflow, any baseline text line missing, any change in the dose strings. --strict adds the polish checks.
+//   - records the §11.1 polish metrics: text under 12 px (SVG text by its rendered height), tap targets under 44 px
+//     (inline links under 24 px), sticky/fixed bars at the top after scrolling, axe serious/critical violations,
+//     time until the app is interactive;
+//   - no service worker; no three.js before "Open here" on block pages; no animation iframe before "Watch"
+//     (lower-limb); plexus: rapid tab switching leaves one 3D canvas;
+//   - captures the text of every chapter / section (all chapters shown, every <details> open) and every dose / volume /
+//     concentration string.
+// Compare mode fails on: any console or page error, any response >= 400, new failed requests (any failed HEAD),
+// new horizontal overflow, a service worker, early three.js or animation iframes, extra plexus canvases, any baseline
+// text line missing (except the reviewed ones in parity-allow.json), any change in the dose strings.
 
-import { createRequire } from 'node:module';
-import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
+import {
+  args, BASE, BASEDIR, PAGES, VIEWPORTS, LANDINGS, ENGINE_PAGES, listArg, slug, normLines, doses, allTextOf, compareText,
+  launch, attachLog, waitReady, pool, captureText, stepScans, brachialText, plexusText, readJson,
+} from './lib.mjs';
 
-const require = createRequire(import.meta.url);
-const { chromium } = require(`${execSync('npm root -g').toString().trim()}/playwright`);
-
-const HERE = path.dirname(fileURLToPath(import.meta.url));
-const BASEDIR = path.join(HERE, 'baseline');
-
-export const PAGES = [
-  'truncal/', 'truncal/back/', 'truncal/chest-wall/', 'truncal/abdominal-wall/',
-  'head-neck/', 'head-neck/cervical/', 'head-neck/scalp/', 'head-neck/face/', 'head-neck/airway/', 'head-neck/eye/',
-  'lower-limb/', 'lower-limb/hip/', 'lower-limb/knee/', 'lower-limb/foot-ankle/', 'lower-limb/thigh/',
-  'brachial-plexus/', 'plexus/', 'spinal/', 'regional.html',
-];
-export const VIEWPORTS = {
-  390: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
-  1440: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
-};
-export const DOSE_RE = /\d+(?:\.\d+)?\s*(?:mg\/kg|mL|ml|mg|%)/g;
-
-const args = Object.fromEntries(process.argv.slice(2).map((a) => { const [k, ...v] = a.replace(/^--/, '').split('='); return [k, v.length ? v.join('=') : true]; }));
-const BASE = (args.base || 'http://localhost:8765/').replace(/\/?$/, '/');
-const pages = args.pages ? String(args.pages).split(',').filter(Boolean) : PAGES;
-const vps = args.viewports ? String(args.viewports).split(',') : Object.keys(VIEWPORTS);
+const pages = listArg('pages', PAGES);
+const vps = listArg('viewports', Object.keys(VIEWPORTS));
 const WRITE = !!args.baseline;
 const STRICT = !!args.strict;
 const SHOTS = args.shots ? path.resolve(String(args.shots)) : null;
+const AXE = (() => {
+  const cands = [process.env.AXE, args.axe].filter(Boolean);
+  try { cands.push(`${execSync('npm root -g').toString().trim()}/axe-core/axe.min.js`); } catch { /* none */ }
+  return cands.find((f) => f && fs.existsSync(f)) || null;
+})();
 
-export const slug = (p) => p.replace(/\.html$/, '').replace(/\/$/, '').replace(/\//g, '__') || 'index';
-// Lines whose presence depends on layout timing (shown only while a figure is wider than its box).
-export const VOLATILE = [/^Scroll sideways to see the whole/];
-export const normLines = (t) => String(t || '').split('\n').map((l) => l.replace(/\s+/g, ' ').trim()).filter((l) => l.length > 1 && !VOLATILE.some((re) => re.test(l)));
-export function doses(texts) {
-  const out = {};
-  for (const t of texts) for (const m of String(t).match(DOSE_RE) || []) { const k = m.replace(/\s+/g, ' '); out[k] = (out[k] || 0) + 1; }
-  return Object.fromEntries(Object.entries(out).sort(([a], [b]) => a.localeCompare(b)));
-}
-
-// ------------------------------------------------------------------ in-page helpers (run in the browser)
-const FORCE_CSS = '.tb-chapter,.sp-chapter{display:block!important}';
-
-async function waitReady(page) {
-  await page.waitForLoadState('load');
-  await page.waitForFunction(() => {
-    const b = document.body;
-    if (!b) return false;
-    if (b.classList.contains('tb-app') && document.querySelector('#tb-bar, .tb-chapter')) return b.dataset.tbReady === 'true' || !document.querySelector('.tb-chapter');
-    return true;
-  }, null, { timeout: 30000 }).catch(() => {});
-  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
-  await page.waitForTimeout(400);
-}
-
-async function metrics(page) {
-  return page.evaluate(() => {
+// ------------------------------------------------------------------ in-page helpers
+async function metrics(page, isPhone) {
+  return page.evaluate(async (isPhone) => {
     const de = document.documentElement;
-    const vis = (e) => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none'; };
+    const vis = (e) => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none' && cs.opacity !== '0'; };
     let small = 0; const smallEx = [];
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
     const seen = new Set();
     for (let n = walker.nextNode(); n; n = walker.nextNode()) {
       const e = n.parentElement; if (!e || seen.has(e) || !n.textContent.trim()) continue; seen.add(e);
-      if (e.closest('canvas,script,style,noscript,.tb-sr,.sr-only,[aria-hidden="true"] title')) continue;
+      if (e.closest('canvas,script,style,noscript,.tb-sr,.sr-only,.ra-sr,[aria-hidden="true"] title')) continue;
       if (!vis(e)) continue;
       let px;
       if (e instanceof SVGElement) { const r = e.getBoundingClientRect(); px = r.height; } else px = parseFloat(getComputedStyle(e).fontSize);
@@ -101,80 +72,35 @@ async function metrics(page) {
       const min = inline ? 24 : 44;
       if (Math.min(r.width, r.height) < min - 0.5) { tiny++; if (tinyEx.length < 5) tinyEx.push(`${e.tagName.toLowerCase()}#${e.id || ''}.${String(e.className).split(' ')[0]} ${Math.round(r.width)}x${Math.round(r.height)}`); }
     }
-    const sticky = [...document.querySelectorAll('body *')].filter((e) => { const p = getComputedStyle(e).position; return (p === 'sticky' || p === 'fixed') && vis(e) && e.getBoundingClientRect().top < 120; });
+    // Sticky/fixed bars that stay at the top once the reader has scrolled (skip links and off-screen things excluded).
+    const y0 = scrollY;
+    window.scrollTo({ top: Math.min(1200, Math.max(0, de.scrollHeight - innerHeight)), behavior: 'instant' });
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    const stuck = [...document.querySelectorAll('body *')].filter((e) => {
+      const p = getComputedStyle(e).position;
+      if (p !== 'sticky' && p !== 'fixed') return false;
+      if (!vis(e)) return false;
+      const r = e.getBoundingClientRect();
+      return r.bottom > 0 && r.top < 120 && r.top > -2 && !e.closest('[role=dialog],dialog');
+    }).filter((e, _, all) => !all.some((o) => o !== e && o.contains(e)));
+    const barBottom = stuck.reduce((m, e) => Math.max(m, e.getBoundingClientRect().bottom), 0);
+    window.scrollTo({ top: y0, behavior: 'instant' });
+    let sw = 0;
+    try { sw = (await navigator.serviceWorker?.getRegistrations?.() || []).length + (navigator.serviceWorker?.controller ? 1 : 0); } catch { /* none */ }
     return {
       overflow: de.scrollWidth > de.clientWidth + 1 ? de.scrollWidth - de.clientWidth : 0,
       smallText: small, smallTextEx: smallEx, smallTargets: tiny, smallTargetsEx: tinyEx,
-      stickyTop: sticky.length, stickyEx: sticky.slice(0, 4).map((e) => `${e.tagName.toLowerCase()}#${e.id}.${String(e.className).split(' ')[0]} h${Math.round(e.getBoundingClientRect().height)}`),
+      stickyTop: stuck.length, barHeight: Math.round(barBottom),
+      stickyEx: stuck.slice(0, 4).map((e) => `${e.tagName.toLowerCase()}#${e.id}.${String(e.className).split(' ')[0]} h${Math.round(e.getBoundingClientRect().height)}`),
+      serviceWorkers: sw,
+      readyMs: Math.round(window.__raReadyAt || 0),
+      animFrames: document.querySelectorAll('iframe[src*="lower-limb/anim"], iframe[src*="/anim/"]').length,
+      canvases: document.querySelectorAll('canvas').length,
     };
-  });
+  }, isPhone);
 }
 
 const overflowNow = (page) => page.evaluate(() => { const de = document.documentElement; return de.scrollWidth > de.clientWidth + 1 ? de.scrollWidth - de.clientWidth : 0; });
-
-/** Text of each chapter / section with every chapter shown and every <details> open. */
-async function captureText(page) {
-  await page.addStyleTag({ content: FORCE_CSS });
-  return page.evaluate(() => {
-    document.querySelectorAll('details').forEach((d) => { d.open = true; });
-    const SEL = '.tb-chapter, .sp-chapter, main section[id], main [role=tabpanel]';
-    const root = document.querySelector('main') || document.body;
-    const secs = [...root.querySelectorAll(SEL)].filter((e) => !e.parentElement.closest(SEL));
-    const out = {};
-    if (!secs.length) out.main = root.innerText;
-    else {
-      // Text in <main> outside any section (intro, credits) is kept as "_main".
-      const clone = root.cloneNode(true);
-      clone.querySelectorAll(SEL).forEach((e) => e.remove());
-      const rest = clone.textContent.replace(/\s+/g, ' ').trim();
-      if (rest) out._main = rest;
-      secs.forEach((e, i) => { out[e.id || `section-${i}`] = e.innerText; });
-    }
-    const foot = document.querySelector('.sp-foot, footer:not(.ntf-footer), .tb-foot');
-    if (foot && !root.contains(foot)) out._foot = foot.innerText;
-    return out;
-  });
-}
-
-/** Engine pages: step every scan through its steps in each image type. */
-async function stepScans(page, isPhone) {
-  const chapters = await page.evaluate(() => [...document.querySelectorAll('.tb-chapter')].filter((c) => c.querySelector('.tb-scan')).map((c) => c.id));
-  const out = {}; const offscreen = [];
-  for (const ch of chapters) {
-    await page.evaluate((id) => { location.hash = id; }, ch);
-    await page.waitForTimeout(150);
-    const scans = await page.evaluate((id) => [...document.getElementById(id).querySelectorAll('.tb-scan')].map((f) => f.id), ch);
-    for (const sid of scans) {
-      const views = await page.evaluate((sid) => { const f = document.getElementById(sid); const v = [...f.querySelectorAll('.tb-scan-ctrls .tb-seg-btn[data-v]')].map((b) => b.dataset.v); return v.length ? v : ['default']; }, sid);
-      out[sid] = {};
-      for (const v of views) {
-        const texts = [];
-        if (v !== 'default') await page.evaluate(({ sid, v }) => document.querySelector(`#${CSS.escape(sid)} .tb-seg-btn[data-v="${v}"]`).click(), { sid, v });
-        const n = await page.evaluate((sid) => document.querySelectorAll(`#${CSS.escape(sid)} .tb-scan-step`).length, sid);
-        for (let i = 0; i < n; i++) {
-          await page.evaluate(({ sid, i }) => document.querySelectorAll(`#${CSS.escape(sid)} .tb-scan-step`)[i].click(), { sid, i });
-          await page.waitForTimeout(60);
-          texts.push(await page.evaluate((sid) => document.querySelector(`#${CSS.escape(sid)} .tb-scan-text`)?.innerText || '', sid));
-        }
-        if (isPhone && n) {
-          // After Next from step 1, is the image still on screen?
-          await page.evaluate((sid) => document.querySelectorAll(`#${CSS.escape(sid)} .tb-scan-step`)[0].click(), sid);
-          await page.waitForTimeout(80);
-          const nb = page.locator(`#${sid} .tb-scan-nav .tb-btn`, { hasText: 'Next' }).first();
-          if (await nb.count()) {
-            await nb.scrollIntoViewIfNeeded().catch(() => {});
-            await nb.click({ timeout: 3000 }).catch(() => {});
-            await page.waitForTimeout(120);
-            const on = await page.evaluate((sid) => { const s = document.querySelector(`#${CSS.escape(sid)} .tb-scan-stage`); if (!s) return true; const r = s.getBoundingClientRect(); return r.bottom > 40 && r.top < innerHeight - 40; }, sid);
-            if (!on) offscreen.push(`${sid}/${v}`);
-          }
-        }
-        out[sid][v] = texts;
-      }
-    }
-  }
-  return { scans: out, offscreen };
-}
 
 async function chapterOverflow(page) {
   const ids = await page.evaluate(() => [...document.querySelectorAll('.tb-chapter[id], .sp-chapter[id]')].map((c) => c.id));
@@ -183,81 +109,58 @@ async function chapterOverflow(page) {
     await page.evaluate((h) => { location.hash = h; }, id);
     await page.waitForTimeout(120);
     let o = await overflowNow(page);
-    // Scans and figures size themselves after a resize tick; only count overflow that persists.
     if (o) { await page.waitForTimeout(700); o = await overflowNow(page); }
     if (o) bad[id] = o;
   }
   return bad;
 }
 
-/** Read text until two reads 150 ms apart agree (panels re-render after a click; slow under load). */
-async function stableText(page, fn) {
-  let prev = await page.evaluate(fn);
-  for (let i = 0; i < 12; i++) {
-    await page.waitForTimeout(150);
-    const now = await page.evaluate(fn);
-    if (now === prev) return now;
-    prev = now;
-  }
-  return prev;
+async function axeCheck(page) {
+  if (!AXE) return null;
+  try {
+    await page.addScriptTag({ path: AXE });
+    return await page.evaluate(async () => {
+      const r = await window.axe.run(document, { resultTypes: ['violations'], runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] } });
+      return r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${v.impact} ${v.id} ×${v.nodes.length} (${v.nodes[0]?.target?.join(' ') || ''})`);
+    });
+  } catch (err) { return [`axe failed to run: ${String(err.message || err).split('\n')[0]}`]; }
 }
 
-/** Brachial plexus: every block x every tab. */
-async function brachialText(page) {
-  const out = {};
-  const blocks = await page.evaluate(() => [...document.querySelectorAll('#block-chips [data-block]')].map((b) => b.dataset.block).filter(Boolean));
-  for (const b of blocks) {
-    await page.evaluate((b) => document.querySelector(`#block-chips [data-block="${b}"]`).click(), b);
-    await page.waitForTimeout(200);
-    for (const t of ['ultrasound', 'guide', 'coverage']) {
-      await page.evaluate((t) => document.getElementById(`tab-${t}`)?.click(), t);
-      await page.waitForTimeout(150);
-      out[`${b}/${t}`] = await stableText(page, () => { document.querySelectorAll('#sec-tabs details').forEach((d) => { d.open = true; }); return document.getElementById('sec-tabs')?.innerText || ''; });
-    }
-  }
-  return out;
-}
-
-/** Plexus explorer: every plexus x every block (info panel). */
-async function plexusText(page) {
-  const out = {};
-  for (const px of ['cervical', 'lumbar', 'sacral']) {
+/** Plexus: switch plexus tabs quickly; the explorer must end with as many canvases as it started with. */
+async function plexusCanvas(page) {
+  const before = await page.evaluate(() => document.querySelectorAll('canvas').length);
+  for (const px of ['lumbar', 'sacral', 'cervical', 'lumbar', 'cervical', 'sacral', 'cervical']) {
     await page.evaluate((px) => { location.hash = `plexus=${px}`; }, px);
-    await page.waitForTimeout(1200);
-    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
-    const blocks = await page.evaluate(() => [...document.querySelectorAll('button[data-block]')].map((b) => b.dataset.block));
-    for (const b of blocks) {
-      await page.evaluate((b) => document.querySelector(`button[data-block="${b}"]`)?.click(), b);
-      await page.waitForTimeout(150);
-      out[`${px}/${b || 'none'}`] = await stableText(page, () => document.getElementById('sec-info')?.innerText || '');
-    }
+    await page.waitForTimeout(40);
   }
-  return out;
+  await page.waitForTimeout(2500);
+  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+  const after = await page.evaluate(() => document.querySelectorAll('canvas').length);
+  return { before, after };
 }
 
 // ------------------------------------------------------------------ one page at one viewport
 async function runPage(browser, p, vp) {
   const ctx = await browser.newContext({ ...VIEWPORTS[vp], reducedMotion: 'reduce' });
-  const page = await ctx.newPage();
-  const log = { console: [], pageErrors: [], bad: [], failed: [], three: [] };
-  page.on('console', (m) => { if (m.type() === 'error') log.console.push(m.text().slice(0, 300)); });
-  page.on('pageerror', (e) => log.pageErrors.push(String(e.message || e).slice(0, 300)));
-  page.on('response', (r) => {
-    const u = r.url().replace(BASE, '/');
-    if (r.status() >= 400) log.bad.push(`${r.status()} ${u}`);
-    if (/\.glb(\?|$)|draco|three\.module/i.test(u)) log.three.push(`${r.status()} ${u}`);
+  await ctx.addInitScript(() => {
+    const mark = () => { if (!window.__raReadyAt) window.__raReadyAt = performance.now(); };
+    document.addEventListener('tb-ready', mark); window.addEventListener('tb-ready', mark);
+    new MutationObserver((_, o) => { if (document.body?.dataset.tbReady === 'true') { mark(); o.disconnect(); } }).observe(document, { subtree: true, attributes: true, attributeFilter: ['data-tb-ready'] });
+    window.addEventListener('load', () => { if (!document.body?.classList.contains('tb-app') || !document.querySelector('.tb-chapter, #tb-bar')) setTimeout(mark, 0); });
   });
-  page.on('requestfailed', (r) => { const f = r.failure()?.errorText || ''; log.failed.push(`${f} ${r.method()} ${r.url().replace(BASE, '/')}`); });
+  const page = await ctx.newPage();
+  const log = attachLog(page);
   const res = { page: p, vp: +vp };
   try {
     const resp = await page.goto(BASE + p, { waitUntil: 'domcontentloaded', timeout: 30000 });
     res.status = resp?.status();
     await waitReady(page);
     if (SHOTS) { fs.mkdirSync(SHOTS, { recursive: true }); await page.screenshot({ path: path.join(SHOTS, `${slug(p)}-${vp}.png`) }); }
-    res.metrics = await metrics(page);
-    // chapter menu open (phones)
+    res.metrics = await metrics(page, vp === '390');
+    res.threeEarly = [...new Set(log.three)];
+    if (!WRITE) res.axe = await axeCheck(page);
     const mb = page.locator('#tb-chmenu-btn');
-    if (await mb.count() && await mb.isVisible()) { await mb.click(); await page.waitForTimeout(100); res.menuOverflow = await overflowNow(page); await page.keyboard.press('Escape'); }
+    if (await mb.count() && await mb.isVisible()) { await mb.click(); await page.waitForTimeout(150); res.menuOverflow = await overflowNow(page); await page.keyboard.press('Escape'); }
     const isEngine = await page.evaluate(() => !!document.querySelector('.tb-chapter[id^="ch-"]'));
     res.chapterOverflow = await chapterOverflow(page);
     if (isEngine) {
@@ -265,50 +168,39 @@ async function runPage(browser, p, vp) {
       res.scans = s.scans; res.scanOffscreen = s.offscreen;
       await page.evaluate(() => { location.hash = 'ch-home'; });
       await page.waitForTimeout(100);
+      res.threeAfterScans = [...new Set(log.three)];
+      res.animFramesAfterScans = await page.evaluate(() => document.querySelectorAll('iframe[src*="/anim/"]').length);
     }
     if (p === 'brachial-plexus/') res.extra = await brachialText(page);
-    if (p === 'plexus/') res.extra = await plexusText(page);
+    if (p === 'plexus/') { res.extra = await plexusText(page); if (!WRITE) res.canvas = await plexusCanvas(page); }
     res.text = await captureText(page);
   } catch (err) {
     res.error = String(err.message || err).split('\n')[0];
   }
-  // A request aborted by navigation/teardown is not a fault of the page; keep everything else.
   res.log = log;
   await ctx.close();
   return res;
 }
 
-// ------------------------------------------------------------------ main
 function summarise(r) {
-  const allText = [...Object.values(r.text || {}), ...Object.values(r.extra || {}), ...Object.values(r.scans || {}).flatMap((v) => Object.values(v).flat())];
+  const allText = allTextOf(r);
   return {
     status: r.status, error: r.error || null,
     console: r.log.console, pageErrors: r.log.pageErrors, bad: r.log.bad, failed: r.log.failed, three: [...new Set(r.log.three)],
     overflow: r.metrics?.overflow ?? null, menuOverflow: r.menuOverflow ?? null, chapterOverflow: r.chapterOverflow || {},
     scanOffscreen: r.scanOffscreen || [],
-    polish: r.metrics ? { smallText: r.metrics.smallText, smallTextEx: r.metrics.smallTextEx, smallTargets: r.metrics.smallTargets, smallTargetsEx: r.metrics.smallTargetsEx, stickyTop: r.metrics.stickyTop, stickyEx: r.metrics.stickyEx } : null,
+    polish: r.metrics ? { smallText: r.metrics.smallText, smallTextEx: r.metrics.smallTextEx, smallTargets: r.metrics.smallTargets, smallTargetsEx: r.metrics.smallTargetsEx, stickyTop: r.metrics.stickyTop, stickyEx: r.metrics.stickyEx, barHeight: r.metrics.barHeight, readyMs: r.metrics.readyMs } : null,
     doses: doses(allText),
     lineCount: normLines(allText.join('\n')).length,
   };
 }
 
+// ------------------------------------------------------------------ main
 async function main() {
-  const browser = await chromium.launch();
+  const browser = await launch();
   const jobs = [];
   for (const p of pages) for (const vp of vps) jobs.push([p, vp]);
-  const results = [];
-  const N = Number(args.workers || 4);
-  let next = 0;
-  await Promise.all(Array.from({ length: N }, async () => {
-    while (next < jobs.length) {
-      const [p, vp] = jobs[next++];
-      const t0 = Date.now();
-      const r = await runPage(browser, p, vp);
-      r.ms = Date.now() - t0;
-      results.push(r);
-      process.stderr.write(`  ${p} @${vp} ${r.ms}ms${r.error ? ` ERROR ${r.error}` : ''}\n`);
-    }
-  }));
+  const results = await pool(jobs, Number(args.workers || 4), ([p, vp]) => runPage(browser, p, vp), ([p, vp]) => `${p} @${vp}`);
   await browser.close();
   results.sort((a, b) => pages.indexOf(a.page) - pages.indexOf(b.page) || a.vp - b.vp);
 
@@ -316,9 +208,8 @@ async function main() {
     fs.mkdirSync(BASEDIR, { recursive: true });
     const smoke = {};
     for (const r of results) {
-      const s = slug(r.page);
-      const file = path.join(BASEDIR, `${s}.json`);
-      const prev = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : { url: r.page, viewports: {} };
+      const file = path.join(BASEDIR, `${slug(r.page)}.json`);
+      const prev = readJson(file, { url: r.page, viewports: {} });
       if (!prev.viewports) prev.viewports = {};
       prev.url = r.page;
       prev.viewports[r.vp] = { text: r.text || {}, extra: r.extra || {}, scans: r.scans || {}, doses: summarise(r).doses };
@@ -326,67 +217,69 @@ async function main() {
       smoke[`${r.page}@${r.vp}`] = summarise(r);
     }
     const sfile = path.join(BASEDIR, 'smoke.json');
-    const prevSmoke = fs.existsSync(sfile) ? JSON.parse(fs.readFileSync(sfile, 'utf8')) : {};
-    fs.writeFileSync(sfile, `${JSON.stringify({ ...prevSmoke, ...smoke }, null, 1)}\n`);
+    fs.writeFileSync(sfile, `${JSON.stringify({ ...readJson(sfile, {}), ...smoke }, null, 1)}\n`);
     console.log(`Baseline written to ${path.relative(process.cwd(), BASEDIR)} (${results.length} page/viewport runs).`);
-    for (const r of results) { const s = summarise(r); console.log(`${r.page}@${r.vp}: console ${s.console.length}, pageErr ${s.pageErrors.length}, >=400 ${s.bad.length}, failed ${s.failed.length}, overflow ${s.overflow}, lines ${s.lineCount}, doses ${Object.keys(s.doses).length}`); }
     return 0;
   }
 
-  // compare
-  const smoke0 = fs.existsSync(path.join(BASEDIR, 'smoke.json')) ? JSON.parse(fs.readFileSync(path.join(BASEDIR, 'smoke.json'), 'utf8')) : {};
+  const smoke0 = readJson(path.join(BASEDIR, 'smoke.json'), {});
   let fails = 0;
   const report = [];
+  const polishRows = [];
   for (const r of results) {
     const key = `${r.page}@${r.vp}`;
     const s = summarise(r);
     const b = smoke0[key];
-    const bfile = path.join(BASEDIR, `${slug(r.page)}.json`);
-    const bt = fs.existsSync(bfile) ? JSON.parse(fs.readFileSync(bfile, 'utf8')).viewports?.[r.vp] : null;
-    const problems = []; const notes = [];
+    const bt = readJson(path.join(BASEDIR, `${slug(r.page)}.json`))?.viewports?.[r.vp] || null;
+    const problems = []; const notes = []; const polish = [];
     const fresh = (list, base) => list.filter((x) => !(base || []).includes(x));
+    const m = r.metrics || {};
     if (s.error) problems.push(`run error: ${s.error}`);
     if (s.status >= 400) problems.push(`page status ${s.status}`);
-    const nc = fresh(s.console, b?.console); if (nc.length) problems.push(`new console errors: ${nc.join(' | ')}`);
-    const np = fresh(s.pageErrors, b?.pageErrors); if (np.length) problems.push(`new page errors: ${np.join(' | ')}`);
-    const nb = fresh(s.bad, b?.bad); if (nb.length) problems.push(`new >=400 responses: ${nb.join(', ')}`);
+    if (s.console.length) problems.push(`console errors: ${[...new Set(s.console)].join(' | ')}`);
+    if (s.pageErrors.length) problems.push(`page errors: ${[...new Set(s.pageErrors)].join(' | ')}`);
+    if (s.bad.length) problems.push(`responses >= 400: ${[...new Set(s.bad)].join(', ')}`);
     const nf = fresh(s.failed.map((x) => x.replace(/\?.*$/, '')), (b?.failed || []).map((x) => x.replace(/\?.*$/, ''))); if (nf.length) problems.push(`new failed requests: ${nf.join(', ')}`);
+    const heads = s.failed.filter((x) => / HEAD /.test(x)); if (heads.length) problems.push(`failed HEAD requests (plan §8: drop the GLB pre-fetch): ${heads.join(', ')}`);
     if (s.overflow && !(b?.overflow)) problems.push(`horizontal overflow ${s.overflow}px`);
-    if (s.menuOverflow && !(b?.menuOverflow)) problems.push(`overflow with chapter menu open ${s.menuOverflow}px`);
-    const nco = Object.keys(s.chapterOverflow).filter((k) => !(b?.chapterOverflow || {})[k]); if (nco.length) problems.push(`overflow in chapters: ${nco.join(', ')}`);
-    const nso = fresh(s.scanOffscreen, b?.scanOffscreen); if (nso.length) (STRICT ? problems : notes).push(`scan off screen after Next: ${nso.join(', ')}`);
+    if (r.menuOverflow && !(b?.menuOverflow)) problems.push(`overflow with chapter menu open ${r.menuOverflow}px`);
+    const nco = Object.keys(s.chapterOverflow).filter((k) => !(b?.chapterOverflow || {})[k]); if (nco.length) problems.push(`overflow in chapters: ${nco.map((k) => `${k} ${s.chapterOverflow[k]}px`).join(', ')}`);
+    if (m.serviceWorkers) problems.push(`a service worker is registered (${m.serviceWorkers}); regional pages must not register one (§11.8)`);
+    // three.js only on brachial-plexus/ and plexus/ (and after "Open here", which the smoke never taps).
+    if (!['brachial-plexus/', 'plexus/'].includes(r.page) && (r.threeAfterScans || r.threeEarly || []).length) problems.push(`three.js / GLB requested without "Open here": ${(r.threeAfterScans || r.threeEarly).join(', ')}`);
     if (b?.three?.length) { const lost = b.three.filter((x) => x.startsWith('2')).length; const now = s.three.filter((x) => x.startsWith('2')).length; if (now < lost) problems.push(`three.js/GLB/Draco loads dropped from ${lost} to ${now}`); }
+    if (r.page.startsWith('lower-limb/') && (m.animFrames || r.animFramesAfterScans)) problems.push(`animation iframe created before "Watch" (${m.animFrames || r.animFramesAfterScans})`);
+    if (r.canvas && r.canvas.after !== r.canvas.before) problems.push(`plexus: rapid tab switching left ${r.canvas.after} canvases (started with ${r.canvas.before})`);
     if (bt) {
-      const baseLines = new Set(normLines([...Object.values(bt.text || {}), ...Object.values(bt.extra || {}), ...Object.values(bt.scans || {}).flatMap((v) => Object.values(v).flat())].join('\n')));
-      const nowLines = new Set(normLines([...Object.values(r.text || {}), ...Object.values(r.extra || {}), ...Object.values(r.scans || {}).flatMap((v) => Object.values(v).flat())].join('\n')));
-      const missing = [...baseLines].filter((l) => !nowLines.has(l));
-      const added = [...nowLines].filter((l) => !baseLines.has(l));
-      if (missing.length) problems.push(`${missing.length} baseline text line(s) missing, e.g. ${missing.slice(0, 4).map((l) => JSON.stringify(l.slice(0, 80))).join('; ')}`);
-      if (added.length) notes.push(`${added.length} new text line(s), e.g. ${added.slice(0, 3).map((l) => JSON.stringify(l.slice(0, 60))).join('; ')}`);
-      const d0 = JSON.stringify(bt.doses || {}); const d1 = JSON.stringify(s.doses);
-      if (d0 !== d1) {
-        const all = new Set([...Object.keys(bt.doses || {}), ...Object.keys(s.doses)]);
-        const diff = [...all].filter((k) => (bt.doses || {})[k] !== s.doses[k]).map((k) => `${k}: ${(bt.doses || {})[k] || 0}→${s.doses[k] || 0}`);
-        problems.push(`dose strings changed: ${diff.slice(0, 8).join(', ')}`);
-      }
+      const c = compareText(r.page, bt, r);
+      if (c.missing.length) problems.push(`${c.missing.length} baseline text line(s) missing, e.g. ${c.missing.slice(0, 4).map((l) => JSON.stringify(l.slice(0, 80))).join('; ')}`);
+      if (c.allowed.length) notes.push(`${c.allowed.length} reviewed line change(s) (parity-allow.json)`);
+      if (c.added.length) notes.push(`${c.added.length} new text line(s), e.g. ${c.added.slice(0, 3).map((l) => JSON.stringify(l.slice(0, 60))).join('; ')}`);
+      if (c.doseDiff.length) problems.push(`dose strings changed: ${c.doseDiff.slice(0, 8).join(', ')}`);
     } else notes.push('no baseline text for this page/viewport');
-    if (b?.polish && s.polish) {
-      for (const k of ['smallText', 'smallTargets']) if (s.polish[k] > b.polish[k]) (STRICT ? problems : notes).push(`${k} rose ${b.polish[k]}→${s.polish[k]}`);
-    }
-    if (STRICT && s.polish) {
-      if (s.polish.smallText) problems.push(`text under 12px: ${s.polish.smallText} (${s.polish.smallTextEx.join('; ')})`);
-      if (s.polish.smallTargets) problems.push(`targets under 44px: ${s.polish.smallTargets} (${s.polish.smallTargetsEx.join('; ')})`);
-      if (r.vp === 390 && s.polish.stickyTop > 1) problems.push(`${s.polish.stickyTop} sticky/fixed bars at the top (${s.polish.stickyEx.join('; ')})`);
-    }
+    // §11.1 polish targets: failures under --strict, notes otherwise.
+    if (m.smallText) polish.push(`text under 12px: ${m.smallText} (${m.smallTextEx.join('; ')})`);
+    if (m.smallTargets) polish.push(`targets under 44px: ${m.smallTargets} (${m.smallTargetsEx.join('; ')})`);
+    if (r.vp === 390 && m.stickyTop !== 1) polish.push(`${m.stickyTop} sticky/fixed bars at the top after scrolling, want 1 (${m.stickyEx.join('; ')})`);
+    if (r.vp === 390 && m.barHeight > 56 + 1) polish.push(`sticky bar ${m.barHeight}px tall, want ≤ 56`);
+    if (s.scanOffscreen.length) polish.push(`scan off screen after Next: ${s.scanOffscreen.join(', ')}`);
+    if (r.axe?.length) polish.push(`axe: ${r.axe.join('; ')}`);
+    if (m.readyMs > 2500) polish.push(`interactive after ${m.readyMs} ms (want < 2500; measured with ${args.workers || 4} pages in parallel)`);
+    (STRICT ? problems : notes).push(...polish);
     if (problems.length) fails++;
     report.push({ key, ok: !problems.length, problems, notes });
+    polishRows.push({ key, smallText: m.smallText ?? '-', targets: m.smallTargets ?? '-', sticky: r.vp === 390 ? m.stickyTop : '', bar: r.vp === 390 ? m.barHeight : '', scanOff: s.scanOffscreen.length, axe: r.axe ? r.axe.length : 'n/a', readyMs: m.readyMs ?? '-' });
   }
-  for (const x of report) {
+  if (!args.summary) for (const x of report) {
     console.log(`${x.ok ? 'PASS' : 'FAIL'} ${x.key}`);
-    x.problems.forEach((m) => console.log(`   ✗ ${m}`));
-    x.notes.forEach((m) => console.log(`   · ${m}`));
+    x.problems.forEach((msg) => console.log(`   ✗ ${msg}`));
+    if (!args.failsOnly) x.notes.forEach((msg) => console.log(`   · ${msg}`));
   }
-  console.log(`\n${report.length - fails}/${report.length} page/viewport runs match the baseline${STRICT ? ' (strict)' : ''}.`);
+  console.log('\nPolish targets (§11.1): text<12px · targets<44px · sticky bars (390, want 1) · bar px (want ≤56) · scans off screen · axe serious+critical · ms to interactive');
+  for (const p of polishRows) console.log(`  ${p.key.padEnd(30)} ${String(p.smallText).padStart(4)} ${String(p.targets).padStart(4)} ${String(p.sticky).padStart(3)} ${String(p.bar).padStart(4)} ${String(p.scanOff).padStart(3)} ${String(p.axe).padStart(4)} ${String(p.readyMs).padStart(6)}`);
+  if (!AXE) console.log('  (axe not run: set AXE=/path/to/axe.min.js)');
+  console.log(`\n${report.length - fails}/${report.length} page/viewport runs pass${STRICT ? ' (strict)' : ''}.`);
+  if (args.json) fs.writeFileSync(String(args.json), `${JSON.stringify({ report, polish: polishRows }, null, 1)}\n`);
   return fails ? 1 : 0;
 }
 
