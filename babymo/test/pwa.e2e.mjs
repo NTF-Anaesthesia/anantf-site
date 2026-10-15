@@ -53,7 +53,7 @@ try {
   await step('manifest and icons are valid; the page is an app shell', async () => {
     const m = await (await fetch(BASE + 'manifest.webmanifest')).json();
     assert.equal(m.display, 'standalone'); assert.equal(m.start_url, './'); assert.equal(m.scope, './'); assert.ok(m.name && m.short_name);
-    assert.equal(m.theme_color, '#f7f5ef'); assert.equal(m.background_color, '#f7f5ef');
+    assert.equal(m.theme_color, '#f1ede4'); assert.equal(m.background_color, '#f1ede4');
     assert.ok(m.icons.some(i => i.sizes === '192x192') && m.icons.some(i => i.sizes === '512x512') && m.icons.some(i => i.purpose === 'maskable'));
     for (const i of m.icons) {
       const r = await fetch(BASE + i.src); assert.equal(r.status, 200, i.src); assert.equal(r.headers.get('content-type'), 'image/png');
@@ -121,12 +121,12 @@ try {
   await step('offline: the app opens from the cache and a test starts with the cached paper', async () => {
     await ctx.setOffline(true);
     await page.reload(); await page.locator('#f-name').waitFor();
-    assert.match(await page.locator('.pills').innerText(), /offline/i);
+    assert.match(await page.locator('.bm-pills').innerText(), /offline/i);
     await page.fill('#f-name', 'Dr Offline'); await page.fill('#f-pass', 'demo'); await page.click('#start-go');
     await page.locator('#go').waitFor();    // demo mode needs no server, so this proves the shell, scripts and bank came from the cache
     assert.match(await page.textContent('#ready-sum'), /\d+ questions/);
     await page.click('#go'); await page.locator('#stem').waitFor();
-    await page.click('#leave'); await page.click('dialog.sheet [data-yes]'); await page.locator('#resume').waitFor();
+    await page.click('#leave'); await page.click('dialog.app-sheet [data-yes]'); await page.locator('#resume').waitFor();
     await ctx.setOffline(false);
     await page.click('#resume-go'); await submitTest(); await page.click('#done'); await page.locator('#f-name').waitFor();
   });
@@ -176,13 +176,13 @@ try {
   });
   await step('on a screen deeper in, an update is offered as "Update ready · Restart"', async () => {
     await page.goto(BASE + '?demo#/faculty'); await page.click('#in'); await page.locator('#byperson, .empty').first().waitFor();
-    await page.click('#tabs .tab:has-text("Paper")'); await page.locator('#paper-ready').waitFor();
-    await page.click('#paper-ready .row-link >> nth=0'); await page.locator('#suggest').waitFor();
+    await page.click('#tabs .app-tab:has-text("Paper")'); await page.locator('#paper-ready').waitFor();
+    await page.click('#paper-ready .app-row >> nth=0'); await page.locator('#suggest').waitFor();
     await page.evaluate(() => { window.__marker = 7; });
     swVersion = 'babymo-update4'; await update(); await waitingVersion('babymo-update4');
-    await page.locator('#toast.on:has-text("Update ready")').waitFor({ timeout: 10000 });
+    await page.locator('#toast.is-visible:has-text("Update ready")').waitFor({ timeout: 10000 });
     assert.equal(await page.evaluate(() => window.__marker), 7, 'switched on its own on a pushed screen');
-    await page.click('#toast .toast-act');
+    await page.click('#toast .app-toast-action');
     await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 }).catch(said('the page never reloaded into the new version'));
     await activeVersion('babymo-update4');
   });

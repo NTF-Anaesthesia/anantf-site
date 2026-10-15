@@ -1,6 +1,6 @@
-// Native-feeling building blocks for the Baby MO test: bottom sheets, toasts, segmented controls, steppers, the
-// collapsing large title, haptics and the version line. Nothing here knows about tests or Firebase.
-// It follows the qbank design spec (15 Oct 2026) so it can be swapped for the shared qbank/ui files once they exist.
+// Behaviour for the shared app kit (../assets/app/app.css, DESIGN-APP.md): bottom sheets, toasts, segmented controls,
+// steppers, the collapsing large title, haptics and the version line. The kit is CSS only; this is the small amount
+// of JavaScript the Baby MO test needs to drive it. Nothing here knows about tests or Firebase.
 
 export const $ = (s, root = document) => root.querySelector(s);
 export const $$ = (s, root = document) => [...root.querySelectorAll(s)];
@@ -8,22 +8,29 @@ export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;'
 export const nl = s => esc(s).replace(/\n/g, '<br>');
 export const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// 24px line icons (stroke = currentColor), drawn for this app; aria-hidden, so every button that uses one has a label
-const svg = (d, cls = 'ic') => `<svg class="${cls}" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${d}</svg>`;
+// 24px line icons (stroke = currentColor). aria-hidden: every button that uses one has a label.
+const svg = d => `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${d}</svg>`;
 export const icon = {
   close: svg('<path d="M6 6l12 12M18 6 6 18"/>'),
   back: svg('<path d="M15 5l-7 7 7 7"/>'),
-  chevron: svg('<path d="M9 5l7 7-7 7"/>', 'ic chev'),
   forward: svg('<path d="M9 5l7 7-7 7"/>'),
-  flag: svg('<path d="M6 21V4M6 4h11l-2 4 2 4H6"/>'),
+  flag: svg('<path d="M6 21V4M6 4h11l-2.5 4L17 12H6"/>'),
   tick: svg('<path d="M5 12.5l4.5 4.5L19 7"/>'),
   cross: svg('<path d="M7 7l10 10M17 7 7 17"/>'),
-  results: svg('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>'),
+  results: svg('<path d="M5 20v-8M12 20V5M19 20v-5"/>'),
   paper: svg('<path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4M9 12h7M9 16h7"/>'),
   people: svg('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c2 .7 3.2 2.4 3.5 5.2"/>'),
-  settings: svg('<circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1"/>'),
-  grid: svg('<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/>'),
+  settings: svg('<path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.5"/><circle cx="10" cy="17" r="2.5"/>'),
+  grid: svg('<rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/>'),
+  person: svg('<circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.2 4-6.5 8-6.5s7.2 2.3 8 6.5"/>'),
+  download: svg('<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>'),
+  key: svg('<circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l3 3"/>'),
+  play: svg('<path d="M8 5v14l11-7z"/>'),
 };
+export const chevron = '<span class="app-row-chevron" aria-hidden="true"></span>';
+
+// iOS shows :active press states only when the page listens for touches.
+document.addEventListener('touchstart', () => {}, { passive: true });
 
 // ---- haptics and announcements ----
 export function haptic(ms = 10) { try { if (navigator.vibrate && /android/i.test(navigator.userAgent)) navigator.vibrate(ms); } catch { /* not allowed */ } }
@@ -32,32 +39,32 @@ export function announce(text) {
   el.textContent = ''; setTimeout(() => { el.textContent = text; }, 30);
 }
 
-// ---- toast: one at a time, above the bottom chrome, 4 s, optional action (Undo, Restart) ----
+// ---- toast: one at a time, above the tab bar or toolbar, 4 s, optional action (Undo, Restart) ----
 let toastTimer = 0;
 export function toast(msg, { action, ms = 4000 } = {}) {
   const t = $('#toast'); if (!t) return;
   clearTimeout(toastTimer);
-  t.innerHTML = `<span class="toast-msg">${esc(msg)}</span>${action ? `<button type="button" class="toast-act">${esc(action.label)}</button>` : ''}`;
-  t.classList.add('on');
-  if (action) t.querySelector('.toast-act').addEventListener('click', () => { hideToast(); action.fn(); });
+  t.innerHTML = `<span class="app-toast-text">${esc(msg)}</span>${action ? `<button type="button" class="app-toast-action">${esc(action.label)}</button>` : ''}`;
+  t.classList.add('is-visible');
+  if (action) t.querySelector('.app-toast-action').addEventListener('click', () => { hideToast(); action.fn(); });
   toastTimer = setTimeout(hideToast, action ? Math.max(ms, 6000) : ms);
 }
-export function hideToast() { const t = $('#toast'); if (t) t.classList.remove('on'); }
+export function hideToast() { $('#toast')?.classList.remove('is-visible'); }
 
-// ---- bottom sheets ----
-// A <dialog> with a grabber, a title row with Close, scrolling content and a sticky footer above the safe area.
-// Opening pushes a history entry, so Android back and the iOS edge swipe close it; closing returns focus to the trigger.
+// ---- bottom sheets (dialog.app-sheet) ----
+// Opening pushes a history entry, so Android back and the iOS edge swipe close it; closing returns focus to the opener.
+// detent: '' (fits its content), 'medium' (55dvh) or 'large' (92dvh).
 let sheetSeq = 0;
 const openSheets = [];
 export const sheetOpen = () => openSheets.length > 0;
-export function sheet({ title, body = '', footer = '', detent = 'medium', label, onClose, className = '' } = {}) {
+export function sheet({ title, body = '', footer = '', detent = '', onClose } = {}) {
   const id = 'sheet' + (++sheetSeq);
   const d = document.createElement('dialog');
-  d.className = 'sheet ' + className; d.dataset.detent = detent; d.id = id;
+  d.className = 'app-sheet' + (detent ? ' app-sheet--' + detent : ''); d.id = id;
   d.setAttribute('aria-labelledby', id + '-t');
-  d.innerHTML = `<div class="sheet-grab" aria-hidden="true"><span></span></div>
-    <div class="sheet-head"><h2 id="${id}-t" class="sheet-title" tabindex="-1">${esc(title)}</h2><button type="button" class="sheet-close" aria-label="Close${label ? ' ' + esc(label) : ''}">Close</button></div>
-    <div class="sheet-body">${body}</div>${footer ? `<div class="sheet-foot">${footer}</div>` : ''}`;
+  d.innerHTML = `<span class="app-sheet-grabber" aria-hidden="true"></span>
+    <div class="app-sheet-head"><span></span><h2 class="app-sheet-title" id="${id}-t" tabindex="-1">${esc(title)}</h2><button type="button" class="app-btn app-btn--plain app-btn--compact" data-sheet-close>Close</button></div>
+    <div class="app-sheet-body">${body}</div>${footer ? `<div class="app-sheet-foot">${footer}</div>` : ''}`;
   d._trigger = document.activeElement;
   d._onClose = onClose;
   d._done = new Promise(r => { d._resolve = r; });
@@ -65,11 +72,11 @@ export function sheet({ title, body = '', footer = '', detent = 'medium', label,
   d.showModal();
   openSheets.push(d);
   history.pushState({ sheet: id }, '', location.href);
-  d.querySelector('.sheet-close').addEventListener('click', () => closeSheet(d));
+  d.querySelector('[data-sheet-close]').addEventListener('click', () => closeSheet(d));
   d.addEventListener('cancel', ev => { ev.preventDefault(); closeSheet(d); });
-  d.addEventListener('click', ev => { if (ev.target === d) closeSheet(d); });   // tap on the dimmed backdrop
+  d.addEventListener('click', ev => { if (ev.target === d) closeSheet(d); });   // a tap on the dimmed backdrop
   dragToClose(d);
-  requestAnimationFrame(() => d.querySelector('.sheet-title').focus({ preventScroll: true }));
+  requestAnimationFrame(() => d.querySelector('.app-sheet-title').focus({ preventScroll: true }));
   return d;
 }
 // Close a sheet (and pop its history entry). Resolves when it is gone. value is passed to onClose.
@@ -83,16 +90,12 @@ export function closeSheet(d, value) {
 function finishSheet(d, silent) {
   const i = openSheets.indexOf(d); if (i < 0) return;
   openSheets.splice(i, 1);
-  const end = () => {
-    if (d.open) d.close();
-    d.remove();
-    if (!silent && d._trigger && document.contains(d._trigger)) d._trigger.focus({ preventScroll: true });
-    d._onClose?.(d._value);
-    d._resolve(d._value);
-  };
-  if (reducedMotion() || silent) return end();
-  d.classList.add('closing');
-  setTimeout(end, 180);
+  d.style.transform = '';
+  if (d.open) d.close();                    // the kit animates the close (transition on display/overlay)
+  setTimeout(() => d.remove(), silent || reducedMotion() ? 0 : 450);
+  if (!silent && d._trigger && document.contains(d._trigger)) d._trigger.focus({ preventScroll: true });
+  d._onClose?.(d._value);
+  d._resolve(d._value);
 }
 // Route changes (a timer running out, a sign-out) close every sheet without touching history.
 export function closeAllSheets() { for (const d of [...openSheets]) finishSheet(d, true); }
@@ -100,42 +103,38 @@ window.addEventListener('popstate', () => {
   const want = history.state?.sheet;
   for (const d of [...openSheets].reverse()) { if (d.id === want) break; finishSheet(d); }
 });
+// Drag the head or grabber down past 120px (or flick) to close.
 function dragToClose(d) {
-  const handle = [d.querySelector('.sheet-grab'), d.querySelector('.sheet-head')];
-  let y0 = null, dy = 0;
-  const move = ev => { if (y0 == null) return; dy = ev.clientY - y0; d.style.transform = dy > 0 ? `translateY(${dy}px)` : ''; };
-  const up = () => {
-    if (y0 == null) return; y0 = null; d.style.transform = '';
-    if (dy > 90) closeSheet(d); else if (dy < -60) d.dataset.detent = 'large';
-    dy = 0;
+  let y0 = null, dy = 0, t0 = 0;
+  const down = ev => { if (ev.target.closest('button')) return; y0 = ev.clientY; dy = 0; t0 = ev.timeStamp; d.classList.add('is-dragging'); };
+  const move = ev => { if (y0 == null) return; dy = Math.max(0, ev.clientY - y0); d.style.transform = `translateY(${dy}px)`; };
+  const up = ev => {
+    if (y0 == null) return;
+    const v = dy / Math.max(1, ev.timeStamp - t0); y0 = null; d.classList.remove('is-dragging');
+    if (dy > 120 || v > 0.6) closeSheet(d); else d.style.transform = '';
   };
-  for (const h of handle) h.addEventListener('pointerdown', ev => { if (ev.target.closest('button')) return; y0 = ev.clientY; dy = 0; h.setPointerCapture?.(ev.pointerId); });
-  for (const h of handle) { h.addEventListener('pointermove', move); h.addEventListener('pointerup', up); h.addEventListener('pointercancel', up); }
-}
-// The keyboard covers the bottom of the screen on phones: keep sheet footers above it.
-if (window.visualViewport) {
-  const kb = () => document.documentElement.style.setProperty('--kb', Math.max(0, window.innerHeight - visualViewport.height - visualViewport.offsetTop) + 'px');
-  visualViewport.addEventListener('resize', kb); visualViewport.addEventListener('scroll', kb);
+  for (const h of [d.querySelector('.app-sheet-head'), d.querySelector('.app-sheet-grabber')]) h.addEventListener('pointerdown', down);
+  d.addEventListener('pointermove', move); d.addEventListener('pointerup', up); d.addEventListener('pointercancel', up);
 }
 
 // A yes/no question as a sheet. Resolves true for the main button.
 export function confirmSheet({ title, body = '', ok = 'OK', cancel = 'Cancel', danger = false }) {
   return new Promise(res => {
     let said = false;
-    const d = sheet({ title, body: `<div class="sheet-text">${body}</div>`, footer: `<div class="btn-row"><button type="button" class="btn secondary" data-no>${esc(cancel)}</button><button type="button" class="btn ${danger ? 'danger' : 'primary'}" data-yes>${esc(ok)}</button></div>`, onClose: () => res(said) });
+    const d = sheet({ title, body: `<div class="app-text">${body}</div>`, footer: `<div class="app-btn-row" style="margin:0"><button type="button" class="app-btn app-btn--outline" data-no>${esc(cancel)}</button><button type="button" class="app-btn ${danger ? 'app-btn--danger' : 'app-btn--primary'}" data-yes>${esc(ok)}</button></div>`, onClose: () => res(said) });
     d.querySelector('[data-yes]').addEventListener('click', () => { said = true; closeSheet(d, true); });
     d.querySelector('[data-no]').addEventListener('click', () => closeSheet(d, false));
   });
 }
 
 // ---- controls ----
-// Segmented control: 2 to 4 equal square segments on one row, radio buttons underneath (keyboard and screen readers).
-export const seg = (name, label, opts, cur, { hideLabel = false } = {}) => `<fieldset class="seg${hideLabel ? ' seg-bare' : ''}"><legend${hideLabel ? ' class="vh"' : ''}>${esc(label)}</legend><div class="seg-row" role="radiogroup" aria-label="${esc(label)}">${opts.map(([v, l]) => `<label class="seg-opt"><input type="radio" name="${esc(name)}" value="${esc(v)}"${String(v) === String(cur) ? ' checked' : ''}><span>${esc(l)}</span></label>`).join('')}</div></fieldset>`;
+// Segmented control: 2 to 4 segments on one row, radio buttons underneath (arrow keys and screen readers for free).
+export const seg = (name, label, opts, cur, { attrs = '' } = {}) => `<fieldset class="app-segmented"${attrs}><legend>${esc(label)}</legend>${opts.map(([v, l]) => `<label class="app-seg"><input type="radio" name="${esc(name)}" value="${esc(v)}"${String(v) === String(cur) ? ' checked' : ''}><span>${esc(l)}</span></label>`).join('')}</fieldset>`;
 export const segVal = (name, root = document) => root.querySelector(`input[name="${name}"]:checked`)?.value;
 
-// Stepper: − value + with 44px buttons. values: the allowed steps (snaps to them), or min/max/step.
-export const stepper = (id, label, value, { hint = '' } = {}) => `<div class="stepper-row"><span class="stepper-label" id="${id}-l">${esc(label)}${hint ? `<span class="row-sub">${esc(hint)}</span>` : ''}</span>
-  <span class="stepper" role="group" aria-labelledby="${id}-l"><button type="button" class="step-btn" data-step="-1" aria-label="Fewer: ${esc(label)}">−</button><output id="${id}" class="step-val" aria-live="polite">${esc(value)}</output><button type="button" class="step-btn" data-step="1" aria-label="More: ${esc(label)}">+</button></span></div>`;
+// Stepper: − value + (44px buttons) in a grouped row.
+export const stepper = (id, label, value, { sub = '' } = {}) => `<div class="app-row bm-stepper-row"><span class="app-row-body"><span class="app-row-title" id="${id}-l">${esc(label)}</span>${sub ? `<span class="app-row-sub">${sub}</span>` : ''}</span>
+  <span class="bm-stepper" role="group" aria-labelledby="${id}-l"><button type="button" class="bm-step" data-step="-1" aria-label="Less: ${esc(label)}">−</button><output id="${id}" class="bm-step-val app-mono" aria-live="polite">${esc(value)}</output><button type="button" class="bm-step" data-step="1" aria-label="More: ${esc(label)}">+</button></span></div>`;
 export function wireStepper(id, { min = 1, max = 100, step = 1, values, onChange } = {}) {
   const out = document.getElementById(id); if (!out) return;
   const group = out.parentElement;
@@ -147,9 +146,7 @@ export function wireStepper(id, { min = 1, max = 100, step = 1, values, onChange
   group.addEventListener('click', ev => {
     const b = ev.target.closest('[data-step]'); if (!b) return;
     const dir = +b.dataset.step, v = Number(out.textContent);
-    let n;
-    if (values) n = dir > 0 ? values.find(x => x > v) ?? v : [...values].reverse().find(x => x < v) ?? v;
-    else n = Math.min(max, Math.max(min, v + dir * step));
+    const n = values ? (dir > 0 ? values.find(x => x > v) ?? v : [...values].reverse().find(x => x < v) ?? v) : Math.min(max, Math.max(min, v + dir * step));
     if (n === v) return;
     out.textContent = String(n); sync(); onChange?.(n);
   });
@@ -157,37 +154,40 @@ export function wireStepper(id, { min = 1, max = 100, step = 1, values, onChange
   return { get: () => Number(out.textContent), set: v => { out.textContent = String(v); sync(); } };
 }
 
-// ---- large title that collapses into the bar ----
-// The bar's inline title fades in once the big title has scrolled under it.
+// ---- large title that collapses into the bar (the bar gains its blurred surface and inline title) ----
 let titleObserver = null;
-export function watchLargeTitle(scroller) {
+export function watchLargeTitle() {
   titleObserver?.disconnect();
-  const big = scroller.querySelector('.large-title'), bar = scroller.querySelector('.bar');
-  if (!big || !bar || !('IntersectionObserver' in window)) { bar?.classList.add('collapsed'); return; }
-  titleObserver = new IntersectionObserver(([e]) => bar.classList.toggle('collapsed', !e.isIntersecting), { root: scroller, rootMargin: '-44px 0px 0px 0px', threshold: 0 });
+  const big = $('.app-large-title'), bar = $('.app-bar');
+  if (!bar) return;
+  if (!big || !('IntersectionObserver' in window)) { if (!big) bar.classList.add('is-collapsed'); return; }
+  titleObserver = new IntersectionObserver(([e]) => bar.classList.toggle('is-collapsed', !e.isIntersecting), { rootMargin: `-${bar.offsetHeight}px 0px 0px 0px`, threshold: 0 });
   titleObserver.observe(big);
 }
 
 // ---- skeleton rows (no spinners) ----
-export const skeleton = (n = 5) => `<div class="skeleton" aria-hidden="true">${'<div class="sk-row"><i></i><i></i></div>'.repeat(n)}</div><p class="vh" role="status">Loading</p>`;
+export const skeleton = (n = 4) => `<ul class="app-list" aria-busy="true" aria-label="Loading">${'<li><div class="app-row"><span class="app-row-body"><span class="app-skeleton app-skeleton--line"></span><span class="app-skeleton app-skeleton--short"></span></span></div></li>'.repeat(n)}</ul>`;
 
-// ---- score ring: 120px, draws once ----
-export function ring(pct, label = `${Math.round(pct)}%`, cls = '') {
-  const r = 52, c = 2 * Math.PI * r, off = c * (1 - Math.max(0, Math.min(100, pct)) / 100);
-  return `<div class="ring ${cls}" role="img" aria-label="Score ${esc(label)}"><svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true"><circle cx="60" cy="60" r="${r}" class="ring-bg"/><circle cx="60" cy="60" r="${r}" class="ring-fg" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" style="--c:${c.toFixed(1)}"/></svg><span class="ring-num" aria-hidden="true">${esc(label)}</span></div>`;
+// ---- score ring: draws once ----
+export function ring(pct, label, sub, ok) {
+  const v = Math.max(0, Math.min(100, Math.round(pct)));
+  return `<div class="app-ring${ok ? ' app-ring--ok' : ''}" style="--app-ring:${v}" role="img" aria-label="Score ${esc(label)}${sub ? ', ' + esc(sub) : ''}"><svg viewBox="0 0 100 100" aria-hidden="true"><circle class="app-ring-track" cx="50" cy="50" r="44"/><circle class="app-ring-value" cx="50" cy="50" r="44" pathLength="100"/></svg><span class="app-ring-label" aria-hidden="true"><strong>${esc(label)}</strong>${sub ? `<span>${esc(sub)}</span>` : ''}</span></div>`;
 }
 
-// ---- app version line and "Get the latest version" (AGENTS.md: every installable app) ----
+// ---- app version and "Get the latest version" (AGENTS.md: every installable app), as rows ----
 // Reads the version from this app's cache name (<prefix><date>-<hash>). The button checks for a signal by fetching the
 // worker script, then removes only this app's worker and caches and reloads; saved answers and sign-in are untouched.
-export const versionLine = () => '<div class="appver"><p id="appver" hidden></p><p><button type="button" class="link" id="getlatest">Not updating? Get the latest version</button></p><p id="appver-msg" role="status"></p></div>';
+export const versionLine = () => `<section class="app-section bm-appver" aria-label="App version"><ul class="app-list">
+  <li id="appver" hidden><div class="app-row"><span class="app-row-body"><span class="app-row-sub" id="appver-text"></span></span></div></li>
+  <li><button type="button" class="app-row app-row--action" id="getlatest"><span class="app-row-body"><span class="app-row-title">Not updating? Get the latest version</span></span></button></li></ul>
+  <p class="app-section-footer" id="appver-msg" role="status"></p></section>`;
 export async function paintVersion(prefix) {
   const el = $('#appver'), btn = $('#getlatest'); if (!el || !btn) return;
   btn.addEventListener('click', () => getLatest(prefix));
   try {
     const k = (await caches.keys()).find(k => k.startsWith(prefix)); if (!k) return;
     const v = k.slice(prefix.length), m = v.match(/^(\d{4}-\d{2}-\d{2})-([0-9a-f]+)$/);
-    el.textContent = 'App version ' + (m ? `${m[1]} (${m[2]})` : v); el.hidden = false;
+    $('#appver-text').textContent = 'App version ' + (m ? `${m[1]} (${m[2]})` : v); el.hidden = false;
   } catch { /* no caches (old browser, blocked): no line */ }
 }
 async function getLatest(prefix) {

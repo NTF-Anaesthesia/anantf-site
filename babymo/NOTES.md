@@ -57,29 +57,34 @@ in mind (not built): CBD discussions, feedback. Keep the portal a set of small m
 
 ## The app (design, 15 Oct 2026)
 
-Phone first, like a native app, following the qbank design spec (`DESIGN.md` look: paper, ink, wine, square edges; only
-true circles are round). No site header: an app shell with a 44px bar and a large title that collapses into it,
-bottom sheets (with a grabber; Android back and the iOS swipe close them), toasts, segmented controls, steppers.
+Phone first, like a native app. It follows **`DESIGN-APP.md` and uses the shared kit `../assets/app/app.css`**
+(AGENTS.md: every installable app does), with Baby-MO-only bits in `style.css` (navigator dots, stepper, save bar,
+result layout) using the kit's tokens. No site header: a 44px bar with a large title that collapses into it, grouped
+inset lists on the warm ground, bottom sheets (grabber; Android back and the iOS swipe close them), toasts, segmented
+controls. The kit is CSS only; `js/ui.js` holds the little JavaScript that drives it (sheets, toasts, steppers, the
+collapsing title, the version rows).
 
 - **MO, one path, no tab bar**: Start (name, passphrase) → Ready ("14 questions · 20 minutes · pass 80% · attempt 1 of
-  2"; must-ask is never mentioned) → the test (× leave, "Q 3/14" opens the navigator, timer, flag; Back · Clear ·
-  Next, then Finish → check sheet) → Result (score ring, Pass or Not yet, saved or "Saving your result…").
+  2"; must-ask is never mentioned) → the test (× leave, "Q 3/14" opens the navigator, timer, flag; toolbar Back ·
+  Clear · Next, then Finish → check sheet) → Result (score ring, Pass or Not yet, "Saved" or "Saving your result…").
 - **Faculty tabs**: Results (by person with "Needs help" pinned, by question with "Difficult" under 35% once 5 have
   answered, by topic; cohort picker), Paper (read-only), People (approve, decline, roles), Settings.
-- Deviations from the design spec, and why: the shared `qbank/ui` files did not exist yet, so the components live in
-  `js/ui.js` and `style.css` (written to the spec, to be swapped for `qbank/ui` when it lands); a plain entrance
-  animation instead of `startViewTransition` (screens render synchronously, so wiring and tests stay simple); the
-  test's bottom bar is Back · Clear · Next (the flag is in the top bar only, not twice); roles are labelled Faculty and
-  Admin, because nobody edits questions here any more; three review modes (see above); Begin needs a signal in the
-  real app because it counts the attempt on the server (the paper itself is cached and works offline).
-- Choice rows and every button row must fit on one line at 390px (the browser test checks this with `oneRow`), and
-  axe must be clean on every screen, phone and desktop.
+- History of the look: the workflow's design spec (15 Oct 2026) asked for square edges everywhere; `DESIGN-APP.md`
+  (#111, merged the same day) replaced that for installable apps with soft corners and grouped lists, so the app was
+  moved onto the kit before merging. Remaining deviations, and why: a light entrance animation instead of
+  `startViewTransition` (screens render synchronously, so wiring and tests stay simple); the toolbar is Back · Clear ·
+  Next (the flag is in the top bar, not twice); roles are labelled Faculty and Admin, because nobody edits questions
+  here any more; three review modes (see above); Begin needs a signal in the real app because it counts the attempt on
+  the server (the paper itself is cached and works offline); read-only choices are not dimmed (the kit's 60%
+  `.is-dimmed` falls below 4.5:1 contrast).
+- Every button row and segmented control fits on one line at 390px (the browser test checks this with `oneRow`), and
+  axe is clean on every screen, phone and desktop.
 
 ## Code map
 
 - `js/logic.js`: pure logic (settings from the paper and Firebase, drawing a sitting, marking, results by person,
   question and topic, CSV); tests in `test/logic.test.mjs`.
-- `js/ui.js`: the component layer (sheets, toasts, segmented controls, steppers, collapsing title, version line).
+- `js/ui.js`: drives the kit (sheets, toasts, segmented controls, steppers, collapsing title, version rows).
 - `js/local.js`: browser-only backend (demo and "not connected yet"); `js/cloud.js`: Firebase backend; `js/store.js`
   picks one. Same functions in both: any change to one needs the other. The old question and topic functions were
   removed with the editor (15 Oct 2026); the rules still allow those paths (see Status).
@@ -119,12 +124,13 @@ Built around what went wrong in the logbook and prewarming apps (anawj.com):
   minutes.
 - **All or nothing.** `sw.js` caches every file into one cache per version on install (`addAll`); if any file fails the
   old version stays. Only `babymo-` caches are touched.
-- **What is cached.** `SHELL` (this folder), `SITE` (the fonts, the monogram and the bank's code `qbank/js/bank.js`) and
+- **What is cached.** `SHELL` (this folder), `SITE` (the app kit `assets/app/app.css`, the fonts, the monogram and the
+  bank's code `qbank/js/bank.js`) and
   `DATA` (`qbank/bank/questions.json`, `qbank/papers/babymo.json`). Everything is network first (3 s, then the cache).
   The worker answers for the `SITE` and `DATA` files although they are outside its folder (the browser sends every
   request from a page it controls to it; `pwa.e2e.mjs` checks this).
 - **VERSION is a hash of SHELL and SITE**, because this site has no deploy step that stamps it: after changing any of
-  those files, including `qbank/js/bank.js`, run `node babymo/tools/stamp.mjs`; `node babymo/test/version.test.mjs`
+  those files, including `assets/app/app.css` and `qbank/js/bank.js`, run `node babymo/tools/stamp.mjs`; `node babymo/test/version.test.mjs`
   fails if it was forgotten. `DATA` is not hashed: a change to a question needs no new Baby MO version (it is fetched
   fresh whenever there is a signal).
 - **Results are never lost, and you can see when one is waiting.** A finished test goes into a local outbox and is sent

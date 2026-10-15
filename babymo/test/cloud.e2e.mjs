@@ -81,7 +81,7 @@ const step = async (name, fn) => {
   catch (e) { console.error('FAIL', name, '\n', e.message); process.exitCode = 1; if (SHOTS && page) { fs.mkdirSync(SHOTS, { recursive: true }); await page.screenshot({ path: path.join(SHOTS, 'mo-cloud-fail-' + name.replace(/\W+/g, '-') + '.png') }).catch(() => {}); } throw e; }
 };
 const text = (p, sel) => p.locator(sel).first().innerText();
-const tab = (p, label) => p.locator('#tabs .tab', { hasText: label });
+const tab = (p, label) => p.locator('#tabs .app-tab', { hasText: label });
 
 // MO login on a page: name + passphrase
 async function moStart(p, name, pass) {
@@ -94,7 +94,7 @@ async function sitTest(p, { wrong = 0, submit = true } = {}) {
   const items = await p.evaluate(() => JSON.parse(localStorage.getItem('mo-attempt')).items);
   for (let i = 0; i < items.length; i++) {
     const k = i < items.length - wrong ? items[i].answer : (items[i].answer + 1) % items[i].options.length;
-    await p.locator('.choice').nth(k).click();
+    await p.locator('.app-choice').nth(k).click();
     if (i < items.length - 1) await p.click('#next');
   }
   if (submit) await submitNow(p);
@@ -111,7 +111,7 @@ async function facultySignIn(p) {
   await p.locator('#in').waitFor(); await p.click('#in');
   await tab(p, 'Results').waitFor();
 }
-const toastText = async (p, re) => p.waitForFunction(r => new RegExp(r).test(document.querySelector('#toast.on')?.textContent || ''), re.source, { timeout: 10000 });
+const toastText = async (p, re) => p.waitForFunction(r => new RegExp(r).test(document.querySelector('#toast.is-visible')?.textContent || ''), re.source, { timeout: 10000 });
 
 try {
   await seed();
@@ -123,7 +123,7 @@ try {
 
   await step('cloud mode is on (no demo pill) and the SDK loaded', async () => {
     await page.goto(URL_EMU); await page.locator('#f-name').waitFor();
-    assert.equal(await page.locator('.pill.demo').count(), 0, 'demo pill shown: cloud.js is not enabled');
+    assert.equal(await page.locator('.bm-demo').count(), 0, 'demo pill shown: cloud.js is not enabled');
     assert.equal(await page.evaluate(() => typeof window.__moTestSignIn), 'function');
   });
   await step('wrong passphrase is refused', async () => {
@@ -188,11 +188,11 @@ try {
     await facultySignIn(page);
     await page.locator('#byperson').waitFor();
     assert.match(await text(page, '#byperson'), /Dr Test Person/); assert.match(await text(page, '#byperson'), /Best 4\/5/);
-    assert.equal(await page.locator('#tabs .tab').count(), 4);
+    assert.equal(await page.locator('#tabs .app-tab').count(), 4);
   });
   await step('a person, their attempt, results by question, the paper', async () => {
-    await page.click('#byperson .row-link'); await page.locator('#used').waitFor(); assert.match(await text(page, '#used'), /1 of 2/);
-    await page.click('#app .list .row-link >> nth=0'); await page.locator('#att-items').waitFor();
+    await page.click('#byperson .app-row'); await page.locator('#used').waitFor(); assert.match(await text(page, '#used'), /1 of 2/);
+    await page.click('#app .app-list a.app-row >> nth=0'); await page.locator('#att-items').waitFor();
     assert.equal(await page.locator('#att-items li').count(), 5);
     await page.goto(URL_EMU + '#/faculty/results?by=question'); await page.locator('#byquestion').waitFor();
     assert.equal(await page.locator('#byquestion li').count(), 5);
@@ -203,7 +203,7 @@ try {
   await step('settings (admin): save cohort and review mode; People: add and remove a faculty member', async () => {
     await page.goto(URL_EMU + '#/faculty/settings'); await page.locator('#sf').waitFor();
     assert.equal(await page.inputValue('#s-pass'), PASS); assert.equal(await text(page, '#s-count'), '5');
-    await page.fill('#s-cohort', 'Nov 2026 intake'); await page.click('.seg-opt:has-text("Right or wrong")');
+    await page.fill('#s-cohort', 'Nov 2026 intake'); await page.click('.app-seg:has-text("Right or wrong")');
     await page.click('#save'); await toastText(page, /Settings saved/);
     const s = await getD('config', 'test'); assert.equal(s.cohort, 'Nov 2026 intake'); assert.equal(s.review, 'marks'); assert.equal(s.updatedBy.email, ADMIN); assert.equal(s.count, 5); assert.equal(s.passMark, 60); assert.equal(s.minutes, 10);
     assert.equal((await getD('config', 'access')).passphrase, PASS, 'an unchanged passphrase is not rewritten');
@@ -212,11 +212,11 @@ try {
     await page.locator('#mem li', { hasText: 'new.person@example.com' }).first().waitFor();
     assert.deepEqual(await getD('members', 'new.person@example.com'), { id: 'new.person@example.com', role: 'editor', name: 'New Person' });
     await page.locator('#mem li', { hasText: 'new.person@example.com' }).locator('[data-rm]').click();
-    await page.locator('dialog.sheet [data-yes]').click();
+    await page.locator('dialog.app-sheet [data-yes]').click();
     await page.waitForFunction(() => !document.querySelector('#mem')?.textContent.includes('new.person@example.com'));
     assert.equal(await getD('members', 'new.person@example.com'), null);
     await page.goto(URL_EMU + '#/faculty/settings'); await page.locator('#sf').waitFor();   // back to the intake's settings for the next MOs
-    await page.fill('#s-cohort', 'Oct 2026'); await page.click('.seg-opt:has-text("Full review")'); await page.click('#save'); await toastText(page, /Settings saved/);
+    await page.fill('#s-cohort', 'Oct 2026'); await page.click('.app-seg:has-text("Full review")'); await page.click('#save'); await toastText(page, /Settings saved/);
   });
 
   // an editor (not admin) sees no settings form and cannot read the passphrase
@@ -241,7 +241,7 @@ try {
     await p.locator('#in').waitFor(); await p.click('#in');
     await p.locator('#out').waitFor();
     assert.match(await text(p, '#app'), /not faculty yet/);
-    assert.equal(await p.locator('#tabs .tab').count(), 0);
+    assert.equal(await p.locator('#tabs .app-tab').count(), 0);
     const r = await p.evaluate(async () => {
       const c = await import('/babymo/js/cloud.js'); const out = {};
       for (const [k, fn] of Object.entries({ a: () => c.listAttempts(), m: () => c.listMembers(), s: () => c.getSettings(), n: () => c.listAttemptCounts() })) { try { await fn(); out[k] = 'allowed'; } catch (e) { out[k] = e.code; } }
@@ -307,11 +307,11 @@ try {
     assert.equal((await call(p2, 'requestAccess', 'Dr Second')).ok, true);
     assert.equal((await call(p2, 'listRequests')).code, 'permission');
     const adminPage = await facultyPage(facCtx, '#/faculty/people'); await adminPage.locator('#reqs').waitFor();
-    await adminPage.click(`[data-dec="${SECOND}"]`); await adminPage.click('dialog.sheet [data-yes]'); await adminPage.locator('text=Nobody is waiting').waitFor();
+    await adminPage.click(`[data-dec="${SECOND}"]`); await adminPage.click('dialog.app-sheet [data-yes]'); await adminPage.locator('text=Nobody is waiting').waitFor();
     assert.equal(await getD('accessRequests', SECOND), null); assert.equal(await getD('members', SECOND), null);
     assert.equal((await call(p2, 'requestAccess', 'Dr Second')).ok, true);
     await adminPage.reload(); await adminPage.locator(`[data-ap="${SECOND}"]`).click(); await adminPage.locator(`[data-member="${SECOND}"]`).waitFor();
-    await adminPage.click(`[data-member="${SECOND}"] .seg-opt:has-text("Admin")`); await toastText(adminPage, /Now an admin/);
+    await adminPage.click(`[data-member="${SECOND}"] .app-seg:has-text("Admin")`); await toastText(adminPage, /Now an admin/);
     assert.deepEqual(await getD('members', SECOND), { id: SECOND, role: 'admin', name: 'Dr Second' });
     assert.equal((await call(p2, 'memberRole', SECOND)).v, 'admin');
     await adminPage.close(); await p2.close(); await edPage.close();
@@ -360,7 +360,7 @@ try {
     assert.equal(await p.evaluate(() => JSON.parse(localStorage.getItem('mo-outbox')).length), 1, 'result kept in the outbox');
     // recovery: back to the start, log in again with the new passphrase: the waiting result is sent under the new login
     await p.click('#done'); await p.locator('#f-name').waitFor();
-    assert.match(await text(p, '.pills'), /Saving your result/i, 'the start page says a result is waiting');
+    assert.match(await text(p, '.bm-pills'), /Saving your result/i, 'the start page says a result is waiting');
     await p.fill('#f-pass', curPass); await p.click('#start-go'); await p.locator('#go').waitFor();
     await p.waitForFunction(() => JSON.parse(localStorage.getItem('mo-outbox') || '[]').length === 0, null, { timeout: 15000 });
     const as = await docs('attempts', where('name', '==', 'Dr Locked Out')); assert.equal(as.length, 1);
@@ -370,7 +370,7 @@ try {
   await step('reload in the middle of a test, then submit: saved under the same name', async () => {
     const ctx = await newCtx(); const p = await newPage(ctx); page = p;
     await moStart(p, 'Dr Reloader', curPass); await p.locator('#go').waitFor(); await p.click('#go'); await p.locator('#stem').waitFor();
-    await p.locator('.choice').nth(0).click();
+    await p.locator('.app-choice').nth(0).click();
     await p.reload(); await p.locator('#stem').waitFor();
     await p.click('#qpill'); await p.click('#nav-finish'); await p.click('#submit'); await p.locator('#score').waitFor();
     await p.locator('#saved.ok').waitFor({ timeout: 15000 });

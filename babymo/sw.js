@@ -7,15 +7,15 @@
 //  - A new version WAITS (no skipWaiting on install). The page tells it to take over (message 'skipWaiting') only when it
 //    is safe: never during a test or while someone is typing (js/app.js, "safe updates").
 //  - Only this app's caches are deleted (prefix), and only Baby MO's own files are handled (Firebase, Google: network).
-//  - SITE: shared files outside this folder that the app needs (fonts, the question bank's code). DATA: the question bank
+//  - SITE: shared files outside this folder that the app needs (the app kit, fonts, the bank's code). DATA: the question bank
 //    and the paper (../qbank/), precached too but not part of the hash: they change often and are always fetched fresh
 //    when there is a signal, so a bank change never needs a new Baby MO version.
 
-const VERSION = 'babymo-2026-10-15-f9b3988f';
+const VERSION = 'babymo-2026-10-15-456b7fea';
 const NET_WAIT = 3000; // ms before falling back to the cached copy
 const SHELL = ['./', 'index.html', 'style.css', 'manifest.webmanifest', 'js/app.js', 'js/logic.js', 'js/ui.js', 'js/store.js', 'js/local.js', 'js/cloud.js', 'js/firebase-config.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
-const SITE = ['../qbank/js/bank.js', '../fonts/inter.woff2', '../fonts/fraunces-roman.woff2', '../fonts/jetbrains-mono.woff2', '../ana-ntf-monogram.svg'];
+const SITE = ['../assets/app/app.css', '../qbank/js/bank.js', '../fonts/inter.woff2', '../fonts/fraunces-roman.woff2', '../fonts/jetbrains-mono.woff2', '../ana-ntf-monogram.svg'];
 const DATA = ['../qbank/bank/questions.json', '../qbank/papers/babymo.json'];
 
 const abs = u => new URL(u, self.location).href;
