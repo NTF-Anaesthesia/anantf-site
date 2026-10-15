@@ -1,0 +1,1523 @@
+[
+  {
+    "file": "peng-1.jpg",
+    "block": "peng",
+    "blockId": "peng",
+    "page": "lower-limb/hip/",
+    "articleTitle": "Effect of pericapsular nerve group block and suprainguinal fascia iliaca block on postoperative analgesia and stress response in elderly patients undergoing hip arthroplasty: a prospective randomized controlled double-blind trial",
+    "authors": "Cui X, Cheng Z, Zhang T, et al.",
+    "journal": "BMC Anesthesiology",
+    "year": 2024,
+    "doi": "10.1186/s12871-024-02604-8",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11218169/",
+    "pmcid": "PMC11218169",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.",
+    "figure": "Fig. 1",
+    "figureNote": "Shown on PMC as the image file 12871_2024_2604_Fig2_HTML; its burned-in labels (FA, PS, AIIS, IPE) match the Fig. 1 legend.",
+    "caption": "PENG block view: the needle path (dashed) runs from lateral to the plane between the psoas tendon and the iliopubic eminence, medial to the AIIS.",
+    "originalCaption": "Ultrasound imaging of PENG block. The dashed line is outlined by the arrows. FA indicates femoral artery; PS, psoas tendon; AIIS, anterior inferior iliac spine; IPE, iliopubic eminence",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "Medial arrow; FA, PS, AIIS, IPE; dashed needle path; machine scale and settings",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Femoral artery",
+        "kind": "artery",
+        "x": 0.3,
+        "y": 0.39,
+        "tx": 0.22,
+        "ty": 0.24
+      },
+      {
+        "text": "Psoas tendon",
+        "kind": "tendon",
+        "x": 0.47,
+        "y": 0.46,
+        "tx": 0.4,
+        "ty": 0.7
+      },
+      {
+        "text": "AIIS",
+        "kind": "bone",
+        "x": 0.66,
+        "y": 0.37,
+        "tx": 0.8,
+        "ty": 0.24
+      },
+      {
+        "text": "Iliopubic eminence",
+        "kind": "bone",
+        "x": 0.45,
+        "y": 0.565,
+        "tx": 0.24,
+        "ty": 0.68
+      },
+      {
+        "text": "Target plane",
+        "kind": "point",
+        "x": 0.52,
+        "y": 0.53,
+        "tx": 0.66,
+        "ty": 0.62
+      }
+    ]
+  },
+  {
+    "file": "peng-2.jpg",
+    "block": "peng",
+    "blockId": "peng",
+    "page": "lower-limb/hip/",
+    "articleTitle": "Pericapsular Nerve Group (PENG) Block for Pediatric Hip Surgery: A Report of Three Cases",
+    "authors": "Bunnell AM, Smith JV",
+    "journal": "Cureus",
+    "year": 2025,
+    "doi": "10.7759/cureus.78996",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11910944/",
+    "pmcid": "PMC11910944",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License CC-BY 4.0., which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 1",
+    "caption": "PENG block anatomy in a child: the needle aims for the bone between the psoas tendon and the AIIS.",
+    "originalCaption": "An example of PENG ultrasound anatomyThe image shows the anterior inferior iliac spine (A), psoas tendon (B), and trajectory of the needle (C).PENG: Pericapsular nerve group.",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "Medial / Lateral; letter boxes A, B, C with arrows; needle line; 6.0 cm depth",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "AIIS",
+        "kind": "bone",
+        "x": 0.79,
+        "y": 0.43,
+        "tx": 0.88,
+        "ty": 0.36
+      },
+      {
+        "text": "Psoas tendon",
+        "kind": "tendon",
+        "x": 0.45,
+        "y": 0.54,
+        "tx": 0.3,
+        "ty": 0.48
+      },
+      {
+        "text": "Needle",
+        "kind": "point",
+        "x": 0.62,
+        "y": 0.36,
+        "tx": 0.7,
+        "ty": 0.24
+      },
+      {
+        "text": "Iliopubic eminence",
+        "kind": "bone",
+        "x": 0.35,
+        "y": 0.63,
+        "tx": 0.24,
+        "ty": 0.75
+      }
+    ]
+  },
+  {
+    "file": "fib-1.jpg",
+    "block": "fib",
+    "blockId": "fib",
+    "page": "lower-limb/hip/",
+    "articleTitle": "Combining Pericapsular Nerve Group (PENG) Block With the Supra-Inguinal Fascia Iliaca Block (SIFICB) for Perioperative Analgesia and Functional Recovery in Patients Undergoing Hip Surgeries: A Retrospective Case Series",
+    "authors": "Desai DJ, Shah N, Bumiya P",
+    "journal": "Cureus",
+    "year": 2023,
+    "doi": "10.7759/cureus.36374",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10113177/",
+    "pmcid": "PMC10113177",
+    "licence": "CC BY 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 2",
+    "caption": "Supra-inguinal fascia iliaca view: the 'bow-tie' of sartorius and internal oblique, with the needle aimed under the fascia iliaca.",
+    "originalCaption": "Ultrasound image of SIFICB. The appearance of the \"BOW-TIE\" sign formed by the sartorius and internal oblique muscles. The white arrow shows the direction of the needle to pierce the fascia iliaca.SIFICB: suprainguinal fascia iliaca compartment block",
+    "orientation": {
+      "left": "caudal",
+      "right": "cranial"
+    },
+    "burnedInLabels": "Authors' outlines and text: Needle Direction, Sartorius, Internal oblique, Fascia Iliaca, Ileum (sic, ilium)",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG. Orientation inferred from the anatomy (sartorius caudal, internal oblique cranial); not stated by the authors.",
+    "labels": [
+      {
+        "text": "Sartorius",
+        "kind": "muscle",
+        "x": 0.15,
+        "y": 0.25
+      },
+      {
+        "text": "Internal oblique",
+        "kind": "muscle",
+        "x": 0.8,
+        "y": 0.27
+      },
+      {
+        "text": "Fascia iliaca",
+        "kind": "fascia",
+        "x": 0.45,
+        "y": 0.31,
+        "tx": 0.4,
+        "ty": 0.4
+      },
+      {
+        "text": "Iliacus",
+        "kind": "muscle",
+        "x": 0.35,
+        "y": 0.58
+      },
+      {
+        "text": "Ilium",
+        "kind": "bone",
+        "x": 0.6,
+        "y": 0.8,
+        "tx": 0.62,
+        "ty": 0.93
+      },
+      {
+        "text": "Needle tip",
+        "kind": "point",
+        "x": 0.44,
+        "y": 0.3,
+        "tx": 0.3,
+        "ty": 0.12
+      }
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/3.0/."
+  },
+  {
+    "file": "fib-2.jpg",
+    "block": "fib",
+    "blockId": "fib",
+    "page": "lower-limb/hip/",
+    "articleTitle": "Effect of pericapsular nerve group block and suprainguinal fascia iliaca block on postoperative analgesia and stress response in elderly patients undergoing hip arthroplasty: a prospective randomized controlled double-blind trial",
+    "authors": "Cui X, Cheng Z, Zhang T, et al.",
+    "journal": "BMC Anesthesiology",
+    "year": 2024,
+    "doi": "10.1186/s12871-024-02604-8",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11218169/",
+    "pmcid": "PMC11218169",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.",
+    "figure": "Fig. 2",
+    "figureNote": "Shown on PMC as the image file 12871_2024_2604_Fig3_HTML; its burned-in labels (IO, TA, IM, ASIS) match the Fig. 2 legend.",
+    "caption": "Supra-inguinal fascia iliaca view near the ASIS: the dashed line marks the fascia iliaca lying on the iliacus, under the abdominal wall muscles.",
+    "originalCaption": "Ultrasound imaging of SIFIB. Dashed line indicates the fascia iliaca; ASIS, anterior superior iliac spine; IM, iliacus muscle; IO, internal oblique; IP, iliopsoas muscle; and TA, transverse abdominus",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "Lateral arrow; IO, TA, IM, ASIS; dashed line; machine scale",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG. Orientation as marked by the authors.",
+    "labels": [
+      {
+        "text": "Internal oblique",
+        "kind": "muscle",
+        "x": 0.17,
+        "y": 0.28
+      },
+      {
+        "text": "Transversus abdominis",
+        "kind": "muscle",
+        "x": 0.17,
+        "y": 0.4
+      },
+      {
+        "text": "Fascia iliaca",
+        "kind": "fascia",
+        "x": 0.3,
+        "y": 0.45,
+        "tx": 0.42,
+        "ty": 0.55
+      },
+      {
+        "text": "Iliacus",
+        "kind": "muscle",
+        "x": 0.2,
+        "y": 0.66
+      },
+      {
+        "text": "ASIS",
+        "kind": "bone",
+        "x": 0.32,
+        "y": 0.7,
+        "tx": 0.48,
+        "ty": 0.76
+      }
+    ]
+  },
+  {
+    "file": "femoral-1.jpg",
+    "block": "femoral",
+    "blockId": "femoral",
+    "page": "lower-limb/hip/",
+    "articleTitle": "Tetra-block: ultrasound femoral, lateral femoral-cutaneous, obturator, and sciatic nerve blocks in lower limb anesthesia: a case series",
+    "authors": "Coviello A, Iacovazzo C, Cirillo D, et al.",
+    "journal": "Journal of Medical Case Reports",
+    "year": 2023,
+    "doi": "10.1186/s13256-023-04017-6",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10314433/",
+    "pmcid": "PMC10314433",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.",
+    "figure": "Fig. 7",
+    "caption": "Femoral nerve at the groin: the nerve lies lateral to the femoral artery and vein, on the iliacus.",
+    "originalCaption": "Ultrasound Femoral nerve block. Iliac muscle (IM); Femoral nerve (N); Femoral artery (A); Femoral vein (V)",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "Coloured letters IM, N, A, V",
+    "modifications": "Cropped to the ultrasound image (machine menus removed); re-saved as optimised JPEG. Orientation inferred from the anatomy (vein medial).",
+    "labels": [
+      {
+        "text": "Femoral nerve",
+        "kind": "nerve",
+        "x": 0.48,
+        "y": 0.7,
+        "tx": 0.4,
+        "ty": 0.56
+      },
+      {
+        "text": "Femoral artery",
+        "kind": "artery",
+        "x": 0.7,
+        "y": 0.68,
+        "tx": 0.66,
+        "ty": 0.52
+      },
+      {
+        "text": "Femoral vein",
+        "kind": "vein",
+        "x": 0.92,
+        "y": 0.7,
+        "tx": 0.88,
+        "ty": 0.56
+      },
+      {
+        "text": "Iliacus",
+        "kind": "muscle",
+        "x": 0.25,
+        "y": 0.82
+      }
+    ]
+  },
+  {
+    "file": "femoral-2.jpg",
+    "block": "femoral",
+    "blockId": "femoral",
+    "page": "lower-limb/hip/",
+    "articleTitle": "Ultrasound-Guided Femoral Nerve Block to Facilitate the Closed Reduction of a Dislocated Hip Prosthesis",
+    "authors": "Carlin E, Stankard B, Voroba A, et al.",
+    "journal": "Clinical Practice and Cases in Emergency Medicine",
+    "year": 2017,
+    "doi": "10.5811/cpcem.2017.7.34328",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5965208/",
+    "pmcid": "PMC5965208",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed in accordance with the terms of the Creative Commons Attribution (CC BY 4.0) License. See: http://creativecommons.org/licenses/by/4.0/",
+    "figure": "Image 2",
+    "caption": "Right femoral nerve block during injection: the needle (arrows) approaches the nerve lateral to the femoral artery.",
+    "originalCaption": "Ultrasonographic image of the right femoral nerve and associated vascular structures, obtained during injection of anesthesia around the femoral nerve. The series of arrows outlines the course of the needle inserted for delivery of the anesthetic. FN, femoral nerve; FA, femoral artery; FV, femoral vein; DFV, deep femoral vein.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "FN, FA, FV, DFV; three arrows along the needle; machine settings and depth scale",
+    "modifications": "Cropped to the ultrasound image (settings column removed); re-saved as optimised JPEG. Orientation inferred from the anatomy (right groin, vein medial).",
+    "labels": [
+      {
+        "text": "Femoral nerve",
+        "kind": "nerve",
+        "x": 0.44,
+        "y": 0.42,
+        "tx": 0.4,
+        "ty": 0.3
+      },
+      {
+        "text": "Femoral artery",
+        "kind": "artery",
+        "x": 0.65,
+        "y": 0.57,
+        "tx": 0.58,
+        "ty": 0.7
+      },
+      {
+        "text": "Femoral vein",
+        "kind": "vein",
+        "x": 0.72,
+        "y": 0.36,
+        "tx": 0.74,
+        "ty": 0.24
+      },
+      {
+        "text": "Deep femoral vein",
+        "kind": "vein",
+        "x": 0.86,
+        "y": 0.5,
+        "tx": 0.84,
+        "ty": 0.62
+      },
+      {
+        "text": "Needle",
+        "kind": "point",
+        "x": 0.22,
+        "y": 0.24,
+        "tx": 0.12,
+        "ty": 0.14
+      }
+    ]
+  },
+  {
+    "file": "lfcn-1.jpg",
+    "block": "lfcn",
+    "blockId": "lfcn",
+    "page": "lower-limb/hip/",
+    "articleTitle": "Pericapsular Nerve Group (PENG) Block for Pediatric Hip Surgery: A Report of Three Cases",
+    "authors": "Bunnell AM, Smith JV",
+    "journal": "Cureus",
+    "year": 2025,
+    "doi": "10.7759/cureus.78996",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11910944/",
+    "pmcid": "PMC11910944",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License CC-BY 4.0., which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 2",
+    "caption": "Lateral femoral cutaneous nerve (circled) lying superficially between sartorius and tensor fasciae latae.",
+    "originalCaption": "An example of LFCN ultrasound anatomyThe image shows the lateral femoral cutaneous nerve (A), sartorius muscle (B), rectus femoris (C), tensor fascia lata (D), and needle trajectory (E).LFCN: Lateral femoral cutaneous block.",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "Medial / Lateral; letter boxes A-E; circle around the nerve; needle line; 2.7 cm depth",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "LFCN",
+        "kind": "nerve",
+        "x": 0.76,
+        "y": 0.16,
+        "tx": 0.62,
+        "ty": 0.06
+      },
+      {
+        "text": "Sartorius",
+        "kind": "muscle",
+        "x": 0.28,
+        "y": 0.31
+      },
+      {
+        "text": "Rectus femoris",
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.58
+      },
+      {
+        "text": "Tensor fasciae latae",
+        "kind": "muscle",
+        "x": 0.82,
+        "y": 0.44
+      },
+      {
+        "text": "Needle",
+        "kind": "point",
+        "x": 0.88,
+        "y": 0.12,
+        "tx": 0.92,
+        "ty": 0.26
+      }
+    ]
+  },
+  {
+    "file": "lfcn-2.jpg",
+    "block": "lfcn",
+    "blockId": "lfcn",
+    "page": "lower-limb/hip/",
+    "articleTitle": "Comparison between pericapsular nerve group (PENG) block with lateral femoral cutaneous nerve block and supra-inguinal fascia iliaca compartment block (S-FICB) for total hip arthroplasty: a randomized controlled trial",
+    "authors": "Liang L, Zhang C, Dai W, et al.",
+    "journal": "Journal of Anesthesia",
+    "year": 2023,
+    "doi": "10.1007/s00540-023-03192-6",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10390614/",
+    "pmcid": "PMC10390614",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open AccessThis article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 3",
+    "caption": "LFCN block: the nerve (arrows) sits in the fascial tunnel between sartorius and tensor fasciae latae.",
+    "originalCaption": "Images of ultrasound-guided lateral femoral cutaneous nerve (LFCN) block. The needle tip was positioned in the tunnel formed by the fascia between the sartorius and the tensor fascia lata. Dashed arrow, needle pathway; large arrows, LFCN; TFL, tensor fascia lata; RF rectus femoris; Sa, sartorius",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "TFL, Sa, RF; arrows around the nerve; dashed needle path; anterior/medial orientation marker",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG. Orientation as marked by the authors.",
+    "labels": [
+      {
+        "text": "LFCN",
+        "kind": "nerve",
+        "x": 0.49,
+        "y": 0.3,
+        "tx": 0.62,
+        "ty": 0.12
+      },
+      {
+        "text": "Tensor fasciae latae",
+        "kind": "muscle",
+        "x": 0.12,
+        "y": 0.27
+      },
+      {
+        "text": "Sartorius",
+        "kind": "muscle",
+        "x": 0.86,
+        "y": 0.24
+      },
+      {
+        "text": "Rectus femoris",
+        "kind": "muscle",
+        "x": 0.58,
+        "y": 0.62
+      }
+    ]
+  },
+  {
+    "file": "adductor-canal-1.jpg",
+    "block": "adductor-canal",
+    "blockId": "adductor-canal",
+    "page": "lower-limb/knee/",
+    "articleTitle": "Continuous block at the proximal end of the adductor canal provides better analgesia compared to that at the middle of the canal after total knee arthroplasty: a randomized, double-blind, controlled trial",
+    "authors": "Fei Y, Cui X, Chen S, et al.",
+    "journal": "BMC Anesthesiology",
+    "year": 2020,
+    "doi": "10.1186/s12871-020-01165-w",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7545931/",
+    "pmcid": "PMC7545931",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open AccessThis article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.",
+    "figure": "Fig. 1(a)",
+    "caption": "Proximal end of the adductor canal: the saphenous nerve lies next to the femoral artery under sartorius; the red asterisk is the needle-tip target.",
+    "originalCaption": "Ultrasound-guided proximal end adductor canal block (ACB) (A/a) and middle ACB (B/b) techniques. (A) Ultrasound probe position of short-axis scanning at the proximal end of the AC and needle orientation for proximal end ACB. (a) Short-axis ultrasound scan image at the proximal end of the AC. (B) Ultrasound probe position of long-axis scanning with the cranial end of the probe aligned with the proximal end of the AC and needle orientation for middle ACB. (b) Long-axis ultrasound scan image with the cranial end of the probe aligned with the proximal end of the AC (at the cranial side in the image). The purple arrow indicates the skin mark of the puncture point for proximal end ACB; the purple dotted line indicates the skin mark of the proximal end of the AC; the red asterisk indicates the endpoint target for the needle tip; the yellow asterisk indicates the alignment of the medial borders of the SM and ALM. ALM, adductor longus muscle; AMM, adductor magnus muscle; FA, femoral artery; FV, femoral venous; SM, sartorius muscle",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "Medial / Lateral; SM, ALM, AMM, FA, SN; red and yellow asterisks; panel letter a; 4.4 cm depth",
+    "modifications": "Cropped to panel (a) from a four-panel figure; re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Sartorius",
+        "kind": "muscle",
+        "x": 0.68,
+        "y": 0.38
+      },
+      {
+        "text": "Femoral artery",
+        "kind": "artery",
+        "x": 0.63,
+        "y": 0.53,
+        "tx": 0.56,
+        "ty": 0.7
+      },
+      {
+        "text": "Saphenous nerve",
+        "kind": "nerve",
+        "x": 0.74,
+        "y": 0.56,
+        "tx": 0.86,
+        "ty": 0.66
+      },
+      {
+        "text": "Adductor longus",
+        "kind": "muscle",
+        "x": 0.37,
+        "y": 0.59
+      },
+      {
+        "text": "Adductor magnus",
+        "kind": "muscle",
+        "x": 0.13,
+        "y": 0.74
+      },
+      {
+        "text": "Needle target",
+        "kind": "point",
+        "x": 0.68,
+        "y": 0.62,
+        "tx": 0.74,
+        "ty": 0.8
+      }
+    ]
+  },
+  {
+    "file": "adductor-canal-2.jpg",
+    "block": "adductor-canal",
+    "blockId": "adductor-canal",
+    "page": "lower-limb/knee/",
+    "articleTitle": "Continuous femoral nerve block is more effective than continuous adductor canal block for treating pain after total knee arthroplasty",
+    "authors": "Borys M, Domagała M, Wencław K, et al.",
+    "journal": "Medicine",
+    "year": 2019,
+    "doi": "10.1097/MD.0000000000017358",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6775428/",
+    "pmcid": "PMC6775428",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the Creative Commons Attribution License 4.0 (CCBY), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited. http://creativecommons.org/licenses/by/4.0",
+    "figure": "Figure 1A",
+    "caption": "Mid-thigh adductor canal before injection: the saphenous nerve sits beside the superficial femoral artery under sartorius.",
+    "originalCaption": "A. Ultrasound scanning before catheter implantation. B. Local anesthetic deposition in the area of saphenous nerve. ALM = adductor longus muscle, LA = local anesthetic, SaM = sartorius muscle, SaN = saphenous nerve, SFA = superficial femoral artery, VMM = vastus medialis muscle.",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "SaM, SaN, ALM, SFA, VMM; panel letter A; 4.0 depth",
+    "modifications": "Cropped to panel A from a two-panel figure; re-saved as optimised JPEG. Orientation inferred from the anatomy (adductor longus medial, vastus medialis lateral).",
+    "labels": [
+      {
+        "text": "Sartorius",
+        "kind": "muscle",
+        "x": 0.3,
+        "y": 0.4
+      },
+      {
+        "text": "Saphenous nerve",
+        "kind": "nerve",
+        "x": 0.41,
+        "y": 0.59,
+        "tx": 0.52,
+        "ty": 0.5
+      },
+      {
+        "text": "Femoral artery",
+        "kind": "artery",
+        "x": 0.33,
+        "y": 0.68,
+        "tx": 0.26,
+        "ty": 0.84
+      },
+      {
+        "text": "Adductor longus",
+        "kind": "muscle",
+        "x": 0.06,
+        "y": 0.68
+      },
+      {
+        "text": "Vastus medialis",
+        "kind": "muscle",
+        "x": 0.66,
+        "y": 0.68
+      }
+    ]
+  },
+  {
+    "file": "ipack-1.jpg",
+    "block": "ipack",
+    "blockId": "ipack",
+    "page": "lower-limb/knee/",
+    "articleTitle": "Efficacy of IPACK block combined with intra-articular steroid injection in advanced knee osteoarthritis: a retrospective cohort study",
+    "authors": "Altun HI, Gözükızıl ST",
+    "journal": "BMC Anesthesiology",
+    "year": 2026,
+    "doi": "10.1186/s12871-026-03896-8",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13295684/",
+    "pmcid": "PMC13295684",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 1",
+    "caption": "iPACK view from the medial side: the target area (outlined) lies between the popliteal vessels and the femur, well away from the tibial and common peroneal nerves.",
+    "originalCaption": "Ultrasound-guided IPACK block demonstrating the Target area (TA) and surrounding anatomical structures. PA: Popliteal artery, PV: Popliteal vein, TN: Tibial nerve, CPN: Common peroneal nerve, VMM: Vastus medialis muscle, SM: Sartorius muscle, StM: Semitendinosus muscle, SmM: Semimembranosus muscle, BfM: Biceps femoris muscle",
+    "orientation": {
+      "left": "anterior",
+      "right": "posterior"
+    },
+    "burnedInLabels": "Anterior / Medial; VMM, SM, SmM, StM, BfM, TN, CPN, PA, PV, Femur, TA; outlined target; needle arrow",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG. Orientation as marked by the authors (screen top labelled medial).",
+    "labels": [
+      {
+        "text": "Target area",
+        "kind": "point",
+        "x": 0.37,
+        "y": 0.62,
+        "tx": 0.26,
+        "ty": 0.7
+      },
+      {
+        "text": "Popliteal artery",
+        "kind": "artery",
+        "x": 0.46,
+        "y": 0.55,
+        "tx": 0.55,
+        "ty": 0.48
+      },
+      {
+        "text": "Popliteal vein",
+        "kind": "vein",
+        "x": 0.46,
+        "y": 0.65,
+        "tx": 0.56,
+        "ty": 0.68
+      },
+      {
+        "text": "Femur",
+        "kind": "bone",
+        "x": 0.25,
+        "y": 0.52
+      },
+      {
+        "text": "Tibial nerve",
+        "kind": "nerve",
+        "x": 0.73,
+        "y": 0.46,
+        "tx": 0.82,
+        "ty": 0.4
+      },
+      {
+        "text": "Common peroneal nerve",
+        "kind": "nerve",
+        "x": 0.8,
+        "y": 0.75,
+        "tx": 0.8,
+        "ty": 0.86
+      },
+      {
+        "text": "Vastus medialis",
+        "kind": "muscle",
+        "x": 0.41,
+        "y": 0.21
+      },
+      {
+        "text": "Sartorius",
+        "kind": "muscle",
+        "x": 0.59,
+        "y": 0.27
+      }
+    ]
+  },
+  {
+    "file": "ipack-2.jpg",
+    "block": "ipack",
+    "blockId": "ipack",
+    "page": "lower-limb/knee/",
+    "articleTitle": "Clinical Outcomes of Ultrasound-Guided IPACK Block for Posterior Knee Pain in Advanced Osteoarthritis: A Multicenter Prospective Single-Arm Study",
+    "authors": "Isik R, Balaban O, Sahin MZ, et al.",
+    "journal": "Journal of Clinical Medicine",
+    "year": 2026,
+    "doi": "10.3390/jcm15166410",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13513714/",
+    "pmcid": "PMC13513714",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license.",
+    "figure": "Figure 2b",
+    "caption": "iPACK injection: local anaesthetic (outlined) spreads between the femur and the popliteal artery and vein.",
+    "originalCaption": "(a) Position of the ultrasound probe and needle during the IPACK block. The patient is in the prone position. The operator stands lateral to the patient with the ultrasound machine positioned in front of the operator. (b) Ultrasound image showing the needle trajectory, local anesthetic distribution, and relevant anatomical structures during the IPACK block. PA: popliteal artery, PV: popliteal vein, LA: local anesthetic.",
+    "orientation": null,
+    "burnedInLabels": "Needle with blue arrows, PA, PV, LA (outlined), Femur; panel letter b",
+    "modifications": "Cropped to panel (b) (photo of the set-up removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Popliteal artery",
+        "kind": "artery",
+        "x": 0.51,
+        "y": 0.56
+      },
+      {
+        "text": "Popliteal vein",
+        "kind": "vein",
+        "x": 0.66,
+        "y": 0.73
+      },
+      {
+        "text": "Local anaesthetic",
+        "kind": "point",
+        "x": 0.36,
+        "y": 0.7
+      },
+      {
+        "text": "Femur",
+        "kind": "bone",
+        "x": 0.15,
+        "y": 0.83
+      },
+      {
+        "text": "Needle",
+        "kind": "point",
+        "x": 0.22,
+        "y": 0.42
+      }
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/4.0/."
+  },
+  {
+    "file": "genicular-1.jpg",
+    "block": "genicular",
+    "blockId": "genicular",
+    "page": "lower-limb/knee/",
+    "articleTitle": "Ultrasound-Guided Genicular Nerve Blocks for Anterior Cruciate Ligament Reconstruction Surgery in an Outpatient Setting: A Case Series",
+    "authors": "Ramanujam V, DiMaria S, Varma V",
+    "journal": "Cureus",
+    "year": 2023,
+    "doi": "10.7759/cureus.44550",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10544945/",
+    "pmcid": "PMC10544945",
+    "licence": "CC BY 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 1A",
+    "caption": "Superomedial genicular nerve block: the needle reaches the bone beside the genicular artery where the femoral shaft meets the medial condyle.",
+    "originalCaption": "Ultrasound images of genicular nerve blocks. 1A: Superomedial genicular nerve block. 1B: Superolateral genicular nerve block. 1C: Inferomedial genicular nerve block.",
+    "orientation": {
+      "left": "caudad",
+      "right": "cephalad"
+    },
+    "burnedInLabels": "Caudad / Cephalad; Needle, Genicular Artery (red circle), Medial Femoral Condyle, Femoral Shaft; panel label 1A",
+    "modifications": "Cropped to panel 1A from a three-panel figure; re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Genicular artery",
+        "kind": "artery",
+        "x": 0.46,
+        "y": 0.47,
+        "tx": 0.62,
+        "ty": 0.52
+      },
+      {
+        "text": "Medial femoral condyle",
+        "kind": "bone",
+        "x": 0.22,
+        "y": 0.41,
+        "tx": 0.2,
+        "ty": 0.56
+      },
+      {
+        "text": "Femoral shaft",
+        "kind": "bone",
+        "x": 0.75,
+        "y": 0.71,
+        "tx": 0.78,
+        "ty": 0.86
+      },
+      {
+        "text": "Needle",
+        "kind": "point",
+        "x": 0.62,
+        "y": 0.41,
+        "tx": 0.76,
+        "ty": 0.32
+      }
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/3.0/."
+  },
+  {
+    "file": "genicular-2.jpg",
+    "block": "genicular",
+    "blockId": "genicular",
+    "page": "lower-limb/knee/",
+    "articleTitle": "Ultrasound-Guided Genicular Nerve Blocks for Anterior Cruciate Ligament Reconstruction Surgery in an Outpatient Setting: A Case Series",
+    "authors": "Ramanujam V, DiMaria S, Varma V",
+    "journal": "Cureus",
+    "year": 2023,
+    "doi": "10.7759/cureus.44550",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10544945/",
+    "pmcid": "PMC10544945",
+    "licence": "CC BY 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 1B",
+    "caption": "Superolateral genicular nerve block: local anaesthetic is laid on the femur near the genicular artery, above the lateral condyle.",
+    "originalCaption": "Ultrasound images of genicular nerve blocks. 1A: Superomedial genicular nerve block. 1B: Superolateral genicular nerve block. 1C: Inferomedial genicular nerve block.",
+    "orientation": {
+      "left": "cephalad",
+      "right": "caudad"
+    },
+    "burnedInLabels": "Cephalad / Caudad; Needle, Local Anesthetic, Genicular Artery (red circle), Femoral Lateral Condyle, Femoral Shaft; panel label 1B",
+    "modifications": "Cropped to panel 1B from a three-panel figure; re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Genicular artery",
+        "kind": "artery",
+        "x": 0.91,
+        "y": 0.4,
+        "tx": 0.84,
+        "ty": 0.3
+      },
+      {
+        "text": "Local anaesthetic",
+        "kind": "point",
+        "x": 0.6,
+        "y": 0.44,
+        "tx": 0.4,
+        "ty": 0.52
+      },
+      {
+        "text": "Lateral femoral condyle",
+        "kind": "bone",
+        "x": 0.8,
+        "y": 0.5,
+        "tx": 0.78,
+        "ty": 0.64
+      },
+      {
+        "text": "Femoral shaft",
+        "kind": "bone",
+        "x": 0.34,
+        "y": 0.74,
+        "tx": 0.3,
+        "ty": 0.84
+      },
+      {
+        "text": "Needle",
+        "kind": "point",
+        "x": 0.5,
+        "y": 0.33,
+        "tx": 0.44,
+        "ty": 0.22
+      }
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/3.0/."
+  },
+  {
+    "file": "obturator-1.jpg",
+    "block": "obturator",
+    "blockId": "obturator",
+    "page": "lower-limb/knee/",
+    "articleTitle": "Obturator Nerve Block for Postoperative Pain Control After Total Knee Arthroplasty: Case Series and Literature Review",
+    "authors": "Bagaphou TC, Fusco P, Fattorini F, et al.",
+    "journal": "Cureus",
+    "year": 2025,
+    "doi": "10.7759/cureus.92399",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12527566/",
+    "pmcid": "PMC12527566",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License CC-BY 4.0., which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 1",
+    "caption": "Obturator nerve in the medial thigh: the anterior branch runs between adductor longus and brevis, the posterior branch between adductor brevis and magnus.",
+    "originalCaption": "Ultrasonographic anatomy of the obturator nerveALM, adductor longus muscle; ABM, adductor brevis muscle; AMM, adductor magnus muscle; Ob.N Ant.Br., obturator nerve anterior branch; Ob.N post.Br, obturator nerve posterior branch; Pectineus: pectineus muscle.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "Lateral / Medial; Pectineus, ALM, ABM, AMM, ObN ant. br, ObN post. br with leader lines; 30 Hz",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Anterior branch",
+        "kind": "nerve",
+        "x": 0.41,
+        "y": 0.3,
+        "tx": 0.5,
+        "ty": 0.1
+      },
+      {
+        "text": "Posterior branch",
+        "kind": "nerve",
+        "x": 0.3,
+        "y": 0.52,
+        "tx": 0.4,
+        "ty": 0.6
+      },
+      {
+        "text": "Pectineus",
+        "kind": "muscle",
+        "x": 0.16,
+        "y": 0.38
+      },
+      {
+        "text": "Adductor longus",
+        "kind": "muscle",
+        "x": 0.82,
+        "y": 0.18
+      },
+      {
+        "text": "Adductor brevis",
+        "kind": "muscle",
+        "x": 0.8,
+        "y": 0.38
+      },
+      {
+        "text": "Adductor magnus",
+        "kind": "muscle",
+        "x": 0.74,
+        "y": 0.76
+      }
+    ]
+  },
+  {
+    "file": "obturator-2.jpg",
+    "block": "obturator",
+    "blockId": "obturator",
+    "page": "lower-limb/knee/",
+    "articleTitle": "Ultrasound-Guided Obturator Nerve Block: A Focused Review on Anatomy and Updated Techniques",
+    "authors": "Yoshida T, Nakamoto T, Kamibayashi T",
+    "journal": "BioMed Research International",
+    "year": 2017,
+    "doi": "10.1155/2017/7023750",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5322453/",
+    "pmcid": "PMC5322453",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 3(a)",
+    "caption": "Distal obturator approach: the anterior branch lies in the fascia above adductor brevis, the posterior branch in the fascia below it.",
+    "originalCaption": "Ultrasound images obtained during obturator nerve block. (a) A preprocedure view of the distal approach, which is obtained with the transducer located as in Figure 2(a). The anterior branch of the obturator nerve is located at the hyperechoic thick fascia between the adductor brevis muscle and the pectineus (arrows) or adductor longus (open triangles) muscles. The posterior branch of the obturator nerve lies within the fascia between the adductor brevis and adductor magnus muscles (closed triangles). A needle is introduced into these fasciae in a medial-to-lateral (red dotted lines) or lateral-to-medial direction under in-plane ultrasound guidance. (b) A preprocedure view obtained with the transducer located as in Figure 2(b). A hyperechoic structure with an acoustic shadow (arrows) represents the superior pubic ramus. The target for injection of local anesthetic is the fascia, which is seen as contiguous with the superior pubic ramus and located between the pectineus and obturator externus muscles (open triangles). In the approach used by Taha [23], a needle is introduced into this plane under out-of-plane ultrasound guidance (yellow dotted line). In the approach used by Lin et al. [42], a needle is inserted into this plane under in-plane ultrasound guidance in a lateral-to-medial direction (red dotted line). (c) A preprocedure view obtained with the transducer located as in Figure 2(c). Hyperechoic thick fascia between the pectineus and obturator externus muscles (open triangles) is seen inferior to a hyperechoic structure with an acoustic shadow, which represents the superior pubic ramus (arrows). A needle is inserted into this fascia under in-plane ultrasound guidance in an inferior-to-superior direction (red dotted line). (d) A preprocedure view obtained with the transducer located as in Figure 2(d). The obturator externus muscle is seen superficial to the superior pubic ramus (arrows) and the pectineus muscle is seen anterior to the obturator externus muscle. A hyperechoic thick fascia between the pectineus and obturator externus muscles (open triangles) is the target plane. As a needle is inserted 3 cm cephalad from the anterior side of the transducer and advanced in-plane with the transducer toward this fascia in this case (red dotted line), the needle-ultrasound beam angles come to be almost perpendicular. AL, adductor longus muscle; AB, adductor brevis muscle; AM, adductor magnus muscle; PE, pectineus muscle; OE, obturator externus muscle; SPR, superior pubic ramus; GR, gracilis muscle.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "[Lateral] / [Medial]; AL, PE, AB, AM; open and closed triangles; arrows; red dotted needle paths",
+    "modifications": "Cropped to panel (a) from a four-panel figure (blank margin removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Anterior branch",
+        "kind": "nerve",
+        "x": 0.57,
+        "y": 0.41,
+        "tx": 0.78,
+        "ty": 0.36
+      },
+      {
+        "text": "Posterior branch",
+        "kind": "nerve",
+        "x": 0.53,
+        "y": 0.76,
+        "tx": 0.8,
+        "ty": 0.7
+      },
+      {
+        "text": "Adductor longus",
+        "kind": "muscle",
+        "x": 0.6,
+        "y": 0.25
+      },
+      {
+        "text": "Pectineus",
+        "kind": "muscle",
+        "x": 0.24,
+        "y": 0.41
+      },
+      {
+        "text": "Adductor brevis",
+        "kind": "muscle",
+        "x": 0.57,
+        "y": 0.58
+      },
+      {
+        "text": "Adductor magnus",
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.92
+      }
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/4.0/."
+  },
+  {
+    "file": "popliteal-1.jpg",
+    "block": "popliteal",
+    "blockId": "popliteal",
+    "page": "lower-limb/foot-ankle/",
+    "articleTitle": "Perioperative Analgesia for Foot and Ankle Surgery: A Comprehensive Review",
+    "authors": "Pascarella G, De Quattro E, Strumia A, et al.",
+    "journal": "Journal of Clinical Medicine",
+    "year": 2025,
+    "doi": "10.3390/jcm14176301",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12429618/",
+    "pmcid": "PMC12429618",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 2",
+    "caption": "Popliteal sciatic nerve just above its split: the common peroneal (lateral) and tibial (medial) parts lie superficial to the popliteal artery.",
+    "originalCaption": "Ultrasound-guided Popliteal Sciatic nerve Block SN: Sciatic Nerve; TN: Tibial Nerve; CPN: Common Peroneal Nerve; PA: Popliteal Artery; The black rectangle indicates the placement of the ultrasound probe on the anatomical area.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "Lat / Med; coloured arrows and text CPN, TN, PA",
+    "modifications": "Cropped to the ultrasound panel (anatomical drawing removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Common peroneal nerve",
+        "kind": "nerve",
+        "x": 0.35,
+        "y": 0.53,
+        "tx": 0.16,
+        "ty": 0.42
+      },
+      {
+        "text": "Tibial nerve",
+        "kind": "nerve",
+        "x": 0.56,
+        "y": 0.56,
+        "tx": 0.76,
+        "ty": 0.48
+      },
+      {
+        "text": "Popliteal artery",
+        "kind": "artery",
+        "x": 0.7,
+        "y": 0.8,
+        "tx": 0.84,
+        "ty": 0.9
+      }
+    ]
+  },
+  {
+    "file": "popliteal-2.jpg",
+    "block": "popliteal",
+    "blockId": "popliteal",
+    "page": "lower-limb/foot-ankle/",
+    "articleTitle": "Popliteal sciatic nerve block versus intrathecal anesthesia for Achilles tendon rupture repair surgery: a mono-centric retrospective comparative study",
+    "authors": "Si G, Wang L, Deng M, et al.",
+    "journal": "Frontiers in Medicine",
+    "year": 2025,
+    "doi": "10.3389/fmed.2025.1516874",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12318936/",
+    "pmcid": "PMC12318936",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.",
+    "figure": "FIGURE 1B",
+    "caption": "Popliteal sciatic nerve (prone) between semitendinosus and biceps femoris.",
+    "originalCaption": "Ultrasound-guided popliteal sciatic nerve block. (A) Operative setup with the patient in the prone position. (B) Ultrasound image of the semitendinosus (ST), biceps femoris (BF), and sciatic nerve (SN). (C) Needle placement with a nerve stimulator (initial current 1 mA); the needle is adjusted until foot movement occurs, then repositioned to elicit plantarflexion or inversion at < 0.5 mA without aspiration of blood. (D) Local anesthetic (LA) distribution around the sciatic nerve (SN) after injection of 20 mL of 0.4% ropivacaine.",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "ST, BF, SN",
+    "modifications": "Cropped to panel (B) from a four-panel figure (black margins removed); re-saved as optimised JPEG. Orientation inferred from the anatomy (semitendinosus medial, biceps femoris lateral).",
+    "labels": [
+      {
+        "text": "Sciatic nerve",
+        "kind": "nerve",
+        "x": 0.37,
+        "y": 0.43,
+        "tx": 0.4,
+        "ty": 0.62
+      },
+      {
+        "text": "Semitendinosus",
+        "kind": "muscle",
+        "x": 0.1,
+        "y": 0.3
+      },
+      {
+        "text": "Biceps femoris",
+        "kind": "muscle",
+        "x": 0.7,
+        "y": 0.2
+      }
+    ],
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/4.0/."
+  },
+  {
+    "file": "ankle-1.jpg",
+    "block": "ankle",
+    "blockId": "ankle",
+    "page": "lower-limb/foot-ankle/",
+    "nerve": "tibial",
+    "articleTitle": "Perioperative Analgesia for Foot and Ankle Surgery: A Comprehensive Review",
+    "authors": "Pascarella G, De Quattro E, Strumia A, et al.",
+    "journal": "Journal of Clinical Medicine",
+    "year": 2025,
+    "doi": "10.3390/jcm14176301",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12429618/",
+    "pmcid": "PMC12429618",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 3",
+    "caption": "Ankle block, tibial nerve: behind the medial malleolus the nerve lies just posterior to the posterior tibial artery.",
+    "originalCaption": "Ultrasound-guided Tibial Nerve Block. TN: Tibial Nerve; PTA: Posterior Tibial Artery; MM: Medial Malleolus; The black rectangle indicates the placement of the ultrasound probe on the anatomical area.",
+    "orientation": {
+      "left": "posterior",
+      "right": "anterior"
+    },
+    "burnedInLabels": "Post / Ant; coloured arrows and text TN, PTA; MM",
+    "modifications": "Cropped to the ultrasound panel (anatomical drawing removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Tibial nerve",
+        "kind": "nerve",
+        "x": 0.31,
+        "y": 0.46,
+        "tx": 0.2,
+        "ty": 0.64
+      },
+      {
+        "text": "Posterior tibial artery",
+        "kind": "artery",
+        "x": 0.43,
+        "y": 0.43,
+        "tx": 0.56,
+        "ty": 0.28
+      },
+      {
+        "text": "Medial malleolus",
+        "kind": "bone",
+        "x": 0.83,
+        "y": 0.33,
+        "tx": 0.86,
+        "ty": 0.48
+      }
+    ]
+  },
+  {
+    "file": "ankle-2.jpg",
+    "block": "ankle",
+    "blockId": "ankle",
+    "page": "lower-limb/foot-ankle/",
+    "nerve": "deep peroneal",
+    "articleTitle": "Perioperative Analgesia for Foot and Ankle Surgery: A Comprehensive Review",
+    "authors": "Pascarella G, De Quattro E, Strumia A, et al.",
+    "journal": "Journal of Clinical Medicine",
+    "year": 2025,
+    "doi": "10.3390/jcm14176301",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12429618/",
+    "pmcid": "PMC12429618",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 4",
+    "caption": "Ankle block, deep peroneal nerve: the small nerve sits beside the anterior tibial artery on the front of the tibia.",
+    "originalCaption": "Ultrasound-guided Deep peroneal Nerve Block. DPN: Deep Peroneal Nerve; ATA: Anterior Tibial Artery; T: Tibia. The black rectangle indicates the placement of the ultrasound probe on the anatomical area.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "Lat / Med; coloured arrows and text DPN, ATA; T",
+    "modifications": "Cropped to the ultrasound panel (anatomical drawing removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Deep peroneal nerve",
+        "kind": "nerve",
+        "x": 0.42,
+        "y": 0.29,
+        "tx": 0.26,
+        "ty": 0.16
+      },
+      {
+        "text": "Anterior tibial artery",
+        "kind": "artery",
+        "x": 0.48,
+        "y": 0.32,
+        "tx": 0.62,
+        "ty": 0.18
+      },
+      {
+        "text": "Tibia",
+        "kind": "bone",
+        "x": 0.5,
+        "y": 0.42,
+        "tx": 0.5,
+        "ty": 0.6
+      }
+    ]
+  },
+  {
+    "file": "ankle-3.jpg",
+    "block": "ankle",
+    "blockId": "ankle",
+    "page": "lower-limb/foot-ankle/",
+    "nerve": "superficial peroneal",
+    "articleTitle": "Perioperative Analgesia for Foot and Ankle Surgery: A Comprehensive Review",
+    "authors": "Pascarella G, De Quattro E, Strumia A, et al.",
+    "journal": "Journal of Clinical Medicine",
+    "year": 2025,
+    "doi": "10.3390/jcm14176301",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12429618/",
+    "pmcid": "PMC12429618",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 5",
+    "caption": "Ankle block, superficial peroneal nerve: the nerve runs just under the skin above extensor digitorum longus and peroneus brevis, near the fibula.",
+    "originalCaption": "Ultrasound-guided Superficial Peroneal Nerve Block. SPN: Superficial Peroneal Nerve; F: Fibula; T: Tibia; EDL: Extensor Digitorum Longus Muscle; PBM: Peroneus Brevis Muscle; The black rectangle indicates the placement of the ultrasound probe on the anatomical area.",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "Med / Lat; coloured arrow and text SPN; EDL, PBM, F, T",
+    "modifications": "Cropped to the ultrasound panel (anatomical drawing removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Superficial peroneal nerve",
+        "kind": "nerve",
+        "x": 0.47,
+        "y": 0.18,
+        "tx": 0.3,
+        "ty": 0.08
+      },
+      {
+        "text": "Extensor digitorum longus",
+        "kind": "muscle",
+        "x": 0.27,
+        "y": 0.55
+      },
+      {
+        "text": "Peroneus brevis",
+        "kind": "muscle",
+        "x": 0.83,
+        "y": 0.21
+      },
+      {
+        "text": "Fibula",
+        "kind": "bone",
+        "x": 0.7,
+        "y": 0.33,
+        "tx": 0.72,
+        "ty": 0.48
+      },
+      {
+        "text": "Tibia",
+        "kind": "bone",
+        "x": 0.3,
+        "y": 0.82
+      }
+    ]
+  },
+  {
+    "file": "ankle-4.jpg",
+    "block": "ankle",
+    "blockId": "ankle",
+    "page": "lower-limb/foot-ankle/",
+    "nerve": "sural",
+    "articleTitle": "Perioperative Analgesia for Foot and Ankle Surgery: A Comprehensive Review",
+    "authors": "Pascarella G, De Quattro E, Strumia A, et al.",
+    "journal": "Journal of Clinical Medicine",
+    "year": 2025,
+    "doi": "10.3390/jcm14176301",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12429618/",
+    "pmcid": "PMC12429618",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 7",
+    "caption": "Ankle block, sural nerve: the nerve lies next to the small saphenous vein behind the lateral malleolus.",
+    "originalCaption": "Ultrasound-guided Sural Nerve Block. SuN: Sural Nerve; SSV: Small Saphenous Nerve; PBM: Peroneus Brevis Muscle; F: Fibula; The black rectangle indicates the placement of the ultrasound probe on the anatomical area.",
+    "orientation": {
+      "left": "anterior",
+      "right": "posterior"
+    },
+    "burnedInLabels": "Ant / Post; coloured arrows and text SuN, SSV; PBM, F",
+    "modifications": "Cropped to the ultrasound panel (anatomical drawing removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Sural nerve",
+        "kind": "nerve",
+        "x": 0.7,
+        "y": 0.31,
+        "tx": 0.56,
+        "ty": 0.18
+      },
+      {
+        "text": "Small saphenous vein",
+        "kind": "vein",
+        "x": 0.79,
+        "y": 0.27,
+        "tx": 0.86,
+        "ty": 0.5
+      },
+      {
+        "text": "Peroneus brevis",
+        "kind": "muscle",
+        "x": 0.2,
+        "y": 0.42
+      },
+      {
+        "text": "Fibula",
+        "kind": "bone",
+        "x": 0.12,
+        "y": 0.85
+      }
+    ]
+  },
+  {
+    "file": "ankle-5.jpg",
+    "block": "ankle",
+    "blockId": "ankle",
+    "page": "lower-limb/foot-ankle/",
+    "nerve": "saphenous",
+    "articleTitle": "Perioperative Analgesia for Foot and Ankle Surgery: A Comprehensive Review",
+    "authors": "Pascarella G, De Quattro E, Strumia A, et al.",
+    "journal": "Journal of Clinical Medicine",
+    "year": 2025,
+    "doi": "10.3390/jcm14176301",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12429618/",
+    "pmcid": "PMC12429618",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 6",
+    "caption": "Ankle block, saphenous nerve: the nerve runs with the great saphenous vein in front of the medial malleolus.",
+    "originalCaption": "Ultrasound-guided Saphenous Nerve Block. SN: Saphenous Nerve; GSV: Great Saphenous Nerve; MM: Medial Malleolus; The black rectangle indicates the placement of the ultrasound probe on the anatomical area.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "Lat / Med; coloured arrows and text SN, GSV; MM",
+    "modifications": "Cropped to the ultrasound panel (anatomical drawing removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Saphenous nerve",
+        "kind": "nerve",
+        "x": 0.42,
+        "y": 0.5,
+        "tx": 0.3,
+        "ty": 0.36
+      },
+      {
+        "text": "Great saphenous vein",
+        "kind": "vein",
+        "x": 0.49,
+        "y": 0.42,
+        "tx": 0.62,
+        "ty": 0.24
+      },
+      {
+        "text": "Medial malleolus",
+        "kind": "bone",
+        "x": 0.86,
+        "y": 0.5,
+        "tx": 0.82,
+        "ty": 0.7
+      }
+    ]
+  },
+  {
+    "file": "saphenous-1.jpg",
+    "block": "saphenous",
+    "blockId": "saphenous",
+    "page": "lower-limb/foot-ankle/",
+    "articleTitle": "Ultrasound imaging of the femoral and saphenous nerves",
+    "authors": "Fenech M, Roche B, Boyle J",
+    "journal": "Australasian Journal of Ultrasound in Medicine",
+    "year": 2024,
+    "doi": "10.1002/ajum.12403",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11671740/",
+    "pmcid": "PMC11671740",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article under the terms of the http://creativecommons.org/licenses/by/4.0/ License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 9(c)",
+    "caption": "Saphenous nerve below the knee: the nerve lies beside the great saphenous vein, superficial to the crural fascia over the tibia.",
+    "originalCaption": "Saphenous nerve in the lower leg. (a) The saphenous nerve (N) can be in variable positions relative to the great saphenous vein (GSV). In this short‐axis sonographic image, the saphenous nerve is anterior to the GSV. It overlies the edge of the tibia (TIB). (b) The position of the saphenous nerve (yellow), which follows the path of the GSV (blue). Transducer position mid‐leg is demonstrated by the black line for short‐axis imaging of the vein and nerve at the mid‐lower leg region, corresponding to image (a). (c) Short‐axis sonographic image demonstrating the saphenous neve (thick white arrow) posterior to the GSV. Both sit superficial to the crural fascia (thin white arrow). ANT, anterior aspect of image; POST, posterior aspect of image.",
+    "orientation": {
+      "left": "anterior",
+      "right": "posterior"
+    },
+    "burnedInLabels": "ANT / POST; GSV, Saphenous nerve, Crural fascia (arrows), tibia; panel label (c); depth marker",
+    "modifications": "Cropped to panel (c) from a three-panel figure; re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Saphenous nerve",
+        "kind": "nerve",
+        "x": 0.57,
+        "y": 0.55,
+        "tx": 0.66,
+        "ty": 0.4
+      },
+      {
+        "text": "Great saphenous vein",
+        "kind": "vein",
+        "x": 0.48,
+        "y": 0.56,
+        "tx": 0.36,
+        "ty": 0.62
+      },
+      {
+        "text": "Crural fascia",
+        "kind": "fascia",
+        "x": 0.67,
+        "y": 0.81,
+        "tx": 0.78,
+        "ty": 0.92
+      },
+      {
+        "text": "Tibia",
+        "kind": "bone",
+        "x": 0.3,
+        "y": 0.72
+      }
+    ]
+  },
+  {
+    "file": "sciatic-1.jpg",
+    "block": "sciatic",
+    "blockId": "sciatic",
+    "page": "lower-limb/thigh/",
+    "articleTitle": "Comparison of sciatic nerve block quality achieved using the anterior and posterior approaches: a randomised trial",
+    "authors": "Yektaş A, Balkan B",
+    "journal": "BMC Anesthesiology",
+    "year": 2019,
+    "doi": "10.1186/s12871-019-0898-0",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6911281/",
+    "pmcid": "PMC6911281",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open AccessThis article is distributed under the terms of the Creative Commons Attribution 4.0 International License (http://creativecommons.org/licenses/by/4.0/), which permits unrestricted use, distribution, and reproduction in any medium, provided you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons license, and indicate if changes were made. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated.",
+    "figure": "Fig. 4",
+    "caption": "Subgluteal sciatic nerve: the flat nerve lies under gluteus maximus, between the ischial tuberosity and the greater trochanter.",
+    "originalCaption": "Ultrasound image of the sciatic nerve obtained with the posterior (subgluteal) approach during the block is shown in the short axis (transverse view). GMM: gluteus maximus muscle, GT: greater trochanter, IT: ischial tuberosity, QFM: quatratus femoris muscl, LA: local anesthetic, Arrows: Sciatic nerve; triangles = needle.",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "Medial / Lateral; Skin, GMM, IT, GT, SN, QFM; open arrows; machine settings and depth scale",
+    "modifications": "Used as published (single panel); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Sciatic nerve",
+        "kind": "nerve",
+        "x": 0.5,
+        "y": 0.5,
+        "tx": 0.66,
+        "ty": 0.62
+      },
+      {
+        "text": "Gluteus maximus",
+        "kind": "muscle",
+        "x": 0.4,
+        "y": 0.28
+      },
+      {
+        "text": "Ischial tuberosity",
+        "kind": "bone",
+        "x": 0.3,
+        "y": 0.44
+      },
+      {
+        "text": "Greater trochanter",
+        "kind": "bone",
+        "x": 0.6,
+        "y": 0.38,
+        "tx": 0.7,
+        "ty": 0.42
+      },
+      {
+        "text": "Quadratus femoris",
+        "kind": "muscle",
+        "x": 0.4,
+        "y": 0.71
+      }
+    ]
+  }
+]

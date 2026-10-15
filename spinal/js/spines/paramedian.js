@@ -33,7 +33,7 @@ function staticLayer() {
   ${badge(280, 62, 1)}${badge(364, 52, 2)}${badge(372, py(10) - 22, 3)}${badge(462, py(24), 4)}
   <circle cx="${px(ENTRY)}" cy="${py(0)}" r="8" fill="none" stroke="var(--an-cue)" stroke-width="2.6"/>
   ${badge(px(ENTRY) + 24, py(0) + 26, 5)}
-  ${pill(12, 22, 'Upper level', { fs: 15 })}${pill(12, 398, 'Lower level', { fs: 15 })}`;
+  ${pill(12, 22, 'Upper level', { fs: 17 })}${pill(12, 398, 'Lower level', { fs: 17 })}`;
 }
 
 /** Work out what the needle meets for a medial angle a and a cranial angle b (degrees). */

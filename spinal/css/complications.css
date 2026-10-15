@@ -21,7 +21,7 @@
 
 /* ---------------------------------------------------------------- neuro check */
 .spinal-app .cx-check{background:var(--sp-surface);border:1px solid var(--sp-line);border-top:3px solid var(--sp-ink);padding:18px 22px 20px;margin:20px 0;max-width:820px}
-.spinal-app .cx-check-kicker{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 6px}
+.spinal-app .cx-check-kicker{font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 6px}
 .spinal-app .cx-check-intro{margin:0 0 12px;font-size:15px}
 .spinal-app .cx-check-list{list-style:none;margin:0;padding:0}
 .spinal-app .cx-check-item{border-top:1px solid var(--sp-line);padding:12px 0}

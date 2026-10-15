@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<title>Regional blocks — NTF Anaesthesia</title>
+<meta name="description" content="Regional anaesthesia for medical officers, residents and consultants: choose a block for the operation, search every block, and open the upper limb, trunk, head and neck, lower limb and spinal pages and the 3D plexus anatomy.">
+<link rel="icon" href="../ana-ntf-monogram.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/navigation.css?v=20261008">
+<link rel="stylesheet" href="../assets/site-shell.css?v=20261008">
+<link rel="stylesheet" href="../assets/header-nav.css?v=20261008">
+<script defer src="../assets/navigation.js?v=20261008"></script>
+<link rel="stylesheet" href="../shared/regional/css/regional.css?v=20261015">
+<link rel="stylesheet" href="../head-neck/shared/css/headneck.css?v=20261015">
+<link rel="stylesheet" href="../lower-limb/shared/css/lowerlimb.css?v=1">
+<link rel="stylesheet" href="blocks.css?v=20261015">
+<script type="module" src="blocks.js?v=20261015"></script>
+</head>
+<body class="tb-app ra-app bd-app">
+<a class="tb-skip" href="#main">Skip to content</a>
+<header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../airway.html">Airway</a><a href="../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="../exams/">MMed Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<nav class="ntf-crumbs" aria-label="Breadcrumb"><a href="../resources.html">Resources</a><span aria-hidden="true">/</span><a href="../regional.html">Regional anaesthesia</a><span aria-hidden="true">/</span><span aria-current="page">Regional blocks</span></nav>
+
+<div id="tb-bar" class="tb-bar"></div>
+<main id="main" class="site-container">
+  <section class="bd-hero" id="start" aria-labelledby="bd-title">
+    <p class="tb-eyebrow">Regional anaesthesia</p>
+    <h1 id="bd-title">Regional blocks</h1>
+    <p class="tb-lead">Every block in one place: choose one for the operation in front of you, find it by name, and open its scan, dose and coverage.</p>
+    <p class="tb-credit">Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia</p>
+    <p class="tb-hub-disclaimer"><strong>For education only.</strong> Follow local guidelines and senior advice; check doses for each patient.</p>
+    <div id="bd-picker"></div>
+    <div class="bd-search" id="search" role="search">
+      <label class="bd-search-k" for="bd-q">Search every block, operation and page</label>
+      <div class="tb-search-row"><input type="search" class="tb-search-input" id="bd-q" placeholder="e.g. ESP, hernia, knee, LAST" autocomplete="off" spellcheck="false"></div>
+      <ul class="tb-sresults" id="bd-res"></ul>
+      <p class="tb-sr" id="bd-res-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    </div>
+  </section>
+
+  <section class="bd-section" id="need" aria-labelledby="bd-need-h">
+    <h2 class="bd-h2" id="bd-need-h">I need to…</h2>
+    <ul class="tb-tiles bd-tiles">
+      <li><a class="tb-tile" href="#chooser"><span class="tb-tile-t">Choose a block for an operation</span><span class="tb-tile-d">Trunk, head and neck, and lower limb in one list</span></a></li>
+      <li><a class="tb-tile" href="#doses"><span class="tb-tile-t">Check the maximum local anaesthetic dose</span><span class="tb-tile-d">Dose planners and total-dose limits</span></a></li>
+      <li><a class="tb-tile bd-tile--alert" href="../spinal/#cx-last"><span class="tb-tile-t">Treat local anaesthetic toxicity (LAST)</span><span class="tb-tile-d">Emergency steps and lipid doses</span></a></li>
+      <li><a class="tb-tile" href="../spinal/"><span class="tb-tile-t">Do a spinal</span><span class="tb-tile-d">Ward card, technique, troubleshooting</span></a></li>
+      <li><a class="tb-tile" href="#anatomy3d"><span class="tb-tile-t">See the nerves in 3D</span><span class="tb-tile-d">Brachial, cervical, lumbar and sacral plexuses</span></a></li>
+      <li><a class="tb-tile" href="#regions"><span class="tb-tile-t">Browse blocks by region</span><span class="tb-tile-d">Upper limb, trunk, head and neck, lower limb, neuraxial</span></a></li>
+    </ul>
+  </section>
+
+  <section class="bd-section" id="chooser" aria-labelledby="bd-chooser-h">
+    <p class="tb-eyebrow">Across every region</p>
+    <h2 class="bd-h2" id="bd-chooser-h">Which block for this operation</h2>
+    <p class="bd-intro">Pick an operation to see the area to cover, the block options (and the ones to avoid), and a link straight to each block.</p>
+    <div class="bd-filter">
+      <div class="bd-chips" id="bd-chips" role="group" aria-label="Show operations for"></div>
+      <div class="tb-search-row bd-opq-row"><input type="search" class="tb-search-input" id="bd-opq" placeholder="Filter operations, e.g. knee, hernia" autocomplete="off" spellcheck="false" aria-label="Filter operations" aria-controls="bd-ops"></div>
+    </div>
+    <p class="tb-sr" id="bd-ops-status" role="status" aria-live="polite" aria-atomic="true"></p>
+    <div class="bd-chooser">
+      <div class="bd-ops" id="bd-ops"></div>
+      <div class="bd-result-col" id="bd-result-col"></div>
+    </div>
+    <p class="bd-note" id="bd-chooser-note">No operation list yet for the upper limb or for spinals: compare the upper-limb blocks in the <a href="../brachial-plexus/">brachial plexus app</a>, and see <a href="../spinal/">spinal anaesthesia</a>.</p>
+    <noscript><p class="bd-note">The operation chooser and the search need JavaScript. The region links below work without it.</p></noscript>
+  </section>
+
+  <section class="bd-section" id="doses" aria-labelledby="bd-doses-h">
+    <h2 class="bd-h2" id="bd-doses-h">Maximum local anaesthetic dose</h2>
+    <p class="bd-intro">Every block chapter has a dose box with its volume and concentration. When you give more than one block, or a block beside a spinal, add the doses up here:</p>
+    <ul class="bd-rows">
+      <li><a href="../lower-limb/thigh/#ch-combinations"><span class="bd-row-t">Block combinations for the whole lower limb</span><span class="bd-row-d">Operation, blocks and total dose for every lower-limb operation</span></a></li>
+      <li><a href="../lower-limb/thigh/#ch-amputation"><span class="bd-row-t">Amputation planner</span><span class="bd-row-d">Above- and below-knee amputation under nerve blocks: which nerves, what dose</span></a></li>
+      <li><a href="../head-neck/airway/#ch-topical"><span class="bd-row-t">Check the lidocaine dose</span><span class="bd-row-d">Topical anaesthesia for awake intubation: maximum 9 mg/kg topically</span></a></li>
+      <li><a href="../spinal/#cx-last"><span class="bd-row-t">Local anaesthetic systemic toxicity (LAST)</span><span class="bd-row-d">The emergency steps, lipid doses and total-dose limits</span></a></li>
+    </ul>
+  </section>
+
+  <section class="bd-section" id="regions" aria-labelledby="bd-regions-h">
+    <h2 class="bd-h2" id="bd-regions-h">Blocks by region</h2>
+    <ul class="bd-cards" id="bd-cards">
+      <li class="bd-card"><h3><a href="../brachial-plexus/">Upper limb</a></h3><p>The brachial plexus app: 3D model, labelled diagram, ultrasound and coverage for every brachial plexus block.</p></li>
+      <li class="bd-card"><h3><a href="../truncal/">Trunk</a></h3><p>Back, chest wall and abdominal wall blocks.</p></li>
+      <li class="bd-card"><h3><a href="../head-neck/">Head and neck</a></h3><p>Cervical plexus, scalp, face, airway and eye blocks.</p></li>
+      <li class="bd-card"><h3><a href="../lower-limb/">Lower limb</a></h3><p>Hip, knee, foot and ankle, and thigh and amputation blocks.</p></li>
+      <li class="bd-card"><h3><a href="../spinal/">Neuraxial</a></h3><p>Spinal anaesthesia: technique, troubleshooting and ultrasound.</p></li>
+    </ul>
+  </section>
+
+  <section class="bd-section" id="anatomy3d" aria-labelledby="bd-3d-h">
+    <h2 class="bd-h2" id="bd-3d-h">Anatomy in 3D</h2>
+    <p class="bd-intro">Turn the plexus in 3D, linked to a labelled diagram: tap a nerve to see where it runs and which blocks reach it.</p>
+    <ul class="bd-rows bd-rows--3d" id="bd-3d"></ul>
+  </section>
+</main>
+
+<section class="tb-foot" aria-label="Disclaimer and credits"><div class="site-container">
+  <p class="tb-disclaimer"><strong>For education only.</strong> Follow local guidelines and senior advice; check doses for each patient.</p>
+  <p>Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia. Diagrams are drawn by the page in your browser and are schematic.</p>
+  <p><a href="../regional.html">Regional anaesthesia</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
+</div></section>
+<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer>
+</body>
+</html>

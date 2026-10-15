@@ -18,7 +18,6 @@ body.spinal-app{
   --sp-serif:'NTF Serif','Fraunces',Georgia,serif;
   --sp-sans:'NTF Sans',Inter,Arial,sans-serif;
   --sp-mono:'NTF Mono','JetBrains Mono',ui-monospace,Menlo,monospace;
-  --sp-header-h:92px;--sp-nav-h:49px;
   /* anatomy plate (same in both themes) */
   --an-plate:#f4ece1;--an-ink:#2b1e18;--an-skin:#e7c0a3;--an-fat:#f2dcc8;--an-lig-supra:#d8c49b;--an-lig-inter:#e2d3b0;
   --an-flavum:#e2b64a;--an-epifat:#f6e6b8;--an-vein:#5a2a3a;--an-dura:#b4a3c4;--an-arachnoid:#d9cfe3;--an-csf:#cfe4ea;
@@ -97,9 +96,12 @@ body.spinal-app{
 html:root[data-theme=dark]{color-scheme:dark}
 html:root[data-theme=light]{color-scheme:light}
 
-html{scroll-padding-top:160px}
-@media (max-width:900px){html{scroll-padding-top:144px}body.spinal-app{--sp-header-h:80px}}
-@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+/* One sticky bar (the site header scrolls away). --ra-bar is its height; deep-link targets land just below it.
+   No smooth scrolling: programmatic jumps across these long chapters are instant. */
+:root:has(body.spinal-app){--ra-bar:56px}
+html:has(body.spinal-app){scroll-padding-top:calc(var(--ra-bar) + 8px)}
+body.spinal-app .ntf-header{position:static}
+body.spinal-app .ntf-footer .ntf-copyright{font-size:12px}
 
 /* ------------------------------------------------------------------ base type */
 body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--sp-focus);outline-offset:3px;border-radius:0}
@@ -123,7 +125,7 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 .spinal-app :is(code,kbd,.sp-num,.sp-dose){font-family:var(--sp-mono);font-size:.92em;font-variant-numeric:tabular-nums}
 .spinal-app .sp-prose{max-width:70ch}
 .spinal-app .sp-lead{font-size:19px;line-height:1.6;color:var(--sp-ink-2);max-width:62ch;margin:0 0 20px}
-.spinal-app :is(.sp-kicker,.sp-eyebrow){font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 10px}
+.spinal-app :is(.sp-kicker,.sp-eyebrow){font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 10px}
 .spinal-app ::selection{background:var(--sp-accent-soft);color:var(--sp-ink)}
 
 .sp-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
@@ -162,12 +164,12 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 .spinal-app .sp-split{display:grid;gap:32px}
 @media (min-width:1100px){
   .spinal-app .sp-split{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:start}
-  .spinal-app .sp-split>.sp-split-fig{position:sticky;top:168px}
+  .spinal-app .sp-split>.sp-split-fig{position:sticky;top:calc(var(--ra-bar) + 16px)}
 }
 .spinal-app .sp-noscript{padding-block:16px;color:var(--sp-muted)}
 
 /* ------------------------------------------------------------------ chips */
-.spinal-app .sp-chip{display:inline-block;vertical-align:.1em;font:400 11px/1.4 var(--sp-mono);letter-spacing:.02em;padding:1px 6px;border:1px solid var(--sp-line-strong);color:var(--sp-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.spinal-app .sp-chip{display:inline-block;vertical-align:.1em;font:400 12px/1.4 var(--sp-mono);letter-spacing:.02em;padding:1px 6px;border:1px solid var(--sp-line-strong);color:var(--sp-muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 
 /* ------------------------------------------------------------------ buttons (generic) */
 .spinal-app .sp-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1.3 var(--sp-sans);cursor:pointer;transition:border-color .15s,background-color .15s}
@@ -201,7 +203,7 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 .spinal-app .sp-table :is(td,th)>:last-child{margin-bottom:0}
 .spinal-app .sp-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 .spinal-app .sp-table-wrap--scroll .sp-table{min-width:560px}
-.spinal-app .sp-scroll-hint{display:none;margin:6px 0 0;text-align:right;font:11px/1.4 var(--sp-mono);color:var(--sp-muted)}
+.spinal-app .sp-scroll-hint{display:none;margin:6px 0 0;text-align:right;font:12px/1.4 var(--sp-mono);color:var(--sp-muted)}
 @media (max-width:640px){
   .spinal-app .sp-scroll-hint{display:block}
   .spinal-app .sp-table--stack,.spinal-app .sp-table--stack :is(tbody,tr,td,tbody th){display:block;width:100%;box-sizing:border-box}
@@ -209,7 +211,7 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
   .spinal-app .sp-table--stack thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
   .spinal-app .sp-table--stack tr{border:1px solid var(--sp-line);padding:12px;margin:0 0 10px;background:var(--sp-surface)}
   .spinal-app .sp-table--stack :is(td,tbody th){border:0;padding:4px 0}
-  .spinal-app .sp-table--stack :is(td,tbody th)[data-label]::before{content:attr(data-label);display:block;font:400 11px/1.5 var(--sp-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);margin-bottom:1px}
+  .spinal-app .sp-table--stack :is(td,tbody th)[data-label]::before{content:attr(data-label);display:block;font:400 12px/1.5 var(--sp-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);margin-bottom:1px}
   .spinal-app .sp-table--stack tbody th{font:600 16px/1.4 var(--sp-sans);padding-bottom:6px}
 }
 
@@ -274,8 +276,9 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 .spinal-app .sp-details-body>:last-child{margin-bottom:0}
 
 /* ------------------------------------------------------------------ citations + references */
-.spinal-app .sp-cite{font:500 .72em/1 var(--sp-mono);vertical-align:super;line-height:0;margin-left:1px;white-space:nowrap}
-.spinal-app main .sp-cite a{color:var(--sp-accent);text-decoration:none;padding:0 1px}
+/* Citation numbers: never under 12px; the link gets inline padding so the tap target is at least 24px tall. */
+.spinal-app .sp-cite{font:500 max(12px,.72em)/1 var(--sp-mono);vertical-align:super;line-height:0;margin-left:1px;white-space:nowrap}
+.spinal-app main .sp-cite a{color:var(--sp-accent);text-decoration:none;padding:6px 2px}
 .spinal-app main .sp-cite a:is(:hover,:focus-visible){text-decoration:underline;text-underline-offset:2px}
 .spinal-app .sp-refs{list-style:none;margin:8px 0 0;padding:0;max-width:90ch;font-size:14px;line-height:1.65}
 .spinal-app .sp-refs li{display:grid;grid-template-columns:2.6em minmax(0,1fr);gap:4px;padding:8px 0;border-bottom:1px solid var(--sp-line);max-width:none}
@@ -283,8 +286,12 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 .spinal-app .sp-ref-num{font:500 13px/1.65 var(--sp-mono);color:var(--sp-muted);font-variant-numeric:tabular-nums}
 .spinal-app .sp-ref-body{overflow-wrap:anywhere}
 .spinal-app .sp-ref-body b{font-weight:600}
-.spinal-app main .sp-ref-back{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-width:24px;min-height:24px}
+.spinal-app main .sp-ref-back{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;vertical-align:middle}
+.spinal-app main .sp-ref-link{padding-block:4px}
 .spinal-app .sp-refs-empty{color:var(--sp-muted);display:block!important}
+
+/* Inline text links: vertical padding (no layout change for inline boxes) makes each tap target at least 24px tall. */
+.spinal-app main :where(a:not([class])),.spinal-app :where(.sp-foot,.sp-credit) a{padding-block:4px}
 
 /* ------------------------------------------------------------------ foot */
 .spinal-app .sp-foot{border-top:1px solid var(--sp-line);padding:32px 0 36px;background:var(--sp-bg);color:var(--sp-muted);font-size:14px;line-height:1.7}
@@ -319,38 +326,28 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 body.spinal-app [tabindex="-1"]:is(:focus,:focus-visible){outline:none}
 
 /* ------------------------------------------------------------------ levels, key points */
-.spinal-app .sp-controls{margin:18px 0 0;max-width:640px}
-.spinal-app .sp-controls[hidden]{display:none}
-.spinal-app .sp-controls-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
-.spinal-app .sp-controls-label{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted)}
-.spinal-app .sp-level{display:inline-flex;border:1px solid var(--sp-line-strong)}
-.spinal-app .sp-level-btn{min-height:44px;min-width:44px;padding:0 16px;border:0;border-left:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1 var(--sp-sans);cursor:pointer;transition:background-color .15s}
-.spinal-app .sp-level-btn:first-child{border-left:0}
-.spinal-app .sp-level-btn:hover{background:var(--sp-accent-soft)}
-.spinal-app .sp-level-btn[aria-pressed=true]{background:var(--sp-accent);color:var(--sp-on-accent);font-weight:500}
-.spinal-app .sp-level-btn:focus-visible{outline-offset:-4px}
-.spinal-app .sp-controls-hint{margin:8px 0 0;font-size:14px;line-height:1.5;color:var(--sp-muted)}
-
-/* Tier filtering: levels are cumulative. body[data-tier-max] = 1 (MO), 2 (Resident), 3 (Advanced, default). */
+/* Tier filtering: levels are cumulative. body[data-tier-max] = 1 (MO), 2 (Resident), 3 (Consultant, default).
+   (The same rule ships in ../../shared/regional/css/levels.css; kept here so the page works if that file is late.) */
 body.spinal-app[data-tier-max="1"] [data-tier="2"],
 body.spinal-app[data-tier-max="1"] [data-tier="3"],
 body.spinal-app[data-tier-max="2"] [data-tier="3"]{display:none!important}
 
-/* Tier badges (drawn by CSS on tagged blocks; hidden in Quick read). */
+/* Tier badges, drawn by CSS: "Resident" and "Consultant" only (MO content always shows, so it needs no badge), and only
+   on the first block of a run: not on a block nested in, or straight after, a block of the same tier, nor on table
+   cells, key points or the ward card list. A badged block reserves 30px above itself and the badge sits in that space. */
 .spinal-app main [data-tier]{position:relative}
-.spinal-app main [data-tier]::after{position:absolute;top:-11px;left:0;right:auto;z-index:1;padding:2px 7px;background:var(--tb);color:var(--tc);font:400 10.5px/1.4 var(--sp-mono);letter-spacing:.06em;text-transform:uppercase;pointer-events:none;white-space:nowrap}
-.spinal-app main [data-tier="1"]{--tc:var(--sp-t1);--tb:var(--sp-t1-bg)}
 .spinal-app main [data-tier="2"]{--tc:var(--sp-t2);--tb:var(--sp-t2-bg)}
 .spinal-app main [data-tier="3"]{--tc:var(--sp-t3);--tb:var(--sp-t3-bg)}
-.spinal-app main [data-tier="1"]::after{content:'MO'}
+.spinal-app main :is([data-tier="2"],[data-tier="3"])::after{position:absolute;top:-25px;left:0;right:auto;z-index:1;padding:2px 7px;background:var(--tb);color:var(--tc);font:400 12px/1.4 var(--sp-mono);letter-spacing:.06em;text-transform:uppercase;pointer-events:none;white-space:nowrap}
 .spinal-app main [data-tier="2"]::after{content:'Resident'}
-.spinal-app main [data-tier="3"]::after{content:'Advanced'}
-.spinal-app main :is([data-tier="1"] [data-tier="1"],[data-tier="2"] [data-tier="2"],[data-tier="3"] [data-tier="3"],.sp-keypoints,.sp-sixty)::after{display:none}
+.spinal-app main [data-tier="3"]::after{content:'Consultant'}
+.spinal-app main :is([data-tier="2"] [data-tier="2"],[data-tier="3"] [data-tier="3"],[data-tier="2"]+[data-tier="2"],[data-tier="3"]+[data-tier="3"],.sp-keypoints,.sp-sixty)::after{display:none}
 .spinal-app main :is(td,th,tr,tbody,thead)[data-tier]::after{display:none}
+body.spinal-app main :is([data-tier="2"],[data-tier="3"]):not(td,th,tr,tbody,thead,.sp-keypoints,.sp-sixty,[data-tier="2"] [data-tier="2"],[data-tier="3"] [data-tier="3"],[data-tier="2"]+[data-tier="2"],[data-tier="3"]+[data-tier="3"]){margin-top:max(32px,var(--sp-tier-gap,32px))}
 
 /* Key points box */
 .spinal-app .sp-keypoints{margin:0 0 28px;padding:14px 18px 6px;max-width:72ch;background:var(--sp-key-bg);border:1px solid var(--sp-line);border-left:4px solid var(--sp-key)}
-.spinal-app .sp-keypoints-title{margin:0 0 8px;font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-key)}
+.spinal-app .sp-keypoints-title{margin:0 0 8px;font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-key)}
 .spinal-app main .sp-keypoints ul{list-style:none;margin:0 0 8px;padding:0}
 .spinal-app main .sp-keypoints li{position:relative;margin:0 0 6px;padding-left:16px;font-size:15px;line-height:1.55;max-width:none}
 .spinal-app main .sp-keypoints li::before{content:'';position:absolute;left:0;top:.58em;width:6px;height:6px;background:var(--sp-key)}
@@ -367,52 +364,22 @@ body.spinal-app[data-tier-max="2"] [data-tier="3"]{display:none!important}
 .spinal-app main .sp-stop li::before{content:'';position:absolute;left:0;top:.58em;width:6px;height:6px;background:var(--sp-danger)}
 
 @media (max-width:760px){
-  .spinal-app .sp-controls-row{gap:10px}
-  .spinal-app .sp-level-btn{padding:0 12px}
   .spinal-app .sp-keypoints{padding:12px 14px 4px}
 }
 
-/* Reading dock: the level and Quick read controls float on screen so they can be changed anywhere. */
-.spinal-app .sp-controls-note{margin:16px 0 0;font-size:14px;line-height:1.55;color:var(--sp-muted);max-width:60ch}
-.spinal-app .sp-controls{position:fixed;z-index:55;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));margin:0;max-width:none;
-  background:var(--sp-surface);border:1px solid var(--sp-line-strong);border-top:3px solid var(--sp-accent);padding:8px 10px}
-.spinal-app .sp-controls-row{flex-wrap:nowrap;gap:8px 10px}
-.spinal-app .sp-controls .sp-level-btn{min-height:40px}
-.spinal-app .sp-controls-hint{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-body.spinal-app{padding-bottom:84px}
-@media (max-width:760px){
-  .spinal-app .sp-controls{left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:max(10px,env(safe-area-inset-bottom));padding:6px 8px}
-  .spinal-app .sp-controls-row{justify-content:space-between;gap:6px}
-  .spinal-app .sp-controls-label{position:absolute!important;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-  .spinal-app .sp-controls .sp-level-btn{padding:0 10px;font-size:14px}
-  
-  body.spinal-app{--sp-dock-h:72px}
-}
-@media print{.spinal-app .sp-controls,.spinal-app .sp-controls-note{display:none!important}body.spinal-app{padding-bottom:0}}
-html:has(body.spinal-app){scroll-padding-bottom:96px}
-.spinal-app main :is(p,ul,ol,h4,.sp-table-wrap,.tq-grp)[data-tier]::after{top:-20px;left:0}
-.spinal-app main :is(p,ul,ol,h4,.sp-table-wrap,.tq-grp)[data-tier]{margin-top:28px}
 
-/* Advanced level: each section shows only its digest of consultant pearls (built by app.js). */
+/* "Pearls only" (Consultant level): each section shows only its digest of consultant pearls (built by app.js). */
 .spinal-app .sp-adv-digest{display:none}
-body.spinal-app[data-level="adv"] main .sp-section:not(#references):not(#card) > :not(.sp-kicker,h2,.sp-adv-digest){display:none!important}
-body.spinal-app[data-level="adv"] .sp-adv-digest{display:block}
+body.spinal-app[data-pearls-only="true"] main .sp-section:not(#references):not(#card) > :not(.sp-kicker,h2,.sp-adv-digest,.sp-ch-tools){display:none!important}
+body.spinal-app[data-pearls-only="true"] .sp-adv-digest{display:block}
 .spinal-app .sp-adv-digest{max-width:860px}
 .spinal-app .sp-adv-item{margin:0 0 22px}
 .spinal-app .sp-adv-item > :not(.sp-adv-from){margin-top:6px}
-.spinal-app .sp-adv-from{margin:0;font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-pearl)}
+.spinal-app .sp-adv-from{margin:0;font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-pearl)}
 .spinal-app .sp-adv-empty{margin:0;color:var(--sp-muted);font-style:italic}
-@media (max-width:760px){.spinal-app .sp-controls .sp-level-btn{padding:0 8px;font-size:14px}}
 .spinal-app .sp-adv-digest .sp-callout-label{display:none}
-.spinal-app .sp-controls .sp-level-btn{white-space:nowrap}
-@media (max-width:400px){.spinal-app .sp-controls .sp-level-btn{padding:0 7px}}
-/* Advanced pearls (tier-3 key boxes) take the Advanced indigo, matching their badge. */
+/* Consultant pearls (tier-3 key boxes) take the pearl colour, matching their badge. */
 .spinal-app .sp-callout--key[data-tier="3"],.spinal-app .sp-adv-digest .sp-callout--key{--c:var(--sp-pearl);--cb:var(--sp-pearl-bg)}
-.spinal-app main .sp-callout[data-tier]{margin-top:30px}
-/* Badges never overlap text: every block that shows a badge reserves space above itself and the badge sits in that space. */
-body.spinal-app main [data-tier]:not(td,th,tr,tbody,thead,.sp-keypoints,.sp-sixty):not([data-tier="1"] [data-tier="1"],[data-tier="2"] [data-tier="2"],[data-tier="3"] [data-tier="3"]){margin-top:max(30px,var(--sp-tier-gap,30px))}
-body.spinal-app main [data-tier]:not(td,th,tr,tbody,thead,.sp-keypoints,.sp-sixty)::after{top:-24px;left:0}
-@media (max-width:760px){.spinal-app .sp-controls .sp-level{flex:1;display:flex}.spinal-app .sp-controls .sp-level-btn{flex:1}}
 
 /* ================================================================== v3: hub + chapters */
 .spinal-app main{position:relative}
@@ -422,34 +389,90 @@ body.spinal-app.sp-booting .sp-chapter:not(.is-current){position:absolute;left:-
 body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
 .spinal-app .sp-chapter>.sp-section{padding-block:28px 40px;border-top:0}
 .spinal-app .sp-chapter>.sp-section+.sp-section{border-top:1px solid var(--sp-line-strong);padding-top:48px}
-.spinal-app .sp-ch-kicker{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-accent);margin:28px 0 0}
+.spinal-app .sp-ch-tools{max-width:860px}
+.spinal-app .sp-ch-tools .ra-hidden-hint{margin:12px 0 0}
+.spinal-app .sp-ch-tools--pearls .sp-pearls{margin:0 0 20px}
+.spinal-app .sp-pearls{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:12px 0 0;max-width:none;color:var(--sp-muted);font-size:15px;line-height:1.4}
+.spinal-app .sp-pearls[hidden]{display:none}
+.spinal-app .sp-pearls-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--sp-line-strong);border-radius:0;background:var(--sp-surface);color:var(--sp-ink);font:500 15px/1.2 var(--sp-sans);cursor:pointer}
+.spinal-app .sp-pearls-btn::before{content:'';width:14px;height:14px;border:1.5px solid currentColor;box-sizing:border-box}
+.spinal-app .sp-pearls-btn:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+.spinal-app .sp-pearls-btn[aria-pressed=true]{background:var(--sp-accent);border-color:var(--sp-accent);color:var(--sp-on-accent)}
+.spinal-app .sp-pearls-btn[aria-pressed=true]::before{background:currentColor;box-shadow:inset 0 0 0 2px var(--sp-accent)}
+.spinal-app .sp-ch-kicker{font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-accent);margin:28px 0 0}
 
-/* Sticky bar: hub button, chapter nav, search, share */
-.spinal-app .sp-bar{position:sticky;top:var(--sp-header-h);z-index:50;background:color-mix(in srgb,var(--sp-bg) 96%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--sp-line)}
-.spinal-app .sp-bar-inner{display:flex;align-items:center;gap:8px;min-height:56px;padding-block:6px}
-.spinal-app .sp-bar-home{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 8px;border:1px solid var(--sp-line-strong);color:var(--sp-ink);font:500 14px/1 var(--sp-sans);text-decoration:none;flex-shrink:0;background:var(--sp-surface)}
+/* The one sticky app bar (plan §4): home, chapter menu, search, copy link, MO · Res · Con level control.
+   It matches the regional block pages' bar (../../shared/regional/css/regional.css .tb-bar). At most 56px tall. */
+.spinal-app .sp-bar{position:sticky;top:0;z-index:50;background:var(--sp-bg);border-bottom:1px solid var(--sp-line)}
+.spinal-app .sp-bar-inner{position:relative;display:flex;align-items:center;gap:8px;min-height:55px;padding-block:4px}
+.spinal-app .sp-bar-home{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 12px 0 8px;border:1px solid var(--sp-line-strong);color:var(--sp-ink);font:500 15px/1 var(--sp-sans);text-decoration:none;flex-shrink:0;background:var(--sp-surface)}
 .spinal-app .sp-bar-home svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.spinal-app .sp-bar-home[hidden]{display:none}
+.spinal-app .sp-bar-home--back svg{stroke-width:1.9}
 .spinal-app .sp-bar-home:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
-.spinal-app .sp-chnav{flex:1;min-width:0;display:flex}
-.spinal-app .sp-chlist{display:none;list-style:none;margin:0;padding:0;gap:2px 14px;flex-wrap:nowrap;align-items:center;min-width:0}
-.spinal-app .sp-chlist a{display:flex;align-items:center;min-height:44px;font:13.5px/1.2 var(--sp-sans);color:var(--sp-muted);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
+.spinal-app .sp-chnav{flex:1;min-width:0;display:flex;align-items:center;gap:8px}
+.spinal-app .sp-chlist{display:none;list-style:none;margin:0;padding:0;gap:2px 14px;flex:1;flex-wrap:nowrap;align-items:center;min-width:0;overflow:hidden}
+.spinal-app .sp-chlist li{margin:0}
+.spinal-app .sp-chlist a{display:flex;align-items:center;min-height:44px;font:14px/1.2 var(--sp-sans);color:var(--sp-muted);text-decoration:none;white-space:nowrap;border-bottom:2px solid transparent}
 .spinal-app .sp-chlist a:hover{color:var(--sp-ink)}
 .spinal-app .sp-chlist a[aria-current=page]{color:var(--sp-ink);border-bottom-color:var(--sp-accent);font-weight:500}
-.spinal-app .sp-chsel{display:block;flex:1;min-width:0}
-.spinal-app .sp-chsel select{width:100%;min-height:44px;padding:0 10px;border:1px solid var(--sp-line-strong);border-radius:0;background:var(--sp-surface);color:var(--sp-ink);font:15px/1 var(--sp-sans);text-overflow:ellipsis}
+/* Chapter disclosure menu (narrow screens, or when the inline list doesn't fit) */
+.spinal-app .sp-chmenu{position:relative;flex:1;min-width:0}
+.spinal-app .sp-chmenu-btn{display:flex;align-items:center;gap:8px;width:100%;min-height:44px;padding:0 12px;border:1px solid var(--sp-line-strong);border-radius:0;background:var(--sp-surface);color:var(--sp-ink);font:16px/1.2 var(--sp-sans);cursor:pointer;text-align:left}
+.spinal-app .sp-chmenu-btn:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+.spinal-app .sp-chmenu-k{flex-shrink:0;font:400 12px/1 var(--sp-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted)}
+.spinal-app .sp-chmenu-cur{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spinal-app .sp-chmenu-caret{flex-shrink:0;width:8px;height:8px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:translateY(-2px) rotate(45deg)}
+.spinal-app .sp-chmenu-btn[aria-expanded=true] .sp-chmenu-caret{transform:translateY(2px) rotate(-135deg)}
+.spinal-app .sp-chmenu-panel{position:absolute;left:0;top:calc(100% + 4px);z-index:60;width:max(100%,min(360px,calc(100vw - 32px)));max-width:calc(100vw - 16px);max-height:min(70vh,560px);overflow-y:auto;overscroll-behavior:contain;background:var(--sp-bg);border:1px solid var(--sp-line-strong);border-top:2px solid var(--sp-accent);box-shadow:0 12px 24px rgba(0,0,0,.14)}
+.spinal-app .sp-chmenu-panel[hidden]{display:none}
+.spinal-app .sp-chmenu-list,.spinal-app .sp-chmenu-extra{list-style:none;margin:0;padding:4px 0}
+.spinal-app .sp-chmenu-extra{border-top:1px solid var(--sp-line)}
+.spinal-app :is(.sp-chmenu-list,.sp-chmenu-extra) li{margin:0}
+.spinal-app .sp-chmenu-list a{display:flex;align-items:center;min-height:44px;padding:8px 14px;color:var(--sp-ink);font:15px/1.35 var(--sp-sans);text-decoration:none}
+.spinal-app .sp-chmenu-list a:hover{background:var(--sp-accent-soft)}
+.spinal-app .sp-chmenu-list a[aria-current=page]{background:var(--sp-surface-2);box-shadow:inset 3px 0 0 var(--sp-accent);font-weight:500}
+.spinal-app .sp-chmenu-act{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:8px 14px;border:0;border-radius:0;background:none;color:var(--sp-ink);font:15px/1.35 var(--sp-sans);text-align:left;text-decoration:none;cursor:pointer}
+.spinal-app .sp-chmenu-act:hover{background:var(--sp-accent-soft)}
+.spinal-app .sp-chmenu-act svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:var(--sp-accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.spinal-app :is(.sp-chmenu-list a,.sp-chmenu-act,.sp-chmenu-btn,.sp-chmenu-panel){box-sizing:border-box}
+.spinal-app :is(.sp-chmenu-list a,.sp-chmenu-act):focus-visible{outline-offset:-3px}
+.spinal-app .sp-chmenu-share-li{display:none}
 @media (min-width:1240px){
-  .spinal-app .sp-chlist{display:flex}
-  .spinal-app .sp-chsel{display:none}
-  .spinal-app .sp-chnav{justify-content:center}
+  .spinal-app .sp-bar:not(.sp-bar--menu) .sp-chlist{display:flex}
+  .spinal-app .sp-bar:not(.sp-bar--menu) .sp-chmenu{display:none}
 }
-.spinal-app .sp-bar-btn{flex-shrink:0}
+.spinal-app .sp-bar-btn{flex-shrink:0;padding:0 14px}
+.spinal-app .sp-bar-level{flex-shrink:0;display:flex}
 @media (max-width:1239px){.spinal-app .sp-bar-btn{width:44px;padding:0;justify-content:center}.spinal-app .sp-bar-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}}
-@media (max-width:420px){.spinal-app .sp-bar-inner{gap:6px}.spinal-app .sp-bar-home span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}.spinal-app .sp-bar-home{padding:0 10px;min-width:44px;justify-content:center}}
+/* Phones: home (icon), chapter menu, search, level. Copy link moves into the chapter menu; the menu spans the bar. */
+@media (max-width:600px){
+  .spinal-app .sp-bar-inner{gap:6px}
+  .spinal-app .sp-bar-home span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .spinal-app .sp-bar-home{padding:0;width:44px;min-width:44px;box-sizing:border-box;justify-content:center}
+  .spinal-app .sp-chnav{gap:6px}
+  .spinal-app #sp-share{display:none}
+  .spinal-app .sp-chmenu-share-li{display:block}
+  .spinal-app .sp-chmenu{position:static}
+  .spinal-app .sp-chmenu-panel{left:var(--site-gutter,16px);right:var(--site-gutter,16px);width:auto;max-width:none}
+  .spinal-app .sp-chmenu-btn{padding:0 8px 0 10px;gap:6px;font-size:15px}
+  .spinal-app .sp-bar-level .ra-level-btn{padding:0 6px}
+}
+@media (max-width:480px){.spinal-app .sp-chmenu-k{display:none}}
+@media (max-width:420px){.spinal-app .sp-chmenu-btn{font-size:14px;padding:0 6px 0 9px}}
+/* Phones: a 16px side gutter (as the regional block pages) and tighter bar gaps, so the chapter name has room. */
+@media (max-width:480px){:root:has(body.spinal-app){--site-gutter:16px}}
+@media (max-width:400px){.spinal-app .sp-bar-inner,.spinal-app .sp-chnav{gap:4px}.spinal-app .sp-chmenu-btn{gap:4px;padding:0 4px 0 6px}}
+/* The level control's palette is the spinal one; "Back to MO" (after a deep link raised the level) hangs under the bar
+   below 1024px, so the bar keeps its layout. */
+.spinal-app .sp-bar-level .ra-level-k{color:var(--sp-muted)}
+@media (max-width:1023px){
+  .spinal-app .sp-bar-level .ra-level-back{position:absolute;top:calc(100% + 1px);right:var(--site-gutter,16px);z-index:55;border-top:0;box-shadow:0 6px 12px rgba(0,0,0,.08)}
+}
 
-/* Search */
-.spinal-app .sp-sheet{position:fixed;z-index:56;left:0;right:0;top:calc(var(--sp-header-h) + 56px);max-height:calc(100vh - var(--sp-header-h) - 56px - 90px);overflow-y:auto;background:var(--sp-bg);border-bottom:2px solid var(--sp-accent);box-shadow:0 12px 24px rgba(0,0,0,.12)}
+/* Search: the sheet hangs from the bottom of the sticky bar, so it never covers it. */
+.spinal-app .sp-sheet{position:absolute;z-index:56;left:0;right:0;top:100%;max-height:calc(100dvh - var(--ra-bar) - 12px);overflow-y:auto;overscroll-behavior:contain;background:var(--sp-bg);border-bottom:2px solid var(--sp-accent);box-shadow:0 12px 24px rgba(0,0,0,.12)}
 .spinal-app .sp-sheet[hidden]{display:none}
+.spinal-app #sp-sheet-close{width:auto;padding:0 14px}
 .spinal-app .sp-sheet-inner{padding-block:12px 16px}
 .spinal-app .sp-search-row{display:flex;gap:8px;align-items:stretch}
 .spinal-app .sp-search-input{flex:1;min-width:0;min-height:48px;padding:0 14px;border:1px solid var(--sp-line-strong);border-radius:0;background:var(--sp-surface);color:var(--sp-ink);font:16px/1.2 var(--sp-sans)}
@@ -460,7 +483,8 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
 .spinal-app .sp-sresults li:first-child .sp-sres{border-top-width:1px}
 .spinal-app .sp-sres:hover,.spinal-app .sp-sres:focus-visible{background:var(--sp-accent-soft)}
 .spinal-app .sp-sres-t{display:block;font:500 15px/1.35 var(--sp-sans)}
-.spinal-app .sp-sres-c{display:block;font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-accent)}
+.spinal-app .sp-sres-tier{font-weight:400;color:var(--sp-muted)}
+.spinal-app .sp-sres-c{display:block;font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-accent)}
 .spinal-app .sp-sres-s{display:block;font-size:14px;line-height:1.5;color:var(--sp-muted)}
 .spinal-app .sp-sres mark{background:var(--sp-warn-bg);color:var(--sp-ink);padding:0 1px}
 .spinal-app .sp-sres-none{padding:12px;color:var(--sp-muted);background:var(--sp-surface);border:1px solid var(--sp-line);list-style:none}
@@ -507,13 +531,13 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
 @media (min-width:700px){.spinal-app .sp-pager{grid-template-columns:1fr auto 1fr}}
 .spinal-app main a.sp-pager-a{display:flex;flex-direction:column;justify-content:center;min-height:56px;padding:8px 14px;border:1px solid var(--sp-line-strong);background:var(--sp-surface);color:var(--sp-ink);text-decoration:none}
 .spinal-app main a.sp-pager-a:hover,.spinal-app main a.sp-pager-a:focus-visible{background:var(--sp-accent-soft);border-color:var(--sp-accent)}
-.spinal-app .sp-pager-a small{font:400 11px/1.5 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted)}
+.spinal-app .sp-pager-a small{font:400 12px/1.5 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted)}
 .spinal-app .sp-pager-a span{font:500 15px/1.35 var(--sp-sans)}
 .spinal-app .sp-pager-next{text-align:right;align-items:flex-end}
 .spinal-app .sp-pager-hub{align-items:center;text-align:center}
 
 /* Print: current chapter only (the ward card relies on this) */
 @media print{
-  .spinal-app :is(.ntf-header,.ntf-footer,.sp-bar,.sp-sheet,.sp-pager,.sp-foot,.sp-controls,.sp-skip,.sp-ch-kicker){display:none!important}
+  .spinal-app :is(.ntf-header,.ntf-footer,.sp-bar,.sp-sheet,.sp-pager,.sp-foot,.sp-skip,.sp-ch-kicker,.sp-ch-tools){display:none!important}
   body.spinal-app .sp-chapter:not(.is-current){display:none!important}
 }

@@ -1,7 +1,7 @@
 // Back: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
 // nothing is traced from published images.
-import { E, PS, L } from '../../shared/js/scene.js';
+import { E, PS, L } from '../../../shared/regional/js/scene.js';
 
 // Square-shouldered transverse process (sharp polygon): flat posterior surface, squared corners.
 const tp = (x0, x1, top, bot) => PS([x0, top + 0.5], [x0 + 0.6, top], [x1 - 0.6, top], [x1, top + 0.5], [x1, bot], [x0, bot]);
@@ -134,3 +134,32 @@ export const SCENES = {
     probe: { view: 'back', x: 101, y: 111, angle: 0, label: 'transverse, just caudal to the transverse process (right side shown).' },
   },
 };
+
+// One-line descriptions for the scan viewer's "Structures in this view" legend (plan §7), matched by label.
+// Wording is taken from this page's own sonoanatomy, landmark and exam text; BY_SCENE overrides one scene.
+function describe(scenes, all, byScene = {}) {
+  for (const [key, sc] of Object.entries(scenes)) {
+    for (const it of [...(sc.layers || []), ...(sc.lines || []), ...(sc.shapes || [])]) {
+      const d = byScene[key]?.[it.label] ?? all[it.label];
+      if (d && !it.desc) it.desc = d;
+    }
+  }
+}
+
+describe(SCENES, {
+  'Trapezius': 'Trapezius superficially, then erector spinae.',
+  'Rhomboid major': 'Seen at upper thoracic levels only (about T5 and above).',
+  'Erector spinae': 'Three columns, lateral to medial iliocostalis, longissimus and spinalis (“I Like Standing”), supplied by the dorsal rami.',
+  'T4 transverse process': 'Square, bright, with a flat black shadow.',
+  'T5 transverse process': 'Square, bright, with a flat black shadow. Aim for T5 for thoracic surgery.',
+  'T6 transverse process': 'Square, bright, with a flat black shadow.',
+  'Transverse process': 'Square, bright, with a flat black shadow.',
+  'Rib (rounder, deeper)': 'Rounder and deeper than the transverse process, with the bright pleural line between the ribs.',
+  'Pleura': 'Bright sliding line, with lung artefact below.',
+  'Superior costotransverse ligament': 'The bright band sloping from the transverse process to the rib below; the paravertebral space is under it.',
+  'Internal intercostal membrane': 'The posterior wall of the space in this view, continuous with the SCTL. Deposit below it.',
+  'ESP plane': 'Deep to erector spinae, on the transverse process.',
+}, {
+  pvb: { 'Paravertebral space': 'Under the SCTL. Deposit below it: the pleura should be pushed down.' },
+  pvbt: { 'Paravertebral space': 'A hypoechoic wedge between the internal intercostal membrane above and the bright pleura below, which moves with breathing.' },
+});

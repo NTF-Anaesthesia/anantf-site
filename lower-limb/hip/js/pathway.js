@@ -1,6 +1,6 @@
 // Hip page: the hip fracture pathway chapter (emergency department to ward), with an interactive fracture chooser.
 // Original schematic drawing of the proximal femur (SVG). No citations on the page; sources are in the notes file.
-import { el, sv, fill, keyPoints, callout, table, steps, registerSearch } from '../../../truncal/shared/js/ui.js';
+import { el, sv, fill, keyPoints, callout, table, steps, registerSearch } from '../../../shared/regional/js/ui.js';
 
 const FRACTURES = [
   {

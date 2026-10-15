@@ -7,10 +7,15 @@ import {
   ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED,
   BLOCK_SUMMARY, BLOCK_SUMMARY_ALL, DISCLAIMER, blockStatus,
 } from './data.js';
+import {
+  applyLevel, getLevel, onLevel, tierMax, relaxFor, mountLevelControl, mountLevelPicker, hiddenHint, withScrollAnchor,
+} from '../../shared/regional/js/levels.js?v=20261015';
 
 window.bpBus = bus; // handy for debugging in the console
 
 const $ = (sel, root = document) => root.querySelector(sel);
+/** A pearl is a string or {safety: true, html} (a safety pearl, always shown at MO level). Text only: escaped on render. */
+const pearlText = (x) => (typeof x === 'string' ? x : x?.html ?? '');
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const LEVEL_NAME = Object.fromEntries(LEVELS.map((l) => [l.id, l.name]));
 LEVEL_NAME.collateral = 'Collateral branch';
@@ -81,6 +86,7 @@ for (const c of chipDefs) {
     const g = document.createElement('span');
     g.className = 'chip-group-label';
     g.id = 'chip-group-advanced';
+    g.dataset.tier = '3';
     g.textContent = c.group;
     chipsEl.append(g);
     continue;
@@ -89,12 +95,64 @@ for (const c of chipDefs) {
   b.type = 'button';
   b.className = c.advanced ? 'chip chip--advanced' : 'chip';
   b.dataset.block = c.id || '';
+  if (c.advanced) b.dataset.tier = '3';
   b.innerHTML = `<span class="chip-main">${esc(c.label)}</span><span class="chip-sub">${esc(c.sub)}</span>`;
   if (c.advanced) b.setAttribute('aria-describedby', 'chip-group-advanced');
   b.addEventListener('click', () => bus.emit('block', { id: c.id, source: 'app' }));
   chipsEl.append(b);
 }
+// Phones and narrow windows: the same choice as a disclosure menu in the sticky bar.
+const menuBtn = $('#bp-block-btn');
+const menuPanel = $('#bp-block-panel');
+const menuList = $('#bp-block-list');
+for (const c of chipDefs) {
+  const li = document.createElement('li');
+  if (c.group) {
+    li.className = 'bp-blockmenu-group';
+    li.dataset.tier = '3';
+    li.setAttribute('aria-hidden', 'true');
+    li.textContent = c.group;
+    menuList.append(li);
+    continue;
+  }
+  if (c.advanced) li.dataset.tier = '3';
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'bp-blockmenu-item';
+  b.dataset.block = c.id || '';
+  b.innerHTML = `<span class="bp-blockmenu-main">${esc(c.label)}${c.advanced ? ' <span class="adv-tag">Advanced</span>' : ''}</span><span class="bp-blockmenu-sub">${esc(c.sub)}</span>`;
+  b.addEventListener('click', () => { closeMenu(true); bus.emit('block', { id: c.id, source: 'app' }); });
+  li.append(b);
+  menuList.append(li);
+}
+function openMenu() {
+  menuPanel.hidden = false;
+  menuBtn.setAttribute('aria-expanded', 'true');
+  (menuList.querySelector('[aria-pressed="true"]') || menuList.querySelector('button'))?.focus({ preventScroll: true });
+}
+function closeMenu(focusBtn = false) {
+  if (menuPanel.hidden) return;
+  menuPanel.hidden = true;
+  menuBtn.setAttribute('aria-expanded', 'false');
+  if (focusBtn) menuBtn.focus({ preventScroll: true });
+}
+menuBtn.addEventListener('click', () => (menuPanel.hidden ? openMenu() : closeMenu()));
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !menuPanel.hidden) { e.preventDefault(); closeMenu(true); } });
+document.addEventListener('pointerdown', (e) => { if (!menuPanel.hidden && !$('#bp-blockmenu').contains(e.target)) closeMenu(); });
+menuPanel.addEventListener('keydown', (e) => {
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+  const items = [...menuPanel.querySelectorAll('button, a')].filter((n) => n.getClientRects().length);
+  const i = items.indexOf(document.activeElement);
+  const j = (i + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+  e.preventDefault(); items[j]?.focus();
+});
+
 function syncChips() {
+  const cur = BLOCKS[bus.state.block];
+  $('#bp-block-cur').textContent = cur ? shortBlockName(cur) : 'None';
+  for (const b of menuList.querySelectorAll('.bp-blockmenu-item')) {
+    b.setAttribute('aria-pressed', (b.dataset.block || null) === (bus.state.block || null) ? 'true' : 'false');
+  }
   for (const b of chipsEl.querySelectorAll('.chip')) {
     const on = (b.dataset.block || null) === (bus.state.block || null);
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -115,7 +173,7 @@ function syncChips() {
 
 // ---------------------------------------------------------------- share
 // Light mode only: the page is pinned with <html data-theme="light">.
-$('#btn-share').addEventListener('click', async () => {
+async function copyLink() {
   const status = $('#share-status');
   clearTimeout(hashTimer);
   writeHash();
@@ -131,6 +189,14 @@ $('#btn-share').addEventListener('click', async () => {
   status.textContent = ok ? 'Link copied' : 'Copy the address bar to share this view';
   $('#btn-share span').textContent = ok ? 'Copied' : 'Copy link';
   setTimeout(() => { $('#btn-share span').textContent = 'Copy link'; status.textContent = ''; }, 2200);
+  return ok;
+}
+$('#btn-share').addEventListener('click', copyLink);
+$('#btn-share-menu').addEventListener('click', async () => {
+  const ok = await copyLink();
+  const t = $('#btn-share-menu span');
+  t.textContent = ok ? 'Link copied' : 'Copy the address bar to share';
+  setTimeout(() => { t.textContent = 'Copy link to this view'; closeMenu(true); }, 900);
 });
 
 // ---------------------------------------------------------------- collapsible panels
@@ -164,13 +230,15 @@ async function mountModule(name, path, containerSel, ...args) {
 // ---------------------------------------------------------------- tabs
 const tabButtons = TABS.map((t) => $(`#tab-${t}`));
 const lazy = {
-  ultrasound: () => mountModule('ultrasound', './ultrasound.js', '#mount-ultrasound'),
-  coverage: () => mountModule('coverage', './coverage.js', '#mount-coverage', { heading: false }),
+  ultrasound: () => mountModule('ultrasound', './ultrasound.js?v=20261015b', '#mount-ultrasound'),
+  coverage: () => mountModule('coverage', './coverage.js?v=20261015b', '#mount-coverage', { heading: false }),
   guide: () => renderGuide(),
 };
 const mounted = new Set();
 function selectTab(tab, focus = false) {
   if (!TABS.includes(tab)) return;
+  // A link to a view the reader's level hides (Coverage is Resident) shows it for this visit only.
+  relaxFor($(`#tab-${tab}`));
   currentTab = tab;
   tabButtons.forEach((b, i) => {
     const on = TABS[i] === tab;
@@ -241,7 +309,7 @@ function elementCard() {
 function overviewHTML() {
   const levels = LEVELS.map((l, i) => {
     const adv = BLOCK_ORDER_ADVANCED.filter((bid) => BLOCKS[bid]?.level === l.id);
-    const blocks = [...(l.blockIds || []), ...adv].map((bid) => `<button type="button" class="btn-ghost${BLOCKS[bid].advanced ? ' btn-ghost--advanced' : ''}" data-block="${esc(bid)}">${esc(BLOCKS[bid].name)}${BLOCKS[bid].advanced ? ' <span class="adv-tag">Advanced</span>' : ''}</button>`).join('');
+    const blocks = [...(l.blockIds || []), ...adv].map((bid) => `<button type="button" class="btn-ghost${BLOCKS[bid].advanced ? ' btn-ghost--advanced" data-tier="3' : ''}" data-block="${esc(bid)}">${esc(BLOCKS[bid].name)}${BLOCKS[bid].advanced ? ' <span class="adv-tag">Advanced</span>' : ''}</button>`).join('');
     return `<li class="card level-card" style="--level-colour:${esc(l.color)}">
       <div class="level-head"><span class="level-num" aria-hidden="true">${i + 1}</span><h4>${esc(l.name)} <span class="count">× ${l.count}</span></h4></div>
       <p><strong>Where:</strong> ${esc(l.location)}</p>
@@ -251,23 +319,26 @@ function overviewHTML() {
       ${blocks ? `<div class="level-blocks"><span class="muted small">Blocked here:</span> ${blocks}</div>` : ''}
     </li>`;
   }).join('');
-  const row = (r) => `<tr${r.advanced ? ' class="row-advanced"' : ''}>
+  const row = (r) => `<tr${r.advanced ? ' class="row-advanced" data-tier="3"' : ''}>
       <th scope="row"><button type="button" class="link-btn" data-block="${esc(r.id)}">${esc(shortBlockName(BLOCKS[r.id]))}</button>${r.relatedTo && BLOCKS[r.relatedTo] ? `<span class="row-variant">Variant of ${esc(shortBlockName(BLOCKS[r.relatedTo]).toLowerCase())}</span>` : ''}</th>
       <td>${esc(LEVEL_NAME[r.level])}</td><td>${esc(r.needle)}</td><td>${esc(r.volume)}</td><td>${esc(r.approach)}</td><td>${esc(r.indications)}</td></tr>`;
   const advRows = BLOCK_SUMMARY_ALL.filter((r) => r.advanced);
   const rows = BLOCK_SUMMARY.map(row).join('') +
-    (advRows.length ? `<tr class="group-row"><th scope="rowgroup" colspan="6">Advanced blocks <span class="muted">(variants of the core four; volumes from published studies, not the deck)</span></th></tr>${advRows.map(row).join('')}` : '');
+    (advRows.length ? `<tr class="group-row" data-tier="3"><th scope="rowgroup" colspan="6">Advanced blocks <span class="muted">(variants of the core four; volumes from published studies, not the deck)</span></th></tr>${advRows.map(row).join('')}` : '');
   return `<div class="guide-grid">
     <div class="guide-main">
       <h3 class="guide-title">How the plexus is organised</h3>
       <p class="mnemonic"><strong>${esc(LEVEL_MNEMONIC.text)}</strong>: ${esc(LEVEL_MNEMONIC.meaning)}<br><span class="muted">${esc(LEVEL_MNEMONIC.blocks)}</span></p>
       <ol class="levels">${levels}</ol>
+      <div data-tier="2">
       <h3 class="guide-title">The blocks at a glance</h3>
+      <p class="ra-tier-badge" data-badge="2">Resident</p>
       <div class="table-wrap" tabindex="0" role="region" aria-label="Comparison of the core and advanced blocks">
         <table class="summary">
           <thead><tr><th scope="col">Block</th><th scope="col">Plexus level</th><th scope="col">Needle</th><th scope="col">Volume</th><th scope="col">Approach</th><th scope="col">Typical indications</th></tr></thead>
           <tbody>${rows}</tbody>
         </table>
+      </div>
       </div>
     </div>
     ${asideHTML()}
@@ -293,14 +364,12 @@ function blockHTML(b) {
   const why = core ? (b.whyChoose || b.examQs?.[0]?.a || '') : '';
   const variantHTML = core ? `
         <p class="note variant-note"><span class="adv-tag">Advanced</span> <span>Variant of the <button type="button" class="link-btn" data-block="${esc(core.id)}">${esc(coreName.toLowerCase())} block</button>. Learn that one first; this page covers what changes.</span></p>
-        ${why ? `<div class="why-box"><p class="why-title">Why choose this over ${esc(coreName.toLowerCase())}?</p><p>${esc(why)}</p></div>` : ''}` : '';
+        ${why ? `<div class="why-box" data-tier="3"><p class="why-title">Why choose this over ${esc(coreName.toLowerCase())}?</p><p>${esc(why)}</p></div>` : ''}` : '';
   // Core blocks: point to their advanced variants (blocks whose relatedTo is this one).
   const variants = b.advanced ? [] : Object.keys(BLOCKS).filter((id) => BLOCKS[id].advanced && BLOCKS[id].relatedTo === b.id);
   const variantsHTML = variants.length ? `
-        <div class="jump-row variants-row"><span class="muted">Advanced variants:</span> ${variants.map((id) => `<button type="button" class="btn-ghost btn-ghost--advanced" data-block="${esc(id)}">${esc(shortBlockName(BLOCKS[id]))} <span class="adv-tag">Advanced</span></button>`).join(' ')}</div>` : '';
-  const sources = (b.sources || []).length ? `
-      <h4>Sources</h4>
-      <ul class="sources">${b.sources.map((s) => `<li>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.label)}</a>` : esc(s.label)}</li>`).join('')}</ul>` : '';
+        <div class="jump-row variants-row" data-tier="3"><span class="muted">Advanced variants:</span> ${variants.map((id) => `<button type="button" class="btn-ghost btn-ghost--advanced" data-block="${esc(id)}">${esc(shortBlockName(BLOCKS[id]))} <span class="adv-tag">Advanced</span></button>`).join(' ')}</div>` : '';
+  // b.sources stays in data.js (provenance for the maintainers) but is not shown: no citations on the pages.
   return `<div class="guide-grid">
     <div class="guide-main">
       <div class="block-head">
@@ -312,7 +381,7 @@ function blockHTML(b) {
         </div>
         <div class="jump-row">
           <button type="button" class="btn-ghost" data-tab="ultrasound">Watch it on ultrasound</button>
-          <button type="button" class="btn-ghost" data-tab="coverage">See the coverage map</button>
+          <button type="button" class="btn-ghost" data-tab="coverage" data-tier="2">See the coverage map</button>
         </div>
         ${variantsHTML}
       </div>
@@ -328,7 +397,9 @@ function blockHTML(b) {
       <h4>Performing the block</h4>
       <ol class="steps">${steps.map(([t, d]) => `<li><p class="step-title">${esc(t)}</p><div>${d}</div></li>`).join('')}</ol>
 
+      <div data-tier="2">
       <h4>Coverage</h4>
+      <p class="ra-tier-badge" data-badge="2">Resident</p>
       <p>${esc(b.coverageText)}</p>
       <dl class="kv cover-lists">
         <div><dt><span class="dot st-target" aria-hidden="true"></span>Injection target</dt><dd class="chip-row">${chips(b.targetIds, 'st-target')}</dd></div>
@@ -336,6 +407,7 @@ function blockHTML(b) {
         ${b.variable.length ? `<div><dt><span class="dot st-variable" aria-hidden="true"></span>Variable</dt><dd class="chip-row">${chips(b.variable, 'st-variable')}</dd></div>` : ''}
         ${b.spares.length ? `<div><dt><span class="dot st-spares" aria-hidden="true"></span>Usually spared</dt><dd class="chip-row">${chips(b.spares, 'st-spares')}</dd></div>` : ''}
       </dl>
+      </div>
       ${sideEffect.length ? `<p class="note note-warn"><strong>Expected side effect:</strong> ${esc(sideEffect.join(', '))} block.</p>` : ''}
       ${separate.length ? `<p class="note"><strong>Needs a separate injection:</strong> ${esc(separate.join(', '))}.</p>` : ''}
 
@@ -346,11 +418,13 @@ function blockHTML(b) {
       ${list(b.complications)}
 
       <h4>Pearls</h4>
-      ${list(b.pearls)}
+      <ul>${(b.pearls || []).map((x, i) => `<li${i >= 3 && !x.safety ? ' data-tier="2"' : ''}>${esc(pearlText(x))}</li>`).join('')}</ul>
 
+      <div data-tier="2">
       <h4>Exam questions</h4>
+      <p class="ra-tier-badge" data-badge="2">Resident</p>
       <div class="qa">${(b.examQs || []).map((x, i) => `<details><summary><span class="q-num">Q${i + 1}</span> ${esc(x.q)}</summary><p>${esc(x.a)}</p></details>`).join('')}</div>
-${sources}
+      </div>
     </div>
     ${asideHTML()}
   </div>`;
@@ -392,6 +466,7 @@ function renderGuide() {
   guideEl.dataset.key = key;
   guideEl.innerHTML = b ? blockHTML(b) : overviewHTML();
   guideEl.querySelectorAll('.qa details').forEach((d, i) => { if (openQs.has(i)) d.open = true; });
+  guideHint?.refresh();
 }
 
 guideEl.addEventListener('click', (e) => {
@@ -416,14 +491,38 @@ guideEl.addEventListener('pointerout', (e) => {
   if (t && t.dataset.sel && !t.contains(e.relatedTarget)) bus.emit('hover', { id: null, source: 'guide' });
 });
 
+// ---------------------------------------------------------------- levels (MO / Resident / Consultant)
+// MO: the core blocks, set-up, the five steps, complications, the first pearls and safety pearls. Resident adds coverage, the
+// remaining pearls, exam questions and the comparison table. Consultant adds the advanced blocks and "why choose".
+const blockChip = (id) => chipsEl.querySelector(`.chip[data-block="${CSS.escape(id || '')}"]`);
+/** An advanced block opened by a link or a button: show it for this visit even at MO or Resident level. */
+function relaxForBlock(id) { if (id && BLOCKS[id]?.advanced) relaxFor(blockChip(id)); }
+const guideHint = hiddenHint(guideEl, { label: 'in this guide' });
+$('#guide-hint').append(guideHint);
+mountLevelControl($('#bp-level'), { label: false });
+// First visit: the one-screen level picker, except on a shared link (the reader came for that view).
+if (!location.hash) mountLevelPicker($('#bp-picker'));
+onLevel(() => {
+  const max = tierMax();
+  withScrollAnchor(() => {
+    // The level now hides what is on screen: fall back to the nearest view that it shows.
+    const b = BLOCKS[bus.state.block];
+    if (b?.advanced && max < 3) bus.emit('block', { id: b.relatedTo && BLOCKS[b.relatedTo] ? b.relatedTo : null, source: 'level' });
+    if (currentTab === 'coverage' && max < 2) selectTab('guide');
+  });
+  guideHint.refresh();
+});
+
 // ---------------------------------------------------------------- bus wiring
-bus.on('block', () => { syncChips(); renderGuide(); writeHash(); });
+bus.on('block', (p) => { if (p?.source !== 'level') relaxForBlock(bus.state.block); syncChips(); renderGuide(); writeHash(); });
 bus.on('select', () => { updateGuideSelection(); writeHash(); });
 
 // ---------------------------------------------------------------- boot
+applyLevel();
+relaxForBlock(initial.block);
 syncChips();
 // Web fonts change chip widths; re-run so the active chip stays in view on phones.
 document.fonts?.ready?.then(() => syncChips()).catch(() => {});
-mountModule('viewer3d', './viewer3d.js', '#mount-3d');
-mountModule('diagram', './diagram.js', '#mount-diagram');
+mountModule('viewer3d', './viewer3d.js?v=20261015b', '#mount-3d');
+mountModule('diagram', './diagram.js?v=20261015b', '#mount-diagram');
 selectTab(initial.tab || 'ultrasound');

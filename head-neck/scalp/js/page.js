@@ -1,13 +1,16 @@
-// Scalp and occipital page: wires the shared truncal shell to this page's chapters and data.
-import { bootPage } from '../../../truncal/shared/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy } from './anatomy.js';
+// Scalp and occipital page: wires the shared regional shell to this page's chapters and data.
+import { bootPage } from '../../../shared/regional/js/shell.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy } from './anatomy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Scalp and occipital blocks',
   eyebrow: 'Regional anaesthesia · Head and neck',
+  backLabel: 'See all head and neck blocks and the operation chooser',
+  backShort: 'Head and neck blocks',
+  backHref: '../',
   lead: 'The scalp block for craniotomy, and the greater and lesser occipital nerve blocks: where the nerves are and how to reach them.',
   searchPlaceholder: 'Search, e.g. craniotomy, occipital, GLASS Z',
   tiles: [

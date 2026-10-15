@@ -1,14 +1,17 @@
-// Thigh and amputation page: wires the shared regional shell (truncal/shared) to this page's chapters and data.
-import { bootPage } from '../../../truncal/shared/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy } from './anatomy.js';
-import { renderAmputation, renderCombinations } from './planner.js';
+// Thigh and amputation page: wires the shared regional shell (shared/regional) to this page's chapters and data.
+import { bootPage } from '../../../shared/regional/js/shell.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy } from './anatomy.js?v=20261015';
+import { renderAmputation, renderCombinations } from './planner.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Thigh and amputation blocks',
   eyebrow: 'Regional anaesthesia · Lower-limb blocks',
+  backLabel: 'See all lower-limb blocks and the operation chooser',
+  backShort: 'Lower-limb blocks',
+  backHref: '../',
   lead: 'The sciatic nerve high in the thigh, the posterior femoral cutaneous nerve beside it, and how to put the whole leg to sleep without a spinal: above- and below-knee amputations under nerve blocks, with the dose counted.',
   searchPlaceholder: 'Search, e.g. AKA, PFCN',
   tiles: [

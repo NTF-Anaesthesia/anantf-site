@@ -28,6 +28,8 @@
 .spinal-app .sx-svg-pill{font:500 13px/1 var(--sp-sans)}
 .spinal-app .sx-svg-small{font:400 12px/1 var(--sp-mono);letter-spacing:.05em;text-transform:uppercase}
 .spinal-app .sx-svg-badge{font:600 15px/1 var(--sp-sans)}
+/* Phones: the figures scale down, so their small labels scale up to stay at least 12px on screen. */
+@media (max-width:600px){.spinal-app .sx-svg-small{font-size:17px}.spinal-app .sx-svg-badge{font-size:18px}}
 .spinal-app .sx-key{display:block;margin-top:6px;color:var(--sp-muted)}
 .spinal-app .sx-key b{display:inline-block;min-width:1.5em;height:1.5em;line-height:1.5em;text-align:center;background:var(--sp-ink);color:var(--sp-bg);font:600 12px/1.5em var(--sp-sans);margin-right:3px;border-radius:50%}
 

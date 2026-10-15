@@ -2,7 +2,7 @@
 
 /* ------------------------------------------------------------------ jump row + parts */
 .spinal-app .tq-jump{counter-reset:none}
-.spinal-app .tq-jump-n{font:400 11px/1 var(--sp-mono);color:var(--sp-muted);margin-right:6px;letter-spacing:.04em}
+.spinal-app .tq-jump-n{font:400 12px/1 var(--sp-mono);color:var(--sp-muted);margin-right:6px;letter-spacing:.04em}
 .spinal-app .tq-part{padding-top:0;margin-top:0}
 .spinal-app main .tq-h{margin:56px 0 14px;max-width:none}
 .spinal-app .tq-num{display:inline-block;min-width:3.2em;font:400 13px/1 var(--sp-mono);letter-spacing:.04em;color:var(--sp-muted);vertical-align:.22em}
@@ -61,7 +61,7 @@
 .spinal-app main .tq-ac-srcsub{font:400 12px/1.45 var(--sp-mono);color:var(--sp-muted);margin:2px 0 8px}
 .spinal-app .tq-ac-col--asra .tq-ac-srcsub{color:var(--sp-warn)}
 .spinal-app .tq-ac-dl{margin:0}
-.spinal-app .tq-ac-dl dt{font:400 11px/1.5 var(--sp-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);margin-top:8px}
+.spinal-app .tq-ac-dl dt{font:400 12px/1.5 var(--sp-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);margin-top:8px}
 .spinal-app main .tq-ac-dl dd{margin:0;font-size:15px;line-height:1.5}
 .spinal-app main .tq-ac-dl .tq-ac-val{font:500 17px/1.4 var(--sp-sans)}
 .spinal-app main .tq-ac-notes{margin:14px 0 0;padding-left:1.2em;font-size:14px;line-height:1.6}
@@ -94,7 +94,7 @@
 /* ------------------------------------------------------------------ svg drawings */
 .spinal-app .tq-svg{display:block;width:100%;height:auto}
 .spinal-app .tq-svg-pill{font:500 13px/1 var(--sp-sans)}
-.spinal-app .tq-svg-small{font:400 11px/1 var(--sp-mono);letter-spacing:.06em;text-transform:uppercase}
+.spinal-app .tq-svg-small{font:400 12px/1 var(--sp-mono);letter-spacing:.06em;text-transform:uppercase}
 .spinal-app .tq-svg-title{font:italic 400 19px/1 var(--sp-serif)}
 .spinal-app .tq-svg[data-mode=midline] :is(.tq-ap-para,.tq-ap-label-para){display:none}
 .spinal-app .tq-svg[data-mode=paramedian] :is(.tq-ap-mid,.tq-ap-label-mid){display:none}
@@ -104,9 +104,9 @@
 /* ------------------------------------------------------------------ timeline (theme-aware) */
 #tq-fig-timecourse .sp-fig-stage{padding:12px 0 4px}
 .spinal-app .tq-tl-label{font:500 13px/1 var(--sp-sans);fill:var(--sp-ink)}
-.spinal-app .tq-tl-tick{font:400 11px/1 var(--sp-mono);fill:var(--sp-muted)}
+.spinal-app .tq-tl-tick{font:400 12px/1 var(--sp-mono);fill:var(--sp-muted)}
 .spinal-app .tq-tl-note{font:400 12px/1 var(--sp-sans);fill:var(--sp-muted)}
-.spinal-app .tq-tl-checkn{font:500 11px/1 var(--sp-mono);fill:var(--sp-bg)}
+.spinal-app .tq-tl-checkn{font:500 12px/1 var(--sp-mono);fill:var(--sp-bg)}
 .spinal-app .tq-tl-check{fill:var(--sp-ink)}
 .spinal-app .tq-tl-solid{fill:var(--sp-accent)}
 .spinal-app .tq-tl-mid{fill:var(--sp-accent);opacity:.45}
@@ -131,7 +131,7 @@
 .spinal-app .tq-spread-meter{display:inline-flex;gap:3px}
 .spinal-app .tq-spread-meter>span{display:block;width:16px;height:8px;border:1px solid var(--sp-line-strong)}
 .spinal-app .tq-spread-meter>span.tq-on{background:var(--sp-accent);border-color:var(--sp-accent)}
-.spinal-app .tq-spread-who{font:400 11px/1.4 var(--sp-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);text-align:right}
+.spinal-app .tq-spread-who{font:400 12px/1.4 var(--sp-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);text-align:right}
 .spinal-app .tq-spread-body{padding:4px 8px 14px calc(2.2em + 16px);font-size:15px}
 .spinal-app main .tq-spread-body p{margin:0}
 @media (max-width:520px){
@@ -204,4 +204,4 @@
 .spinal-app .tq-acd-sum .tq-acd-name{font:400 18px/1.25 var(--sp-serif)}
 .spinal-app .tq-acd-sum .tq-acd-dose{font-size:14px;color:var(--sp-muted)}
 .spinal-app .tq-acd-quick{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:14.5px;line-height:1.4}
-.spinal-app .tq-acd-quick b{font:600 11px/1 var(--sp-mono);letter-spacing:.06em;margin-right:4px;color:var(--sp-muted)}
+.spinal-app .tq-acd-quick b{font:600 12px/1 var(--sp-mono);letter-spacing:.06em;margin-right:4px;color:var(--sp-muted)}

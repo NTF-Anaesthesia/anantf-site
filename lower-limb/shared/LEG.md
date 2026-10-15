@@ -1,25 +1,38 @@
 # Lower-limb blocks: section notes and the leg figure API
 
-The lower-limb section (`lower-limb/`) runs on the shared regional engine in `truncal/shared/` (see
-`truncal/shared/DATA.md`). Pages supply data; they do not edit `truncal/shared/`. Lower-limb extras live here:
+The lower-limb section (`lower-limb/`) runs on the shared regional engine in `shared/regional/` (see
+`shared/regional/DATA.md`). Pages supply data; they do not edit `shared/regional/`. Lower-limb extras live here:
 
 ```
 lower-limb/shared/
-  js/leg.js        leg figures: coverage maps, probe insets, anatomy figures (this file's API)
-  js/anim.js       animFigure(slug): Dr Chew Shi Hao's animated block demonstrations, embedded from lower-limb/anim/
-  css/lowerlimb.css  section styles (prefix ll-), loaded after truncal.css
-lower-limb/anim/   frozen copy of his animation engine and block modules, shown in embed mode inside an iframe
+  js/leg.js        shim only: the leg figures moved to shared/regional/js/figures/leg.js (this file's API)
+  js/anim.js       animFigure(slug): a lazy "Watch the animation" disclosure for pages outside a block's data (see below)
+  css/lowerlimb.css  section styles (prefix ll-), loaded after shared/regional/css/regional.css
+lower-limb/anim/   frozen copy of Dr Chew Shi Hao's animation engine and block modules, shown in embed mode inside an iframe
+shared/regional/js/ops/ops-lowerlimb.js   the operations behind the landing chooser (also read by /blocks/)
 ```
+
+**Animations.** A block shows Dr Chew Shi Hao's animation through the engine's `watch` slot:
+`watch: { anim: 'peng', variant?: 'single', caption: '…', tier: 1 }`. The iframe is created only when the reader opens
+"Watch the animation", only one is live on a page, and closing it unloads it. `tier: 1` keeps it at MO level (the engine
+default for `watch` is Resident). Do not edit `lower-limb/anim/` (his code).
+
+**Operation chooser.** `lower-limb/landing.js` renders; the data (`OPS`, `OP_REGIONS`, `LINKS`) and
+`lowerLimbCoverageMap(op)` live in `shared/regional/js/ops/ops-lowerlimb.js`. Add an operation there, not in the landing.
+
+**Levels.** The engine sets each section's level (MO / Resident / Consultant) from its key (see DATA.md). Lower-limb
+data overrides: safety-critical pearls are `{ safety: true, html }` (always MO), the ankle block's "Ultrasound, nerve
+by nerve" is `tier: 1`, and the thigh page's amputation planner chapter is `tier: 2`.
 
 Pages: `lower-limb/index.html` (landing and operation chooser), `hip/`, `knee/`, `foot-ankle/`, `thigh/`.
 Each page copies the truncal page template (`truncal/abdominal-wall/index.html`) with paths one level deeper for the
-engine (`../../truncal/shared/…`), breadcrumbs **Resources / Regional anaesthesia / Lower-limb blocks / <Page>**, and the
+engine (`../../shared/regional/…`), breadcrumbs **Resources / Regional anaesthesia / Lower-limb blocks / <Page>**, and the
 credit **"Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia"**.
 
-## leg.js API (drop-in partners of the truncal dermatome functions, like `head-neck/shared/js/head.js`)
+## leg.js API (drop-in partners of the truncal dermatome functions, like `shared/regional/js/figures/head.js`)
 
 ```js
-import { legCoverageMap, legProbeInset, legFigure, LANDMARKS, ZONES } from '../../shared/js/leg.js';
+import { legCoverageMap, legProbeInset, legFigure, LANDMARKS, ZONES } from '../../../shared/regional/js/figures/leg.js';
 coverage: { map: legCoverageMap, side: 'unilateral', views: ['front','back'],   // views optional (default: those used)
             areas: [{ zones: ['femoral-ant', 'saphenous'], density: 'dense' },
                     { zones: ['knee-ant'], density: 'moderate' }],

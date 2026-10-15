@@ -35,7 +35,7 @@ export function mount(root) {
   try {
     const css = document.createElement('link');
     css.rel = 'stylesheet';
-    css.href = new URL('../../css/card.css?v=2', import.meta.url).href;
+    css.href = new URL('../../css/card.css?v=3', import.meta.url).href;
     document.head.append(css);
   } catch { /* the card still reads without its stylesheet */ }
 
@@ -152,7 +152,7 @@ export function mount(root) {
       el('li', { html: '<strong>CSF not flowing clearly, blood-stained CSF that does not clear</strong>, or you are not sure the clotting is safe.' }),
       el('li', { html: '<strong>Falling blood pressure, slow heart rate, breathlessness, weak hands or drowsiness</strong> after the injection. Call for help, give oxygen, treat early. <a href="#ts-hypotension">Hypotension</a> · <a href="#ts-high-spinal">High spinal</a>' })));
   grid.append(block('cd-steps', '5. Steps', S, stop,
-    tier(el('p', { class: 'cd-note', html: 'Never inject through resistance. Hold the needle so it cannot move while you attach the syringe. Many anaesthetists aspirate again at the end of the injection to confirm the tip has not moved. Difficult back: <a href="#ts-difficult-back">troubleshooting</a>.' }), 2)));
+    tier(el('p', { class: 'cd-note', html: 'Never inject through resistance. Hold the needle so it cannot move while you attach the syringe. Many anaesthetists aspirate again at the end of the injection to confirm the tip has not moved. Difficult back: <a href="#ts-difficult-back">troubleshooting</a>.' }), 1)));
 
   // ------------------------------------------------------------ 6 block assessment
   grid.append(block('cd-block', '6. Check the block before incision',
@@ -197,7 +197,7 @@ export function mount(root) {
       </ul><p>Do not wait for the morning round, and do not put it down to a slow block. Examine the legs, tell the surgical team, and ask for an urgent MRI if anything is new. Write down what you found and when. <a href="#cx-ward">Ward red flags</a></p>`,
     }),
     el('p', { class: 'cd-lead-line', html: 'Give these red flags to the ward in writing and in words. Day-case patients go home with the same list and a contact number.' }),
-    tier(el('p', { class: 'cd-note', html: 'Haematoma presents most often when the block should be wearing off, or after an anticoagulant is restarted: ask for leg checks at those times. Record the technique, drug, dose, level and block result: <a href="#tq-documentation">Documentation</a>.' }), 2)));
+    tier(el('p', { class: 'cd-note', html: 'Haematoma presents most often when the block should be wearing off, or after an anticoagulant is restarted: ask for leg checks at those times. Record the technique, drug, dose, level and block result: <a href="#tq-documentation">Documentation</a>.' }), 1)));
 
   // ------------------------------------------------------------ print footer (print only)
   root.append(el('p', { class: 'cd-print-foot', text: 'Ward card from anantf.com/spinal/#ch-card.' }));

@@ -1,4 +1,4 @@
-// Abdominal wall: block data (schema: ../../shared/DATA.md, "Block schema").
+// Abdominal wall: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
 import { SCENES } from './scenes.js';
 
 

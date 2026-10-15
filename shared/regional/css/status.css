@@ -1,0 +1,51 @@
+/* Regional anaesthesia app: block-status tokens (plan §8). Same values as ../js/status.js; change both together.
+   Status = colour + line style: target thick with a wine halo, covers solid, variable dashed / hatched, spares dashed and faded.
+   Anatomical colours (nerves yellow, arteries red, veins blue) are not status colours and are not set here. */
+:root{
+  --ra-st-target:#166534;--ra-st-covers:#16a34a;--ra-st-variable:#c2410c;--ra-st-spares:#94a3b8;--ra-st-halo:#633d3c;
+  --ra-inj:#1f1a17;--ra-inj-ring:#fffaf0;--ra-la:#409ede;--ra-la-edge:#1d5f96;
+}
+
+/* SVG strokes */
+[data-status="target"]{--ra-st:var(--ra-st-target)}
+[data-status="covers"]{--ra-st:var(--ra-st-covers)}
+[data-status="variable"]{--ra-st:var(--ra-st-variable)}
+[data-status="spares"]{--ra-st:var(--ra-st-spares)}
+svg .ra-st[data-status]{stroke:var(--ra-st)}
+svg .ra-st[data-status="target"]{stroke-width:3;filter:drop-shadow(0 0 1.5px var(--ra-st-halo))}
+svg .ra-st[data-status="variable"]{stroke-dasharray:6 4}
+svg .ra-st[data-status="spares"]{stroke-dasharray:3 4;stroke-opacity:.55}
+
+/* Chips and legend keys (Blocked / Variable / Spared) */
+.ra-st-chip{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 10px;border:1px solid var(--ra-st,#827b6d);border-radius:0;
+  background:#f7f5ef;color:#272722;font:400 14px/1.3 'NTF Sans',system-ui,sans-serif}
+.ra-st-chip[data-status="variable"]{border-style:dashed}
+.ra-st-chip[data-status="spares"]{border-style:dashed;color:#55534d}
+.ra-st-chip[data-status="target"]{border-width:2px;box-shadow:0 0 0 1px var(--ra-st-halo)}
+.ra-st-key{display:inline-block;width:22px;height:0;border-top:3px solid var(--ra-st,#827b6d);vertical-align:middle}
+.ra-st-key[data-status="variable"]{border-top-style:dashed}
+.ra-st-key[data-status="spares"]{border-top-style:dashed;opacity:.55}
+.ra-st-key[data-status="target"]{border-top-width:4px;box-shadow:0 0 0 1px var(--ra-st-halo)}
+
+/* Coverage maps: variable areas hatched (pattern supplied by the figure; this class is the fallback) */
+.ra-st-hatch{background-image:repeating-linear-gradient(45deg,var(--ra-st-variable) 0 2px,transparent 2px 6px)}
+
+/* Coverage maps drawn with status fills (coverageFills() in status.js; figure has class tb-cov--st):
+   dense = covers green, solid; moderate = covers green, stippled; patchy = variable orange, hatched. */
+.tb-app .tb-cov--st .tb-cov-sw,.tb-cov--st .tb-cov-sw{border-color:#14532d}
+.tb-app .tb-cov--st .tb-cov-sw--dense,.tb-cov--st .tb-cov-sw--dense{background:rgba(22,163,74,.78)}
+.tb-app .tb-cov--st .tb-cov-sw--moderate,.tb-cov--st .tb-cov-sw--moderate{background:radial-gradient(circle,var(--ra-st-target) 1.3px,transparent 1.6px) 0 0/6px 6px,rgba(22,163,74,.30)}
+.tb-app .tb-cov--st .tb-cov-sw--patchy,.tb-cov--st .tb-cov-sw--patchy{border-color:var(--ra-st-variable);background:repeating-linear-gradient(45deg,var(--ra-st-variable) 0 2px,rgba(194,65,12,.16) 2px 6px)}
+
+/* Coverage chips at the Inject step of the scan viewer (Blocked / Variable / Spared) */
+.ra-cov-chips{display:flex;flex-direction:column;gap:8px;margin:0;padding:12px 14px;border:1px solid #d7d2c8;background:#fbf9f4}
+.ra-cov-chips[hidden]{display:none}
+.ra-cov-chips-k{margin:0;font:400 12px/1.6 'NTF Mono','JetBrains Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:#55534d}
+.ra-cov-grp{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0;padding:0;list-style:none}
+.ra-cov-grp>li{margin:0;max-width:none}
+.ra-cov-grp-k{flex:0 0 100%;font:600 13px/1.4 'NTF Sans',system-ui,sans-serif;color:#272722}
+.ra-cov-chips .ra-st-chip{font-size:14px}
+.ra-cov-chips .ra-st-chip::before{content:'';flex:none;width:16px;height:0;border-top:3px solid var(--ra-st)}
+.ra-cov-chips .ra-st-chip[data-status="variable"]::before,.ra-cov-chips .ra-st-chip[data-status="spares"]::before{border-top-style:dashed}
+.ra-cov-chips .ra-st-chip[data-status="spares"]::before{opacity:.7}
+.ra-cov-chips .ra-cov-more{display:inline-flex;align-items:center;min-height:24px;font-size:15px}

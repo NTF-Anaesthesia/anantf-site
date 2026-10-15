@@ -1,4 +1,4 @@
-// Back: block data (schema: ../../shared/DATA.md, "Block schema").
+// Back: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
 import { SCENES } from './scenes.js';
 
 const BILATERAL_LAST = 'Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks (for example bilateral ESP or paravertebral blocks for a sternotomy or an upper abdominal incision) or when combining blocks.';

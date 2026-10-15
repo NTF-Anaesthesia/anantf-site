@@ -1,12 +1,11 @@
-// Foot and ankle blocks: block data (schema: ../../../truncal/shared/DATA.md, "Block schema"; leg figures:
+// Foot and ankle blocks: block data (schema: ../../../shared/regional/DATA.md, "Block schema"; leg figures:
 // ../../shared/LEG.md). Popliteal and ankle doses are Dr Chew Shi Hao's (the owner's decision); the below-knee saphenous
 // doses come from the literature (sources in the notes file, not on the page). Text is plain, with no citations.
-import { el } from '../../../truncal/shared/js/ui.js';
-import { mountScan } from '../../../truncal/shared/js/scan.js';
-import { legCoverageMap } from '../../shared/js/leg.js';
-import { animFigure } from '../../shared/js/anim.js';
-import { SCENES } from './scenes.js';
-import { ankleSection } from './anatomy.js';
+import { el } from '../../../shared/regional/js/ui.js';
+import { mountScan } from '../../../shared/regional/js/scan.js';
+import { legCoverageMap } from '../../../shared/regional/js/figures/leg.js';
+import { SCENES } from './scenes.js?v=20261015';
+import { ankleSection } from './anatomy.js?v=20261015';
 
 // A row of buttons that swaps between several scan viewers (mounted on first use).
 function scanSwitcher(sec, items, { label, idPrefix }) {
@@ -46,7 +45,7 @@ export const BLOCKS = [
       dose: '15 ml of 0.4% ropivacaine (60 mg), 5 ml aliquots, inside the paraneural sheath',
       covers: 'Below the knee except the medial leg and medial malleolus (saphenous)',
     },
-    intro: animFigure('popliteal', { caption: 'Popliteal sciatic block: the common peroneal nerve stacked over the tibial nerve, the two side by side (deep and superficial), in-plane and out-of-plane approaches, and a near miss outside the sheath. On a phone, tap Full screen and turn the phone sideways to read the labels.' }),
+    watch: { anim: 'popliteal', caption: 'Popliteal sciatic block: the common peroneal nerve stacked over the tibial nerve, the two side by side (deep and superficial), in-plane and out-of-plane approaches, and a near miss outside the sheath. On a phone, tap Full screen and turn the phone sideways to read the labels.', tier: 1 }, // Dr Chew Shi Hao's animation (lower-limb/anim/), loaded when opened
     scene: SCENES.popliteal,
     position: `<p><strong>Lateral</strong>, block side up, with a pillow under the leg so the knee is slightly flexed and the probe has room behind the thigh. Alternatives: <strong>prone</strong> (easiest scanning), or <strong>supine</strong> with the leg raised on a padded support or held by an assistant (fine for trauma and the obese, but the probe works from underneath).</p>`,
     equipment: [
@@ -96,7 +95,7 @@ export const BLOCKS = [
       'Fluid on top of the sheath and the nerves don’t part? Advance through it.',
       'Medial leg still sensate = saphenous, not a failed popliteal.',
       'Ideal for a calf cuff with a saphenous block; useless for a thigh cuff.',
-      'Numb foot, weak ankle: crutches, no weight-bearing, protect the heel.',
+      { safety: true, html: 'Numb foot, weak ankle: crutches, no weight-bearing, protect the heel.' }, // safety: shown at MO level
     ],
     sections: [
       {
@@ -206,7 +205,7 @@ export const BLOCKS = [
       dose: '17 ml of 0.5% ropivacaine (85 mg): tibial 5 ml, then 3 ml each for the other four',
       covers: 'The foot below the malleoli. Not a calf tourniquet.',
     },
-    intro: animFigure('ankle', { caption: 'Ankle block: the medial view (tibial and saphenous nerves), the anterior view (deep peroneal) and the lateral view (superficial peroneal traced up the leg, and the sural nerve), with a negative example at the tibial nerve. On a phone, tap Full screen and turn the phone sideways to read the labels.' }),
+    watch: { anim: 'ankle', caption: 'Ankle block: the medial view (tibial and saphenous nerves), the anterior view (deep peroneal) and the lateral view (superficial peroneal traced up the leg, and the sural nerve), with a negative example at the tibial nerve. On a phone, tap Full screen and turn the phone sideways to read the labels.', tier: 1 }, // Dr Chew Shi Hao's animation (lower-limb/anim/), loaded when opened
     scene: SCENES.tibial,
     position: '<p><strong>Supine</strong>, with a roll or a footrest under the calf so the heel and both malleoli are free and you can reach behind them. Externally rotate the leg for the tibial and saphenous nerves; internally rotate it for the sural. Stand at the foot of the bed for the front of the ankle.</p>',
     equipment: [
@@ -256,11 +255,11 @@ export const BLOCKS = [
       'Deep peroneal can be on either side of the artery: find it, don’t assume.',
       'Can’t see a superficial nerve? Ring its vein, or lay a subcutaneous wheal.',
       'Ankle cuff yes; calf cuff no.',
-      'No adrenaline in a toe; think twice at the ankle in a vascular foot.',
+      { safety: true, html: 'No adrenaline in a toe; think twice at the ankle in a vascular foot.' }, // safety: shown at MO level
     ],
     sections: [
       {
-        id: 'us-nerves', title: 'Ultrasound, nerve by nerve',
+        id: 'us-nerves', title: 'Ultrasound, nerve by nerve', tier: 1, // the other four nerves of an MO block
         html: '<p>The tibial nerve is in the main viewer above. Choose one of the other four: each has its own probe position, needle path and spread.</p>',
         render: (sec) => scanSwitcher(sec, [
           { key: 'dpn', label: 'Deep peroneal', scene: SCENES.dpn, blockId: 'ankle-dpn' },
@@ -397,7 +396,7 @@ export const BLOCKS = [
       'The saphenous is the only femoral nerve below the knee: medial leg, medial malleolus, inner foot.',
       'Find the vein, find the nerve. Light pressure, or the vein vanishes.',
       'A thigh band fills the vein and makes the target obvious.',
-      'Ring the vein, not the inside of it: aspirate.',
+      { safety: true, html: 'Ring the vein, not the inside of it: aspirate.' }, // safety: shown at MO level
       'Below-knee blocks spare the knee skin and the quadriceps.',
       'For foot surgery, a low adductor canal block is the most reliable saphenous block.',
       'Landmark field block: subcutaneous, not intradermal; inject as you withdraw.',

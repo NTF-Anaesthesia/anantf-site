@@ -1,5 +1,5 @@
 /* Hip blocks page: anatomy figures, comparison table and the fracture chooser (prefix hp-).
-   Shared styles (linked from index.html): ../../truncal/shared/css/truncal.css and ../shared/css/lowerlimb.css. */
+   Shared styles (linked from index.html): ../../shared/regional/css/regional.css and ../shared/css/lowerlimb.css. */
 .tb-app .hp-fig{margin:24px 0 10px;max-width:760px}
 .tb-app main .hp-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
 .tb-app .hp-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
@@ -37,3 +37,5 @@
 /* Coverage maps here show one front view of the whole leg: cap the size so a hip-only map doesn't fill a phone screen. */
 .tb-app .ll-cov-views--1{max-width:170px;margin:0 auto}
 @media (min-width:1000px){.tb-app .ll-cov-views--1{max-width:200px}}
+/* Phones: thinner figure padding so the 360-unit drawings keep their labels at 12px or more */
+@media (max-width:480px){.tb-app .hp-fig-stage{padding:2px}}

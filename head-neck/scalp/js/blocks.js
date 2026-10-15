@@ -1,6 +1,6 @@
-// Scalp and occipital: block data (schema: ../../../truncal/shared/DATA.md, "Block schema").
-import { headCoverageMap, viewsFigure } from '../../shared/js/head.js';
-import { SCENES } from './scenes.js';
+// Scalp and occipital: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
+import { headCoverageMap, viewsFigure } from '../../../shared/regional/js/figures/head.js?v=20261015';
+import { SCENES } from './scenes.js?v=20261015';
 
 /** The seven injection sites, numbered to match the key. */
 export function scalpPointsFigure() {
@@ -48,6 +48,8 @@ export const BLOCKS = [
       `Local anaesthetic with adrenaline, for example lidocaine 0.75% with bupivacaine 0.25% and adrenaline 1:200 000.`,
       'Monitoring: injections around the face and occiput are close to vessels',
     ],
+    // A landmark-only block: its landmarks and approach are the how-to, so they show at MO level.
+    tiers: { landmarks: 1, approach: 1 },
     landmarksTitle: 'Landmarks and injections',
     landmarks: `<ol><li><strong>Supraorbital</strong>: feel the supraorbital notch and inject just above it, perpendicular to the eyebrow.</li><li><strong>Supratrochlear</strong>: just medial to the supraorbital injection, at the bridge of the nose.</li><li><strong>Zygomaticotemporal</strong>: infiltrate from the lateral orbital rim back along the top of the zygomatic arch. The nerve runs through temporalis, so inject both <strong>deep and superficial</strong> to the temporalis fascia: the hardest nerve to block.</li><li><strong>Auriculotemporal</strong>: 1 cm in front of and 1 cm above the tragus, feel the superficial temporal artery and inject <strong>just behind it</strong>. Stay above the tragus: the facial nerve is close below.</li><li><strong>Great auricular</strong> (optional): usually covered by the lesser occipital injection, 1.5–2 cm behind the ear at the level of the tragus.</li><li><strong>Lesser occipital</strong>: infiltrate behind the ear from the top of the ear to the lobule, then back along the superior nuchal line.</li><li><strong>Greater occipital</strong>: feel the occipital artery about two-thirds of the way from the mastoid to the external occipital protuberance, on the superior nuchal line, and inject <strong>just medial to it</strong>.</li></ol>`,
     approach: `<p>Aspirate before each injection: the scalp is very vascular. Press on each site for a minute afterwards to spread the local anaesthetic and stop bruising.</p>`,

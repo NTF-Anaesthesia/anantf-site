@@ -1,7 +1,7 @@
 // Back: anatomy chapter (paravertebral space, counting levels, A–E label exercise), the landmark paravertebral
 // stepper, and the level table. All figures are original schematic drawings (SVG).
-import { el, sv, fill, keyPoints, callout, table, registerSearch, announce, reducedMotion } from '../../shared/js/ui.js';
-import { OUTLINE } from '../../shared/js/dermatomes.js';
+import { el, sv, fill, keyPoints, callout, table, registerSearch, announce, reducedMotion } from '../../../shared/regional/js/ui.js';
+import { OUTLINE } from '../../../shared/regional/js/dermatomes.js';
 
 const NERVE = '#f2c230', NERVE_EDGE = '#8a6a00', ART = '#c0392b', VEIN = '#2f63b0';
 const BONE = '#ece2cc', BONE_EDGE = '#9c8a64', MUSCLE = '#d49a88', MUSCLE_EDGE = '#a8695a', PLEURA = '#5b6f99', LIG = '#7c6845';
@@ -208,7 +208,7 @@ export function renderAnatomy(sec) {
   sec.append(f2);
 
   // Exam corner for the anatomy chapter
-  const ex = el('section', { class: 'tb-bsec tb-bsec--examcorner', id: 'anat-exam', 'aria-labelledby': 'anat-exam-h' });
+  const ex = el('section', { class: 'tb-bsec tb-bsec--examcorner', id: 'anat-exam', 'aria-labelledby': 'anat-exam-h', dataset: { tier: '2' } });
   ex.append(el('h3', { id: 'anat-exam-h', text: 'Exam corner' }));
   const q = el('article', { class: 'tb-exam-q bk-exam-q' });
   q.append(el('p', { class: 'tb-exam-src', text: 'Exam question' }));

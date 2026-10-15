@@ -1,6 +1,6 @@
-// Face: block data (schema: ../../../truncal/shared/DATA.md, "Block schema").
-import { headCoverageMap } from '../../shared/js/head.js';
-import { SCENES } from './scenes.js';
+// Face: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
+import { headCoverageMap } from '../../../shared/regional/js/figures/head.js?v=20261015';
+import { SCENES } from './scenes.js?v=20261015';
 
 const common = {
   position: '<p>Supine, head in the midline. Ask the patient to look straight ahead so you can line up the pupil.</p>',

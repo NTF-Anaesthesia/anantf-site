@@ -1,6 +1,6 @@
 // Chest wall: anatomy chapter (innervation of the chest wall). Original schematic drawings (SVG).
-import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../shared/js/ui.js';
-import { OUTLINE } from '../../shared/js/dermatomes.js';
+import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../../shared/regional/js/ui.js';
+import { OUTLINE } from '../../../shared/regional/js/dermatomes.js';
 
 const NERVE = '#e2b21c', NERVE_EDGE = '#7a5c00', LA = '#2c74b3', ART = '#c0392b';
 const MUS = '#d49a88', MUS_D = '#c9897a', MUS_E = '#a8695a', FAT = '#f3e2bf', SKIN = '#e7c0a3', BONE = '#ece2cc', BONE_E = '#9c8a64';

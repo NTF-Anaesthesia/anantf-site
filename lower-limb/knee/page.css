@@ -1,5 +1,5 @@
 /* Knee blocks page: anatomy figures and the motor-sparing plan builder (prefix kn-).
-   Shared styles: ../../truncal/shared/css/truncal.css and ../shared/css/lowerlimb.css. */
+   Shared styles: ../../shared/regional/css/regional.css and ../shared/css/lowerlimb.css. */
 .tb-app .kn-fig{margin:24px 0 10px;max-width:760px}
 .tb-app main .kn-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
 .tb-app .kn-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}
@@ -56,3 +56,5 @@
 .tb-app .kn-plan-tbl abbr{text-decoration:none;border-bottom:1px dotted currentColor;cursor:help;white-space:nowrap}
 /* single-view leg coverage maps: keep them a sensible height on a phone */
 .tb-app .ll-cov-views--1{max-width:240px;margin-left:auto;margin-right:auto}
+/* Phones: thinner figure padding so the 360-unit drawings keep their labels at 12px or more */
+@media (max-width:480px){.tb-app .kn-fig-stage,.tb-app .kn-plan-fig{padding:2px}}

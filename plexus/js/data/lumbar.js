@@ -10,7 +10,7 @@ export default {
   name: 'Lumbar plexus',
   tab: 'Lumbar',
   side: 'right',
-  levels: ['T12', 'L1', 'L2', 'L3', 'L4'],
+  levels: ['T12', 'L1', 'L2', 'L3', 'L4', 'L5'],
   levelColours: { T12: '#5b6b7a', L1: '#1f6f8b', L2: '#8c4f9f', L3: '#2f7d32', L4: '#b45309', L5: '#9d174d' },
   intro: 'The lumbar plexus forms inside psoas major from the anterior rami of L1–L4, often with a small branch from T12. '
     + 'Its nerves leave psoas at its lateral border (femoral, LFCN, iliohypogastric, ilio-inguinal), its front (genitofemoral) and its medial border (obturator, lumbosacral trunk).',

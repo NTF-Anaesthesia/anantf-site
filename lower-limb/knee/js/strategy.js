@@ -1,7 +1,7 @@
 // Knee page: "The motor-sparing knee" chapter, with an interactive plan builder (pick blocks, see which parts of the
 // knee they reach and what they cost in muscle power). The coverage model is a teaching simplification of the cadaver
 // innervation maps: each region is a set of nerves; a block reaches some of them. Prefix kn-.
-import { el, sv, fill, keyPoints, callout, table, registerSearch, announce } from '../../../truncal/shared/js/ui.js';
+import { el, sv, fill, keyPoints, callout, table, registerSearch, announce } from '../../../shared/regional/js/ui.js';
 
 // Nerves (articular unless stated)
 const NERVES = {

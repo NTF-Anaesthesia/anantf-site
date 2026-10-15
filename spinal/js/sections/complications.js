@@ -176,10 +176,10 @@ function pdph() {
           ],
         }),
       )),
-    T(P(`<strong>Mechanism of a patch (tier 3):</strong> the injected blood first compresses the dural sac (an immediate pressure effect), then clots over the hole. That is why relief can be quick but a leak can reopen.`), 3),
+    T(P(`<strong>Mechanism of a patch:</strong> the injected blood first compresses the dural sac (an immediate pressure effect), then clots over the hole. That is why relief can be quick but a leak can reopen.`), 3),
     T(P(`After a spinal with a fine (22G or smaller) needle, a <strong>greater occipital nerve block</strong> may be offered (a weak, grade C recommendation); the headache may come back, and severe cases still need a patch.${cite('uppal2023')}`), 3),
     T(callout('pearl', {
-      title: 'Advanced pearl: when a patch fails',
+      title: 'Consultant pearl: when a patch fails',
       body: '<p>If a blood patch gives no relief, or only brief relief, do not just repeat it. Re-examine the diagnosis first. A headache that has lost its postural pattern, or that comes with focal signs, needs a senior review and imaging for other causes such as intracranial haemorrhage or cerebral venous sinus thrombosis before another patch.</p>',
     }), 3),
     T(tree.el, 2),
@@ -220,7 +220,7 @@ function haematoma() {
       ])),
     T(P(`Trained staff should check sensory and motor recovery regularly for at least ${N('24 h')} after a neuraxial block, and longer in high-risk patients. Brief day-case patients on what to report.${cite('esaic2022')}`), 1),
     T(callout('pearl', {
-      title: 'Advanced pearl: a block that is too dense or too long',
+      title: 'Consultant pearl: a block that is too dense or too long',
       body: '<p>Do not wait for pain: motor block may be the only early sign. A block that returns after starting to wear off is the strongest hint. The threshold for an urgent MRI should be low; a normal-looking early picture should not stop you from acting if the signs are progressing.</p>',
     }), 3),
   );
@@ -305,7 +305,7 @@ function neuro() {
       ],
     }), 2),
     T(callout('pearl', {
-      title: 'Advanced pearl: the patient who cannot tell you',
+      title: 'Consultant pearl: the patient who cannot tell you',
       body: '<p>Warning paraesthesia and pain on injection are only useful if the patient can report them. Heavy sedation or general anaesthesia before the block removes this early warning, which is one reason most spinals are done with the patient awake or lightly sedated. If a deeply sedated patient must have a block, take extra care with the level, the needle direction and the injection pressure.</p>',
     }), 3),
   );
@@ -338,7 +338,7 @@ function high() {
       ],
     }), 2),
     T(P('Causes: too large a dose for the patient, a hyperbaric drug with the head down or a pregnancy-like state (<a href="#tq-spread-h">spread factors</a>), subdural placement, or an epidural top-up or large injection after an intended spinal. The reverse order matters too: a spinal given after a failed epidural, or a repeat spinal after a failed one, can spread much higher than expected. Short stature and obesity add to the risk. Treat it as an airway, breathing and circulation problem first, and tell the patient what is happening.'), 2),
-    T(P('Support breathing and circulation until the block recedes, which can take a couple of hours or more. Afterwards, talk to the patient: explain what happened and how they are, because it can be a frightening experience. Record it and tell the patient’s team.'), 2),
+    T(P('Support breathing and circulation until the block recedes, which can take a couple of hours or more. Afterwards, talk to the patient: explain what happened and how they are, because it can be a frightening experience. Record it and tell the patient’s team.'), 1),
   );
 }
 
@@ -356,7 +356,7 @@ function last() {
       P(`Management follows the Association of Anaesthetists LAST card: <strong>stop injecting, call for help, get the lipid pack, oxygen and airway, benzodiazepine for seizures.</strong> Give ${D('20%')} lipid emulsion: a bolus of ${D('1.5 mL/kg')} over 2–3 min, then an infusion of ${D('15 mL/kg/h')}. If the circulation has not recovered, repeat the bolus at 5 and 10 min (no more than 3 boluses in total) and double the infusion to ${D('30 mL/kg/h')} after 5 min. Maximum cumulative dose ${D('12 mL/kg')}. In cardiac arrest use smaller adrenaline doses (${D('≤1 µg/kg')}) and expect a long resuscitation.${cite('cx-qrh310')}`)),
     T(P('Mechanism of lipid rescue and the pharmacology of local anaesthetic toxicity are in <a href="#ph-last">Pharmacology</a>.', 'sp-prose cx-small'), 2),
     T(callout('pearl', {
-      title: 'Advanced pearl: LAST can be quiet or late',
+      title: 'Consultant pearl: LAST can be quiet or late',
       body: '<p>LAST does not always begin with a seizure. It can start with agitation, a metallic taste or perioral numbness, or with cardiovascular collapse alone, and it can appear some minutes after the block. Keep monitoring and keep the lipid pack close. In treatment, lipid emulsion is not replaced by propofol, and vasopressin, calcium channel blockers and beta-blockers are best avoided. Keep a running total of every local anaesthetic given, by every route, in the notes.</p><p>Ventricular arrhythmias in LAST can be stubborn: amiodarone is the usual choice, and lidocaine must not be used. Resuscitation may take over an hour, so in a severe case warn the team who can provide cardiopulmonary bypass or ECMO early. After a large dose, watch for at least an hour.</p>',
     }), 3),
   );
@@ -373,7 +373,7 @@ function cardiac() {
       'Avoid heavy sedation on top of a spinal, and keep watching breathing and heart rate.',
     ]), 2),
     T(callout('pearl', {
-      title: 'Advanced pearl: why a slow heart rate is not benign',
+      title: 'Consultant pearl: why a slow heart rate is not benign',
       body: '<p>Reduced venous return and a reflex slowing of the heart (the Bezold-Jarisch reflex is the proposed mechanism: an underfilled, vigorously contracting ventricle triggers vagal afferents) are both thought to contribute. A falling heart rate in a patient who is still talking is a reason to act now, with the legs raised, a vagolytic and a vasopressor ready, rather than to watch the next reading.</p>',
     }), 3),
   );
@@ -403,9 +403,9 @@ function wrongRoute() {
     T(P(`<strong>Intrathecal vincristine</strong> is a devastating, usually fatal error. The safeguard is to supply vinca alkaloids for infusion in a minibag, never in a syringe.`), 2),
     T(P(`<strong>NRFit connectors</strong> (ISO 80369-6) are small-bore connectors for neuraxial and regional devices that will not mate with Luer, so an IV syringe or line cannot be connected to a spinal needle or epidural.${cite('iso80369-6')} The 2016 standard was replaced by a 2025 edition.`), 2),
     T(f.fig, 2),
-    T(P('<strong>If the wrong drug has gone intrathecal:</strong> stop, call for help at once, keep the patient monitored, and involve the ICU and neurosurgery early. Early CSF drainage or lavage is described for some drugs; this is a specialist decision made with neurosurgery and the poisons service, not a ward procedure. Keep the ampoules and syringes, and report the incident.'), 3),
+    T(P('<strong>If the wrong drug has gone intrathecal:</strong> stop, call for help at once, keep the patient monitored, and involve the ICU and neurosurgery early. Early CSF drainage or lavage is described for some drugs; this is a specialist decision made with neurosurgery and the poisons service, not a ward procedure. Keep the ampoules and syringes, and report the incident.'), 1),
     T(callout('pearl', {
-      title: 'Advanced pearl: fix the system, not the person',
+      title: 'Consultant pearl: fix the system, not the person',
       body: '<p>Wrong-route errors keep happening to careful people. Reminders to "be vigilant" fail; physical barriers work. That means connectors that cannot mate, separate storage for IV-only drugs, and drugs supplied in forms that cannot reach the spinal needle. When you find a near miss, report it: the fix is usually in how drugs are stored and supplied.</p>',
     }), 3),
   );
@@ -445,7 +445,7 @@ function tur() {
         'Suspect bladder perforation if pain, distension or shock: ask the surgeon to examine and consider conversion to open repair.',
       ])),
     T(callout('pearl', {
-      title: 'Advanced pearl: why not a general anaesthetic?',
+      title: 'Consultant pearl: why not a general anaesthetic?',
       body: '<p>Under general anaesthesia the first signs (confusion, nausea, headache) are lost; TUR syndrome shows late as hypertension, bradycardia, hypotension, seizures or unexplained arrhythmia. Keep sedation light if you want the monitor to keep working, and speak to the patient during the resection.</p>',
     }), 3),
   );
@@ -490,7 +490,7 @@ function aftercare() {
         'Do not drive, sign legal papers or drink alcohol for the first day after sedation or if the legs feel odd.',
         'Document the drugs and dose, the number of attempts, any paraesthesia or bloody tap, the time the block wore off, and the advice given.',
       ])),
-    T(P(`Neurological checks of sensory and motor recovery should continue for at least ${N('24 h')} after a neuraxial block, and longer if the patient is at high risk (for example on antithrombotic drugs).${cite('esaic2022')}`), 2),
+    T(P(`Neurological checks of sensory and motor recovery should continue for at least ${N('24 h')} after a neuraxial block, and longer if the patient is at high risk (for example on antithrombotic drugs).${cite('esaic2022')}`), 1),
   );
 }
 
