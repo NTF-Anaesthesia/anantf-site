@@ -6,9 +6,10 @@
   --bpd-med: #a87d00;        /* medial cord family */
   --bpd-neutral: #a87d00;    /* roots and trunks */
   --bpd-related: #7c5a3a;    /* nerves outside the plexus */
-  --bpd-variable: #b45309;
-  --bpd-variable-bg: #fde7c7;
-  --bpd-spared: #9aa3af;
+  /* status: shared regional tokens (shared/regional/css/status.css) */
+  --bpd-variable: var(--ra-st-variable, #c2410c);
+  --bpd-variable-bg: #fbe3d4;
+  --bpd-spared: var(--ra-st-spares, #94a3b8);
   --bpd-m: #b08968;
   --bpd-text: #1e293b;
   --bpd-muted: #5b6575;

@@ -75,6 +75,10 @@ const HOME_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 
 const BACK_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
 const REGION = { href: '../regional.html', short: 'Regional', label: 'Regional anaesthesia' };
 const SHORT = Object.fromEntries($$('#sp-chlist a').map((a) => [a.dataset.ch, a.textContent.trim()]));
+// Phones: the chapter button is about 70px wide, so a few chapters get a shorter name there.
+const PHONE_SHORT = { 'ch-backs': 'Backs/US', 'ch-exam': 'Exam', 'ch-refs': 'Refs' };
+const narrow = matchMedia('(max-width: 420px)');
+narrow.addEventListener?.('change', () => paintChapterNav());
 
 function fitBelowBar(panel) {
   const bottom = Math.max(0, bar.getBoundingClientRect().bottom);
@@ -120,7 +124,7 @@ function paintChapterNav() {
   $$('#sp-chlist a, #sp-chmenu a[data-ch]').forEach((a) => {
     if (a.dataset.ch === current?.id) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
-  if (menuCur) menuCur.textContent = !current || current.id === 'ch-home' ? 'Hub' : (SHORT[current.id] || current.dataset.title);
+  if (menuCur) menuCur.textContent = !current || current.id === 'ch-home' ? 'Hub' : ((narrow.matches && PHONE_SHORT[current.id]) || SHORT[current.id] || current.dataset.title);
   // Home: on a chapter it goes to the hub; on the hub it goes back to the Regional anaesthesia page.
   const home = $('#sp-home-link');
   if (!home) return;

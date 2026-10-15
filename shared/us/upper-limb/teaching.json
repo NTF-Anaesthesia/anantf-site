@@ -274,12 +274,6 @@
         "kind": "artery",
         "x": 0.715,
         "y": 0.309
-      },
-      {
-        "text": "Suprascapular artery",
-        "kind": "artery",
-        "x": 0.276,
-        "y": 0.181
       }
     ],
     "caption": "Supraclavicular view: the trunks and divisions (a \"bunch of grapes\") lie lateral to the subclavian artery, on the first rib. Inject at the corner pocket first, then around the plexus. Use colour Doppler: the dorsal scapular and suprascapular arteries often run nearby.",
@@ -370,61 +364,61 @@
         "text": "Axillary artery",
         "kind": "artery",
         "x": 0.432,
-        "y": 0.634
+        "y": 0.632
       },
       {
         "text": "Lateral cord",
         "kind": "nerve",
         "x": 0.292,
-        "y": 0.574
+        "y": 0.571
       },
       {
         "text": "Posterior cord",
         "kind": "nerve",
         "x": 0.344,
-        "y": 0.754
+        "y": 0.752
       },
       {
         "text": "Medial cord",
         "kind": "nerve",
         "x": 0.568,
-        "y": 0.661
+        "y": 0.659
       },
       {
         "text": "Axillary vein",
         "kind": "vein",
         "x": 0.818,
-        "y": 0.781
+        "y": 0.78
       },
       {
         "text": "Pectoralis minor",
         "kind": "muscle",
         "x": 0.636,
-        "y": 0.486
+        "y": 0.483
       },
       {
         "text": "Pectoralis major",
         "kind": "muscle",
         "x": 0.719,
-        "y": 0.158
+        "y": 0.153
       },
       {
         "text": "Subscapularis",
         "kind": "muscle",
         "x": 0.115,
-        "y": 0.891
+        "y": 0.89
       },
       {
         "text": "Thoracoacromial vessels",
         "kind": "artery",
         "x": 0.198,
-        "y": 0.235
+        "y": 0.23
       },
       {
         "text": "Lateral pectoral nerve",
         "kind": "nerve",
         "x": 0.313,
-        "y": 0.284
+        "y": 0.279
       }
     ],
     "caption": "Infraclavicular (parasagittal) view: the cords surround the axillary artery deep to pectoralis major and minor. Aim to place local anaesthetic between the posterior cord and the artery, and reposition if the medial cord is not covered.",

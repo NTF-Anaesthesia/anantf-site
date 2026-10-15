@@ -84,7 +84,7 @@
 .v3d-label--el.is-selected { background: var(--v3d-accent); color: #fff; border-color: transparent; }
 :root[data-theme="dark"] .v3d-label--el.is-selected { color: #04121f; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .v3d-label--el.is-selected { color: #04121f; } }
-.v3d-label--el[data-status="target"] { box-shadow: 0 0 0 2px #db2777; }
+.v3d-label--el[data-status="target"] { box-shadow: 0 0 0 2px var(--ra-st-halo, #633d3c); }
 .v3d-label--collateral, .v3d-label--related { font-weight: 500; font-size: 12px; }
 .v3d-label--level {
   font-size: 12px;
@@ -112,8 +112,8 @@
   align-items: center;
   justify-content: center;
   gap: 4px;
-  min-width: 40px;
-  height: 40px;
+  min-width: 44px;
+  height: 44px;
   padding: 0 8px;
   border-radius: 0;
   border: 1px solid var(--v3d-border);
@@ -149,6 +149,16 @@
   font-size: 12px;
   pointer-events: none;
 }
+/* Small viewers (phones): the colour key collapses behind a 44px "Colours" button so the model stays visible. */
+.v3d-legend-toggle { display: none; }
+.v3d.is-compact .v3d-legend { pointer-events: auto; padding: 0; background: transparent; box-shadow: none; }
+.v3d.is-compact .v3d-legend-toggle { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px; border: 1px solid var(--v3d-border); border-radius: 0;
+  background: var(--v3d-panel); color: var(--v3d-fg); font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1; cursor: pointer; }
+.v3d.is-compact .v3d-legend-toggle::after { content: ''; width: 7px; height: 7px; border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor; transform: translateY(-2px) rotate(45deg); }
+.v3d.is-compact .v3d-legend-toggle[aria-expanded="true"]::after { transform: translateY(2px) rotate(-135deg); }
+.v3d.is-compact .v3d-legend-list { margin-top: 4px; padding: 6px 8px; background: var(--v3d-panel); }
+.v3d.is-compact .v3d-legend-list[hidden] { display: none; }
+.v3d-legend-toggle:focus-visible { outline: 3px solid var(--v3d-focus); outline-offset: 2px; }
 .v3d-legend-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 10px; }
 .v3d-legend-list li { display: inline-flex; align-items: center; gap: 5px; }
 .v3d-swatch { width: 12px; height: 12px; border-radius: 0; flex: none; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2); }
@@ -162,7 +172,7 @@
   align-items: center;
   gap: 6px;
   max-width: calc(100% - 16px);
-  padding: 4px 4px 4px 10px;
+  padding: 0 0 0 10px;
   border-radius: 0;
   background: var(--v3d-panel);
   box-shadow: var(--v3d-shadow);
@@ -171,11 +181,11 @@
 .v3d-chip[hidden] { display: none; }
 .v3d-chip-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .v3d-chip-status { display: inline-block; margin-left: 4px; padding: 1px 6px; border-radius: 0; font-size: 12px; color: #fff; background: #475569; }
-.v3d-chip-status--target { background: #be185d; }
+.v3d-chip-status--target { background: var(--ra-st-target, #166534); box-shadow: 0 0 0 2px var(--ra-st-halo, #633d3c); }
 .v3d-chip-status--covers { background: #15803d; }
-.v3d-chip-status--variable { background: #b45309; }
+.v3d-chip-status--variable { background: #9a3412; }
 .v3d-chip-status--spares { background: #475569; }
-.v3d-chip-x { width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
+.v3d-chip-x { flex-shrink: 0; width: 44px; height: 44px; border-radius: 0 !important; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer; }
 .v3d-chip-x:hover { background: rgba(127, 127, 127, 0.18); }
 .v3d-chip-x svg { width: 16px; height: 16px; }
 
@@ -273,7 +283,7 @@
 .v3d.is-compact .v3d-label { font-size: 12px; padding: 1px 5px; }
 .v3d.is-compact .v3d-label--probe { max-width: 150px; font-size: 12px; }
 .v3d.is-compact .v3d-label--struct { display: none; }
-.v3d.is-compact .v3d-legend { font-size: 12px; padding: 4px 6px; }
+.v3d.is-compact .v3d-legend { font-size: 12px; }
 .v3d.is-compact .v3d-caption { bottom: 48px; font-size: 12px; }
 .v3d.is-compact .v3d-hint { font-size: 12px; }
 

@@ -433,6 +433,7 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
 .spinal-app .sp-chmenu-act{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:8px 14px;border:0;border-radius:0;background:none;color:var(--sp-ink);font:15px/1.35 var(--sp-sans);text-align:left;text-decoration:none;cursor:pointer}
 .spinal-app .sp-chmenu-act:hover{background:var(--sp-accent-soft)}
 .spinal-app .sp-chmenu-act svg{width:18px;height:18px;flex-shrink:0;fill:none;stroke:var(--sp-accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.spinal-app :is(.sp-chmenu-list a,.sp-chmenu-act,.sp-chmenu-btn,.sp-chmenu-panel){box-sizing:border-box}
 .spinal-app :is(.sp-chmenu-list a,.sp-chmenu-act):focus-visible{outline-offset:-3px}
 .spinal-app .sp-chmenu-share-li{display:none}
 @media (min-width:1240px){
@@ -456,6 +457,7 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
   .spinal-app .sp-bar-level .ra-level-btn{padding:0 6px}
 }
 @media (max-width:480px){.spinal-app .sp-chmenu-k{display:none}}
+@media (max-width:420px){.spinal-app .sp-chmenu-btn{font-size:14px;padding:0 6px 0 9px}}
 /* The level control's palette is the spinal one; "Back to MO" (after a deep link raised the level) hangs under the bar
    below 1024px, so the bar keeps its layout. */
 .spinal-app .sp-bar-level .ra-level-k{color:var(--sp-muted)}

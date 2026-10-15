@@ -11,13 +11,14 @@
   --cv-ctx: #b9ada4;
   --cv-accent: #1d4ed8;
   --cv-accent-ink: #ffffff;
-  --cv-cov: #2f6fde;
-  --cv-cov-line: #1e4fae;
-  --cv-var-bg: #fde7c7;
-  --cv-var-fg: #d07a12;
-  --cv-var-ink: #8a4b06;
+  /* status: shared regional tokens (shared/regional/css/status.css): blocked solid green, variable orange hatch, spared grey dashed */
+  --cv-cov: var(--ra-st-covers, #16a34a);
+  --cv-cov-line: #14532d;
+  --cv-var-bg: rgba(194, 65, 12, 0.16);
+  --cv-var-fg: var(--ra-st-variable, #c2410c);
+  --cv-var-ink: #9a3412;
   --cv-spare: #fbfbfc;
-  --cv-spare-line: #8a93a1;
+  --cv-spare-line: var(--ra-st-spares, #94a3b8);
   --cv-hl: #111827;
   --cv-focus: #b45309;
   --cv-danger: #b42318;
@@ -103,7 +104,7 @@
 }
 .cv-tab, .cv-segbtn {
   border: 0; background: transparent; padding: 6px 12px; border-radius: 0;
-  cursor: pointer; min-height: 36px; font-size: 0.95rem;
+  cursor: pointer; min-height: 44px; font-size: 0.95rem;
 }
 .cv-tab[aria-selected="true"], .cv-segbtn[aria-pressed="true"] {
   background: var(--cv-bg); box-shadow: 0 1px 2px rgba(0,0,0,.12), 0 0 0 1px var(--cv-border); font-weight: 600;
@@ -207,7 +208,7 @@
 .cv-spared li, .cv-supp li { margin: 3px 0; font-size: 0.92rem; }
 .cv-spared li.st-spares::marker { color: var(--cv-spare-line); }
 .cv-spared li.st-variable::marker { color: var(--cv-var-fg); }
-.cv-linkbtn { background: none; border: 0; padding: 0; cursor: pointer; font-weight: 600; text-decoration: underline; text-decoration-color: var(--cv-border); text-underline-offset: 3px; }
+.cv-linkbtn { display: inline-block; min-height: 28px; background: none; border: 0; padding: 2px 0; cursor: pointer; font-weight: 600; text-decoration: underline; text-decoration-color: var(--cv-border); text-underline-offset: 3px; }
 .cv-linkbtn:hover, .cv-linkbtn.is-hl { text-decoration-color: currentColor; color: var(--cv-accent); }
 .cv-other { font-size: 0.85rem; color: var(--cv-muted); margin: 8px 0 0; }
 
@@ -258,3 +259,9 @@
 .cv[data-mode="compare"][data-size="wide"] .cv-grid--adv { grid-template-columns: repeat(auto-fill, minmax(max(240px, calc((100% - 30px) / 4)), 1fr)); }
 .cv-notes { margin: 6px 0; padding-left: 1.1em; }
 .cv-notes li { margin: 3px 0; font-size: 0.92rem; }
+
+/* Read-only block label: the block is chosen in the app's sticky bar (Oct 2026). */
+.cv-current { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 1.05rem; }
+.cv-current[hidden] { display: none; }
+.cv-current-k { font: 400 12px/1.4 'NTF Mono', ui-monospace, monospace; text-transform: uppercase; letter-spacing: .06em; color: var(--cv-muted); }
+.cv-current-hint { flex-basis: 100%; font-size: 0.9rem; color: var(--cv-muted); }

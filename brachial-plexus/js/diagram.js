@@ -231,7 +231,8 @@ export function mount(containerEl, bus) {
   main.style.minWidth = '0';
   const toolbar = htmlEl('div', { class: 'bpd-toolbar' }, main);
   htmlEl('p', {}, toolbar, 'Tap or hover any segment. Its whole pathway lights up.');
-  const zoomBtn = htmlEl('button', { class: 'bpd-btn bpd-zoom', type: 'button', 'aria-pressed': 'true' }, toolbar, 'Fit to screen');
+  // The label names the action ("Fit to screen" / "Zoom in"), so the button is not a toggle and has no aria-pressed.
+  const zoomBtn = htmlEl('button', { class: 'bpd-btn bpd-zoom', type: 'button' }, toolbar, 'Fit to screen');
 
   const stage = htmlEl('div', { class: 'bpd-stage' }, main);
   const scroller = htmlEl('div', { class: 'bpd-scroll' }, stage);
@@ -617,7 +618,6 @@ export function mount(containerEl, bus) {
   on(zoomBtn, 'click', () => {
     st.zoomed = !st.zoomed;
     root.classList.toggle('is-zoomed', st.zoomed);
-    zoomBtn.setAttribute('aria-pressed', String(st.zoomed));
     zoomBtn.textContent = st.zoomed ? 'Fit to screen' : 'Zoom in';
     revealFocus();
   });
@@ -627,13 +627,13 @@ export function mount(containerEl, bus) {
     const scale = svg.clientWidth / VB.w;
     return (x - VB.x) * scale;
   }
-  function revealX(x0, x1) {
+  function revealX(x0, x1, instant = false) {
     if (scroller.scrollWidth <= scroller.clientWidth + 2) return;
     const a = svgXToScroll(x0), b = svgXToScroll(x1);
     const view0 = scroller.scrollLeft, view1 = view0 + scroller.clientWidth;
     if (a >= view0 && b <= view1) return;
     const target = (a + b) / 2 - scroller.clientWidth / 2;
-    scroller.scrollTo({ left: Math.max(0, target), behavior: reduceMotion() ? 'auto' : 'smooth' });
+    scroller.scrollTo({ left: Math.max(0, target), behavior: instant || reduceMotion() ? 'auto' : 'smooth' });
   }
   function revealInScroll(g) {
     if (scroller.scrollWidth <= scroller.clientWidth + 2) return;
@@ -641,8 +641,8 @@ export function mount(containerEl, bus) {
     if (r.left >= s.left && r.right <= s.right) return;
     scroller.scrollBy({ left: (r.left + r.right) / 2 - (s.left + s.right) / 2, behavior: reduceMotion() ? 'auto' : 'smooth' });
   }
-  function revealFocus() {
-    if (st.block && LEVEL_BANDS[st.block]) { const b = LEVEL_BANDS[st.block]; revealX(b.x0, b.x1); }
+  function revealFocus(instant = false) {
+    if (st.block && LEVEL_BANDS[st.block]) { const b = LEVEL_BANDS[st.block]; revealX(b.x0, b.x1, instant); }
     else if (st.selected && groups[st.selected]) revealInScroll(groups[st.selected]);
   }
   const reduceMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -655,6 +655,8 @@ export function mount(containerEl, bus) {
     root.classList.toggle('is-zoomed', narrow && st.zoomed);
     if (narrow !== was) hideTip();
     applyTextScale();
+    // Deep link (#block=axillary): once the narrow, panning layout exists, bring the block's band into view.
+    if (narrow && !was) requestAnimationFrame(() => revealFocus(true));
   });
 
   // When the 1220-unit drawing is shrunk into a narrow column, enlarge the small

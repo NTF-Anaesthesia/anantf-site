@@ -71,7 +71,7 @@
         "text": "Subcutaneous tissue",
         "kind": "other",
         "x": 0.627,
-        "y": 0.028
+        "y": 0.05
       },
       {
         "text": "External oblique",
@@ -146,19 +146,19 @@
         "text": "T4 transverse process",
         "kind": "bone",
         "x": 0.055,
-        "y": 0.669
+        "y": 0.585
       },
       {
         "text": "T5 transverse process",
         "kind": "bone",
         "x": 0.517,
-        "y": 0.625
+        "y": 0.517
       },
       {
         "text": "T6 transverse process",
         "kind": "bone",
         "x": 0.98,
-        "y": 0.625
+        "y": 0.53
       },
       {
         "text": "Intertransverse tissue complex",
@@ -190,32 +190,32 @@
       {
         "text": "Trapezius",
         "kind": "muscle",
-        "x": 0.573,
-        "y": 0.087
+        "x": 0.569,
+        "y": 0.075
       },
       {
         "text": "Erector spinae",
         "kind": "muscle",
-        "x": 0.579,
-        "y": 0.304
+        "x": 0.575,
+        "y": 0.295
       },
       {
         "text": "Transverse process",
         "kind": "bone",
-        "x": 0.27,
-        "y": 0.47
+        "x": 0.263,
+        "y": 0.392
       },
       {
         "text": "Superior costotransverse ligament",
         "kind": "fascia",
-        "x": 0.492,
-        "y": 0.652
+        "x": 0.487,
+        "y": 0.648
       },
       {
         "text": "Pleura",
         "kind": "pleura",
-        "x": 0.479,
-        "y": 0.881
+        "x": 0.474,
+        "y": 0.879
       }
     ],
     "caption": "Paravertebral block (sagittal, in-plane): feel the pop through the superior costotransverse ligament and deposit below it; the pleura should be pushed down.",
@@ -247,8 +247,8 @@
       {
         "text": "Transverse process",
         "kind": "bone",
-        "x": 0.286,
-        "y": 0.521
+        "x": 0.32,
+        "y": 0.403
       },
       {
         "text": "External intercostal muscle",
@@ -271,8 +271,8 @@
       {
         "text": "Pleura",
         "kind": "pleura",
-        "x": 0.75,
-        "y": 0.62
+        "x": 0.82,
+        "y": 0.593
       }
     ],
     "caption": "Paravertebral block (transverse, in-plane): deposit below the internal intercostal membrane, which is continuous with the superior costotransverse ligament.",
