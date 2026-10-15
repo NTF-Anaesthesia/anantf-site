@@ -83,6 +83,8 @@ const blocks = Object.fromEntries(BLOCK_ORDER_ALL.map((id) => {
     variable: [...b.variable],
     spares: [...b.spares],
     advanced: !!b.advanced,
+    // Nerves reached as an unwanted effect (e.g. the phrenic nerve with interscalene): shown as "(side effect)".
+    sideEffects: [...(b.sideEffectIds || [])],
     // Advanced variants fall back to their core block when the level drops below Consultant (explorer.js).
     ...(b.advanced && b.relatedTo ? { relatedTo: b.relatedTo } : {}),
     more: { href: `../brachial-plexus/#block=${id}`, text: 'Needle, volume, ultrasound and coverage in the brachial plexus app' },

@@ -5,7 +5,7 @@
 //
 // ?embed=1 (used by explorer.js on pages without a three.js import map) shows the explorer alone, for an iframe.
 
-import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015c';
+import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015d';
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../../shared/regional/js/levels.js?v=20261015';
 
 const V = '20261015c';

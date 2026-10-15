@@ -25,7 +25,7 @@ import { createBus } from './bus.js?v=20261015';
 import { STATUS_ORDER } from '../../shared/regional/js/status.js?v=20261015';
 import { countHidden, onLevel, setLevel, getLevel, relaxFor, tierMax, LEVELS } from '../../shared/regional/js/levels.js?v=20261015';
 
-const V = '20261015c';
+const V = '20261015d';
 export const PLEXUSES = [
   { id: 'cervical', tab: 'Cervical', name: 'Cervical plexus' },
   { id: 'brachial', tab: 'Brachial', name: 'Brachial plexus' },
@@ -376,13 +376,13 @@ export function mountExplorer(host, opts = {}) {
   }
 
   // ---------------------------------------------------------------- info panel
-  function elChip(id, st) {
+  function elChip(id, st, side = false) {
     const { data } = current;
     const e = data.elements[id];
     if (!e) return `<span class="px-chip is-text">${esc(id)}</span>`;
     const cls = st ? ` st-${st}` : '';
     const pressed = current.bus.state.selected === id;
-    return `<button type="button" class="px-chip${cls}" data-select="${esc(id)}" aria-pressed="${pressed}">${esc(e.name || id)}</button>`;
+    return `<button type="button" class="px-chip${cls}" data-select="${esc(id)}" aria-pressed="${pressed}">${esc(e.name || id)}${side ? '<span class="px-chip-sub">side effect</span>' : ''}</button>`;
   }
   function levelBadges(roots) {
     return roots.map((r) => {
@@ -398,7 +398,7 @@ export function mountExplorer(host, opts = {}) {
     const lists = STATUS_ORDER.filter((k) => b[k].length).map((k) => `
       <div class="px-list">
         <h4>${statusSwatch(k)}${esc(STATUS_LABEL[k])}</h4>
-        <div class="px-chips">${b[k].map((id) => elChip(id, k)).join('')}</div>
+        <div class="px-chips">${b[k].map((id) => elChip(id, k, (b.sideEffects || []).includes(id))).join('')}</div>
       </div>`).join('');
     // Tier 1 (MO): the block, its summary (which carries the safety points) and what it reaches. Tier 2: the technique note.
     return `
@@ -438,7 +438,7 @@ export function mountExplorer(host, opts = {}) {
         </dl>
         <div class="px-reach">
           <h4>Blocks that reach it</h4>
-          ${reach.length ? `<div class="px-chips">${reach.map(([bid, st]) => `<button type="button" class="px-chip st-${st}"${data.blocks[bid].advanced ? ' data-tier="3"' : ''} data-block="${esc(bid)}" aria-pressed="${current.bus.state.block === bid}">${esc(data.blocks[bid].short || data.blocks[bid].name || bid)}<span class="px-chip-sub">${esc(STATUS_LABEL[st].toLowerCase())}</span></button>`).join('')}</div>` : '<p class="px-muted">None of the blocks listed here.</p>'}
+          ${reach.length ? `<div class="px-chips">${reach.map(([bid, st]) => `<button type="button" class="px-chip st-${st}"${data.blocks[bid].advanced ? ' data-tier="3"' : ''} data-block="${esc(bid)}" aria-pressed="${current.bus.state.block === bid}">${esc(data.blocks[bid].short || data.blocks[bid].name || bid)}<span class="px-chip-sub">${esc(STATUS_LABEL[st].toLowerCase())}${(data.blocks[bid].sideEffects || []).includes(id) ? ' (side effect)' : ''}</span></button>`).join('')}</div>` : '<p class="px-muted">None of the blocks listed here.</p>'}
           ${sparedLine(spared.filter((bid) => !data.blocks[bid].advanced), '')}
           ${sparedLine(spared.filter((bid) => data.blocks[bid].advanced), ' data-tier="3"', spared.some((bid) => !data.blocks[bid].advanced) ? 'Also usually spared by' : '')}
         </div>
