@@ -22,6 +22,8 @@
 
 /* the test: solid session bar with the pill, timer and flag; progress under it */
 .bm-session .app-bar-row{grid-template-columns:auto 1fr auto}
+/* during the test the bar is fully opaque: question text must not show through it */
+.bm-session.app-bar{background:var(--app-ground);-webkit-backdrop-filter:none;backdrop-filter:none}
 .bm-qpill{border:0;cursor:pointer;font-family:var(--app-mono);min-height:44px;padding:0 14px;gap:8px;background:var(--app-fill)}
 .bm-qpill svg{width:18px;height:18px;color:var(--app-wine)}
 .bm-qpill:active{background:var(--app-pressed-ground)}
