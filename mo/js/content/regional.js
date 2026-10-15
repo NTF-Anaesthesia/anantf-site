@@ -99,13 +99,18 @@ export default {
             explain: 'The handbook\'s paperwork after any block is a procedure note, post-block instructions and an APS referral. A numb leg cannot protect itself or bear weight safely: the patient walks only when the block has worn off and the team agrees.',
           },
         ] },
-        { t: 'links', items: [
+        { t: 'links', title: 'Related topics', items: [
           { text: 'Helping with a spinal', href: '#/learn/regional/spinal-help' },
           { text: 'Local anaesthetic safety', href: '#/learn/regional/la-safety' },
+          { text: 'Contraindications and blood thinners', href: '#/learn/regional/block-contraindications' },
           { text: 'After a nerve block or spinal', href: '#/learn/pain-aps/after-blocks' },
           { text: 'The acute pain service', href: '#/learn/pain-aps/aps', note: 'what happens after your referral' },
           { text: 'Counselling and consent', href: '#/learn/preop/counselling' },
           { text: 'Notes and smartphrases', href: '#/learn/good/documentation', note: 'procedure notes' },
+          { text: 'Local anaesthetic toxicity', href: '#/crisis/last', note: 'crisis card' },
+          { text: 'A block and a toxic reaction', href: '#/practice/scenario/last-block', note: 'scenario' },
+        ] },
+        { t: 'links', title: 'Block guides on this site and beyond', items: [
           { text: 'Regional anaesthesia', href: '../regional.html', note: 'the site\'s block guides' },
           { text: 'Spinal anaesthesia', href: '../spinal/' },
           { text: 'Brachial plexus blocks', href: '../brachial-plexus/' },
@@ -337,7 +342,7 @@ export default {
         { t: 'scenario', id: 'last-block' },
         { t: 'quiz', id: 'regional-la-safety-q', items: [
           {
-            q: 'A 50 kg woman is having a block. What is the most plain bupivacaine 0.5% she can have?',
+            q: 'A 50 kg woman is having a block. What is the largest volume of plain bupivacaine 0.5% she can have?',
             options: ['`10 mL`', '`20 mL`', '`40 mL`', '`50 mL`'],
             answer: 1,
             explain: '`2 mg/kg` × `50 kg` = `100 mg`. 0.5% is `5 mg/mL`, so `100 mg` is `20 mL`. That is the ceiling for everything: if the surgeon also infiltrates, the total must stay under it.',

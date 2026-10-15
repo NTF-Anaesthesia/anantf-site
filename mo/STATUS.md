@@ -5,37 +5,26 @@ owner's instruction (PR #103, 15 Oct 2026): live, unlisted, at anantf.com/mo/. T
 
 ## Done
 
-- **Engine** (`mo/js/`, `index.html`, `style.css`, `sw.js`, `tools/stamp.mjs`). It was reviewed by three reviewers, and
-  all 36 verified findings are fixed (commit c10fb25). See `NOTES.md` for the design and code map.
-- **Tests all pass:** `calc.test.mjs` (24), `content.test.mjs`, `version.test.mjs`, `e2e.mjs` (every screen at phone
-  size, plus axe), `pwa.e2e.mjs`.
-- **Content is written** for everything in `PLAN.md`: 14 modules, 94 topics, 63 drugs, 21 crisis cards, 14 scenarios,
-  204 flashcards and 8 figures. A coverage script confirmed nothing is missing, including the gap-check amendments at the
-  end of `PLAN.md`.
-- **Checks completed.** Each piece had an author, then a clinical (or numbers) check, then a teaching (or safety) check.
-  - Drugs (core and more): numbers and safety checks done.
-  - Crises and figures: numbers check done.
-  - Clinical check done for: preop, maintenance, regional, induction, setup, pain-aps, emergencies, start, pacu, cases,
-    patients, emergence, sedation, scenarios, cards.
-  - Teaching check done for: preop, maintenance, induction, setup, emergencies, start, cards.
+- Engine, reviewed and fixed; all tests pass (calc, content, version, e2e, pwa).
+- All content written and checked: every module had an author, a clinical check and a teaching check; drugs and crisis
+  cards had numbers and safety checks; figures were rendered and looked at.
+- Version 1 merged (PR #103), then the remaining checks in a second PR (15 Oct 2026).
 
-## Not done yet (next steps, in order)
+## Not done yet
 
-1. **Finish the checks that were stopped or never ran:**
-   - Safety check: `crises`, `figures`.
-   - Clinical check: `good`.
-   - Teaching check: `patients`, `regional`, `pain-aps`, `cases`, `scenarios`, `emergence`, `sedation`, `good`, `pacu`.
-
-   The prompts are the "clinical checker" and "teaching checker" roles. Each reads `mo/CONTENT.md`, `mo/PLAN.md` and the
-   handbook, fixes the file directly, and runs `node mo/test/content.test.mjs`.
-2. **Run a cross-module consistency review.** Look for the same fact stated differently across modules, drugs, crisis
-   cards, flashcards and scenarios: doses, thresholds, rules for baby MOs. Fix each one.
-3. **Run the final tests,** then stamp: `node mo/tools/stamp.mjs`. Take phone screenshots
-   (`SHOTS=<dir> node mo/test/e2e.mjs`).
-4. **Open a new PR** with the fixes, listing the handbook discrepancies below for the owner. Merge it (squash) per
-   AGENTS.md and report.
-5. **Optional:** a link from the Baby MO test start page to the guide. This needs `node babymo/tools/stamp.mjs` and the
-   babymo tests.
+1. **Cross-module consistency review:** the same fact stated differently across modules, drugs, crisis cards,
+   flashcards and scenarios (doses, thresholds, rules for baby MOs). One known small gap: suxamethonium for
+   laryngospasm is `1 mg/kg` in the topic and crisis card but `1–1.5 mg/kg` in the scenario and drug card.
+2. **Faculty read-through** before sharing widely. Points for a consultant to decide:
+   - rocuronium RSI dose basis (below)
+   - whether the longest crisis cards should be shorter, and whether to keep the recruitment manoeuvre on the hypoxia card
+   - whether a junior may give suxamethonium for laryngospasm before the consultant arrives
+   - atropine dose in cardiac arrest (0.6 mg up to 3 mg, vagal cause) as the department's preference
+   - confirm the standard pharmacy phenylephrine syringe is 100 mcg/mL
+   - scenario pacu-drowsy gives sugammadex 2 mg/kg after neostigmine (TOF ratio 0.6)
+   - the needlestick pathway wording (where NTFGH sends staff)
+   - some core topics run 1,200-1,400 words with quizzes; split into two screens?
+3. Optional: a link from the Baby MO test start page to the guide (needs `node babymo/tools/stamp.mjs`).
 
 ## The handbook (source)
 

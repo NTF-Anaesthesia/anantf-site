@@ -17,11 +17,11 @@ export default {
         { t: 'key', items: [
           'In your first month you never extubate or end a case on your own. If surgery is finishing and your consultant is not with you: **call, then wait**.',
           'Plan the ending early with your consultant: when the agent goes off, which reversal, and what analgesia and antiemetics are still due.',
-          'Extubate only when the criteria are met: regular breathing at more than `10` and fewer than `30` a minute, a train-of-four (TOF) ratio above `0.9`, breaths bigger than dead space (aim for `5 mL/kg`), SpO2 above `98%` on `100%` oxygen and a stable circulation.',
+          'Extubate only when every criterion in the table below is met. The two that catch people out: a train-of-four (TOF) ratio above `0.9` (measured, not guessed) and a regular rate of `10–30` a minute.',
           'Take the airway out deep (your consultant\'s call) or fully awake, never in between: the half-awake stage is when laryngospasm happens.',
           'Oxygen on and eyes on the patient until the post-anaesthesia care unit (PACU) nurse has taken over.',
         ] },
-        { t: 'p', text: 'Waking a patient up is as risky as putting them to sleep: about a third of serious airway problems happen as patients wake up or in recovery. Have everything ready, watch closely and say what you see.' },
+        { t: 'p', text: 'Waking a patient up is as risky as putting them to sleep: many serious airway problems happen as patients wake up or in recovery. Have everything ready, watch closely and say what you see.' },
         { t: 'callout', kind: 'stop', title: 'Month 1: never alone', text: 'In your first month you are not expected to extubate or end a case on your own, especially when there is anything special (a difficult airway, loose teeth). If surgery is done and your consultant is not with you, **call, then wait**. Ending includes turning the anaesthetic off and reversing: keep the patient asleep, monitored and on oxygen until your consultant is back.' },
         { t: 'script', title: 'Calling your consultant to the end of a case', lines: [
           '"I\'m the MO in OT 5. The surgeon is closing skin, about 10 minutes to go."',
@@ -31,9 +31,9 @@ export default {
         { t: 'h', text: 'Getting ready while the surgeon closes' },
         { t: 'list', items: [
           'Agree the plan with your consultant: when the agent goes off, the reversal, and a deep or an awake extubation.',
-          'Don\'t top up the muscle relaxant without asking (the surgeon may be nearly finished); check the TOF count so you know what reversal is needed.',
-          'Give what is still due, as your consultant asks: analgesia and the end-of-case antiemetic.',
-          'Draw up the reversal your consultant has chosen. Suction on and in reach, a face mask, an oral airway and a bite block ready; call the anaesthetic unit (AU) nurse back if they are out.',
+          'Don\'t top up the muscle relaxant without asking (the surgeon may be nearly finished). Check the TOF count so you know what reversal is needed.',
+          'Give what is still due, as your consultant asks (analgesia, the end-of-case antiemetic), and draw up the reversal they chose.',
+          'Suction on and in reach, a face mask, an oral airway and a bite block ready; call the anaesthetic unit (AU) nurse back if they are out.',
         ] },
         { t: 'h', text: 'The extubation criteria' },
         { t: 'table', head: ['Criterion', 'Handbook', 'In practice'], rowHead: true, rows: [
@@ -44,7 +44,7 @@ export default {
           ['Oxygen', 'SpO2 above `98%`', 'On `100%` oxygen at the end of the case. If their usual SpO2 is lower (chronic lung disease), your consultant sets the target'],
           ['Circulation', 'Haemodynamically stable', 'No big swings, no active bleeding'],
         ], caption: 'The handbook\'s extubation criteria. For an awake extubation the patient also follows a command. Your consultant will also want them warm (above `36 °C`) and comfortable.' },
-        { t: 'h', text: 'The steps (handbook)' },
+        { t: 'h', text: 'The steps, in order' },
         { t: 'steps', items: [
           { title: 'Bite block in beforehand,', text: 'while the patient is still deep. A waking patient who bites the tube blocks it, and a strong breath against a blocked tube can pull fluid into the lungs (negative-pressure pulmonary oedema).' },
           { title: 'Call the AU nurse if they are not present.' },
@@ -144,13 +144,17 @@ export default {
           'Glycopyrrolate is slower and gentler (less tachycardia; it does not enter the brain). Atropine acts faster: expect a brief tachycardia, sometimes followed by a slow rate as the neostigmine peaks.',
           'Asthma, heart block or a slow heart rate: watch for bronchospasm and bradycardia.',
         ] },
-        { t: 'drugs', ids: ['neostigmine', 'glycopyrrolate', 'atropine'] },
+        { t: 'details', title: 'Dose cards: neostigmine, glycopyrrolate, atropine', blocks: [
+          { t: 'drugs', ids: ['neostigmine', 'glycopyrrolate', 'atropine'] },
+        ] },
         { t: 'h', text: 'Sugammadex' },
         { t: 'p', text: 'Sugammadex wraps up rocuronium molecules so they cannot act. In the right dose it works at any depth of block, in about `2–3 min`, with no anticholinergic. It does nothing for atracurium or suxamethonium.' },
-        { t: 'drug', id: 'sugammadex' },
+        { t: 'details', title: 'Sugammadex dose card', blocks: [
+          { t: 'drug', id: 'sugammadex' },
+        ] },
         { t: 'list', items: [
           'Dose on total body weight (in severe obesity your consultant may choose a lower weight), and never under-dose to save a vial: too little lets the block come back in the post-anaesthesia care unit (PACU).',
-          '`16 mg/kg` straight after an intubating dose lets the patient wake, but it is not a guaranteed airway rescue. For a `70 kg` adult it is over `1 g`: several vials.',
+          '`16 mg/kg` straight after an intubating dose is a way to wake the patient up, not a guaranteed airway rescue. For a `70 kg` adult it is over `1 g`: several vials.',
           'Paralysing again within `24 h`: rocuronium may not work normally, so tell your consultant.',
           'Rarely anaphylaxis or marked bradycardia: watch the monitor as it goes in. Not recommended in severe kidney failure.',
         ] },
@@ -409,7 +413,7 @@ export default {
             q: 'Your patient had a popliteal sciatic block for an ankle operation. What is the most important thing to add to the handover?',
             options: ['The make of the ultrasound machine', 'That the numb leg needs protecting, and oral pain relief should start before the block wears off', 'That the patient can walk to the toilet straight away', 'Nothing: blocks look after themselves'],
             answer: 1,
-            explain: 'A numb limb is easily injured, and when the block wears off (often in the night) pain can arrive suddenly: rebound pain. Regular oral analgesia started early, and the post-block instructions (Epic smartphrase POSTPNBINSTR1), cover both.',
+            explain: 'A numb limb is easily injured, and when the block wears off (often in the night) pain can arrive suddenly: rebound pain. Regular oral analgesia started early, and the post-block instructions (the ready-made Epic text, smartphrase `POSTPNBINSTR1`), cover both.',
           },
         ] },
         { t: 'links', items: [

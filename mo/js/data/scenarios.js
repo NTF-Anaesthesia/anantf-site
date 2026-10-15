@@ -32,7 +32,7 @@ export const SCENARIOS = [
       },
       c: {
         text: 'He stops responding, the eyelash reflex has gone and he stops breathing. You lift the jaw and squeeze the bag with the adjustable pressure-limiting (APL) valve at `20 cmH2O`. The chest hardly rises, the bag feels stiff and the capnograph shows only a tiny bump.',
-        vitals: { HR: 76, BP: '118/72', SpO2: 97, EtCO2: 8 },
+        vitals: { HR: 76, BP: '118/72', SpO2: 99, EtCO2: 8 },
         choices: [
           { text: 'Say it out loud: “I’m finding this hard to bag.” Then fix the basics: head tilt, chin lift, a firm jaw thrust and a better mask seal.', next: 'd', good: true, feedback: 'Saying it early is the most useful thing you can do: your consultant can only help with a problem they know about. Then the basics: head position, jaw thrust and a good seal fix most difficult mask ventilation.' },
           { text: 'Reach for the rocuronium: once he is relaxed, bagging will be easier.', next: 'c2', good: false, feedback: 'Your consultant stops your hand. The handbook rule is the reverse: give the relaxant only after you have shown you can bag (step 8). In experienced hands a relaxant sometimes makes bagging easier, but that is your consultant’s decision after the basics, not yours. Meanwhile the saturation is falling.' },
@@ -41,17 +41,17 @@ export const SCENARIOS = [
         ],
       },
       c2: {
-        text: 'Thirty seconds have gone. SpO2 is `90%` and falling, the bag is still stiff and his abdomen looks fuller. Your consultant steps in: “Let’s do this together.”',
-        vitals: { HR: 94, BP: '128/80', SpO2: 90, EtCO2: 5 },
+        text: 'A minute and a half has gone. SpO2 is `91%` and falling, the bag is still stiff and his abdomen looks fuller. Your consultant steps in: “Let’s do this together.”',
+        vitals: { HR: 94, BP: '128/80', SpO2: 91, EtCO2: 5 },
         choices: [
           { text: 'Put in an oropharyngeal airway, then hold the mask with two hands and a jaw thrust while your consultant squeezes the bag.', next: 'e', good: true, feedback: 'Two people, two hands and an airway adjunct: the strongest basic technique. Two hands on the mask give a far better seal and jaw thrust than one hand can.' },
           { text: 'Stop bagging and wait for him to start breathing on his own.', next: 'c2', good: false, feedback: 'Propofol and fentanyl stop breathing for several minutes, far longer than his oxygen will last now. Keep oxygenating.' },
-          { text: 'Keep squeezing harder with the APL valve closed.', next: 'bad', good: false, feedback: 'Each hard squeeze pushes more gas into his stomach.' },
+          { text: 'Keep squeezing harder with the APL valve closed.', next: 'bad', good: false, feedback: 'Each hard squeeze pushes more gas into his stomach, and a full stomach is how vomit reaches the lungs. Two people, two hands and an airway adjunct work better than force.' },
         ],
       },
       d: {
         text: 'With a firm jaw thrust and a better seal the chest moves a little and the capnograph shows small waves, but it is still hard work.',
-        vitals: { HR: 78, BP: '116/70', SpO2: 95, EtCO2: 22 },
+        vitals: { HR: 78, BP: '116/70', SpO2: 97, EtCO2: 22 },
         choices: [
           { text: 'Put in an oropharyngeal airway (sized from the corner of the mouth to the angle of the jaw) and switch to two hands on the mask while your consultant squeezes the bag.', next: 'e', good: true, feedback: 'Exactly. The oral airway lifts the tongue off the back of the throat, and two hands give the best seal and jaw thrust.' },
           { text: 'Put in a nasopharyngeal airway.', next: 'e', good: 'ok', feedback: 'It helps too, but in a deeply unconscious patient an oral airway is quicker and doesn’t risk a nosebleed. The nasal airway is useful when the jaw is clenched or the patient is lighter.' },
@@ -216,7 +216,7 @@ export const SCENARIOS = [
     start: 'a',
     nodes: {
       a: {
-        text: 'A 78-year-old woman, `55 kg`, for a cystoscopy and resection of a bladder tumour under GA with a supraglottic airway. She takes amlodipine and losartan and took both this morning. Before induction her BP was `165/85`. Because of her age your consultant asked you to draw up phenylephrine and ephedrine. Your consultant induced with fentanyl `50 mcg` and propofol `100 mg`, the airway went in easily, and she is breathing sevoflurane at `2.5%`. Your consultant has stepped next door to help a colleague (“Call me if anything changes”). As she is put into lithotomy the next BP reads `72/40`.',
+        text: 'A 78-year-old woman, `55 kg`, for a cystoscopy and resection of a bladder tumour under GA with a supraglottic airway. She takes amlodipine and losartan and took both this morning. Before induction her BP was `165/85`. Because of her age your consultant asked you to draw up phenylephrine and ephedrine. Your consultant induced with fentanyl `50 mcg` and propofol `70 mg`, the airway went in easily, and she is breathing sevoflurane at `2.5%`. Your consultant has stepped next door to help a colleague (“Call me if anything changes”). As she is put into lithotomy the next BP reads `72/40`.',
         vitals: { HR: 56, BP: '72/40', SpO2: 99, EtCO2: 34, RR: 14 },
         choices: [
           { text: 'Ask the AU nurse to call your consultant now; turn the sevoflurane down; set the BP to cycle every minute and recheck it.', next: 'b', good: true, feedback: 'Do both at once: get help coming and start the simple fixes. Too much anaesthetic for an elderly patient is the commonest cause: `2.5%` sevoflurane is well over 1 MAC (minimum alveolar concentration) at 78, when 1 MAC is only about `1.6%` (about `2%` in a 40-year-old).' },
@@ -235,7 +235,7 @@ export const SCENARIOS = [
         ],
       },
       b: {
-        text: 'Help is on the way. The BP cycles again: `70/42`, heart rate `54`. The ephedrine and phenylephrine syringes are labelled on your tray.',
+        text: 'Help is on the way and the sevoflurane is down at `1.5%`. The BP cycles again: `70/42`, heart rate `54`. The ephedrine and phenylephrine syringes are labelled on your tray.',
         vitals: { HR: 54, BP: '70/42', SpO2: 99, EtCO2: 31, RR: 14 },
         choices: [
           { text: 'Ephedrine `5 mg` IV (`1 mL` of `5 mg/mL`), repeated in 2–3 minutes if needed.', next: 'c', good: true, feedback: 'With a slow heart rate, ephedrine is a good first choice: it raises both the heart rate and the blood pressure.' },
@@ -781,8 +781,8 @@ export const SCENARIOS = [
         ],
       },
       e: {
-        text: 'You look: you can see only the epiglottis, no cords and no arytenoids (Cormack–Lehane grade 3). SpO2 `96%`.',
-        vitals: { HR: 112, BP: '124/74', SpO2: 96, RR: 0, T: 38.1 },
+        text: 'You look: you can see only the epiglottis, no cords and no arytenoids (Cormack–Lehane grade 3). SpO2 `98%`.',
+        vitals: { HR: 112, BP: '124/74', SpO2: 98, RR: 0, T: 38.1 },
         choices: [
           { text: 'Say what you see (“Grade 3, no cords”), take the blade out and hand over to your consultant, with the bougie and video laryngoscope ready. Your consultant may ask the nurse to ease the cricoid.', next: 'f', good: true, feedback: 'Saying it early lets the most experienced person make the next attempt with the right kit, while the saturation is still good.' },
           { text: 'Keep trying with the same blade for another minute.', next: 'e2', good: false, feedback: 'A long attempt with a poor view uses up his oxygen and causes swelling. Repeating the same thing rarely gives a different result.' },
@@ -790,8 +790,8 @@ export const SCENARIOS = [
         ],
       },
       e2: {
-        text: 'Your attempt has taken 90 seconds. SpO2 `86%`, heart rate `124`. Your consultant takes the laryngoscope: “Stop. What now?”',
-        vitals: { HR: 124, BP: '130/80', SpO2: 86, RR: 0, T: 38.1 },
+        text: 'That attempt and the apnoea before it have gone on for over two minutes. SpO2 `88%`, heart rate `124`. Your consultant takes the laryngoscope: “Stop. What now?”',
+        vitals: { HR: 124, BP: '130/80', SpO2: 88, RR: 0, T: 38.1 },
         choices: [
           { text: 'Oxygenate first: gentle mask ventilation with the cricoid on (or, if that fails, a supraglottic airway with the cricoid eased to let it in), as your consultant directs. Then your consultant makes the next attempt with the video laryngoscope and bougie.', next: 'f', good: true, feedback: 'Oxygen first, then a better attempt with better kit by the more experienced person.' },
           { text: '“Let me have one more go.”', next: 'bad', good: false, feedback: 'More attempts by the same person with the same kit, while desaturating, cause swelling and increase the risk of vomiting and aspiration.' },
@@ -959,7 +959,7 @@ export const SCENARIOS = [
       },
       b: {
         text: 'Second: a 58-year-old man, ASA 3 (obstructive sleep apnoea on CPAP, BMI 41), after a laparoscopic inguinal hernia repair, in PACU for 40 minutes. Awake, his SpO2 is `94%` on air. When he dozes off he snores and the SpO2 falls to `88%`. Pain `3/10`.',
-        vitals: { HR: 84, BP: '146/88', SpO2: 88, RR: 12, T: 36.5 },
+        vitals: { HR: 84, BP: '146/88', SpO2: 94, RR: 12, T: 36.5 },
         choices: [
           { text: 'He isn’t for nurse-led discharge (ASA 3, OSA, high BMI). Keep him in PACU: sit him up, give oxygen, put on his own CPAP, and discuss with the primary anaesthetist whether he needs a monitored bed.', next: 'c', good: true, feedback: 'OSA and a high BMI are on the exclusion list. Obstruction when asleep is exactly the risk: CPAP and sitting up treat it, and a monitored bed is a senior’s decision.' },
           { text: 'Nurse-led discharge: he is awake and comfortable.', next: 'b', good: false, feedback: 'He is excluded: ASA 3, OSA and a high BMI. And awake isn’t the test: he desaturates when asleep, which is what he will do on the ward.' },

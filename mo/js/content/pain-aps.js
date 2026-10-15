@@ -17,7 +17,7 @@ export default {
       blocks: [
         { t: 'key', items: [
           "The acute pain service (APS) follows up patients whose pain relief needs a specialist eye: patient-controlled analgesia (PCA), epidurals, nerve block catheters, and everyone who had a single-shot nerve block or a spinal.",
-          "APS MO is a week-long duty, weekends included: weekday rounds with the APS consultant and the pain nurses; at weekends you round alone, then report to the specialist on duty in OT.",
+          "APS MO is a week-long duty, weekends included: weekday rounds with the APS consultant and the pain nurses; at weekends you round alone, then report to the specialist on duty in the operating theatre (OT).",
           "Your job: keep the APS list, review and document, top up (refill) PCA, epidural and local anaesthetic infusions as prescribed, remove catheters, take referrals and help with pain procedures.",
           "Changes to a PCA, an epidural or a nerve catheter are made on the APS consultant's say-so. Tell the consultant about every referral; often you see the patient first, then present.",
           "A patient who is hard to rouse, a block that is rising or getting denser, or new back pain cannot wait for the round: act and call at once.",
@@ -68,11 +68,26 @@ export default {
           "Referrals waiting, and patients to see again",
           "Who steps down to oral pain relief next",
         ] },
+        { t: 'quiz', id: 'pain-aps-aps-q', items: [
+          {
+            q: "On a Saturday round you find a woman with an epidural who is comfortable, but whose legs are weaker than at the last check. Who do you tell, and when?",
+            options: ["Nobody: epidurals make legs weak", "The APS consultant now, after stopping the infusion: it can wait for no one's round", "The ward doctor on Monday", "Write it in Epic and review again in the evening"],
+            answer: 1,
+            explain: "New or worsening leg weakness with an epidural may be a haematoma or abscess. You stop the infusion and call the APS consultant straight away, even at a weekend. You never wait for the round.",
+          },
+          {
+            q: "A ward doctor asks you to double a patient's PCA bolus because her pain is high. What do you do?",
+            options: ["Change it: the ward doctor asked", "Change it and tell the consultant on the next round", "See the patient and check the pump, then discuss with the APS consultant: changes are made on the consultant's say-so", "Add a background infusion"],
+            answer: 2,
+            explain: "Changes to a PCA, epidural or catheter are made on the APS consultant's say-so. Your job is to see the patient, find the cause (line, pump, missing paracetamol, a surgical problem), and bring a plan to the consultant.",
+          },
+        ] },
         { t: 'links', items: [
           { text: 'Analgesic options', href: '#/learn/pain-aps/analgesics' },
           { text: 'PCA', href: '#/learn/pain-aps/pca' },
           { text: 'Epidurals and catheters', href: '#/learn/pain-aps/epidurals' },
           { text: 'After a nerve block or spinal', href: '#/learn/pain-aps/after-blocks' },
+          { text: 'Headache after a spinal or epidural', href: '#/learn/pain-aps/pdph' },
           { text: 'How to call for help', href: '#/learn/start/calling-for-help' },
           { text: 'Documentation and Epic', href: '#/learn/good/documentation' },
         ] },
@@ -101,18 +116,18 @@ export default {
           ['Weak opioid', 'Tramadol', "`50–100 mg` every 4–6 h; max `400 mg` a day (`300 mg` over 75)."],
           ['Strong opioid', 'Oxycodone, morphine, fentanyl', "By mouth once eating and drinking (oxycodone `5–10 mg` every 4–6 h as needed, `2.5–5 mg` in the elderly); IV titration or PCA when not."],
         ] },
-        { t: 'p', text: "Your consultant may add other opioid-sparing drugs: dexamethasone, low-dose ketamine, IV lidocaine or a gabapentinoid. These are the consultant's choice; know they exist and why. Gabapentinoids add to opioid drowsiness and slow breathing, especially in the elderly, so they are used less than they were." },
+        { t: 'p', text: "Your consultant may add other opioid-sparing drugs: dexamethasone, low-dose ketamine, IV lignocaine or a gabapentinoid. These are the consultant's choice; know they exist and why. Gabapentinoids add to opioid drowsiness and slow breathing, especially in the elderly, so they are used less than they were." },
         { t: 'p', text: "IV titration in the post-anaesthesia care unit (PACU): morphine `1–2 mg` every 5–10 min (`0.5–1 mg` in the elderly). It peaks at 15–20 min, so doses stack up in the elderly, in kidney impairment and in sleep apnoea. Stop if the patient is drowsy or breathing fewer than `10` times a minute. After about `0.1 mg/kg`, stop and call the primary anaesthetist. See [pain in PACU](#/learn/pacu/pain)." },
         { t: 'scenario', id: 'pacu-pain-ponv' },
         { t: 'drugs', title: 'Common analgesics', ids: ['paracetamol', 'parecoxib', 'tramadol', 'morphine', 'oxycodone'] },
         { t: 'callout', kind: 'warn', title: 'Avoid NSAIDs, including parecoxib, with', items: [
-          "Kidney impairment, dehydration, hypovolaemia or major bleeding, especially with an ACE inhibitor, an angiotensin receptor blocker or a diuretic.",
+          "Kidney impairment, dehydration, hypovolaemia or major bleeding, especially with an angiotensin-converting enzyme (ACE) inhibitor, an angiotensin receptor blocker or a diuretic.",
           "An active peptic ulcer or gut bleeding.",
           "A bleeding risk: coagulopathy, low platelets, or surgery where bleeding would be disastrous (ask the surgeon).",
           "Asthma made worse by aspirin or other NSAIDs. Most people with asthma take NSAIDs safely: ask.",
           "Late pregnancy (third trimester).",
           "A previous reaction to an NSAID; for parecoxib, also a sulfonamide allergy.",
-          "COX-2 drugs such as parecoxib, also: after coronary bypass surgery, and with ischaemic heart disease, stroke or heart failure.",
+          "COX-2 drugs (cyclo-oxygenase-2 inhibitors) such as parecoxib, also: after coronary bypass surgery, and with ischaemic heart disease, stroke or heart failure.",
         ] },
         { t: 'callout', kind: 'tip', text: "Older patients: NSAIDs are harder on the kidneys and stomach, and tramadol and opioids cause confusion. Start low, go slow, and keep the paracetamol regular." },
         { t: 'h', text: 'Kidney impairment' },
@@ -439,6 +454,20 @@ export default {
         ] },
         { t: 'crisis', id: 'last' },
         { t: 'scenario', id: 'last-block' },
+        { t: 'quiz', id: 'pain-aps-after-blocks-q', items: [
+          {
+            q: "A day-case patient had a long-acting brachial plexus block at `10:00`. What advice stops the night-time pain crisis?",
+            options: ["Wait until the pain starts, then take painkillers", "Take regular paracetamol and the anti-inflammatory from today, and the stronger painkiller when the tingling starts", "Take nothing: the block lasts for days", "Come to hospital when it wears off"],
+            answer: 1,
+            explain: "Pain can rise from nothing to severe within an hour as a block wears off. Regular simple analgesia from the start, and the stronger drug taken at the first tingling, stay ahead of it.",
+          },
+          {
+            q: "Two days after a spinal for a knee operation, a man has new back pain and his legs feel weaker than yesterday. What do you do?",
+            options: ["Reassure him: the spinal is long gone", "Examine him, document it, and call your senior or the APS consultant now", "Give an NSAID and review tomorrow", "Ask the physiotherapist to mobilise him"],
+            answer: 1,
+            explain: "New back pain with weakness after a spinal may be a haematoma or abscess. It is an emergency: examine, document and call at once. Time to treatment decides recovery.",
+          },
+        ] },
         { t: 'links', items: [
           { text: 'Your role in regional anaesthesia', href: '#/learn/regional/ra-role' },
           { text: 'Local anaesthetic safety', href: '#/learn/regional/la-safety' },
@@ -559,7 +588,7 @@ export default {
           ['Oral opioids (oxycodone, morphine, tramadol)', "Give the usual dose on the morning of surgery, and continue it. If they will be nil by mouth for long, the APS converts it to an IV dose."],
           ['Fentanyl patch', "Leave it on, and keep heat off it: forced-air warmers and heat pads increase absorption. Mention it at handover."],
           ['Buprenorphine (patch or tablet)', "Usually continued at the usual dose. It binds tightly and blunts other opioids, so the APS plans pain relief: more regional and non-opioid analgesia, other opioids titrated carefully."],
-          ['Methadone', "Continue the usual daily dose once confirmed. It is long-acting and can prolong the QT interval: look at the ECG, and take care with other drugs that prolong it, such as ondansetron and haloperidol."],
+          ['Methadone', "Continue the usual daily dose once confirmed. It is long-acting and can prolong the QT interval on the ECG (a heart rhythm risk): look at the ECG, and take care with other drugs that prolong it, such as ondansetron and haloperidol."],
         ] },
         { t: 'h', text: 'Pain relief after surgery' },
         { t: 'list', items: [
@@ -574,9 +603,24 @@ export default {
         { t: 'h', text: 'Going home' },
         { t: 'p', text: "Before discharge, plan the way back to the usual dose: the extra opioid comes down over days, with a clear end date. Write the plan for the usual prescriber, give only a short supply, and do not send patients home on slow-release opioids started for acute pain." },
         { t: 'callout', kind: 'tip', text: "Be kind. Patients on long-term opioids, and especially those treated for dependence, often expect to be disbelieved and under-treated. Believe their pain, explain the plan, and agree goals (moving, breathing deeply, sleeping) rather than a pain score of zero." },
+        { t: 'quiz', id: 'pain-aps-opioid-tolerant-q', items: [
+          {
+            q: "A man takes methadone daily and is booked for a hernia repair tomorrow. What is the right plan?",
+            options: ["Stop the methadone tonight so opioids work better", "Continue his usual dose, confirm it with the prescriber or records, and refer to the APS early", "Replace it with paracetamol", "Give only the surgical opioid and no usual dose"],
+            answer: 1,
+            explain: "Stopping his usual opioid causes withdrawal and pain that is hard to treat. The usual dose is a baseline: plan extra pain relief on top, with the APS involved from the premed.",
+          },
+          {
+            q: "An opioid-tolerant patient is hard to rouse and breathing slowly after surgery. How do you give naloxone?",
+            options: ["`400 mcg` at once", "In small steps (`20–40 mcg`) until breathing is adequate, with help called", "Not at all: it is dangerous in these patients", "Only intramuscularly"],
+            answer: 1,
+            explain: "Dangerous sedation still needs treating, but a big dose causes sudden withdrawal and severe pain. Small steps until breathing is adequate; a patient who has stopped breathing is ventilated first.",
+          },
+        ] },
         { t: 'links', items: [
           { text: 'Analgesic options', href: '#/learn/pain-aps/analgesics' },
           { text: 'PCA', href: '#/learn/pain-aps/pca' },
+          { text: 'Pain in PACU', href: '#/learn/pacu/pain' },
           { text: 'Medicines before surgery', href: '#/learn/preop/medicines' },
           { text: 'The acute pain service', href: '#/learn/pain-aps/aps' },
           { text: 'Opioid overdose', href: '#/crisis/opioid-overdose', note: 'crisis card' },

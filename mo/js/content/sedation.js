@@ -15,7 +15,7 @@ export default {
       summary: 'What MAC is, the levels of sedation, and how to keep a sedated patient safe.',
       blocks: [
         { t: 'key', items: [
-          'Monitored anaesthesia care (MAC) means an anaesthetist looks after a patient having a procedure under local or regional anaesthesia, with or without sedation. There is no one size fits all.',
+          'Monitored anaesthesia care (MAC) means an anaesthetist looks after a patient having a procedure under local or regional anaesthesia, with or without sedation.',
           'Always ask your senior the sedation plan before you draw anything up.',
           'Sedation runs from relaxed to general anaesthesia with no clear borders. Aim for a patient who answers when you speak to them.',
           'Monitor as for a general anaesthetic, with capnography: it shows slow or stopped breathing long before the saturation falls, especially when the patient is on oxygen.',
@@ -131,7 +131,9 @@ export default {
           ['Fentanyl `25 mcg` or alfentanil `100–250 mcg` steps', 'Pain relief for a painful step; alfentanil peaks in `90 s`', 'Slow breathing, worse with any sedative; chest wall rigidity with large or fast doses'],
           ['Remifentanil: TCI, starting at a low target such as `0.5–1 ng/mL`', 'Strong, short pain relief that is easy to adjust', 'Apnoea and a slow heart rate as the target rises, sooner with propofol or midazolam; never as a bolus. Clear the line after stopping: a flush of what is left in it can stop the patient breathing'],
         ], caption: 'Starting IV doses for sedation in a fit adult (half or less in the older or frail). The handbook dose table\'s ranges (midazolam `0.05–0.15 mg/kg`, ketamine `0.5–2 mg/kg`, remifentanil TCI `0.5–5 ng/mL`) are anaesthetic doses, far more than sedation needs.' },
-        { t: 'drugs', title: 'Drug cards: read the label on each line, as induction and TIVA doses are not sedation doses', ids: ['propofol', 'midazolam', 'dexmedetomidine', 'ketamine', 'fentanyl', 'alfentanil', 'remifentanil'] },
+        { t: 'details', title: 'Drug cards (read the label on each line: induction and TIVA doses are not sedation doses)', blocks: [
+          { t: 'drugs', ids: ['propofol', 'midazolam', 'dexmedetomidine', 'ketamine', 'fentanyl', 'alfentanil', 'remifentanil'] },
+        ] },
         { t: 'h', text: 'How to give sedation' },
         { t: 'steps', items: [
           { title: 'Agree the plan.', text: 'Drug, starting dose, target level and who gives what, with your consultant, before drawing up.' },
@@ -251,7 +253,7 @@ export default {
         { t: 'steps', items: [
           { title: 'Say it out loud.', text: '"Heart rate `38`: please stop." Ask the surgeon to release the pressure or traction.' },
           { title: 'Watch it recover.', text: 'The heart rate usually returns within seconds of stopping. Check the pulse, blood pressure and oxygen saturation, and tell your consultant.' },
-          { title: 'If it persists or keeps coming back,', text: 'call your consultant and get atropine from the E-drug tray. Give intravenous (IV) atropine `0.6 mg` as they ask (they may choose `0.3 mg` for a mild slowing, or glycopyrrolate `0.2–0.4 mg`, which is slower to work). If the heart rate stays very slow with low blood pressure before they arrive, give the atropine `0.6 mg`. No pulse: [cardiac arrest](#/crisis/cardiac-arrest). See [bradycardia](#/crisis/bradycardia).' },
+          { title: 'If it persists or keeps coming back,', text: 'call your consultant and get atropine from the E-drug tray. Give intravenous (IV) atropine `0.6 mg` as they ask (`0.3 mg` for a mild slowing; glycopyrrolate `0.2–0.4 mg` is slower to work). If the heart rate stays very slow with low blood pressure before they arrive, give the `0.6 mg` yourself. No pulse: [cardiac arrest](#/crisis/cardiac-arrest). See [bradycardia](#/crisis/bradycardia).' },
         ] },
         { t: 'drugs', title: 'For the slow heart', ids: ['atropine', 'glycopyrrolate'] },
         { t: 'h', text: 'Sedation and claustrophobia' },

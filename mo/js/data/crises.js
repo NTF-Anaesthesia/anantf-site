@@ -40,8 +40,7 @@ export const CRISES = [
         '4 Hs: hypoxia, hypovolaemia (bleeding), high or low potassium and other metabolic causes, hypothermia.',
         '4 Ts: thrombosis (heart or lung), tension pneumothorax, tamponade, toxins.',
         'In theatre also: anaphylaxis, local anaesthetic toxicity, high spinal, drug error, gas embolism, vagal reflex, malignant hyperthermia, air trapping in asthma.',
-        'Check every syringe and infusion: wrong drug or wrong strength?',
-        'Blood gas: potassium, haemoglobin, glucose, calcium, pH.',
+        'Check every syringe and infusion: wrong drug or wrong strength? Blood gas for potassium, haemoglobin, glucose, calcium and pH.',
         'Swap the person doing compressions every 2 min.',
       ] },
       { title: 'When the circulation returns', items: [
@@ -305,7 +304,7 @@ export const CRISES = [
         'Keep the mask and CPAP on until it breaks.',
       ] },
       { title: 'If not improving', items: [
-        'SpO2 falling or no air moving: suxamethonium IV in a small dose relaxes the cords (your consultant\'s call).',
+        'SpO2 falling or no air moving: a small dose of suxamethonium IV relaxes the cords. Your consultant decides, so ask early, before the SpO2 is very low, and have it drawn up.',
         'Have atropine ready: the heart slows with hypoxia and suxamethonium.',
         'Ventilate by mask until the patient breathes; intubate if needed.',
         'Afterwards pass an orogastric tube: the stomach fills with air.',
@@ -824,7 +823,7 @@ export const CRISES = [
         'Dantrolene `2.5 mg/kg` IV, as fast as it can be mixed.',
         'Repeat `1 mg/kg` every 5 min until EtCO2 is below `6 kPa` (`45 mmHg`) and core temperature below `38.5 °C`.',
         'Core temperature probe, arterial line, urinary catheter. Blood gas, potassium, CK, clotting.',
-        'Cool if the core temperature is above `38.5 °C`: cold IV saline, ice packs to groins and armpits, cold washouts. Stop once below `38.5 °C` to avoid overshooting.',
+        'Cool if the core temperature is above `38.5 °C`: cold IV saline, ice packs to groins and armpits, cold washouts. Stop cooling once below `38 °C` to avoid overshooting.',
       ] },
       { title: 'If not improving', items: [
         'High potassium: calcium, insulin and glucose ([hyperkalaemia](#/crisis/hyperkalaemia)).',

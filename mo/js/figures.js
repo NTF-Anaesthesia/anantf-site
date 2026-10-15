@@ -223,8 +223,8 @@ ${tri(300, 300, 'd', FROM_PT)}${tri(250, 360, 'l', FROM_PT)}${tri(100, 360, 'l',
 <text x="336" y="328" text-anchor="middle" font-size="12" font-weight="600">Patient</text>
 <text x="292" y="296" text-anchor="end" font-size="12" fill="${MUTED}">expiratory limb</text>
 <circle cx="300" cy="326" r="11" fill="${PAPER}" stroke="${INK}" stroke-width="1.5"/>${tri(300, 325, 'd', FROM_PT, 1)}
-<text x="284" y="322" text-anchor="end" font-size="12">Expiratory</text>
-<text x="284" y="336" text-anchor="end" font-size="12">valve, one-way</text>
+<text x="284" y="316" text-anchor="end" font-size="12">Expiratory</text>
+<text x="284" y="330" text-anchor="end" font-size="12">valve, one-way</text>
 <rect x="160" y="353" width="20" height="14" fill="${PAPER}" stroke="${INK}" stroke-width="1.5"/>
 <path d="M 164 364 L 176 356" stroke="${INK}" stroke-width="1.5"/>
 <text x="170" y="347" text-anchor="middle" font-size="12">Bag/vent switch</text>
