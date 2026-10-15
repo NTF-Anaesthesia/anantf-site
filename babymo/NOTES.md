@@ -142,14 +142,14 @@ Built around what went wrong in the logbook and prewarming apps (anawj.com):
 - Faculty Google sign-in uses a popup, which can fail in an app installed on an iPhone: faculty should use the browser.
 - Icons are the NTF monogram (`icons/`), made from `ana-ntf-monogram.svg`.
 
-## Status
+## Status (15 Oct 2026, evening)
 
-- Live at anantf.com/babymo/ with the Firebase project `ntf-mo-portal` (config filled in 14 Oct 2026).
-- 15 Oct 2026: 14 questions in the paper are ready and 16 are drafts waiting for the owner's check, so a sitting is 14
-  questions until more are ready (the Paper tab says how many more are needed).
-- To do (needs the owner, separate PR): remove the unused `questions`, `questions/*/history` and `config/topics` paths
-  from `firestore.rules` and paste the rules (`SETUP.md` step F). Until then they are harmless: the app no longer reads
-  or writes them. The old questions in Firestore can be deleted from the console afterwards.
+- Live at anantf.com/babymo/ with the Firebase project `ntf-mo-portal`. Revamped phone app (#117) on the shared kit.
+- The paper has 30 ready questions, each with an explanation (#120, #121), so a sitting is the full 20.
+- Firestore rules: the old `questions`, `questions/*/history` and `config/topics` paths are closed (#123). The owner
+  pasted the rules and deleted the leftover question documents (15 Oct 2026).
+- Nothing waiting on the owner. Worth doing before the next intake: install on a real iPhone and Android phone and sit
+  one test (only tested in phone-sized browsers so far).
 - Ideas, not agreed: CBD discussions and feedback as further modules; per-MO history across cohorts.
 
 ## Decisions log
@@ -165,3 +165,8 @@ Built around what went wrong in the logbook and prewarming apps (anawj.com):
   owner approves them. This app lost its editor, paste, topics page, bulk select, backup/import and duplicate tools;
   it reads the paper and the bank, shows them read-only under Paper, and keeps results, people and settings in
   Firebase. Rebuilt as a native-feeling phone app at the same time (the design spec above).
+- 15 Oct 2026 (owner): all 15 remaining drafts promoted with the proposed keys; explanations written for every question
+  (arguable keys kept, the explanation says why: laryngospasm "100 mg suxamethonium", propofol vs ketamine in asthma,
+  ProSeal leak pressure, ABG compensation, thyromental distance). The Brugada question uses an open-licence ECG
+  (CC BY-SA 4.0, credit in `qbank/img/CREDITS.md`) with the original options and key.
+- 15 Oct 2026 (owner): old question paths removed from the rules and the old data deleted.
