@@ -55,7 +55,7 @@ export const BLOCKS = [
         ],
       },
     ],
-    sections: [{ id: 'drugs', title: 'Drugs for eye blocks', html: drugs }],
+    sections: [{ id: 'drugs', title: 'Drugs for eye blocks', html: drugs, safety: true }],
   },
   {
     id: 'st',
