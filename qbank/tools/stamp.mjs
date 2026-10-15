@@ -31,7 +31,7 @@ for (const f of shell.filter(f => f.endsWith('.css'))) for (const m of fs.readFi
 // and what those outside files use in turn (the app kit's fonts)
 for (const f of [...site].filter(f => f.endsWith('.css'))) for (const m of fs.readFileSync(path.join(dir, f), 'utf8').matchAll(/url\(\s*["']?([^"')]+\.(?:woff2|svg|png))["']?\s*\)/g)) if (!/^(data:|https?:)/.test(m[1])) site.add(rel(f, m[1]));
 const siteList = [...site].filter(f => f.startsWith('../')).sort();
-const data = ['bank/questions.json', 'sources.json', 'papers.json', ...papers.map(p => `papers/${p}.json`), ...walk('img')].sort();
+const data = ['bank/questions.json', 'sources.json', 'papers.json', ...papers.map(p => `papers/${p}.json`), ...walk('img').filter(f => /\.(png|jpe?g|webp|svg)$/.test(f))].sort();
 for (const f of [...shell, ...siteList, ...data]) if (f !== 'papers.json' && !fs.existsSync(path.join(dir, f))) { console.error('missing ' + f); process.exit(1); }
 
 const list = a => '[' + a.map(f => `'${f}'`).join(', ') + ']';

@@ -101,20 +101,6 @@ service cloud.firestore {
         && request.resource.data.passphrase.size() >= 4 && request.resource.data.passphrase.size() <= 100;
       allow delete: if false;
     }
-    // rules have no loops: join the items with '|' and check the whole text with one pattern (1 to 60 characters per item,
-    // no '|' inside an item). The first and last item must be strings; the app only ever writes strings.
-    function topicsOk(l) {
-      return l.size() == 0 || (l[0] is string && l[l.size() - 1] is string && l.join('|').matches('^([^|]{1,60}[|]){0,199}[^|]{1,60}$'));
-    }
-    // the list of topics faculty pick from: any member, never an MO
-    match /config/topics {
-      allow read: if member();
-      allow create, update: if member() && request.resource.data.keys().hasOnly(['list', 'updatedAt', 'updatedBy'])
-        && request.resource.data.list is list && request.resource.data.list.size() <= 200
-        && topicsOk(request.resource.data.list)
-        && request.resource.data.updatedAt is number && validStamp(request.resource.data);
-      allow delete: if false;
-    }
     match /config/test {
       allow read: if member() || validSession();
       allow create, update: if admin() && validSettings(request.resource.data) && validStamp(request.resource.data);
@@ -149,49 +135,8 @@ service cloud.firestore {
     }
 
     // ---- questions ----
-    // drafts and archived questions may be unfinished (blank options, answer -1); active ones must be complete
-    function validOption(o, complete) {
-      return o is string && o.size() <= 500 && (!complete || o.size() >= 1);
-    }
-    function validQuestion(d) {
-      return d.stem is string && d.stem.size() >= 1 && d.stem.size() <= 2000
-        && d.status in ['draft', 'active', 'archived']
-        && d.options is list && d.options.size() == 4
-        && validOption(d.options[0], d.status == 'active') && validOption(d.options[1], d.status == 'active')
-        && validOption(d.options[2], d.status == 'active') && validOption(d.options[3], d.status == 'active')
-        && d.answer is int && d.answer >= (d.status == 'active' ? 0 : -1) && d.answer <= 3
-        && d.explain is string && d.explain.size() <= 5000
-        && d.topic is string && d.topic.size() <= 240
-        && d.image is string && d.image.size() <= 400000
-        && d.status in ['draft', 'active', 'archived']
-        && d.get('must', false) is bool
-        && d.get('level', 'standard') in ['standard', 'hard']
-        && d.rev is int && d.rev >= 1
-        && d.updatedAt is number
-        && validStamp(d);
-    }
-    match /questions/{id} {
-      allow get: if member() || (validSession() && resource.data.status == 'active');
-      allow list: if member() || (validSession() && resource.data.status == 'active');
-      allow create: if editor()
-        && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'must', 'level', 'updatedAt', 'updatedBy'])
-        && validQuestion(request.resource.data) && request.resource.data.rev == 1;
-      // optimistic concurrency: a save must be exactly one revision ahead of what is stored
-      allow update: if editor()
-        && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'must', 'level', 'updatedAt', 'updatedBy'])
-        && validQuestion(request.resource.data) && request.resource.data.rev == resource.data.rev + 1;
-      allow delete: if admin();
-
-      // a copy of every save: permanent
-      match /history/{h} {
-        allow read: if member();
-        allow create: if editor()
-          && request.resource.data.keys().hasOnly(['stem', 'options', 'answer', 'explain', 'topic', 'image', 'status', 'rev', 'must', 'level', 'updatedAt', 'updatedBy', 'savedAt'])
-          && request.resource.data.savedAt is number
-          && validQuestion(request.resource.data);
-        allow update, delete: if false;
-      }
-    }
+    // none in Firebase since 15 Oct 2026: the bank is qbank/bank/questions.json in the repo. The old questions,
+    // questions/*/history and config/topics paths match no rule, so they are closed to everyone.
 
     // ---- attempts ----
     function validItem(i) {

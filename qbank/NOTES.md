@@ -143,3 +143,13 @@ test and the MO guide (see "Design" below).
 change, desktop, 200% zoom, offline after the first visit; `SHOTS=<dir>` saves phone screenshots) and
 `node qbank/test/pwa.e2e.mjs` (manifest and icons, first install without reload, offline copy, questions network first,
 "Get the latest version", no reload mid-session or while typing, updates apply when idle).
+
+## Status (15 Oct 2026, evening)
+
+- Live at anantf.com/qbank/ (#118). Bank: 30 questions, all ready, all with explanations; one picture
+  (`img/brugada-type1-v1-v3.jpg`, CC BY-SA 4.0, credited in `img/CREDITS.md` and in the question's explanation).
+- Faculty routes in place: Suggest a change (GitHub issue or copied text) and the spreadsheet round trip; the owner
+  approves every change. No `Question edit:` issues open.
+- Not started: pulling other apps' items into the bank (`sources.json` is empty; the owner said the other apps are
+  still changing, 15 Oct 2026). A later idea: a Worker so faculty without GitHub can file suggestions directly.
+- Only checked in phone-sized browsers, not yet on a real iPhone or Android phone.

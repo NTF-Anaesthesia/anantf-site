@@ -1,7 +1,7 @@
 # Setting up the Baby MO test's shared storage
 
 Until you do this, the test page runs in local-only mode (everything stays in the browser it was typed in). These steps
-create the Firebase project that holds the questions, the MOs' logins and their results. Allow about 20 minutes.
+create the Firebase project that holds the settings, the MOs' logins and their results (the questions are in `qbank/`). Allow about 20 minutes.
 Do them once, signed in to Google as the account that should own the project.
 
 ## A. Create the project
@@ -46,8 +46,8 @@ The rules below are not live yet, but the console always works, so you create th
    (for example `you@gmail.com`). Add two **string** fields: `role` = `admin` and `name` = your name. Save.
 
 Only this first admin is created by hand. Every other faculty member signs in with Google in the app and taps
-"Request faculty access"; any current faculty member (editor or admin) then approves or declines the request inside the
-portal. (An admin can still add someone directly in the Faculty tab, and changes the passphrase there too.) Changing the
+"Ask for faculty access"; any current faculty member (editor or admin) then approves or declines the request in the
+app's People tab. (An admin can still add someone directly in People, and changes the passphrase in Settings.) Changing the
 passphrase signs every MO out until they enter the new one: do it when a new cohort starts.
 
 ## F. Put the rules live
@@ -65,11 +65,14 @@ refuses everyone, so the test cannot be used.
 
 1. Open `https://anantf.com/babymo/` in a private window, enter a name and the passphrase: you should reach the test.
 2. A wrong passphrase should be refused with a clear message.
-3. In another window sign in as faculty with Google: you should see the question editor and results.
+3. In another window sign in as faculty with Google: you should see the Results, Paper, People and Settings tabs.
 
 ## Notes
 
 - Costs: the free Spark plan is plenty for a few dozen MOs.
 - Faculty who can read the Sessions list can see the current passphrase (it is stored in each login). That is accepted;
   the passphrase is a shared door code, not a secret.
-- Deleting a question leaves its saved history behind (history is permanent by design).
+- The questions are not in Firebase: they come from the question bank (`qbank/`) in this repo.
+- Old projects (before 15 Oct 2026) may still hold a `questions` collection and a `config/topics` document from when
+  questions were edited in the app. The rules now close both; delete them in Firestore (Data tab: the `questions`
+  collection's ⋮ menu → Delete collection; `config` → `topics` → Delete document). Results are not affected.

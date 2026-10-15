@@ -1,5 +1,7 @@
 // Stamps sw.js with a version made from the files it caches, so a phone that has the app gets the new files when any of
-// them changes. Run after changing any file the worker caches (the list SHELL in sw.js):
+// them changes. Run after changing any file the worker caches (the lists SHELL and SITE in sw.js; SITE includes the
+// question bank's code, ../qbank/js/bank.js, and the fonts). DATA (the bank and the paper) is not hashed: the worker
+// always fetches it fresh when there is a signal, so a change to a question never needs a new version.
 //     node babymo/tools/stamp.mjs          writes the new VERSION into sw.js
 //     node babymo/tools/stamp.mjs --check  only checks (used by test/version.test.mjs); exits 1 if stale
 import fs from 'node:fs';
@@ -10,10 +12,11 @@ import { fileURLToPath } from 'node:url';
 const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const swPath = path.join(dir, 'sw.js');
 const sw = fs.readFileSync(swPath, 'utf8');
-const shell = [...sw.match(/const SHELL = \[([\s\S]*?)\];/)[1].matchAll(/'([^']+)'/g)].map(m => m[1]).filter(f => f !== './');
+const list = name => [...(sw.match(new RegExp(`const ${name} = \\[([\\s\\S]*?)\\];`)) || ['', ''])[1].matchAll(/'([^']+)'/g)].map(m => m[1]);
+const files = [...list('SHELL'), ...list('SITE')].filter(f => f !== './');
 export function versionOf() {
   const h = crypto.createHash('sha256');
-  for (const f of shell.slice().sort()) h.update(f + '\0').update(fs.readFileSync(path.join(dir, f))).update('\0');
+  for (const f of files.slice().sort()) h.update(f + '\0').update(fs.readFileSync(path.join(dir, f))).update('\0');
   // the worker's own code counts too (everything except the VERSION line)
   h.update(sw.replace(/const VERSION = '[^']*';/, ''));
   return h.digest('hex').slice(0, 8);

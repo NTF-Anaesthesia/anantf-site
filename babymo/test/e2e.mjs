@@ -1,327 +1,321 @@
-// Browser test of the Baby MO portal in local (demo) mode, at phone size, with an axe accessibility check.
+// Browser test of the Baby MO test in local (demo) mode with the REAL question bank (../qbank/), at phone size, with an
+// axe accessibility check on every screen (and a desktop pass at the end).
 // Run from the repo root (files are served from this checkout by route; no server):
-//   node babymo/test/e2e.mjs            SHOTS=<dir> also saves phone screenshots
+//   node babymo/test/e2e.mjs            SHOTS=<dir> also saves phone screenshots of every main screen
 const { chromium } = await import(process.env.PLAYWRIGHT_PATH || '/opt/node22/lib/node_modules/playwright/index.mjs');
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { resolvePaper } from '../../qbank/js/bank.js';
 
 const AXE = process.env.AXE_PATH || new URL('./vendor/axe.min.js', import.meta.url).pathname;
 const root = new URL('../../', import.meta.url).pathname;
 const BASE = 'https://anantf.com/babymo/';
 const SHOTS = process.env.SHOTS;
-const MIME = { html: 'text/html', js: 'text/javascript', css: 'text/css', svg: 'image/svg+xml', json: 'application/json', png: 'image/png' };
+const MIME = { html: 'text/html', js: 'text/javascript', css: 'text/css', svg: 'image/svg+xml', json: 'application/json', png: 'image/png', woff2: 'font/woff2', webmanifest: 'application/manifest+json' };
+
+// the real bank and paper, to know the right answers and check the snapshots
+const BANK = JSON.parse(fs.readFileSync(path.join(root, 'qbank/bank/questions.json'), 'utf8'));
+const PAPER = JSON.parse(fs.readFileSync(path.join(root, 'qbank/papers/babymo.json'), 'utf8'));
+const { pool: POOL, all: ALL } = resolvePaper(PAPER, BANK.questions);
+const N = Math.min(PAPER.count, POOL.length);
+const answerFor = stem => { const q = POOL.find(x => x.stem.replace(/\s+/g, ' ').trim() === stem.replace(/\s+/g, ' ').trim()); assert.ok(q, 'stem not in the paper: ' + stem.slice(0, 60)); return q; };
 
 const exe = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') && !fs.statSync('/opt/pw-browsers/chromium').isDirectory() ? '/opt/pw-browsers/chromium' : null);
 const b = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : {});
 const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, serviceWorkers: 'block', acceptDownloads: true });
-await ctx.route(/^https:\/\/(www\.)?anantf\.com\//, async route => {
+ctx._serve = async route => {
   const u = new URL(route.request().url());
   let rel = decodeURIComponent(u.pathname).replace(/^\//, '');
   if (rel.endsWith('/')) rel += 'index.html';
   const f = path.join(root, rel);
   if (!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) return route.fulfill({ status: 404, body: 'not found' });
   await route.fulfill({ status: 200, contentType: MIME[f.split('.').pop()] || 'application/octet-stream', body: fs.readFileSync(f) });
-});
+};
+await ctx.route(/^https:\/\/(www\.)?anantf\.com\//, ctx._serve);
 await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
-const page = await ctx.newPage();
+let page = await ctx.newPage();
 const errors = [];
-page.on('pageerror', e => errors.push(e.message));
-page.on('console', m => { if (m.type() === 'error') errors.push(m.text()); });
+const watch = p => { p.on('pageerror', e => errors.push(e.message)); p.on('console', m => { if (m.type() === 'error') errors.push(m.text()); }); };
+watch(page);
 
-const shot = async name => { if (SHOTS) { fs.mkdirSync(SHOTS, { recursive: true }); await page.screenshot({ path: path.join(SHOTS, `babymo-${name}.png`), fullPage: true }); } };
+const shot = async name => { if (SHOTS) { fs.mkdirSync(SHOTS, { recursive: true }); await page.evaluate(() => document.querySelector('#toast')?.classList.remove('is-visible')); await page.waitForTimeout(300); await page.screenshot({ path: path.join(SHOTS, `${name}.png`) }); } };
 const axe = async label => {
   if (!fs.existsSync(AXE)) return;
   if (!(await page.evaluate(() => !!window.axe))) await page.addScriptTag({ path: AXE });
+  await page.waitForTimeout(300);   // let entrance animations finish (axe reads colours mid-fade otherwise)
   const r = await page.evaluate(() => window.axe.run(document, { runOnly: ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'] }));
   const bad = r.violations.filter(v => ['serious', 'critical'].includes(v.impact));
-  assert.equal(bad.length, 0, `axe (${label}): ` + bad.map(v => v.id + ' ' + v.nodes[0]?.target + ' ' + v.nodes[0]?.failureSummary?.slice(0, 120)).join('; '));
+  assert.equal(bad.length, 0, `axe (${label}): ` + bad.map(v => v.id + ' ' + v.nodes[0]?.target + ' ' + v.nodes[0]?.failureSummary?.slice(0, 160)).join('; '));
 };
-const step = async (name, fn) => { try { await fn(); console.log('ok  ', name); } catch (e) { console.error('FAIL', name, '\n', e.message); await shot('fail-' + name.replace(/\W+/g, '-')); process.exitCode = 1; throw e; } };
-// every direct child of the matching element sits on one line (same vertical centre, give or take a few pixels): rows of buttons must not wrap on a phone
+const step = async (name, fn) => { try { await fn(); console.log('ok  ', name); } catch (e) { console.error('FAIL', name, '\n', e.message); if (SHOTS) await shot('fail-' + name.replace(/\W+/g, '-')).catch(() => {}); process.exitCode = 1; throw e; } };
+// every visible direct child of the matching element sits on one line (same vertical centre, give or take): rows of buttons must not wrap on a phone
 const oneRow = async sel => {
-  const bad = await page.evaluate(s => [...document.querySelectorAll(s)].filter(el => { const k = [...el.children].filter(c => c.offsetParent); return k.length > 1 && (() => { const m = k.map(c => { const r = c.getBoundingClientRect(); return r.top + r.height / 2; }); return Math.max(...m) - Math.min(...m) > 12; })(); }).map(el => el.className || el.id), sel);
+  const found = await page.locator(sel).count(); assert.ok(found > 0, 'nothing matches ' + sel);
+  const bad = await page.evaluate(s => [...document.querySelectorAll(s)].filter(el => { const k = [...el.children].filter(c => c.offsetParent && c.tagName !== 'LEGEND'); return k.length > 1 && (() => { const m = k.map(c => { const r = c.getBoundingClientRect(); return r.top + r.height / 2; }); return Math.max(...m) - Math.min(...m) > 12; })(); }).map(el => el.className || el.id), sel);
   assert.deepEqual(bad, [], `wraps onto a second line at phone width: ${sel}`);
 };
-const text = sel => page.locator(sel).innerText();
+const noSideScroll = async () => assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth && document.querySelector('#app').scrollWidth <= document.querySelector('#app').clientWidth + 1), true, 'the page scrolls sideways');
+const text = sel => page.locator(sel).first().innerText();
+const sheetGone = () => page.locator('dialog.app-sheet').waitFor({ state: 'detached' });
+const stem = async () => (await text('#stem')).trim();
+const startAs = async (name, pass) => { await page.goto(BASE + '?demo'); await page.locator('#f-name').waitFor(); await page.fill('#f-name', name); await page.fill('#f-pass', pass); await page.click('#start-go'); };
+const submitNow = async () => { await page.click('#qpill'); await page.click('#nav-finish'); await page.locator('#submit').waitFor(); await page.click('#submit'); await page.locator('#score').waitFor(); };
 
 try {
-  // ---- an MO sits the test ----
-  await step('home, wrong passphrase refused', async () => {
+  // ================= an MO sits the test =================
+  await step('start page; a wrong passphrase is refused', async () => {
     await page.goto(BASE + '?demo'); await page.locator('#f-name').waitFor();
-    await shot('home'); await axe('home');
-    await page.fill('#f-name', 'Dr Test Person'); await page.fill('#f-pass', 'nope'); await page.click('#start button[type=submit]');
+    assert.match(await text('h1'), /Baby MO test/); assert.equal(await page.locator('#tabs').isHidden(), true);
+    await shot('01-start'); await axe('start'); await noSideScroll();
+    await page.fill('#f-name', 'Dr Test Person'); await page.fill('#f-pass', 'nope'); await page.click('#start-go');
     await page.locator('#start-err:not([hidden])').waitFor(); assert.match(await text('#start-err'), /passphrase is not right/);
   });
-  await step('ready screen', async () => {
-    await page.fill('#f-pass', 'demo'); await page.click('#start button[type=submit]');
-    await page.locator('#go').waitFor(); assert.match(await text('#app'), /5 questions/); assert.match(await text('#app'), /Pass mark 80%/);
-    await shot('ready'); await axe('ready');
+  await step('ready screen: real paper, pass mark and attempts', async () => {
+    await page.fill('#f-pass', 'demo'); await page.click('#start-go');
+    await page.locator('#go').waitFor();
+    assert.equal(await text('#ready-sum'), `${N} questions · ${PAPER.minutes} minutes · pass ${PAPER.passMark}% · attempt 1 of 2`);
+    assert.doesNotMatch(await text('#app'), /must/i, 'must-ask is not mentioned to MOs');
+    await shot('02-ready'); await axe('ready'); await oneRow('.app-toolbar-inner');
   });
-  await step('answering, flagging, resume after reload', async () => {
-    await page.click('#go'); await page.locator('#qform').waitFor();
-    assert.match(await text('.topbar'), /Question 1 of 5/);
-    assert.equal(await page.locator('#prev').isDisabled(), true);
-    await page.locator('.opt').nth(0).click();               // answer A on Q1
-    await page.click('#flag'); assert.match(await text('#flag'), /Flagged/);
-    await shot('question'); await axe('question');
-    await page.reload(); await page.locator('#qform').waitFor();   // reload mid-test: same place, answer kept, clock still running
-    assert.match(await text('.topbar'), /Question 1 of 5/);
-    assert.equal(await page.locator('.opt.on').count(), 1);
-    assert.match(await text('#timer'), /^[0-4]:\d\d$|^5:00$/);
-    await page.click('#next'); assert.match(await text('.topbar'), /Question 2 of 5/);
-    await page.click('#prev'); await page.click('#clear'); assert.equal(await page.locator('.opt.on').count(), 0);
+  await step('the test: answer, flag, reload resumes, back and clear', async () => {
+    await page.click('#go'); await page.locator('#stem').waitFor();
+    assert.equal(await text('#qpill'), `Q 1/${N}`);
+    assert.equal(await page.getAttribute('#prev', 'aria-disabled'), 'true');
+    assert.equal(await page.locator('#tabs').isHidden(), true, 'no tab bar during a test');
+    const n0 = await page.locator('.app-choice').count(); assert.ok(n0 >= 2 && n0 <= 6);
+    assert.equal(await page.getByRole('button', { name: /^A, \S/ }).count(), 1, 'accessible name is "A, <choice>"');
+    await page.locator('.app-choice').nth(0).click();
+    assert.equal(await page.getAttribute('.app-choice >> nth=0', 'aria-pressed'), 'true');
+    await page.click('#flag'); assert.equal(await page.getAttribute('#flag', 'aria-pressed'), 'true');
+    await shot('03-question'); await axe('question'); await oneRow('#sbar-row'); await oneRow('.app-toolbar-inner'); await noSideScroll();
+    const s1 = await stem();
+    await page.reload(); await page.locator('#stem').waitFor();       // reload mid-test: same place, answer kept, clock still running
+    assert.equal(await stem(), s1); assert.equal(await page.locator('.app-choice[aria-pressed=true]').count(), 1);
+    assert.match(await text('#timer'), /^\d{1,2}:\d\d$/);
+    await page.click('#next'); assert.equal(await text('#qpill'), `Q 2/${N}`);
+    await page.click('#prev'); assert.equal(await stem(), s1);
+    await page.click('#clear'); assert.equal(await page.locator('.app-choice[aria-pressed=true]').count(), 0);
+    await page.click('#timer'); assert.equal(await text('#timer'), 'Show timer'); await page.click('#timer'); assert.match(await text('#timer'), /^\d/);
   });
-  await step('review lists blanks and flags, submit asks first', async () => {
-    await page.locator('.opt').nth(1).click();
-    for (let i = 0; i < 4; i++) await page.click('#next');
-    await page.click('#review'); await page.locator('.grid').waitFor();
-    assert.match(await text('#app'), /4 unanswered/); await shot('review'); await axe('review');
-    await page.click('#submit'); await page.locator('dialog[open]').waitFor(); await shot('confirm');
-    await page.click('dialog button[value=no]'); await page.locator('dialog').waitFor({ state: 'detached' });
+  await step('navigator sheet; back button closes a sheet; check sheet lists blanks and flags', async () => {
+    await page.click('#qpill'); await page.locator('.bm-navgrid').waitFor();
+    assert.equal(await page.locator('.bm-dot').count(), N); assert.equal(await page.locator('.bm-dot.is-flag').count(), 1); assert.equal(await page.locator('.bm-dot.is-cur').count(), 1);
+    await shot('04-navigator'); await axe('navigator');
+    await page.goBack(); await sheetGone(); assert.equal(await text('#qpill'), `Q 1/${N}`, 'back closed the sheet and stayed in the test');
+    await page.click('#qpill'); await page.click(`.bm-dot >> nth=${N - 1}`); await sheetGone();
+    assert.equal(await text('#qpill'), `Q ${N}/${N}`); await page.locator('#finish').waitFor();
+    await page.click('#finish'); await page.locator('#submit').waitFor();
+    assert.match(await text('#check-sum'), new RegExp(`${N} unanswered questions · 1 flagged`));
+    await shot('05-check'); await axe('check');
+    await page.click('[data-goto="0"]'); await sheetGone(); assert.equal(await text('#qpill'), `Q 1/${N}`);
   });
-  await step('answer everything correctly from the bank and submit', async () => {
-    // read the correct answers from the demo bank in storage, answer by matching text
-    const key = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('mo-local-v1')); return d.questions.map(q => ({ stem: q.stem, ans: q.options[q.answer] })); });
-    await page.click('.cell >> nth=0');
-    for (let i = 0; i < 5; i++) {
-      const stem = (await text('.stem')).trim();
-      const want = key.find(k => k.stem === stem).ans;
-      await page.locator('.opt', { hasText: want }).first().click();
-      if (i < 4) await page.click('#next'); else await page.click('#review');
+  await step('leaving keeps the answers; the start page offers Resume', async () => {
+    await page.goBack(); await page.waitForTimeout(300); await page.locator('#stem').waitFor();
+    assert.match(page.url(), /#\/test$/, 'the back button does not leave a test by accident');
+    await page.click('#leave'); await page.locator('dialog.app-sheet [data-no]').waitFor(); await page.click('dialog.app-sheet [data-no]'); await sheetGone();
+    await page.click('#leave'); await page.click('dialog.app-sheet [data-yes]');
+    await page.locator('#resume').waitFor(); assert.match(await text('#resume'), /Question 1 of/);
+    await shot('06-resume'); await axe('resume');
+    await page.click('#resume-go'); await page.locator('#stem').waitFor();
+  });
+  let sat;
+  await step('answer every question correctly and submit: pass, saved, snapshot stored', async () => {
+    for (let i = 0; i < N; i++) {
+      const q = answerFor(await stem());
+      await page.locator('.app-choice').nth(q.answer).click();
+      if (i < N - 1) await page.click('#next');
     }
-    await page.click('#submit'); await page.click('dialog button[value=yes]');
-    await page.locator('.score').waitFor();
-    assert.match(await text('.score'), /5\s*\/ 5/); assert.match(await text('.score'), /Pass/);
-    await page.locator('#saved.ok').waitFor(); assert.match(await text('#saved'), /Saved/);
-    await shot('result'); await axe('result');
-    const { n } = await page.evaluate(() => ({ n: JSON.parse(localStorage.getItem('mo-outbox') || '[]').length })); assert.equal(n, 0);
+    await page.click('#finish'); assert.match(await text('#check-sum'), /Every question is answered · 1 flagged/);
+    await page.click('#submit'); await page.locator('#score').waitFor();
+    assert.match(await text('.bm-verdict'), /Pass/); assert.match(await text('#score'), new RegExp(`${N} of ${N} right`));
+    await page.locator('#saved.ok').waitFor(); assert.match(await text('#saved'), /Saved/i);
+    await shot('07-result'); await axe('result'); await oneRow('.app-toolbar-inner');
+    assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('mo-outbox') || '[]').length), 0);
+    sat = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v2')).attempts.at(-1));
+    assert.equal(sat.items.length, N); assert.equal(sat.cohort, 'Demo cohort'); assert.equal(sat.attemptNo, 1);
+    const ids = new Set(sat.items.map(i => i.qid)); assert.equal(ids.size, N);
+    for (const it of sat.items) {
+      const q = POOL.find(x => x.id === it.qid); assert.ok(q, 'snapshot qid is a ready bank id');
+      assert.equal(it.stem, q.stem); assert.deepEqual(it.options, q.options); assert.equal(it.answer, q.answer);
+      assert.deepEqual(Object.keys(it).sort(), ['answer', 'explain', 'options', 'picked', 'qid', 'stem', 'topic']);
+    }
+    for (const m of PAPER.must.filter(id => POOL.some(q => q.id === id))) assert.ok(ids.has(m), 'a must-ask question is missing: ' + m);
   });
-  await step('timer running out submits by itself', async () => {
-    await page.click('#done'); await page.fill('#f-name', 'Slow Person'); await page.fill('#f-pass', 'demo'); await page.click('#start button[type=submit]');
-    await page.click('#go'); await page.locator('#qform').waitFor();
-    await page.evaluate(() => { const a = JSON.parse(localStorage.getItem('mo-attempt')); a.startedAt -= 6 * 60 * 1000; localStorage.setItem('mo-attempt', JSON.stringify(a)); });
-    await page.reload(); await page.locator('.score').waitFor();
-    assert.match(await text('#app'), /Time ran out/); assert.match(await text('.score'), /0\s*\/ 5/);
+  await step('full review: your answer against the right one, in words', async () => {
+    await page.click('#answers a.app-row >> nth=0'); await page.locator('#stem').waitFor();
+    assert.match(await text('.app-choice.is-correct'), /Correct/i);
+    assert.equal(await page.getByText(/your answer, correct$/).count(), 1, 'the state is in words for screen readers');
+    await shot('08-review'); await axe('review'); await oneRow('.app-toolbar-inner');
+    await page.click('.app-toolbar a:has-text("Next")'); await page.locator('.app-kicker:has-text("Question 2 of")').waitFor();
+    await page.goto(BASE + '?demo#/result'); await page.locator('#score').waitFor();
+  });
+  await step('the timer running out submits by itself', async () => {
+    await page.click('#done'); await page.locator('#f-name').waitFor();
+    await page.fill('#f-name', 'Slow Person'); await page.fill('#f-pass', 'demo'); await page.click('#start-go');
+    await page.click('#go'); await page.locator('#stem').waitFor();
+    await page.evaluate(m => { const a = JSON.parse(localStorage.getItem('mo-attempt')); a.startedAt -= (m + 1) * 60 * 1000; localStorage.setItem('mo-attempt', JSON.stringify(a)); }, PAPER.minutes);
+    await page.reload(); await page.locator('#score').waitFor();
+    assert.match(await text('#app'), /Time ran out/); assert.match(await text('#score'), new RegExp(`0 of ${N} right`)); assert.match(await text('.bm-verdict'), /Not yet/);
     await page.click('#done');
   });
 
-  // ---- faculty ----
-  await step('faculty sign in and question list', async () => {
-    await page.goto(BASE + '?demo#/faculty'); await page.locator('#in').waitFor(); await page.click('#in');
-    await page.locator('.qlist').waitFor(); assert.equal(await page.locator('.qlist li').count(), 6);
-    assert.match(await text('.summary'), /6.*ready for the test/); await shot('questions'); await axe('questions');
+  // ================= faculty =================
+  await step('faculty sign in; Results by person', async () => {
+    await page.goto(BASE + '?demo#/faculty'); await page.locator('#in').waitFor();
+    await shot('09-faculty-signin'); await axe('faculty gate');
+    await page.click('#in'); await page.locator('#byperson').waitFor();
+    assert.equal(await page.locator('#tabs .app-tab').count(), 4); await oneRow('#tabs');
+    assert.equal(await page.getAttribute('#tabs .app-tab >> nth=0', 'aria-current'), 'page');
+    assert.equal(await page.locator('#byperson li').count(), 2); assert.match(await text('#byperson'), /Dr Test Person/); assert.match(await text('#byperson'), /Slow Person/);
+    assert.match(await text('#res-sum'), /2 sittings · 1 passed/);
+    await shot('10-results-person'); await axe('results by person'); await oneRow('.app-segmented'); await noSideScroll();
   });
-  await step('new question: validation, then save as active', async () => {
-    await page.click('a[href="#/faculty/q/new"]'); await page.locator('#qf').waitFor();
-    await page.fill('#stem', 'What is the antidote to heparin?'); await page.check('input[name=status][value=active]', { force: true });
-    await page.click('#qf button[type=submit]');
-    assert.match(await text('#app'), /Fill in choice A/); assert.match(await text('#app'), /Pick the correct answer/);
-    await shot('editor-errors'); await axe('editor-errors'); await oneRow('.segrow');
-    await page.fill('#opt0', 'Protamine'); await page.fill('#opt1', 'Vitamin K'); await page.fill('#opt2', 'Tranexamic acid'); await page.fill('#opt3', 'Naloxone');
-    await page.check('#ans0');
-    assert.match(await text('.preview'), /Correct answer/);
-    await page.click('#qf button[type=submit]'); await page.locator('.qlist').waitFor();
-    assert.equal(await page.locator('.qlist li').count(), 7); assert.match(await text('.summary'), /7.*ready/);
+  await step('Results by question, its detail, by topic', async () => {
+    await page.click('.app-seg:has-text("By question")'); await page.locator('#byquestion').waitFor();
+    // one row per distinct question across every sitting (with more ready questions than a sitting holds, sittings differ)
+    const seen = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('mo-local-v2') || '{}'); return new Set((d.attempts || []).flatMap(a => (a.items || []).map(i => i.qid))).size; });
+    assert.ok(seen >= N && seen <= POOL.length, `distinct questions ${seen}`);
+    assert.equal(await page.locator('#byquestion li').count(), seen);
+    await shot('11-results-question'); await axe('results by question');
+    await page.click('#byquestion .app-row >> nth=0'); await page.locator('#picks').waitFor();
+    assert.match(await text('#picks'), /Answer/i); assert.match(await text('#picks'), /chose/);
+    await shot('12-question-stats'); await axe('question stats');
+    await page.goBack(); await page.locator('#byquestion').waitFor();
+    await page.click('.app-seg:has-text("By topic")'); await page.locator('#bytopic').waitFor(); assert.match(await text('#bytopic'), /% right/);
+    await shot('13-results-topic'); await axe('results by topic');
+    await page.click('.app-seg:has-text("By person")'); await page.locator('#byperson').waitFor();
   });
-  await step('edit keeps history; unsaved text is offered back after leaving', async () => {
-    await page.click('.qlist li >> nth=0'); await page.locator('#qf').waitFor();
-    await page.fill('#stem', 'What reverses heparin?'); await page.click('a:has-text("All questions")');
-    await page.locator('.qlist').waitFor(); await page.click('.qlist li >> nth=0');
-    await page.locator('#restore').waitFor(); await page.click('#restore');
-    assert.equal(await page.inputValue('#stem'), 'What reverses heparin?');
-    await page.click('#qf button[type=submit]'); await page.locator('.qlist').waitFor();
-    await page.click('.qlist li >> nth=0'); await page.click('#hist summary'); await page.locator('.hist li').first().waitFor();
-    assert.equal(await page.locator('.hist li').count(), 2); await page.click('a:has-text("All questions")');
+  await step('a person: sittings, missed questions, give another attempt with Undo', async () => {
+    await page.click('#byperson .app-row:has-text("Slow Person")'); await page.locator('#used').waitFor();
+    assert.match(await text('#used'), /1 of 2/); assert.match(await text('#app'), new RegExp(`Missed in the latest sitting \\(${N}\\)`, 'i'));
+    await shot('14-person'); await axe('person');
+    await page.click('#grant'); await page.click('dialog.app-sheet [data-yes]');
+    await page.locator('#used:has-text("0 of 2")').waitFor();
+    await page.locator('#toast.is-visible .app-toast-action').click(); await page.locator('#used:has-text("1 of 2")').waitFor();
+    await page.click('#app .app-list a.app-row >> nth=0'); await page.locator('#att-items').waitFor(); assert.equal(await page.locator('#att-items li').count(), N);
+    await axe('attempt');
   });
-  await step('a draft can be unfinished and is not given to MOs', async () => {
-    await page.click('a[href="#/faculty/q/new"]'); await page.fill('#stem', 'Half-written question'); await page.click('#qf button[type=submit]');
-    await page.locator('.qlist').waitFor(); assert.match(await text('.summary'), /7.*ready/); assert.match(await text('.summary'), /1 draft/);
+  await step('Paper: read-only, ready and draft questions, Must and Hard badges, Suggest a change', async () => {
+    await page.click('#tabs .app-tab:has-text("Paper")'); await page.locator('#paper-ready').waitFor();
+    assert.equal(await page.locator('#paper-ready li').count(), POOL.length);
+    assert.equal(await page.locator('#paper-drafts li').count(), ALL.length - POOL.length);
+    assert.equal(await page.locator('#paper-ready .bm-must').count(), POOL.filter(q => q.must).length);
+    assert.equal(await page.locator('#paper-ready .bm-hard').count(), POOL.filter(q => q.level === 'hard').length);
+    assert.equal(await page.locator('#app input, #app textarea, #app [contenteditable]').count(), 0, 'nothing to edit');
+    await shot('15-paper'); await axe('paper');
+    await page.click('#paper-ready .app-row >> nth=0'); await page.locator('#suggest').waitFor();
+    const q = answerFor(await stem());
+    assert.match(await text('.app-choice.is-answer'), /Answer/i); assert.match(await text('.app-choice.is-answer'), new RegExp(q.options[q.answer].slice(0, 10).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.equal(await page.getAttribute('#suggest', 'href'), `https://anantf.com/qbank/#/q/${q.id}?suggest`);
+    await shot('16-paper-question'); await axe('paper question');
+    await page.goBack(); await page.locator('#paper-ready').waitFor();
   });
-  await step('paste many', async () => {
-    await page.click('a[href="#/faculty/paste"]'); await page.fill('#paste', 'Q1 Normal adult heart rate?\n(A) 20-30\n(B) 60-100\n(C) 120-160\n(D) 200\nAnswer: B\n\nQ2 No answer here?\nA) a\nB) b\nC) c\nD) d\n');
-    await page.click('#read'); await page.locator('#addall').waitFor(); assert.match(await text('#out'), /2 questions found/); assert.match(await text('#out'), /no answer/);
-    await shot('paste'); await axe('paste'); await oneRow('.segrow');
-    await page.check('input[name=as][value=active]', { force: true }); await page.click('#addall'); await page.locator('.qlist').waitFor();
-    assert.match(await text('.summary'), /8.*ready/); assert.match(await text('.summary'), /2 drafts/);
+  await step('Settings: steppers, review mode, unsaved-changes guard, save', async () => {
+    await page.click('#tabs .app-tab:has-text("Settings")'); await page.locator('#sf').waitFor();
+    assert.equal(await text('#s-count'), String(PAPER.count)); assert.equal(await text('#s-pm'), String(PAPER.passMark)); assert.equal(await text('#s-min'), String(PAPER.minutes));
+    await shot('17-settings'); await axe('settings'); await oneRow('.app-segmented'); await oneRow('.bm-stepper'); await oneRow('.bm-stepper-row'); await noSideScroll();
+    for (let i = 0; i < PAPER.count - 3; i++) await page.click('.bm-stepper:has(#s-count) [data-step="-1"]');
+    assert.equal(await text('#s-count'), '3');
+    await page.click('.bm-stepper:has(#s-min) [data-step="1"]'); assert.equal(await text('#s-min'), '25');
+    await page.click('.app-seg:has-text("Right or wrong")');
+    await page.fill('#s-cohort', 'Oct 2026'); await page.fill('#s-pass', 'newpass');
+    await page.click('#tabs .app-tab:has-text("People")'); await page.locator('dialog.app-sheet [data-no]').waitFor();
+    assert.match(await text('dialog.app-sheet'), /Leave without saving/);
+    await page.click('dialog.app-sheet [data-no]'); await sheetGone();
+    assert.equal(await page.inputValue('#s-cohort'), 'Oct 2026', 'typed text kept'); assert.match(page.url(), /settings/);
+    await page.fill('#s-pass', 'ab'); await page.click('#save'); await page.locator('#serr:not([hidden])').waitFor();
+    await page.fill('#s-pass', 'newpass'); await page.click('#save'); await page.locator('#toast.is-visible:has-text("Settings saved")').waitFor();
+    await page.locator('#sf').waitFor(); assert.equal(await text('#s-count'), '3'); assert.equal(await page.inputValue('#s-cohort'), 'Oct 2026');
+    await page.click('#d-count'); assert.equal(await text('#s-count'), String(PAPER.count)); await page.click('.bm-stepper:has(#s-count) [data-step="-1"]');
+    for (let i = 0; i < PAPER.count - 4; i++) await page.click('.bm-stepper:has(#s-count) [data-step="-1"]');
+    await page.click('#save'); await page.locator('#toast.is-visible:has-text("Settings saved")').waitFor();
+    const st = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v2')).settings);
+    assert.equal(st.count, 3); assert.equal(st.minutes, 25); assert.equal(st.review, 'marks'); assert.equal(st.cohort, 'Oct 2026');
   });
-  await step('spreadsheet round trip and backup', async () => {
-    await page.click('a[href="#/faculty/data"]');
-    const [dl] = await Promise.all([page.waitForEvent('download'), page.click('#csvdown')]);
-    const csv = fs.readFileSync(await dl.path(), 'utf8'); assert.match(csv, /question,A,B,C,D,answer/); assert.match(csv, /What reverses heparin/);
-    const edited = csv.replace('What reverses heparin?', 'What reverses heparin effect?') + 'new1,draft,Airway,"Brand new, with comma?",a,b,c,d,C,\r\n';
-    const tmp = path.join(process.env.TMPDIR || '/tmp', 'mo-e2e.csv'); fs.writeFileSync(tmp, edited);
-    await page.setInputFiles('#csvup', tmp); await page.locator('#doimp').waitFor(); assert.match(await text('#out'), /1 new question/); assert.match(await text('#out'), /10 existing/);
-    await page.click('#doimp'); await page.locator('.qlist').waitFor();
-    assert.match(await text('#app'), /What reverses heparin effect/); assert.match(await text('#app'), /Brand new, with comma/);
-    await page.click('a[href="#/faculty/data"]'); const [dj] = await Promise.all([page.waitForEvent('download'), page.click('#jsondown')]);
-    assert.equal(JSON.parse(fs.readFileSync(await dj.path(), 'utf8')).kind, 'baby-mo-bank');
-    await page.setInputFiles('#jsonup', { name: 'bad.json', mimeType: 'application/json', buffer: Buffer.from('{"x":1}') }); await page.locator('#out .status').waitFor();
-    await page.click('a:has-text("All questions")');
-  });
-  await step('results by person and by question', async () => {
-    await page.click('#nav >> text=Results'); await page.locator('table').waitFor();
-    assert.equal(await page.locator('tbody tr').count(), 2); assert.match(await text('tbody'), /Dr Test Person/); assert.match(await text('tbody'), /Slow Person/);
-    await shot('results'); await axe('results');
-    await page.click('a:has-text("By question")'); await page.locator('th:has-text("Question")').waitFor(); assert.match(await text('tbody'), /100%|0%/);
-    await page.click('a:has-text("By topic")'); await page.locator('th:has-text("Topic")').waitFor(); assert.match(await text('tbody'), /%/);
-    await page.click('a:has-text("By person")'); await page.click('a:has-text("Dr Test Person")'); await page.locator('.review').waitFor(); assert.match(await text('.summary'), /5\/5/);
-  });
-  await step('settings: save, numbers checked, passphrase', async () => {
-    await page.click('#nav >> text=Settings'); await page.locator('#sf').waitFor();
-    await page.fill('#s-count', '0'); await page.click('#sf button[type=submit]'); await page.locator('#serr:not([hidden])').waitFor();
-    await page.fill('#s-count', '3'); await page.fill('#s-cohort', 'Oct 2026'); await page.check('input[name=review][value=full]', { force: true }); await page.click('#sf button[type=submit]');
-    await page.locator('#sf').waitFor(); assert.equal(await page.inputValue('#s-count'), '3');
-    await page.fill('#p-pass', 'newpass'); await page.click('#pf button[type=submit]');
-    await shot('settings'); await axe('settings'); await oneRow('.segrow');
-  });
-  await step('faculty page: approve and decline requests, add, change role, remove', async () => {
+  await step('People: approve and decline requests, change a role, add and remove', async () => {
     await page.evaluate(() => {   // two people have asked for access (in the real app they do this from the Faculty page)
-      const d = JSON.parse(localStorage.getItem('mo-local-v1'));
+      const d = JSON.parse(localStorage.getItem('mo-local-v2'));
       d.requests = [{ email: 'dr.new@example.com', name: 'Dr New', requestedAt: Date.now() }, { email: 'dr.no@example.com', name: 'Dr No', requestedAt: Date.now() - 1000 }];
-      localStorage.setItem('mo-local-v1', JSON.stringify(d));
+      localStorage.setItem('mo-local-v2', JSON.stringify(d));
     });
     await page.goto(BASE + '?demo#/faculty/people'); await page.locator('#reqs').waitFor();
-    assert.equal(await page.locator('#reqs li').count(), 2); assert.match(await text('#nav'), /Faculty \(2\)/);
-    await shot('people'); await axe('people'); await oneRow('.row.one'); await oneRow('#nav');
-    await page.click('[data-ap="dr.new@example.com"][data-role=editor]'); await page.click('dialog button[value=yes]');
-    await page.locator('#mem li:has-text("dr.new@example.com")').first().waitFor(); assert.equal(await page.locator('#reqs li').count(), 1);
-    await page.click('[data-dec="dr.no@example.com"]'); await page.click('dialog button[value=yes]');
-    await page.locator('text=Nobody is waiting').waitFor(); assert.doesNotMatch(await text('#nav'), /\(/);
-    await page.click('[data-setrole="dr.new@example.com"]'); await page.locator('#mem li:has-text("dr.new@example.com"):has-text("Admin")').waitFor();
+    assert.equal(await page.locator('#reqs li').count(), 2); await page.locator('.app-tab-badge:has-text("2")').waitFor();
+    await shot('18-people'); await axe('people'); await oneRow('#reqs .app-btn-row'); await oneRow('#tabs');
+    await page.click('[data-ap="dr.new@example.com"]');
+    await page.locator('#mem li:has-text("dr.new@example.com")').waitFor(); assert.equal(await page.locator('#reqs li').count(), 1);
+    await page.click('[data-dec="dr.no@example.com"]'); await page.click('dialog.app-sheet [data-yes]');
+    await page.locator('text=Nobody is waiting').waitFor(); assert.equal(await page.locator('.app-tab-badge').count(), 0);
+    await page.click('[data-member="dr.new@example.com"] .app-seg:has-text("Admin")'); await page.locator('#toast.is-visible:has-text("Now an admin")').waitFor();
+    await oneRow('#mem .app-segmented');
     await page.fill('#m-email', 'dr.lee@example.com'); await page.fill('#m-name', 'Dr Lee'); await page.click('#mf button[type=submit]');
-    await page.locator('#mem li:has-text("dr.lee@example.com")').first().waitFor();
-    await page.click('[data-rm="dr.lee@example.com"]'); await page.click('dialog button[value=yes]');
+    await page.locator('#mem li:has-text("dr.lee@example.com")').waitFor();
+    await page.click('[data-rm="dr.lee@example.com"]'); await page.click('dialog.app-sheet [data-yes]');
     await page.locator('#mem li:has-text("dr.lee@example.com")').waitFor({ state: 'detached' });
   });
-  await step('select several questions and change them together', async () => {
-    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
-    const before = await text('.summary');
-    await page.click('#selmode'); await page.locator('.bulkbar').waitFor(); assert.equal(await page.locator('.qlist input[data-sel]').count() > 3, true);
-    await page.click('.chip[data-s=active]'); await page.locator('.qlist input[data-sel]').first().waitFor();
-    const n = await page.locator('.qlist input[data-sel]').count();
-    await page.click('#selall'); assert.match(await text('#selcount'), new RegExp(n + ' ticked'));
-    await shot('bulk'); await axe('bulk'); await oneRow('.row.one'); await oneRow('.chips'); await oneRow('#nav');
-    await page.click('[data-bulk=draft]'); await page.click('dialog button[value=yes]');
-    await page.locator('#selcount:has-text("0 ticked")').waitFor();
-    assert.match(await text('.summary'), /^0 ready/);
-    await page.click('.chip[data-s=draft]'); await page.click('#selall'); await page.click('[data-bulk=active]'); await page.click('dialog button[value=yes]');
-    await page.locator('#toast.on', { hasText: 'put in the test' }).waitFor();   // not the earlier "made drafts" toast, still showing
-    await page.locator('#selcount').waitFor(); await page.click('#selmode'); await page.locator('.bulkbar').waitFor({ state: 'detached' });
-    await page.click('.chip[data-s=all]');
-    assert.notEqual(await text('.summary'), '');
+  await step('the new settings apply: 3 questions, 25 minutes, right-or-wrong review, cohort recorded', async () => {
+    await startAs('Dr Third', 'newpass'); await page.locator('#go').waitFor();
+    assert.match(await text('#ready-sum'), /^3 questions · 25 minutes · pass 80% · attempt 1 of 2$/);
+    await page.click('#go'); await page.locator('#stem').waitFor();
+    const ids = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-attempt')).items.map(i => i.qid));
+    assert.equal(ids.length, 3); for (const id of ids) assert.ok(PAPER.must.includes(id), 'with 4 must-ask questions and 3 places, all 3 are must-ask');
+    await submitNow();
+    assert.equal(await page.locator('#answers a.app-row').count(), 0, 'right-or-wrong review has no answers to open');
+    assert.equal(await page.locator('#answers li').count(), 3);
+    const c = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v2')).attempts.at(-1).cohort); assert.equal(c, 'Oct 2026');
   });
-  await step('duplicates: tick the older copies, then delete them', async () => {
-    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
-    const n0 = await page.locator('.qlist li').count();
-    await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('mo-local-v1')); const qs = d.questions; const arr = Array.isArray(qs) ? qs : Object.values(qs); const c = JSON.parse(JSON.stringify(arr[0])); c.id = 'dup-copy'; c.updatedAt = 1; const c2 = JSON.parse(JSON.stringify(arr[0])); c2.id = 'dup-copy-2'; c2.updatedAt = 2; c2.stem += ' (reworded at the end)'; if (Array.isArray(qs)) qs.push(c2); else qs[c2.id] = c2; if (Array.isArray(qs)) qs.push(c); else qs[c.id] = c; localStorage.setItem('mo-local-v1', JSON.stringify(d)); });
-    await page.reload(); await page.locator('.qlist').waitFor();
-    assert.equal(await page.locator('.qlist li').count(), n0 + 2);
-    await page.click('#selmode'); await page.click('#seldup'); await page.locator('#selcount:has-text("2 ticked")').waitFor();
-    await page.click('#seldel'); await page.click('dialog button[value=yes]');
-    await page.locator('#toast.on', { hasText: '2 deleted' }).waitFor();
-    assert.equal(await page.locator('.qlist li').count(), n0);
-    await page.click('#selmode'); await page.locator('.bulkbar').waitFor({ state: 'detached' });
-  });
-  await step('topics: several per question, a topic list, rename, bulk add, delete', async () => {
-    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
-    await page.click('.qlist li:has(.badge.active) >> nth=0'); await page.locator('#qf').waitFor();
-    await page.selectOption('#addtopic', '__new'); await page.fill('#addtopic-new', 'Cardiac'); await page.press('#addtopic-new', 'Enter');
-    await page.locator('.tchip:has-text("Cardiac")').waitFor();
-    const existing = (await page.locator('#addtopic option').allTextContents()).find(o => o && !o.endsWith('…'));
-    assert.ok(existing, 'the dropdown lists existing topics');
-    await page.selectOption('#addtopic', existing); await page.locator(`.tchip:has-text("${existing}")`).waitFor();
-    assert.equal(await page.locator('.tchip').count() >= 2, true); await shot('topics-editor'); await axe('topics-editor');
-    await page.click(`.tchip:has-text("${existing}")`); assert.equal(await page.locator(`.tchip:has-text("${existing}")`).count(), 0);
-    await page.selectOption('#addtopic', existing);
-    await page.click('#qf button[type=submit]'); await page.locator('.qlist').waitFor();
-    assert.match(await text('.qlist'), new RegExp(`Cardiac, ${existing}`));
-    // the topic filter finds a question by any of its topics
-    await page.selectOption('#qt', 'Cardiac'); await page.locator('.qlist li').first().waitFor(); assert.equal(await page.locator('.qlist li').count(), 1);
-    await page.selectOption('#qt', '');
-    // the topic list page
-    await page.click('a[href="#/faculty/topics"]'); await page.locator('#tlist').waitFor();
-    await page.fill('#tname', 'Neuro'); await page.click('#tf button[type=submit]'); await page.locator('#tlist li:has-text("Neuro")').waitFor();
-    await shot('topics'); await axe('topics'); await oneRow('.row.one');
-    await page.click('[data-ren="Cardiac"]'); await page.locator('dialog[open] #rn').waitFor(); await page.fill('dialog #rn', 'Cardiology'); await page.click('dialog button[value=yes]');
-    await page.locator('#tlist li:has-text("Cardiology")').waitFor(); assert.equal(await page.locator('#tlist li:has-text("Cardiology") .muted').innerText(), '1 question');
-    assert.equal(await page.locator('#tlist li:has-text("Cardiac")').count(), 0);
-    // reload: the saved list (Neuro has no questions yet) is still there
-    await page.reload(); await page.locator('#tlist').waitFor(); await page.locator('#tlist li:has-text("Neuro")').waitFor();
-    // bulk: add Neuro to every ticked question
-    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor(); await page.click('#selmode'); await page.click('.chip[data-s=active]'); await page.click('#selall');
-    await page.click('[data-bulk=addtopic]'); await page.locator('dialog #at-sel').waitFor(); await page.selectOption('dialog #at-sel', 'Neuro'); await page.click('dialog #at-ok');
-    await page.locator('dialog[open] button[value=yes]').waitFor(); await page.click('dialog[open] button[value=yes]');
-    await page.locator('#toast.on:has-text("added to the topic")').waitFor();
-    await page.click('#selmode'); await page.selectOption('#qt', 'Neuro'); await page.locator('.qlist li').first().waitFor();
-    const nNeuro = await page.locator('.qlist li').count(); assert.equal(nNeuro >= 6, true);
-    await page.click('#selmode'); await page.click('.chip[data-s=active]'); await page.click('#selall'); await page.click('[data-bulk=rmtopic]');
-    await page.selectOption('dialog #at-sel', 'Neuro'); await page.click('dialog #at-ok');
-    await page.locator('dialog[open] button[value=yes]').waitFor(); await page.click('dialog[open] button[value=yes]');
-    await page.locator('#toast.on:has-text("taken out")').waitFor();
-    await page.selectOption('#qt', ''); await page.click('#selmode');
-    // delete a topic: it comes off the questions and the list
-    await page.goto(BASE + '?demo#/faculty/topics'); await page.locator('#tlist').waitFor();
-    await page.click('[data-del="Cardiology"]'); await page.click('dialog button[value=yes]');
-    await page.locator('#tlist li:has-text("Cardiology")').waitFor({ state: 'detached' });
-  });
-  await step('question flags: must-ask and hard show on the list and filter', async () => {
-    await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
-    await page.click('.qlist li:has(.badge.active) >> nth=0'); await page.locator('#qf').waitFor();
-    await page.check('#must'); await page.check('input[name=level][value=hard]', { force: true }); await page.click('#qf button[type=submit]'); await page.locator('.qlist').waitFor();
-    assert.equal(await page.locator('.badge.must').count(), 1); assert.equal(await page.locator('.badge.hard').count(), 1);
-    assert.match(await text('.summary'), /1<\/b> must-ask|1 must-ask/); await shot('flags'); await axe('flags'); await oneRow('.chips');
-    await page.click('.chip[data-k=must]'); await page.locator('.qlist li').first().waitFor(); assert.equal(await page.locator('.qlist li').count(), 1);
-    await page.click('.chip[data-k=""]'); 
-  });
-  await step('new settings apply: 3 questions, full review, cohort recorded', async () => {
-    await page.click('#nav >> text=Test'); await page.fill('#f-name', 'Dr Third'); await page.fill('#f-pass', 'newpass'); await page.click('#start button[type=submit]');
-    await page.locator('#go').waitFor(); assert.match(await text('#app'), /3 questions/); await page.click('#go');
-    for (let i = 0; i < 2; i++) { await page.locator('.opt').first().click(); await page.click('#next'); }
-    await page.locator('.opt').first().click(); await page.click('#review'); await page.click('#submit'); await page.click('dialog button[value=yes]');
-    await page.locator('.score').waitFor(); assert.match(await text('#app'), /Correct answer|Your answer/);
-    const mustStem = await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('mo-local-v1')); return d.questions.find(q => q.must).stem; });
-    assert.ok((await text('#app')).includes(mustStem.slice(0, 40)), 'the must-ask question is in the sitting'); await shot('result-full'); await axe('result-full');
-    const c = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v1')).attempts.at(-1).cohort); assert.equal(c, 'Oct 2026');
-  });
-  await step('sign out returns to the faculty sign-in', async () => {
-    await page.goto(BASE + '?demo#/faculty/results'); await page.locator('#signout').waitFor();
-    assert.match(await text('#wholine'), /Signed in as demo@example.com · Admin/);
-    await page.click('#signout'); await page.locator('#in').waitFor();
-    assert.match(await text('#wholine'), /Not signed in/);
-    assert.equal(await page.locator('#signout').count(), 0); assert.doesNotMatch(await text('#nav'), /Results/);
-    await page.click('#in'); await page.locator('.qlist, .summary').first().waitFor();
-  });
-  const sit = async name => { await page.goto(BASE + '?demo'); await page.fill('#f-name', name); await page.fill('#f-pass', 'newpass'); await page.click('#start button[type=submit]'); };
-  const submitBlank = async () => {
-    await page.click('#go'); await page.locator('#qform').waitFor(); await page.click('#rv'); await page.locator('.grid').waitFor();
-    await page.click('#submit'); await page.click('dialog button[value=yes]'); await page.locator('.score').waitFor();
-  };
   await step('two attempts: fail, try again, last attempt, then blocked', async () => {
-    await sit('Retry Person'); await page.locator('#go').waitFor(); assert.match(await text('#app'), /attempt 1 of 2/);
-    await submitBlank(); assert.match(await text('#app'), /Attempt 1 of 2/); assert.match(await text('#app'), /1<\/b> attempt left|1 attempt left/);
-    await shot('retry'); await axe('retry');
-    await page.click('#again'); await page.locator('#go').waitFor(); assert.match(await text('#app'), /attempt 2 of 2/);
-    await submitBlank(); assert.match(await text('#app'), /last attempt/); assert.equal(await page.locator('#again').count(), 0);
+    await page.click('#done'); await startAs('Retry Person', 'newpass'); await page.locator('#go').waitFor(); assert.match(await text('#ready-sum'), /attempt 1 of 2/);
+    await page.click('#go'); await submitNow(); assert.match(await text('#app'), /Attempt 1 of 2\. You have 1 attempt left/);
+    await shot('19-retry'); await axe('retry');
+    await page.click('#again'); await page.locator('#go').waitFor(); assert.match(await text('#ready-sum'), /attempt 2 of 2/);
+    await page.click('#go'); await submitNow(); assert.match(await text('#app'), /last attempt/); assert.equal(await page.locator('#again').count(), 0);
     await page.click('#done');
-    await sit('retry  PERSON'); await page.locator('#start-err:not([hidden])').waitFor(); assert.match(await text('#start-err'), /used all 2 of your attempts/);
+    await startAs('retry  PERSON', 'newpass'); await page.locator('#start-err:not([hidden])').waitFor(); assert.match(await text('#start-err'), /used all 2 of your attempts/);
   });
-  await step('faculty can give another attempt', async () => {
-    await page.goto(BASE + '?demo#/faculty/results'); await page.locator('table').waitFor();
-    await page.click('tbody a:has-text("Retry Person") >> nth=0'); await page.locator('#grant').waitFor();
-    assert.match(await text('.status'), /2 of 2/); await page.click('#grant'); await page.click('dialog button[value=yes]');
-    await page.locator('.status:has-text("1 of 2")').waitFor();
-    await sit('Retry Person'); await page.locator('#go').waitFor(); assert.match(await text('#app'), /attempt 2 of 2/);
-    await page.click('#cancel');
+  await step('Needs help, then faculty give another attempt', async () => {
+    await page.goto(BASE + '?demo#/faculty/results'); await page.locator('#needshelp').waitFor();
+    assert.match(await text('#needshelp'), /Retry Person/);
+    await page.click('#needshelp .app-row'); await page.locator('#grant').waitFor(); await page.click('#grant'); await page.click('dialog.app-sheet [data-yes]');
+    await page.locator('#used:has-text("1 of 2")').waitFor();
+    await startAs('Retry Person', 'newpass'); await page.locator('#go').waitFor(); assert.match(await text('#ready-sum'), /attempt 2 of 2/);
+    await page.click('#cancel'); await page.locator('#f-name').waitFor();
   });
   await step('a result left waiting from earlier is sent when the page opens', async () => {
-    await page.goto(BASE + '?demo'); await page.locator('#f-name').waitFor();
-    const before = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v1')).attempts.length);
-    await page.evaluate(() => localStorage.setItem('mo-outbox', JSON.stringify([{ id: 'waiting1', uid: 'local', name: 'Dr Waiting', cohort: '', startedAt: 1, submittedAt: 2, durationSec: 5, items: [{ qid: 'x', stem: 'S', options: ['a', 'b', 'c', 'd'], answer: 0, topic: '', explain: '', picked: 0 }], settings: { count: 1, passMark: 80, minutes: 5 } }])));
+    const before = await page.evaluate(() => JSON.parse(localStorage.getItem('mo-local-v2')).attempts.length);
+    await page.evaluate(() => localStorage.setItem('mo-outbox', JSON.stringify([{ id: 'waiting1', uid: 'local', name: 'Dr Waiting', cohort: '', startedAt: 1, submittedAt: 2, durationSec: 5, items: [{ qid: 'x', stem: 'S', options: ['a', 'b', 'c'], answer: 0, topic: '', explain: '', picked: 0 }], settings: { count: 1, passMark: 80, minutes: 5 } }])));
     await page.reload(); await page.locator('#f-name').waitFor();
-    await page.waitForFunction(b => JSON.parse(localStorage.getItem('mo-local-v1')).attempts.length === b + 1 && !JSON.parse(localStorage.getItem('mo-outbox') || '[]').length, before, { timeout: 10000 });
+    await page.waitForFunction(b => JSON.parse(localStorage.getItem('mo-local-v2')).attempts.length === b + 1 && !JSON.parse(localStorage.getItem('mo-outbox') || '[]').length, before, { timeout: 10000 });
   });
-  await step('help page', async () => { await page.goto(BASE + '?demo#/faculty/help'); await page.locator('h1').waitFor(); assert.match(await text('h1'), /How this works/); await axe('help'); });
+  await step('sign out from Settings returns to the faculty sign-in', async () => {
+    await page.goto(BASE + '?demo#/faculty/settings'); await page.locator('#signout').waitFor();
+    assert.match(await text('#app'), /demo@example.com/);
+    await page.click('#signout'); await page.locator('#in').waitFor(); assert.equal(await page.locator('#tabs').isHidden(), true);
+  });
+  await step('a small real phone (320px, mobile viewport): sliding screens never zoom the page out; the test toolbar fits', async () => {
+    // a mobile browser widens the layout to fit anything that sticks out (the pushed-in screen does, mid-slide) and stays zoomed out
+    const mctx = await b.newContext({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, serviceWorkers: 'block' });
+    await mctx.route(/^https:\/\/(www\.)?anantf\.com\//, r => ctx._serve(r));
+    await mctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
+    const p = await mctx.newPage(); watch(p);
+    try {
+      await p.goto(BASE + '?demo'); await p.locator('#f-name').waitFor();
+      await p.fill('#f-name', 'Small Phone'); await p.fill('#f-pass', 'demo'); await p.click('#start-go');
+      await p.locator('#go').waitFor(); await p.waitForTimeout(400); await p.tap('#go');
+      await p.locator('#stem').waitFor(); await p.tap('#next'); await p.waitForTimeout(400);
+      const r = await p.evaluate(() => ({ w: innerWidth, right: Math.max(...[...document.querySelectorAll('#toolbar .app-btn')].map(e => e.getBoundingClientRect().right)) }));
+      assert.equal(r.w, 320, 'the page was zoomed out to ' + r.w + 'px');
+      assert.ok(r.right <= 320, 'a toolbar button sticks out past the screen edge: ' + r.right);
+    } finally { await mctx.close(); }
+  });
+  await step('desktop width: centred column and a tab rail, axe clean', async () => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    for (const h of ['', '#/faculty']) { await page.goto(BASE + '?demo' + h); await page.locator('h1').waitFor(); await axe('desktop ' + (h || 'start')); }
+    await page.click('#in'); await page.locator('#byperson').waitFor(); await axe('desktop results');
+    const w = await page.evaluate(() => document.querySelector('#app').getBoundingClientRect().width); assert.ok(w <= 682, 'content is a column of at most 680px');
+    for (const h of ['#/faculty/paper', '#/faculty/settings', '#/faculty/people']) { await page.goto(BASE + '?demo' + h); await page.locator('h1').waitFor(); await page.waitForTimeout(300); await axe('desktop ' + h); }
+    await page.setViewportSize({ width: 390, height: 844 });
+  });
   assert.deepEqual(errors, [], 'console errors: ' + errors.join(' | '));
   console.log('babymo e2e: all steps ok');
-} catch { /* already reported */ } finally { await b.close(); }
+} catch (e) { if (!process.exitCode) { console.error(e); process.exitCode = 1; } } finally { await b.close(); }
