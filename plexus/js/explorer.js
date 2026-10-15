@@ -12,6 +12,7 @@
 //   opts.onChange   fn({plexus, plexusName, plexusTab, block, blockName, blockShort, el}) after every state change
 //   opts.onBlockPick fn(blockId) after the reader picks a block chip (the page closes its menu)
 //   opts.intro      false hides the plexus introduction
+//   opts.legacyIds  true: use the plexus page's historical element ids (sec-3d, info, …); only one such explorer per page
 //   opts.inline     true forces mounting in this document even without an import map for three.js
 //
 //   controller = { root, ready, state(), setPlexus(id, want), setBlock(id), select(id), clear(), destroy() }
@@ -201,17 +202,21 @@ export function mountExplorer(host, opts = {}) {
   }
   const tabsHost = opts.tabsHost || bar.querySelector('.px-tabs');
   const chipsHost = opts.chipsHost || bar.querySelector('.chips');
+  // The page's own explorer keeps the ids the page always had (sec-3d, h-3d, body-3d, info, …); others get a prefix.
+  const legacy = !!opts.legacyIds;
+  const id = (s) => (legacy ? s : pid(s));
+  const SR = { '3d': 'Show or hide 3D anatomy', diagram: 'Show or hide the plexus diagram', info: 'Show or hide details' };
   const panel = (key, title, extraCls, bodyCls) => `
-    <section class="panel ${extraCls}" aria-labelledby="${pid(`h-${key}`)}">
+    <section class="panel ${extraCls}" id="${id(`sec-${key}`)}" aria-labelledby="${id(`h-${key}`)}">
       <div class="panel-head">
-        <h2 id="${pid(`h-${key}`)}">${title}</h2>
-        <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="${pid(`body-${key}`)}"><span class="sr-only">Show or hide: ${title}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <h2 id="${id(`h-${key}`)}">${title}</h2>
+        <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="${id(`body-${key}`)}"><span class="sr-only">${SR[key]}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       </div>
-      <div class="panel-body ${bodyCls || ''}" id="${pid(`body-${key}`)}">${key === 'info' ? '' : `<div class="mount mount-${key}"></div>`}</div>
+      <div class="panel-body ${bodyCls || ''}" id="${id(`body-${key}`)}">${key === 'info' ? '' : `<div class="mount mount-${key}" id="${id(`mount-${key}`)}"></div>`}</div>
     </section>`;
   root.insertAdjacentHTML('beforeend', `
-    <p class="intro"></p>
-    <div class="px-legend" hidden></div>
+    <p class="intro" id="${id('intro')}"></p>
+    <div class="px-legend" id="${id('legend')}" hidden></div>
     <div class="stage">${panel('3d', '3D anatomy', 'panel-3d')}${panel('diagram', 'Plexus diagram', 'panel-diagram')}</div>
     ${panel('info', 'Details', 'panel-info', 'px-info-wrap')}`);
   const q = (s) => root.querySelector(s);
@@ -222,6 +227,7 @@ export function mountExplorer(host, opts = {}) {
   if (opts.intro === false) ui.intro.remove();
   ui.info = document.createElement('div');
   ui.info.className = 'px-info';
+  ui.info.id = id('info');
   ui.info.setAttribute('aria-live', 'polite');
   // "n items hidden at MO level · Show all" (levels.js classes; one per explorer, removed with it).
   const hint = document.createElement('p');
@@ -238,7 +244,7 @@ export function mountExplorer(host, opts = {}) {
     btn.addEventListener('click', () => {
       const open = btn.getAttribute('aria-expanded') !== 'false';
       btn.setAttribute('aria-expanded', String(!open));
-      const body = root.querySelector(`#${btn.getAttribute('aria-controls')}`);
+      const body = root.querySelector(`#${CSS.escape(btn.getAttribute('aria-controls'))}`);
       if (body) body.hidden = open;
       btn.closest('.panel')?.classList.toggle('is-collapsed', open);
       if (!open) window.dispatchEvent(new Event('resize'));

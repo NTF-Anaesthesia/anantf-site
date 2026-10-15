@@ -12,7 +12,6 @@
 .tb-app main .bk-list{padding-left:1.2em;max-width:68ch}
 .tb-app main .bk-list li{margin:0 0 8px}
 .tb-app main .bk-note{font-size:15px;color:var(--tb-muted);max-width:68ch}
-.tb-app main .tb-chapter>h3{margin-top:48px}
 /* A–E exercise */
 .tb-app .bk-exam-q{padding-bottom:16px}
 .tb-app .bk-quiz{display:grid;gap:16px;margin-top:8px}

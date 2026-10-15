@@ -208,7 +208,7 @@ export function renderAnatomy(sec) {
   sec.append(f2);
 
   // Exam corner for the anatomy chapter
-  const ex = el('section', { class: 'tb-bsec tb-bsec--examcorner', id: 'anat-exam', 'aria-labelledby': 'anat-exam-h' });
+  const ex = el('section', { class: 'tb-bsec tb-bsec--examcorner', id: 'anat-exam', 'aria-labelledby': 'anat-exam-h', dataset: { tier: '2' } });
   ex.append(el('h3', { id: 'anat-exam-h', text: 'Exam corner' }));
   const q = el('article', { class: 'tb-exam-q bk-exam-q' });
   q.append(el('p', { class: 'tb-exam-src', text: 'Exam question' }));

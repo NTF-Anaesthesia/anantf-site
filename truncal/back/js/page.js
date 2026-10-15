@@ -1,13 +1,16 @@
 // Back page: wires the shared shell to this page's chapters and data.
 import { bootPage } from '../../../shared/regional/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy, renderLandmark, renderLevels, renderRelated } from './anatomy.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy, renderLandmark, renderLevels, renderRelated } from './anatomy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
-  title: 'Back blocks',
+  title: 'Back (paraspinal) blocks',
   eyebrow: 'Regional anaesthesia · Truncal blocks',
+  backLabel: 'See all truncal blocks and the block chooser',
+  backShort: 'Truncal blocks',
+  backHref: '../',
   lead: 'Erector spinae plane and thoracic paravertebral blocks: the anatomy of the paravertebral space, how to find the level, what each block covers, and how to do them.',
   searchPlaceholder: 'Search, e.g. ESP, SCTL, T7, dose',
   tiles: [
@@ -25,8 +28,8 @@ bootPage({
     { id: 'ch-esp', title: 'Erector spinae plane block', short: 'ESP', desc: 'Parasagittal at T5, with the MTP variant. MMed OSCE 2025.', block: byId.esp },
     { id: 'ch-pvb', title: 'Paravertebral block: sagittal in-plane', short: 'PVB sagittal', desc: 'Under the SCTL, caudal to cranial. MMed OSCE 2020.', block: byId.pvb },
     { id: 'ch-pvbt', title: 'Paravertebral block: transverse in-plane', short: 'PVB transverse', desc: 'Under the internal intercostal membrane.', block: byId.pvbt },
-    { id: 'ch-pvblm', title: 'Paravertebral block: landmark technique', short: 'PVB landmark', desc: 'Tuohy, transverse process at about 4 cm, pop and loss of resistance.', render: renderLandmark },
+    { id: 'ch-pvblm', title: 'Paravertebral block: landmark technique', short: 'PVB landmark', desc: 'Tuohy, transverse process at about 4 cm, pop and loss of resistance.', render: renderLandmark, tier: 3 },
     { id: 'ch-levels', title: 'Which level for which operation', short: 'Levels', desc: 'Levels to block from the back, by operation.', render: renderLevels },
-    { id: 'ch-related', title: 'Related blocks and alternatives', short: 'Related', desc: 'Thoracic epidural, intercostal, intertransverse process (MTP, retrolaminar, TLIP) and interpleural blocks, in brief.', render: renderRelated },
+    { id: 'ch-related', title: 'Related blocks and alternatives', short: 'Related', desc: 'Thoracic epidural, intercostal, intertransverse process (MTP, retrolaminar, TLIP) and interpleural blocks, in brief.', render: renderRelated, tier: 2 },
   ],
 });

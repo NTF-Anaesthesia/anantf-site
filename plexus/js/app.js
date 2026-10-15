@@ -98,7 +98,7 @@ function paintPick(s) {
 const first = readHash();
 const ex = mountExplorer(ui.mount, {
   plexus: first.plexus, block: first.block, el: first.el,
-  tabsHost: ui.tabs, chipsHost: ui.chips, creditHost: ui.credit,
+  tabsHost: ui.tabs, chipsHost: ui.chips, creditHost: ui.credit, legacyIds: true,
   onChange(s) {
     writeHash(s);
     paintPick(s);

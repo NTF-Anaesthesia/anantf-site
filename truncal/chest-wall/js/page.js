@@ -1,13 +1,16 @@
 // Chest wall page: wires the shared shell to this page's chapters and data.
 import { bootPage } from '../../../shared/regional/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy } from './anatomy.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy } from './anatomy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Chest wall blocks',
   eyebrow: 'Regional anaesthesia · Truncal blocks',
+  backLabel: 'See all truncal blocks and the block chooser',
+  backShort: 'Truncal blocks',
+  backHref: '../',
   lead: 'Serratus anterior plane, PECS I and II, and parasternal blocks: which branch of the intercostal nerve each one reaches, how to see the planes, and what each block covers.',
   searchPlaceholder: 'Search, e.g. serratus, PECS, sternum, dose',
   tiles: [
