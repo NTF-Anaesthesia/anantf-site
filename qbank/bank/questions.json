@@ -1,0 +1,636 @@
+{
+ "kind": "ntf-qbank",
+ "version": 1,
+ "questions": [
+  {
+   "id": "q0oawyog",
+   "stem": "The following confirm the adequate placement of the Proseal LMA EXCEPT:",
+   "options": [
+    "Cuff pressure of 60 cm H2O",
+    "Ability to pass the nasogastric tube through the suction port",
+    "Leak pressure of less than 25 cm H2O",
+    "Unobstructed inspiratory and expiratory flow"
+   ],
+   "answer": 0,
+   "explain": "",
+   "topics": [
+    "Airway"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q1",
+   "review": "Key A (cuff 60) is fine, but \"leak pressure of less than 25\" also does not confirm a good seal (a good seal is above about 20-25). Check the intended meaning.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q1cjwbux",
+   "stem": "After the induction of general anaesthesia, you are unable to intubate the patient. You then attempt to ventilate using the face mask but ventilation was also inadequate. O2 saturation has started to drop. What do you do next?",
+   "options": [
+    "Attempt fibreoptic intubation",
+    "Attempt to insert laryngeal mask (LMA) for ventilation",
+    "Perform tracheostomy",
+    "Awaken the patient"
+   ],
+   "answer": 1,
+   "explain": "",
+   "topics": [
+    "Airway"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q2",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q1n31tml",
+   "stem": "A 60-year-old woman with a history of asthma and chronic obstructive pulmonary disease is scheduled for an emergency laparotomy. She is awake and alert on arrival to the operating room. Which of the following drugs is most likely to be used as the induction agent in this patient?",
+   "options": [
+    "Etomidate",
+    "Ketamine",
+    "Propofol",
+    "Rocuronium"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Pharmacology"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO alternate paper Q3",
+   "review": "Key C (propofol), but most teaching answers ketamine for an asthmatic; rocuronium is not an induction agent. Decide the key.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0mokgh2",
+   "stem": "A 78-year old patient with a history of facet joint arthropathy, small localized right posterior shoulder skin infection and ischaemic heart disease with severe aortic stenosis (valve area 1 cm2) on clopidogrel stopped for the last 8 days. The anaesthesia is considering the use of neuraxial anaesthesia for the orthopaedic procedure. Which of the following options represents a contraindication to the use of neuraxial anaesthesia in this patient?",
+   "options": [
+    "Facet joint arthropathy",
+    "Aortic stenosis",
+    "Posterior shoulder skin infection",
+    "Clopidogrel stopped for last 8 days"
+   ],
+   "answer": 1,
+   "explain": "",
+   "topics": [
+    "Regional"
+   ],
+   "level": "hard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q4",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q019sjml",
+   "stem": "An 80-year-old woman is scheduled for spine surgery which requires neuromonitoring. 2 vials of 1mg Remifentanil have been made up to a total volume of 40mls with saline. What is the concentration per ml?",
+   "options": [
+    "20mcg",
+    "25mcg",
+    "40mcg",
+    "50mcg"
+   ],
+   "answer": 3,
+   "explain": "",
+   "topics": [
+    "Pharmacology"
+   ],
+   "level": "hard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO alternate paper Q5",
+   "review": "Stem now says made up to 40 ml in total, so 50 mcg/ml (D) is right. Check the wording.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q1reqwts",
+   "stem": "A trauma patient has sustained severe injuries resulting in massive haemorrhage and haemodynamic instability. The anaesthesia team activates the massive transfusion protocol (MTP) cycle 1. Which of these is a component of MTP 1?",
+   "options": [
+    "1 U Cryoprecipitate",
+    "200ml Fresh frozen plasma",
+    "4 U PCT",
+    "2 CSP"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Transfusion"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q6",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0mrqrp0",
+   "stem": "Which of the following statements is true?",
+   "options": [
+    "Too small a NIBP cuff results in falsely high BP readings.",
+    "Intra-arterial line monitoring is based on the principle of oscillometry",
+    "3 lead ECG allows for monitoring of inferior lead, aVF.",
+    "Pulse oximetry functions well in the presence of venous pulsations."
+   ],
+   "answer": 0,
+   "explain": "",
+   "topics": [
+    "Monitoring"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q7",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q029rue6",
+   "stem": "The ACC/AHA guidelines outline the evaluation of patients with active cardiac conditions coming for non-cardiac surgery. Which of the following group of patients do not require further workup for their cardiac conditions prior to surgery?",
+   "options": [
+    "Compensated heart failure with history of atrial fibrillation",
+    "Decompensated heart failure and history of MI",
+    "3rd degree heart block with concurrent severe aortic stenosis",
+    "Unstable coronary syndrome and 1st degree AV block"
+   ],
+   "answer": 0,
+   "explain": "",
+   "topics": [
+    "Pre-op"
+   ],
+   "level": "hard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q8",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q052rnj4",
+   "stem": "A 55-year-old woman with a history of knee pain is scheduled for a total knee replacement. She is currently taking oral morphine 10mg every 8 hours for pain control. What is the equivalent intravenous morphine 24-hour requirement for this patient?",
+   "options": [
+    "10mg",
+    "20mg",
+    "30mg",
+    "40mg"
+   ],
+   "answer": 0,
+   "explain": "",
+   "topics": [
+    "Pain"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO alternate paper Q9",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0cg4ygm",
+   "stem": "A 65-year-old woman weighing 60kg is scheduled for a hip replacement surgery. She will be given a fascia iliaca block with 40mls ropivacaine. What is the maximum toxic dose of ropivacaine that should not be exceeded in this patient?",
+   "options": [
+    "60mg",
+    "120mg",
+    "180mg",
+    "240mg"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Regional"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO alternate paper Q10",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0q1fhrl",
+   "stem": "A 45-year-old patient with hypertension, diabetes mellitus, well-controlled asthma, and ischaemic heart disease s/p PCI 2 years ago is classified as ASA",
+   "options": [
+    "1",
+    "2",
+    "3",
+    "4"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Pre-op"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q11",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0szg62r",
+   "stem": "A 30-year-old woman weighing 40kg is scheduled for a removal of lump in her arm. She will be given IV paracetamol during her anaesthetic. The vial is labelled paracetamol 1000mg in 100ml. How much volume of IV paracetamol should be given to her?",
+   "options": [
+    "100ml",
+    "90ml",
+    "60ml",
+    "40ml"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Pharmacology"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO alternate paper Q12",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0yjkkx3",
+   "stem": "A 70-year-old patient was scheduled for an endoscopy procedure under sedation and monitored anaesthetic care. A 100mcg vial of Fentanyl was drawn up and made up to 10 ml. At the end of the case, 6ml was remaining in the syringe. The AU nurse is tallying the CDs. How much Fentanyl was used during the case?",
+   "options": [
+    "10mcg",
+    "20mcg",
+    "40mcg",
+    "60mcg"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Pharmacology"
+   ],
+   "level": "hard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO alternate paper Q13",
+   "review": "Stem now gives a 100 mcg vial made up to 10 ml, so 4 ml used = 40 mcg (C). Check the wording.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q07ttxc0",
+   "stem": "A 20-year-old patient weighing 70kg is scheduled for a tonsillectomy. Intubation with an ETT is planned. What is the most likely dose of IV atracurium given to this patient at induction?",
+   "options": [
+    "20mg",
+    "30mg",
+    "35mg",
+    "40mg"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Pharmacology"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO alternate paper Q14",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0oehvu6",
+   "stem": "You are reviewing a 50 year old male for elective spine surgery in PEC. He has some recent URTI 3 weeks ago. What is your main differential diagnosis?",
+   "options": [
+    "Hyperkalaemia",
+    "Myocardial ischaemia",
+    "Brugada pattern",
+    "Right bundle branch block"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Cardiac"
+   ],
+   "level": "hard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO alternate paper Q15",
+   "review": "Needs an ECG picture: the Word file's ECG came from a website with a watermark and is not used here. Add an ECG the department owns, and reword to \"What does this ECG show?\" (the recent URTI is not relevant to Brugada).",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0yivt2u",
+   "stem": "Management of laryngospasm includes all the following EXCEPT",
+   "options": [
+    "CPAP",
+    "Suxamethonium 100mg IV",
+    "Propofol 50mg IV",
+    "Increase FiO2"
+   ],
+   "answer": 1,
+   "explain": "",
+   "topics": [
+    "Emergencies"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q16",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0v7hkzg",
+   "stem": "You have been asked by the consultant anaesthetist to give adrenaline in a crisis situation. She passes you a syringe labelled 'adrenaline 1:10,000'. You gave 1 ml from this syringe. How much of adrenaline was given to the patient?",
+   "options": [
+    "1 mg",
+    "100 mcg",
+    "10 mcg",
+    "1 mcg"
+   ],
+   "answer": 1,
+   "explain": "",
+   "topics": [
+    "Emergencies"
+   ],
+   "level": "standard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q17",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q1ldribg",
+   "stem": "A 65 year old patient with history of diverticulitis for exploratory laparotomy has been listed as a P2. His ABG is below. What is the most likely cause of this patient’s acid-base disturbance?\npH 7.30  PaCO2 28  HCO3 16  Lactate 4",
+   "options": [
+    "Uncompensated metabolic acidosis",
+    "Partially compensated metabolic acidosis",
+    "Fully compensated metabolic acidosis",
+    "Uncompensated respiratory acidosis"
+   ],
+   "answer": 1,
+   "explain": "",
+   "topics": [
+    "Acid-base"
+   ],
+   "level": "hard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO alternate paper Q18",
+   "review": "Key B (partially compensated). By Winter's formula the expected PaCO2 is 32 +/- 2, so 28 suggests an extra respiratory alkalosis. Decide whether you are happy with B.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q12y6cwb",
+   "stem": "A 72 year old man undergoing laparoscopic colectomy under general anesthesia begins to desaturate. His SpO2 drops from 99% to 90% over 2 minutes. Capnography is normal. The FiO2 is increased to 1.0. On auscultation, breath sounds are decreased on the left. Airway pressures have increased. What is the most appropriate next step in management?",
+   "options": [
+    "Perform needle decompression of the right chest",
+    "Suction the endotracheal tube and assess for obstruction",
+    "Confirm endotracheal tube position and check for right mainstem intubation",
+    "Increase tidal volume and respiratory rate"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "Emergencies"
+   ],
+   "level": "hard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO alternate paper Q19",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q1mj09ya",
+   "stem": "During preoperative assessment, a patient’s physical examination reveals that the elderly patient has a full beard, limited mandibular protrusion and a short thyromental distance. Which is the most significant predictor of difficult airway management in this patient during anaesthesia induction?",
+   "options": [
+    "Elderly patient",
+    "Full beard",
+    "Limited mandibular protrusion",
+    "Short thyromental distance"
+   ],
+   "answer": 3,
+   "explain": "",
+   "topics": [
+    "Airway"
+   ],
+   "level": "hard",
+   "status": "active",
+   "image": "",
+   "source": "Baby MO paper (both versions) Q20",
+   "review": "",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q1bpjh35",
+   "stem": "A 50-year old patient is scheduled for elective surgery requiring general anaesthesia. As part of the preoperative assessment, you examine the patient’s airway and assess for potential indicators of difficult intubation. The patient presents with a thyromental distance of 5cm, a mouth opening of 2.5cm and limited neck range of motion. Which of the following statements is the most accurate interpretation of these findings?",
+   "options": [
+    "The patient has a high likelihood of easy intubation due to the acceptable thyromental distance of 5cm",
+    "The patient is at low risk for difficult intubation since the mouth opening of 2.5cm is acceptable",
+    "The patient’s limited neck range of motion is the sole concern for potential difficult intubation",
+    "The patient’s thyromental distance, mouth opening and neck movements increase the risk of difficult intubation"
+   ],
+   "answer": 3,
+   "explain": "",
+   "topics": [
+    "Airway"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q3",
+   "review": "No answer key came with the paper; proposed D (TMD 5 cm, mouth opening 2.5 cm and a stiff neck together raise the risk). Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q18xtqbo",
+   "stem": "Your consultant tasked you to perform manual inline stabilization for tracheal intubation. Which of the following statements is false?",
+   "options": [
+    "This is a potential difficult airway situation.",
+    "This is done to protect from cervical spine injury during intubation.",
+    "This can be performed either at the cephalad or caudad position with respect to the patient’s head.",
+    "This adequately prevents further cervical spine injuries."
+   ],
+   "answer": 3,
+   "explain": "",
+   "topics": [
+    "Airway"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q5",
+   "review": "No answer key came with the paper; proposed D (in-line stabilisation does not fully prevent further injury: the false statement). Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0nue19m",
+   "stem": "During a surgical procedure, a patient develops fast atrial fibrillation with a heart rate of 160 beats per minute. The patient’s blood pressure drops to 70/40. What is the most appropriate immediate step in the intraoperative management?",
+   "options": [
+    "Administer synchronized electrical cardioversion",
+    "Administer intravenous amiodarone",
+    "Administer intravenous digoxin",
+    "Continue monitoring without intervention"
+   ],
+   "answer": 0,
+   "explain": "",
+   "topics": [
+    "Cardiac"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q9",
+   "review": "No answer key came with the paper; proposed A (fast AF with BP 70/40 is unstable: synchronised cardioversion). Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q18giksd",
+   "stem": "A patient in the PACU following surgery complains of nausea and begins to vomit. The patient has had no antiemetic prophylaxis and is awake, alert and haemodynamically stable. What is the most appropriate initial pharmacological treatment for the patient’s nausea and vomiting in the PACU?",
+   "options": [
+    "Administer intravenous metoclopramide",
+    "Administer intravenous droperidol",
+    "Administer intravenous ondansetron",
+    "Continue monitoring without intervention"
+   ],
+   "answer": 2,
+   "explain": "",
+   "topics": [
+    "PACU"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q10",
+   "review": "No answer key came with the paper; proposed C (ondansetron first-line; stem now says no prophylaxis was given). Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q08jq2fw",
+   "stem": "A 45-year old patient is scheduled for an elective surgery requiring general anaesthesia. The patient’s surgery is planned for 8:00 AM. According to fasting guidelines, when should the patient be allowed to have clear liquids prior to surgery?",
+   "options": [
+    "Until 6:00 AM on the day of the surgery",
+    "Until 12:00 AM (midnight) on the day of the surgery",
+    "Until 10:00 PM the day before surgery",
+    "Until 08:00 PM the day before surgery"
+   ],
+   "answer": 0,
+   "explain": "",
+   "topics": [
+    "Pre-op"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q12",
+   "review": "No answer key came with the paper; proposed A (clear fluids until 2 h before an 08:00 start). Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0b36c7k",
+   "stem": "During maintenance of anaesthesia in an orthopaedic surgery, a patient experiences sudden and forceful closure of the vocal cords, leading to laryngospasm. Of the following options below, which is the most common risk factor for the occurrence of laryngospasm during anaesthesia?",
+   "options": [
+    "Insufficient depth of anaesthesia",
+    "Chronic smoking",
+    "Maintained spontaneous ventilation",
+    "Absence of secretions in the airway"
+   ],
+   "answer": 0,
+   "explain": "",
+   "topics": [
+    "Emergencies"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q13",
+   "review": "No answer key came with the paper; proposed A (light anaesthesia is the classic trigger; C \"spontaneous ventilation\" is arguable). Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0z5k6t0",
+   "stem": "What are the precalculated doses of drugs used in a rapid sequence induction (fentanyl, propofol, suxamethonium, followed by atracurium after induction)?",
+   "options": [
+    "Fentanyl 1-2 mcg/kg; propofol 20-30 mg/kg; suxamethonium 1-2 mg/kg; then atracurium 0.5 mg/kg",
+    "Fentanyl 1-2 mcg/kg; propofol 2-3 mg/kg; suxamethonium 10-20 mg/kg; then atracurium 0.5 mg/kg",
+    "Fentanyl 10-20 mcg/kg; propofol 2-3 mg/kg; suxamethonium 1-2 mg/kg; then atracurium 0.5 mg/kg",
+    "Fentanyl 1-2 mcg/kg; propofol 2-3 mg/kg; suxamethonium 1-2 mg/kg; then atracurium 0.5 mg/kg"
+   ],
+   "answer": 3,
+   "explain": "",
+   "topics": [
+    "Pharmacology"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q14",
+   "review": "No answer key came with the paper; proposed D. The doses were a table in the Word file and are now one line per choice. Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0nc5x14",
+   "stem": "Atracurium:",
+   "options": [
+    "Is degraded by ester hydrolysis",
+    "Is potentiated by hyperthermia",
+    "In high doses acts faster than suxamethonium",
+    "Can cause bradycardia"
+   ],
+   "answer": 0,
+   "explain": "",
+   "topics": [
+    "Pharmacology"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q15",
+   "review": "No answer key came with the paper; proposed A (ester hydrolysis and Hofmann elimination; cooling slows it; it is not faster than sux; histamine release gives tachycardia). Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q0lwf9i7",
+   "stem": "A patient undergoing surgery suddenly develops wheezing and signs of respiratory distress shortly after induction of anaesthesia. The anaesthesia team suspects aspiration of gastric contents. What is the most common risk factor profile for the occurrence of aspiration during anaesthesia?",
+   "options": [
+    "Young age and obesity",
+    "History of smoking and asthma",
+    "Recent upper respiratory tract infection",
+    "Gastrooesophageal reflux disease with hiatal hernia"
+   ],
+   "answer": 3,
+   "explain": "",
+   "topics": [
+    "Airway"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q18",
+   "review": "No answer key came with the paper; proposed D (GORD with hiatus hernia). Confirm.",
+   "updated": "2026-10-15"
+  },
+  {
+   "id": "q1nui3wl",
+   "stem": "Hypotension in the recovery may be due to:",
+   "options": [
+    "Inadequate pain control",
+    "Inadequate volume replacement",
+    "Hypoglycaemia",
+    "Inaccurate transducer placement with the NIBP"
+   ],
+   "answer": 1,
+   "explain": "",
+   "topics": [
+    "PACU"
+   ],
+   "level": "standard",
+   "status": "draft",
+   "image": "",
+   "source": "Baby MO paper v3 Q19",
+   "review": "No answer key came with the paper; proposed B (under-filling is the usual cause in recovery). Confirm.",
+   "updated": "2026-10-15"
+  }
+ ]
+}
