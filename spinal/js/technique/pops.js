@@ -1,5 +1,5 @@
 // Special populations (merged from the old populations section). No new doses: see the dose table in tq-drugs.
-// Tiers: 1 MO, 2 Resident, 3 Advanced.
+// Tiers: 1 MO, 2 Resident, 3 Consultant.
 import { el, cite, callout, table, details, tier } from '../ui.js?v=1';
 
 const T = tier;

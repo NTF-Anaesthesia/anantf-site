@@ -37,12 +37,13 @@
   --us-air: #eef2f6;
   --us-probe: #334155;
 
-  --st-covers: #0e7490;
-  --st-covers-bg: #d7f3f8;
-  --st-variable: #9a4a06;
-  --st-variable-bg: #fde7c7;
-  --st-spares: #4b5563;
-  --st-spares-bg: #e5e7eb;
+  /* status text on tint: darker shades of the shared regional tokens, for contrast */
+  --st-covers: var(--ra-st-target, #166534);
+  --st-covers-bg: #dcefe1;
+  --st-variable: #9a3412;
+  --st-variable-bg: #fbe3d4;
+  --st-spares: #475569;
+  --st-spares-bg: #e8eaee;
 
   container-type: inline-size;
   color: var(--us-text);
@@ -227,13 +228,13 @@
 .bpus-chip-sm { border: 1px solid var(--us-border); background: var(--us-surface); border-radius: 0; padding: 3px 10px; font-size: 0.85rem; cursor: pointer; min-height: 32px; }
 .bpus-chip-sm:hover { border-color: var(--us-accent); }
 .bpus-pearls { margin-top: 10px; }
-.bpus-pearls summary { cursor: pointer; font-weight: 650; min-height: 32px; display: list-item; }
+.bpus-pearls summary { cursor: pointer; font-weight: 650; min-height: 44px; display: list-item; padding: 10px 0; }
 
 /* ---------- legend ---------- */
 .bpus-legend { margin-top: 12px; }
 .bpus-legend-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
 .bpus-chip {
-  width: 100%; display: flex; align-items: center; gap: 8px; text-align: left; padding: 6px 10px; min-height: 40px;
+  width: 100%; display: flex; align-items: center; gap: 8px; text-align: left; padding: 6px 10px; min-height: 44px;
   background: var(--us-bg); border: 1px solid var(--us-border); border-radius: 0; cursor: pointer;
 }
 .bpus-chip:hover, .bpus-chip.is-hl { border-color: var(--us-hl); box-shadow: 0 0 0 2px color-mix(in srgb, var(--us-hl) 40%, transparent); }
@@ -374,4 +375,25 @@
 /* Phones: put "Advanced" on its own line above the advanced tabs */
 @media (max-width: 600px) {
   .bpus-tabs-sep { flex-basis: 100%; margin-left: 0; padding-left: 0; border-left: 0; margin-top: 2px; }
+}
+
+/* ---------- harmonised shell (Oct 2026) ---------- */
+/* Read-only block label: the block is chosen in the app's sticky bar. */
+.bpus-current { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; }
+.bpus-current-text { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 1.05rem; }
+.bpus-current-k { font: 400 12px/1.4 'NTF Mono', ui-monospace, monospace; text-transform: uppercase; letter-spacing: .06em; color: var(--us-muted); }
+.bpus-current .adv-tag { align-self: center; }
+.bpus .bpus-btn, .bpus .bpus-btn-sm, .bpus-step, .bpus-view, .bpus-switch { min-height: 44px; }
+/* Phones: Simulated · Diagram · Real as one segmented control (one view at a time). */
+.bpus-views.is-seg { display: flex; flex-wrap: nowrap; gap: 0; width: 100%; border: 1px solid var(--us-border); }
+.bpus-views.is-seg .bpus-view { flex: 1 1 0; min-width: 0; border: 0; border-left: 1px solid var(--us-border); background: var(--us-bg); text-decoration: none; color: var(--us-text); }
+.bpus-views.is-seg .bpus-view:first-child { border-left: 0; }
+.bpus-views.is-seg .bpus-view[hidden] { display: none; }
+.bpus-views.is-seg .bpus-view[aria-pressed="true"] { background: var(--us-accent); color: var(--us-accent-ink); font-weight: 600; }
+/* Phones: the four steps as one row of equal buttons (number above the name). */
+@container (max-width: 520px) {
+  .bpus-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; width: 100%; }
+  .bpus-steps li { min-width: 0; }
+  .bpus-step { width: 100%; flex-direction: column; justify-content: center; gap: 2px; padding: 6px 2px; margin-left: -1px; font-size: 0.95rem; }
+  .bpus-steps li:first-child .bpus-step { margin-left: 0; }
 }

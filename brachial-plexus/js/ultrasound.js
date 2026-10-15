@@ -1153,8 +1153,9 @@ export function mount(containerEl, bus) {
   for (const [order, rowName] of chooserRows) {
     const ids = (order || []).filter((id) => SCENES[id] && BLOCKS[id]);
     if (!ids.length) continue;
-    if (rowName) el('h4', { class: 'bpus-h bpus-h-sm bpus-chooser-row', text: rowName }, chooser);
+    if (rowName) el('h4', { class: 'bpus-h bpus-h-sm bpus-chooser-row', text: rowName, 'data-tier': '3' }, chooser);
     const chooserGrid = el('div', { class: 'bpus-chooser-grid' }, chooser);
+    if (rowName) chooserGrid.dataset.tier = '3'; // advanced blocks: Consultant level (shared/regional/js/levels.js)
   for (const id of ids) {
     const b = el('button', { type: 'button', class: 'bpus-card', 'data-block': id }, chooserGrid);
     const c = el('canvas', { class: 'bpus-thumb is-pending', width: 320, height: Math.round((320 * SCENES[id].h) / SCENES[id].w), 'aria-hidden': 'true' }, b);
@@ -1173,19 +1174,11 @@ export function mount(containerEl, bus) {
   // ---- main ----
   const main = el('section', { class: 'bpus-main' }, root);
   const head = el('div', { class: 'bpus-head' }, main);
-  const tabs = el('div', { class: 'bpus-tabs', role: 'group', 'aria-label': 'Block' }, head);
+  // The block is chosen once, in the app's sticky bar; here it is a read-only label kept in sync.
   const tabBtns = {};
-  const addTab = (id) => {
-    tabBtns[id] = el('button', { type: 'button', class: 'bpus-tab', text: shortBlock(id) }, tabs);
-    tabBtns[id].addEventListener('click', () => chooseBlock(id));
-  };
-  BLOCK_ORDER.forEach(addTab);
-  const advIds = (BLOCK_ORDER_ADVANCED || []).filter((id) => SCENES[id] && BLOCKS[id]);
-  if (advIds.length) {
-    el('span', { class: 'bpus-tabs-sep', text: 'Advanced', 'aria-hidden': 'true' }, tabs);
-    for (const id of advIds) { addTab(id); tabBtns[id].classList.add('bpus-tab-adv'); tabBtns[id].setAttribute('aria-label', `${shortBlock(id)} (advanced)`); }
-  }
-  const allBtn = el('button', { type: 'button', class: 'bpus-tab bpus-tab-all', text: 'Overview', title: 'Show all the scans (keeps the block chosen in the other views)' }, tabs);
+  const curRow = el('div', { class: 'bpus-current' }, head);
+  const curText = el('p', { class: 'bpus-current-text' }, curRow);
+  const allBtn = el('button', { type: 'button', class: 'bpus-btn bpus-btn-sm bpus-tab-all', text: 'All scans', title: 'Show all the scans (keeps the block chosen in the other views)' }, curRow);
   allBtn.addEventListener('click', () => showBlock(null));
 
   const controls = el('div', { class: 'bpus-controls' }, main);
@@ -1208,7 +1201,11 @@ export function mount(containerEl, bus) {
   labChk.addEventListener('change', () => { st.labels = labChk.checked; renderLabels(); });
 
   // View modes: simulated scan, idealised diagram, real scan (only when available).
+  // Wide: each view is an on/off toggle and they sit side by side. Phones (narrow container): a segmented control
+  // that shows one view at a time, so the views are not stacked down the page.
   const viewGrp = el('div', { class: 'bpus-views', role: 'group', 'aria-label': 'Views to show' }, controls);
+  const isNarrow = () => root.getBoundingClientRect().width < 640;
+  let narrowViews = null;
   const VIEW_NAMES = [['sim', 'Simulated'], ['ideal', 'Diagram'], ['real', 'Real scan']];
   const viewBtns = {};
   for (const [k, name] of VIEW_NAMES) {
@@ -1298,6 +1295,7 @@ export function mount(containerEl, bus) {
   // ---- view modes ----
   function realList() { const l = st.block && REAL_SCANS[st.block]; return Array.isArray(l) ? l.filter((x) => x && x.src) : []; }
   function toggleView(k) {
+    if (narrowViews) { st.phoneView = k; applyViews(); resize(); return; }
     const next = { ...st.views, [k]: !st.views[k] };
     const avail = (v) => v !== 'real' || realList().length > 0;
     if (!Object.keys(next).some((v) => next[v] && avail(v))) return; // keep at least one view
@@ -1309,6 +1307,18 @@ export function mount(containerEl, bus) {
     const hasReal = realList().length > 0;
     viewBtns.real.hidden = !hasReal;
     viewGrp.hidden = false;
+    narrowViews = isNarrow();
+    viewGrp.classList.toggle('is-seg', narrowViews);
+    viewGrp.setAttribute('aria-label', narrowViews ? 'View' : 'Views to show');
+    if (narrowViews) {
+      if (!st.phoneView || (st.phoneView === 'real' && !hasReal)) st.phoneView = 'sim';
+      for (const [k] of VIEW_NAMES) viewBtns[k].setAttribute('aria-pressed', String(k === st.phoneView));
+      simFig.hidden = st.phoneView !== 'sim';
+      idFig.hidden = st.phoneView !== 'ideal';
+      realFig.hidden = !(hasReal && st.phoneView === 'real');
+      if (!realFig.hidden) renderReal();
+      return;
+    }
     for (const [k] of VIEW_NAMES) viewBtns[k].setAttribute('aria-pressed', String(!!st.views[k] && (k !== 'real' || hasReal)));
     if (!st.views.sim && !st.views.ideal && !hasReal) st.views.sim = true;
     simFig.hidden = !st.views.sim;
@@ -1371,7 +1381,10 @@ export function mount(containerEl, bus) {
     if (!st.block) { drawThumbs(); return; }
     scene = SCENES[st.block];
     tl = buildTimeline(scene);
-    for (const [k, b] of Object.entries(tabBtns)) b.setAttribute('aria-pressed', String(k === st.block));
+    curText.textContent = '';
+    el('span', { class: 'bpus-current-k', text: 'Block' }, curText);
+    el('strong', { text: BLOCKS[st.block].name.replace(/ \(.*\)/, '') }, curText);
+    if (BLOCKS[st.block].advanced) el('span', { class: 'adv-tag', text: 'Advanced' }, curText);
     stage.style.aspectRatio = `${scene.w} / ${scene.h}`;
     usSvg.setAttribute('viewBox', `0 0 ${scene.w} ${scene.h}`);
     canvas.setAttribute('aria-label', `Simulated ultrasound image: ${BLOCKS[st.block].name}. ${scene.view}. Screen left is ${scene.sides[0]}, right is ${scene.sides[1]}. Field ${scene.wMm} mm wide and ${scene.hMm} mm deep.`);
@@ -1869,7 +1882,7 @@ export function mount(containerEl, bus) {
       const d = el('details', { class: 'bpus-pearls' }, info);
       el('summary', { text: 'Pearls' }, d);
       const ul = el('ul', { class: 'bpus-list' }, d);
-      for (const p of b.pearls) el('li', { text: p }, ul);
+      for (const p of b.pearls) el('li', { text: typeof p === 'string' ? p : p.html }, ul);
     }
     idStatus.textContent = st.step === 4 ? 'Cyan = local anaesthetic' : st.step === 3 ? 'Dashed = needle path' : scene.sides.join(' ⇄ ');
   }
@@ -1898,6 +1911,7 @@ export function mount(containerEl, bus) {
   // ---- sizing ----
   function resize() {
     if (!scene || main.hidden) return;
+    if (isNarrow() !== narrowViews) applyViews();
     const r = stage.getBoundingClientRect();
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const W = Math.max(1, Math.round(r.width * dpr)), H = Math.max(1, Math.round(r.height * dpr));

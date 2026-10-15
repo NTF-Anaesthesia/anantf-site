@@ -1,13 +1,16 @@
-// Cervical plexus page: wires the shared truncal shell to this page's chapters and data.
-import { bootPage } from '../../../truncal/shared/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy } from './anatomy.js';
+// Cervical plexus page: wires the shared regional shell to this page's chapters and data.
+import { bootPage } from '../../../shared/regional/js/shell.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy } from './anatomy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Cervical plexus blocks',
   eyebrow: 'Regional anaesthesia · Head and neck',
+  backLabel: 'See all head and neck blocks and the operation chooser',
+  backShort: 'Head and neck blocks',
+  backHref: '../',
   lead: 'Superficial, intermediate and deep cervical plexus blocks: where the nerves come out, how to see them, and which layer to inject.',
   searchPlaceholder: 'Search, e.g. carotid, Erb’s point, phrenic',
   tiles: [

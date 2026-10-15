@@ -1,6 +1,6 @@
-// Cervical plexus: block data (schema: ../../../truncal/shared/DATA.md, "Block schema").
-import { headCoverageMap } from '../../shared/js/head.js';
-import { SCENES } from './scenes.js';
+// Cervical plexus: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
+import { headCoverageMap } from '../../../shared/regional/js/figures/head.js?v=20261015';
+import { SCENES } from './scenes.js?v=20261015';
 
 export const BLOCKS = [
   // ------------------------------------------------------------------ superficial and intermediate
@@ -49,7 +49,8 @@ export const BLOCKS = [
       'Lifting the head off the pillow makes the posterior border of SCM easy to feel.',
       'Look for the tapering posterior edge of SCM, not for the nerves: if the dots aren’t clear, the plane under SCM still works.',
       'A larger volume does not mean a better block here; it means more spread to the brachial plexus and phrenic nerve.',
-      'Both sides for thyroid surgery is fine with the superficial or intermediate block. Never do a deep block on both sides.',
+      // Safety: shown at MO level too (plan §5, promoted).
+      { safety: true, html: 'Both sides for thyroid surgery is fine with the superficial or intermediate block. Never do a deep block on both sides.' },
     ],
     sections: [
       {

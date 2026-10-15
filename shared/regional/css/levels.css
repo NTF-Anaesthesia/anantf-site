@@ -1,0 +1,70 @@
+/* Regional anaesthesia app: level system styles (plan §5). Pairs with ../js/levels.js.
+   Levels are cumulative: body[data-tier-max] = 1 (MO), 2 (Resident), 3 (Consultant). Untagged content always shows.
+   Colours follow DESIGN.md: wine accent, square edges, nothing under 12px. */
+
+:root{
+  --ra-lv-ink:#272722;--ra-lv-muted:#55534d;--ra-lv-wine:#633d3c;--ra-lv-wine-hover:#4b2e2d;--ra-lv-ivory:#fffaf0;
+  --ra-lv-paper:#f7f5ef;--ra-lv-line:#d7d2c8;--ra-lv-control:#827b6d;--ra-lv-hover:#e9e5dc;--ra-lv-inset:#eee9df;
+}
+
+/* ---- hiding */
+body[data-tier-max="1"] [data-tier="2"],
+body[data-tier-max="1"] [data-tier="3"],
+body[data-tier-max="2"] [data-tier="3"]{display:none!important}
+
+/* ---- segmented control: MO · Res · Con (full words on wide screens) */
+.ra-level{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;min-width:0}
+.ra-level-k{font:400 12px/1 'NTF Mono',ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--ra-lv-muted)}
+.ra-level-seg{display:inline-flex;border:1px solid var(--ra-lv-control);background:var(--ra-lv-paper)}
+.ra-level-btn{min-width:44px;min-height:44px;padding:0 10px;border:0;border-left:1px solid var(--ra-lv-line);border-radius:0;
+  background:transparent;color:var(--ra-lv-ink);font:500 14px/1 'NTF Sans',system-ui,sans-serif;cursor:pointer}
+.ra-level-btn:first-child{border-left:0}
+.ra-level-btn:hover{background:var(--ra-lv-hover)}
+.ra-level-btn[aria-pressed="true"]{background:var(--ra-lv-wine);color:var(--ra-lv-ivory)}
+.ra-level-btn[aria-pressed="true"]:hover{background:var(--ra-lv-wine-hover)}
+.ra-level-btn:focus-visible,.ra-level-back:focus-visible{outline:2px solid var(--ra-lv-wine);outline-offset:2px;position:relative;z-index:1}
+.ra-level-full{display:none}
+@media (min-width:1024px){.ra-level-short{display:none}.ra-level-full{display:inline}}
+@media (max-width:599px){.ra-level-k{display:none}}
+
+/* "Back to MO" after a deep link raised the level for this view */
+.ra-level-back{min-height:44px;padding:0 10px;border:1px solid var(--ra-lv-line);border-radius:0;background:var(--ra-lv-inset);
+  color:var(--ra-lv-wine);font:500 13px/1.2 'NTF Sans',system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;white-space:nowrap}
+.ra-level-back[hidden]{display:none}
+
+/* ---- badges: first block of a run only (the page decides where), never on table cells */
+.ra-tier-badge{display:inline-block;width:auto;max-width:none;margin:0 0 8px;padding:2px 7px;border:1px solid var(--ra-lv-line);background:var(--ra-lv-inset);color:var(--ra-lv-muted);
+  font:400 12px/1.4 'NTF Mono',ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.ra-tier-badge[data-badge="2"]{color:#3f4a5a}
+.ra-tier-badge[data-badge="3"]{color:var(--ra-lv-wine)}
+
+/* ---- "n items hidden at MO level · Show all" */
+.ra-hidden-hint{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:16px 0;padding:8px 12px;border-left:3px solid var(--ra-lv-line);
+  background:var(--ra-lv-inset);color:var(--ra-lv-muted);font:400 14px/1.4 'NTF Sans',system-ui,sans-serif}
+.ra-hidden-hint button{min-height:44px;padding:0 4px;border:0;background:none;color:var(--ra-lv-wine);font:inherit;font-weight:500;
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.ra-hidden-hint[hidden]{display:none}
+.ra-hidden-hint.is-relaxed{border-left-color:var(--ra-lv-wine);color:var(--ra-lv-ink)}
+
+/* ---- first-visit picker (one screen; /blocks/ and the first page visited) */
+.ra-level-picker{max-width:640px;margin:16px 0 24px;padding:20px 16px;border:1px solid var(--ra-lv-line);background:var(--ra-lv-paper)}
+.ra-level-picker{color:var(--ra-lv-ink);font:400 16px/1.55 'NTF Sans',system-ui,sans-serif;border-left:4px solid var(--ra-lv-wine)}
+.ra-level-picker #ra-level-picker-h{margin:0 0 8px;font:400 26px/1.2 'NTF Serif',Georgia,serif;letter-spacing:-.015em}
+.ra-level-picker.ra-level-picker p{margin:0 0 4px;color:var(--ra-lv-muted);font-size:15px}
+.ra-level-picker-skip{min-height:44px;padding:0 4px;border:0;background:none;color:var(--ra-lv-wine);font:500 15px/1.2 'NTF Sans',system-ui,sans-serif;
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.ra-level-picker :is(button):focus-visible{outline:2px solid var(--ra-lv-wine);outline-offset:2px}
+.ra-level-picker .ra-level-picker-list{list-style:none;margin:12px 0 4px;padding:0;display:grid;gap:8px;max-width:none}
+.ra-level-picker .ra-level-picker-item{margin:0;max-width:none}
+.ra-level-picker li button{display:block;width:100%;min-height:44px;padding:10px 12px;border:1px solid var(--ra-lv-control);border-radius:0;
+  background:var(--ra-lv-paper);color:var(--ra-lv-ink);font:400 15px/1.4 'NTF Sans',system-ui,sans-serif;text-align:left;cursor:pointer}
+.ra-level-picker li button strong{display:block;font-weight:600}
+.ra-level-picker li button:hover{background:var(--ra-lv-hover);border-color:var(--ra-lv-wine)}
+
+.ra-sr{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+@media (max-width:600px){
+  .ra-level-picker{padding:16px 14px}
+  .ra-level-picker #ra-level-picker-h{font-size:22px}
+  .ra-level-picker li button{font-size:14px;padding:8px 12px}
+}
+@media print{.ra-level,.ra-hidden-hint,.ra-level-picker{display:none!important}}

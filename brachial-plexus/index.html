@@ -9,17 +9,19 @@
 <meta name="description" content="Interactive brachial plexus anatomy for ultrasound-guided regional anaesthesia: 3D model, labelled diagram, ultrasound views, needle and local anaesthetic placement, and block coverage for interscalene, supraclavicular, infraclavicular and axillary blocks.">
 <meta name="color-scheme" content="light">
 <script type="importmap">
-{"imports":{"three":"./vendor/three/build/three.module.min.js","three/addons/":"./vendor/three/examples/jsm/"}}
+{"imports":{"three":"../shared/vendor/three-r160/build/three.module.min.js","three/addons/":"../shared/vendor/three-r160/examples/jsm/"}}
 </script>
-<link rel="stylesheet" href="css/app.css?v=3">
-<link rel="stylesheet" href="css/viewer3d.css?v=3">
-<link rel="stylesheet" href="css/diagram.css?v=3">
-<link rel="stylesheet" href="css/ultrasound.css?v=3">
-<link rel="stylesheet" href="css/coverage.css?v=3">
-<link rel="modulepreload" href="js/data.js">
-<link rel="modulepreload" href="js/bus.js">
-<link rel="stylesheet" href="../assets/couture-app.css?v=20261010-ra"><link rel="stylesheet" href="../assets/navigation.css?v=20261007-framing"><link rel="stylesheet" href="../assets/site-shell.css?v=20261007-framing"><script defer src="../assets/navigation.js?v=20261008"></script><link rel="stylesheet" href="../assets/header-nav.css?v=20261008"></head>
-<body class="plexus-app"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../airway.html">Airway</a><a href="../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="../exams/">MMed Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<link rel="stylesheet" href="css/app.css?v=20261015b">
+<link rel="stylesheet" href="css/viewer3d.css?v=20261015">
+<link rel="stylesheet" href="css/diagram.css?v=20261015b">
+<link rel="stylesheet" href="css/ultrasound.css?v=20261015">
+<link rel="stylesheet" href="css/coverage.css?v=20261015b">
+<link rel="stylesheet" href="../shared/regional/css/status.css?v=20261015">
+<link rel="stylesheet" href="../shared/regional/css/levels.css?v=20261015">
+<link rel="stylesheet" href="../assets/couture-app.css?v=20261010-ra"><link rel="stylesheet" href="../assets/navigation.css?v=20261007-framing"><link rel="stylesheet" href="../assets/site-shell.css?v=20261007-framing"><script defer src="../assets/navigation.js?v=20261008"></script><link rel="stylesheet" href="../assets/header-nav.css?v=20261008">
+<link rel="stylesheet" href="css/shell.css?v=20261015b">
+</head>
+<body class="plexus-app ra-app"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../airway.html">Airway</a><a href="../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="../exams/">MMed Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top" id="top">
@@ -28,23 +30,34 @@
       <p class="org">Regional anaesthesia</p>
       <h1>Brachial plexus</h1>
     </div>
-    <div class="top-tools">
-      <button type="button" class="tool-btn" id="btn-share" aria-describedby="share-status">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>
-        <span>Copy link</span>
-      </button>
-      <span id="share-status" class="sr-status" role="status" aria-live="polite"></span>
-    </div>
   </div>
-  <nav class="blockbar" aria-label="Choose a block">
-    <div class="blockbar-inner">
-      <span class="blockbar-label" id="blockbar-label">Block</span>
-      <div class="chips" role="group" aria-labelledby="blockbar-label" id="block-chips"></div>
-    </div>
-  </nav>
 </header>
 
+<nav class="bp-bar" id="bp-bar" aria-label="Brachial plexus app">
+  <div class="bp-bar-inner">
+    <a class="bp-home" href="../regional.html" title="Regional anaesthesia"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7M6 9.5V20h12V9.5"/></svg><span>Regional</span></a>
+    <div class="bp-blockmenu" id="bp-blockmenu">
+      <button type="button" class="bp-blockmenu-btn" id="bp-block-btn" aria-expanded="false" aria-controls="bp-block-panel"><span class="bp-blockmenu-k">Block</span><span class="bp-blockmenu-cur" id="bp-block-cur">None</span><span class="bp-caret" aria-hidden="true"></span></button>
+      <div class="bp-blockmenu-panel" id="bp-block-panel" hidden>
+        <ul class="bp-blockmenu-list" id="bp-block-list" aria-label="Choose a block"></ul>
+        <ul class="bp-blockmenu-extra">
+          <li class="bp-share-li"><button type="button" class="bp-blockmenu-act" id="btn-share-menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span>Copy link to this view</span></button></li>
+          <li><a class="bp-blockmenu-act" href="../regional.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7M6 9.5V20h12V9.5"/></svg><span>All regional anaesthesia</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="chips" role="group" aria-label="Choose a block" id="block-chips"></div>
+    <button type="button" class="bp-tool" id="btn-share" aria-describedby="share-status" title="Copy link to this view">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>
+      <span>Copy link</span>
+    </button>
+    <span id="share-status" class="sr-status" role="status" aria-live="polite"></span>
+    <div class="bp-level" id="bp-level"></div>
+  </div>
+</nav>
+
 <main id="main">
+  <div id="bp-picker"></div>
   <p class="intro" id="intro">Choose a block. Select a nerve to follow it across the model, diagram and ultrasound.</p>
 
   <div class="stage">
@@ -70,11 +83,11 @@
       <div class="tabs" role="tablist" aria-label="Detail views">
         <button type="button" role="tab" id="tab-ultrasound" aria-controls="tp-ultrasound" aria-selected="true">Ultrasound</button>
         <button type="button" role="tab" id="tab-guide" aria-controls="tp-guide" aria-selected="false" tabindex="-1">Block guide</button>
-        <button type="button" role="tab" id="tab-coverage" aria-controls="tp-coverage" aria-selected="false" tabindex="-1">Coverage</button>
+        <button type="button" role="tab" data-tier="2" id="tab-coverage" aria-controls="tp-coverage" aria-selected="false" tabindex="-1">Coverage</button>
       </div>
     </div>
     <div class="tabpanel" role="tabpanel" id="tp-ultrasound" aria-labelledby="tab-ultrasound" tabindex="0"><div class="mount" id="mount-ultrasound"></div></div>
-    <div class="tabpanel" role="tabpanel" id="tp-guide" aria-labelledby="tab-guide" tabindex="0" hidden><div class="guide" id="mount-guide"></div></div>
+    <div class="tabpanel" role="tabpanel" id="tp-guide" aria-labelledby="tab-guide" tabindex="0" hidden><div id="guide-hint"></div><div class="guide" id="mount-guide"></div></div>
     <div class="tabpanel" role="tabpanel" id="tp-coverage" aria-labelledby="tab-coverage" tabindex="0" hidden><div class="mount" id="mount-coverage"></div></div>
   </section>
 </main>
@@ -84,11 +97,12 @@
     <p class="disclaimer" id="disclaimer"></p>
 
     <p id="model-credit">3D model derived from <a href="https://www.z-anatomy.com/">Z-Anatomy</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>), based on BodyParts3D © DBCLS (CC BY-SA 2.1 JP). Modified. The model files are shared under CC BY-SA 4.0. 3D rendering uses <a href="https://threejs.org/">three.js</a> (MIT).</p>
+    <p class="credit">Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia</p>
     <p><a href="https://anantf.com/">Back to anantf.com</a></p>
   </div>
 </section>
 
-<script type="module" src="js/app.js"></script>
+<script type="module" src="js/app.js?v=20261015b"></script>
 <noscript><p class="noscript">This teaching app needs JavaScript to run.</p></noscript>
 <footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer></body>
 </html>

@@ -87,7 +87,7 @@ export function mount(root) {
     infos,
     caption: 'Simulated scans and diagrams drawn by this page from one model of an adult lumbar spine with typical depths. They are not patient images and are not to scale for any one patient. Sagittal views show cranial on the left; transverse views show the patient’s left on the left.',
   });
-  root.append(tier(viewer.fig, 2));
+  root.append(tier(viewer.fig, 1)); // MO: the MO steps above refer to this viewer
 
   // ------------------------------------------------------------ counting levels
   const count = el('div', { class: 'us-prose' });

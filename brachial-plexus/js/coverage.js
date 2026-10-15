@@ -374,15 +374,8 @@ export function mount(containerEl, bus, opts = {}) {
   }));
   tabs.append(...tabBtns);
 
-  const chips = el('div', { class: 'cv-chips', role: 'group', 'aria-label': 'Choose a block' });
-  const chipBtn = (b) => el('button', {
-    type: 'button', class: `cv-chip${b && BLOCKS[b]?.advanced ? ' cv-chip--adv' : ''}`, 'data-block': b || '', text: b ? shortName(b) : 'No block',
-  });
-  const coreChips = [null, ...BLOCK_ORDER].map(chipBtn);
-  const advChips = ADVANCED_IDS.map(chipBtn);
-  const chipBtns = [...coreChips, ...advChips];
-  chips.append(...coreChips);
-  if (advChips.length) chips.append(el('span', { class: 'cv-chipgroup', text: 'Advanced' }), ...advChips);
+  // The block is chosen once, in the app's sticky bar; here it is a read-only label kept in sync.
+  const chips = el('p', { class: 'cv-current', 'aria-live': 'polite' });
   head.append(tabs, chips);
 
   const body = el('div', { class: 'cv-body' });
@@ -428,8 +421,10 @@ export function mount(containerEl, bus, opts = {}) {
     stage.append(el('p', { class: 'cv-note cv-compare-note', text: `Comparing ${layerName.toLowerCase()} coverage of the four core blocks${ADVANCED_IDS.length ? ' and the advanced variants' : ''}. To compare another layer, choose it in the tabs above, then Compare again. Select a card to make that block active.` }));
     stage.append(compareGrid(BLOCK_ORDER, 'cv-grid'));
     if (ADVANCED_IDS.length) {
-      stage.append(el('h3', { class: 'cv-gridhead', text: 'Advanced blocks' }));
-      stage.append(compareGrid(ADVANCED_IDS, 'cv-grid cv-grid--adv'));
+      stage.append(el('h3', { class: 'cv-gridhead', text: 'Advanced blocks', 'data-tier': '3' }));
+      const adv = compareGrid(ADVANCED_IDS, 'cv-grid cv-grid--adv');
+      adv.dataset.tier = '3'; // Consultant level (shared/regional/js/levels.js)
+      stage.append(adv);
     }
   }
 
@@ -608,7 +603,9 @@ export function mount(containerEl, bus, opts = {}) {
       b.setAttribute('aria-selected', String(on));
       b.tabIndex = on ? 0 : -1;
     }
-    for (const c of chipBtns) c.setAttribute('aria-pressed', String((c.dataset.block || null) === state.block));
+    chips.textContent = '';
+    chips.append(el('span', { class: 'cv-current-k', text: 'Block' }), el('strong', { text: state.block ? shortName(state.block) : 'None chosen' }));
+    if (!state.block) chips.append(el('span', { class: 'cv-current-hint', text: 'Choose one in the bar at the top, or compare them all.' }));
     // Compare shows every block, so the block chips would only mislead there.
     chips.hidden = state.mode === 'compare';
     root.dataset.mode = state.mode;
@@ -743,10 +740,6 @@ export function mount(containerEl, bus, opts = {}) {
     e.preventDefault();
     setMode(tabBtns[j].dataset.mode);
     tabBtns[j].focus();
-  });
-  chips.addEventListener('click', (e) => {
-    const c = e.target.closest('.cv-chip');
-    if (c) bus.emit('block', { id: c.dataset.block || null, source: SRC });
   });
 
   // ---- bus ----------------------------------------------------------------------

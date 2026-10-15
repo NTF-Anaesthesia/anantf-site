@@ -1,10 +1,10 @@
 // Knee blocks: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../../truncal/shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths
 // (slim to average build, right leg); nothing is traced from published images. Probe insets use the leg figure
-// (../../shared/js/leg.js). Transverse thigh views: medial on screen left, lateral on screen right. Coronal views of the
+// (../../../shared/regional/js/figures/leg.js). Transverse thigh views: medial on screen left, lateral on screen right. Coronal views of the
 // knee: cranial (proximal) on screen left, caudal on screen right.
-import { E, P, L } from '../../../truncal/shared/js/scene.js';
-import { legProbeInset } from '../../shared/js/leg.js';
+import { E, P, L } from '../../../shared/regional/js/scene.js';
+import { legProbeInset } from '../../../shared/regional/js/figures/leg.js';
 
 // ------------------------------------------------------------------ shared pieces of the anteromedial thigh
 // Deep border of sartorius (the plane the femoral triangle and adductor canal injections open).

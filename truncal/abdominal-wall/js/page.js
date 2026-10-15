@@ -1,13 +1,16 @@
 // Abdominal wall page: wires the shared shell to this page's chapters and data.
-import { bootPage } from '../../shared/js/shell.js';
-import { BLOCKS } from './blocks.js';
-import { renderAnatomy } from './anatomy.js';
+import { bootPage } from '../../../shared/regional/js/shell.js';
+import { BLOCKS } from './blocks.js?v=20261015';
+import { renderAnatomy } from './anatomy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));
 
 bootPage({
   title: 'Abdominal wall blocks',
   eyebrow: 'Regional anaesthesia · Truncal blocks',
+  backLabel: 'See all truncal blocks and the block chooser',
+  backShort: 'Truncal blocks',
+  backHref: '../',
   lead: 'Lateral and subcostal TAP, rectus sheath, quadratus lumborum and ilioinguinal blocks: where the nerves run, how to see them and what each block covers.',
   searchPlaceholder: 'Search, e.g. groin, TAP, rectus sheath, dose',
   tiles: [

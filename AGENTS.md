@@ -42,14 +42,20 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `exams/index.html` | MMed exam resources by Dr Chew Shi Hao (his design) | In main navigation (noindex) |
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
 | `popliteal/index.html` | Popliteal sciatic block animation by Dr Chew Shi Hao | No (unlisted) |
-| `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app | No (unlisted) |
-| `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting and ultrasound (Dr Koh Wenjun and Dr Chew Shi Hao) | No (unlisted) |
-| `truncal/` | Truncal blocks: landing page with the "which block for which operation" chooser, and `back/`, `chest-wall/`, `abdominal-wall/` pages on a shared engine in `truncal/shared/` (see `truncal/shared/DATA.md`) | No (unlisted; card on Regional) |
-| `head-neck/` | Head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the truncal engine (`truncal/shared/`) plus head figures in `head-neck/shared/js/head.js` | No (unlisted; card on Regional, link from Airway) |
+| `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app (the upper-limb part of the regional app) | No (unlisted; card on Regional) |
+| `spinal/index.html` | Spinal anaesthesia: technique, troubleshooting and ultrasound (Dr Koh Wenjun and Dr Chew Shi Hao); the neuraxial part of the regional app | No (unlisted; card on Regional) |
+| `truncal/` | Truncal blocks: landing page with the "which block for which operation" chooser, and `back/`, `chest-wall/`, `abdominal-wall/` pages on the shared regional engine in `shared/regional/` (see `shared/regional/DATA.md`; `truncal/shared/` holds only re-export shims for old cached pages) | No (unlisted; card on Regional) |
+| `head-neck/` | Head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the shared regional engine (`shared/regional/`) plus head figures in `shared/regional/js/figures/head.js` | No (unlisted; card on Regional, link from Airway) |
+| `blocks/` | Regional anaesthesia app front door: level picker, "I need to…" tiles, one "which block for this operation" chooser over the trunk, head and neck and lower-limb operations, search across every region, and region cards. Built from `shared/regional/js/registry.js` and `shared/regional/js/ops/` (no clinical text of its own) | No (unlisted, noindex; card on Regional) |
+| `plexus/index.html` | Cervical, lumbar and sacral plexuses in 3D with linked diagrams; `plexus/js/explorer.js` (`mountExplorer`) is also opened from the "Anatomy in 3D" card on block pages | No (unlisted, noindex; card on Regional) |
+| `shared/regional/` | The shared regional engine (moved from `truncal/shared/` on 15 Oct 2026): app bar, levels, block template, scan teacher, block registry (`js/registry.js`), operation data (`js/ops/`), figures (`js/figures/head.js`, `js/figures/leg.js`) and styles. Schema and wiring in `shared/regional/DATA.md`. `truncal/shared/`, `head-neck/shared/js/head.js` and `lower-limb/shared/js/leg.js` are now one-line re-export shims so old cached pages keep working: don't import through them | — |
+| `shared/vendor/three-r160/` | three.js (r160) and its Draco decoder, used by `brachial-plexus/` and `plexus/` through their import maps (moved from `brachial-plexus/vendor/three`) | — |
+| `shared/us/` | Open-licence ultrasound images by region, with credits and licences in each `sources.json` (for the scan viewer's "Real" view; not yet shown on the pages) | — |
+| `test/regional/` | Tests for the regional pages: smoke, deep links, levels, data and content parity against a baseline (`node test/regional/run-all.mjs`; see `test/regional/README.md`) | — |
 | `babymo/` | Baby MO test: the department's MCQ test for new medical officers (MOs enter a name and a shared passphrase; faculty see results, the read-only paper, people and settings in the app). Own Firebase project `ntf-mo-portal` (sign-in, settings, results); its questions come from `qbank/papers/babymo.json` and `qbank/bank/questions.json`, and nobody edits questions in this app (faculty suggest changes through `qbank/`). Start with `babymo/NOTES.md` | No (unlisted) |
 | `qbank/` | Question bank: the department's shared MCQs (`bank/questions.json`, one format with permanent ids), the papers made from it (`papers/`), and the qbank app at anantf.com/qbank/. Start with `qbank/NOTES.md`. Questions are public (owner, 15 Oct 2026) | No (unlisted) |
 | `mo/` | MO guide: the practical learning app for new medical officers (handbook and beyond: learn topics, drug doses by weight, crisis cards, calculators, scenarios, flashcards; progress on the phone only). Start with `mo/NOTES.md`; content format in `mo/CONTENT.md` | No (unlisted) |
-| `lower-limb/` | Lower-limb blocks: landing page with the operation chooser, and `hip/`, `knee/`, `foot-ankle/`, `thigh/` pages on the truncal engine (`truncal/shared/`) plus leg figures and the embedded animations in `lower-limb/shared/` (see `lower-limb/shared/LEG.md`). Created by Dr Koh Wenjun and Dr Chew Shi Hao | No (unlisted; card on Regional) |
+| `lower-limb/` | Lower-limb blocks: landing page with the operation chooser, and `hip/`, `knee/`, `foot-ankle/`, `thigh/` pages on the shared regional engine (`shared/regional/`) plus leg figures in `shared/regional/js/figures/leg.js` and the embedded animations in `lower-limb/shared/` (see `lower-limb/shared/LEG.md`). Created by Dr Koh Wenjun and Dr Chew Shi Hao | No (unlisted; card on Regional) |
 | `lower-limb/anim/` | Dr Chew Shi Hao's animated block demonstrations (his engine and block modules, shown inside the lower-limb pages in an iframe) | No |
 | `popliteal-animation/` | Archived copy of Dr Chew Shi Hao's original popliteal block page (frozen; do not edit) | No (unlisted) |
 | `ra.html`, `draft-ra.html` | Redirects to the lower-limb pages (old links) | No |
@@ -78,8 +84,17 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   and drop "draft" from its breadcrumb.
 
 - The main navigation is Airway, Regional Anaesthesia, POCUS and MMed Exam Prep. Don't add department, recruitment or handbook pages back.
-- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `popliteal-animation/`, `babymo/`, `qbank/` or `mo/` from the homepage, and keep their
+- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/` or `mo/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
+- The regional pages (`blocks/`, `truncal/`, `head-neck/`, `lower-limb/`, `brachial-plexus/`, `plexus/`, `spinal/`) are one
+  app: same app bar, the credit line "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" (Dr Chew Shi Hao
+  linked to https://chewshihao.com/), and the same MO · Resident · Consultant level control (`shared/regional/js/levels.js`).
+  Levels are cumulative: MO sees tier 1, Resident tiers 1–2, Consultant everything; with no choice saved the level is
+  Consultant, so nothing is hidden by surprise. The choice is kept on the phone (`ra-level`), never in the URL. Mark
+  content with `data-tier` or a `tier` field in the data (`shared/regional/DATA.md` §2b). **Doses, the LAST line and
+  complications are always MO level (tier 1)**: you may move safety content to a lower tier, never to a higher one
+  (`test/regional/levels.mjs` checks). Old URLs and hashes must keep working; run `node test/regional/run-all.mjs`
+  after changing any regional page.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
 - `babymo/` is an installable app (service worker): after changing any file listed in `SHELL` or `SITE` in `babymo/sw.js` (pages, scripts, styles, manifest, icons, fonts, the app kit `assets/app/app.css` and `qbank/js/bank.js`) run `node babymo/tools/stamp.mjs`, or phones keep the old files (`node babymo/test/version.test.mjs` checks). The bank and the paper (`DATA`) are not stamped: question changes need no new version. Its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/version.test.mjs`, `node babymo/test/e2e.mjs`, `node babymo/test/pwa.e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit names or results (the questions themselves now live in `qbank/`).
@@ -110,7 +125,7 @@ When asked to "apply the website edits" (or similar):
   suggestions: list what you plan to change and get a maintainer's go-ahead before merging. The name in a batch is
   self-reported, so don't treat it as proof of who sent it.
 - Find each change in the source by searching for the old text. The locator is a hint only: much of the text in the
-  apps (`spinal/`, `brachial-plexus/`, `truncal/`, `head-neck/`, `lower-limb/`, `pocus/`, `exams/`) is built by JavaScript from data in scripts, so edit the
+  apps (`spinal/`, `brachial-plexus/`, `plexus/`, `truncal/`, `head-neck/`, `lower-limb/`, `pocus/`, `exams/`) is built by JavaScript from data in scripts, so edit the
   data, not the rendered HTML. If the old text can't be found, or appears more than once and the heading doesn't
   settle it, ask rather than guess.
 - Apply edits as written but tidy them into the site's style (`DESIGN.md`, British spelling, the page's existing

@@ -9,7 +9,7 @@ const UL = (items) => el('ul', { class: 'sx-list' }, ...items.map((h) => el('li'
 const P = (html, cls) => el('p', { html, class: cls });
 // A tagged group: small heading and a list.
 const G = (n, title, items) => T(el('div', { class: 'sx-grp' }, el('p', { class: 'sx-sub', text: title }), UL(items)), n);
-const PEARL = (title, html) => T(callout('key', { title: `Advanced pearl: ${title}`, body: `<p>${html}</p>` }), 3);
+const PEARL = (title, html) => T(callout('key', { title: `Consultant pearl: ${title}`, body: `<p>${html}</p>` }), 3);
 const STOP = (items) => T(callout('warn', { title: 'Stop and get help', body: UL(items) }), 1);
 // Tier-2 depth goes into one collapsed block per panel so the plan stays short.
 const MORE = (summary, ...nodes) => T(details({ summary, body: nodes }), 2);

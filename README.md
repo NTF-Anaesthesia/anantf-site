@@ -8,6 +8,12 @@ Static site served by GitHub Pages at https://anantf.com.
 | `resources.html` | Searchable learning library |
 | `airway.html` | Airway learning and NAPS model collection |
 | `regional.html` | Regional anaesthesia learning |
+| `blocks/` | Regional anaesthesia app front door: operation chooser and search across every region (unlisted; card on `regional.html`) |
+| `truncal/`, `head-neck/`, `lower-limb/` | Regional block pages by region, on the shared engine (unlisted; cards on `regional.html`) |
+| `brachial-plexus/`, `plexus/`, `spinal/` | Brachial plexus app, plexus anatomy in 3D and spinal anaesthesia (unlisted; cards on `regional.html`) |
+| `shared/regional/` | Shared regional engine: app bar, levels, block template, scan viewer, block registry, operation data (see `shared/regional/DATA.md`) |
+| `shared/vendor/three-r160/` | three.js used by the 3D viewers |
+| `test/regional/` | Tests for the regional pages (`node test/regional/run-all.mjs`) |
 | `pocus/` | Point-of-care ultrasound tutorials |
 | `exams/` | MMed exam resources by Dr Chew Shi Hao (canonical master copy) |
 | `exams/reference/` | Part B model-answer PDFs |

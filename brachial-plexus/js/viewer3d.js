@@ -27,7 +27,8 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import {
   ELEMENTS, ELEMENT_ORDER, LEVELS, BLOCKS, getPathway, blockStatus,
 } from './data.js';
-import { colourFor, CORD_COLOURS } from './diagram.js';
+import { colourFor, CORD_COLOURS } from './diagram.js?v=20261015b';
+import { STATUS_COLOURS, LA } from '../../shared/regional/js/status.js?v=20261015';
 
 const SOURCE = 'viewer3d';
 
@@ -94,14 +95,8 @@ export const MODEL_CATEGORIES = [
   { cat: 'nerve', test: /root|trunk|cord|div|ramus|median|ulnar|radial|musculo|axillary|suprascap|thoracic|pectoral|(^|[^a-z0-9])(c[5-8]|t1)([^0-9]|$)/i },
 ];
 
-/** Colours used for block status (shared with the legend). */
-export const STATUS_COLORS = {
-  target: '#db2777',
-  covers: '#16a34a',
-  variable: '#f59e0b',
-  spares: '#94a3b8',
-  none: '#cbd5e1',
-};
+/** Colours used for block status (shared with the legend): the regional status tokens (shared/regional/js/status.js). */
+export const STATUS_COLORS = { ...STATUS_COLOURS, none: '#cbd5e1' };
 
 const CLASSIC_NERVE = '#e8b923';
 const RELATED_COLOR = '#6b7280';
@@ -540,7 +535,7 @@ export function mount(containerEl, bus, options = {}) {
     // (same coordinate frame). When it loads, it replaces the single fused "Nerve"
     // mesh so each segment can be picked and coloured.
     splitUrl: 'model/brachial-plexus-v3-nerves-split.glb',
-    dracoPath: new URL('../vendor/three/examples/jsm/libs/draco/gltf/', import.meta.url).href,
+    dracoPath: new URL('../../shared/vendor/three-r160/examples/jsm/libs/draco/gltf/', import.meta.url).href,
     ...options,
   };
 
@@ -583,6 +578,11 @@ export function mount(containerEl, bus, options = {}) {
   containerEl.appendChild(root);
 
   // Respond to small containers
+  let legendOpen = false;
+  const phoneMq = window.matchMedia('(max-width: 600px)');
+  const onPhoneMq = () => { if (legend.childElementCount) updateLegend(); };
+  phoneMq.addEventListener?.('change', onPhoneMq);
+  const legendListId = `v3d-key-${Math.random().toString(36).slice(2, 8)}`;
   const setCompact = (w) => {
     const c = w < 560;
     if (root.classList.contains('is-compact') === c) return;
@@ -860,12 +860,8 @@ export function mount(containerEl, bus, options = {}) {
   async function tryLoadGLB() {
     if (!opts.glbUrl) return;
     const url = new URL(opts.glbUrl, document.baseURI).href;
-    let ok = false;
-    try {
-      const res = await fetch(url, { method: 'HEAD', cache: 'no-cache' });
-      ok = res.ok && !/text\/html/i.test(res.headers.get('content-type') || '');
-    } catch { ok = false; }
-    if (!ok || destroyed) return;
+    // No HEAD pre-check: the loader itself fails cleanly (and the schematic model stays) if the file is missing.
+    if (destroyed) return;
     loading.hidden = false;
     try {
       const [{ GLTFLoader }, { DRACOLoader }] = await Promise.all([
@@ -1292,7 +1288,7 @@ export function mount(containerEl, bus, options = {}) {
       items = [
         ['target', 'Injection target'], ['covers', 'Blocked'], ['variable', 'Variable'], ['spares', 'Spared'],
       ].map(([k, t]) => [STATUS_COLORS[k], t]);
-      items.push(['#22d3ee', 'Local anaesthetic']);
+      items.push([LA.color, 'Local anaesthetic']);
     } else if (state.layers.colour === 'cord') {
       items = [
         [CORD_COLOURS.neutral, 'Roots and trunks'], [CORD_COLOURS.lateral, 'Lateral cord'],
@@ -1305,7 +1301,13 @@ export function mount(containerEl, bus, options = {}) {
     } else {
       items = [[CLASSIC_NERVE, 'Nerve'], ['#d62f2f', 'Artery'], ['#2563eb', 'Vein']];
     }
-    const ul = el('ul', { class: 'v3d-legend-list', 'aria-label': 'Colour key' });
+    const ul = el('ul', { class: 'v3d-legend-list', id: legendListId, 'aria-label': 'Colour key' });
+    // Phones: the key is collapsed behind a "Colours" button until opened, so it does not cover the model.
+    const compact = phoneMq.matches;
+    const tog = el('button', { type: 'button', class: 'v3d-legend-toggle', 'aria-expanded': String(!compact || legendOpen), 'aria-controls': legendListId }, 'Colours');
+    tog.addEventListener('click', () => { legendOpen = !legendOpen; updateLegend(); legend.querySelector('.v3d-legend-toggle')?.focus(); requestRender(); });
+    legend.append(tog);
+    ul.hidden = compact && !legendOpen;
     for (const [c, t] of items) {
       const li = el('li');
       const sw = el('span', { class: 'v3d-swatch', 'aria-hidden': 'true' });
@@ -1373,9 +1375,9 @@ export function mount(containerEl, bus, options = {}) {
 
   // ------------------------------------------------------------------ block overlay
   const blobGeo = track(noisyBlobGeometry());
-  const laMat = materialFor('#22d3ee', { transparent: true, opacity: 0.55, depthWrite: false, roughness: 0.25, emissive: '#0ea5e9', emissiveIntensity: 0.3 });
+  const laMat = materialFor(LA.color, { transparent: true, opacity: 0.55, depthWrite: false, roughness: 0.25, emissive: LA.edge, emissiveIntensity: 0.3 });
   // "X-ray" pass so local anaesthetic stays visible behind vessels and bone.
-  const laXrayMat = track(new THREE.MeshBasicMaterial({ color: '#22d3ee', transparent: true, opacity: 0.28, depthWrite: false, depthTest: false }));
+  const laXrayMat = track(new THREE.MeshBasicMaterial({ color: LA.color, transparent: true, opacity: 0.28, depthWrite: false, depthTest: false }));
   const probeMat = materialFor('#475569', { transparent: true, opacity: 0.38, roughness: 0.4, depthWrite: false });
   const probeFaceMat = materialFor('#0f172a', { roughness: 0.6, transparent: true, opacity: 0.7, depthWrite: false });
   const planeMat = track(new THREE.MeshBasicMaterial({ color: '#38bdf8', transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false }));
@@ -1771,6 +1773,7 @@ export function mount(containerEl, bus, options = {}) {
         for (const b of blocked) {
           const rr = { l: r.l + dx, r: r.r + dx, t: r.t + dy, b: r.b + dy };
           if (overlaps(rr, b, 0) && b.t > o.height / 2) dy += b.t - rr.b - 4; // lift above the caption / chip
+          else if (overlaps(rr, b, 0) && b.b < o.height / 2 && b.l < o.width / 2) dy += b.b - rr.t + 4; // drop below the colour key
         }
         if (dx || dy) {
           it.d.style.transform += ` translate(${Math.round(dx)}px, ${Math.round(dy)}px)`;
@@ -2044,6 +2047,7 @@ export function mount(containerEl, bus, options = {}) {
   return {
     destroy() {
       destroyed = true;
+      phoneMq.removeEventListener?.('change', onPhoneMq);
       cancelAnimationFrame(rafId);
       cancelAnimationFrame(hoverRaf);
       clearTimeout(toastTimer);

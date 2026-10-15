@@ -1,0 +1,883 @@
+[
+  {
+    "file": "scp-1.jpg",
+    "block": "scp",
+    "blockId": "scp",
+    "page": "head-neck/cervical/",
+    "articleTitle": "Ultrasound-guided superficial cervical plexus block for cancer-related clavicle pain",
+    "authors": "Ege E, Chai T, Roldan CJ, et al.",
+    "journal": "Interventional Pain Medicine",
+    "year": 2022,
+    "doi": "10.1016/j.inpm.2022.100152",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11372992/",
+    "pmcid": "PMC11372992",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Fig. 2",
+    "caption": "Superficial cervical plexus block: transverse scan at mid-neck, with the needle path (dotted line) ending just under the posterior edge of sternocleidomastoid.",
+    "originalCaption": "Ultrasound image of the superficial cervical plexus procedure showing the needle path for injection (dashed line). A = anterior; P = posterior, SCM = sternocleidomastoid, IJV = internal jugular vein, CA = carotid artery.",
+    "alt": "Transverse ultrasound of the side of the neck showing sternocleidomastoid over the internal jugular vein and carotid artery, with a dotted needle path coming in from the posterior side",
+    "orientation": {
+      "left": "Anterior",
+      "right": "Posterior"
+    },
+    "burnedInLabels": "SCM, IJV, CA, A, P; dotted needle path",
+    "labels": [
+      {
+        "text": "Sternocleidomastoid",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.45,
+        "y": 0.17
+      },
+      {
+        "text": "Internal jugular vein",
+        "elementId": null,
+        "kind": "vein",
+        "x": 0.31,
+        "y": 0.41,
+        "tx": 0.2,
+        "ty": 0.33
+      },
+      {
+        "text": "Carotid artery",
+        "elementId": null,
+        "kind": "artery",
+        "x": 0.26,
+        "y": 0.65,
+        "tx": 0.42,
+        "ty": 0.72
+      },
+      {
+        "text": "Needle path",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.73,
+        "y": 0.235,
+        "tx": 0.8,
+        "ty": 0.36
+      }
+    ],
+    "credit": "Ege E et al. Interventional Pain Medicine 2022, Fig. 2. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "dcp-1.jpg",
+    "block": "dcp",
+    "blockId": "dcp",
+    "page": "head-neck/cervical/",
+    "articleTitle": "Prospective Observational Study after Eversion Carotid Endarterectomy with Ultrasound-Guided Deep-Intermediate Cervical Plexus Blockade",
+    "authors": "Vega Colón M, López González JM, Jiménez Gómez BM, et al.",
+    "journal": "Healthcare",
+    "year": 2022,
+    "doi": "10.3390/healthcare10101986",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9601612/",
+    "pmcid": "PMC9601612",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 1, panel B",
+    "caption": "Cervical plexus block at C4, needle from the lateral side: path 2 (intermediate) stops on the fascia just deep to sternocleidomastoid; path 1 (which the authors call deep) goes further, to the plane between middle scalene and levator scapulae.",
+    "originalCaption": "Ultrasound-guided cervical plexus block. (A) Position of the ultrasound probe and puncture site at the carotid bifurcation. (B) Ultrasound image of the deep (1st) and intermediate (2nd) cervical plexus block. SCM: sternocleidomastoid muscle; LCM: longus colli muscle; LCapM: longus capitis muscle; MSM: middle scalene muscle; ESM: elevator scapulae muscle; IJV: internal jugular vein; CA: carotid artery bifurcation; C4: C4 vertebra transverse process.",
+    "alt": "Transverse ultrasound at C4 showing sternocleidomastoid, the carotid bifurcation, longus capitis and longus colli, the C4 transverse process, middle scalene and levator scapulae, with two dashed needle paths from the lateral side",
+    "orientation": {
+      "left": "Medial",
+      "right": "Lateral"
+    },
+    "burnedInLabels": "Panel letter B partly cropped; Medial, Lateral, SCM, IJV, CA, LCapM, LCM, C4, MSM, ESM; dashed needle paths 1a (deep) and 2a (intermediate)",
+    "labels": [
+      {
+        "text": "Sternocleidomastoid",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.49,
+        "y": 0.17
+      },
+      {
+        "text": "Internal jugular vein",
+        "elementId": null,
+        "kind": "vein",
+        "x": 0.13,
+        "y": 0.22
+      },
+      {
+        "text": "Carotid bifurcation",
+        "elementId": null,
+        "kind": "artery",
+        "x": 0.25,
+        "y": 0.32,
+        "tx": 0.33,
+        "ty": 0.42
+      },
+      {
+        "text": "Longus capitis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.23,
+        "y": 0.5
+      },
+      {
+        "text": "Longus colli",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.23,
+        "y": 0.65
+      },
+      {
+        "text": "C4 transverse process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.46,
+        "y": 0.62
+      },
+      {
+        "text": "Middle scalene",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.63,
+        "y": 0.41
+      },
+      {
+        "text": "Levator scapulae",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.84,
+        "y": 0.47
+      },
+      {
+        "text": "Intermediate injection (2)",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.635,
+        "y": 0.33,
+        "tx": 0.62,
+        "ty": 0.22
+      },
+      {
+        "text": "Deep injection (1)",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.8,
+        "y": 0.4,
+        "tx": 0.82,
+        "ty": 0.57
+      }
+    ],
+    "credit": "Vega Colón M et al. Healthcare 2022, Figure 1 panel B. CC BY 4.0. Cropped to the ultrasound panel; labels and needle paths on the image are the authors'."
+  },
+  {
+    "file": "sln-1.jpg",
+    "block": "sln",
+    "blockId": "sln",
+    "page": "head-neck/airway/",
+    "articleTitle": "Airway Ultrasound: A Narrative Review of Present Use and Future Applications in Anesthesia",
+    "authors": "Riveros-Perez E, Avella-Molano B, Rocuts A, et al.",
+    "journal": "Healthcare",
+    "year": 2025,
+    "doi": "10.3390/healthcare13131502",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12248689/",
+    "pmcid": "PMC12248689",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 11",
+    "caption": "Parasagittal view between the hyoid and the thyroid cartilage: the superior laryngeal nerve block target lies on the thyrohyoid membrane (arrowhead).",
+    "originalCaption": "Parasagittal Thyrohyoid view. 1, Hyoid bone; 2, Thyroid cartilage; The arrowhead marks the location of the thyrohyoid membrane.",
+    "alt": "Parasagittal ultrasound of the front of the neck showing the hyoid bone with its shadow, the thyroid cartilage, and the thyrohyoid membrane running between them under the thyrohyoid muscle",
+    "orientation": {
+      "left": "Cephalad",
+      "right": "Caudad"
+    },
+    "burnedInLabels": "1 (hyoid), 2 (thyroid cartilage), arrowhead (thyrohyoid membrane); scanner depth scale cropped",
+    "labels": [
+      {
+        "text": "Hyoid bone",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.24,
+        "y": 0.43,
+        "tx": 0.2,
+        "ty": 0.62
+      },
+      {
+        "text": "Thyroid cartilage",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.9,
+        "y": 0.25,
+        "tx": 0.86,
+        "ty": 0.42
+      },
+      {
+        "text": "Thyrohyoid membrane",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.59,
+        "y": 0.35,
+        "tx": 0.6,
+        "ty": 0.55
+      },
+      {
+        "text": "Thyrohyoid muscle",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.29,
+        "tx": 0.42,
+        "ty": 0.12
+      }
+    ],
+    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 11. CC BY 4.0. Cropped; numbers and arrowhead on the image are the authors'; the thyrohyoid muscle label is ours."
+  },
+  {
+    "file": "sln-2.jpg",
+    "block": "sln",
+    "blockId": "sln",
+    "page": "head-neck/airway/",
+    "articleTitle": "Ultrasound-guided thyroid cartilage plane block for superior laryngeal nerve blockade in awake fiberoptic tracheal intubation: combined cadaveric validation and randomized clinical trial",
+    "authors": "Shan T, Gu M, Zhou X, et al.",
+    "journal": "International Journal of Surgery",
+    "year": 2026,
+    "doi": "10.1097/JS9.0000000000004631",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13105536/",
+    "pmcid": "PMC13105536",
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "licenceQuote": "This is an open access article distributed under the Creative Commons Attribution-ShareAlike License 4.0, which allows others to remix, tweak, and build upon the work, even for commercial purposes, as long as the author is credited and the new creations are licensed under the identical terms.",
+    "figure": "Figure 1, panel C",
+    "caption": "Parasagittal view before injection: the superior laryngeal nerve (yellow arrow) and artery (red arrow) sit on the thyrohyoid membrane (white arrows), between the hyoid and the thyroid cartilage.",
+    "originalCaption": "Ultrasound-guided TCP block. A 22-gauge needle was advanced medial to the transducer caudal to cranially at the cranial half of the thyroid cartilage laminae, with out-of-plane technique. (A, B) Anatomical diagram. (C) Pre-injection, with the needle maintaining an angle of 60°–75° to the skin. The white asterisk indicates the saline. (D) Post-injection. LA, local anesthetic. The white long arrow indicates the needle, white short arrow indicated the thyrohyoid membrane, the yellow arrow indicated the superior laryngeal nerve, the red arrow indicated the superior laryngeal artery, and the yellow shadow zone demonstrated spread of LA.",
+    "alt": "Parasagittal ultrasound between the hyoid bone and thyroid cartilage, with arrows on the thyrohyoid membrane, the superior laryngeal nerve and artery, and the needle entering from the caudal end",
+    "orientation": {
+      "left": "Cephalad",
+      "right": "Caudad"
+    },
+    "burnedInLabels": "cephalad, caudad, hyoid bone, thyroid cartilage, needle, 60–75°, asterisks (saline); white, yellow and red arrows; probe-position photo inset cropped off",
+    "labels": [
+      {
+        "text": "Hyoid bone",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.08,
+        "y": 0.62,
+        "tx": 0.12,
+        "ty": 0.86
+      },
+      {
+        "text": "Thyrohyoid membrane",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.32,
+        "y": 0.61,
+        "tx": 0.3,
+        "ty": 0.9
+      },
+      {
+        "text": "Superior laryngeal nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.42,
+        "y": 0.57,
+        "tx": 0.52,
+        "ty": 0.82
+      },
+      {
+        "text": "Superior laryngeal artery",
+        "elementId": null,
+        "kind": "artery",
+        "x": 0.46,
+        "y": 0.575,
+        "tx": 0.62,
+        "ty": 0.36
+      },
+      {
+        "text": "Thyroid cartilage",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.82,
+        "y": 0.52,
+        "tx": 0.84,
+        "ty": 0.66
+      },
+      {
+        "text": "Needle",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.77,
+        "y": 0.2,
+        "tx": 0.62,
+        "ty": 0.12
+      }
+    ],
+    "credit": "Shan T et al. International Journal of Surgery 2026, Figure 1 panel C. CC BY-SA 4.0 (reuse must keep the same licence). Cropped to the panel without the photo inset; labels and arrows on the image are the authors'."
+  },
+  {
+    "file": "ttb-1.jpg",
+    "block": "ttb",
+    "blockId": "ttb",
+    "page": "head-neck/airway/",
+    "articleTitle": "Airway Ultrasound: A Narrative Review of Present Use and Future Applications in Anesthesia",
+    "authors": "Riveros-Perez E, Avella-Molano B, Rocuts A, et al.",
+    "journal": "Healthcare",
+    "year": 2025,
+    "doi": "10.3390/healthcare13131502",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12248689/",
+    "pmcid": "PMC12248689",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 10, panel a",
+    "caption": "Midline longitudinal scan: the cricothyroid membrane (arrowhead) lies between the thyroid cartilage and the cricoid, above the tracheal rings ('string of pearls').",
+    "originalCaption": "(a,b) Longitudinal view of the upper airway to visualize the String of Pearls. 1, Thyroid cartilage; 2, Cricoid cartilage; 3. Tracheal rings; The arrowhead points towards the crico-thyroid membrane.",
+    "alt": "Longitudinal midline ultrasound of the front of the neck showing the thyroid cartilage, the cricothyroid membrane, the cricoid cartilage and the tracheal rings over the bright air line",
+    "orientation": {
+      "left": "Cephalad",
+      "right": "Caudad"
+    },
+    "burnedInLabels": "1, 2, 3 and arrowhead; probe marker dot and scanner text cropped",
+    "labels": [
+      {
+        "text": "Thyroid cartilage",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.05,
+        "y": 0.11,
+        "tx": 0.1,
+        "ty": 0.32
+      },
+      {
+        "text": "Cricothyroid membrane",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.17,
+        "y": 0.155,
+        "tx": 0.22,
+        "ty": 0.42
+      },
+      {
+        "text": "Cricoid cartilage",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.36,
+        "y": 0.12,
+        "tx": 0.42,
+        "ty": 0.32
+      },
+      {
+        "text": "Tracheal rings",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.7,
+        "y": 0.18,
+        "tx": 0.72,
+        "ty": 0.38
+      },
+      {
+        "text": "Air-mucosa line",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.55,
+        "y": 0.24,
+        "tx": 0.55,
+        "ty": 0.55
+      }
+    ],
+    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 10 panel a. CC BY 4.0. Cropped to one panel; numbers and arrowhead on the image are the authors'."
+  },
+  {
+    "file": "ttb-2.jpg",
+    "block": "ttb",
+    "blockId": "ttb",
+    "page": "head-neck/airway/",
+    "articleTitle": "Airway Ultrasound: A Narrative Review of Present Use and Future Applications in Anesthesia",
+    "authors": "Riveros-Perez E, Avella-Molano B, Rocuts A, et al.",
+    "journal": "Healthcare",
+    "year": 2025,
+    "doi": "10.3390/healthcare13131502",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12248689/",
+    "pmcid": "PMC12248689",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 5",
+    "caption": "Transverse scan over the cricothyroid membrane: the arrow points to the bright air line just deep to the membrane, with reverberation artefacts below.",
+    "originalCaption": "Transverse Cricothyroid view. Arrow pointing towards the crico-thyroid membrane. Reverberation artifacts are seen parallel and in the far field of view.",
+    "alt": "Transverse ultrasound over the cricothyroid membrane showing a bright curved air line with an arrow pointing at it and parallel reverberation lines below",
+    "orientation": null,
+    "burnedInLabels": "Arrow (cricothyroid membrane); scanner text and depth scale cropped",
+    "labels": [
+      {
+        "text": "Cricothyroid membrane",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.49,
+        "y": 0.18,
+        "tx": 0.49,
+        "ty": 0.07
+      },
+      {
+        "text": "Reverberation artefact",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.47,
+        "y": 0.45,
+        "tx": 0.25,
+        "ty": 0.6
+      }
+    ],
+    "credit": "Riveros-Perez E et al. Healthcare 2025, Figure 5. CC BY 4.0. Cropped; the arrow on the image is the authors'."
+  },
+  {
+    "file": "gon-1.jpg",
+    "block": "gon",
+    "blockId": "gon",
+    "page": "head-neck/scalp/",
+    "articleTitle": "Ultrasound-Guided Occipital Nerve Block for Treatment of Atypical Occipital Neuralgia",
+    "authors": "Skinner C, Kumar S",
+    "journal": "Cureus",
+    "year": 2021,
+    "doi": "10.7759/cureus.18584",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8575339/",
+    "pmcid": "PMC8575339",
+    "licence": "CC BY",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 1",
+    "caption": "Greater occipital nerve at C2: the nerve (arrow) lies on obliquus capitis inferior, deep to semispinalis capitis.",
+    "originalCaption": "Left-sided greater occipital nerve (GON) seen with high-frequency linear ultrasound probe. SSC: semispinalis capitis; OCI: obliquus capitis inferior.",
+    "alt": "Ultrasound at C2 showing semispinalis capitis over obliquus capitis inferior, with an arrow on the greater occipital nerve in the plane between them",
+    "orientation": null,
+    "burnedInLabels": "SSC, OCI, GON with arrow; depth scale cropped",
+    "labels": [
+      {
+        "text": "Semispinalis capitis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.27,
+        "y": 0.39,
+        "tx": 0.25,
+        "ty": 0.3
+      },
+      {
+        "text": "Obliquus capitis inferior",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.36,
+        "y": 0.6,
+        "tx": 0.3,
+        "ty": 0.72
+      },
+      {
+        "text": "Greater occipital nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.47,
+        "y": 0.49,
+        "tx": 0.62,
+        "ty": 0.58
+      }
+    ],
+    "credit": "Skinner C, Kumar S. Cureus 2021, Figure 1. CC BY. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "gon-2.jpg",
+    "block": "gon",
+    "blockId": "gon",
+    "page": "head-neck/scalp/",
+    "articleTitle": "A comparison of the clinical efficacy of GON block at the C2 level and GON block at the classical distal occipital level in the treatment of cluster headache",
+    "authors": "Kılınç A, Karaoğlan M",
+    "journal": "Journal of Oral & Facial Pain and Headache",
+    "year": 2025,
+    "doi": "10.22514/jofph.2025.080",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12727177/",
+    "pmcid": "PMC12727177",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article under the CC BY 4.0 license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Fig. 1, panel B",
+    "caption": "Proximal greater occipital nerve block at C2: the nerve lies in the plane (small arrows) on top of obliquus capitis inferior, lateral to the C2 spinous process.",
+    "originalCaption": "Greater occipital nerve block at the level of C2 with ultrasound guided. (A) Anatomical illustration of GON block performed at the C2 level. (B) Corresponding ultrasound image of the same view. GON: Greater occipital nerve; TON: Third occipital nerve; OCI: Obliquis capitis inferior muscle; C2 SP: Spinal process of C2.",
+    "alt": "Ultrasound along obliquus capitis inferior at C2 with small arrows outlining the plane over the muscle, the greater occipital nerve marked in it, and the C2 spinous process medially",
+    "orientation": {
+      "left": "Lateral",
+      "right": "Medial"
+    },
+    "burnedInLabels": "Panel letter B; GON with dashed line, OCI, C2 SP, Lateral, Medial; small white arrows",
+    "labels": [
+      {
+        "text": "Greater occipital nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.3,
+        "y": 0.54,
+        "tx": 0.42,
+        "ty": 0.38
+      },
+      {
+        "text": "Obliquus capitis inferior",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.41,
+        "y": 0.73
+      },
+      {
+        "text": "C2 spinous process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.89,
+        "y": 0.47,
+        "tx": 0.7,
+        "ty": 0.62
+      }
+    ],
+    "credit": "Kılınç A, Karaoğlan M. Journal of Oral & Facial Pain and Headache 2025, Fig. 1 panel B. CC BY 4.0. Cropped to the ultrasound panel; labels and arrows on the image are the authors'."
+  },
+  {
+    "file": "so-1.jpg",
+    "block": "so",
+    "blockId": "so",
+    "page": "head-neck/face/",
+    "articleTitle": "Ultrasound Imaging of Facial Vascular Neural Structures and Relevance to Aesthetic Injections: A Pictorial Essay",
+    "authors": "Wu WT, Chang KV, Chang HC, et al.",
+    "journal": "Diagnostics",
+    "year": 2022,
+    "doi": "10.3390/diagnostics12071766",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9317469/",
+    "pmcid": "PMC9317469",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 7",
+    "caption": "Supraorbital nerve (yellow arrowhead) leaving the supraorbital foramen, a gap in the bright line of the frontal bone, under the brow muscles.",
+    "originalCaption": "Ultrasound imaging of the supraorbital nerve (yellow arrowhead). White square, footprint of the ultrasound transducer.",
+    "alt": "Transverse ultrasound above the eyebrow showing depressor supercilii and orbicularis oculi over the frontal bone, with a yellow arrowhead on the supraorbital nerve at the foramen",
+    "orientation": {
+      "left": "Medial",
+      "right": "Lateral"
+    },
+    "burnedInLabels": "Depressor supercilii, Orbicularis Oculi, Supraorbital foramen, Medial, Lateral; yellow arrowhead; face-photo probe diagram cropped off",
+    "labels": [
+      {
+        "text": "Depressor supercilii",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.29,
+        "y": 0.48
+      },
+      {
+        "text": "Orbicularis oculi",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.85,
+        "y": 0.31
+      },
+      {
+        "text": "Supraorbital nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.518,
+        "y": 0.63,
+        "tx": 0.66,
+        "ty": 0.52
+      },
+      {
+        "text": "Supraorbital foramen",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.55,
+        "y": 0.77,
+        "tx": 0.25,
+        "ty": 0.8
+      }
+    ],
+    "credit": "Wu WT et al. Diagnostics 2022, Figure 7. CC BY 4.0. Cropped to the ultrasound image; labels and arrowhead on the image are the authors'."
+  },
+  {
+    "file": "so-2.jpg",
+    "block": "so",
+    "blockId": "so",
+    "page": "head-neck/face/",
+    "articleTitle": "Ultrasound-Guided Interventions for Neuropathic Pain: A Narrative Pictorial Review",
+    "authors": "Lin TY, Chang KV, Wu WT, et al.",
+    "journal": "Life",
+    "year": 2025,
+    "doi": "10.3390/life15091404",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12471328/",
+    "pmcid": "PMC12471328",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 1, panel B",
+    "caption": "Ultrasound-guided supraorbital nerve injection: the needle (yellow arrow) comes in from the side to the notch in the frontal bone (SF) under corrugator supercilii.",
+    "originalCaption": "Cadaveric bony model reconstruction illustrating the supraorbital foramen (SF), infraorbital foramen (IF), and mental foramen (MF) (A), and ultrasound-guided injections targeting the supraorbital nerve (V1; needle trajectory indicated by the yellow arrow) (B), infraorbital nerve (V2; needle trajectory indicated by the red arrow) (C), and mental nerve (V3; needle trajectory indicated by the blue arrow) (D). CS, corrugator supercilii; LLS, levator labii superioris; DA, depressor anguli oris. The white square indicates the transducer footprint. Cadaveric images adapted from cadaveric images provided by the Visible Human Project® of the National Library of Medicine. Excerpts featured in the VH Dissector are used with permission from Touch of Life Technologies Inc. (Aurora, CO, USA).",
+    "alt": "Ultrasound over the supraorbital notch showing corrugator supercilii above a dip in the bright frontal bone, with a yellow arrow showing the needle path into the notch",
+    "orientation": null,
+    "burnedInLabels": "Panel letter B; CS, SF; yellow needle-trajectory arrow; probe-position photo inset cropped off",
+    "labels": [
+      {
+        "text": "Corrugator supercilii",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.275,
+        "y": 0.35
+      },
+      {
+        "text": "Supraorbital foramen",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.63,
+        "y": 0.72,
+        "tx": 0.45,
+        "ty": 0.85
+      },
+      {
+        "text": "Needle path",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.765,
+        "y": 0.51,
+        "tx": 0.86,
+        "ty": 0.66
+      }
+    ],
+    "credit": "Lin TY et al. Life 2025, Figure 1 panel B. CC BY 4.0. Cropped to the ultrasound panel without the photo inset; labels and arrow on the image are the authors'."
+  },
+  {
+    "file": "io-1.jpg",
+    "block": "io",
+    "blockId": "io",
+    "page": "head-neck/face/",
+    "articleTitle": "Ultrasound Imaging of Facial Vascular Neural Structures and Relevance to Aesthetic Injections: A Pictorial Essay",
+    "authors": "Wu WT, Chang KV, Chang HC, et al.",
+    "journal": "Diagnostics",
+    "year": 2022,
+    "doi": "10.3390/diagnostics12071766",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9317469/",
+    "pmcid": "PMC9317469",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 13",
+    "caption": "Infraorbital nerve (yellow arrowhead) coming out of the infraorbital foramen in the maxilla, under levator labii superioris.",
+    "originalCaption": "Ultrasound imaging of the infraorbital nerve (yellow arrowhead). White square, footprint of the ultrasound transducer.",
+    "alt": "Transverse ultrasound below the eye showing levator anguli oris, levator labii superioris and orbicularis oculi over the maxilla, with a yellow arrowhead on the infraorbital nerve",
+    "orientation": {
+      "left": "Medial",
+      "right": "Lateral"
+    },
+    "burnedInLabels": "Levator anguli oris, Levator labii superioris, Orbicularis oculi, Infraorbital foramen, Medial, Lateral; yellow arrowhead; face-photo probe diagram cropped off",
+    "labels": [
+      {
+        "text": "Levator anguli oris",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.28,
+        "y": 0.46
+      },
+      {
+        "text": "Levator labii superioris",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.73,
+        "y": 0.35
+      },
+      {
+        "text": "Orbicularis oculi",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.87,
+        "y": 0.2
+      },
+      {
+        "text": "Infraorbital nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.775,
+        "y": 0.5,
+        "tx": 0.88,
+        "ty": 0.44
+      },
+      {
+        "text": "Infraorbital foramen",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.74,
+        "y": 0.56,
+        "tx": 0.5,
+        "ty": 0.7
+      }
+    ],
+    "credit": "Wu WT et al. Diagnostics 2022, Figure 13. CC BY 4.0. Cropped to the ultrasound image; labels and arrowhead on the image are the authors'."
+  },
+  {
+    "file": "io-2.jpg",
+    "block": "io",
+    "blockId": "io",
+    "page": "head-neck/face/",
+    "articleTitle": "Ultrasound-Guided Interventions for Neuropathic Pain: A Narrative Pictorial Review",
+    "authors": "Lin TY, Chang KV, Wu WT, et al.",
+    "journal": "Life",
+    "year": 2025,
+    "doi": "10.3390/life15091404",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12471328/",
+    "pmcid": "PMC12471328",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 1, panel C",
+    "caption": "Ultrasound-guided infraorbital nerve injection: the needle (red arrow) aims at the foramen (IF), a dip in the bright maxilla under levator labii superioris.",
+    "originalCaption": "Cadaveric bony model reconstruction illustrating the supraorbital foramen (SF), infraorbital foramen (IF), and mental foramen (MF) (A), and ultrasound-guided injections targeting the supraorbital nerve (V1; needle trajectory indicated by the yellow arrow) (B), infraorbital nerve (V2; needle trajectory indicated by the red arrow) (C), and mental nerve (V3; needle trajectory indicated by the blue arrow) (D). CS, corrugator supercilii; LLS, levator labii superioris; DA, depressor anguli oris. The white square indicates the transducer footprint. Cadaveric images adapted from cadaveric images provided by the Visible Human Project® of the National Library of Medicine. Excerpts featured in the VH Dissector are used with permission from Touch of Life Technologies Inc. (Aurora, CO, USA).",
+    "alt": "Ultrasound over the infraorbital foramen showing levator labii superioris above a dip in the bright maxilla, with a red arrow showing the needle path",
+    "orientation": null,
+    "burnedInLabels": "Panel letter C; LLS, IF; red needle-trajectory arrow; probe-position photo inset cropped off",
+    "labels": [
+      {
+        "text": "Levator labii superioris",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.8,
+        "y": 0.53
+      },
+      {
+        "text": "Infraorbital foramen",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.67,
+        "y": 0.72,
+        "tx": 0.45,
+        "ty": 0.82
+      },
+      {
+        "text": "Needle path",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.81,
+        "y": 0.67,
+        "tx": 0.9,
+        "ty": 0.8
+      }
+    ],
+    "credit": "Lin TY et al. Life 2025, Figure 1 panel C. CC BY 4.0. Cropped to the ultrasound panel without the photo inset; labels and arrow on the image are the authors'."
+  },
+  {
+    "file": "me-1.jpg",
+    "block": "me",
+    "blockId": "me",
+    "page": "head-neck/face/",
+    "articleTitle": "Ultrasound Imaging of Facial Vascular Neural Structures and Relevance to Aesthetic Injections: A Pictorial Essay",
+    "authors": "Wu WT, Chang KV, Chang HC, et al.",
+    "journal": "Diagnostics",
+    "year": 2022,
+    "doi": "10.3390/diagnostics12071766",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9317469/",
+    "pmcid": "PMC9317469",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 20",
+    "caption": "Mental nerve (yellow arrowhead) leaving the mental foramen, a break in the bright line of the mandible, under depressor labii inferioris.",
+    "originalCaption": "Ultrasound imaging of the mental nerve (yellow arrowhead). White square, footprint of the ultrasound transducer.",
+    "alt": "Transverse ultrasound over the chin showing mentalis, depressor labii inferioris and depressor anguli oris over the mandible, with a yellow arrowhead on the mental nerve at the foramen",
+    "orientation": {
+      "left": "Medial",
+      "right": "Lateral"
+    },
+    "burnedInLabels": "Mentalis, Depressor labii inferioris, Depressor anguli oris, Mental foramen, Medial, Lateral; yellow arrowhead; face-photo probe diagram cropped off",
+    "labels": [
+      {
+        "text": "Mentalis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.15,
+        "y": 0.37
+      },
+      {
+        "text": "Depressor labii inferioris",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.47,
+        "y": 0.34,
+        "tx": 0.4,
+        "ty": 0.2
+      },
+      {
+        "text": "Depressor anguli oris",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.8,
+        "y": 0.3
+      },
+      {
+        "text": "Mental nerve",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.57,
+        "y": 0.46,
+        "tx": 0.72,
+        "ty": 0.52
+      },
+      {
+        "text": "Mental foramen",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.56,
+        "y": 0.5,
+        "tx": 0.38,
+        "ty": 0.75
+      }
+    ],
+    "credit": "Wu WT et al. Diagnostics 2022, Figure 20. CC BY 4.0. Cropped to the ultrasound image; labels and arrowhead on the image are the authors'."
+  },
+  {
+    "file": "me-2.jpg",
+    "block": "me",
+    "blockId": "me",
+    "page": "head-neck/face/",
+    "articleTitle": "Ultrasound-Guided Interventions for Neuropathic Pain: A Narrative Pictorial Review",
+    "authors": "Lin TY, Chang KV, Wu WT, et al.",
+    "journal": "Life",
+    "year": 2025,
+    "doi": "10.3390/life15091404",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12471328/",
+    "pmcid": "PMC12471328",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 1, panel D",
+    "caption": "Ultrasound-guided mental nerve injection: the needle (blue arrow) aims at the mental foramen (MF), a break in the bright mandible.",
+    "originalCaption": "Cadaveric bony model reconstruction illustrating the supraorbital foramen (SF), infraorbital foramen (IF), and mental foramen (MF) (A), and ultrasound-guided injections targeting the supraorbital nerve (V1; needle trajectory indicated by the yellow arrow) (B), infraorbital nerve (V2; needle trajectory indicated by the red arrow) (C), and mental nerve (V3; needle trajectory indicated by the blue arrow) (D). CS, corrugator supercilii; LLS, levator labii superioris; DA, depressor anguli oris. The white square indicates the transducer footprint. Cadaveric images adapted from cadaveric images provided by the Visible Human Project® of the National Library of Medicine. Excerpts featured in the VH Dissector are used with permission from Touch of Life Technologies Inc. (Aurora, CO, USA).",
+    "alt": "Ultrasound over the mental foramen showing a break in the bright mandible line, with a blue arrow showing the needle path",
+    "orientation": null,
+    "burnedInLabels": "Panel letter D; MF; blue needle-trajectory arrow; probe-position photo inset and the DA label cropped off",
+    "labels": [
+      {
+        "text": "Mandible",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.3,
+        "y": 0.52,
+        "tx": 0.2,
+        "ty": 0.62
+      },
+      {
+        "text": "Mental foramen",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.65,
+        "y": 0.68,
+        "tx": 0.48,
+        "ty": 0.82
+      },
+      {
+        "text": "Needle path",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.79,
+        "y": 0.71,
+        "tx": 0.88,
+        "ty": 0.86
+      }
+    ],
+    "credit": "Lin TY et al. Life 2025, Figure 1 panel D. CC BY 4.0. Cropped to the ultrasound panel without the photo inset; the label and arrow on the image are the authors'."
+  }
+]

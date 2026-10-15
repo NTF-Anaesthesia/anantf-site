@@ -182,11 +182,9 @@ export function createTree(data, { headingLevel = 4, kicker, onNode } = {}) {
     if (focus) {
       heading.focus({ preventScroll: true });
       const r = heading.getBoundingClientRect();
-      const top = 170;
-      if (r.top < top || r.top > window.innerHeight - 160) {
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollBy({ top: r.top - top, behavior: reduce ? 'auto' : 'smooth' });
-      }
+      // Just below the one sticky app bar (--ra-bar); an instant jump, never a smooth programmatic scroll.
+      const top = (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--ra-bar')) || 56) + 16;
+      if (r.top < top || r.top > window.innerHeight - 160) window.scrollBy({ top: r.top - top, behavior: 'instant' });
       const text = isOutcome(n)
         ? `${TONES[n.tone]?.label || 'Outcome'}: ${n.outcome}`
         : `Step ${step}: ${n.prompt}`;

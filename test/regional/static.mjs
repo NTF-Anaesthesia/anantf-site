@@ -1,0 +1,158 @@
+#!/usr/bin/env node
+// Regional anaesthesia app: repository checks that need no browser (plan §3, §11.6, §11.8, owner rules).
+//
+//   node test/regional/static.mjs        options: --json=<file>   --failsOnly
+//
+// Checks:
+//   1. nothing in the repo imports or links through the old-path shims (truncal/shared/**, head-neck/shared/js/head.js,
+//      lower-limb/shared/js/leg.js), and nothing points at the old brachial-plexus/vendor/three;
+//   2. every regional page keeps its noindex tag;
+//   3. no "FRCA" in the regional pages (say exam / MMed);
+//   4. no service worker registered by the regional pages;
+//   5. no personal e-mail addresses (only contact@anantf.com) or phone numbers in the regional pages;
+//   6. engine entry points are versioned (?v=) once, never "?v=…?v=…";
+//   7. every relative import / script / stylesheet in the regional pages points at a file that exists;
+//   8. the test allow-lists are valid JSON with a reason for every entry.
+
+import fs from 'node:fs';
+import path from 'node:path';
+import { ROOT, HERE, reporter, walk } from './lib.mjs';
+
+const R = reporter('Static');
+const REGIONAL_DIRS = ['truncal', 'head-neck', 'lower-limb', 'brachial-plexus', 'plexus', 'spinal', 'shared/regional', 'blocks'];
+const EXCLUDE = (f) => f.startsWith('lower-limb/anim/') || f.startsWith('test/') || f.includes('/vendor/') || f.startsWith('shared/vendor/');
+const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
+const files = walk(REGIONAL_DIRS, ['.js', '.mjs', '.html', '.css']).filter((f) => !EXCLUDE(f));
+const htmlFiles = [...files.filter((f) => f.endsWith('.html')), ...['regional.html', 'ra.html', 'draft-ra.html'].filter((f) => fs.existsSync(path.join(ROOT, f)))];
+const SHIMS = new Set([
+  ...(fs.existsSync(path.join(ROOT, 'truncal/shared/js')) ? fs.readdirSync(path.join(ROOT, 'truncal/shared/js')).map((f) => `truncal/shared/js/${f}`) : []),
+  'truncal/shared/css/truncal.css', 'head-neck/shared/js/head.js', 'lower-limb/shared/js/leg.js',
+]);
+const isShim = (f) => SHIMS.has(f);
+
+/** Every module / script / stylesheet reference in a file: [{spec, line}]. */
+function refsOf(f, src) {
+  const out = [];
+  const lines = src.split('\n');
+  const RE = [
+    /\bimport\s+(?:[\w*{}\s,]+\s+from\s+)?['"]([^'"]+)['"]/g,
+    /\bexport\s+(?:\*|\{[^}]*\})\s+from\s+['"]([^'"]+)['"]/g,
+    /\bimport\(\s*['"]([^'"]+)['"]\s*\)/g,
+    /<script[^>]+src=["']([^"']+)["']/g,
+    /<link[^>]+href=["']([^"']+\.css[^"']*)["']/g,
+    /@import\s+(?:url\()?["']?([^"')\s]+)["']?\)?/g,
+  ];
+  lines.forEach((line, i) => {
+    if (/^\s*(\/\/|\*|\/\*)/.test(line)) return;
+    for (const re of RE) for (const m of line.matchAll(re)) out.push({ spec: m[1], line: i + 1 });
+  });
+  // Import maps: "three": "../shared/vendor/three-r160/three.module.js"
+  for (const m of src.matchAll(/<script type="importmap">([\s\S]*?)<\/script>/g)) {
+    try { for (const v of Object.values(JSON.parse(m[1]).imports || {})) out.push({ spec: v, line: 0 }); } catch { out.push({ spec: '<invalid import map>', line: 0 }); }
+  }
+  return out;
+}
+function resolveRef(f, spec) {
+  if (/^(https?:)?\/\//.test(spec) || /^(data|blob|mailto):/.test(spec) || spec.startsWith('#') || /^[a-z@][\w./-]*$/i.test(spec) && !spec.includes('/') && !spec.endsWith('.js') && !spec.endsWith('.css')) return null;
+  if (/^(three|three\/addons\/)/.test(spec)) return null; // bare specifiers resolved by the import map
+  if (spec.includes('${')) return null; // template literal, built at run time
+  const clean = spec.split(/[?#]/)[0];
+  const abs = clean.startsWith('/') ? clean.slice(1) : path.posix.normalize(path.posix.join(path.posix.dirname(f), clean));
+  return abs;
+}
+
+// 1 + 7. shims and broken references
+{
+  const through = []; const broken = []; const oldVendor = []; const doubleV = [];
+  const scan = [...files, ...htmlFiles.filter((f) => !files.includes(f)), ...walk(['mo', 'babymo', 'assets'], ['.js', '.mjs', '.html', '.css']).filter((f) => !EXCLUDE(f))];
+  for (const f of new Set(scan)) {
+    const src = read(f);
+    if (/brachial-plexus\/vendor\/three/.test(src) && !isShim(f)) oldVendor.push(f);
+    for (const { spec, line } of refsOf(f, src)) {
+      if (/\?v=[^'"?]*\?v=/.test(spec)) doubleV.push(`${f}:${line}: ${spec}`);
+      const abs = resolveRef(f, spec);
+      if (!abs) continue;
+      if (SHIMS.has(abs) && !isShim(f)) through.push(`${f}:${line}: ${spec}`);
+      if (REGIONAL_DIRS.some((d) => f.startsWith(d)) || htmlFiles.includes(f)) {
+        const p = path.join(ROOT, abs);
+        const dirOk = spec.split(/[?#]/)[0].endsWith('/') && fs.existsSync(p) && fs.statSync(p).isDirectory(); // import-map prefix
+        if (!dirOk && (!fs.existsSync(p) || (fs.statSync(p).isDirectory() && !fs.existsSync(path.join(p, 'index.html'))))) broken.push(`${f}:${line}: ${spec} → /${abs}`);
+      }
+    }
+  }
+  R.check('nothing imports or links through the old-path shims', !through.length, through.join('\n'));
+  R.check('nothing points at the old brachial-plexus/vendor/three', !oldVendor.length, oldVendor.join('\n'));
+  R.check('every relative import, script and stylesheet in the regional pages exists', !broken.length, broken.join('\n'));
+  R.check('no doubled cache-busting query (?v=…?v=…)', !doubleV.length, doubleV.join('\n'));
+  // Shims themselves still point at real files.
+  const badShim = [];
+  for (const s of SHIMS) {
+    if (!fs.existsSync(path.join(ROOT, s))) { badShim.push(`${s} missing`); continue; }
+    for (const { spec } of refsOf(s, read(s))) { const abs = resolveRef(s, spec); if (abs && !fs.existsSync(path.join(ROOT, abs))) badShim.push(`${s} → ${spec} (missing)`); }
+  }
+  R.check(`all ${SHIMS.size} shims exist and point at real files`, !badShim.length, badShim.join('\n'));
+}
+
+// 2. noindex
+{
+  const pages = htmlFiles.filter((f) => /(^|\/)index\.html$/.test(f) && !f.startsWith('shared/'));
+  const missing = pages.filter((f) => !/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex/i.test(read(f)));
+  R.check(`noindex on every regional page (${pages.length} pages)`, pages.length && !missing.length, `missing: ${missing.join(', ')}`);
+}
+
+// 3. FRCA
+{
+  const hits = [];
+  for (const f of [...files, 'regional.html'].filter((x) => fs.existsSync(path.join(ROOT, x)))) {
+    read(f).split('\n').forEach((l, i) => { if (/FRCA/.test(l)) hits.push(`${f}:${i + 1}: ${l.trim().slice(0, 100)}`); });
+  }
+  R.check('no "FRCA" in the regional pages (say exam / MMed)', !hits.length, hits.join('\n'));
+}
+
+// 4. service workers
+{
+  const hits = files.filter((f) => /serviceWorker\s*\.\s*register\s*\(/.test(read(f)));
+  R.check('no service worker registered by the regional pages', !hits.length, hits.join(', '));
+}
+
+// 5. personal contact details
+{
+  const hits = [];
+  for (const f of files) {
+    const src = read(f);
+    for (const m of src.matchAll(/[\w.+-]+@[\w-]+\.[\w.-]+/g)) if (!/^contact@anantf\.com$/i.test(m[0]) && !/@\d|\.(js|css|png|svg|glb)$/.test(m[0]) && !/^[\w-]+@\d/.test(m[0])) hits.push(`${f}: ${m[0]}`);
+    for (const m of src.matchAll(/(?:\+65[\s-]?)?\b[689]\d{3}[\s-]\d{4}\b/g)) hits.push(`${f}: phone-like "${m[0]}"`);
+  }
+  R.check('no personal e-mail addresses or phone numbers (public contact is contact@anantf.com)', !hits.length, [...new Set(hits)].join('\n'));
+}
+
+// 6. versioned entry points
+{
+  const bad = [];
+  for (const f of htmlFiles.filter((x) => /^(truncal|head-neck|lower-limb)\/[\w-]+\/index\.html$/.test(x))) {
+    const src = read(f);
+    if (!/src=["']js\/page\.js\?v=\d+["']/.test(src)) bad.push(`${f}: js/page.js has no ?v=`);
+    if (!/regional\.css\?v=\d+/.test(src)) bad.push(`${f}: regional.css has no ?v=`);
+  }
+  R.check('engine page entry points carry ?v=', !bad.length, bad.join('\n'));
+}
+
+// 8. allow-lists
+{
+  const why = [];
+  for (const name of ['parity-allow.json', 'data-allow.json']) {
+    const f = path.join(HERE, name);
+    if (!fs.existsSync(f)) continue;
+    let j;
+    try { j = JSON.parse(fs.readFileSync(f, 'utf8')); } catch (e) { why.push(`${name}: ${e.message}`); continue; }
+    const walkWhy = (o, at) => {
+      if (Array.isArray(o)) o.forEach((x, i) => { if (x && typeof x === 'object') { if (!x.why) why.push(`${name} ${at}[${i}] has no "why"`); } });
+      else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) if (!k.startsWith('_')) walkWhy(v, `${at}.${k}`);
+    };
+    walkWhy(j, '');
+    for (const [p, v] of Object.entries(j)) for (const x of [...(v.missingPatterns || []), ...(v.renames || []).map((r) => ({ re: r.from }))]) { try { new RegExp(x.re); } catch (e) { why.push(`${name} ${p}: bad regex ${x.re}`); } }
+  }
+  R.check('test allow-lists are valid and every entry says why', !why.length, why.join('\n'));
+}
+
+process.exit(R.finish());

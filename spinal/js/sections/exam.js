@@ -1,10 +1,10 @@
-// Chapter "Exam (FRCA)": exam knowledge and viva points.
+// Chapter "Exam (MMed)": exam knowledge and viva points.
 // Content not taught elsewhere on the page: obstetric and infant spinals (exam only), neuraxial
 // comparison, test doses, evidence, physics, history and viva answers. Mostly tier 2 and 3.
 // No doses are given here. Dose lines live in Pharmacology and Technique.
 import { el, tier, keyPoints, callout, table, details } from '../ui.js?v=1';
 
-export const meta = { id: 'exam', prefix: 'ex', title: 'Exam (FRCA) knowledge' };
+export const meta = { id: 'exam', prefix: 'ex', title: 'Exam (MMed) knowledge' };
 
 const P = (html, cls = 'sp-prose') => el('p', { class: cls, html });
 const UL = (items) => el('ul', { class: 'sp-prose', html: items.map((i) => `<li>${i}</li>`).join('') });
@@ -60,7 +60,7 @@ function testDose() {
 function obstetric() {
   const warn = T(callout('policy', {
     title: 'Exam knowledge only',
-    body: '<p>NTF has no obstetric service. This is here because the FRCA examines it. A typical caesarean dose is <span class="sp-dose">2.2–2.3 mL</span> of hyperbaric bupivacaine 0.5% (<span class="sp-dose">11–11.5 mg</span>).</p>',
+    body: '<p>NTF has no obstetric service. This is here because the MMed exam tests it. A typical caesarean dose is <span class="sp-dose">2.2–2.3 mL</span> of hyperbaric bupivacaine 0.5% (<span class="sp-dose">11–11.5 mg</span>).</p>',
   }), 2);
   const body = el('div');
   body.append(
@@ -99,7 +99,7 @@ function obstetric() {
       '<strong>High block</strong> after a caesarean spinal is managed as in <a href="#ts-high-spinal">high spinal</a>, with left uterine displacement while the patient is pregnant.',
     ]), 3),
   );
-  return sub('ex-obstetric', 'Spinal for caesarean section (exam knowledge only)', warn, details({ id: 'ex-obstetric-d', summary: 'Open: caesarean spinal for the FRCA', body: body, open: false }));
+  return sub('ex-obstetric', 'Spinal for caesarean section (exam knowledge only)', warn, details({ id: 'ex-obstetric-d', summary: 'Open: caesarean spinal for the MMed exam', body: body, open: false }));
 }
 
 // ---------------------------------------------------------------- 4. paediatric
@@ -128,7 +128,7 @@ function paeds() {
       '<strong>Caudal block</strong> is the regional technique most often used in children; see the <a href="#ex-compare">comparison table</a>.',
     ]), 3),
   );
-  return sub('ex-paeds', 'Infant (paediatric) spinal (exam knowledge only)', warn, details({ id: 'ex-paeds-d', summary: 'Open: infant awake spinal for the FRCA', body: body, open: false }));
+  return sub('ex-paeds', 'Infant (paediatric) spinal (exam knowledge only)', warn, details({ id: 'ex-paeds-d', summary: 'Open: infant awake spinal for the MMed exam', body: body, open: false }));
 }
 
 // ---------------------------------------------------------------- 5. evidence
@@ -220,7 +220,7 @@ function viva() {
 export function mount(root) {
   root.append(
     keyPoints([
-      'This is exam knowledge: mostly Resident and Advanced. The bedside chapters teach the practice.',
+      'This is exam knowledge: mostly Resident and Consultant. The bedside chapters teach the practice.',
       'Spinal is a small dose in CSF with a fast, dense block; epidural is a large volume, slower and titratable.',
       'Caesarean spinal: block to T4, prevent hypotension with a phenylephrine infusion (Kinsella 2018).',
       'Infant spinal: for ex-premature infants to avoid apnoea after general anaesthesia; the GAS trial found no difference in outcome.',

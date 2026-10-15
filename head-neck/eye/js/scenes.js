@@ -1,10 +1,10 @@
 // Eye: schematic sections of the orbit for the landmark eye blocks (no ultrasound: scene.image = 'diagram').
 // The orbit is drawn as a sagittal section turned on its side so that depth into the orbit runs down the screen:
 // the front of the eye is at the top, the orbital apex at the bottom, the roof on the left and the floor on the right.
-// Millimetres; schema ../../../truncal/shared/DATA.md. Original geometry from typical adult dimensions (axial length
+// Millimetres; schema ../../../shared/regional/DATA.md. Original geometry from typical adult dimensions (axial length
 // about 24 mm, orbit about 45 mm deep); nothing is traced from published images.
-import { E, P, L } from '../../../truncal/shared/js/scene.js';
-import { headProbeInset } from '../../shared/js/head.js';
+import { E, P, L } from '../../../shared/regional/js/scene.js';
+import { headProbeInset } from '../../../shared/regional/js/figures/head.js?v=20261015';
 
 const G = { cx: 24, cy: 12.2, r: 11.8 };             // globe
 const arc = (r, a0, a1, n = 24) => Array.from({ length: n + 1 }, (_, i) => {
@@ -15,7 +15,7 @@ const arc = (r, a0, a1, n = 24) => Array.from({ length: n + 1 }, (_, i) => {
 function orbit({ id, title, view, tenon = false, injections, steps, probe }) {
   const shapes = [
     { id: 'roof', kind: 'bone', label: 'Orbital roof', short: 'Roof', shape: L(1.4, [1.5, 1], [3.6, 14], [9.5, 30], [19.5, 45.5]), at: [4.4, 17], lab: [5, 38] },
-    { id: 'floor', kind: 'bone', label: 'Orbital floor', short: 'Floor', shape: L(1.4, [47, 2], [45, 14], [39, 29], [30, 45.5]), at: [44.2, 17], lab: [44, 40] },
+    { id: 'floor', kind: 'bone', label: 'Orbital floor', short: 'Floor', shape: L(1.4, [47, 2], [45, 14], [39, 29], [30, 45.5]), at: [44.2, 17], lab: [38.6, 41.4] },
     { id: 'globe', kind: 'fluid', label: 'Globe', shape: E(G.cx, G.cy, G.r, G.r), at: [17, 13], lab: [15, 11.5] },
     { id: 'lens', kind: 'cartilage', label: 'Lens', nolabel: true, shape: E(G.cx, 4.6, 4.4, 1.8) },
     { id: 'sr', kind: 'muscle', label: 'Superior rectus', short: 'SR', shape: P([12.3, 13.6], [14, 13], [24, 44.6], [22.8, 45]), at: [16.6, 24], lab: [9.5, 23] },

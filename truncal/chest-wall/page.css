@@ -1,4 +1,4 @@
-/* Chest wall page: anatomy chapter figures and notes (prefix cw-). Shared styles: ../shared/css/truncal.css */
+/* Chest wall page: anatomy chapter figures and notes (prefix cw-). Shared styles: ../../shared/regional/css/regional.css */
 .tb-app .cw-fig{margin:24px 0 8px}
 .tb-app main .cw-fig-title{font:400 22px/1.3 var(--tb-serif);margin:0 0 10px}
 .tb-app .cw-fig-stage{border:1px solid var(--tb-line);background:#fbf9f4;padding:8px}

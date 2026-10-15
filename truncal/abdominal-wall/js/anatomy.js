@@ -1,6 +1,6 @@
 // Abdominal wall: anatomy chapter (T6–L1 innervation). Original schematic drawings (SVG).
-import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../shared/js/ui.js';
-import { OUTLINE } from '../../shared/js/dermatomes.js';
+import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../../shared/regional/js/ui.js';
+import { OUTLINE } from '../../../shared/regional/js/dermatomes.js';
 
 const NERVE = '#e2b21c', NERVE_EDGE = '#7a5c00', LA = '#2c74b3';
 

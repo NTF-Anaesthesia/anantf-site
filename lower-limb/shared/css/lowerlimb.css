@@ -1,10 +1,10 @@
-/* Lower-limb blocks: section styles on top of truncal/shared/css/truncal.css. Prefix ll-. */
+/* Lower-limb blocks: section styles on top of shared/regional/css/regional.css. Prefix ll-. */
 .ll-anim{margin:0 0 28px;border:1px solid var(--line,#d9d2c3);background:#f7f5ef}
 .ll-anim-frame{display:block;width:100%;height:520px;border:0;background:#f7f5ef}
 .ll-anim-cap{font-size:14px;line-height:1.5;color:var(--ink-soft,#5d554b);padding:10px 14px;border-top:1px solid var(--line,#d9d2c3)}
 .ll-anim-cap a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 
-/* Leg figures (lower-limb/shared/js/leg.js): coverage maps, probe insets, anatomy figures */
+/* Leg figures (shared/regional/js/figures/leg.js): coverage maps, probe insets, anatomy figures */
 .tb-app .ll-cov{max-width:460px}
 .tb-app .ll-cov-views{display:grid;gap:6px;align-items:start}
 .tb-app .ll-cov-view{min-width:0}

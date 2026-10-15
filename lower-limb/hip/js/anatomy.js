@@ -1,8 +1,8 @@
 // Hip page: anatomy chapter (the lumbar plexus in the groin and thigh; hip joint innervation; why PENG works).
 // Original schematic drawings (SVG), not traced from any published figure. Clinical colours: nerves yellow, arteries red,
 // veins blue, local anaesthetic blue.
-import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../../truncal/shared/js/ui.js';
-import * as LEG from '../../shared/js/leg.js';
+import { el, sv, fill, keyPoints, callout, table, registerSearch } from '../../../shared/regional/js/ui.js';
+import * as LEG from '../../../shared/regional/js/figures/leg.js';
 
 const NERVE = '#e2b21c', NERVE_EDGE = '#7a5c00', ART = '#c0392b', VEIN = '#2f5d9e', LA = '#2c74b3';
 const INK = '#272722', MUTED = '#55534d';

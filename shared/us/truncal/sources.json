@@ -1,0 +1,1248 @@
+[
+  {
+    "file": "esp-1.jpg",
+    "block": "esp",
+    "blockId": "esp",
+    "page": "truncal/back/",
+    "articleTitle": "Fascial plane blocks for cardiothoracic surgery: a narrative review",
+    "authors": "Capuano P, Sepolvere G, Toscano A, et al.",
+    "journal": "Journal of Anesthesia, Analgesia and Critical Care",
+    "year": 2024,
+    "doi": "10.1186/s44158-024-00155-5",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10926596/",
+    "pmcid": "PMC10926596",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 10, panel A",
+    "caption": "Erector spinae plane block at T4: the needle tip sits under erector spinae on the transverse process, with local anaesthetic lifting the muscle off the bone.",
+    "originalCaption": "A ESPB: the needle is advanced with an in-plane approach in caudo-cranial direction to reach the interfascial plane between the transverse process and the erector spinae muscle. B Ultrasound visualization of the ESPB catheter between the ESM and the transverse process. ESM, erector spinae muscle; LA, local anesthetic; N, needle; T4, transverse process",
+    "alt": "Parasagittal ultrasound over the T4 transverse process during an erector spinae plane block, with the needle and local anaesthetic deep to erector spinae",
+    "orientation": null,
+    "burnedInLabels": "Panel letter A (cropped off); ESM, N, LA, T4; depth scale dots and \"3 cm\"",
+    "labels": [
+      {
+        "text": "Erector spinae",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.2,
+        "y": 0.33,
+        "tx": 0.16,
+        "ty": 0.35
+      },
+      {
+        "text": "T4 transverse process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.36,
+        "y": 0.46,
+        "tx": 0.4,
+        "ty": 0.55
+      },
+      {
+        "text": "Local anaesthetic",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.44,
+        "y": 0.41,
+        "tx": 0.37,
+        "ty": 0.4
+      },
+      {
+        "text": "Needle",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.56,
+        "y": 0.28,
+        "tx": 0.5,
+        "ty": 0.31
+      }
+    ],
+    "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 10 panel A. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "esp-2.jpg",
+    "block": "esp",
+    "blockId": "esp",
+    "page": "truncal/back/",
+    "articleTitle": "Fascial plane blocks for cardiothoracic surgery: a narrative review",
+    "authors": "Capuano P, Sepolvere G, Toscano A, et al.",
+    "journal": "Journal of Anesthesia, Analgesia and Critical Care",
+    "year": 2024,
+    "doi": "10.1186/s44158-024-00155-5",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10926596/",
+    "pmcid": "PMC10926596",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 9, panel B",
+    "caption": "Scanning for an erector spinae plane block at T4: trapezius, rhomboid and erector spinae lie in layers over the bright T4 transverse process.",
+    "originalCaption": "A ESPB performed with the patient in sitting position before general anesthesia induction. B Sono-anatomy of the ESPB block: trapezius (uppermost), rhomboid (middle), and erector spinae (lowermost) are identified. The hyperechoic T4 transverse process is individuated inferior to the erector spinae muscle. TR, trapezius muscle; RH, rhomboid muscle; ESM, erector spinae muscle; T4, transverse process",
+    "alt": "Parasagittal ultrasound at T4 showing trapezius, rhomboid and erector spinae over the transverse process",
+    "orientation": null,
+    "burnedInLabels": "Panel letter B (cropped off); TR, RH, ESM, T4",
+    "labels": [
+      {
+        "text": "Trapezius",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.3,
+        "y": 0.34,
+        "tx": 0.24,
+        "ty": 0.35
+      },
+      {
+        "text": "Rhomboid",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.3,
+        "y": 0.44,
+        "tx": 0.24,
+        "ty": 0.44
+      },
+      {
+        "text": "Erector spinae",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.3,
+        "y": 0.55,
+        "tx": 0.24,
+        "ty": 0.57
+      },
+      {
+        "text": "T4 transverse process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.46,
+        "y": 0.59,
+        "tx": 0.43,
+        "ty": 0.66
+      }
+    ],
+    "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 9 panel B. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "pvb-1.jpg",
+    "block": "pvb",
+    "blockId": "pvb",
+    "page": "truncal/back/",
+    "articleTitle": "Mechanical needle guidance for ultrasound-guided parasagittal oblique in-plane paravertebral blocks: a cadaveric study",
+    "authors": "Elsharkawy H, Altinpulluk EY, Shimada T, et al.",
+    "journal": "Brazilian Journal of Anesthesiology",
+    "year": 2026,
+    "doi": "10.1016/j.bjane.2025.844716",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12811454/",
+    "pmcid": "PMC12811454",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Figure 2",
+    "caption": "Sagittal (paramedian oblique) view for a thoracic paravertebral block at T4: the needle passes between two transverse processes, through the superior costotransverse ligament, into the space just above the pleura. Image from an unembalmed cadaver.",
+    "originalCaption": "Ultrasound-guided paravertebral block using paramedian oblique sagittal scan without needle guidance at T4. The long white arrow represents the needle inserted parasagittal in-plane technique. TP, Transverse Process; SCL, Superior Costotransverse Ligament; IIM, Internal Intercostal Membrane.",
+    "alt": "Paramedian sagittal ultrasound of the thoracic paravertebral space between two transverse processes, with the needle path drawn in",
+    "orientation": {
+      "left": "cranial",
+      "right": "caudal"
+    },
+    "burnedInLabels": "Authors' overlays: red TP outlines, green line (SCL/IIM), orange line (pleura), large white needle arrow, text \"Paraspinal Muscles\", \"SCL/IIM\", \"Pleura\", \"TP\", partly \"Lung\"; \"Cranial\"/\"Caudal\" and \"Paravertebral Space\" text cropped off",
+    "labels": [
+      {
+        "text": "Transverse process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.17,
+        "y": 0.6,
+        "tx": 0.11,
+        "ty": 0.66
+      },
+      {
+        "text": "Transverse process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.83,
+        "y": 0.6,
+        "tx": 0.86,
+        "ty": 0.66
+      },
+      {
+        "text": "Paraspinal muscles",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.45,
+        "y": 0.33
+      },
+      {
+        "text": "Superior costotransverse ligament / internal intercostal membrane",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.52,
+        "y": 0.76,
+        "tx": 0.7,
+        "ty": 0.68
+      },
+      {
+        "text": "Paravertebral space",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.36,
+        "y": 0.8,
+        "tx": 0.22,
+        "ty": 0.9
+      },
+      {
+        "text": "Pleura",
+        "elementId": null,
+        "kind": "pleura",
+        "x": 0.62,
+        "y": 0.82,
+        "tx": 0.8,
+        "ty": 0.93
+      },
+      {
+        "text": "Needle path",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.67,
+        "y": 0.38,
+        "tx": 0.8,
+        "ty": 0.3
+      }
+    ],
+    "credit": "Elsharkawy H et al. Brazilian Journal of Anesthesiology 2026, Figure 2. CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "note": "Cadaver scan (study in unembalmed cadavers)."
+  },
+  {
+    "file": "pvbt-1.jpg",
+    "block": "pvbt",
+    "blockId": "pvbt",
+    "page": "truncal/back/",
+    "articleTitle": "Comparison of injectate spread following transverse vs. sagittal in-plane ultrasound-guided thoracic paravertebral block: a cadaveric study",
+    "authors": "Tang J, Tang S, Wang N, et al.",
+    "journal": "Frontiers in Medicine",
+    "year": 2025,
+    "doi": "10.3389/fmed.2025.1667862",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12647097/",
+    "pmcid": "PMC12647097",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.",
+    "figure": "Figure 1, panel B",
+    "caption": "Transverse in-plane thoracic paravertebral block at T6: the needle runs from lateral to medial towards the tip of the transverse process, just above the pleura. Image from a cadaver.",
+    "originalCaption": "Ultrasound views of T6-7 paravertebral injections using two approaches and dye spread in PVS after injections. (A) showed a transverse cross-sectional image at transverse process, a typical ultrasound image during TPVB using TI approach. (B) showed a sagittal cross-sectional image at the thoracic PVS, a typical ultrasound image during TPVB using SI approach. (C) PVS of T6-7 segment was stained using SI approach. (D) PVS of T6-7 to T3-4 segments were stained using TI approach. Yellow arrowheads indicated injection needle. Upward white triangles indicated pleura. * indicated the injection site. TP, transverse process; PVS, paravertebral space; TPVB, thoracic paravertebral block; TI, transverse in-plane; SI, sagittal in-plane.",
+    "alt": "Transverse ultrasound of the thoracic paravertebral region at T6 with the needle advanced from lateral to medial towards the transverse process",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "Panel letter B (top right, not removable without losing the needle entry); \"TP 6\"; \"Medial\", \"Lateral\"; yellow arrows along the needle; white triangles on the pleura",
+    "labels": [
+      {
+        "text": "T6 transverse process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.08,
+        "y": 0.47,
+        "tx": 0.1,
+        "ty": 0.37
+      },
+      {
+        "text": "Pleura",
+        "elementId": null,
+        "kind": "pleura",
+        "x": 0.5,
+        "y": 0.74,
+        "tx": 0.6,
+        "ty": 0.84
+      },
+      {
+        "text": "Needle",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.57,
+        "y": 0.47,
+        "tx": 0.7,
+        "ty": 0.3
+      },
+      {
+        "text": "Needle tip",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.3,
+        "y": 0.7,
+        "tx": 0.22,
+        "ty": 0.6
+      }
+    ],
+    "credit": "Tang J et al. Frontiers in Medicine 2025, Figure 1 panel B. CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "note": "Cadaver scan. The original legend labels panel A as transverse and B as sagittal, but the burned-in orientation words show B is the transverse (medial-lateral) view, so this file follows the burned-in labels."
+  },
+  {
+    "file": "parasternal-1.jpg",
+    "block": "parasternal",
+    "blockId": "parasternal",
+    "page": "truncal/chest-wall/",
+    "articleTitle": "Fascial plane blocks for cardiothoracic surgery: a narrative review",
+    "authors": "Capuano P, Sepolvere G, Toscano A, et al.",
+    "journal": "Journal of Anesthesia, Analgesia and Critical Care",
+    "year": 2024,
+    "doi": "10.1186/s44158-024-00155-5",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10926596/",
+    "pmcid": "PMC10926596",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 1, panel B",
+    "caption": "Parasternal view between two ribs: the superficial block goes under pectoralis major, the deep block between the internal intercostal and transversus thoracis muscles above the pleura.",
+    "originalCaption": "A Superficial parasternal block. Patient and probe position. The needle is inserted with the in-plane approach in the cranial to caudal or caudal to cranial direction. B Ultrasound landmarks of superficial and deep parasternal block. From top to bottom: pectoralis major muscle, external intercostal muscle, internal intercostal muscle, transversus thoracis muscle, pleura, ribs. PMM, pectoralis major muscle; EIM, external intercostal muscle; IIM, internal intercostal muscle; TTM, transversus thoracis muscle",
+    "alt": "Parasternal ultrasound between two ribs showing pectoralis major, the intercostal muscles, transversus thoracis and pleura, with arrows to the superficial and deep targets",
+    "orientation": null,
+    "burnedInLabels": "Panel letter B and the arrow captions \"Superficial/Deep parasternal block\" (cropped off; arrows kept); PMM, EIM, IIM, TTM, Pleura, Rib; machine settings column cropped off",
+    "labels": [
+      {
+        "text": "Pectoralis major",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.45,
+        "y": 0.33,
+        "tx": 0.5,
+        "ty": 0.27
+      },
+      {
+        "text": "External intercostal",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.55
+      },
+      {
+        "text": "Internal intercostal",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.64
+      },
+      {
+        "text": "Transversus thoracis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.45,
+        "y": 0.715,
+        "tx": 0.3,
+        "ty": 0.72
+      },
+      {
+        "text": "Pleura",
+        "elementId": null,
+        "kind": "pleura",
+        "x": 0.4,
+        "y": 0.77,
+        "tx": 0.47,
+        "ty": 0.82
+      },
+      {
+        "text": "Rib",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.08,
+        "y": 0.48
+      },
+      {
+        "text": "Rib",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.93,
+        "y": 0.48
+      },
+      {
+        "text": "Superficial target",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.43,
+        "y": 0.48,
+        "tx": 0.24,
+        "ty": 0.4
+      },
+      {
+        "text": "Deep target",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.62,
+        "y": 0.69,
+        "tx": 0.76,
+        "ty": 0.62
+      }
+    ],
+    "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 1 panel B. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "pecs-1.jpg",
+    "block": "pecs",
+    "blockId": "pecs",
+    "page": "truncal/chest-wall/",
+    "articleTitle": "Fascial plane blocks for cardiothoracic surgery: a narrative review",
+    "authors": "Capuano P, Sepolvere G, Toscano A, et al.",
+    "journal": "Journal of Anesthesia, Analgesia and Critical Care",
+    "year": 2024,
+    "doi": "10.1186/s44158-024-00155-5",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10926596/",
+    "pmcid": "PMC10926596",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 5, panel B",
+    "caption": "PECS I block: local anaesthetic has opened the plane between pectoralis major and pectoralis minor, above the fourth rib.",
+    "originalCaption": "A PECS 1 before injection of local anesthetic. B PECS 1 after injection of local anesthetic, which spreads into the fascial layers between pectoral major and minor muscles. PMM, pectoralis major muscle; PMm, pectoralis minor muscle; N, needle; LA, local anesthetic",
+    "alt": "Ultrasound of the PECS I block with local anaesthetic between pectoralis major and pectoralis minor",
+    "orientation": null,
+    "burnedInLabels": "Panel letter B (cropped off); PMM, PMm, LA, N, IV RIB",
+    "labels": [
+      {
+        "text": "Pectoralis major",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.58,
+        "y": 0.26,
+        "tx": 0.58,
+        "ty": 0.29
+      },
+      {
+        "text": "Pectoralis minor",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.26,
+        "y": 0.68,
+        "tx": 0.26,
+        "ty": 0.73
+      },
+      {
+        "text": "Local anaesthetic",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.28,
+        "y": 0.45,
+        "tx": 0.24,
+        "ty": 0.4
+      },
+      {
+        "text": "Needle",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.44,
+        "y": 0.47,
+        "tx": 0.46,
+        "ty": 0.53
+      },
+      {
+        "text": "4th rib",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.3,
+        "y": 0.8,
+        "tx": 0.3,
+        "ty": 0.87
+      }
+    ],
+    "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 5 panel B. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "pecs-2.jpg",
+    "block": "pecs",
+    "blockId": "pecs",
+    "page": "truncal/chest-wall/",
+    "articleTitle": "Fascial plane blocks for cardiothoracic surgery: a narrative review",
+    "authors": "Capuano P, Sepolvere G, Toscano A, et al.",
+    "journal": "Journal of Anesthesia, Analgesia and Critical Care",
+    "year": 2024,
+    "doi": "10.1186/s44158-024-00155-5",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10926596/",
+    "pmcid": "PMC10926596",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 6, panel A",
+    "caption": "PECS II block before injection: the needle tip is in the plane between pectoralis minor and serratus anterior over the fourth rib.",
+    "originalCaption": "A PECS 2 before injection of local anesthetic. B PECS 2 after injection of local anesthetic, which spreads into the fascial layers between pectoral minor and serratus anterior muscles. PMM, pectoralis major muscle; PMm, pectoralis minor muscle; SM, serratus anterior muscle; N, needle; LA, local anesthetic",
+    "alt": "Ultrasound of the PECS II block with the needle tip between pectoralis minor and serratus anterior over the fourth rib",
+    "orientation": null,
+    "burnedInLabels": "Panel letter A (on the rib shadow); PMM, PMm, N, SM, IV RIB",
+    "labels": [
+      {
+        "text": "Pectoralis major",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.55,
+        "y": 0.22,
+        "tx": 0.54,
+        "ty": 0.19
+      },
+      {
+        "text": "Pectoralis minor",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.33,
+        "y": 0.45,
+        "tx": 0.33,
+        "ty": 0.43
+      },
+      {
+        "text": "Serratus anterior",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.38,
+        "y": 0.58,
+        "tx": 0.36,
+        "ty": 0.62
+      },
+      {
+        "text": "Needle tip",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.29,
+        "y": 0.535,
+        "tx": 0.17,
+        "ty": 0.5
+      },
+      {
+        "text": "4th rib",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.24,
+        "y": 0.63,
+        "tx": 0.13,
+        "ty": 0.7
+      }
+    ],
+    "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 6 panel A. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "sap-1.jpg",
+    "block": "sap",
+    "blockId": "sap",
+    "page": "truncal/chest-wall/",
+    "articleTitle": "Fascial plane blocks for cardiothoracic surgery: a narrative review",
+    "authors": "Capuano P, Sepolvere G, Toscano A, et al.",
+    "journal": "Journal of Anesthesia, Analgesia and Critical Care",
+    "year": 2024,
+    "doi": "10.1186/s44158-024-00155-5",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10926596/",
+    "pmcid": "PMC10926596",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 7, panel A",
+    "caption": "Serratus anterior plane at the fifth rib: the superficial block goes between latissimus dorsi and serratus anterior, the deep block between serratus anterior and the rib.",
+    "originalCaption": "A Sono-anatomy of SAPB: In the superficial SAPB, the target is the interfascial plane between LD and SAM; in the deep SAPB, the target is the interfascial plane between SAM and the periosteum of the V rib. B Deep SAPB: the needle is advanced in-plane in the interfascial plane between the SAM and the V rib and LA is injected. LD, latissimus dorsi; SAM, serratus anterior muscle; P, pleura; LA, local anesthetic; N, needle",
+    "alt": "Ultrasound over the fifth rib in the mid-axillary line showing latissimus dorsi, serratus anterior, rib and pleura, with arrows to the superficial and deep targets",
+    "orientation": null,
+    "burnedInLabels": "Panel letter A (cropped off); LD, SAM, V Rib, P; arrows \"Superficial SAPB\" and \"Deep SAPB\"",
+    "labels": [
+      {
+        "text": "Latissimus dorsi",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.33,
+        "y": 0.28,
+        "tx": 0.32,
+        "ty": 0.3
+      },
+      {
+        "text": "Serratus anterior",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.3,
+        "y": 0.44,
+        "tx": 0.28,
+        "ty": 0.48
+      },
+      {
+        "text": "5th rib",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.62,
+        "y": 0.52,
+        "tx": 0.67,
+        "ty": 0.59
+      },
+      {
+        "text": "Pleura",
+        "elementId": null,
+        "kind": "pleura",
+        "x": 0.25,
+        "y": 0.79,
+        "tx": 0.28,
+        "ty": 0.85
+      },
+      {
+        "text": "Superficial target",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.44,
+        "y": 0.32,
+        "tx": 0.2,
+        "ty": 0.2
+      },
+      {
+        "text": "Deep target",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.55,
+        "y": 0.49,
+        "tx": 0.82,
+        "ty": 0.42
+      }
+    ],
+    "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 7 panel A. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "sap-2.jpg",
+    "block": "sap",
+    "blockId": "sap",
+    "page": "truncal/chest-wall/",
+    "articleTitle": "Fascial plane blocks for cardiothoracic surgery: a narrative review",
+    "authors": "Capuano P, Sepolvere G, Toscano A, et al.",
+    "journal": "Journal of Anesthesia, Analgesia and Critical Care",
+    "year": 2024,
+    "doi": "10.1186/s44158-024-00155-5",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10926596/",
+    "pmcid": "PMC10926596",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.",
+    "figure": "Fig. 7, panel B",
+    "caption": "Deep serratus anterior plane block: local anaesthetic pools under serratus anterior, next to the fifth rib and above the pleura.",
+    "originalCaption": "A Sono-anatomy of SAPB: In the superficial SAPB, the target is the interfascial plane between LD and SAM; in the deep SAPB, the target is the interfascial plane between SAM and the periosteum of the V rib. B Deep SAPB: the needle is advanced in-plane in the interfascial plane between the SAM and the V rib and LA is injected. LD, latissimus dorsi; SAM, serratus anterior muscle; P, pleura; LA, local anesthetic; N, needle",
+    "alt": "Ultrasound of a deep serratus anterior plane block with local anaesthetic deep to serratus anterior beside the fifth rib",
+    "orientation": null,
+    "burnedInLabels": "Panel letter B (partly cropped); LD, SAM, LA, N, V Rib, P; depth scale cropped off",
+    "labels": [
+      {
+        "text": "Latissimus dorsi",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.2,
+        "y": 0.33,
+        "tx": 0.17,
+        "ty": 0.36
+      },
+      {
+        "text": "Serratus anterior",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.25,
+        "y": 0.51,
+        "tx": 0.22,
+        "ty": 0.54
+      },
+      {
+        "text": "Local anaesthetic",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.25,
+        "y": 0.68,
+        "tx": 0.23,
+        "ty": 0.7
+      },
+      {
+        "text": "Needle",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.53,
+        "y": 0.53,
+        "tx": 0.63,
+        "ty": 0.43
+      },
+      {
+        "text": "5th rib",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.7,
+        "y": 0.57,
+        "tx": 0.65,
+        "ty": 0.67
+      },
+      {
+        "text": "Pleura",
+        "elementId": null,
+        "kind": "pleura",
+        "x": 0.3,
+        "y": 0.82,
+        "tx": 0.34,
+        "ty": 0.94
+      }
+    ],
+    "credit": "Capuano P et al. Journal of Anesthesia, Analgesia and Critical Care 2024, Fig. 7 panel B. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "tap-1.jpg",
+    "block": "tap",
+    "blockId": "tap",
+    "page": "truncal/abdominal-wall/",
+    "articleTitle": "Rescue analgesia with a transversus abdominis plane block alleviates moderate-to-severe pain and improves oxygenation after abdominal surgery: a randomized controlled trial",
+    "authors": "He J, Qin S, Wang Y, et al.",
+    "journal": "Frontiers in Pain Research",
+    "year": 2024,
+    "doi": "10.3389/fpain.2024.1454665",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11521947/",
+    "pmcid": "PMC11521947",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.",
+    "figure": "Figure 1, panel F",
+    "caption": "Lateral TAP block view in the mid-axillary line: external oblique, internal oblique and transversus abdominis stacked in three layers.",
+    "originalCaption": "A schematic diagram of the TAPB. (A–D) The ultrasound probe position, the needle puncture site, and a sonographic image of the subcostal TAPB for upper abdominal surgery. The asterisk indicates the needle target. (E–H) The ultrasound probe position, the needle puncture site, and a sonographic image of the lateral TAPB for lower abdominal surgery. TAPB, transversus abdominis plane block; RA, rectus abdominis muscle; TA, transversus abdominis muscle; EO, external oblique muscle; IO, internal oblique muscle.",
+    "alt": "Transverse ultrasound of the lateral abdominal wall showing external oblique, internal oblique and transversus abdominis",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "\"Medial\", \"Lateral\"; EO, IO, TA",
+    "labels": [
+      {
+        "text": "External oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.45,
+        "y": 0.3
+      },
+      {
+        "text": "Internal oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.45,
+        "y": 0.48
+      },
+      {
+        "text": "Transversus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.45,
+        "y": 0.66
+      },
+      {
+        "text": "TAP plane",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.72,
+        "y": 0.58,
+        "tx": 0.75,
+        "ty": 0.82
+      }
+    ],
+    "credit": "He J et al. Frontiers in Pain Research 2024, Figure 1 panel F. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "tap-2.jpg",
+    "block": "tap",
+    "blockId": "tap",
+    "page": "truncal/abdominal-wall/",
+    "articleTitle": "Rescue analgesia with a transversus abdominis plane block alleviates moderate-to-severe pain and improves oxygenation after abdominal surgery: a randomized controlled trial",
+    "authors": "He J, Qin S, Wang Y, et al.",
+    "journal": "Frontiers in Pain Research",
+    "year": 2024,
+    "doi": "10.3389/fpain.2024.1454665",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11521947/",
+    "pmcid": "PMC11521947",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.",
+    "figure": "Figure 1, panel H",
+    "caption": "Lateral TAP block: the needle comes in from the medial side and its tip (asterisk) sits between internal oblique and transversus abdominis.",
+    "originalCaption": "A schematic diagram of the TAPB. (A–D) The ultrasound probe position, the needle puncture site, and a sonographic image of the subcostal TAPB for upper abdominal surgery. The asterisk indicates the needle target. (E–H) The ultrasound probe position, the needle puncture site, and a sonographic image of the lateral TAPB for lower abdominal surgery. TAPB, transversus abdominis plane block; RA, rectus abdominis muscle; TA, transversus abdominis muscle; EO, external oblique muscle; IO, internal oblique muscle.",
+    "alt": "Transverse ultrasound of a lateral TAP block with the needle tip between internal oblique and transversus abdominis",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "\"Medial\", \"Lateral\"; EO, IO, TA, \"Needle\", asterisk at the needle target",
+    "labels": [
+      {
+        "text": "External oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.3
+      },
+      {
+        "text": "Internal oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.52
+      },
+      {
+        "text": "Transversus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.5,
+        "y": 0.84
+      },
+      {
+        "text": "Needle",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.25,
+        "y": 0.58,
+        "tx": 0.15,
+        "ty": 0.55
+      },
+      {
+        "text": "Needle tip (TAP plane)",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.47,
+        "y": 0.7,
+        "tx": 0.75,
+        "ty": 0.7
+      }
+    ],
+    "credit": "He J et al. Frontiers in Pain Research 2024, Figure 1 panel H. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "subcostal-1.jpg",
+    "block": "subcostal",
+    "blockId": "subcostal",
+    "page": "truncal/abdominal-wall/",
+    "articleTitle": "Rescue analgesia with a transversus abdominis plane block alleviates moderate-to-severe pain and improves oxygenation after abdominal surgery: a randomized controlled trial",
+    "authors": "He J, Qin S, Wang Y, et al.",
+    "journal": "Frontiers in Pain Research",
+    "year": 2024,
+    "doi": "10.3389/fpain.2024.1454665",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11521947/",
+    "pmcid": "PMC11521947",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open-access article distributed under the terms of the Creative Commons Attribution License (CC BY). The use, distribution or reproduction in other forums is permitted, provided the original author(s) and the copyright owner(s) are credited and that the original publication in this journal is cited, in accordance with accepted academic practice. No use, distribution or reproduction is permitted which does not comply with these terms.",
+    "figure": "Figure 1, panel D",
+    "caption": "Subcostal TAP block: the needle target (asterisk) is the plane between the back of rectus abdominis and transversus abdominis, just below the costal margin.",
+    "originalCaption": "A schematic diagram of the TAPB. (A–D) The ultrasound probe position, the needle puncture site, and a sonographic image of the subcostal TAPB for upper abdominal surgery. The asterisk indicates the needle target. (E–H) The ultrasound probe position, the needle puncture site, and a sonographic image of the lateral TAPB for lower abdominal surgery. TAPB, transversus abdominis plane block; RA, rectus abdominis muscle; TA, transversus abdominis muscle; EO, external oblique muscle; IO, internal oblique muscle.",
+    "alt": "Subcostal ultrasound with rectus abdominis and transversus abdominis and the needle target between them",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "\"Medial\", \"Lateral\"; RA, TA, \"Needle\", asterisk at the needle target",
+    "labels": [
+      {
+        "text": "Rectus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.62,
+        "y": 0.27
+      },
+      {
+        "text": "Transversus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.88,
+        "y": 0.43,
+        "tx": 0.88,
+        "ty": 0.4
+      },
+      {
+        "text": "Needle target (RA–TA plane)",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.6,
+        "y": 0.35,
+        "tx": 0.4,
+        "ty": 0.45
+      }
+    ],
+    "credit": "He J et al. Frontiers in Pain Research 2024, Figure 1 panel D. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "subcostal-2.jpg",
+    "block": "subcostal",
+    "blockId": "subcostal",
+    "page": "truncal/abdominal-wall/",
+    "articleTitle": "Ultrasound-guided peripheral abdominal wall blocks",
+    "authors": "Fernandes HS, de Azevedo AS, Ferreira TC, et al.",
+    "journal": "Clinics (São Paulo)",
+    "year": 2021,
+    "doi": "10.6061/clinics/2021/e2170",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7798119/",
+    "pmcid": "PMC7798119",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons License (http://creativecommons.org/licenses/by/4.0/) which permits unrestricted use, distribution, and reproduction in any medium or format, provided the original work is properly cited.",
+    "figure": "Figure 7",
+    "caption": "Oblique subcostal TAP block: the needle (drawn in) ends between internal oblique and transversus abdominis.",
+    "originalCaption": "Ultrasound image showing the proper position of the needle tip in the plane between the IO and TA muscles.",
+    "alt": "Oblique subcostal ultrasound of the abdominal wall with a drawn needle line ending between internal oblique and transversus abdominis",
+    "orientation": {
+      "left": "medial-cranial",
+      "right": "lateral-caudal"
+    },
+    "burnedInLabels": "Authors' drawn needle line and \"Needle projection\" arrow; muscle names, \"Medial-cranial\"/\"Lateral-caudal\", machine menu, date and time all outside the crop",
+    "labels": [
+      {
+        "text": "External oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.85,
+        "y": 0.28,
+        "tx": 0.88,
+        "ty": 0.26
+      },
+      {
+        "text": "Internal oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.85,
+        "y": 0.45,
+        "tx": 0.88,
+        "ty": 0.45
+      },
+      {
+        "text": "Transversus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.85,
+        "y": 0.66,
+        "tx": 0.86,
+        "ty": 0.66
+      },
+      {
+        "text": "Needle tip",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.59,
+        "y": 0.52,
+        "tx": 0.4,
+        "ty": 0.62
+      }
+    ],
+    "credit": "Fernandes HS et al. Clinics (São Paulo) 2021, Figure 7. CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "note": "The needle is a line drawn by the authors to show the path, not a real needle. Muscle labels placed at the depths of the authors' side labels (outside the crop)."
+  },
+  {
+    "file": "rsb-1.jpg",
+    "block": "rsb",
+    "blockId": "rsb",
+    "page": "truncal/abdominal-wall/",
+    "articleTitle": "Ultrasound-guided peripheral abdominal wall blocks",
+    "authors": "Fernandes HS, de Azevedo AS, Ferreira TC, et al.",
+    "journal": "Clinics (São Paulo)",
+    "year": 2021,
+    "doi": "10.6061/clinics/2021/e2170",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7798119/",
+    "pmcid": "PMC7798119",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons License (http://creativecommons.org/licenses/by/4.0/) which permits unrestricted use, distribution, and reproduction in any medium or format, provided the original work is properly cited.",
+    "figure": "Figure 10",
+    "caption": "Rectus sheath block: local anaesthetic spreads between the back of rectus abdominis and the posterior rectus sheath; the linea semilunaris and the three flank muscles are to the side.",
+    "originalCaption": "US image, with the projection of the needle position, and the local anesthetic spread between the RA muscle and posterior leaflet of RAS. EO: external oblique muscle; IO: internal oblique muscle; TA: transverse abdominis muscle.",
+    "alt": "Transverse ultrasound at the lateral edge of rectus abdominis with local anaesthetic between the muscle and the posterior rectus sheath",
+    "orientation": {
+      "left": "medial",
+      "right": "lateral"
+    },
+    "burnedInLabels": "\"Rectus abdominis m.\", \"Local anesthetic\", \"Posterior leaflet of RAS\", \"Linea semilunaris\" with arrow, EO, IO, TA, \"Needle projection\" (drawn line), \"Medial\", \"Lateral\", depth scale",
+    "labels": [
+      {
+        "text": "Rectus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.22,
+        "y": 0.45,
+        "tx": 0.17,
+        "ty": 0.42
+      },
+      {
+        "text": "Local anaesthetic",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.18,
+        "y": 0.62,
+        "tx": 0.12,
+        "ty": 0.59
+      },
+      {
+        "text": "Posterior rectus sheath",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.14,
+        "y": 0.72,
+        "tx": 0.22,
+        "ty": 0.75
+      },
+      {
+        "text": "Linea semilunaris",
+        "elementId": null,
+        "kind": "fascia",
+        "x": 0.61,
+        "y": 0.52,
+        "tx": 0.62,
+        "ty": 0.76
+      },
+      {
+        "text": "External oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.82,
+        "y": 0.37,
+        "tx": 0.89,
+        "ty": 0.39
+      },
+      {
+        "text": "Internal oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.82,
+        "y": 0.49,
+        "tx": 0.89,
+        "ty": 0.5
+      },
+      {
+        "text": "Transversus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.82,
+        "y": 0.6,
+        "tx": 0.89,
+        "ty": 0.62
+      },
+      {
+        "text": "Needle path",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.42,
+        "y": 0.45,
+        "tx": 0.73,
+        "ty": 0.07
+      }
+    ],
+    "credit": "Fernandes HS et al. Clinics (São Paulo) 2021, Figure 10. CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "note": "The needle is a line drawn by the authors to show the path, not a real needle."
+  },
+  {
+    "file": "iih-1.jpg",
+    "block": "iih",
+    "blockId": "iih",
+    "page": "truncal/abdominal-wall/",
+    "articleTitle": "Ultrasound-guided ilioinguinal-iliohypogastric block (ILIHB) or perifocal wound infiltration (PWI) in children: a prospective randomized comparison of analgesia quality, a pilot study",
+    "authors": "Grosse B, Eberbach S, Pinnschmidt HO, et al.",
+    "journal": "BMC Anesthesiology",
+    "year": 2020,
+    "doi": "10.1186/s12871-020-01170-z",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7532635/",
+    "pmcid": "PMC7532635",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open AccessThis article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.",
+    "figure": "Fig. 1, panel b",
+    "caption": "Ilioinguinal and iliohypogastric block in a child: the two nerves (white arrows) lie in the plane between internal oblique and transversus abdominis, near the iliac crest.",
+    "originalCaption": "Anatomy: a macroscopic: Black arrows = ilioinguinal-iliohypogastric nerves; b Ultrasound image: EO = abdominal external oblique muscle, IO = abdominal internal oblique muscle, TA = transverse abdominal muscle; White arrows = Ilioinguinal and iliohypogastric nerves between fasciae, Dotted line = needle in situ; lat.=lateral, med.=medial",
+    "alt": "Transverse ultrasound just medial to the anterior superior iliac spine in a child, showing the ilioinguinal and iliohypogastric nerves between internal oblique and transversus abdominis",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "Panel letter b (cropped off); EO, IO, TA; white arrows on the nerves; dotted needle line; \"lat.\", \"med.\"",
+    "labels": [
+      {
+        "text": "External oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.66,
+        "y": 0.22,
+        "tx": 0.71,
+        "ty": 0.24
+      },
+      {
+        "text": "Internal oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.42,
+        "y": 0.36,
+        "tx": 0.41,
+        "ty": 0.37
+      },
+      {
+        "text": "Transversus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.36,
+        "y": 0.64,
+        "tx": 0.36,
+        "ty": 0.67
+      },
+      {
+        "text": "Ilioinguinal / iliohypogastric nerves",
+        "elementId": null,
+        "kind": "nerve",
+        "x": 0.31,
+        "y": 0.45,
+        "tx": 0.15,
+        "ty": 0.12
+      },
+      {
+        "text": "Needle tip",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.51,
+        "y": 0.59,
+        "tx": 0.62,
+        "ty": 0.7
+      }
+    ],
+    "credit": "Grosse B et al. BMC Anesthesiology 2020, Fig. 1 panel b. CC BY 4.0. Cropped; labels on the image are the authors'."
+  },
+  {
+    "file": "ql-1.jpg",
+    "block": "ql",
+    "blockId": "ql",
+    "page": "truncal/abdominal-wall/",
+    "articleTitle": "Ultrasound guided quadratus lumborum block versus interlaminar epidural block for analgesia in pediatric abdominal surgery: a randomized controlled trial",
+    "authors": "Wageh M, Sultan MA, Moawad HES, et al.",
+    "journal": "BMC Anesthesiology",
+    "year": 2024,
+    "doi": "10.1186/s12871-024-02548-z",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11107015/",
+    "pmcid": "PMC11107015",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.",
+    "figure": "Fig. 2",
+    "caption": "Quadratus lumborum block in a child: the flank muscles taper into quadratus lumborum under latissimus dorsi; the asterisks mark the injection site between quadratus lumborum and psoas.",
+    "originalCaption": "Ultrasound guided quadratus lumborum block. *****: site of injection. QL: quadratus lumborum; EO: externak oblique; IO: internal oblique; TA: transversus abdominis; LD: latismus dorsi",
+    "alt": "Transverse flank ultrasound in a child showing the abdominal wall muscles, latissimus dorsi, quadratus lumborum and psoas, with the injection site marked",
+    "orientation": null,
+    "burnedInLabels": "EO, IO, TA, LD, QL, psoas and asterisks in red (authors'); depth scale; photographed from the screen",
+    "labels": [
+      {
+        "text": "External oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.14,
+        "y": 0.29
+      },
+      {
+        "text": "Internal oblique",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.17,
+        "y": 0.43
+      },
+      {
+        "text": "Transversus abdominis",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.18,
+        "y": 0.53
+      },
+      {
+        "text": "Latissimus dorsi",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.8,
+        "y": 0.29,
+        "tx": 0.82,
+        "ty": 0.29
+      },
+      {
+        "text": "Quadratus lumborum",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.63,
+        "y": 0.6
+      },
+      {
+        "text": "Psoas major",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.55,
+        "y": 0.86
+      },
+      {
+        "text": "Injection site",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.57,
+        "y": 0.75
+      }
+    ],
+    "credit": "Wageh M et al. BMC Anesthesiology 2024, Fig. 2. CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "note": "Photograph of the ultrasound screen; the original caption marks the injection site but does not name the QL approach."
+  },
+  {
+    "file": "ql-2.jpg",
+    "block": "ql",
+    "blockId": "ql",
+    "page": "truncal/abdominal-wall/",
+    "articleTitle": "Effects of anterior approach to quadratus lumborum block on postoperative cognitive function following hip surgery in older people: a randomized controlled clinical trial",
+    "authors": "Zhu M, Mei Y, Zhou R, et al.",
+    "journal": "BMC Geriatrics",
+    "year": 2023,
+    "doi": "10.1186/s12877-023-04514-9",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10712103/",
+    "pmcid": "PMC10712103",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/. The Creative Commons Public Domain Dedication waiver (http://creativecommons.org/publicdomain/zero/1.0/) applies to the data made available in this article, unless otherwise stated in a credit line to the data.",
+    "figure": "Fig. 2",
+    "caption": "Anterior (transmuscular) quadratus lumborum block: the \"shamrock\" view with quadratus lumborum, psoas and erector spinae around the transverse process; the arrow is the needle path into the plane between quadratus lumborum and psoas.",
+    "originalCaption": "Ultrasound image of anterior QLB. The arrow indicates the trajectory of the needle. QL, quadratus lumborum; PM, psoas major; ESM, erector spinae muscles; TP, transverse process",
+    "alt": "Shamrock view of the lumbar region with quadratus lumborum, psoas, erector spinae and the transverse process, and an arrow along the needle path",
+    "orientation": null,
+    "burnedInLabels": "QL, PM, ESM, TP; red arrow (needle trajectory)",
+    "labels": [
+      {
+        "text": "Quadratus lumborum",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.48,
+        "y": 0.36,
+        "tx": 0.48,
+        "ty": 0.35
+      },
+      {
+        "text": "Psoas major",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.38,
+        "y": 0.56,
+        "tx": 0.4,
+        "ty": 0.54
+      },
+      {
+        "text": "Erector spinae",
+        "elementId": null,
+        "kind": "muscle",
+        "x": 0.64,
+        "y": 0.55,
+        "tx": 0.64,
+        "ty": 0.54
+      },
+      {
+        "text": "Transverse process",
+        "elementId": null,
+        "kind": "bone",
+        "x": 0.5,
+        "y": 0.58,
+        "tx": 0.54,
+        "ty": 0.66
+      },
+      {
+        "text": "Needle path",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.6,
+        "y": 0.22,
+        "tx": 0.78,
+        "ty": 0.15
+      },
+      {
+        "text": "Target (QL–psoas plane)",
+        "elementId": null,
+        "kind": "point",
+        "x": 0.45,
+        "y": 0.45,
+        "tx": 0.22,
+        "ty": 0.4
+      }
+    ],
+    "credit": "Zhu M et al. BMC Geriatrics 2023, Fig. 2. CC BY 4.0. Cropped; labels on the image are the authors'."
+  }
+]

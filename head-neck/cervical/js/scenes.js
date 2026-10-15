@@ -1,8 +1,8 @@
 // Cervical plexus: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
-// Schema: ../../../truncal/shared/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
-// nothing is traced from published images. Probe insets use the head figure (../../shared/js/head.js).
-import { E, P, PS, L } from '../../../truncal/shared/js/scene.js';
-import { headProbeInset } from '../../shared/js/head.js';
+// Schema: ../../../shared/regional/DATA.md ("Scene schema"). Geometry is original, laid out from typical adult depths;
+// nothing is traced from published images. Probe insets use the head figure (../../../shared/regional/js/figures/head.js).
+import { E, P, PS, L } from '../../../shared/regional/js/scene.js';
+import { headProbeInset } from '../../../shared/regional/js/figures/head.js?v=20261015';
 
 export const SCENES = {
   // Right neck, transverse at the midpoint of the posterior border of sternocleidomastoid (about C4).
@@ -28,7 +28,7 @@ export const SCENES = {
       { id: 'ijv', kind: 'vein', label: 'Internal jugular vein', short: 'IJV', shape: E(11.4, 17.2, 4, 2.3), lab: [14, 25.4] },
       { id: 'cp', kind: 'nerve', label: 'Cervical plexus branches', short: 'CP', shape: [E(25.2, 10.4, 1.1, 0.8), E(27.4, 11, 1, 0.8), E(26.2, 12.4, 1, 0.75)], at: [26.2, 11.2], lab: [33, 9] },
       { id: 'gan', kind: 'nerve', label: 'Great auricular nerve', short: 'GAN', shape: E(15.5, 5.6, 0.9, 0.6), lab: [11, 2.6] },
-      { id: 'bp', kind: 'nerve', label: 'Brachial plexus roots (C5, C6)', short: 'C5–C6', shape: [E(22.6, 22.4, 1.6, 1.4), E(23.6, 26.4, 1.6, 1.4)], at: [23, 24.4], lab: [32, 26.6] },
+      { id: 'bp', kind: 'nerve', label: 'Brachial plexus roots (C5, C6)', short: 'C5–C6', shape: [E(22.6, 22.4, 1.6, 1.4), E(23.6, 26.4, 1.6, 1.4)], at: [23, 24.4], lab: [31.5, 24.2] },
       { id: 'tp', kind: 'bone', label: 'C4 transverse process', short: 'TP', shape: L(0.9, [10, 30.6], [18, 29.8], [27, 30.2]), lab: [18, 31.6], nolabel: true },
     ],
     target: { at: [26.2, 13.8], r: 2 },
@@ -78,7 +78,7 @@ export const SCENES = {
       { id: 'phr', kind: 'nerve', label: 'Phrenic nerve', short: 'Phr', shape: E(8.6, 19.8, 0.8, 0.6), lab: [3.6, 27.6] },
       { id: 'at', kind: 'bone', label: 'Anterior tubercle', short: 'AT', shape: PS([10, 25.6], [12.6, 22.8], [17, 23], [18, 26.2]), at: [14, 23.2], lab: [11, 29.5] },
       { id: 'pt', kind: 'bone', label: 'Posterior tubercle', short: 'PT', shape: PS([25, 24.6], [27.6, 21.8], [32, 22.2], [33, 25.6]), at: [29.5, 22], lab: [33, 30] },
-      { id: 'root', kind: 'nerve', label: 'C4 nerve root', short: 'C4', shape: E(21.5, 23.2, 1.8, 1.5), lab: [21.5, 33] },
+      { id: 'root', kind: 'nerve', label: 'C4 nerve root', short: 'C4', shape: E(21.5, 23.2, 1.8, 1.5), lab: [26.5, 33.2] },
       { id: 'va', kind: 'artery', label: 'Vertebral artery', short: 'VA', nolabel: true, shape: E(21.2, 29.6, 1.5, 1.4) },
     ],
     target: { at: [23.2, 21], r: 2 },

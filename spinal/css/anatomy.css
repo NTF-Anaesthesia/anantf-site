@@ -42,7 +42,7 @@
   .spinal-app .an-stepbtn[aria-current=step]{border-color:var(--sp-accent)}
 }
 .spinal-app .an-steppanel{min-width:0}
-.spinal-app .an-stepkicker{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 4px}
+.spinal-app .an-stepkicker{font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:var(--sp-muted);margin:0 0 4px}
 .spinal-app main .an-stepname{font:400 22px/1.25 var(--sp-serif);letter-spacing:-.02em;margin:0 0 10px;color:var(--sp-ink)}
 .spinal-app .an-stepdl{display:grid;grid-template-columns:minmax(0,1fr);gap:2px 16px;margin:0;font-size:15px;line-height:1.6}
 .spinal-app .an-stepdl dt{font:600 12px/1.4 var(--sp-sans);text-transform:uppercase;letter-spacing:.06em;color:var(--sp-muted);margin-top:8px}
@@ -64,7 +64,7 @@
   .spinal-app .an-land-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .spinal-app .an-land-side{border-top:0;border-left:1px solid rgba(43,30,24,.2)}
 }
-.spinal-app .an-land-label{font:400 11px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:#5b4a3e;margin:0 0 8px}
+.spinal-app .an-land-label{font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.1em;color:#5b4a3e;margin:0 0 8px}
 .spinal-app .an-levels{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .spinal-app .an-levels li{margin:0}
 .spinal-app .an-level{min-width:44px;min-height:44px;padding:6px 10px;border:1px solid #8c8273;background:rgba(251,247,241,.7);color:#2b1e18;font:500 14px/1 var(--sp-mono);font-variant-numeric:tabular-nums;cursor:pointer;transition:background-color .15s,border-color .15s}
@@ -105,7 +105,7 @@
 .spinal-app .an-range-wrap{display:grid;gap:2px;width:100%;max-width:560px}
 .spinal-app .an-range-label{font-size:15px}
 .spinal-app .an-range{width:100%;min-height:44px;margin:0;accent-color:var(--sp-accent)}
-.spinal-app .an-range-ticks{display:flex;justify-content:space-between;font:400 11px/1.4 var(--sp-mono);color:var(--sp-muted);padding:0 4px}
+.spinal-app .an-range-ticks{display:flex;justify-content:space-between;font:400 12px/1.4 var(--sp-mono);color:var(--sp-muted);padding:0 4px}
 
 @media (prefers-reduced-motion:reduce){
   .spinal-app .an-stepbtn,.spinal-app .an-level{transition:none}
@@ -117,3 +117,6 @@
 .spinal-app .an-ov-btn[aria-pressed=true]::before{background:linear-gradient(currentColor,currentColor) center/8px 8px no-repeat}
 .spinal-app .an-derm-legend{font-size:14px;color:#5b4a3e;margin-top:10px!important}
 .spinal-app .an-derm-key{display:inline-block;width:22px;height:12px;margin-right:8px;vertical-align:-1px;border-top:1.6px dashed #34507a;background-image:radial-gradient(#34507a 1.1px,transparent 1.3px);background-size:6px 6px}
+
+/* Phones: the dermatome figure scales down, so its landmark labels scale up to stay at least 12px on screen. */
+@media (max-width:600px){.spinal-app .an-derm-svg .an-derm-mark text{font-size:17px}}

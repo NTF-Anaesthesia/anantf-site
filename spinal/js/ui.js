@@ -75,7 +75,7 @@ export function registerSearch(items) {
 export function getSearchExtras() { return searchExtras; }
 
 // ---------------------------------------------------------------- tiers and key points
-/** Tag a block with a learning tier (1 MO, 2 Resident, 3 Advanced). Returns the node. */
+/** Tag a block with a learning tier (1 MO, 2 Resident, 3 Consultant). Returns the node. */
 export function tier(node, n) {
   const t = Number(n);
   if (node && (t === 1 || t === 2 || t === 3)) node.dataset.tier = String(t);
