@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en-GB" class="app" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f1ede4">
+<title>Question bank · NTF Anaesthesia</title>
+<meta name="description" content="Practise the NTF anaesthesia department's multiple-choice questions on your phone.">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Questions">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preload" href="../fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/app/app.css">
+<link rel="stylesheet" href="ui/qbank.css">
+</head>
+<body class="app-body app-has-tabbar">
+<a class="app-skip" href="#main">Skip to content</a>
+<header class="app-bar" id="bar">
+  <div class="app-bar-row">
+    <div class="app-bar-lead" id="bar-start"></div>
+    <div class="qb-bar-mid" id="bar-mid"><p class="app-bar-title" aria-hidden="true">Question bank</p></div>
+    <div class="app-bar-trail"><span class="app-badge app-badge--warn" id="offline" hidden>Offline</span><span class="qb-bar-end" id="bar-end"></span></div>
+  </div>
+  <div id="bar-extra"></div>
+</header>
+<main class="app-main" id="main" tabindex="-1">
+  <span class="app-skeleton app-skeleton--title qb-sk-title"></span>
+  <ul class="app-list" aria-busy="true" aria-label="Loading">
+    <li><div class="app-row"><span class="app-skeleton app-skeleton--tile"></span><span class="app-row-body"><span class="app-skeleton app-skeleton--line"></span><span class="app-skeleton app-skeleton--short"></span></span></div></li>
+    <li><div class="app-row"><span class="app-skeleton app-skeleton--tile"></span><span class="app-row-body"><span class="app-skeleton app-skeleton--line"></span><span class="app-skeleton app-skeleton--short"></span></span></div></li>
+    <li><div class="app-row"><span class="app-skeleton app-skeleton--tile"></span><span class="app-row-body"><span class="app-skeleton app-skeleton--line"></span><span class="app-skeleton app-skeleton--short"></span></span></div></li>
+  </ul>
+</main>
+<div id="foot"></div>
+<nav class="app-tabbar" id="tabbar" aria-label="Sections">
+  <div class="app-tabbar-inner">
+    <a class="app-tab" href="#/practise" data-tab="practise"><span class="app-tab-icon" aria-hidden="true" data-icon="practise"></span>Practise</a>
+    <a class="app-tab" href="#/browse" data-tab="browse"><span class="app-tab-icon" aria-hidden="true" data-icon="browse"></span>Browse</a>
+    <a class="app-tab" href="#/papers" data-tab="papers"><span class="app-tab-icon" aria-hidden="true" data-icon="papers"></span>Papers</a>
+    <a class="app-tab" href="#/progress" data-tab="progress"><span class="app-tab-icon" aria-hidden="true" data-icon="progress"></span>Progress</a>
+  </div>
+</nav>
+<div class="app-toast" id="toast" role="status" aria-live="polite"></div>
+<div class="app-sr" id="live" aria-live="polite"></div>
+<noscript><p style="padding:16px">This app needs JavaScript.</p></noscript>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

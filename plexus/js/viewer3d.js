@@ -12,7 +12,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
-import { STATUS, INJECTION } from '../../shared/regional/js/status.js?v=20261015';
+import { STATUS_COLOURS } from './diagram.js';
 
 const DRACO_PATH = new URL('../../shared/vendor/three-r160/examples/jsm/libs/draco/gltf/', import.meta.url).href;
 const SOURCE = '3d';
@@ -28,9 +28,7 @@ const CAT_LAYER = { bone: 'bones', ligament: 'bones', muscle: 'muscles', artery:
 const NERVE = new THREE.Color('#e8b923');
 const RELATED = new THREE.Color('#9a8f7a');
 const DIMMED = new THREE.Color('#b9b2a3');
-const ST = Object.fromEntries(Object.entries(STATUS).map(([k, v]) => [k, new THREE.Color(v.color)]));
-const ST_OPACITY = { spares: STATUS.spares.opacity };
-const HALO = new THREE.Color(STATUS.target.halo);
+const STATUS = Object.fromEntries(Object.entries(STATUS_COLOURS).map(([k, v]) => [k, new THREE.Color(v)]));
 
 const LAYERS = [
   { key: 'bones', label: 'Bones', on: true },
@@ -62,31 +60,10 @@ export function mountViewer(container, ctx) {
   const viewGroup = h('div', 'px-v3-group');
   viewGroup.setAttribute('role', 'group');
   viewGroup.setAttribute('aria-label', 'Camera views');
-  // Layer toggles live in an overflow menu ("Layers ▾") so the bar stays one row.
-  const layerWrap = h('div', 'px-v3-layers');
-  const layerBtn = h('button', 'px-v3-btn px-v3-layers-btn');
-  layerBtn.type = 'button';
-  layerBtn.setAttribute('aria-expanded', 'false');
-  layerBtn.innerHTML = '<span>Layers</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
-  const layerGroup = h('div', 'px-v3-menu');
+  const layerGroup = h('div', 'px-v3-group');
   layerGroup.setAttribute('role', 'group');
   layerGroup.setAttribute('aria-label', 'Layers');
-  layerGroup.hidden = true;
-  layerGroup.id = `px-v3-layers-${Math.random().toString(36).slice(2, 8)}`;
-  layerBtn.setAttribute('aria-controls', layerGroup.id);
-  layerWrap.append(layerBtn, layerGroup);
-  bar.append(viewGroup, layerWrap);
-  const setLayerMenu = (open, focusBtn) => {
-    layerGroup.hidden = !open;
-    layerBtn.setAttribute('aria-expanded', String(open));
-    if (open) layerGroup.querySelector('button')?.focus({ preventScroll: true });
-    else if (focusBtn) layerBtn.focus({ preventScroll: true });
-  };
-  layerBtn.addEventListener('click', () => setLayerMenu(layerGroup.hidden));
-  const onDocDown = (e) => { if (!layerGroup.hidden && !layerWrap.contains(e.target)) setLayerMenu(false); };
-  document.addEventListener('pointerdown', onDocDown);
-  layerWrap.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !layerGroup.hidden) { e.preventDefault(); e.stopPropagation(); setLayerMenu(false, true); } });
-  layerWrap.addEventListener('focusout', (e) => { if (e.relatedTarget && !layerWrap.contains(e.relatedTarget)) setLayerMenu(false); });
+  bar.append(viewGroup, layerGroup);
   const stage = h('div', 'px-v3-stage');
   const canvasHost = h('div', 'px-v3-canvas');
   const labelHost = h('div', 'px-v3-labels');
@@ -156,7 +133,6 @@ export function mountViewer(container, ctx) {
     const r = Math.min(0.01, Math.max(0.0005, Number(spec.r) || 0.002));
     const base = e.kind === 'related' ? RELATED : NERVE;
     const mat = track(new THREE.MeshStandardMaterial({ color: base.clone(), roughness: 0.42, metalness: 0.05, emissive: 0x000000 }));
-    const curves = [];
     const group = new THREE.Group();
     group.userData.id = id;
     let first = null; let mid = null; let best = 0;
@@ -184,8 +160,6 @@ export function mountViewer(container, ctx) {
       const proxyGeo = track(new THREE.TubeGeometry(curve, Math.max(6, segs >> 1), Math.max(r * 2.2, r + 0.0035), 6, false));
       const proxy = new THREE.Mesh(proxyGeo, pickMat);
       proxy.userData.id = id;
-      proxy.userData.r = r;
-      curves.push({ curve, segs });
       group.add(proxy);
       pickables.push(proxy);
       if (!first) first = pts[0].clone();
@@ -193,10 +167,9 @@ export function mountViewer(container, ctx) {
     }
     if (!group.children.length) continue;
     nerveRoot.add(group);
-    const o = { group, mat, base, mid, first, curves, r, halo: null };
+    const o = { group, mat, base, mid, first };
     if (e.kind === 'root' && first) {
-      const lab = h('div', 'px-v3-labwrap');
-      lab.append(h('span', 'px-v3-label is-root', e.short || e.name || id));
+      const lab = h('div', 'px-v3-label is-root', e.short || e.name || id);
       const lo = new CSS2DObject(lab);
       lo.position.copy(first);
       lo.center.set(1.1, 0.5);
@@ -213,45 +186,17 @@ export function mountViewer(container, ctx) {
   scene.add(selLabel);
 
   // Block marker (needle tip / injection point).
-  // Ink sphere with an ivory ring (a camera-facing sprite), the shared injection-marker style.
-  const marker = new THREE.Group();
-  marker.add(new THREE.Mesh(track(new THREE.SphereGeometry(0.0042, 20, 14)), track(new THREE.MeshStandardMaterial({ color: new THREE.Color(INJECTION.fill), roughness: 0.4 }))));
-  const ringCanvas = document.createElement('canvas');
-  ringCanvas.width = ringCanvas.height = 128;
-  const rc = ringCanvas.getContext('2d');
-  if (rc) {
-    rc.lineWidth = 16; rc.strokeStyle = INJECTION.fill; rc.beginPath(); rc.arc(64, 64, 50, 0, Math.PI * 2); rc.stroke();
-    rc.lineWidth = 10; rc.strokeStyle = INJECTION.ring; rc.beginPath(); rc.arc(64, 64, 50, 0, Math.PI * 2); rc.stroke();
-  }
-  const ringTex = track(new THREE.CanvasTexture(ringCanvas));
-  ringTex.colorSpace = THREE.SRGBColorSpace;
-  const ring = new THREE.Sprite(track(new THREE.SpriteMaterial({ map: ringTex, transparent: true, depthTest: false })));
-  ring.scale.setScalar(0.0145);
-  ring.renderOrder = 10;
-  marker.add(ring);
+  const marker = new THREE.Mesh(track(new THREE.SphereGeometry(0.0045, 20, 14)), track(new THREE.MeshStandardMaterial({ color: 0xdb2777, emissive: 0x6b0f3a, roughness: 0.35 })));
   marker.visible = false;
   scene.add(marker);
-
-  // Wine halo behind target nerves (built on first use for each nerve).
-  const haloMat = track(new THREE.MeshBasicMaterial({ color: HALO, transparent: true, opacity: 0.35, side: THREE.BackSide, depthWrite: false }));
-  function haloFor(o) {
-    if (o.halo) return o.halo;
-    const g = new THREE.Group();
-    for (const { curve, segs } of o.curves) g.add(new THREE.Mesh(track(new THREE.TubeGeometry(curve, Math.max(6, segs >> 1), o.r * 1.9, 10, false)), haloMat));
-    g.renderOrder = 1;
-    o.group.add(g);
-    o.halo = g;
-    return g;
-  }
 
   // ---------------------------------------------------------------- layers
   const layerState = Object.fromEntries(LAYERS.map((l) => [l.key, l.on]));
   const layerMeshes = { bones: [], muscles: [], covering: [], vessels: [], other: [] };
   const layerBtns = {};
   for (const l of LAYERS) {
-    const b = h('button', 'px-v3-toggle');
+    const b = h('button', 'px-v3-btn px-v3-toggle app-chip', l.label);
     b.type = 'button';
-    b.innerHTML = `<span class="px-v3-check" aria-hidden="true"></span><span>${l.label}</span>`;
     b.setAttribute('aria-pressed', String(l.on));
     b.addEventListener('click', () => {
       layerState[l.key] = !layerState[l.key];
@@ -271,12 +216,12 @@ export function mountViewer(container, ctx) {
   const validView = (v) => v && isPt(v.target) && isPt(v.position);
   const viewKeys = Object.keys(views).filter((k) => validView(views[k]));
   for (const k of viewKeys) {
-    const b = h('button', 'px-v3-btn', views[k].label || k[0].toUpperCase() + k.slice(1));
+    const b = h('button', 'px-v3-btn app-btn app-btn--outline app-btn--small', views[k].label || k[0].toUpperCase() + k.slice(1));
     b.type = 'button';
     b.addEventListener('click', () => setView(k));
     viewGroup.appendChild(b);
   }
-  const resetBtn = h('button', 'px-v3-btn', 'Reset');
+  const resetBtn = h('button', 'px-v3-btn app-btn app-btn--plain app-btn--small', 'Reset');
   resetBtn.type = 'button';
   resetBtn.addEventListener('click', () => {
     if (bus.state.block && validView(data.blocks?.[bus.state.block]?.view)) flyToView(data.blocks[bus.state.block].view);
@@ -345,55 +290,7 @@ export function mountViewer(container, ctx) {
       renderer.render(scene, camera);
       labelRenderer.render(scene, camera);
     }
-    if (a || moved) { clearNudge(); requestRender(); } else scheduleNudge();
-  }
-
-  // The collision nudge reads label boxes (a forced layout), so it runs only once the camera has settled,
-  // never on every frame of an orbit or a camera flight. While the camera moves, labels sit unnudged.
-  let nudgeTimer = 0; let nudged = false;
-  function scheduleNudge() {
-    if (nudgeTimer || destroyed) return;
-    nudgeTimer = setTimeout(() => { nudgeTimer = 0; if (!destroyed && !anim && width > 0 && height > 0) nudgeLabels(); }, 120);
-  }
-  function clearNudge() {
-    clearTimeout(nudgeTimer); nudgeTimer = 0;
-    if (!nudged) return;
-    nudged = false;
-    for (const lo of labelObjs) {
-      const inner = lo.element.firstElementChild;
-      if (inner && inner.style.transform) { inner.style.transform = ''; inner.classList.remove('is-nudged'); }
-    }
-  }
-
-  // Root labels: push overlapping labels apart vertically (the label keeps a short leader to its root).
-  function nudgeLabels() {
-    const items = [];
-    for (const lo of labelObjs) {
-      const el = lo.element;
-      const inner = el.firstElementChild;
-      if (!inner) continue;
-      if (!lo.visible || el.style.display === 'none') { inner.style.transform = ''; continue; }
-      const r = el.getBoundingClientRect();
-      if (!r.width) continue;
-      items.push({ inner, top: r.top, bottom: r.bottom, left: r.left, right: r.right });
-    }
-    items.sort((a, b) => a.top - b.top);
-    const placed = [];
-    for (const it of items) {
-      let dy = 0;
-      for (let pass = 0; pass < 3; pass++) {
-        let moved = false;
-        for (const p of placed) {
-          if (it.right <= p.left || it.left >= p.right) continue;
-          if (it.top + dy < p.bottom + 2 && it.bottom + dy > p.top - 2) { dy = p.bottom + 2 - it.top; moved = true; }
-        }
-        if (!moved) break;
-      }
-      it.inner.style.transform = dy ? `translateY(${Math.round(dy)}px)` : '';
-      it.inner.classList.toggle('is-nudged', dy > 0.5);
-      if (dy) nudged = true;
-      placed.push({ left: it.left, right: it.right, top: it.top + dy, bottom: it.bottom + dy });
-    }
+    if (a || moved) requestRender();
   }
 
   const ro = new ResizeObserver(() => {
@@ -422,17 +319,16 @@ export function mountViewer(container, ctx) {
       let colour = o.base;
       let opacity = 1;
       if (block) {
-        if (st) { colour = ST[st]; opacity = ST_OPACITY[st] ?? 1; } else { colour = DIMMED; opacity = 0.3; }
+        if (st) colour = STATUS[st];
+        else { colour = DIMMED; opacity = 0.3; }
       }
-      const isTarget = st === 'target' && !(keep && !keep.has(id));
-      if (isTarget) haloFor(o).visible = true; else if (o.halo) o.halo.visible = false;
       if (keep && !keep.has(id)) opacity = Math.min(opacity, 0.2);
       o.mat.color.copy(colour);
       const transparent = opacity < 1;
       if (o.mat.transparent !== transparent) { o.mat.transparent = transparent; o.mat.needsUpdate = true; }
       o.mat.opacity = opacity;
       o.mat.depthWrite = !transparent;
-      const glow = id === selected ? 0.45 : id === hovered ? 0.3 : st === 'target' ? 0.35 : 0;
+      const glow = id === selected ? 0.45 : id === hovered ? 0.3 : 0;
       o.mat.emissive.copy(colour).multiplyScalar(glow);
     }
     // Block marker.
@@ -446,7 +342,7 @@ export function mountViewer(container, ctx) {
     const sel = bus.state.selected;
     const keep = sel ? ctx.lineage(sel) : null;
     for (const lo of labelObjs) lo.visible = on;
-    for (const [id, o] of objs) if (o.label) o.label.element.firstElementChild.classList.toggle('is-dim', !!keep && !keep.has(id));
+    for (const [id, o] of objs) if (o.label) o.label.element.classList.toggle('is-dim', !!keep && !keep.has(id));
     const o = sel && objs.get(sel);
     if (on && o && o.mid && !(o.label && elements[sel]?.kind === 'root')) {
       selLabelEl.textContent = elements[sel]?.name || sel;
@@ -464,16 +360,11 @@ export function mountViewer(container, ctx) {
     const r = canvas.getBoundingClientRect();
     ndc.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
     raycaster.setFromCamera(ndc, camera);
-    const hits = raycaster.intersectObjects(pickables.filter((p) => p.parent?.visible !== false), false);
+    const hits = raycaster.intersectObjects(pickables, false);
     if (!hits.length) return null;
-    // Near-equal hits (within 1.5 cm of the nearest): prefer one in the selected nerve's lineage, then the thinnest.
-    const near = hits.filter((x) => x.distance <= hits[0].distance + 0.015 && x.object.userData.id);
-    const sel = bus.state.selected;
-    const keep = sel ? ctx.lineage(sel) : null;
-    let pool = near;
-    if (keep) { const inLine = near.filter((x) => keep.has(x.object.userData.id)); if (inLine.length) pool = inLine; }
-    pool.sort((a, b) => (a.object.userData.r - b.object.userData.r) || (a.distance - b.distance));
-    return (pool[0] || hits[0]).object.userData.id || null;
+    // Prefer the thinnest/most specific nerve among near-equal hits: take the first,
+    // but if the selected lineage is active, prefer an element inside it.
+    return hits[0].object.userData.id || null;
   }
   let down = null;
   let hoverId = null;
@@ -513,31 +404,8 @@ export function mountViewer(container, ctx) {
   canvas.addEventListener('pointerleave', onLeave);
 
   // ---------------------------------------------------------------- bus
-  // Frame the camera on the selected nerve: keep the viewing direction, centre on its paths and fit them.
-  function frameOn(id, instant) {
-    const o = id && objs.get(id);
-    if (!o) return;
-    const box = new THREE.Box3();
-    o.group.traverse((m) => { if (m.isMesh && m.userData.id === id && m.geometry) { m.geometry.computeBoundingBox(); box.union(m.geometry.boundingBox.clone().applyMatrix4(m.matrixWorld)); } });
-    if (box.isEmpty()) return;
-    const c = box.getCenter(new THREE.Vector3());
-    const radius = Math.max(0.035, box.getBoundingSphere(new THREE.Sphere()).radius);
-    const fov = THREE.MathUtils.degToRad(camera.fov);
-    const fitH = radius / Math.sin(fov / 2);
-    const fitW = fitH / Math.max(0.3, Math.min(1, camera.aspect));
-    const dist = Math.min(controls.maxDistance * 0.95, Math.max(0.12, Math.max(fitH, fitW) * 1.1));
-    const dir = camera.position.clone().sub(controls.target);
-    if (dir.lengthSq() < 1e-10) dir.set(0, 0, 1);
-    dir.normalize();
-    flyTo(c.clone().addScaledVector(dir, dist), c, instant);
-  }
-
   const offs = [
-    bus.on('select', (p) => {
-      refresh();
-      // A tap in the 3D view already shows the nerve; frame it when it was chosen elsewhere.
-      if (p.id && p.source !== SOURCE) frameOn(p.id, p.instant);
-    }),
+    bus.on('select', refresh),
     bus.on('hover', refresh),
     bus.on('block', (p) => {
       refresh();
@@ -563,7 +431,7 @@ export function mountViewer(container, ctx) {
   let modelRoot = null;
   const glbPath = data.model?.glb;
   if (glbPath) {
-    loader.load(new URL(glbPath, ctx.baseUrl || document.baseURI).href, (gltf) => {
+    loader.load(new URL(glbPath, document.baseURI).href, (gltf) => {
       if (destroyed) return;
       const want = `exp_${data.id}`;
       const sc = (gltf.scenes || []).find((x) => x.name === want) || gltf.scene || gltf.scenes?.[0];
@@ -616,20 +484,17 @@ export function mountViewer(container, ctx) {
     destroy() {
       destroyed = true;
       cancelAnimationFrame(raf);
-      clearTimeout(nudgeTimer);
       ro.disconnect();
       offs.forEach((f) => f());
       canvas.removeEventListener('pointerdown', onDown);
       canvas.removeEventListener('pointerup', onUp);
       canvas.removeEventListener('pointermove', onMove);
       canvas.removeEventListener('pointerleave', onLeave);
-      document.removeEventListener('pointerdown', onDocDown);
       controls.dispose();
       for (const lo of [...labelObjs, selLabel]) { lo.element.remove(); lo.removeFromParent(); }
       if (modelRoot) modelRoot.removeFromParent();
       disposables.forEach((d) => { try { d.dispose(); } catch { /* ignore */ } });
       draco.dispose();
-      try { renderer.setAnimationLoop?.(null); } catch { /* ignore */ }
       renderer.dispose();
       renderer.forceContextLoss?.();
       root.remove();

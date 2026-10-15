@@ -214,12 +214,12 @@ try {
   await step('duplicates: tick the older copies, then delete them', async () => {
     await page.goto(BASE + '?demo#/faculty'); await page.locator('.qlist').waitFor();
     const n0 = await page.locator('.qlist li').count();
-    await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('mo-local-v1')); const qs = d.questions; const arr = Array.isArray(qs) ? qs : Object.values(qs); const c = JSON.parse(JSON.stringify(arr[0])); c.id = 'dup-copy'; c.updatedAt = 1; if (Array.isArray(qs)) qs.push(c); else qs[c.id] = c; localStorage.setItem('mo-local-v1', JSON.stringify(d)); });
+    await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('mo-local-v1')); const qs = d.questions; const arr = Array.isArray(qs) ? qs : Object.values(qs); const c = JSON.parse(JSON.stringify(arr[0])); c.id = 'dup-copy'; c.updatedAt = 1; const c2 = JSON.parse(JSON.stringify(arr[0])); c2.id = 'dup-copy-2'; c2.updatedAt = 2; c2.stem += ' (reworded at the end)'; if (Array.isArray(qs)) qs.push(c2); else qs[c2.id] = c2; if (Array.isArray(qs)) qs.push(c); else qs[c.id] = c; localStorage.setItem('mo-local-v1', JSON.stringify(d)); });
     await page.reload(); await page.locator('.qlist').waitFor();
-    assert.equal(await page.locator('.qlist li').count(), n0 + 1);
-    await page.click('#selmode'); await page.click('#seldup'); await page.locator('#selcount:has-text("1 ticked")').waitFor();
+    assert.equal(await page.locator('.qlist li').count(), n0 + 2);
+    await page.click('#selmode'); await page.click('#seldup'); await page.locator('#selcount:has-text("2 ticked")').waitFor();
     await page.click('#seldel'); await page.click('dialog button[value=yes]');
-    await page.locator('#toast.on', { hasText: '1 deleted' }).waitFor();
+    await page.locator('#toast.on', { hasText: '2 deleted' }).waitFor();
     assert.equal(await page.locator('.qlist li').count(), n0);
     await page.click('#selmode'); await page.locator('.bulkbar').waitFor({ state: 'detached' });
   });

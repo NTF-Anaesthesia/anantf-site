@@ -1,0 +1,195 @@
+/* qbank app: only what the shared phone-app kit (../../assets/app/app.css, DESIGN-APP.md) doesn't have. Kit tokens only;
+   every class starts with qb-. */
+
+/* ---------- shell ---------- */
+/* clip anything that sticks out sideways (a sliding screen, a long word), so phone browsers never widen the layout and
+   zoom the page out (Baby MO needed the same) */
+.app-main{overflow-x:clip}
+.qb-pushed{padding-top:var(--app-s4)}
+.qb-focus #offline{display:none}
+.qb-bar-mid{display:flex;justify-content:center;min-width:0}
+.qb-bar-end{display:flex;align-items:center;gap:var(--app-s1)}
+.app-bar-trail{min-width:0}
+#offline{margin-right:var(--app-s1)}
+h1.app-bar-title:focus{outline:none}
+.app-large-title:focus{outline:none}
+.qb-sk-title{margin:var(--app-s2) var(--app-s1) var(--app-s5)}
+/* the bar and the tab bar stay put while a screen slides (iOS: only the content moves; the bar cross-fades) */
+@media (prefers-reduced-motion:no-preference){
+  #bar{view-transition-name:qb-bar}
+  .app-tabbar{view-transition-name:qb-tabbar}
+  .app-toolbar{view-transition-name:qb-toolbar}
+  ::view-transition-old(qb-bar),::view-transition-new(qb-bar){animation-duration:var(--app-d-fast)}
+}
+
+/* session bar: leave, the question pill in the middle, timer and flag; progress along its foot */
+.qb-session .app-bar-row{grid-template-columns:auto 1fr auto}
+.qb-qpill{border:0;cursor:pointer;font-family:var(--app-mono);min-height:44px;padding:0 14px;gap:8px;white-space:nowrap}
+.qb-qpill svg{width:18px;height:18px;color:var(--app-wine)}
+.qb-qpill:active{background:var(--app-pressed-ground)}
+.qb-timer{min-width:64px;font-family:var(--app-mono);font-variant-numeric:tabular-nums;color:var(--app-ink);font-weight:500}
+.qb-timer.is-low{color:var(--app-warn);font-weight:600}
+.qb-timer.is-hidden-time{font-family:var(--app-sans);font-size:var(--app-t-subhead);color:var(--app-wine)}
+.qb-flag[aria-pressed="true"]{color:var(--app-wine)}
+.qb-bar-progress{border-radius:0;height:3px}
+.app-toolbar .app-btn{min-height:48px;min-width:0;padding-inline:var(--app-s3);white-space:nowrap}   /* three buttons fit at 320px */
+.app-toolbar .app-btn svg{width:18px;height:18px}
+.qb-flag-btn[aria-pressed="true"]{color:var(--app-wine);box-shadow:inset 0 0 0 2px var(--app-wine);background:var(--app-blush)}
+
+/* ---------- question ---------- */
+.qb-q{padding-top:var(--app-s2)}
+.qb-q-kicker{display:flex;flex-wrap:wrap;align-items:center;gap:6px var(--app-s2);margin:0 0 var(--app-s2);padding:0 var(--app-s1)}
+.qb-q-kicker .app-kicker{margin:0}
+.qb-stem{margin:0 0 var(--app-s2);padding:0 var(--app-s1);font-size:calc(18rem/17);line-height:1.55;white-space:pre-line;-webkit-user-select:text;user-select:text;overflow-wrap:anywhere}
+.qb-img{display:block;width:100%;aspect-ratio:4/3;margin:var(--app-s3) 0;padding:0;border:0;border-radius:var(--app-r-md);background:var(--app-inset);overflow:hidden;cursor:zoom-in}
+.qb-img img{display:block;width:100%;height:100%;object-fit:contain}
+.qb-zoom{display:block;width:100%;height:auto;border-radius:var(--app-r-md)}
+.app-choice-letter svg{width:16px;height:16px}
+ul.qb-ro{list-style:none}
+.qb-ro .app-choice{cursor:default}
+.qb-ro .app-choice:active{transform:none;background:inherit}
+@media (hover:hover) and (pointer:fine){.qb-ro .app-choice:not(.is-selected):not(.is-correct):not(.is-incorrect):not(.is-answer):not(.is-dimmed):hover{background:var(--app-surface)}
+  .qb-ro .app-choice.is-dimmed:hover{background:transparent}}
+.qb-explain{margin:var(--app-s4) 0 var(--app-s2);font-size:var(--app-t-body);line-height:1.6;-webkit-user-select:text;user-select:text;overflow-wrap:anywhere}
+.qb-explain p{margin:0 0 var(--app-s3)}
+.qb-explain p:last-child{margin-bottom:0}
+.qb-explain .app-kicker{margin-bottom:var(--app-s1)}
+.qb-suggest{margin:0 0 var(--app-s2) calc(-1 * var(--app-s1))}
+.qb-meta{padding:0 var(--app-s1);font-size:var(--app-t-subhead);color:var(--app-muted)}
+.qb-meta p{margin:0}
+.qb-show{margin-top:var(--app-s4)}
+.qb-q-actions{margin-top:var(--app-s6)}
+.qb-verdict{display:flex;align-items:center;gap:var(--app-s2);margin:0 0 var(--app-s3);padding:0 var(--app-s1);font-weight:600;font-size:var(--app-t-body)}
+.qb-verdict svg{flex:none;width:22px;height:22px}
+.qb-verdict.is-ok{color:var(--app-ok)}
+.qb-verdict.is-bad{color:var(--app-bad)}
+.app-sheet-title .qb-verdict{margin:0;padding:0;font-size:inherit}
+
+/* feedback sheet: the verdict reads from the left edge, like an iOS alert sheet title */
+.qb-feedback .app-sheet-head{grid-template-columns:1fr auto;padding-left:var(--app-gutter)}
+.qb-feedback .app-sheet-head>span:first-child{display:none}
+.qb-feedback .app-sheet-title{grid-column:1;text-align:left}
+.qb-feedback .app-sheet-body .app-text{margin-bottom:0}
+
+/* ---------- rows, lists and small pieces ---------- */
+.qb-clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.app-row-sub .qb-clamp{display:-webkit-box}
+.qb-sub{margin-right:var(--app-s2)}
+.qb-badges{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:1px}
+.qb-badges .app-badge{min-height:20px}
+.qb-facts{display:block}
+.app-row .app-badge{flex:none}
+.qb-top-action{margin:0 0 var(--app-s6)}
+.qb-list-h{margin-top:var(--app-s2)}
+.qb-after-chips{margin-top:var(--app-s2)}
+.qb-none{margin:var(--app-s2) var(--app-s4) var(--app-s6);color:var(--app-muted)}
+.qb-empty{margin-top:var(--app-s2)}
+.qb-minibar{flex:none;display:block;width:64px;height:6px;border-radius:var(--app-r-full);background:var(--app-fill);overflow:hidden}
+.qb-minibar i{display:block;height:100%;border-radius:var(--app-r-full);background:var(--app-wine)}
+.qb-steps3{flex:none;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:72px}
+.qb-steps3 i{height:6px;border-radius:var(--app-r-full);background:var(--app-fill)}
+.qb-steps3 i.is-on{background:var(--app-wine)}
+.qb-mark{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%}
+.qb-mark svg{width:17px;height:17px}
+.qb-mark.is-ok{background:var(--app-ok-bg);color:var(--app-ok)}
+.qb-mark.is-bad{background:var(--app-bad-bg);color:var(--app-bad)}
+.qb-mark.is-none{box-shadow:inset 0 0 0 1.5px var(--app-control);color:var(--app-muted)}
+.qb-about{padding:0 var(--app-s1)}
+.qb-note{margin:0 0 var(--app-s4);padding:0 var(--app-s1)}
+
+/* search field: an iOS-style filled search bar */
+.qb-search{position:relative;margin:0 0 var(--app-s1)}
+.qb-search svg{position:absolute;left:11px;top:50%;width:20px;height:20px;transform:translateY(-50%);color:var(--app-muted);pointer-events:none}
+.qb-search-input{display:block;width:100%;min-height:44px;padding:10px 12px 10px 40px;border:0;border-radius:var(--app-r-md);background:var(--app-fill);
+  font-size:max(16px,var(--app-t-body));color:var(--app-ink);-webkit-appearance:none;appearance:none}
+.qb-search-input::placeholder{color:#66635b}
+.qb-search-input:focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--app-wine)}
+.qb-search-input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;width:20px;height:20px;margin:0 -2px 0 8px;cursor:pointer;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='9' fill='%23827b6d'/%3E%3Cpath d='M6.5 6.5l7 7M13.5 6.5l-7 7' stroke='%23fbfaf6' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center/20px 20px no-repeat}
+.qb-count{margin:var(--app-s2) var(--app-s4) var(--app-s2);font-size:var(--app-t-subhead);color:var(--app-muted)}
+
+/* stats in a card: three figures */
+.qb-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:var(--app-s3) 0}
+.qb-stat{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;padding:0 var(--app-s2);text-align:center;overflow-wrap:anywhere}
+.qb-stat+.qb-stat{box-shadow:-1px 0 0 var(--app-line)}
+.qb-stat b{font-family:var(--app-serif);font-weight:400;font-size:var(--app-t-title1);line-height:1.15;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.qb-stat span{font-size:var(--app-t-subhead);color:var(--app-muted)}
+.qb-stats+.app-section,.qb-stats+.qb-note,.qb-stats+.qb-top-action{margin-top:var(--app-s2)}
+
+/* this week: seven day circles */
+.qb-week-card{padding:var(--app-s4) var(--app-s3)}
+.qb-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.qb-day{display:grid;justify-items:center;gap:6px;min-width:0;font-size:var(--app-t-caption);font-weight:500;color:var(--app-muted)}
+.qb-day i{display:grid;place-items:center;width:30px;max-width:100%;aspect-ratio:1;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--app-control)}
+.qb-day i svg{width:15px;height:15px}
+.qb-day.is-on i{background:var(--app-wine);color:var(--app-ivory);box-shadow:none}
+.qb-day.is-today{color:var(--app-ink);font-weight:600}
+
+/* results: the score ring beside the score */
+.qb-result{display:flex;align-items:center;gap:var(--app-s5);padding:var(--app-s5) var(--app-s4)}
+.qb-result .app-ring{--app-ring-size:112px;flex:none}
+.qb-result-text{min-width:0}
+.qb-result-big{margin:0 0 2px;font-family:var(--app-serif);font-weight:400;font-size:var(--app-t-title1);line-height:1.2;letter-spacing:-.02em}
+.qb-pass{display:flex;flex-wrap:wrap;align-items:center;gap:var(--app-s2);margin:var(--app-s2) 0 0}
+.qb-ring-still .app-ring-value{animation:none}
+@media (max-width:340px){.qb-result{gap:var(--app-s4);padding-inline:var(--app-s3)}.qb-result .app-ring{--app-ring-size:96px}}
+
+/* ---------- sheets ---------- */
+.qb-sheet-grip{flex:none;touch-action:none;cursor:grab}
+.app-sheet{padding-bottom:var(--qb-kb,0px)}
+.qb-sheet-h{padding-top:var(--app-s4)}
+.qb-sheet-h:first-child{padding-top:0}
+.qb-sheet-intro{margin:0 0 var(--app-s3);padding:0 var(--app-s1)}
+.qb-sheet-list{margin:var(--app-s3) 0;background:var(--app-ground)}
+.app-sheet .app-chips{margin-top:0;margin-bottom:0}
+.qb-chips-foot{padding-top:2px}
+.qb-live{margin:0 0 var(--app-s2);font-size:var(--app-t-subhead);color:var(--app-muted);text-align:center}
+.qb-foot-row{margin:0}
+.app-sheet-foot .app-btn-row{margin:var(--app-s2) 0 0}
+.app-sheet-foot>.qb-foot-row:first-child{margin-top:0}
+.qb-check-line{margin:0 0 var(--app-s4);font-weight:600;font-size:calc(20rem/17)}
+.qb-hint{display:block;margin-top:6px;padding:0 var(--app-s1);font-size:var(--app-t-subhead);color:var(--app-muted)}
+.app-sheet textarea.app-input{min-height:50px;resize:none;overflow:hidden}
+
+/* stepper (− value +) at the end of a grouped row */
+.qb-stepper-row{min-height:56px;padding-block:6px}
+.qb-stepper{flex:none;display:flex;align-items:center;gap:2px;padding:2px;border-radius:10px;background:var(--app-fill)}
+.qb-step{width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:var(--app-wine);font-size:22px;line-height:1;cursor:pointer}
+.qb-step:active{background:var(--app-surface)}
+.qb-step[aria-disabled="true"]{color:var(--app-line-strong);cursor:default}
+.qb-step-val{min-width:44px;text-align:center;font-family:var(--app-mono);font-variant-numeric:tabular-nums;font-size:var(--app-t-body)}
+
+/* suggest a change: each choice, its letter is the "correct answer" radio */
+.qb-opts{margin:0 0 var(--app-s4);padding:0;border:0;min-width:0}
+.qb-opts legend{padding:0}
+.qb-opt-row{display:flex;align-items:flex-start;gap:var(--app-s2);margin:0 0 var(--app-s2)}
+.qb-opt-pick{position:relative;flex:none;display:grid;place-items:center;width:44px;height:50px;cursor:pointer}
+.qb-opt-pick input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.qb-opt-letter{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--app-control);font-size:var(--app-t-subhead);font-weight:600;color:var(--app-ink-soft);
+  transition:background-color var(--app-d-fast) linear}
+.qb-opt-pick input:checked+.qb-opt-letter{background:var(--app-ok);color:#fff;box-shadow:none}
+.qb-opt-pick input:focus-visible+.qb-opt-letter{outline:2px solid var(--app-wine);outline-offset:2px}
+.qb-opt-pick:active .qb-opt-letter{background:var(--app-pressed)}
+.qb-opt-input{flex:1;min-width:0}
+
+/* navigator sheet: a grid of numbered circles */
+.qb-navgrid{display:grid;grid-template-columns:repeat(auto-fill,44px);gap:12px;justify-content:start;margin:var(--app-s2) 0 var(--app-s4);padding:0;list-style:none}
+.qb-dot{position:relative;width:44px;height:44px;padding:0;border:0;border-radius:50%;background:var(--app-surface);box-shadow:inset 0 0 0 1.5px var(--app-control);font-family:var(--app-mono);font-variant-numeric:tabular-nums;font-size:var(--app-t-subhead);color:var(--app-ink);cursor:pointer}
+.qb-dot:active{background:var(--app-pressed)}
+.qb-dot.is-done{background:var(--app-ink);color:var(--app-ivory);box-shadow:none}
+.qb-dot.is-flag::after{content:'';position:absolute;top:-1px;right:-1px;width:14px;height:14px;border-radius:50%;background:var(--app-wine);box-shadow:0 0 0 2px var(--app-surface)}
+.qb-dot.is-cur{outline:2px solid var(--app-wine);outline-offset:3px}
+.qb-legend{display:flex;flex-wrap:wrap;gap:var(--app-s1) var(--app-s4);margin:0;padding:0;list-style:none;font-size:var(--app-t-subhead);color:var(--app-muted)}
+.qb-legend li{display:inline-flex;align-items:center;gap:6px}
+.qb-legend i{position:relative;display:inline-block;width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--app-control)}
+.qb-legend i.is-done{background:var(--app-ink);box-shadow:none}
+.qb-legend i.is-flag{width:10px;height:10px;background:var(--app-wine);box-shadow:none}
+.qb-legend i.is-cur{outline:2px solid var(--app-wine);outline-offset:2px}
+
+
+/* small phones (320px): a pushed screen's title gets a little more room (the back label stays short), and four
+   segments keep whole words */
+@media (max-width:360px){
+  .app-bar--solid:not(.qb-session) .app-bar-title{max-width:40vw}
+  .app-seg span{padding:0 4px}
+}

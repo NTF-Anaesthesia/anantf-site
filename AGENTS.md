@@ -52,7 +52,8 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `shared/vendor/three-r160/` | three.js (r160) and its Draco decoder, used by `brachial-plexus/` and `plexus/` through their import maps (moved from `brachial-plexus/vendor/three`) | — |
 | `shared/us/` | Open-licence ultrasound images by region, with credits and licences in each `sources.json` (for the scan viewer's "Real" view; not yet shown on the pages) | — |
 | `test/regional/` | Tests for the regional pages: smoke, deep links, levels, data and content parity against a baseline (`node test/regional/run-all.mjs`; see `test/regional/README.md`) | — |
-| `babymo/` | Baby MO test: the department's MCQ test for new medical officers (MOs enter a name and a shared passphrase; faculty edit questions and see results in the app). Own Firebase project `ntf-mo-portal`; start with `babymo/NOTES.md`. The real question bank is not in this repo | No (unlisted) |
+| `babymo/` | Baby MO test: the department's MCQ test for new medical officers (MOs enter a name and a shared passphrase; faculty edit questions and see results in the app). Own Firebase project `ntf-mo-portal` (sign-in, results); its questions come from `qbank/papers/babymo.json`. Start with `babymo/NOTES.md` | No (unlisted) |
+| `qbank/` | Question bank: the department's shared MCQs (`bank/questions.json`, one format with permanent ids), the papers made from it (`papers/`), and the qbank app at anantf.com/qbank/. Start with `qbank/NOTES.md`. Questions are public (owner, 15 Oct 2026) | No (unlisted) |
 | `mo/` | MO guide: the practical learning app for new medical officers (handbook and beyond: learn topics, drug doses by weight, crisis cards, calculators, scenarios, flashcards; progress on the phone only). Start with `mo/NOTES.md`; content format in `mo/CONTENT.md` | No (unlisted) |
 | `lower-limb/` | Lower-limb blocks: landing page with the operation chooser, and `hip/`, `knee/`, `foot-ankle/`, `thigh/` pages on the shared regional engine (`shared/regional/`) plus leg figures in `shared/regional/js/figures/leg.js` and the embedded animations in `lower-limb/shared/` (see `lower-limb/shared/LEG.md`). Created by Dr Koh Wenjun and Dr Chew Shi Hao | No (unlisted; card on Regional) |
 | `lower-limb/anim/` | Dr Chew Shi Hao's animated block demonstrations (his engine and block modules, shown inside the lower-limb pages in an iframe) | No |
@@ -71,6 +72,10 @@ one wine accent, square edges, hairline rules, light only, readable sizes (body 
 12px). Read it before styling anything. Interactive teaching apps follow the regional block pages
 (`truncal/`, `head-neck/`, `lower-limb/`). Anatomy and clinical colour codes (yellow nerves, red arteries, blue veins, danger and
 warning colours) are never recoloured to the brand.
+Installable web apps (with a service worker or home-screen icon) follow `DESIGN-APP.md`, the phone-app version
+of the language, and use the shared kit `assets/app/app.css` (every component in `assets/app/specimen.html`).
+Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp every app that lists it (today
+`node mo/tools/stamp.mjs` and `node qbank/tools/stamp.mjs`; run each app's tests) in the same PR.
 
 ## Rules
 
@@ -79,7 +84,7 @@ warning colours) are never recoloured to the brand.
   and drop "draft" from its breadcrumb.
 
 - The main navigation is Airway, Regional Anaesthesia, POCUS and MMed Exam Prep. Don't add department, recruitment or handbook pages back.
-- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/` or `mo/` from the homepage, and keep their
+- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/` or `mo/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - The regional pages (`blocks/`, `truncal/`, `head-neck/`, `lower-limb/`, `brachial-plexus/`, `plexus/`, `spinal/`) are one
   app: same app bar, the credit line "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" (Dr Chew Shi Hao
@@ -92,9 +97,11 @@ warning colours) are never recoloured to the brand.
   after changing any regional page.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
-- `babymo/` is an installable app (service worker): after changing any file listed in `SHELL` in `babymo/sw.js` (pages, scripts, styles, manifest, icons) run `node babymo/tools/stamp.mjs`, or phones keep the old files (`node babymo/test/version.test.mjs` checks). Its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/version.test.mjs`, `node babymo/test/e2e.mjs`, `node babymo/test/pwa.e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit the real question bank, names or results.
+- `babymo/` is an installable app (service worker): after changing any file listed in `SHELL` in `babymo/sw.js` (pages, scripts, styles, manifest, icons) run `node babymo/tools/stamp.mjs`, or phones keep the old files (`node babymo/test/version.test.mjs` checks). Its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/version.test.mjs`, `node babymo/test/e2e.mjs`, `node babymo/test/pwa.e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit names or results (the questions themselves now live in `qbank/`).
+- `qbank/` (the question bank): after any change to `qbank/bank/` or `qbank/papers/` run `node qbank/tools/check.mjs` and `node qbank/test/bank.test.mjs`. The qbank app is installable and on the app kit: after changing anything in `qbank/` (or `assets/app/`) run `node qbank/tools/stamp.mjs`; its tests are `node qbank/test/bank.test.mjs`, `practice.test.mjs`, `version.test.mjs`, `e2e.mjs` and `pwa.e2e.mjs`. Never change or reuse a question's `id`; retire questions with `status: archived` rather than deleting them. **The owner approves every question change suggested by faculty** (issues titled `Question edit:`, pasted batches, spreadsheet imports): list what would change and wait for the owner's go-ahead before merging (owner, 15 Oct 2026). No copyrighted or watermarked pictures in questions.
+  The qbank app (`qbank/index.html`, `ui/`, `js/`) is an installable app: after changing anything in `qbank/` (questions and papers included) run `node qbank/tools/stamp.mjs`, which rewrites `qbank/papers.json` and the offline file lists and `VERSION` in `qbank/sw.js` (`node qbank/test/version.test.mjs` checks). Its tests are `node qbank/test/bank.test.mjs`, `node qbank/test/practice.test.mjs`, `node qbank/test/version.test.mjs`, `node qbank/test/e2e.mjs` and `node qbank/test/pwa.e2e.mjs`. `qbank/ui/` (the shared app look and building blocks) is meant for the Baby MO test too: once Baby MO imports it, a change there also needs Baby MO's stamp and tests.
 - `mo/` (the MO guide) is an installable app too: after changing any file in `mo/` (content included) run `node mo/tools/stamp.mjs`, which rewrites the offline file lists and `VERSION` in `mo/sw.js` (`node mo/test/version.test.mjs` checks). Its tests are `node mo/test/calc.test.mjs`, `node mo/test/content.test.mjs`, `node mo/test/version.test.mjs`, `node mo/test/e2e.mjs` and `node mo/test/pwa.e2e.mjs`. Its content is data (`mo/js/content/`, `mo/js/data/`; format in `mo/CONTENT.md`); keep the handbook's administrative sections, names and phone numbers out of it.
-- Every installable app (one with a service worker, today `babymo/` and `mo/`) ends its settings or start page with two lines of small
+- Every installable app (one with a service worker, today `babymo/`, `mo/` and `qbank/`) ends its settings or start page with two lines of small
   muted text (owner, 14 Oct 2026, as on anawj.com): `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
   read from the app's cache name) and a `Not updating? Get the latest version` button that checks for signal, then
   removes only that app's service worker and caches and reloads, never touching saved answers or sign-in.
