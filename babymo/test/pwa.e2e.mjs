@@ -42,8 +42,9 @@ const step = async (name, fn) => { try { await fn(); console.log('ok  ', name); 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const versions = () => page.evaluate(async () => (await caches.keys()).filter(k => k.startsWith('babymo-')).sort());
 const update = () => page.evaluate(async () => { const r = await navigator.serviceWorker.getRegistration(); await r.update(); });
-const activeVersion = async v => { await page.waitForFunction(async v => { const r = await navigator.serviceWorker.getRegistration(); return r?.active && (await caches.keys()).includes(v) && !(await caches.keys()).some(k => k.startsWith('babymo-') && k !== v); }, v, { timeout: 15000 }); };
-const waitingVersion = async v => { await page.waitForFunction(async v => { const r = await navigator.serviceWorker.getRegistration(); return r?.waiting && (await caches.keys()).includes(v); }, v, { timeout: 15000 }); };
+const said = what => e => { throw new Error(what + ': ' + e.message.split('\n')[0]); };
+const activeVersion = async v => { await page.waitForFunction(async v => { const r = await navigator.serviceWorker.getRegistration(); return r?.active && (await caches.keys()).includes(v) && !(await caches.keys()).some(k => k.startsWith('babymo-') && k !== v); }, v, { timeout: 15000 }).catch(said(v + ' never became the only active version')); };
+const waitingVersion = async v => { await page.waitForFunction(async v => { const r = await navigator.serviceWorker.getRegistration(); return r?.waiting && (await caches.keys()).includes(v); }, v, { timeout: 15000 }).catch(said(v + ' never installed and waited')); };
 const sw = () => fs.readFileSync(path.join(root, 'babymo/sw.js'), 'utf8');
 const list = name => [...sw().match(new RegExp(`const ${name} = \\[([\\s\\S]*?)\\];`))[1].matchAll(/'([^']+)'/g)].map(m => m[1]);
 const submitTest = async () => { await page.click('#qpill'); await page.click('#nav-finish'); await page.click('#submit'); await page.locator('#score').waitFor(); };
@@ -107,7 +108,7 @@ try {
   await step('"Get the latest version" with a signal clears only babymo- caches and keeps saved data', async () => {
     await page.evaluate(async () => { localStorage.setItem('bm-keep', 'yes'); await caches.open('babymo-old'); await caches.open('other-app'); window.__marker = 5; });
     await page.click('#getlatest');
-    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 });
+    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 }).catch(said('the page never reloaded into the new version'));
     await page.locator('#f-name').waitFor();
     const keys = await page.evaluate(() => caches.keys());
     assert.ok(!keys.includes('babymo-old'), 'old babymo- cache kept');
@@ -151,7 +152,7 @@ try {
     await submitTest(); await sleep(1500);
     assert.equal(await page.evaluate(() => window.__marker), 2, 'reloaded on the result screen');
     await page.click('#done');        // back to the start page: nothing typed, no test: now it is safe
-    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 });
+    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 }).catch(said('the page never reloaded into the new version'));
     await page.locator('#f-name').waitFor();
     await activeVersion('babymo-update1');
   });
@@ -163,13 +164,13 @@ try {
     assert.equal(await page.inputValue('#f-name'), 'Dr Typing');
     await page.fill('#f-name', '');
     await page.evaluate(() => { location.hash = '#/faculty'; });   // moving to another top-level screen while idle lets it apply
-    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 });
+    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 }).catch(said('the page never reloaded into the new version'));
     await activeVersion('babymo-update2');
   });
   await step('an update found while idle on the start page switches by itself', async () => {
     await page.goto(BASE + '?demo#/'); await page.locator('#f-name').waitFor(); await page.evaluate(() => { window.__marker = 4; });
     swVersion = 'babymo-update3'; await update();
-    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 });
+    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 }).catch(said('the page never reloaded into the new version'));
     await activeVersion('babymo-update3');
     assert.deepEqual(await versions(), ['babymo-update3']);
   });
@@ -182,7 +183,7 @@ try {
     await page.locator('#toast.on:has-text("Update ready")').waitFor({ timeout: 10000 });
     assert.equal(await page.evaluate(() => window.__marker), 7, 'switched on its own on a pushed screen');
     await page.click('#toast .toast-act');
-    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 });
+    await page.waitForFunction(() => window.__marker === undefined, null, { timeout: 15000 }).catch(said('the page never reloaded into the new version'));
     await activeVersion('babymo-update4');
   });
   assert.deepEqual(errors, [], 'page errors: ' + errors.join(' | '));

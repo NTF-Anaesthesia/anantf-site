@@ -11,7 +11,7 @@
 //    and the paper (../qbank/), precached too but not part of the hash: they change often and are always fetched fresh
 //    when there is a signal, so a bank change never needs a new Baby MO version.
 
-const VERSION = 'babymo-2026-10-15-5551be2c';
+const VERSION = 'babymo-2026-10-15-f9b3988f';
 const NET_WAIT = 3000; // ms before falling back to the cached copy
 const SHELL = ['./', 'index.html', 'style.css', 'manifest.webmanifest', 'js/app.js', 'js/logic.js', 'js/ui.js', 'js/store.js', 'js/local.js', 'js/cloud.js', 'js/firebase-config.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
@@ -28,7 +28,7 @@ self.addEventListener('install', e => {
 });
 
 // The page asks a waiting worker to take over when it is safe.
-self.addEventListener('message', e => { if (e.data === 'skipWaiting') self.skipWaiting(); });
+self.addEventListener('message', e => { if (e.data === 'skipWaiting') e.waitUntil(self.skipWaiting()); });   // waitUntil: the worker must not be stopped before it takes over
 
 self.addEventListener('activate', e => {
   e.waitUntil((async () => {

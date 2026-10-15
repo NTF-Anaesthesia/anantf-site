@@ -104,10 +104,10 @@ function pills({ outbox: showOutbox = true } = {}) {
   if (mode === 'local') out.push(`<span class="pill demo">${isDemo ? 'Demo' : 'Not connected'}: this browser only</span>`);
   const n = outbox().length;
   if (showOutbox && n) out.push(`<span class="pill warn" id="outpill">${n === 1 ? 'Saving your result…' : `Saving ${n} results…`}</span>`);
-  return out.length ? `<div class="pills">${out.join('')}</div>` : '';
+  return `<div class="pills">${out.join('')}</div>`;
 }
 window.addEventListener('online', () => repaintPills()); window.addEventListener('offline', () => repaintPills());
-function repaintPills() { const el = $('#app .pills'); if (el) el.outerHTML = pills(); }
+function repaintPills() { const el = $('#app .pills'); if (el) el.outerHTML = pills({ outbox: !location.hash.startsWith('#/faculty') }); }
 const errorPanel = (e, retry = true) => `<div class="inset-panel" role="alert"><p>${esc(errText(e))}</p>${retry ? '<button type="button" class="btn secondary small" id="retry-route">Try again</button>' : ''}</div>`;
 
 // ---------- routing ----------
@@ -133,7 +133,7 @@ async function route() {
   try {
     await userKnown;
     if (p[0] !== 'faculty') {
-      if (S.attempt?.items && p[0] !== 'test' && p[0] !== '' && p[0] !== undefined) return go('#/test');
+      if (S.attempt?.items && p[0] && p[0] !== 'test') return location.replace('#/test');
       if (p[0] === 'test') return S.attempt?.items ? viewTest() : go('#/');
       if (p[0] === 'ready') return S.attempt && !S.attempt.items ? viewReady() : go('#/');
       if (p[0] === 'result') return p[1] != null ? viewReviewItem(+p[1]) : viewResult();
@@ -442,6 +442,7 @@ function viewReviewItem(i) {
   setScreen(`${bar({ title: `Question ${i + 1} of ${n}`, back: { href: '#/result', label: 'Result' }, always: true })}<div class="qbody">
     <p class="kicker">Question ${i + 1} of ${n}${it.topic ? ' · ' + esc(it.topic.replace(/; /g, ' · ')) : ''}</p>
     <h1 class="stem" id="stem">${nl(it.stem)}</h1>
+    ${r.images?.[i] ? `<img class="qimg" src="${esc(new URL('../../qbank/' + r.images[i], import.meta.url).href)}" alt="Picture for this question">` : ''}
     ${choicesReadOnly(it)}
     ${it.explain ? `<div class="explain"><p class="kicker">Why</p><p>${nl(it.explain)}</p></div>` : ''}
   </div>`, {
@@ -595,7 +596,7 @@ async function viewAttempt(id) {
   const a = S.attempts.find(x => x.id === id);
   if (!a) return go('#/faculty/results');
   const s = L.summarise(a), key = L.attemptKey(a.cohort, a.name);
-  setScreen(`${bar({ title: a.name, back: { href: '#/faculty/person/' + encodeURIComponent(key), label: a.name.split(' ')[0] || 'Back' } })}<div class="content">
+  setScreen(`${bar({ title: a.name, back: { href: '#/faculty/person/' + encodeURIComponent(key), label: a.name } })}<div class="content">
     <p class="kicker">${a.attemptNo ? `Attempt ${a.attemptNo} · ` : ''}${esc(L.fmtDate(a.submittedAt))}</p>
     <h1 class="large-title">${esc(a.name)}</h1>
     <p class="sumline">${s.score}/${s.total} (${s.pct}%) · <span class="badge ${s.pass ? 'pass' : 'notyet'}">${s.pass ? 'Pass' : 'Not yet'}</span>${a.durationSec != null ? ` · ${L.minutesTaken(a.durationSec)}` : ''}</p>
@@ -650,7 +651,7 @@ async function viewPaperQuestion(id) {
   const ready = P.pool.includes(q);
   setScreen(`${bar({ title: 'Question', back: { href: '#/faculty/paper', label: 'Paper' } })}<div class="qbody">
     <p class="kicker">${esc(q.topics.join(' · ') || 'No topic')}</p>
-    <p class="pills">${q.must ? '<span class="badge must">Must</span>' : ''}${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${ready ? '' : `<span class="badge draft">${esc(STATUS_LABEL[q.status] || 'Draft')}: not given to MOs</span>`}</p>
+    <p class="badge-row">${q.must ? '<span class="badge must">Must</span>' : ''}${q.level === 'hard' ? '<span class="badge hard">Hard</span>' : ''}${ready ? '' : `<span class="badge draft">${esc(STATUS_LABEL[q.status] || 'Draft')}: not given to MOs</span>`}</p>
     <h1 class="stem" id="stem">${nl(q.stem)}</h1>
     ${q.image ? `<img class="qimg" src="${esc(new URL('../../qbank/' + q.image, import.meta.url).href)}" alt="Picture for this question">` : ''}
     ${choicesReadOnly({ options: q.options, answer: q.answer, picked: null }, { showPick: false })}
@@ -771,7 +772,7 @@ function wireAccount() { $('#signout')?.addEventListener('click', () => signOut(
 // A new version waits (sw.js has no skipWaiting on install). The page switches to it only on a top-level screen with no
 // test open, no sheet open and nothing typed; otherwise, when no test is open, a toast offers "Restart". It never
 // reloads during a test, on the Ready or Result screens, or while someone is typing. On the first install nothing reloads.
-let waitingReg = null, reloading = false, offered = false;
+let swReg = null, reloading = false, offered = false;
 function safeNow() {
   if (S.attempt?.items || S.dirty || U.sheetOpen()) return false;
   const ae = document.activeElement;
@@ -780,22 +781,33 @@ function safeNow() {
   const h = (location.hash || '#/').split('?')[0];
   return ['#/', '#', '#/faculty', '#/faculty/results', '#/faculty/paper', '#/faculty/people', '#/faculty/settings'].includes(h);
 }
+// Reads the registration's waiting worker each time (an "updatefound" handler can run after the worker has already
+// finished installing, so don't rely on catching it there).
 function applyUpdate() {
-  if (!waitingReg?.waiting || reloading) return;
-  if (safeNow()) { reloading = true; waitingReg.waiting.postMessage('skipWaiting'); return; }
+  const w = swReg?.waiting;
+  if (!w || reloading || !navigator.serviceWorker.controller) return;
+  if (safeNow()) return switchNow(w, true);
   if (!offered && !S.attempt && !/^#\/(test|ready|result)/.test(location.hash)) {
     offered = true;
-    U.toast('Update ready', { ms: 10000, action: { label: 'Restart', fn: () => { if (waitingReg?.waiting) { reloading = true; waitingReg.waiting.postMessage('skipWaiting'); } } } });
+    U.toast('Update ready', { ms: 10000, action: { label: 'Restart', fn: () => { const ww = swReg?.waiting; if (ww) switchNow(ww, false); } } });
   }
 }
+// Ask the waiting worker to take over; the page reloads on "controllerchange". Chrome sometimes holds the switch while
+// the old worker still counts this page as busy: if nothing has happened after 3 s, reload anyway (the old page going
+// away lets the new worker take over). auto: only while it is still safe.
+function switchNow(w, auto) {
+  reloading = true; w.postMessage('skipWaiting');
+  setTimeout(() => { if (!switched && (!auto || safeNow())) location.reload(); else if (!switched) reloading = false; }, 3000);
+}
+let switched = false;
 async function setupPwa() {
   if (!('serviceWorker' in navigator) || !(location.protocol === 'https:' || ['localhost', '127.0.0.1'].includes(location.hostname))) return;
   let hadController = !!navigator.serviceWorker.controller;           // false on the very first visit
   let reg; try { reg = await navigator.serviceWorker.register('sw.js'); } catch { return; }
   if (!reg) return;   // blocked (private mode, tests)
-  const found = () => { if (reg.waiting && navigator.serviceWorker.controller) { waitingReg = reg; applyUpdate(); } };
-  reg.addEventListener('updatefound', () => { const w = reg.installing; w?.addEventListener('statechange', () => { if (w.state === 'installed') found(); }); });
-  found();
+  swReg = reg;
+  reg.addEventListener('updatefound', () => { const w = reg.installing; w?.addEventListener('statechange', () => { if (w.state === 'installed') applyUpdate(); }); });
+  applyUpdate();
   const check = () => reg.update().catch(() => {});
   document.addEventListener('visibilitychange', () => { if (!document.hidden) { check(); applyUpdate(); } });
   window.addEventListener('online', check);
@@ -805,7 +817,7 @@ async function setupPwa() {
   setInterval(applyUpdate, 5000);
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (!hadController) { hadController = true; return; }               // first install taking control: no reload
-    if (reloading) location.reload();
+    if (reloading) { switched = true; location.reload(); }
     else { reloading = true; const wait = setInterval(() => { if (safeNow()) { clearInterval(wait); location.reload(); } }, 1000); }   // another tab switched: reload here when safe
   });
 }

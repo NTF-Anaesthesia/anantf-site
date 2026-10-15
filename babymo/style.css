@@ -33,8 +33,7 @@ a{color:var(--wine);text-decoration:underline;text-decoration-color:var(--line-s
 #shell{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:600px;margin:0 auto;background:var(--paper);position:relative}
 @media (min-width:640px){#shell{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
 main#app{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;outline:none;position:relative}
-.content{padding:0 calc(16px + var(--sar)) 32px calc(16px + var(--sal))}
-.screen-in{animation:push-in 240ms ease-out}
+.content{padding:8px calc(16px + var(--sar)) 32px calc(16px + var(--sal))}.screen-in{animation:push-in 240ms ease-out}
 .screen-back{animation:pop-in 240ms ease-out}
 .screen-fade{animation:fade-in 150ms ease-out}
 @keyframes push-in{from{transform:translateX(24%);opacity:.4}to{transform:none;opacity:1}}
@@ -50,6 +49,7 @@ main#app{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;overscroll-behavior:con
 .bar-side.end{justify-content:flex-end}
 .bar-btn{display:inline-flex;align-items:center;gap:2px;min-height:44px;min-width:44px;padding:0 8px;background:none;border:0;color:var(--wine);font-size:17px;cursor:pointer;text-decoration:none}
 .bar-btn .ic{width:22px;height:22px}
+.bar-btn span{max-width:38vw;max-width:min(38vw,220px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bar-btn:active{background:var(--panel)}
 .large-title{font-family:var(--serif);font-weight:400;font-size:34px;line-height:1.15;letter-spacing:-.02em;margin:4px 0 12px;text-wrap:balance;outline:none}
 .title-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
@@ -62,6 +62,9 @@ h2.section{font-family:var(--sans);font-size:12px;line-height:1.5;letter-spacing
 
 /* pills: offline, saving, saved */
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.pills:empty{display:none}
+.badge-row{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 8px}
+.badge-row:empty{display:none}
 .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border:1px solid var(--line-strong);color:var(--ink-soft);background:var(--paper);white-space:nowrap}
 .pill.warn{color:var(--warn);border-color:var(--warn)}
 .pill.ok{color:var(--ok);border-color:var(--ok)}

@@ -110,6 +110,8 @@ try {
     await page.click('[data-goto="0"]'); await sheetGone(); assert.equal(await text('#qpill'), `Q 1/${N}`);
   });
   await step('leaving keeps the answers; the start page offers Resume', async () => {
+    await page.goBack(); await page.waitForTimeout(300); await page.locator('#stem').waitFor();
+    assert.match(page.url(), /#\/test$/, 'the back button does not leave a test by accident');
     await page.click('#leave'); await page.locator('dialog.sheet [data-no]').waitFor(); await page.click('dialog.sheet [data-no]'); await sheetGone();
     await page.click('#leave'); await page.click('dialog.sheet [data-yes]');
     await page.locator('#resume').waitFor(); assert.match(await text('#resume'), /Question 1 of/);
