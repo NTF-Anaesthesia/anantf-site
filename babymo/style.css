@@ -6,6 +6,9 @@
   .bm-pop{animation:bm-pop var(--app-d-push) var(--app-ease-sheet) both}
   .bm-fade{animation:bm-fade var(--app-d-fast) linear both}
 }
+/* clip the sliding screen: otherwise the pushed-in screen (28% to the right) widens the page for a moment and phone
+   browsers (Android Chrome) zoom the whole page out to fit it, and stay zoomed out */
+#view{overflow-x:clip}
 @keyframes bm-push{from{transform:translateX(28%);opacity:.5}}
 @keyframes bm-pop{from{transform:translateX(-18%);opacity:.5}}
 @keyframes bm-fade{from{opacity:0}}
@@ -31,7 +34,7 @@
 .bm-stem{margin:var(--app-s2) 0 var(--app-s4);padding:0 var(--app-s1);font-family:var(--app-sans);font-size:calc(18rem/17);font-weight:400;line-height:1.55;-webkit-user-select:text;user-select:text;outline:none}
 .bm-qimg{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;background:var(--app-inset);margin:0 0 var(--app-s4);border-radius:var(--app-r-md);cursor:zoom-in}
 .app-choice-letter svg{width:16px;height:16px}
-.app-toolbar .app-btn{min-height:48px}
+.app-toolbar .app-btn{min-height:48px;min-width:0;padding-inline:var(--app-s3)}   /* three buttons fit at 320px */
 .app-toolbar .app-btn svg{width:18px;height:18px}
 
 /* navigator sheet: a grid of numbered circles */
@@ -68,7 +71,7 @@
 /* stepper in a grouped row */
 .bm-stepper-row{min-height:56px}
 .bm-stepper{flex:none;display:flex;align-items:center;gap:2px;padding:2px;border-radius:10px;background:var(--app-fill)}
-.bm-step{width:44px;height:40px;border:0;border-radius:8px;background:transparent;color:var(--app-wine);font-size:22px;line-height:1;cursor:pointer}
+.bm-step{width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:var(--app-wine);font-size:22px;line-height:1;cursor:pointer}
 .bm-step:active{background:var(--app-surface)}
 .bm-step[aria-disabled=true]{color:var(--app-line-strong);cursor:default}
 .bm-step-val{min-width:44px;text-align:center;font-size:var(--app-t-body)}

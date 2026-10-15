@@ -349,7 +349,7 @@ function checkSheet() {
   const d = U.sheet({
     title: 'Submit your test?',
     body: `<p class="app-text" id="check-sum"><b>${esc(parts.join(' · '))}.</b></p>
-      ${un.length || fl.length ? `<div class="app-btn-stack">${un.length ? `<button type="button" class="app-btn app-btn--secondary" data-goto="${un[0]}">Go to the first unanswered (Q ${un[0] + 1})</button>` : ''}${fl.length ? `<button type="button" class="app-btn app-btn--secondary" data-goto="${fl[0]}">Go to the first flagged (Q ${fl[0] + 1})</button>` : ''}</div>` : ''}
+      ${un.length || fl.length ? `<div class="app-btn-stack">${un.length ? `<button type="button" class="app-btn app-btn--secondary" data-goto="${un[0]}">Go to the first unanswered (Q&nbsp;${un[0] + 1})</button>` : ''}${fl.length ? `<button type="button" class="app-btn app-btn--secondary" data-goto="${fl[0]}">Go to the first flagged (Q&nbsp;${fl[0] + 1})</button>` : ''}</div>` : ''}
       <p class="app-small app-muted">You cannot change your answers after this.</p>`,
     footer: '<button type="button" class="app-btn app-btn--primary app-btn--block" id="submit">Submit</button>',
   });

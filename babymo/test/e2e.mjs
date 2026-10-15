@@ -24,14 +24,15 @@ const answerFor = stem => { const q = POOL.find(x => x.stem.replace(/\s+/g, ' ')
 const exe = process.env.CHROMIUM_PATH || (fs.existsSync('/opt/pw-browsers/chromium') && !fs.statSync('/opt/pw-browsers/chromium').isDirectory() ? '/opt/pw-browsers/chromium' : null);
 const b = await chromium.launch(exe ? { executablePath: exe, args: ['--no-sandbox'] } : {});
 const ctx = await b.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, serviceWorkers: 'block', acceptDownloads: true });
-await ctx.route(/^https:\/\/(www\.)?anantf\.com\//, async route => {
+ctx._serve = async route => {
   const u = new URL(route.request().url());
   let rel = decodeURIComponent(u.pathname).replace(/^\//, '');
   if (rel.endsWith('/')) rel += 'index.html';
   const f = path.join(root, rel);
   if (!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) return route.fulfill({ status: 404, body: 'not found' });
   await route.fulfill({ status: 200, contentType: MIME[f.split('.').pop()] || 'application/octet-stream', body: fs.readFileSync(f) });
-});
+};
+await ctx.route(/^https:\/\/(www\.)?anantf\.com\//, ctx._serve);
 await ctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
 let page = await ctx.newPage();
 const errors = [];
@@ -287,6 +288,22 @@ try {
     await page.goto(BASE + '?demo#/faculty/settings'); await page.locator('#signout').waitFor();
     assert.match(await text('#app'), /demo@example.com/);
     await page.click('#signout'); await page.locator('#in').waitFor(); assert.equal(await page.locator('#tabs').isHidden(), true);
+  });
+  await step('a small real phone (320px, mobile viewport): sliding screens never zoom the page out; the test toolbar fits', async () => {
+    // a mobile browser widens the layout to fit anything that sticks out (the pushed-in screen does, mid-slide) and stays zoomed out
+    const mctx = await b.newContext({ viewport: { width: 320, height: 640 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, serviceWorkers: 'block' });
+    await mctx.route(/^https:\/\/(www\.)?anantf\.com\//, r => ctx._serve(r));
+    await mctx.route(/fonts\.(googleapis|gstatic)\.com/, r => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
+    const p = await mctx.newPage(); watch(p);
+    try {
+      await p.goto(BASE + '?demo'); await p.locator('#f-name').waitFor();
+      await p.fill('#f-name', 'Small Phone'); await p.fill('#f-pass', 'demo'); await p.click('#start-go');
+      await p.locator('#go').waitFor(); await p.waitForTimeout(400); await p.tap('#go');
+      await p.locator('#stem').waitFor(); await p.tap('#next'); await p.waitForTimeout(400);
+      const r = await p.evaluate(() => ({ w: innerWidth, right: Math.max(...[...document.querySelectorAll('#toolbar .app-btn')].map(e => e.getBoundingClientRect().right)) }));
+      assert.equal(r.w, 320, 'the page was zoomed out to ' + r.w + 'px');
+      assert.ok(r.right <= 320, 'a toolbar button sticks out past the screen edge: ' + r.right);
+    } finally { await mctx.close(); }
   });
   await step('desktop width: centred column and a tab rail, axe clean', async () => {
     await page.setViewportSize({ width: 1280, height: 900 });
