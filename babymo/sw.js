@@ -7,7 +7,7 @@
 //  - A new version takes over by itself (skipWaiting) and never reloads the page: the page decides when it is safe.
 //  - Only this app's caches are deleted (prefix), and only Baby MO's own address is handled (Firebase, fonts: network).
 
-const VERSION = 'babymo-2026-10-14-4301b10c';
+const VERSION = 'babymo-2026-10-15-c26ef7a7';
 const NET_WAIT = 3000; // ms before falling back to the cached copy
 const SHELL = ['./', 'index.html', 'style.css', 'manifest.webmanifest', 'js/app.js', 'js/logic.js', 'js/store.js', 'js/local.js', 'js/cloud.js', 'js/firebase-config.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
