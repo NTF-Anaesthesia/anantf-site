@@ -60,8 +60,8 @@ export function doseLine(d, dose, w = weightsNow()) {
       calc = `<span class="dl-calc">= <b>${range(r.min, r.max)} ${r.unit}</b>${vol}${basis}${r.capped ? ` (capped at ${dose.max.value} ${esc(dose.max.unit)})` : ''}</span>${fallbackNote(dose, r)}`;
     }
   }
-  const basisNote = dose.weight && dose.weight !== 'TBW' && !calc ? ` <span class="muted">(${esc(WEIGHT_NAMES[dose.weight])})</span>` : '';
-  return `<li>${label}<span class="dl-dose"><span class="v">${esc(perText)}</span>${basisNote}${dose.max ? ` <span class="muted">max ${dose.max.value} ${esc(dose.max.unit)}</span>` : ''}</span>${calc}${dose.note ? `<span class="dl-note">${md(dose.note)}</span>` : ''}</li>`;
+  const basisNote = dose.weight && dose.weight !== 'TBW' && !calc ? ` <span class="app-muted">(${esc(WEIGHT_NAMES[dose.weight])})</span>` : '';
+  return `<li>${label}<span class="dl-dose"><span class="v">${esc(perText)}</span>${basisNote}${dose.max ? ` <span class="app-muted">max ${dose.max.value} ${esc(dose.max.unit)}</span>` : ''}</span>${calc}${dose.note ? `<span class="dl-note">${md(dose.note)}</span>` : ''}</li>`;
 }
 
 /** A full drug card. `full` adds notes, cautions and local practice; `level: 1` makes the name the page's h1 (the drug's
@@ -71,8 +71,12 @@ export function drugCard(d, { full = true, link = false, level = 3, panel = '', 
   const g = DRUG_GROUPS[d.group]?.name || '';
   const name = link ? `<a href="#/drugs/${esc(d.id)}">${esc(d.name)}</a>` : esc(d.name);
   const hn = level === 1 ? 'h1' : 'h3', sub = level === 1 ? 'h2' : 'h4';
+  // on the drug's own screen the name is the large title, so the card keeps just the syringe label and other names
+  const head = level === 1
+    ? `<header class="druglabel">${labelChip(d)}<p class="app-muted app-small">${d.aka?.length ? `Also called ${esc(d.aka.join(', '))}. ` : ''}${d.label && LABELS[d.label] ? `Syringe label: ${esc(LABELS[d.label].name.toLowerCase())}.` : ''}</p></header>`
+    : `<header>${labelChip(d)}<div><h3>${name}</h3><p class="app-muted app-small">${esc(d.cls || g)}${d.aka?.length ? ` · also ${esc(d.aka.join(', '))}` : ''}</p></div></header>`;
   return `<article class="drugcard${level === 1 ? ' page' : ''}" data-drugcard="${esc(d.id)}">
-  <header>${labelChip(d)}<div><${hn}>${name}</${hn}><p class="muted small">${esc(d.cls || g)}${d.aka?.length ? ` · also ${esc(d.aka.join(', '))}` : ''}</p></div></header>${panel}
+  ${head}${panel}
   <dl class="facts">${d.presentation ? `<dt>Comes as</dt><dd>${md(d.presentation)}</dd>` : ''}${d.prep ? `<dt>Draw up</dt><dd>${md(d.prep)}${d.conc ? ` → <span class="v">${fmt(d.conc.value)} ${esc(d.conc.unit)}</span>` : ''}</dd>` : ''}${d.infusionPrep ? `<dt>Infusion</dt><dd>${md(d.infusionPrep)}${d.infusionConc ? ` → <span class="v">${fmt(d.infusionConc.value)} ${esc(d.infusionConc.unit)}</span>` : ''}</dd>` : ''}${d.onset ? `<dt>Onset</dt><dd>${md(d.onset)}</dd>` : ''}${d.duration ? `<dt>Lasts</dt><dd>${md(d.duration)}</dd>` : ''}</dl>
   <ul class="doses">${(d.doses || []).map(x => doseLine(d, x, w)).join('')}</ul>
   ${full && d.local ? `<div class="callout local" role="note"><p class="callout-t">At NTFGH</p><p>${md(d.local)}</p></div>` : ''}
@@ -84,7 +88,7 @@ export function drugCard(d, { full = true, link = false, level = 3, panel = '', 
 /** Compact dose table for several drugs (topic `drugs` blocks, crisis cards). */
 export function drugTable(ids, title = '', w = weightsNow()) {
   const ds = ids.map(id => drugById[id]).filter(Boolean);
-  return `<div class="drugtable-in">${title ? `<h3>${md(title)}</h3>` : ''}<ul class="dtable">${ds.map(d => `<li>${labelChip(d)}<div><a href="#/drugs/${esc(d.id)}"><strong>${esc(d.name)}</strong></a><ul class="doses">${(d.doses || []).slice(0, 3).map(x => doseLine(d, x, w)).join('')}</ul></div></li>`).join('')}</ul></div>`;
+  return `<div class="drugtable-in">${title ? `<h3>${md(title)}</h3>` : ''}<ul class="dtable">${ds.map(d => `<li>${labelChip(d)}<div><a class="dname" href="#/drugs/${esc(d.id)}">${esc(d.name)}</a><ul class="doses">${(d.doses || []).slice(0, 3).map(x => doseLine(d, x, w)).join('')}</ul></div></li>`).join('')}</ul></div>`;
 }
 
 // ---------------------------------------------------------------- the patient panel
@@ -101,25 +105,25 @@ export function patientSummary() {
 export function patientPanel() {
   const p = patient(), w = bodyWeights(p);
   return `<section class="patient" aria-label="Patient weight for doses">
-  <div class="patient-row"><p class="patient-sum" id="patient-sum" aria-live="polite">${patientSummary()}</p><button type="button" class="btn small-btn" id="patient-edit" aria-expanded="false" aria-controls="patient-form">${w.tbw == null ? 'Set weight' : 'Change'}</button></div>
+  <div class="patient-row"><p class="patient-sum" id="patient-sum" aria-live="polite">${patientSummary()}</p><button type="button" class="app-btn app-btn--secondary app-btn--compact" id="patient-edit" aria-expanded="false" aria-controls="patient-form">${w.tbw == null ? 'Set weight' : 'Change'}</button></div>
   <form id="patient-form" class="patient-form" hidden novalidate>
-    <div class="three">
-      <label>Weight <span class="muted">kg</span><input id="p-weight" type="number" inputmode="decimal" min="0.5" max="400" step="0.1" value="${p.weight ?? ''}"></label>
-      <label>Height <span class="muted">cm</span><input id="p-height" type="number" inputmode="decimal" min="40" max="250" step="1" value="${p.height ?? ''}"></label>
-      <fieldset class="seg"><legend>Sex</legend><div class="segrow"><label class="segopt"><input type="radio" name="p-sex" value="m"${p.sex === 'm' ? ' checked' : ''}><span>Male</span></label><label class="segopt"><input type="radio" name="p-sex" value="f"${p.sex === 'f' ? ' checked' : ''}><span>Female</span></label></div></fieldset>
+    <div class="mo-fields three">
+      <label class="app-field"><span class="app-field-label">Weight (kg)</span><input class="app-input" id="p-weight" type="number" inputmode="decimal" min="0.5" max="400" step="0.1" value="${p.weight ?? ''}"></label>
+      <label class="app-field"><span class="app-field-label">Height (cm)</span><input class="app-input" id="p-height" type="number" inputmode="decimal" min="40" max="250" step="1" value="${p.height ?? ''}"></label>
+      <fieldset class="app-segmented"><legend>Sex</legend><label class="app-seg"><input type="radio" name="p-sex" value="m"${p.sex === 'm' ? ' checked' : ''}><span>Male</span></label><label class="app-seg"><input type="radio" name="p-sex" value="f"${p.sex === 'f' ? ' checked' : ''}><span>Female</span></label></fieldset>
     </div>
-    <p class="muted small">Height and sex give ideal, lean and adjusted weight. Kept on this tab only, and cleared after 6 hours.</p>
+    <p class="app-muted app-small">Height and sex give ideal, lean and adjusted weight. Kept on this tab only, and cleared after 6 hours.</p>
     <p class="err" id="p-err" role="alert" hidden></p>
-    <div class="row one"><button type="submit" class="btn primary">Use for doses</button><button type="button" class="btn" id="p-clear">Clear</button></div>
+    <div class="app-btn-row"><button type="submit" class="app-btn app-btn--primary">Use for doses</button><button type="button" class="app-btn app-btn--outline" id="p-clear">Clear</button></div>
   </form>
   ${w.tbw != null ? weightsLine(w) : ''}
 </section>`;
 }
 
 export function weightsLine(w) {
-  if (w.lbw == null) return '<p class="muted small weights-line">Add height and sex for ideal and lean weight.</p>';
+  if (w.lbw == null) return '<p class="app-muted app-small weights-line">Add height and sex for ideal and lean weight.</p>';
   const bits = [w.ibw != null ? `Ideal <span class="v">${fmt(w.ibw)} kg</span>` : '', `lean <span class="v">${fmt(w.lbw)} kg</span>`, w.abw != null ? `adjusted <span class="v">${fmt(w.abw)} kg</span>` : ''].filter(Boolean);
-  return `<p class="muted small weights-line">${bits.join(' · ')}</p>${w.warnings.map(x => `<p class="small warn-text weights-line">${esc(x)}</p>`).join('')}`;
+  return `<p class="app-muted app-small weights-line">${bits.join(' · ')}</p>${w.warnings.map(x => `<p class="app-small warn-text weights-line">${esc(x)}</p>`).join('')}`;
 }
 
 /** Wire a patient panel inside root; onChange redraws whatever shows doses. */

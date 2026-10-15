@@ -65,10 +65,10 @@ export function table(b) {
 function check(b) {
   const done = new Set(getChecks(b.id));
   const n = (b.items || []).length;
-  return `<fieldset class="check" data-check="${esc(b.id)}"><legend>${md(b.title || 'Checklist')}</legend>${(b.items || []).map((t, i) => {
+  return `<fieldset class="check" data-check="${esc(b.id)}"><legend>${md(b.title || 'Checklist')}</legend><ul class="app-list">${(b.items || []).map((t, i) => {
     const id = `${b.id}-${i}`;
-    return `<label class="tick" for="${esc(id)}"><input type="checkbox" id="${esc(id)}" data-i="${i}"${done.has(i) ? ' checked' : ''}><span>${md(t)}</span></label>`;
-  }).join('')}<p class="check-count" aria-live="polite">${done.size} of ${n} done</p></fieldset>`;
+    return `<li><label class="app-row" for="${esc(id)}"><input type="checkbox" id="${esc(id)}" data-i="${i}"${done.has(i) ? ' checked' : ''}><span class="app-row-body"><span class="app-row-title">${md(t)}</span></span></label></li>`;
+  }).join('')}</ul><p class="check-count" aria-live="polite">${done.size} of ${n} done</p></fieldset>`;
 }
 
 function quiz(b) {
@@ -79,7 +79,7 @@ export function quizItem(qid, q, i) {
   const multi = Array.isArray(q.answer);
   const name = `${qid}-${i}`;
   const prev = getQuiz(`${qid}:${i}`);
-  return `<form class="qitem" data-q="${i}" data-quizid="${esc(qid)}" novalidate><fieldset><legend><span class="qn">${i + 1}</span> ${md(q.q)}${multi ? ' <span class="muted">(choose all that apply)</span>' : ''}</legend>${q.options.map((o, j) => `<label class="qopt"><input type="${multi ? 'checkbox' : 'radio'}" name="${esc(name)}" value="${j}"><span>${md(o)}</span></label>`).join('')}</fieldset><div class="qrow"><button type="submit" class="btn">Check answer</button>${prev ? `<span class="muted small">Last time: ${prev.ok ? 'right' : 'not quite'}</span>` : ''}</div><div class="qfb" role="status" aria-live="polite"></div></form>`;
+  return `<form class="qitem" data-q="${i}" data-quizid="${esc(qid)}" novalidate><fieldset><legend><span class="qn">${i + 1}</span> ${md(q.q)}${multi ? ' <span class="app-muted">(choose all that apply)</span>' : ''}</legend><div class="app-choices">${q.options.map((o, j) => `<label class="app-choice"><input type="${multi ? 'checkbox' : 'radio'}" name="${esc(name)}" value="${j}"><span class="app-choice-letter" aria-hidden="true">${'ABCDEFGH'[j] || j + 1}</span><span class="app-choice-text">${md(o)}</span><span class="app-choice-tag"></span></label>`).join('')}</div></fieldset><div class="qrow"><button type="submit" class="app-btn app-btn--outline app-btn--compact">Check answer</button>${prev ? `<span class="app-muted app-small">Last time: ${prev.ok ? 'right' : 'not quite'}</span>` : ''}</div><div class="qfb" role="status" aria-live="polite"></div></form>`;
 }
 
 /** Mark a check-yourself answer and show the explanation. */
@@ -89,9 +89,13 @@ export function markQuiz(form, q) {
   if (!picked.length) { fb.className = 'qfb warn'; fb.innerHTML = '<p>Choose an answer first.</p>'; return null; }
   const want = (Array.isArray(q.answer) ? q.answer : [q.answer]).slice().sort((a, b) => a - b);
   const ok = want.length === picked.length && want.every((v, i) => v === picked[i]);
-  form.querySelectorAll('.qopt').forEach((l, j) => {
-    l.classList.toggle('right', want.includes(j));
-    l.classList.toggle('wrong', picked.includes(j) && !want.includes(j));
+  // colour is never alone: each option also says "Correct", "Your answer" or "Answer" in words
+  form.querySelectorAll('.app-choice').forEach((l, j) => {
+    const got = picked.includes(j), right = want.includes(j);
+    l.classList.toggle('is-correct', got && right);
+    l.classList.toggle('is-incorrect', got && !right);
+    l.classList.toggle('is-answer', !got && right);
+    l.querySelector('.app-choice-tag').textContent = got && right ? 'Correct' : got ? 'Your answer' : right ? 'Answer' : '';
   });
   fb.className = 'qfb ' + (ok ? 'ok' : 'no');
   fb.innerHTML = `<p><strong>${ok ? 'Right.' : 'Not quite.'}</strong> ${want.length > 1 ? 'The answers are' : 'The answer is'}: ${want.map(j => md(q.options[j])).join('; ')}.</p>${q.explain ? `<p>${md(q.explain)}</p>` : ''}`;

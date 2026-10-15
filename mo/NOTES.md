@@ -23,10 +23,16 @@ progress kept on the phone. It sits beside the Baby MO test (`../babymo/`), whic
 
 ## Design rules
 
-- Follows `../DESIGN.md` (warm paper, ink, wine accent, square, hairlines, light only) and the site header and footer.
-  Clinical colours keep their meaning: crisis red, warning amber, monitor colours in scenarios, syringe label colours
-  (ISO 26825) on drug cards.
-- Phone first (390 px). Five tabs: Learn, Drugs, Tools, Crisis, Practice. Every screen has a link (hash routes, Back works).
+- **The phone-app kit** (owner, 15 Oct 2026): the guide follows `../DESIGN-APP.md` and uses `../assets/app/app.css`
+  (every component is in `../assets/app/specimen.html`): large titles that collapse into the top bar, a bottom tab bar
+  (Learn, Drugs, Tools, Crisis, Practice), grouped lists, cards, buttons, answer choices, segmented controls, sheets,
+  toasts, soft corners on things you press. `style.css` holds only what is specific to the content (callouts, steps, drug
+  cards and dose lines, tables, figures, calculators, the monitor in scenarios, the crisis cards). Do not add colours
+  outside the kit's tokens. Clinical colours keep their meaning: crisis red, warning amber, monitor colours in scenarios,
+  syringe label colours (ISO 26825) on drug cards.
+- Phone first (390 px; checked at 360 and 320 too). Every screen has a link (hash routes, Back works). Pushed screens
+  have a back button naming the screen they return to; practice sessions hide the tab bar. Screens slide in and out with
+  View Transitions where the browser has them (not in automated tests, and not with reduced motion).
 - **Doses:** adults unless a page says otherwise. The patient's weight (and optional height and sex, for ideal, lean and
   adjusted weight) is kept for the browser tab only and cleared after 6 hours, so yesterday's patient is never used.
   Without height, lean/ideal-weight doses fall back to total weight and say so.
@@ -38,7 +44,7 @@ progress kept on the phone. It sits beside the Baby MO test (`../babymo/`), whic
 
 ## Code map
 
-- `js/app.js` screens and router; `js/render.js` content blocks; `js/drugs-ui.js` drug cards and the patient panel;
+- `js/app.js` screens, router, tab bar, top bar, sheet and toast; `js/ui.js` kit markup helpers (titles, grouped rows); `js/render.js` content blocks; `js/drugs-ui.js` drug cards and the patient panel;
   `js/tools.js` calculators and builders; `js/practice.js` scenarios, flashcards, check yourself, drawer game;
   `js/search.js`; `js/store.js` progress and patient; `js/md.js` inline markup; `js/figures.js` drawings;
   `js/calc.js` every sum (pure, tested).
@@ -57,8 +63,8 @@ updates). `SHOTS=<dir> node mo/test/e2e.mjs` saves phone screenshots.
 Same rules as the Baby MO test (`../babymo/NOTES.md`): one cache per version filled all at once, network first with a
 3-second fallback to the cache, a new version takes over by itself but the page reloads only when safe (never on the first
 install, never with a calculator half filled, mid-scenario, mid-flashcards or on a crisis card), and the page looks for
-updates when it comes to the front. It also caches the shared site header, styles and fonts (`SITE` in `sw.js`) so the
-guide looks right with no signal.
+updates when it comes to the front. It also caches the shared app kit stylesheet and its fonts (`SITE` in `sw.js`, found by
+`tools/stamp.mjs` following the page's links and `@import`/`url()`) so the guide looks right with no signal.
 
 **After changing any file in `mo/` (content included) run `node mo/tools/stamp.mjs`**: it rewrites the file lists and
 `VERSION` (`mo-<date>-<hash>`) in `sw.js`. `node mo/test/version.test.mjs` fails if you forget. The start page and About
