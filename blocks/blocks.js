@@ -4,13 +4,14 @@
    - search across every region: the block registry, every operation and the main pages and planners;
    - one "Which block for this operation" chooser over the upper-limb, trunk, head and neck and lower-limb operations, drawing each
      region's own coverage figure (data and figures from /shared/regional/js/ops/, shared with the region landings);
-   - region cards built from the registry, and the "Anatomy in 3D" links;
-   - "Something has gone wrong": every decision guide (shared/regional/js/data/decisions.js, drawn by decide.js).
+   - the contents: Part I (principles and safety) and one numbered Part per region, built from the registry; the Index at the
+     end holds the operation chooser (a <details> that opens on #chooser and #op-…) and an A–Z of blocks;
+   - "If it goes wrong": every decision guide (shared/regional/js/data/decisions.js, drawn by decide.js).
    No clinical text is written here: operations, block names, guides and links come from the ops modules, the guide data
    and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
 import { registerOffline, mountAppVersion } from '../shared/regional/js/offline.js?v=20261016';
-import { initAppFeel, settingsItem } from '../shared/regional/js/appnav.js?v=20261017';
+import { initAppFeel, settingsItem, settingsButton } from '../shared/regional/js/appnav.js?v=20261017';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
 import * as UL from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
@@ -438,6 +439,9 @@ const chooser = (() => {
   function open(key, { scroll = false, focus = false, push = false, announce = true, hash = true } = {}) {
     const o = OPS.find((x) => x.key === key) || (OPS.filter((x) => x.id === key).length === 1 ? OPS.find((x) => x.id === key) : null);
     if (!o) return false;
+    // The chooser lives in a collapsed part of the index: open it first (a closed box has no size to scroll to).
+    const box = document.getElementById('chooser');
+    if (box && box.tagName === 'DETAILS' && (hash || scroll)) box.open = true;
     // A deep link to an operation hidden by the filter: show it.
     const li = $(`li[data-key="${o.key}"]`, opsBox);
     if (li?.hidden) { filter = 'all'; q.value = ''; store.set('bd-filter', filter); applyFilter(); }
@@ -494,58 +498,72 @@ const chooser = (() => {
   return { open, close, get current() { return current; } };
 })();
 
-/* ------------------------------------------------------------------ region cards and 3D links (from the registry) */
-const PAGES_BY_REGION = {
+/* ------------------------------------------------------------------ contents: one Part per region (from the registry) */
+// Chapters of each Part: the region's pages, in reading order (titles as the pages word them). Blocks come from the registry.
+const CHAPTERS = {
   'upper-limb': [['Shoulder', '../upper-limb/shoulder/'], ['Arm', '../upper-limb/arm/'], ['Forearm and hand', '../upper-limb/forearm-hand/'], ['Brachial plexus app', '../brachial-plexus/']],
   trunk: [['Back', '../truncal/back/'], ['Chest wall', '../truncal/chest-wall/'], ['Abdominal wall', '../truncal/abdominal-wall/']],
   'head-neck': [['Cervical plexus', '../head-neck/cervical/'], ['Scalp and occipital', '../head-neck/scalp/'], ['Face', '../head-neck/face/'], ['Airway', '../head-neck/airway/'], ['Eye', '../head-neck/eye/']],
   'lower-limb': [['Hip', '../lower-limb/hip/'], ['Knee', '../lower-limb/knee/'], ['Foot and ankle', '../lower-limb/foot-ankle/'], ['Thigh and amputation', '../lower-limb/thigh/']],
+  neuraxial: [['Ward card', '../spinal/#ch-card'], ['Technique', '../spinal/#ch-technique'], ['Difficult backs and ultrasound', '../spinal/#ch-backs'], ['Troubleshooting', '../spinal/#ch-trouble'], ['Complications and aftercare', '../spinal/#ch-complications']],
 };
-const OPEN_WORDS = { 'upper-limb': 'Open upper-limb blocks', trunk: 'Open truncal blocks', 'head-neck': 'Open head and neck blocks', 'lower-limb': 'Open lower-limb blocks', neuraxial: 'Open spinal anaesthesia' };
-function regionCards() {
-  const ul = $('#bd-cards');
-  const byHref = new Map(REGIONS.map((r) => [`..${r.url}`, r]));
-  $$('.bd-card', ul).forEach((card) => {
-    const a = $('h3 a', card);
-    const r = byHref.get(a.getAttribute('href'));
-    if (!r) return;
-    card.dataset.region = r.id;
+/** Fill each Part with its numbered chapters and, in one fold, its blocks (chapter 7 holds blocks 7.1, 7.2 …). */
+function contents() {
+  let n = $$('#principles .bd-ch').length;
+  for (const r of REGIONS) {
+    const part = $(`.bd-part[data-region="${r.id}"]`);
+    const chapters = CHAPTERS[r.id];
+    if (!part || !chapters) continue;
     const blocks = blocksIn(r.id);
-    const pages = PAGES_BY_REGION[r.id];
-    const parts = [];
-    if (pages) parts.push(`<ul class="bd-card-pages" aria-label="${esc(r.title)} pages">${pages.map(([t, h]) => `<li><a href="${h}">${esc(t)}</a></li>`).join('')}</ul>`);
-    if (blocks.length > 1) {
-      parts.push(`<details class="bd-card-more"><summary>All ${blocks.length} ${esc(r.title.toLowerCase())} blocks</summary><ul class="bd-card-blocks">${blocks.map((b) => `<li><a href="${esc(rel(b.url))}">${esc(b.title)}</a></li>`).join('')}</ul></details>`);
+    const pageOf = (b) => rel(b.url).split('#')[0];
+    const groups = [];
+    const ol = document.createElement('ol');
+    ol.className = 'bd-toc-list';
+    ol.innerHTML = chapters.map(([t, href]) => {
+      n += 1;
+      const mine = blocks.filter((b) => pageOf(b) === href);
+      if (mine.length) groups.push({ no: String(n), t, blocks: mine });
+      return `<li class="bd-ch"><a class="bd-ch-link" href="${esc(href)}"><span class="bd-n">${n}</span><span class="bd-ch-t">${esc(t)}</span></a></li>`;
+    }).join('');
+    part.append(ol);
+    // Blocks that only the 3D explorer teaches: listed after the chapters, without a number.
+    const other = blocks.filter((b) => !chapters.some(([, href]) => pageOf(b) === href));
+    if (other.length && blocks.length > 1) groups.push({ no: '', t: 'Shown in Anatomy in 3D', blocks: other });
+    if (groups.length) {
+      const total = groups.reduce((a, g) => a + g.blocks.length, 0);
+      const det = document.createElement('details');
+      det.className = 'bd-secs bd-secs--part';
+      det.innerHTML = `<summary><span class="bd-ch-t">All ${total} blocks</span></summary><div class="bd-secs-body">${groups.map((g) => `<h4 class="bd-secs-gt">${g.no ? `<span class="bd-n">${g.no}</span>` : ''}${esc(g.t)}</h4>
+        <ol class="bd-secs-list">${g.blocks.map((b, i) => `<li><a href="${esc(rel(b.url))}">${g.no ? `<span class="bd-n">${g.no}.${i + 1}</span>` : ''}<span>${esc(b.title)}</span></a></li>`).join('')}</ol>`).join('')}</div>`;
+      part.append(det);
     }
-    parts.push(`<a class="bd-card-link" href="${esc(a.getAttribute('href'))}">${OPEN_WORDS[r.id] || `Open ${esc(r.title)}`} ${ARROW}</a>`);
-    card.insertAdjacentHTML('beforeend', parts.join(''));
-    const k = document.createElement('p');
-    k.className = 'bd-card-k';
-    k.textContent = blocks.length > 1 ? `${blocks.length} blocks` : 'Neuraxial';
-    card.prepend(k);
-  });
+  }
 }
-function anatomyRows() {
-  const rows = [
-    ['Cervical plexus', 'Superficial, intermediate and deep cervical plexus blocks', '../plexus/#plexus=cervical', null],
-    ['Brachial plexus', 'Interscalene, supraclavicular, infraclavicular and axillary, with the advanced variants', '../plexus/#plexus=brachial', null],
-    ['Lumbar plexus', 'Femoral, fascia iliaca, PENG, LFCN, obturator, adductor canal', '../plexus/#plexus=lumbar', null],
-    ['Sacral plexus', 'Sciatic approaches, popliteal and pudendal', '../plexus/#plexus=sacral', null],
-  ];
-  // Count the registry blocks that open each plexus in 3D (plan §8 table).
-  const all = REGIONS.flatMap((r) => blocksIn(r.id));
-  rows.forEach((row) => {
-    if (row[3] != null) return;
-    const id = row[2].split('=')[1];
-    row[3] = all.filter((b) => b.anatomy3d?.plexus === id).length;
-  });
-  $('#bd-3d').innerHTML = rows.map(([t, d, h, n]) => `<li><a href="${h}"><span class="bd-row-t">${esc(t)}</span><span class="bd-row-d">${esc(d)}${n ? ` · ${n} block${n === 1 ? '' : 's'}` : ''}</span></a></li>`).join('');
+
+/** The A–Z: every block by its title, and its short names (ESP, TAP …) pointing at the same place. */
+function azIndex() {
+  const body = $('#bd-az-body');
+  if (!body) return;
+  const items = [];
+  const seen = new Set();
+  const add = (term, href, to) => { const k = `${norm(term)}|${href}`; if (!seen.has(k)) { seen.add(k); items.push({ term, href, to }); } };
+  for (const r of REGIONS) for (const b of blocksIn(r.id)) {
+    add(b.title, rel(b.url), '');
+    for (const a of b.aliases || []) if (/^[A-Za-z0-9-]{2,7}$/.test(a)) add(a, rel(b.url), b.title);
+  }
+  const letter = (t) => { const c = norm(t).charAt(0).toUpperCase(); return /[A-Z]/.test(c) ? c : '0–9'; };
+  items.sort((x, y) => norm(x.term).localeCompare(norm(y.term), 'en'));
+  const by = new Map();
+  items.forEach((it) => { const l = letter(it.term); if (!by.has(l)) by.set(l, []); by.get(l).push(it); });
+  const id = (l) => `az-${l === '0–9' ? '0' : l}`;
+  body.innerHTML = `<nav class="bd-az-jump" aria-label="Jump to a letter">${[...by.keys()].map((l) => `<a href="#${id(l)}">${esc(l)}</a>`).join('')}</nav>
+    ${[...by].map(([l, arr]) => `<h4 class="bd-az-l" id="${id(l)}">${esc(l)}</h4><ul class="bd-az-list">${arr.map((it) => `<li><a href="${esc(it.href)}">${esc(it.term)}${it.to ? `<span class="bd-az-to"> · ${esc(it.to)}</span>` : ''}</a></li>`).join('')}</ul>`).join('')}`;
 }
 
 /* ------------------------------------------------------------------ app bar */
-const SECTIONS = [['start', 'Start'], ['need', 'I need to…'], ['wrong', 'If it goes wrong'], ['chooser', 'Operation chooser'], ['doses', 'Maximum dose'], ['regions', 'Blocks by region'], ['anatomy3d', 'Anatomy in 3D']];
+const SECTIONS = [['start', 'Start'], ['principles', 'Principles and safety'], ['regions', 'Regions'], ['index', 'Index']];
 // Shorter names for the menu button on phones (the button is about 150px wide there).
-const SHORT = { start: 'Start', need: 'I need to', wrong: 'Gone wrong', chooser: 'Chooser', doses: 'Doses', regions: 'Regions', anatomy3d: 'In 3D' };
+const SHORT = { start: 'Start', principles: 'Principles', regions: 'Regions', index: 'Index' };
 function appBar() {
   const bar = $('#tb-bar');
   bar.className = 'tb-bar bd-bar';
@@ -572,6 +590,7 @@ function appBar() {
   </div>`;
   mountLevelControl($('.tb-bar-level', bar));
   $('.tb-chmenu-extra', bar).append(settingsItem('tb-chmenu-act'));
+  $('#tb-share', bar).before(settingsButton('tb-tool tb-bar-btn')); // wide bars that list the sections inline have no menu: Settings as a button
 
   const btn = $('#tb-chmenu-btn');
   const menu = $('#tb-chmenu');
@@ -655,7 +674,17 @@ function wrongGuides() {
 }
 
 /* ------------------------------------------------------------------ hash routing */
+/** Open the folds a hash points into (or at): the chooser, the dose planners, the A–Z. A closed fold has nothing to scroll to. */
+function openForHash(hash) {
+  let id = String(hash || '').replace(/^#/, '');
+  if (!id) return;
+  try { id = decodeURIComponent(id); } catch { /* keep as is */ }
+  if (/^op-[\w-]+$/.test(id)) { const c = document.getElementById('chooser'); if (c) c.open = true; return; }
+  let el = document.getElementById(id);
+  while (el) { if (el.tagName === 'DETAILS') el.open = true; el = el.parentElement; }
+}
 function route({ initial = false } = {}) {
+  openForHash(location.hash);
   openGuideFromHash();
   const m = location.hash.match(/^#op-([\w-]+)$/);
   if (m) {
@@ -668,6 +697,11 @@ function route({ initial = false } = {}) {
     if (t) requestAnimationFrame(() => t.scrollIntoView({ block: 'start', behavior: 'auto' }));
   }
 }
+// A link to a fold on this page (also one to the hash already in the address) opens it before the browser scrolls.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest?.('a[href^="#"]');
+  if (a && a.getAttribute('href').length > 1) openForHash(a.getAttribute('href'));
+});
 
 /* ------------------------------------------------------------------ boot */
 applyLevel();
@@ -675,8 +709,8 @@ appBar();
 mountLevelPicker($('#bd-picker'));
 wireSearch();
 wrongGuides();
-regionCards();
-anatomyRows();
+contents();
+azIndex();
 route({ initial: true });
 addEventListener('hashchange', () => route());
 document.body.dataset.bdReady = 'true';
