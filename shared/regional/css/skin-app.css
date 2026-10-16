@@ -19,7 +19,7 @@
 html[data-skin="app"]{
   color-scheme:light;
   --app-ground:#f1ede4;--app-surface:#fbfaf6;--app-paper:#f7f5ef;--app-inset:#eee9df;--app-fill:#e6e1d6;
-  --app-pressed:#e9e5dc;--app-pressed-ground:#e3ded3;--app-blush:#e8ded7;--app-bar:rgb(251 250 246 / .98);--app-backdrop:rgb(39 39 34 / .38);
+  --app-pressed:#e9e5dc;--app-pressed-ground:#e3ded3;--app-blush:#e8ded7;--app-bar:rgb(251 250 246 / 1);--app-backdrop:rgb(39 39 34 / .38);
   --app-ink:#272722;--app-ink-soft:#504e47;--app-muted:#55534d;--app-wine:#633d3c;--app-wine-press:#4b2e2d;--app-ivory:#fffaf0;
   --app-line:#d7d2c8;--app-line-strong:#8f8574;--app-control:#827b6d;
   --app-ok:#1f6b3a;--app-ok-bg:#e3efe4;--app-bad:#a12a1c;--app-bad-bg:#f6e1df;--app-warn:#7a4f00;--app-warn-bg:#f5ead2;
@@ -62,8 +62,8 @@ html[data-skin="app"] body.plexus-app>section.foot{background:transparent}
 html[data-skin="app"] :is(.ntf-header,.ntf-crumbs){display:none!important}
 
 /* The bar: transparent on the ground while the large title is showing, then (once the title has scrolled under it) a
-   blurred surface with a hairline, as on iOS (98% opaque: owner, 17 Oct 2026, text scrolling under it showed through and
-   distracted; the blur stays as a refinement, the tab bar uses the same token). The surface is a pseudo-element, not the bar itself, so a
+   blurred surface with a hairline, as on iOS (fully opaque: owner, 17 Oct 2026, text scrolling under it showed through and
+   distracted, and at 98% a faint ghost of the text was still visible; the tab bar uses the same token). The surface is a pseudo-element, not the bar itself, so a
    backdrop-filter on the bar never becomes the containing block of the search sheet (position: fixed) inside it.
    js/appnav.js sets html[data-ra-collapsed] from an IntersectionObserver on the page's first heading. */
 html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar){background:transparent;border-bottom:0;isolation:isolate}

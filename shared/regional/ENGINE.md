@@ -60,7 +60,7 @@ Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level co
 | `lacalc.js` | `mountLaCalc(host, prefill)`: the dose calculator form; styles in `css/lacalc.css` (prefix `lc-`) |
 | `decide.js` | the "If it goes wrong" guides: `mountGuide(host, guide, {idPrefix, headingLevel})`, `guideList(ids, {idPrefix, headingLevel, lazy})`, `openGuideFromHash()`, `ensureDecideCss()` (links `css/decide.css`, prefix `ra-dg-`). No imports |
 | `data/decisions.js` | the guide data (§3.8): `GUIDES`, `GUIDE_ORDER`, `CORE_GUIDES`, `EXTRA_GUIDES`, `guidesFor(id, region, extra)`, `validateGuide` |
-| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`; while the app look is on it also draws the bottom tab bar (`TABS`, `currentTab`), adds the top bar's search and Safety buttons and moves the chapter menu under the bar below 480 px (`mountBarActions`, `SAFETY_URL`), and runs the large-title observer (`mountLargeTitle`: html `data-ra-collapsed`). Its only import is `skin.js`. Always imported as `appnav.js?v=20261024` |
+| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`; while the app look is on it also draws the bottom tab bar (`TABS`, `currentTab`), adds the top bar's search and Safety buttons and moves the chapter menu under the bar below 480 px (`mountBarActions`, `SAFETY_URL`), and runs the large-title observer (`mountLargeTitle`: html `data-ra-collapsed`). Its only import is `skin.js`. Always imported as `appnav.js?v=20261026` |
 | `skin.js` | the two looks (§2 "Skins"): `getSkinPref` / `setSkinPref` (`localStorage` `ra-skin`: `auto` · `app` · `web`), `resolveSkin`, `getSkin`, `applySkin`, `onSkin(fn)`, `openedAsApp`. No imports, no DOM beyond `<html data-skin>`. Always imported as `skin.js?v=20261018` |
 | `offline.js` | `registerOffline()` registers `/regional-sw.js` once the page has loaded and gone quiet; `mountAppVersion(host)` draws the version lines at the foot of `/blocks/`. Always imported as `offline.js?v=20261016` |
 | `search.js` | page search index and synonyms |
@@ -129,7 +129,7 @@ before, apart from the Settings entry and the plain app bar on the region landin
   (their operation chooser needs the full column).
 - **Rail (≥ 1024 px).** `mountRail` wraps `<main>` in `.ra-frame` (a two-column grid inside the 1240 px column) with
   `nav.ra-rail` on the left: this page's chapters or sections ("On this page"), then this region's landing and pages,
-  the other regions, and the tools (all blocks, dose calculator, Anatomy in 3D, Settings), from `REGION_NAV` /
+  the other regions, and the tools (all blocks, then the same four tools as Part I of `/blocks/`: Emergency guides and dose calculator, Which block for which operation, Ultrasound anatomy, Anatomy in 3D; then Settings), from `REGION_NAV` /
   `TOOL_NAV`. The current page is `aria-current="page"`, the current chapter or section `aria-current="location"`
   (blush with a wine edge, as in the chapter menu). Engine pages and `spinal/` follow `body[data-chapter]`; Settings
   follows the section in view (`spy: true`). The rail is sticky under the bar, scrolls itself when taller than the
@@ -283,8 +283,8 @@ them**, and don't delete them (`static.mjs` and `deeplinks.mjs` check both).
   landings. Bump them when you change what they load. Under `blocks/`, `pagebar.js?v=` and `chooser.js?v=` (shared by `/blocks/`, Safety, Indication and Ultrasound) follow the same date. `static.mjs` allows digits only in `js/page.js?v=`, so for a
   second bump on the same day use the next date, not a letter suffix.
 - **Stateful modules must load under one URL per page**, or they run twice and split their state. `levels.js` and
-  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, `appnav.js` as `…?v=20261024` and `skin.js` as
-  `…?v=20261018`, from every module and every app. `skin-app.css` is one URL on every page (`?v=20261024`); bump it on every page that links it. If you bump one, change
+  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, `appnav.js` as `…?v=20261026` and `skin.js` as
+  `…?v=20261018`, from every module and every app. `skin-app.css` is one URL on every page (`?v=20261026`); bump it on every page that links it. If you bump one, change
   every import of it in the same commit (grep for the file name). Other engine modules import each other without a
   query. `smoke.mjs` fails on a stateful module loaded under two URLs.
 - Never write `?v=…?v=…` (`static.mjs` checks).

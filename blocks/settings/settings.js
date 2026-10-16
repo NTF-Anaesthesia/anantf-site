@@ -8,7 +8,7 @@
      - the app version lines and "Not updating? Get the latest version" (offline.js; also at the foot of /blocks/). */
 import { applyLevel, mountLevelControl, onLevel, getLevel, LEVELS, LEVEL_IDS } from '../../shared/regional/js/levels.js?v=20261015';
 import { registerOffline, mountAppVersion } from '../../shared/regional/js/offline.js?v=20261016';
-import { initAppFeel, mountRail, getAutoHide, setAutoHide, getSlash, setSlash } from '../../shared/regional/js/appnav.js?v=20261024';
+import { initAppFeel, mountRail, getAutoHide, setAutoHide, getSlash, setSlash } from '../../shared/regional/js/appnav.js?v=20261026';
 import { getSkin, getSkinPref, setSkinPref, onSkin } from '../../shared/regional/js/skin.js?v=20261018';
 
 const $ = (id) => document.getElementById(id);

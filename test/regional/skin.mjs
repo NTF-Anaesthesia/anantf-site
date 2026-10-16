@@ -512,7 +512,7 @@ for (const vp of VPS) {
     R.check(`blocks/${h} moves to blocks/safety/${h}`, page.url().endsWith(`/blocks/safety/${h}`), page.url());
     await ctx.close();
   }
-  // The bar and the tab bar are all but opaque: text scrolling under them must not show through (owner, 17 Oct 2026).
+  // The bar and the tab bar are fully opaque: text scrolling under them must not show through (owner, 17 Oct 2026).
   for (const p of ['blocks/', 'truncal/back/', 'blocks/safety/']) {
     const { ctx, page } = await open(p, { vp: '390', storage: { 'ra-skin': 'app' } });
     await waitReady(page, { idle: false });
@@ -523,7 +523,7 @@ for (const vp of VPS) {
       const bar = document.querySelector('.ra-appbar');
       return { collapsed: document.documentElement.hasAttribute('data-ra-collapsed'), bar: alpha(getComputedStyle(bar, '::before').backgroundColor), barOn: getComputedStyle(bar, '::before').opacity, tab: alpha(getComputedStyle(document.querySelector('.ra-tabbar')).backgroundColor) };
     });
-    R.check(`${p}: scrolled, the app bar and the tab bar are at least 97% opaque`, a.collapsed && a.bar >= 0.97 && Number(a.barOn) === 1 && a.tab >= 0.97, JSON.stringify(a));
+    R.check(`${p}: scrolled, the app bar and the tab bar are fully opaque`, a.collapsed && a.bar === 1 && Number(a.barOn) === 1 && a.tab === 1, JSON.stringify(a));
     await ctx.close();
   }
 }

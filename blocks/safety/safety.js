@@ -8,12 +8,12 @@
    the dose" links keep working as they were. Everything here is MO level. */
 import { applyLevel } from '../../shared/regional/js/levels.js?v=20261015';
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016';
-import { mountRail } from '../../shared/regional/js/appnav.js?v=20261024';
+import { mountRail } from '../../shared/regional/js/appnav.js?v=20261026';
 import { guideList, openGuideFromHash } from '../../shared/regional/js/decide.js?v=20261017';
 import { GUIDES, GUIDE_ORDER } from '../../shared/regional/js/data/decisions.js';
 import { mountLaCalc } from '../../shared/regional/js/lacalc.js';
 import { parseQuery } from '../../shared/regional/js/la.js';
-import { pageBar } from '../pagebar.js?v=20261024';
+import { pageBar } from '../pagebar.js?v=20261026';
 
 const $ = (s, r = document) => r.querySelector(s);
 applyLevel();

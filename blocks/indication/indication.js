@@ -4,8 +4,8 @@
    operation; a bare #op-<id> works when the id is unique). /blocks/#chooser and /blocks/#op-… land here. */
 import { applyLevel } from '../../shared/regional/js/levels.js?v=20261015';
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016';
-import { pageBar } from '../pagebar.js?v=20261024';
-import { mountChooser, $ } from '../chooser.js?v=20261024';
+import { pageBar } from '../pagebar.js?v=20261026';
+import { mountChooser, $ } from '../chooser.js?v=20261026';
 
 applyLevel();
 pageBar({ title: 'Indication', search: () => { const q = $('#bd-opq'); q.scrollIntoView({ block: 'center' }); q.focus({ preventScroll: true }); } });

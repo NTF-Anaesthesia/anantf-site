@@ -3,7 +3,7 @@
 // Author: Dr Koh Wenjun, NTF Anaesthesia.
 
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
-import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261024'; // Settings, bar auto-hide, prefetch
+import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261026'; // Settings, bar auto-hide, prefetch
 import { bus } from './bus.js';
 import {
   ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED,

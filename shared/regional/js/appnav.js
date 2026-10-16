@@ -16,7 +16,7 @@
 //   of the bar into a row under it (so the bar holds back, search, Safety and the level control at 360 px). See js/skin.js
 //   and css/skin-app.css (ENGINE.md §2 "Skins").
 //
-// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261024 (one instance per page).
+// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261026 (one instance per page).
 // Cross-document view transitions are pure CSS (@view-transition in css/appnav.css).
 
 import { getSkin, onSkin } from './skin.js?v=20261018';
@@ -51,7 +51,8 @@ export const REGION_NAV = Object.freeze([
   { id: 'lower-limb', title: 'Lower limb', label: 'Lower-limb blocks', href: 'lower-limb/', pages: [['Hip', 'lower-limb/hip/'], ['Knee', 'lower-limb/knee/'], ['Foot and ankle', 'lower-limb/foot-ankle/'], ['Thigh and amputation', 'lower-limb/thigh/']] },
   { id: 'neuraxial', title: 'Neuraxial', label: 'Neuraxial', href: 'spinal/', pages: [] },
 ]);
-export const TOOL_NAV = Object.freeze([['All regional blocks', 'blocks/'], ['Dose calculator', 'blocks/calculator/'], ['Anatomy in 3D', 'plexus/'], ['Settings', 'blocks/settings/']]);
+// The same four tools as Part I of /blocks/ (each once, same names), then Settings.
+export const TOOL_NAV = Object.freeze([['All regional blocks', 'blocks/'], ['Emergency guides and dose calculator', 'blocks/safety/', 'blocks/calculator/'], ['Which block for which operation', 'blocks/indication/'], ['Ultrasound anatomy', 'blocks/ultrasound/'], ['Anatomy in 3D', 'plexus/'], ['Settings', 'blocks/settings/']]);
 
 /** This page's path from the site root, e.g. 'truncal/back/'. */
 const here = () => {
@@ -148,7 +149,7 @@ export function mountRail({ main = document.getElementById('main'), label = 'On 
     if (rows.length > 1) group(region.title, rows);
   }
   group(region ? 'Other regions' : 'Regions', REGION_NAV.filter((r) => r !== region).map((r) => ({ href: R(r.href), text: r.title })));
-  group('Tools', TOOL_NAV.map(([t, h]) => ({ href: R(h), text: t, current: path === h })), 'ra-rail-g--tools');
+  group('Tools', TOOL_NAV.map(([t, h, also]) => ({ href: R(h), text: t, current: path === h || path === also })), 'ra-rail-g--tools'); // a row's optional third item is a page that is the same tool (the stand-alone calculator)
 
   const frame = make('div', { class: 'ra-frame' });
   main.before(frame);
