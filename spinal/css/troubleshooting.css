@@ -157,3 +157,9 @@
 .spinal-app .ts-index-group{min-width:0}
 body.spinal-app main .ts-index li[data-tier]{margin-top:0!important}
 body.spinal-app main .ts-index-h{margin-top:12px}
+
+/* "If it goes wrong": the regional app's shared guides (shared/regional/js/decide.js; styles in
+   shared/regional/css/decide.css). Map the engine tokens to this app's, so dark mode follows. */
+.spinal-app .ra-dg-host{--tb-paper:var(--sp-bg);--tb-inset:var(--sp-surface-2);--tb-hover:var(--sp-accent-soft);--tb-ink:var(--sp-ink);--tb-ink-soft:var(--sp-ink-2);--tb-muted:var(--sp-muted);--tb-wine:var(--sp-accent);--tb-wine-hover:var(--sp-accent);--tb-ivory:var(--sp-on-accent);--tb-line:var(--sp-line);--tb-line-strong:var(--sp-line-strong);--tb-danger:var(--sp-danger);--tb-danger-bg:var(--sp-danger-bg);--tb-warn:var(--sp-warn);--tb-warn-bg:var(--sp-warn-bg);--tb-sans:var(--sp-sans);--tb-mono:var(--sp-mono)}
+.spinal-app main .ts-wrong-more{font-size:15px;margin:12px 0 0}
+.spinal-app main .ts-wrong-more a{display:inline-flex;align-items:center;gap:6px;min-height:44px}

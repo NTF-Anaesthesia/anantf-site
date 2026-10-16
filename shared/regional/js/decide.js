@@ -1,4 +1,4 @@
-// Regional anaesthesia app: step-by-step decision guides ("If it goes wrong"; ENGINE.md backlog item 4).
+// Regional anaesthesia app: step-by-step decision guides ("If it goes wrong"; ENGINE.md §3.8).
 // Data and schema: ./data/decisions.js. Styles: ../css/decide.css (linked by this module, like scan.css).
 //
 //   mountGuide(host, guide, {idPrefix, headingLevel}) → {el, reset(), back(), current(), path()}
@@ -9,8 +9,9 @@
 //       `${idPrefix}-${guideId}`; with lazy (the default) a guide is built the first time it is opened.
 //   openGuideFromHash(hash?) → opens the guide <details> a hash points at (or sits in); true if it did.
 //
-// No imports: the module can be used by any regional page (engine pages, /blocks/, and later the brachial and spinal
-// apps). Element ids are prefixed, so the same guide can appear once per block on one page.
+// Used by the engine pages, /blocks/, brachial-plexus/ and spinal/. Apps that don't load regional.css wrap the list in
+// .ra-dg-host (decide.css gives it the engine tokens and the tb-btn / tb-details styles; the app may remap the tokens).
+// Element ids are prefixed, so the same guide can appear once per block on one page.
 import { GUIDES, GUIDE_ORDER } from './data/decisions.js';
 
 const CSS_KEY = 'decide';
@@ -18,7 +19,7 @@ export function ensureDecideCss() {
   if (typeof document === 'undefined' || document.querySelector(`link[data-ra-css="${CSS_KEY}"]`)) return;
   const l = document.createElement('link');
   l.rel = 'stylesheet';
-  l.href = new URL('../css/decide.css', import.meta.url).href;
+  l.href = new URL('../css/decide.css?v=20261017', import.meta.url).href;
   l.dataset.raCss = CSS_KEY;
   document.head.append(l);
 }
@@ -140,7 +141,7 @@ export function mountGuide(host, g, { idPrefix = `dg-${g.id}`, headingLevel = 4 
       const t = card.querySelector('.ra-dg-title');
       t.focus({ preventScroll: true });
       const r = card.getBoundingClientRect();
-      const bar = document.querySelector('.tb-bar')?.getBoundingClientRect().bottom || 0;
+      const bar = document.querySelector('.tb-bar,.bp-bar,.sp-bar')?.getBoundingClientRect().bottom || 0;
       if (r.top < bar + 8 || r.top > innerHeight * 0.6) card.scrollIntoView({ block: 'start', behavior: 'instant' });
       live.textContent = `Step ${n}: ${s.ask || s.do}. ${s.do ? strip(s.html) : ''}`.trim();
     }

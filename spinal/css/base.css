@@ -99,7 +99,7 @@ html:root[data-theme=light]{color-scheme:light}
 /* One sticky bar (the site header scrolls away). --ra-bar is its height; deep-link targets land just below it.
    No smooth scrolling: programmatic jumps across these long chapters are instant. */
 :root:has(body.spinal-app){--ra-bar:56px}
-html:has(body.spinal-app){scroll-padding-top:calc(var(--ra-bar) + 8px)}
+html:has(body.spinal-app){scroll-padding-top:calc(var(--ra-bar,56px) + 8px)}
 body.spinal-app .ntf-header{position:static}
 body.spinal-app .ntf-footer .ntf-copyright{font-size:12px}
 
@@ -164,7 +164,7 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 .spinal-app .sp-split{display:grid;gap:32px}
 @media (min-width:1100px){
   .spinal-app .sp-split{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:start}
-  .spinal-app .sp-split>.sp-split-fig{position:sticky;top:calc(var(--ra-bar) + 16px)}
+  .spinal-app .sp-split>.sp-split-fig{position:sticky;top:calc(var(--ra-bar,56px) + 16px)}
 }
 .spinal-app .sp-noscript{padding-block:16px;color:var(--sp-muted)}
 
@@ -470,7 +470,7 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
 }
 
 /* Search: the sheet hangs from the bottom of the sticky bar, so it never covers it. */
-.spinal-app .sp-sheet{position:absolute;z-index:56;left:0;right:0;top:100%;max-height:calc(100dvh - var(--ra-bar) - 12px);overflow-y:auto;overscroll-behavior:contain;background:var(--sp-bg);border-bottom:2px solid var(--sp-accent);box-shadow:0 12px 24px rgba(0,0,0,.12)}
+.spinal-app .sp-sheet{position:absolute;z-index:56;left:0;right:0;top:100%;max-height:calc(100dvh - var(--ra-bar,56px) - 12px);overflow-y:auto;overscroll-behavior:contain;background:var(--sp-bg);border-bottom:2px solid var(--sp-accent);box-shadow:0 12px 24px rgba(0,0,0,.12)}
 .spinal-app .sp-sheet[hidden]{display:none}
 .spinal-app #sp-sheet-close{width:auto;padding:0 14px}
 .spinal-app .sp-sheet-inner{padding-block:12px 16px}

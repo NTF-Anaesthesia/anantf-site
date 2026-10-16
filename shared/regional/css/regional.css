@@ -26,7 +26,7 @@ body.tb-app{
 /* Deep-link targets land 8px below the bar. Only scroll-margin is used: an html scroll-padding as well would add up
    and land targets a whole bar height too low. */
 html:has(body.tb-app){color-scheme:light;scroll-padding-top:0;background:#f7f5ef}
-.tb-app :is(main [id],.tb-chapter){scroll-margin-top:calc(var(--ra-bar) + 8px)}
+.tb-app :is(main [id],.tb-chapter){scroll-margin-top:calc(var(--ra-bar,56px) + 8px)}
 /* One sticky bar inside app pages: the site header scrolls away with the page (scoped to app pages only). */
 body:is(.tb-app,.ra-app) .ntf-header{position:static}
 
@@ -154,7 +154,7 @@ body:is(.tb-app,.ra-app) .ntf-header{position:static}
 }
 
 /* search */
-.tb-app .tb-sheet{position:absolute;z-index:56;left:0;right:0;top:100%;max-height:calc(100dvh - var(--ra-bar) - 12px);overflow-y:auto;overscroll-behavior:contain;background:var(--tb-paper);border-bottom:2px solid var(--tb-wine);box-shadow:0 12px 24px rgba(0,0,0,.12)}
+.tb-app .tb-sheet{position:absolute;z-index:56;left:0;right:0;top:100%;max-height:calc(100dvh - var(--ra-bar,56px) - 12px);overflow-y:auto;overscroll-behavior:contain;background:var(--tb-paper);border-bottom:2px solid var(--tb-wine);box-shadow:0 12px 24px rgba(0,0,0,.12)}
 .tb-app .tb-sheet[hidden]{display:none}
 .tb-app .tb-sheet-inner{padding-block:12px 16px}
 .tb-app .tb-search-row{display:flex;gap:8px;align-items:stretch}

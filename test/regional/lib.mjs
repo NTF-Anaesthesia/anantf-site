@@ -312,7 +312,8 @@ export async function stepScans(page, isPhone) {
   return { scans: out, offscreen };
 }
 
-/** Brachial plexus: every block x every tab. */
+/** Brachial plexus: every block x every tab. The "If it goes wrong" guides stay closed (as on the engine pages, guide
+ *  text isn't captured; data.mjs checks it). */
 export async function brachialText(page) {
   const out = {};
   const blocks = await page.evaluate(() => [...document.querySelectorAll('#block-chips [data-block]')].map((b) => b.dataset.block).filter(Boolean));
@@ -322,7 +323,7 @@ export async function brachialText(page) {
     for (const t of ['ultrasound', 'guide', 'coverage']) {
       await page.evaluate((t) => document.getElementById(`tab-${t}`)?.click(), t);
       await page.waitForTimeout(150);
-      out[`${b}/${t}`] = await stableText(page, () => { document.querySelectorAll('#sec-tabs details').forEach((d) => { d.open = true; }); return document.getElementById('sec-tabs')?.innerText || ''; });
+      out[`${b}/${t}`] = await stableText(page, () => { document.querySelectorAll('#sec-tabs details:not(.ra-dg-item):not(.ra-dg-all)').forEach((d) => { d.open = true; }); return document.getElementById('sec-tabs')?.innerText || ''; });
       if (t !== 'ultrasound') continue;
       // Views shown one at a time (phones: Simulated / Diagram / Real scan segmented control): read each, and every real image.
       const views = await page.evaluate(() => [...document.querySelectorAll('#sec-tabs button[aria-pressed]')].filter((x) => /^(Simulated|Diagram|Real scan|Real)$/.test(x.textContent.trim()) && x.getClientRects().length).map((x) => x.textContent.trim()));

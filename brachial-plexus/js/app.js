@@ -11,6 +11,8 @@ import {
 import {
   applyLevel, getLevel, onLevel, tierMax, relaxFor, mountLevelControl, mountLevelPicker, hiddenHint, withScrollAnchor,
 } from '../../shared/regional/js/levels.js?v=20261015';
+import { guideList } from '../../shared/regional/js/decide.js?v=20261017';
+import { guidesFor } from '../../shared/regional/js/data/decisions.js';
 
 window.bpBus = bus; // handy for debugging in the console
 
@@ -426,6 +428,13 @@ function blockHTML(b) {
       <h4>Complications</h4>
       ${list(b.complications)}
 
+      <div class="bp-wrong" data-tier="1">
+      <h4 id="bp-wrong-h">If it goes wrong</h4>
+      <p class="bp-wrong-lead">Step-by-step guides for the problems this block can cause. Open one and answer each question: it shows the next thing to do.</p>
+      <div class="ra-dg-host" id="bp-wrong-list"></div>
+      <p class="bp-wrong-more"><a href="../blocks/#wrong">Every guide on one page <span aria-hidden="true">→</span></a></p>
+      </div>
+
       <h4>Pearls</h4>
       <ul>${(b.pearls || []).map((x, i) => `<li${i >= 3 && !x.safety ? ' data-tier="2"' : ''}>${esc(pearlText(x))}</li>`).join('')}</ul>
 
@@ -471,10 +480,17 @@ function renderGuide() {
   openQs = new Set([...guideEl.querySelectorAll('.qa details')].map((d, i) => (d.open ? i : -1)).filter((i) => i >= 0));
   const b = BLOCKS[bus.state.block];
   const key = b ? b.id : '';
+  const openGuides = guideEl.dataset.key === key ? [...guideEl.querySelectorAll('.ra-dg-item[open]')].map((d) => d.id) : [];
   if (guideEl.dataset.key !== key) openQs.clear();
   guideEl.dataset.key = key;
   guideEl.innerHTML = b ? blockHTML(b) : overviewHTML();
   guideEl.querySelectorAll('.qa details').forEach((d, i) => { if (openQs.has(i)) d.open = true; });
+  // "If it goes wrong": the shared decision guides for this block (shared/regional/js/data/decisions.js), always MO level.
+  const wrongHost = b && guideEl.querySelector('#bp-wrong-list');
+  if (wrongHost) {
+    wrongHost.append(guideList(guidesFor(b.id, 'upper-limb'), { idPrefix: `${b.id}-wrong`, headingLevel: 5 }));
+    openGuides.forEach((id) => { const d = document.getElementById(id); if (d) d.open = true; });
+  }
   guideHint?.refresh();
 }
 
