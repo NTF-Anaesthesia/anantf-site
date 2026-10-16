@@ -6,6 +6,27 @@
         "line": "See all truncal blocks and the block chooser →",
         "why": "Plan §4: cfg.backLabel replaces the hard-coded truncal hub link that head-neck and lower-limb pages showed (or patched with fixHubBack)."
       }
+    ],
+    "missingPatterns": [
+      {
+        "re": "^For education only\\.",
+        "why": "Owner (16 Oct 2026): the 'for education only' notices are removed from every regional page; only the department's own juniors use the app."
+      },
+      {
+        "re": "^Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia$",
+        "why": "Owner (16 Oct 2026): the credit line is shown once, in the page footer, not at the top of the page (the footer line is longer, so the short top line is no longer a separate line)."
+      },
+      {
+        "re": "^Simplified maps: territories overlap and vary between patients\\. For education only\\.",
+        "why": "Owner (16 Oct 2026): the 'for education only' sentence is removed from the brachial plexus coverage footnote; the anatomy-varies caveat stays."
+      }
+    ],
+    "renames": [
+      {
+        "from": "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia For education only\\. Follow local guidelines and senior advice; check doses for each patient\\. ",
+        "to": "",
+        "why": "Owner (16 Oct 2026): on the region landings the credit line moves to the footer and the 'for education only' notice is removed; the rest of the page's text is unchanged."
+      }
     ]
   },
   "truncal/back/": {

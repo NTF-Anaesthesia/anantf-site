@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="../../shared/regional/css/regional.css?v=20261017">
 <link rel="stylesheet" href="settings.css?v=20261017">
 <script type="module" src="settings.js?v=20261017"></script>
+<link rel="manifest" href="../../blocks/manifest.webmanifest">
+<link rel="apple-touch-icon" href="../../blocks/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#f7f5ef">
 </head>
 <body class="tb-app ra-app st-app">
 <a class="tb-skip" href="#main">Skip to content</a>
@@ -30,7 +33,6 @@
     <p class="tb-eyebrow">Regional anaesthesia</p>
     <h1 id="st-title">Settings</h1>
     <p class="tb-lead">How the regional block pages look and behave on this device. Your choices are kept in this browser only and apply to every regional page.</p>
-    <p class="tb-credit">Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia</p>
   </section>
 
   <section class="st-section" id="level" aria-labelledby="st-level-h">
@@ -67,6 +69,19 @@
     </dl>
   </section>
 
+  <section class="st-section" id="home" aria-labelledby="st-home-h">
+    <h2 class="st-h" id="st-home-h">Add it to your home screen</h2>
+    <p class="st-intro">Opened from the home screen, the regional blocks fill the whole screen with no browser bar and no NTF Anaesthesia website header, like any other app. It still works without signal once you have opened the pages.</p>
+    <ul class="st-rows">
+      <li class="st-row"><div class="st-row-t"><strong>iPhone or iPad (Safari)</strong>
+        <p class="st-row-d">Tap the Share button, then <em>Add to Home Screen</em>.</p></div></li>
+      <li class="st-row"><div class="st-row-t"><strong>Android (Chrome)</strong>
+        <p class="st-row-d">Open the menu (three dots), then <em>Install app</em> or <em>Add to Home screen</em>.</p></div></li>
+      <li class="st-row" id="st-install-row" hidden><div class="st-row-t"><strong>This browser can install it now</strong>
+        <p class="st-row-d"><button type="button" class="st-appver-btn" id="st-install">Install the app</button></p></div></li>
+    </ul>
+  </section>
+
   <section class="st-section" id="version" aria-labelledby="st-version-h">
     <h2 class="st-h" id="st-version-h">App version</h2>
     <p class="st-intro">The regional pages work without signal once you have opened them. If a page looks out of date, get the latest version: your level and settings are kept.</p>
@@ -78,8 +93,7 @@
   </section>
 </main>
 
-<section class="tb-foot" aria-label="Disclaimer and credits"><div class="site-container">
-  <p class="tb-disclaimer"><strong>For education only.</strong> Follow local guidelines and senior advice; check doses for each patient.</p>
+<section class="tb-foot" aria-label="Credits"><div class="site-container">
   <p>Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia.</p>
   <p><a href="../">Regional blocks</a> · <a href="../../regional.html">Regional anaesthesia</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
 </div></section>

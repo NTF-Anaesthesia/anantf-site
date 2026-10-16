@@ -13,6 +13,8 @@
 //   5. no personal e-mail addresses (only contact@anantf.com) or phone numbers in the regional pages;
 //   6. engine entry points are versioned (?v=) once, never "?v=…?v=…";
 //   7. every relative import / script / stylesheet in the regional pages points at a file that exists;
+//   9. the home-screen manifest (blocks/manifest.webmanifest): valid, icons exist, start_url /blocks/, standalone, and every
+//      regional page links it;
 //   8. the test allow-lists are valid JSON with a reason for every entry.
 
 import fs from 'node:fs';
@@ -101,6 +103,17 @@ function resolveRef(f, spec) {
   const pages = htmlFiles.filter((f) => /(^|\/)index\.html$/.test(f) && !f.startsWith('shared/'));
   const missing = pages.filter((f) => !/<meta\s+name=["']robots["']\s+content=["'][^"']*noindex/i.test(read(f)));
   R.check(`noindex on every regional page (${pages.length} pages)`, pages.length && !missing.length, `missing: ${missing.join(', ')}`);
+}
+
+// 2b. home-screen manifest
+{
+  const m = (() => { try { return JSON.parse(read('blocks/manifest.webmanifest')); } catch (e) { return { error: e.message }; } })();
+  const iconsOk = (m.icons || []).every((i) => fs.existsSync(path.join(ROOT, i.src.replace(/^\//, ''))));
+  const maskable = (m.icons || []).some((i) => /maskable/.test(i.purpose || ''));
+  R.check('manifest: valid, start_url /blocks/, standalone, icons exist (one maskable)', !m.error && m.start_url === '/blocks/' && m.display === 'standalone' && m.scope === '/' && (m.icons || []).length >= 3 && iconsOk && maskable, JSON.stringify(m).slice(0, 200));
+  const want = PAGES.filter((p) => p !== 'regional.html').map((p) => (p.endsWith('/') ? p + 'index.html' : p));
+  const lacking = want.filter((f) => !/<link\s+rel=["']manifest["']\s+href=["'][^"']*blocks\/manifest\.webmanifest["']/.test(read(f)));
+  R.check(`every regional page links the manifest (${want.length} pages)`, !lacking.length, `missing: ${lacking.join(', ')}`);
 }
 
 // 3. FRCA

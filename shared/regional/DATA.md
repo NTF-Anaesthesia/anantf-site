@@ -51,9 +51,9 @@ breadcrumb (`<span aria-current="page">Chest wall</span>`), and `page.css` if yo
   (`../../resources.html`, `../../regional.html`, `../`)
 - `<div id="tb-bar"></div>` (the shell fills it), `<main id="main" class="site-container">` (the shell fills it; a
   `<noscript>` inside is fine), `<div id="tb-live" class="tb-sr" aria-live="polite" aria-atomic="true"></div>`
-- the `tb-foot` block (disclaimer **"For education only. Follow local guidelines and senior advice; check doses for
-  each patient."** and the credit **"Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>,
-  NTF Anaesthesia"**, link back to `../`), then `ntf-footer`
+- the `tb-foot` block (the credit **"Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>,
+  NTF Anaesthesia"**, only here at the foot of the page and never at the top, with a link back to `../`; no "for
+  education only" notice, since the app is for the department's own juniors), then `ntf-footer`
 - `<body class="tb-app">`, stylesheets `../../assets/navigation.css`, `site-shell.css`, `header-nav.css`,
   `../../shared/regional/css/regional.css?v=20261017` (it imports `appnav.css`: desktop frame and rail, bar auto-hide,
   view transitions), and `<script type="module" src="js/page.js?v=20261017"></script>`
@@ -81,14 +81,12 @@ bootPage({
   backShort: 'Lower-limb blocks',                   // bar Home label on the hub (default: the breadcrumb's last link)
   backHref: '../',                                  // region landing (default: the breadcrumb's last link)
   home: '/blocks/',                                 // the front door link; false = none (default: on once /blocks/ is live)
-  credit: 'Created by …',                           // hub credit line, HTML; false = none
   level: true,                                      // false = no level control, no tier hiding, no hints
 });
 ```
 
-- **Defaults.** `backLabel` defaults to "See all <breadcrumb parent, lower case> and the block chooser"; `credit`
-  defaults to "Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia"
-  (exported as `DEFAULT_CREDIT`). Don't patch the hub link text from page code (the old `fixHubBack()`): set `backLabel`.
+- **Defaults.** `backLabel` defaults to "See all <breadcrumb parent, lower case> and the block chooser"; the hub
+  shows no credit (it is in each page's footer; `DEFAULT_CREDIT` is still exported). Don't patch the hub link text from page code (the old `fixHubBack()`): set `backLabel`.
 - **One sticky bar.** Inside app pages the site header scrolls away (`body.tb-app .ntf-header{position:static}`) and only
   `#tb-bar` sticks (56 px; CSS variable `--ra-bar` on `:root`). Deep-link targets land just below it
   (`scroll-padding-top` / `scroll-margin-top: calc(var(--ra-bar) + 8px)`); stick your own sticky things at
@@ -121,7 +119,7 @@ bootPage({
   ("PROSPECT recommends…"). `refs` / `refsIntro` in the config are ignored.
 - Sticky bar: Hub link and chapters are one `nav`; on screens under 1240 px the chapters are a disclosure menu
   (`#tb-chmenu-btn`), not a `<select>`. Search opens with Ctrl+K / Cmd+K, or "/" when not typing in a box (the reader
-  can turn "/" off in Settings, WCAG 2.1.4). The hub shows the disclaimer under the credit.
+  can turn "/" off in Settings, WCAG 2.1.4).
 - Old deep links to the removed References chapter (`#ch-refs`, `#ref-…`) land on the hub.
 - Chapter ids must start `ch-`. A block chapter should be `ch-<blockId>`.
 
@@ -414,7 +412,7 @@ Changes here affect both sections: check `head-neck/` pages too. Three opt-in fi
 ## 9. The regional app as a whole (levels, registry, scan teacher, figures, `/blocks/`)
 
 The engine pages, `brachial-plexus/`, `plexus/`, `spinal/` and the front door `blocks/` form one app: the same app bar,
-the same credit line (`cfg.credit`, default "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" with
+the same credit line in the page footer ("Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" with
 Dr Chew Shi Hao linked to https://chewshihao.com/), the same level control and the same status colours.
 
 ### Levels outside the engine

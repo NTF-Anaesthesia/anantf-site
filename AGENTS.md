@@ -47,7 +47,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `truncal/` | Truncal blocks: landing page with the "which block for which operation" chooser, and `back/`, `chest-wall/`, `abdominal-wall/` pages on the shared regional engine in `shared/regional/` (see `shared/regional/DATA.md`; `truncal/shared/` holds only re-export shims for old cached pages) | No (unlisted; card on Regional) |
 | `head-neck/` | Head and neck blocks: landing page with the operation chooser, and `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` pages on the shared regional engine (`shared/regional/`) plus head figures in `shared/regional/js/figures/head.js` | No (unlisted; card on Regional, link from Airway) |
 | `upper-limb/` | Upper-limb blocks: landing page with the operation chooser, and `shoulder/`, `arm/`, `forearm-hand/` pages on the shared regional engine (`shared/regional/`) plus arm figures in `shared/regional/js/figures/arm.js` and operations in `shared/regional/js/ops/ops-upperlimb.js`. The brachial plexus app stays as it was | No (unlisted, noindex; card on Regional) |
-| `blocks/` | Regional anaesthesia app front door: level picker, "I need to…" tiles, one "which block for this operation" chooser over the upper-limb, trunk, head and neck and lower-limb operations, search across every region, the "If it goes wrong" guides (`#wrong`), region cards, and the app version lines at the foot. Built from `shared/regional/js/registry.js` and `shared/regional/js/ops/` (no clinical text of its own) | No (unlisted, noindex; card on Regional) |
+| `blocks/` | Regional anaesthesia app front door: level picker, "I need to…" tiles, one "which block for this operation" chooser over the upper-limb, trunk, head and neck and lower-limb operations, search across every region, the "If it goes wrong" guides (`#wrong`), region cards, and the app version lines at the foot; its `manifest.webmanifest` and `icons/` make the regional app installable. Built from `shared/regional/js/registry.js` and `shared/regional/js/ops/` (no clinical text of its own) | No (unlisted, noindex; card on Regional) |
 | `blocks/calculator/` | Local anaesthetic dose calculator: maximum dose by weight (lean body weight when BMI is 30 or more), several agents together. Data and maths in `shared/regional/js/la.js`, the form in `shared/regional/js/lacalc.js`; each block's dose box links to it, prefilled | No (unlisted, noindex; tile on `/blocks/`) |
 | `blocks/settings/` | Settings for the regional app: level of detail, "Hide the bar while scrolling down" (`ra-autohide`, off by default), "Press / to search" (`ra-slash`), and the app version lines. Reached from every regional app bar | No (unlisted, noindex) |
 | `regional-sw.js` | The regional app's offline service worker, at the site root so it can cover every regional folder. It answers only the regional paths (and the shared site files they load) and leaves the homepage, `mo/`, `qbank/`, `babymo/` and the rest alone. Stamped by `shared/regional/tools/stamp.mjs` | — |
@@ -98,7 +98,8 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - The regional pages (`blocks/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `brachial-plexus/`, `plexus/`, `spinal/`) are one
   app: same app bar, the credit line "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" (Dr Chew Shi Hao
-  linked to https://chewshihao.com/), and the same MO · Resident · Consultant level control (`shared/regional/js/levels.js`).
+  linked to https://chewshihao.com/) at the foot of the page only, never at the top, no "for education only" notice
+  (the owner, 16 Oct 2026: only the department's own juniors use the app), and the same MO · Resident · Consultant level control (`shared/regional/js/levels.js`).
   Levels are cumulative: MO sees tier 1, Resident tiers 1–2, Consultant everything; with no choice saved the level is
   Consultant, so nothing is hidden by surprise. The choice is kept on the phone (`ra-level`), never in the URL. Mark
   content with `data-tier` or a `tier` field in the data (`shared/regional/DATA.md` §2b). **Doses, the LAST line,
@@ -119,8 +120,9 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
 - Every regional page calls `initAppFeel({bar, search})` from `shared/regional/js/appnav.js` (and `mountRail()` except on
   `brachial-plexus/` and `plexus/`); import it under one URL (`appnav.js?v=…`). Anything that sticks under the bar uses
   `top: var(--ra-bar-now, var(--ra-bar, 56px))`, and a new region page goes into `REGION_NAV` in `appnav.js`. The look is
-  `DESIGN.md` as before: no rounded cards, tab bars, dark mode or splashy motion. The site header stays unchanged. There is no
-  web app manifest or install prompt yet (held until Dr Chew Shi Hao has seen the result).
+  `DESIGN.md` as before: no rounded cards, tab bars, dark mode or splashy motion. The site header stays unchanged in a browser tab; when the app is added to the home screen (`display-mode: standalone`) the NTF Anaesthesia header and the breadcrumbs are hidden, since the block app is all that screen is used for (rule in `appnav.css`). The app can be
+  added to the home screen: `blocks/manifest.webmanifest` (start `/blocks/`, scope `/`, standalone, icons in `blocks/icons/` in the
+  MO guide's style) is linked from every regional page, and `/blocks/settings/` explains how to install it.
 - Every installable app (one with a service worker, today `babymo/`, `mo/`, `qbank/` and the regional app) ends its settings or start page with two lines of small
   muted text (owner, 14 Oct 2026): `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
   read from the app's cache name) and a `Not updating? Get the latest version` button that checks for signal, then

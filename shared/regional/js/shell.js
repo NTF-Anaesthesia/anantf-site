@@ -89,7 +89,7 @@ function addHint(sec) {
  * bootPage(config): see DATA.md for every field.
  * config = { title, eyebrow, lead, tiles:[{title, desc, href}], chapters:[{id, title, short, desc, tier?, block?, render?}],
  *            synonyms:[[…]], searchPlaceholder, hubExtra,
- *            backLabel, backShort, backHref, home, credit, level }
+ *            backLabel, backShort, backHref, home, level }
  */
 export async function bootPage(cfg) {
   const main = $('#main');
@@ -105,7 +105,6 @@ export async function bootPage(cfg) {
   const backShort = cfg.backShort || parent?.text || 'All blocks';
   const backLabel = cfg.backLabel || `See all ${(parent?.text || 'blocks in this region').replace(/^[A-Z](?![A-Z])/, (c) => c.toLowerCase())} and the block chooser`;
   const home = cfg.home === false ? null : (typeof cfg.home === 'string' ? cfg.home : (FRONT_DOOR_READY ? `${ROOT}blocks/` : null));
-  const credit = cfg.credit === false ? null : (cfg.credit || DEFAULT_CREDIT);
 
   // ------------------------------------------------------------ chapter list
   // (cfg.refs / cfg.refsIntro are ignored: these pages no longer show a References chapter.)
@@ -120,8 +119,6 @@ export async function bootPage(cfg) {
   if (cfg.eyebrow) hubIn.append(el('p', { class: 'tb-eyebrow', text: cfg.eyebrow }));
   hubIn.append(el('h1', { id: 'tb-home-h', text: cfg.title || BASE_TITLE }));
   if (cfg.lead) hubIn.append(fill(el('p', { class: 'tb-lead' }), cfg.lead));
-  if (credit) hubIn.append(fill(el('p', { class: 'tb-credit' }), credit));
-  hubIn.append(fill(el('p', { class: 'tb-hub-disclaimer' }), '<strong>For education only.</strong> Follow local guidelines and senior advice; check doses for each patient.'));
   if (useLevel) mountLevelPicker(hubIn);
   const hubQ = el('input', { type: 'search', class: 'tb-search-input', id: 'tb-hub-q', placeholder: ph(), autocomplete: 'off', spellcheck: 'false', 'aria-label': 'Search this page' });
   const hubRes = el('ul', { class: 'tb-sresults', id: 'tb-hub-res' });
