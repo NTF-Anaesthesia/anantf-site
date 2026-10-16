@@ -1,11 +1,11 @@
 // Browser test of the BIS to DSA page at phone and desktop size, with an axe accessibility check.
-// Run from the repo root with a static server on port 8080 (python3 -m http.server 8080): node bis/test/e2e.mjs
+// Run from the repo root with a static server on port 8080 (python3 -m http.server 8080): node eeg/test/e2e.mjs
 const { chromium } = await import(process.env.PLAYWRIGHT_PATH || '/opt/node22/lib/node_modules/playwright/index.mjs');
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const AXE = new URL('../../tools/vendor/axe.min.js', import.meta.url).pathname;
-const BASE = `http://localhost:${process.env.PORT || 8080}/bis/`;
+const BASE = `http://localhost:${process.env.PORT || 8080}/eeg/`;
 const b = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH, args: ['--no-sandbox'] } : {});
 const errors = [];
 const bis = p => p.$eval('#vBis', e => +e.textContent);

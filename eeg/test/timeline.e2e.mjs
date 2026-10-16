@@ -1,9 +1,9 @@
 // Browser test of the case timeline (timeline.js): +1 / +5 min run the case on, -1 / -5 min go back to the same patient and the same
-// drug controls, and the bar shows the case time. Run with a static server on port 8080: node bis/test/timeline.e2e.mjs (also run by e2e.mjs)
+// drug controls, and the bar shows the case time. Run with a static server on port 8080: node eeg/test/timeline.e2e.mjs (also run by e2e.mjs)
 const { chromium } = await import(process.env.PLAYWRIGHT_PATH || '/opt/node22/lib/node_modules/playwright/index.mjs');
 import assert from 'node:assert/strict';
 
-const BASE = `http://localhost:${process.env.PORT || 8080}/bis/`;
+const BASE = `http://localhost:${process.env.PORT || 8080}/eeg/`;
 const b = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH, args: ['--no-sandbox'] } : {});
 const errors = [];
 try {

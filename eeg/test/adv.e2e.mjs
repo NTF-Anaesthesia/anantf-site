@@ -1,11 +1,11 @@
 // Browser test of the BIS Advance screen (the 'advance' skin): channel modes, numeric panels, trends, the real menu tree, dialogs,
 // alarms (bar, list, pill, sound), messages, sensor check, snapshot, chart view, case review, demo mode. Run with a static server
-// on port 8080: node bis/test/adv.e2e.mjs  (also run by e2e.mjs)
+// on port 8080: node eeg/test/adv.e2e.mjs  (also run by e2e.mjs)
 const { chromium } = await import(process.env.PLAYWRIGHT_PATH || '/opt/node22/lib/node_modules/playwright/index.mjs');
 import assert from 'node:assert/strict';
 
 const AXE = new URL('../../tools/vendor/axe.min.js', import.meta.url).pathname;
-const BASE = `http://localhost:${process.env.PORT || 8080}/bis/`;
+const BASE = `http://localhost:${process.env.PORT || 8080}/eeg/`;
 const b = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH, args: ['--no-sandbox'] } : {});
 const errors = [];
 const txt = (p, sel) => p.$eval(sel, e => e.textContent.trim());

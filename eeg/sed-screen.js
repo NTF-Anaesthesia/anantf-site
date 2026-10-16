@@ -1,5 +1,5 @@
 // Masimo SedLine screen (the 'sedline' skin), part 1: state, settings, the DOM around the two canvases, hit regions, alarms, sound and the
-// per-frame tick. Built from Masimo's operator's manuals and screen figures (bis/NOTES.md, "Masimo SedLine"): a Root monitor, 800 x 1280,
+// per-frame tick. Built from Masimo's operator's manuals and screen figures (eeg/NOTES.md, "Masimo SedLine"): a Root monitor, 800 x 1280,
 // portrait. Loaded before sed-draw.js and sed-menu.js and app.js; reads app.js globals only when called, never at load.
 const sq=id=>document.getElementById(id);
 // factory defaults of every setting the monitor has (the menu tree is in sed-menu.js); null = Off
@@ -29,8 +29,7 @@ function sedBuild(){if(SED.built)return;SED.built=true;sedLoad();
   </div><span class="sedroot" aria-hidden="true">Root</span></div>
   <details class="sedctl" id="sedCtl"><summary>Controls</summary><p class="sednote">Teaching simulation: the EEG is synthetic and the PSi is a stand-in, not Masimo’s algorithm. These keys are not on a Root (the touchscreen does all of it); they are here for keyboards and screen readers.</p>
   <div class="bilkeys"><button type="button" id="bSilent">Silent</button><button type="button" id="bMenu" aria-haspopup="dialog" aria-expanded="false">Menu</button><button type="button" id="bSensor" aria-pressed="false">Sensor check</button></div>
-  <div class="sedsim" id="sedSim" role="group" aria-label="Simulator controls, outside the monitor"><span class="sl">Display:</span><button type="button" data-st="1" aria-pressed="false">Suppression Time (ST) row</button><span class="sl">Simulate:</span>
-   <button type="button" data-sim="off" aria-pressed="false">Sensor off patient</button><button type="button" data-sim="hiz" aria-pressed="false">High impedance</button><button type="button" data-sim="gel" aria-pressed="false">Gel bridging</button><button type="button" data-sim="none" aria-pressed="false">No sensor</button><button type="button" data-sim="disc" aria-pressed="false">SedLine disconnected</button><button type="button" data-sim="expired" aria-pressed="false">Replace sensor</button><button type="button" data-sim="batt" aria-pressed="false">Battery low</button></div></details></div>`;
+  <div class="sedsim" id="sedSim" role="group" aria-label="Simulator controls, outside the monitor"><span class="sl">Display:</span><button type="button" data-st="1" aria-pressed="false">Suppression Time (ST) row</button></div></details></div>`;
  SED.cv=sq('sedCv');SED.cvE=sq('sedEeg');
  const S=sq('sedS');S.addEventListener('click',sedClick);S.addEventListener('pointerdown',sedPointer);S.addEventListener('wheel',sedWheel,{passive:false});document.addEventListener('keydown',sedKey);
  const stb=document.querySelector('[data-st]');if(stb)stb.setAttribute('aria-pressed',String(!!SED.set.smart));

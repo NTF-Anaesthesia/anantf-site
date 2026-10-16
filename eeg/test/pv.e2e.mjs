@@ -1,10 +1,10 @@
 // Browser test of the Philips IntelliVue screen (the 'philips' skin): it opens from the monitor switch, draws the three waves and the
 // numerics, Setup BIS changes the shown numerics, the sensor window runs a check, BIS limits raise the yellow alarm and Silence acknowledges it.
-// Run with a static server on port 8080: node bis/test/pv.e2e.mjs  (also run by e2e.mjs)
+// Run with a static server on port 8080: node eeg/test/pv.e2e.mjs  (also run by e2e.mjs)
 const { chromium } = await import(process.env.PLAYWRIGHT_PATH || '/opt/node22/lib/node_modules/playwright/index.mjs');
 import assert from 'node:assert/strict';
 
-const BASE = `http://localhost:${process.env.PORT || 8080}/bis/`;
+const BASE = `http://localhost:${process.env.PORT || 8080}/eeg/`;
 const b = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH, args: ['--no-sandbox'] } : {});
 const errors = [];
 try {
