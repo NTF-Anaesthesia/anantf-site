@@ -5,6 +5,7 @@
 //
 // ?embed=1 (used by explorer.js on pages without a three.js import map) shows the explorer alone, for an iframe.
 
+import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015d';
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../../shared/regional/js/levels.js?v=20261015';
 
@@ -216,3 +217,4 @@ async function copyLink(btn) {
 }
 ui.share.addEventListener('click', () => copyLink(ui.share));
 ui.shareMenu.addEventListener('click', () => copyLink(ui.shareMenu));
+registerOffline();

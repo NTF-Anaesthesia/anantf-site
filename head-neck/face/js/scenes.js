@@ -130,4 +130,45 @@ export const SCENES = {
     probe: { view: 'side', points: [[121, 105]], key: 'Needle entry', label: 'in the coronoid notch, below the middle of the zygomatic arch (right side).' },
     probeInset: headProbeInset,
   },
+  // Suprazygomatic maxillary (V2) block with ultrasound: the pterygopalatine fossa seen from below the zygomatic arch
+  // (Consultant level, in the deep blocks chapter). Right side of an infant's face; probe in the infrazygomatic area over
+  // the maxilla, tilted up and back, marker anterior. Under masseter and the lateral pterygoid muscle, two bright bone
+  // lines with shadows (the lateral pterygoid plate behind, the back of the maxilla in front) frame the entrance to the
+  // fossa, with the maxillary artery in it. The needle comes from above the arch, out of plane: only its tip is seen.
+  // Infant depths (the fossa entrance about 2 cm deep); not to scale for adults.
+  ppf: {
+    id: 'hn-fa-ppf', title: 'Pterygopalatine fossa: infrazygomatic view for the suprazygomatic maxillary block', width: 32, depth: 30, focus: 18, skin: 0.8,
+    view: 'Right side of an infant’s face, probe below the zygomatic arch over the maxilla, tilted upwards and backwards towards the pterygopalatine fossa. Posterior on the left, anterior on the right. The needle comes from above the arch, out of plane.',
+    orient: { left: 'Posterior', right: 'Anterior', marker: 'right' },
+    layers: [
+      { id: 'sc', kind: 'fat', label: 'Subcutaneous fat', short: 'Fat', bottom: [[0, 3.2], [32, 3.6]], labelX: 26 },
+      { id: 'mas', kind: 'muscle', label: 'Masseter', short: 'Masseter', stri: 60, edge: 0.7, bottom: [[0, 8.4], [32, 8]], labelX: 8 },
+      { id: 'lpt', kind: 'muscle', label: 'Lateral pterygoid', short: 'Lat. pteryg.', stri: -14, echo: 0.13, edge: 0, bottom: [[0, 18.6], [12.6, 18.2], [16, 19.6], [19.6, 17.8], [32, 15.2]], labelX: 8 },
+      { id: 'ppf', kind: 'fat-deep', label: 'Pterygopalatine fossa', short: 'PPF', echo: 0.34, edge: 0, bottom: 40, at: [16, 23.4], lab: [16, 28.2] },
+    ],
+    shapes: [
+      { id: 'lpp', kind: 'bone', label: 'Lateral pterygoid plate', short: 'Plate', shape: PS([0, 19], [12.8, 18.4], [13.2, 20.2], [13.4, 30], [0, 30]), at: [6.4, 18.8], lab: [5.6, 25.2],
+        desc: 'The back wall of the entrance to the fossa: a bright line with a black shadow.' },
+      { id: 'mx', kind: 'bone', label: 'Maxilla (back wall)', short: 'Maxilla', shape: PS([19.4, 17.6], [32, 15], [32, 30], [20.2, 30], [19, 19.4]), at: [25.6, 16.4], lab: [26, 25.2],
+        desc: 'The front wall: the bright, sloping back surface of the maxilla with its shadow.' },
+      { id: 'mxa', kind: 'artery', label: 'Maxillary artery', short: 'Max. a.', shape: E(15.4, 20.6, 1, 0.85), lab: [11.4, 13.2],
+        desc: 'Pulsatile, in the entrance to the fossa: colour Doppler shows it. Aspirate before injecting.' },
+      { id: 'v2', kind: 'nerve', label: 'Maxillary nerve (V2)', short: 'V2', shape: E(16.8, 25.2, 0.9, 0.65), lab: [21.6, 21.4],
+        desc: 'Deep in the fossa and rarely seen: the target is the fossa, not the nerve.' },
+    ],
+    target: { at: [16.2, 21.8], r: 2.2 },
+    injections: [
+      // Out of plane: the needle crosses the beam, so it shows only as a bright dot (entry a fraction of a millimetre above the tip).
+      { id: 'ppf', label: 'Suprazygomatic, out of plane', entry: [16.6, 21.2], tip: [16.9, 21.8],
+        spread: { along: [[13.4, 22.4], [16.4, 22.6], [19.2, 22.2]], x0: 13.4, x1: 19.2, from: 16.6, thick: 2.6, up: 0.3, above: 3 } },
+    ],
+    steps: {
+      scan: '<p>Under general anaesthesia, the <strong>mouth slightly open</strong> (the coronoid process moves down out of the way). Probe <strong>below the zygomatic arch, over the maxilla</strong>, tilted upwards and backwards so the beam aims at the pterygopalatine fossa. Colour Doppler on.</p>',
+      identify: '<p>Under the skin: masseter, then the <strong>lateral pterygoid</strong> muscle. Deep to it, two bright bone lines with shadows: the <strong>lateral pterygoid plate</strong> behind and the <strong>back of the maxilla</strong> in front. The gap between them is the entrance to the <strong>pterygopalatine fossa</strong>, with the <strong>maxillary artery</strong> in it. The maxillary nerve lies deep in the fossa and is rarely seen.</p>',
+      needle: '<p>The needle enters <strong>above the arch</strong>, at the frontozygomatic angle, and touches the greater wing of the sphenoid; it is then turned <strong>downwards and forwards</strong> into the fossa. It crosses the beam <strong>out of plane</strong>, so you see only its tip, as a bright dot or tissue movement, arriving at the fossa entrance.</p>',
+      inject: '<p>Aspirate, then inject slowly (dose in the text above), watching the fluid <strong>fill the fossa</strong>: that spread is the sign of success. Repeat on the other side for a cleft palate.</p>',
+    },
+    probe: { view: 'side', x: 128, y: 104, angle: 0, marker: 'right', label: 'below the right zygomatic arch, over the maxilla, tilted upwards and backwards towards the pterygopalatine fossa.' },
+    probeInset: headProbeInset,
+  },
 };

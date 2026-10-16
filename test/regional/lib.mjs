@@ -23,20 +23,22 @@ export const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const ROOT = path.resolve(HERE, '../..');
 export const BASEDIR = path.join(HERE, 'baseline');
 
-/** Every regional page (plan §1): truncal ×4, head-neck ×6, lower-limb ×5, brachial-plexus, plexus, spinal, regional.html. */
+/** Every regional page (plan §1): truncal ×4, head-neck ×6, lower-limb ×5, upper-limb ×4, brachial-plexus, plexus, spinal, regional.html, the dose calculator. */
 export const PAGES = [
   'truncal/', 'truncal/back/', 'truncal/chest-wall/', 'truncal/abdominal-wall/',
   'head-neck/', 'head-neck/cervical/', 'head-neck/scalp/', 'head-neck/face/', 'head-neck/airway/', 'head-neck/eye/',
   'lower-limb/', 'lower-limb/hip/', 'lower-limb/knee/', 'lower-limb/foot-ankle/', 'lower-limb/thigh/',
-  'brachial-plexus/', 'plexus/', 'spinal/', 'regional.html',
+  'upper-limb/', 'upper-limb/shoulder/', 'upper-limb/arm/', 'upper-limb/forearm-hand/',
+  'brachial-plexus/', 'plexus/', 'spinal/', 'regional.html', 'blocks/calculator/',
 ];
 /** Pages built on the shared engine (bootPage + renderBlock), with their block data module. */
 export const ENGINE_PAGES = [
   'truncal/back/', 'truncal/chest-wall/', 'truncal/abdominal-wall/',
   'head-neck/cervical/', 'head-neck/scalp/', 'head-neck/face/', 'head-neck/airway/', 'head-neck/eye/',
   'lower-limb/hip/', 'lower-limb/knee/', 'lower-limb/foot-ankle/', 'lower-limb/thigh/',
+  'upper-limb/shoulder/', 'upper-limb/arm/', 'upper-limb/forearm-hand/',
 ];
-export const LANDINGS = ['truncal/', 'head-neck/', 'lower-limb/'];
+export const LANDINGS = ['truncal/', 'head-neck/', 'lower-limb/', 'upper-limb/'];
 /** Region apps that mount the level control (engine pages + the three own apps). */
 export const LEVEL_PAGES = [...ENGINE_PAGES, 'brachial-plexus/', 'plexus/', 'spinal/'];
 

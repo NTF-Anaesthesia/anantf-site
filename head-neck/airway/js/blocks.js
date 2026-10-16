@@ -1,6 +1,17 @@
 // Airway: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
 import { headCoverageMap } from '../../../shared/regional/js/figures/head.js?v=20261015';
-import { SCENES } from './scenes.js?v=20261015';
+import { el } from '../../../shared/regional/js/ui.js';
+import { mountScan } from '../../../shared/regional/js/scan.js';
+import { SCENES } from './scenes.js?v=20261016';
+
+// An extra scan viewer inside a block section (its own deep links: #<blockId>-step-…, #<blockId>-inj-…).
+function extraScan(scene, blockId) {
+  return (sec) => {
+    const wrap = el('div', { class: 'tb-scan-wrap' });
+    sec.append(wrap);
+    mountScan(wrap, scene, { blockId });
+  };
+}
 
 const LIDO = 'All the lidocaine counts: sprays, nebuliser, blocks and transtracheal injection together. Keep the total within 9 mg/kg (adults; 4.5 mg/kg in children).';
 
@@ -123,5 +134,15 @@ export const BLOCKS = [
       misses: '<ul><li>The larynx above and below the cords.</li><li>The front of the tongue (lingual nerve) and the nose.</li></ul>',
     },
     complications: `<ul><li><strong>Carotid artery injection</strong>: the internal carotid is close behind the tonsillar pillar. Aspirate before injecting.</li><li>Loss of the gag and swallowing reflexes: aspiration risk.</li></ul>`,
+    sections: [
+      {
+        // Consultant level: an uncommon route, next to the carotid, with spread to the vagus and hypoglossal nerves.
+        id: 'peristyloid-us', title: 'Peristyloid approach with ultrasound', tier: 3,
+        html: `<p>An extraoral route to the nerve where it passes the <strong>styloid process</strong>, for when the mouth cannot be opened or the intraoral injection is not possible. Ultrasound shows the styloid and, with colour Doppler, the <strong>internal carotid artery</strong> just deep and behind it, so the needle can stop short of it. The nerve itself is too small to see.</p>
+<ul><li>Local anaesthetic here often spreads to the <strong>vagus</strong> (hoarseness), <strong>accessory</strong> and <strong>hypoglossal</strong> nerves. Blocked on both sides, the tongue and vocal cords can obstruct the airway: <strong>one side only</strong> with this approach. For awake intubation, prefer the intraoral injection or topical anaesthesia.</li>
+<li>A very small arterial injection here reaches the brain directly and can cause a seizure: inject slowly in small increments with repeated aspiration, and keep within the dose box.</li></ul>`,
+        render: extraScan(SCENES.gpnUs, 'gpus'),
+      },
+    ],
   },
 ];

@@ -102,6 +102,7 @@ export function anatomyHref(id) {
 const cap1 = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 const figureMods = {
   legCoverageMap: () => import('./figures/leg.js'),
+  armCoverageMap: () => import('./figures/arm.js'),
   headCoverageMap: () => import('./figures/head.js?v=20261015'), // same URL as the head-neck pages: one module instance
 };
 async function zoneNamer(cov) {

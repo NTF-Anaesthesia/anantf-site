@@ -28,40 +28,153 @@
     "text": "Lamina",
     "elementId": null,
     "kind": "bone",
-    "x": 0.33,
-    "y": 0.4,
-    "tx": 0.22,
-    "ty": 0.34
+    "x": 0.26,
+    "y": 0.42,
+    "tx": 0.2,
+    "ty": 0.33,
+    "line": [
+     [
+      0.1,
+      0.5
+     ],
+     [
+      0.16,
+      0.465
+     ],
+     [
+      0.22,
+      0.43
+     ],
+     [
+      0.28,
+      0.405
+     ],
+     [
+      0.32,
+      0.395
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "Lamina",
     "elementId": null,
     "kind": "bone",
-    "x": 0.63,
-    "y": 0.45,
+    "x": 0.6,
+    "y": 0.43,
     "tx": 0.7,
-    "ty": 0.37
+    "ty": 0.33,
+    "line": [
+     [
+      0.5,
+      0.51
+     ],
+     [
+      0.55,
+      0.47
+     ],
+     [
+      0.6,
+      0.43
+     ],
+     [
+      0.65,
+      0.395
+     ],
+     [
+      0.7,
+      0.375
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "Posterior complex",
     "elementId": null,
     "kind": "fascia",
-    "x": 0.47,
-    "y": 0.555,
-    "tx": 0.3,
-    "ty": 0.56
+    "x": 0.44,
+    "y": 0.545,
+    "tx": 0.26,
+    "ty": 0.56,
+    "line": [
+     [
+      0.38,
+      0.548
+     ],
+     [
+      0.42,
+      0.546
+     ],
+     [
+      0.46,
+      0.544
+     ],
+     [
+      0.495,
+      0.54
+     ]
+    ],
+    "block": true,
+    "desc": "Ligamentum flavum and the posterior dura: the first bright line in the window. Measure the depth to here."
+   },
+   {
+    "text": "Intrathecal space",
+    "elementId": null,
+    "kind": "point",
+    "x": 0.44,
+    "y": 0.615,
+    "tx": 0.27,
+    "ty": 0.64,
+    "shape": [
+     [
+      0.38,
+      0.565
+     ],
+     [
+      0.5,
+      0.56
+     ],
+     [
+      0.5,
+      0.665
+     ],
+     [
+      0.38,
+      0.67
+     ]
+    ],
+    "desc": "The black, fluid-filled thecal sac between the posterior and anterior complexes."
    },
    {
     "text": "Anterior complex",
     "elementId": null,
     "kind": "bone",
-    "x": 0.44,
-    "y": 0.7,
-    "tx": 0.3,
-    "ty": 0.78
+    "x": 0.42,
+    "y": 0.69,
+    "tx": 0.26,
+    "ty": 0.78,
+    "line": [
+     [
+      0.36,
+      0.705
+     ],
+     [
+      0.4,
+      0.692
+     ],
+     [
+      0.44,
+      0.688
+     ],
+     [
+      0.48,
+      0.697
+     ]
+    ],
+    "desc": "Anterior dura, posterior longitudinal ligament and the back of the vertebral body. If you can see it, the window is open."
    }
   ],
-  "modifications": "Cropped to panel A; labels and inset on the image are the authors'.",
+  "modifications": "Cropped to panel A; labels and inset on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Zhuang W et al. Frontiers in Medicine 2026, Figure 1, panel A. CC BY 4.0. Cropped to panel A; labels and inset on the image are the authors'.",
   "note": "Licence text says CC BY; its hyperlink in the article XML points to the CC BY 4.0 deed."
  },
@@ -94,40 +207,145 @@
     "text": "L2 lamina",
     "elementId": null,
     "kind": "bone",
-    "x": 0.33,
-    "y": 0.46,
+    "x": 0.35,
+    "y": 0.455,
     "tx": 0.16,
-    "ty": 0.4
+    "ty": 0.4,
+    "line": [
+     [
+      0.25,
+      0.41
+     ],
+     [
+      0.3,
+      0.43
+     ],
+     [
+      0.35,
+      0.455
+     ],
+     [
+      0.39,
+      0.475
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "L3 lamina",
     "elementId": null,
     "kind": "bone",
-    "x": 0.63,
-    "y": 0.47,
+    "x": 0.64,
+    "y": 0.465,
     "tx": 0.8,
-    "ty": 0.4
+    "ty": 0.4,
+    "line": [
+     [
+      0.56,
+      0.5
+     ],
+     [
+      0.61,
+      0.475
+     ],
+     [
+      0.67,
+      0.455
+     ],
+     [
+      0.73,
+      0.44
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "Posterior complex",
     "elementId": null,
     "kind": "fascia",
-    "x": 0.42,
-    "y": 0.6,
-    "tx": 0.62,
-    "ty": 0.62
+    "x": 0.44,
+    "y": 0.612,
+    "tx": 0.66,
+    "ty": 0.6,
+    "line": [
+     [
+      0.4,
+      0.615
+     ],
+     [
+      0.44,
+      0.612
+     ],
+     [
+      0.48,
+      0.61
+     ],
+     [
+      0.51,
+      0.608
+     ]
+    ],
+    "block": true,
+    "desc": "Ligamentum flavum and the posterior dura: the first bright line in the window. Measure the depth to here."
+   },
+   {
+    "text": "Intrathecal space",
+    "elementId": null,
+    "kind": "point",
+    "x": 0.44,
+    "y": 0.7,
+    "tx": 0.66,
+    "ty": 0.7,
+    "shape": [
+     [
+      0.37,
+      0.64
+     ],
+     [
+      0.5,
+      0.635
+     ],
+     [
+      0.5,
+      0.775
+     ],
+     [
+      0.37,
+      0.78
+     ]
+    ],
+    "desc": "The black, fluid-filled thecal sac between the posterior and anterior complexes."
    },
    {
     "text": "Anterior complex",
     "elementId": null,
     "kind": "bone",
-    "x": 0.4,
-    "y": 0.81,
-    "tx": 0.62,
-    "ty": 0.83
+    "x": 0.42,
+    "y": 0.808,
+    "tx": 0.66,
+    "ty": 0.84,
+    "line": [
+     [
+      0.38,
+      0.815
+     ],
+     [
+      0.42,
+      0.808
+     ],
+     [
+      0.46,
+      0.808
+     ],
+     [
+      0.49,
+      0.815
+     ]
+    ],
+    "desc": "Anterior dura, posterior longitudinal ligament and the back of the vertebral body. If you can see it, the window is open."
    }
   ],
-  "modifications": "Cropped to panel a and trimmed below the anterior complex to remove the measurement table; labels and measurement lines on the image are the authors'.",
+  "modifications": "Cropped to panel a and trimmed below the anterior complex to remove the measurement table; labels and measurement lines on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Qu B et al. BMC Anesthesiology 2020, Fig. 2, panel a. CC BY 4.0. Cropped to panel a and trimmed below the anterior complex to remove the measurement table; labels and measurement lines on the image are the authors'.",
   "note": "Orientation from the authors' L2 (left) and L3 (right) labels."
  },
@@ -160,37 +378,101 @@
     "text": "Sacrum",
     "elementId": null,
     "kind": "bone",
-    "x": 0.23,
-    "y": 0.48,
+    "x": 0.2,
+    "y": 0.46,
     "tx": 0.12,
-    "ty": 0.4
+    "ty": 0.38,
+    "line": [
+     [
+      0.14,
+      0.43
+     ],
+     [
+      0.18,
+      0.445
+     ],
+     [
+      0.22,
+      0.465
+     ],
+     [
+      0.26,
+      0.485
+     ]
+    ],
+    "desc": "A flat bright line with no gaps and a dense shadow. Count the gaps upwards from here: the first is L5–S1."
    },
    {
     "text": "L5 lamina",
     "elementId": null,
     "kind": "bone",
-    "x": 0.33,
-    "y": 0.48,
+    "x": 0.35,
+    "y": 0.485,
     "tx": 0.33,
-    "ty": 0.4
+    "ty": 0.4,
+    "line": [
+     [
+      0.31,
+      0.475
+     ],
+     [
+      0.35,
+      0.485
+     ],
+     [
+      0.39,
+      0.5
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "L4 lamina",
     "elementId": null,
     "kind": "bone",
-    "x": 0.5,
-    "y": 0.52,
+    "x": 0.47,
+    "y": 0.525,
     "tx": 0.5,
-    "ty": 0.44
+    "ty": 0.44,
+    "line": [
+     [
+      0.43,
+      0.51
+     ],
+     [
+      0.47,
+      0.525
+     ],
+     [
+      0.51,
+      0.54
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "L3 lamina",
     "elementId": null,
     "kind": "bone",
-    "x": 0.63,
-    "y": 0.51,
+    "x": 0.64,
+    "y": 0.505,
     "tx": 0.72,
-    "ty": 0.43
+    "ty": 0.43,
+    "line": [
+     [
+      0.6,
+      0.5
+     ],
+     [
+      0.64,
+      0.505
+     ],
+     [
+      0.68,
+      0.515
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "Spinal canal (L5–S1)",
@@ -199,7 +481,8 @@
     "x": 0.29,
     "y": 0.64,
     "tx": 0.2,
-    "ty": 0.72
+    "ty": 0.72,
+    "desc": "The canal seen through the gap between two laminae. The red colour Doppler spots are injectate in the canal."
    },
    {
     "text": "Spinal canal (L4–5)",
@@ -208,10 +491,11 @@
     "x": 0.41,
     "y": 0.69,
     "tx": 0.52,
-    "ty": 0.76
+    "ty": 0.76,
+    "desc": "The canal seen through the gap between two laminae. The red colour Doppler spots are injectate in the canal."
    }
   ],
-  "modifications": "Light crop of the outer border; labels, Doppler colour and inset on the image are the authors'.",
+  "modifications": "Light crop of the outer border; labels, Doppler colour and inset on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Kao SC, Lin CS. BioMed Research International 2017, Figure 7. CC BY 4.0. Light crop of the outer border; labels, Doppler colour and inset on the image are the authors'.",
   "note": "This is a colour Doppler image taken during a caudal injection (the red spots are injectate flow in the canal), but the B-mode anatomy is the standard count-up view. Orientation from the anatomy and the authors' labels (sacrum on the left)."
  },
@@ -244,10 +528,30 @@
     "text": "Posterior complex",
     "elementId": null,
     "kind": "fascia",
-    "x": 0.44,
+    "x": 0.42,
     "y": 0.575,
-    "tx": 0.28,
-    "ty": 0.5
+    "tx": 0.26,
+    "ty": 0.5,
+    "line": [
+     [
+      0.385,
+      0.578
+     ],
+     [
+      0.41,
+      0.575
+     ],
+     [
+      0.435,
+      0.574
+     ],
+     [
+      0.455,
+      0.578
+     ]
+    ],
+    "block": true,
+    "desc": "Ligamentum flavum and the posterior dura: the first bright line in the window. Measure the depth to here."
    },
    {
     "text": "Intrathecal space",
@@ -255,20 +559,62 @@
     "kind": "point",
     "x": 0.43,
     "y": 0.66,
-    "tx": 0.26,
-    "ty": 0.64
+    "tx": 0.24,
+    "ty": 0.64,
+    "shape": [
+     [
+      0.38,
+      0.6
+     ],
+     [
+      0.47,
+      0.6
+     ],
+     [
+      0.48,
+      0.72
+     ],
+     [
+      0.37,
+      0.72
+     ]
+    ],
+    "desc": "The black, fluid-filled thecal sac between the posterior and anterior complexes."
    },
    {
     "text": "Anterior complex",
     "elementId": null,
     "kind": "bone",
-    "x": 0.4,
-    "y": 0.73,
-    "tx": 0.3,
-    "ty": 0.8
+    "x": 0.42,
+    "y": 0.736,
+    "tx": 0.28,
+    "ty": 0.8,
+    "line": [
+     [
+      0.345,
+      0.745
+     ],
+     [
+      0.38,
+      0.738
+     ],
+     [
+      0.42,
+      0.735
+     ],
+     [
+      0.47,
+      0.738
+     ],
+     [
+      0.49,
+      0.745
+     ]
+    ],
+    "desc": "Anterior dura, posterior longitudinal ligament and the back of the vertebral body. If you can see it, the window is open."
    }
   ],
-  "modifications": "Cropped to panel B; labels and inset on the image are the authors'.",
+  "modifications": "Cropped to panel B; labels and inset on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Zhuang W et al. Frontiers in Medicine 2026, Figure 1, panel B. CC BY 4.0. Cropped to panel B; labels and inset on the image are the authors'.",
   "note": "Licence text says CC BY; its hyperlink in the article XML points to the CC BY 4.0 deed. The authors call this the transverse median view."
  },
@@ -301,19 +647,98 @@
     "x": 0.47,
     "y": 0.615,
     "tx": 0.2,
-    "ty": 0.58
+    "ty": 0.58,
+    "line": [
+     [
+      0.4,
+      0.62
+     ],
+     [
+      0.45,
+      0.615
+     ],
+     [
+      0.5,
+      0.615
+     ],
+     [
+      0.55,
+      0.62
+     ]
+    ],
+    "block": true,
+    "desc": "Ligamentum flavum and the posterior dura: the first bright line in the window. Measure the depth to here."
+   },
+   {
+    "text": "Intrathecal space",
+    "elementId": null,
+    "kind": "point",
+    "x": 0.5,
+    "y": 0.7,
+    "tx": 0.8,
+    "ty": 0.68,
+    "shape": [
+     [
+      0.36,
+      0.645
+     ],
+     [
+      0.6,
+      0.64
+     ],
+     [
+      0.64,
+      0.73
+     ],
+     [
+      0.5,
+      0.75
+     ],
+     [
+      0.36,
+      0.765
+     ]
+    ],
+    "desc": "The black, fluid-filled thecal sac between the posterior and anterior complexes."
    },
    {
     "text": "Anterior complex",
     "elementId": null,
     "kind": "bone",
-    "x": 0.4,
-    "y": 0.785,
+    "x": 0.5,
+    "y": 0.772,
     "tx": 0.62,
-    "ty": 0.86
+    "ty": 0.88,
+    "line": [
+     [
+      0.3,
+      0.81
+     ],
+     [
+      0.38,
+      0.79
+     ],
+     [
+      0.46,
+      0.775
+     ],
+     [
+      0.54,
+      0.77
+     ],
+     [
+      0.62,
+      0.765
+     ],
+     [
+      0.7,
+      0.75
+     ]
+    ],
+    "desc": "Anterior dura, posterior longitudinal ligament and the back of the vertebral body. If you can see it, the window is open."
    }
   ],
-  "modifications": "Uncropped; arrows and calliper on the image are the authors'.",
+  "modifications": "Uncropped; arrows and calliper on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Gonzalez Fiol A et al. POCUS Journal 2023, Figure 2. CC BY 4.0. Uncropped; arrows and calliper on the image are the authors'.",
   "note": "The study used only a transverse scan at the interspace. No left/right marker is given, so orientation is null."
  },
@@ -347,30 +772,119 @@
     "elementId": null,
     "kind": "muscle",
     "x": 0.5,
-    "y": 0.38,
+    "y": 0.4,
     "tx": 0.3,
-    "ty": 0.36
+    "ty": 0.36,
+    "shape": [
+     [
+      0.035,
+      0.28
+     ],
+     [
+      0.98,
+      0.27
+     ],
+     [
+      0.98,
+      0.48
+     ],
+     [
+      0.75,
+      0.5
+     ],
+     [
+      0.62,
+      0.52
+     ],
+     [
+      0.45,
+      0.53
+     ],
+     [
+      0.25,
+      0.53
+     ],
+     [
+      0.035,
+      0.55
+     ]
+    ],
+    "desc": "The paraspinal muscle lying over the laminae and the articular processes."
    },
    {
     "text": "Articular process",
     "elementId": null,
     "kind": "bone",
-    "x": 0.17,
-    "y": 0.57,
+    "x": 0.19,
+    "y": 0.56,
     "tx": 0.12,
-    "ty": 0.45
+    "ty": 0.66,
+    "line": [
+     [
+      0.08,
+      0.62
+     ],
+     [
+      0.13,
+      0.57
+     ],
+     [
+      0.2,
+      0.555
+     ],
+     [
+      0.28,
+      0.58
+     ],
+     [
+      0.35,
+      0.62
+     ],
+     [
+      0.42,
+      0.66
+     ]
+    ],
+    "desc": "Rounded bony humps lateral to the laminae. There is no window into the canal here: move towards the midline."
    },
    {
     "text": "Articular process",
     "elementId": null,
     "kind": "bone",
     "x": 0.7,
-    "y": 0.525,
-    "tx": 0.8,
-    "ty": 0.44
+    "y": 0.52,
+    "tx": 0.86,
+    "ty": 0.72,
+    "line": [
+     [
+      0.58,
+      0.62
+     ],
+     [
+      0.64,
+      0.55
+     ],
+     [
+      0.7,
+      0.52
+     ],
+     [
+      0.76,
+      0.53
+     ],
+     [
+      0.82,
+      0.58
+     ],
+     [
+      0.88,
+      0.63
+     ]
+    ],
+    "desc": "Rounded bony humps lateral to the laminae. There is no window into the canal here: move towards the midline."
    }
   ],
-  "modifications": "Cropped to panel C; labels on the image are the authors'.",
+  "modifications": "Cropped to panel C; labels on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Pakpirom J et al. BMC Anesthesiology 2022, Fig. 3, panel C. CC BY 4.0. Cropped to panel C; labels on the image are the authors'.",
   "note": "Orientation from panel B of the same figure (cranial to the left); the authors scanned the sequence in one orientation. Thoracic, not lumbar."
  },
@@ -406,25 +920,110 @@
     "x": 0.5,
     "y": 0.37,
     "tx": 0.3,
-    "ty": 0.36
+    "ty": 0.36,
+    "shape": [
+     [
+      0.01,
+      0.23
+     ],
+     [
+      0.96,
+      0.23
+     ],
+     [
+      0.96,
+      0.46
+     ],
+     [
+      0.7,
+      0.5
+     ],
+     [
+      0.55,
+      0.49
+     ],
+     [
+      0.3,
+      0.49
+     ],
+     [
+      0.01,
+      0.47
+     ]
+    ],
+    "desc": "The paraspinal muscle lying over the laminae and the articular processes."
    },
    {
     "text": "Lamina",
     "elementId": null,
     "kind": "bone",
     "x": 0.4,
-    "y": 0.52,
+    "y": 0.505,
     "tx": 0.34,
-    "ty": 0.62
+    "ty": 0.62,
+    "line": [
+     [
+      0.17,
+      0.53
+     ],
+     [
+      0.24,
+      0.515
+     ],
+     [
+      0.32,
+      0.507
+     ],
+     [
+      0.4,
+      0.505
+     ],
+     [
+      0.48,
+      0.508
+     ],
+     [
+      0.56,
+      0.52
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "Lamina",
     "elementId": null,
     "kind": "bone",
-    "x": 0.72,
-    "y": 0.555,
+    "x": 0.74,
+    "y": 0.545,
     "tx": 0.8,
-    "ty": 0.66
+    "ty": 0.66,
+    "line": [
+     [
+      0.6,
+      0.575
+     ],
+     [
+      0.66,
+      0.555
+     ],
+     [
+      0.72,
+      0.545
+     ],
+     [
+      0.8,
+      0.545
+     ],
+     [
+      0.9,
+      0.55
+     ],
+     [
+      0.96,
+      0.555
+     ]
+    ],
+    "desc": "Bright bone with a black shadow under it. The gaps between the laminae are the windows into the canal."
    },
    {
     "text": "Interlaminar space",
@@ -433,19 +1032,23 @@
     "x": 0.2,
     "y": 0.51,
     "tx": 0.12,
-    "ty": 0.42
+    "ty": 0.42,
+    "block": true,
+    "desc": "The gap between two laminae, where the needle passes to reach the epidural space."
    },
    {
     "text": "Interlaminar space",
     "elementId": null,
     "kind": "point",
-    "x": 0.63,
-    "y": 0.52,
+    "x": 0.6,
+    "y": 0.53,
     "tx": 0.66,
-    "ty": 0.42
+    "ty": 0.42,
+    "block": true,
+    "desc": "The gap between two laminae, where the needle passes to reach the epidural space."
    }
   ],
-  "modifications": "Cropped to panel D; labels on the image are the authors'.",
+  "modifications": "Cropped to panel D; labels on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Pakpirom J et al. BMC Anesthesiology 2022, Fig. 3, panel D. CC BY 4.0. Cropped to panel D; labels on the image are the authors'.",
   "note": "Orientation from panel B of the same figure (cranial to the left). Thoracic, not lumbar."
  },
@@ -475,49 +1078,129 @@
     "text": "Sacral cornu",
     "elementId": null,
     "kind": "bone",
-    "x": 0.34,
-    "y": 0.38,
+    "x": 0.36,
+    "y": 0.33,
     "tx": 0.2,
-    "ty": 0.2
+    "ty": 0.2,
+    "desc": "One of the two bony bumps either side of the sacral hiatus (the eyes of the “frog face”)."
    },
    {
     "text": "Sacral cornu",
     "elementId": null,
     "kind": "bone",
-    "x": 0.81,
-    "y": 0.36,
+    "x": 0.73,
+    "y": 0.31,
     "tx": 0.9,
-    "ty": 0.18
+    "ty": 0.18,
+    "desc": "One of the two bony bumps either side of the sacral hiatus (the eyes of the “frog face”)."
    },
    {
     "text": "Sacrococcygeal ligament",
     "elementId": null,
     "kind": "fascia",
-    "x": 0.58,
-    "y": 0.33,
+    "x": 0.56,
+    "y": 0.35,
     "tx": 0.3,
-    "ty": 0.08
+    "ty": 0.08,
+    "line": [
+     [
+      0.42,
+      0.36
+     ],
+     [
+      0.5,
+      0.355
+     ],
+     [
+      0.58,
+      0.345
+     ],
+     [
+      0.66,
+      0.335
+     ],
+     [
+      0.69,
+      0.33
+     ]
+    ],
+    "block": true,
+    "desc": "The ligament that roofs the sacral hiatus. The caudal needle passes through it."
    },
    {
     "text": "Sacral canal",
     "elementId": null,
     "kind": "point",
-    "x": 0.55,
-    "y": 0.5,
+    "x": 0.56,
+    "y": 0.48,
     "tx": 0.2,
-    "ty": 0.78
+    "ty": 0.78,
+    "shape": [
+     [
+      0.42,
+      0.38
+     ],
+     [
+      0.69,
+      0.355
+     ],
+     [
+      0.71,
+      0.58
+     ],
+     [
+      0.6,
+      0.59
+     ],
+     [
+      0.45,
+      0.61
+     ],
+     [
+      0.41,
+      0.6
+     ]
+    ],
+    "desc": "The space under the ligament, continuous with the epidural space: the target for a caudal block."
    },
    {
     "text": "Sacrum",
     "elementId": null,
     "kind": "bone",
     "x": 0.56,
-    "y": 0.62,
+    "y": 0.612,
     "tx": 0.56,
-    "ty": 0.8
+    "ty": 0.8,
+    "line": [
+     [
+      0.4,
+      0.66
+     ],
+     [
+      0.45,
+      0.635
+     ],
+     [
+      0.52,
+      0.62
+     ],
+     [
+      0.6,
+      0.61
+     ],
+     [
+      0.68,
+      0.6
+     ],
+     [
+      0.72,
+      0.61
+     ]
+    ],
+    "desc": "The back of the sacrum: the floor of the sacral canal."
    }
   ],
-  "modifications": "Cropped to panel A; labels on the image are the authors'.",
+  "modifications": "Cropped to panel A; labels on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Ma D et al. Frontiers in Medicine 2025, Figure 1, panel A. CC BY 4.0. Cropped to panel A; labels on the image are the authors'.",
   "note": "Licence text says CC BY; its hyperlink in the article XML points to the CC BY 4.0 deed. The authors' \"sacral horn\" = sacral cornu; \"sacral caudal ligament\" = sacrococcygeal ligament."
  },
@@ -547,10 +1230,33 @@
     "text": "Sacrum",
     "elementId": null,
     "kind": "bone",
-    "x": 0.2,
-    "y": 0.43,
+    "x": 0.22,
+    "y": 0.445,
     "tx": 0.12,
-    "ty": 0.56
+    "ty": 0.56,
+    "line": [
+     [
+      0.08,
+      0.415
+     ],
+     [
+      0.15,
+      0.425
+     ],
+     [
+      0.22,
+      0.445
+     ],
+     [
+      0.29,
+      0.47
+     ],
+     [
+      0.35,
+      0.49
+     ]
+    ],
+    "desc": "The bony back of the sacrum. Its bright surface ends at the sacral hiatus."
    },
    {
     "text": "Sacral canal",
@@ -559,10 +1265,41 @@
     "x": 0.55,
     "y": 0.45,
     "tx": 0.62,
-    "ty": 0.3
+    "ty": 0.3,
+    "shape": [
+     [
+      0.38,
+      0.37
+     ],
+     [
+      0.7,
+      0.37
+     ],
+     [
+      0.7,
+      0.62
+     ],
+     [
+      0.6,
+      0.6
+     ],
+     [
+      0.5,
+      0.55
+     ],
+     [
+      0.43,
+      0.52
+     ],
+     [
+      0.38,
+      0.5
+     ]
+    ],
+    "desc": "The space under the ligament, continuous with the epidural space: the target for a caudal block."
    }
   ],
-  "modifications": "Cropped to panel B; labels on the image are the authors'.",
+  "modifications": "Cropped to panel B; labels on the image are the authors'. Colour-key outlines and descriptions traced here (anantf.com), not the authors’.",
   "credit": "Ma D et al. Frontiers in Medicine 2025, Figure 1, panel B. CC BY 4.0. Cropped to panel B; labels on the image are the authors'.",
   "note": "No cranial/caudal marker is given, so orientation is null. The authors' burned-in \"Sacral hiatus\" arrow points into soft tissue above the superficial sacral line rather than at the step where the bone ends, so no overlay label is added for the hiatus. Licence text says CC BY; its hyperlink in the article XML points to the CC BY 4.0 deed."
  }

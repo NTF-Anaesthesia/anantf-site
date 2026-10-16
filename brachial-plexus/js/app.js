@@ -2,6 +2,7 @@
 // and keeps the URL hash (#block=axillary&el=cord-post&tab=guide) in sync.
 // Author: Dr Koh Wenjun, NTF Anaesthesia.
 
+import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { bus } from './bus.js';
 import {
   ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED,
@@ -534,3 +535,4 @@ document.fonts?.ready?.then(() => syncChips()).catch(() => {});
 mountModule('viewer3d', './viewer3d.js?v=20261015b', '#mount-3d');
 mountModule('diagram', './diagram.js?v=20261015b', '#mount-diagram');
 selectTab(initial.tab || 'ultrasound');
+registerOffline();

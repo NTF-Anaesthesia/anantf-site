@@ -5,6 +5,7 @@
 import { $, $$, el, fill, announce } from './ui.js';
 import { attachSearch, buildIndex, addSynonyms } from './search.js';
 import { renderBlock } from './block.js';
+import { registerOffline } from './offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { applyLevel, mountLevelControl, mountLevelPicker, hiddenHint, relaxFor, onLevel, tierOf, tierMax, setLevel, getLevel, LEVELS, TIER_NAMES } from './levels.js?v=20261015'; // same URL as brachial-plexus, plexus, spinal and /blocks/: one level state per page
 
 /** Site root, from this module's URL (works at any page depth and on a local server). */
@@ -408,6 +409,7 @@ export async function bootPage(cfg) {
   document.body.classList.remove('tb-booting');
   document.body.classList.add('tb-chapters-on');
   document.body.dataset.tbReady = 'true';
+  registerOffline();
   document.dispatchEvent(new CustomEvent('tb-ready'));
   await goToHash(location.hash, { initial: true });
   fitChapters();

@@ -1,0 +1,69 @@
+/* Regional anaesthesia app: "If it goes wrong" decision guides (../js/decide.js). Prefix ra-dg-.
+   Design: DESIGN.md (paper, ink, one wine accent, square edges, hairlines, light only, nothing under 12px, 44px targets).
+   Danger and caution colours are clinical codes, kept as in regional.css (--tb-danger, --tb-warn). */
+
+.tb-app .ra-dg-list{max-width:72ch;margin:4px 0 0}
+.tb-app .ra-dg-list>.ra-dg-item:last-of-type{border-bottom:1px solid var(--tb-line)}
+.tb-app .ra-dg-item>summary .ra-dg-sum{font:500 16px/1.45 var(--tb-sans);color:inherit;margin:0;text-transform:none;letter-spacing:0;max-width:none}
+.tb-app .ra-dg-item--danger>summary{color:var(--tb-danger)}
+.tb-app .ra-dg-item--danger>summary::before{content:'';flex:0 0 3px;align-self:stretch;margin:-2px 0;background:var(--tb-danger)}
+.tb-app .ra-dg-item>summary{justify-content:flex-start}
+.tb-app .ra-dg-item>summary::after{margin-left:auto}
+
+.tb-app .ra-dg{max-width:68ch}
+.tb-app main .ra-dg-when{font-size:15px;line-height:1.6;color:var(--tb-ink-soft);margin:0 0 14px;max-width:none}
+
+/* answers so far */
+.tb-app main .ra-dg-trail{list-style:none;margin:0 0 12px;padding:0;border-left:1px solid var(--tb-line-strong)}
+.tb-app main .ra-dg-trail[hidden]{display:none}
+.tb-app main .ra-dg-trail-i{margin:0;padding:4px 0 4px 12px;font-size:15px;line-height:1.5;color:var(--tb-muted);max-width:none}
+.tb-app main .ra-dg-trail-a{color:var(--tb-ink);font-weight:600}
+.tb-app main .ra-dg-trail-k{color:var(--tb-ink-soft);font-weight:600}
+
+/* the current step */
+.tb-app .ra-dg-step{--c:var(--tb-wine);--cb:var(--tb-inset);padding:14px 16px 16px;background:var(--cb);border-left:3px solid var(--c);scroll-margin-top:calc(var(--ra-bar,56px) + 12px)}
+.tb-app .ra-dg-step--danger{--c:var(--tb-danger);--cb:var(--tb-danger-bg)}
+.tb-app .ra-dg-step--warn{--c:var(--tb-warn);--cb:var(--tb-warn-bg)}
+.tb-app .ra-dg-step--ask{--c:var(--tb-ink);--cb:var(--tb-paper);border:1px solid var(--tb-line-strong);border-left:3px solid var(--tb-ink)}
+.tb-app main .ra-dg-k{font:500 12px/1.5 var(--tb-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--c);margin:0 0 6px;max-width:none}
+.tb-app main .ra-dg .ra-dg-title{font:600 18px/1.4 var(--tb-sans);text-transform:none;letter-spacing:0;color:var(--tb-ink);margin:0 0 8px;max-width:none}
+.tb-app main .ra-dg .ra-dg-title:focus{outline:none}
+.tb-app main .ra-dg .ra-dg-title:focus-visible{outline:2px solid var(--tb-wine);outline-offset:4px}
+.tb-app main .ra-dg-help{font-size:15px;line-height:1.6;color:var(--tb-ink-soft);margin:0 0 12px;max-width:none}
+.tb-app main .ra-dg-body{font-size:16px;line-height:1.6}
+.tb-app main .ra-dg-body :is(ul,ol){margin:0 0 12px;padding-left:22px}
+.tb-app main .ra-dg-body li{margin:0 0 6px;max-width:none}
+.tb-app .ra-dg-acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.tb-app .ra-dg-acts .ra-dg-choice{min-width:96px}
+.tb-app main .ra-dg-end{font:500 15px/1.5 var(--tb-sans);color:var(--tb-ink-soft);margin:4px 0 0}
+.tb-app .ra-dg-nav{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 4px}
+.tb-app .ra-dg-nav .tb-btn{font-size:15px}
+.tb-app .ra-dg-all{margin-top:12px}
+
+/* the flat list (print, screen readers) */
+.tb-app main .ra-dg-flat{margin:0;padding-left:26px}
+.tb-app main .ra-dg-flat-i{margin:0 0 14px;max-width:none}
+.tb-app main .ra-dg-flat-q{font-weight:600;margin:0 0 4px;max-width:none}
+.tb-app main .ra-dg-flat-k{text-transform:uppercase;font-size:12px;letter-spacing:.08em;color:var(--tb-wine)}
+.tb-app main .ra-dg-flat-i--danger .ra-dg-flat-k{color:var(--tb-danger)}
+.tb-app main .ra-dg-flat-i--warn .ra-dg-flat-k{color:var(--tb-warn)}
+.tb-app main .ra-dg-flat-help,.tb-app main .ra-dg-flat-next{font-size:15px;color:var(--tb-ink-soft);margin:0 0 4px;max-width:none}
+.tb-app main .ra-dg-flat-go{margin:0;padding-left:20px}
+.tb-app main .ra-dg-flat-go li{margin:0;font-size:15px}
+.tb-app main .ra-dg-flat-body :is(ul,ol){margin:0 0 4px;padding-left:20px}
+.tb-app main .ra-dg-flat-body li{font-size:15px;margin:0 0 2px;max-width:none}
+
+/* the section on a block, and the /blocks/ section */
+.tb-app main .ra-dg-lead{font-size:15px;line-height:1.6;color:var(--tb-ink-soft);margin:0 0 8px;max-width:68ch}
+.tb-app main .ra-dg-more{font-size:15px;margin:12px 0 0}
+.tb-app main .ra-dg-more a{display:inline-flex;align-items:center;min-height:44px}
+
+@media (max-width:600px){
+  .tb-app .ra-dg-step{padding:12px 12px 14px}
+  .tb-app .ra-dg-acts .tb-btn{flex:1 1 0}
+}
+
+@media print{
+  .tb-app .ra-dg-trail,.tb-app .ra-dg-stage,.tb-app .ra-dg-nav{display:none}
+  .tb-app .ra-dg-all>summary{display:none}
+}

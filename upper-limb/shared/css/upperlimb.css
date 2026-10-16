@@ -1,0 +1,18 @@
+/* Upper-limb blocks: section styles on top of shared/regional/css/regional.css. Prefix ul-.
+   Arm figures (shared/regional/js/figures/arm.js): coverage maps and probe insets; comparison tables. */
+.tb-app .ul-cov{max-width:420px}
+.tb-app .ul-cov-views{display:grid;gap:6px;align-items:start;grid-template-columns:repeat(2,minmax(0,1fr))}
+.tb-app .ul-cov-views--1{grid-template-columns:minmax(0,1fr);max-width:200px;margin:0 auto}
+.tb-app .ul-cov-view{min-width:0}
+.tb-app .ul-cov-svg{display:block;width:100%;height:auto}
+.tb-app .ul-cov-vname{margin:2px 0 0!important;font-size:14px;line-height:1.3;color:var(--tb-muted,#66665f);text-align:center}
+.tb-app .ul-cov-zones{list-style:none;margin:8px 0 0!important;padding:8px 0 0!important;border-top:1px solid var(--tb-line,#d9d2c3)}
+.tb-app .ul-cov-zones li{font-size:15px;line-height:1.5;margin:0 0 4px;color:var(--tb-ink-soft,#5d554b)}
+.tb-app .ul-cov-zones strong{font-weight:600;color:var(--tb-ink,#272722)}
+.tb-app .ul-cov-sw--deep{background:repeating-linear-gradient(-45deg,#183f63 0 1px,transparent 1px 4px),rgba(44,116,179,.25);border:1.5px solid #183f63}
+.tb-app .ul-probe-svg{width:96px}
+@media (max-width:999px){.tb-app .ul-probe-svg{width:84px}}
+.tb-app .ul-fig-svg{display:block;width:100%;height:auto}
+/* comparison tables on the region pages */
+.tb-app .ul-cmp th[scope=row]{white-space:nowrap}
+@media (max-width:760px){.tb-app .ul-cov{max-width:none}}

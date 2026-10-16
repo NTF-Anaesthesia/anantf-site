@@ -2,7 +2,7 @@
 import { el, fill, table, callout, registerSearch } from '../../../shared/regional/js/ui.js';
 import { viewsFigure } from '../../../shared/regional/js/figures/head.js?v=20261015';
 import { mountScan } from '../../../shared/regional/js/scan.js';
-import { SCENES } from './scenes.js?v=20261015';
+import { SCENES } from './scenes.js?v=20261016';
 
 export function renderAnatomy(sec) {
   sec.append(el('h2', { id: 'fa-anat-h', text: 'Anatomy: the trigeminal nerve' }));
@@ -38,7 +38,12 @@ export function renderDeep(sec) {
   sec.append(fill(el('div', { class: 'tb-prose' }), `<p>Covers the upper jaw, upper teeth, palate, the side of the nose, the cheek and the upper lip. Its main use is <strong>cleft palate repair in children</strong>.</p>
 <ul><li>The needle enters at the <strong>frontozygomatic angle</strong>, goes perpendicular to the skin until it touches the greater wing of the sphenoid, then is turned downwards and forwards into the <strong>pterygopalatine fossa</strong>.</li>
 <li>With ultrasound, the probe lies below the zygomatic arch over the maxilla to watch the fossa; the needle is seen out of plane, and spread was seen in almost every block in one series of infants.</li>
-<li>In a randomised trial in infants, bilateral blocks with <strong>0.15 ml/kg of 0.2% ropivacaine per side</strong> halved morphine use in the 48 hours after cleft palate repair.</li></ul>`));
+<li>In a randomised trial in infants, bilateral blocks with <strong>0.15 ml/kg of 0.2% ropivacaine per side</strong> halved morphine use in the 48 hours after cleft palate repair.</li></ul>
+<p>Step through the ultrasound view of the fossa below.</p>`));
+  // Ultrasound of the pterygopalatine fossa for the suprazygomatic V2 block; deep links #ppf-step-*.
+  const ppfWrap = el('div', { class: 'tb-scan-wrap' });
+  sec.append(ppfWrap);
+  mountScan(ppfWrap, SCENES.ppf, { blockId: 'ppf' });
   sec.append(el('h3', { id: 'fa-deep-v3', text: 'Mandibular nerve (V3): coronoid notch approach' }));
   sec.append(fill(el('div', { class: 'tb-prose' }), `<p>Covers the lower jaw and teeth, the front two-thirds of the tongue, the floor of the mouth, the temple and the front of the ear, and relaxes the muscles of mastication. Used for jaw and tongue surgery and in the pain clinic (trigeminal neuralgia).</p>
 <ul><li>The needle enters in the <strong>coronoid notch</strong>, below the middle of the zygomatic arch, perpendicular to the skin, to the <strong>lateral pterygoid plate</strong>. It is then walked off the back of the plate for V3, or the front of it (towards the pterygopalatine fossa) for V2.</li>

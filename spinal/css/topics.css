@@ -1,0 +1,38 @@
+/* In-chapter topic navigation (js/topics.js): a "Topics" button fixed at the bottom of the screen on long chapters,
+   its list, and the top-of-chapter chips for a chapter that has no jump list of its own. DESIGN.md: paper, ink, one
+   wine accent, square edges, hairlines, nothing under 12px, 44px targets. */
+.spinal-app .sp-topics{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:45;
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;max-width:calc(100vw - 32px);font:14px/1.35 var(--sp-sans);color:var(--sp-ink)}
+.spinal-app .sp-topics[hidden],.spinal-app .sp-topics-panel[hidden]{display:none}
+.spinal-app .sp-topics-btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;max-width:min(420px,calc(100vw - 32px));padding:8px 14px;
+  border:1px solid var(--sp-ink);border-radius:0;background:var(--sp-bg);color:var(--sp-ink);font:500 14px/1.2 var(--sp-sans);cursor:pointer;
+  box-shadow:0 2px 10px rgba(39,39,34,.16)}
+.spinal-app .sp-topics-btn:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+.spinal-app .sp-topics.is-open .sp-topics-btn{background:var(--sp-accent);border-color:var(--sp-accent);color:var(--sp-on-accent)}
+.spinal-app .sp-topics-btn svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.spinal-app .sp-topics-btn-t{flex:none}
+.spinal-app .sp-topics-btn-at{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:400;color:inherit;opacity:.85}
+.spinal-app .sp-topics-btn-at:empty{display:none}
+.spinal-app .sp-topics-btn-at::before{content:'';display:inline-block;width:1px;height:1em;margin:0 8px -2px 0;background:currentColor;opacity:.4}
+
+.spinal-app .sp-topics-panel{width:min(360px,calc(100vw - 32px));overflow-y:auto;overscroll-behavior:contain;padding:4px 0 8px;
+  background:var(--sp-bg);border:1px solid var(--sp-line-strong);box-shadow:0 6px 24px rgba(39,39,34,.18)}
+.spinal-app .sp-topics-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 6px 0 14px;border-bottom:1px solid var(--sp-line)}
+.spinal-app .sp-topics-k{margin:0;font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted)}
+.spinal-app .sp-topics-x{min-height:44px;padding:4px 8px;border:0;background:none;color:var(--sp-accent);font:500 14px/1.2 var(--sp-sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.spinal-app .sp-topics-list{list-style:none;margin:0;padding:4px 0}
+.spinal-app .sp-topics-list li{margin:0}
+.spinal-app .sp-topics-list a,.spinal-app .sp-topics-top-link{display:flex;align-items:baseline;gap:10px;min-height:44px;box-sizing:border-box;padding:11px 14px;color:var(--sp-ink);text-decoration:none;font-size:15px;line-height:1.35}
+.spinal-app .sp-topics-list a:hover,.spinal-app .sp-topics-top-link:hover{background:var(--sp-surface-2)}
+.spinal-app .sp-topics-list a[aria-current]{background:var(--sp-accent-soft);box-shadow:inset 3px 0 0 var(--sp-accent);font-weight:500}
+.spinal-app .sp-topics-n{flex:none;min-width:1.6em;font:400 12px/1.6 var(--sp-mono);color:var(--sp-muted);font-variant-numeric:tabular-nums}
+.spinal-app .sp-topics-top-link{border-top:1px solid var(--sp-line);color:var(--sp-accent);text-decoration:underline;text-underline-offset:3px;font-size:14px}
+.spinal-app :is(.sp-topics-list a,.sp-topics-top-link,.sp-topics-x,.sp-topics-btn):focus-visible{outline:2px solid var(--sp-focus);outline-offset:-2px}
+
+/* Top-of-chapter chips (generated; same look as the hand-written .sp-jump lists) */
+.spinal-app .sp-topics-top{margin:0 0 8px}
+.spinal-app main .sp-topics-top-k{margin:0 0 8px;font:400 12px/1.6 var(--sp-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--sp-muted)}
+.spinal-app main .sp-jump--auto li[hidden]{display:none}
+
+@media print{.spinal-app .sp-topics,.spinal-app .sp-topics-top{display:none!important}}
+@media (prefers-reduced-motion:reduce){.spinal-app .sp-topics *{transition:none!important}}

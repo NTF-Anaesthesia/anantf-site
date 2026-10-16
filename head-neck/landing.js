@@ -1,6 +1,7 @@
 /* Head and neck blocks landing page: "Which block for which operation" chooser.
    The operations, block links and head figure live in /shared/regional/js/ops/ops-headneck.js (shared with /blocks/).
    No sources or references are shown (as on the truncal pages). */
+import { registerOffline } from '../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { OPS, LINKS, headNeckCoverageMap } from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
 
 /* ------------------------------------------------------------------ helpers */
@@ -77,3 +78,4 @@ function init() {
 }
 
 init();
+registerOffline();

@@ -1,8 +1,10 @@
 // Ultrasound-assisted neuraxial (second half of the Difficult backs & ultrasound chapter).
 // Simulated scans are computed in the browser (js/ultrasound/*): original procedural images, not patient scans.
 // Facts from research file 01 part B; journal refs and abstracts checked on PubMed/Crossref (9 October 2026); the NYSORA chapter was read in full.
-import { el, callout, steps, table, tier, keyPoints, registerSearch } from '../ui.js?v=1';
+import { el, callout, steps, table, tier, keyPoints, registerSearch, segmented } from '../ui.js?v=1';
 import { createViewer } from '../ultrasound/viewer.js';
+// The regional app's shared real-scan viewer (colour key, label pills, credit line) over shared/us/neuraxial/.
+import { loadRealScans, mountRealScan } from '../../../shared/regional/js/realscan.js';
 
 export const meta = { id: 'ultrasound', prefix: 'us', title: 'Ultrasound-assisted neuraxial' };
 
@@ -10,6 +12,54 @@ export const refs = {};
 
 function viewInfo(view, html) {
   return el('div', { class: 'us-view-info', dataset: { usFor: view }, html });
+}
+
+// ------------------------------------------------------------ real scans
+// Open-licence published images from shared/us/neuraxial/sources.json (credit, licence and our traced colour key in
+// each entry), shown with the regional app's shared viewer. Grouped by view; each group lists the entries' blockId.
+const REAL_GROUPS = [
+  { id: 'sacrum', label: 'Counting from the sacrum', blocks: ['sacrum'] },
+  { id: 'pso', label: 'Paramedian oblique', blocks: ['pso'] },
+  { id: 'transverse', label: 'Transverse interlaminar', blocks: ['transverse'] },
+  { id: 'thoracic', label: 'Thoracic spine', blocks: ['articular', 'lamina'] },
+  { id: 'caudal', label: 'Sacral hiatus', blocks: ['caudal'] },
+];
+const REAL_SCENE = { realRegion: 'neuraxial' }; // read shared/us/neuraxial/ whatever the page path
+
+function realScans() {
+  const box = el('div', { class: 'us-prose us-real' });
+  const host = el('div', { class: 'us-real-host', id: 'us-real-viewer' });
+  const status = el('p', { class: 'us-real-status', text: 'Loading the real scans…' });
+  box.append(
+    el('h3', { id: 'us-real', text: 'Real scans' }),
+    tier(el('p', { html: 'Published ultrasound images of the same views, used under open licences and credited under each image. The labels burned into the images are the authors’. Tap a structure, or a name in the key, to see what it is; switch on the colour key to see every structure we have outlined.' }), 1),
+    tier(el('p', { class: 'us-note', html: 'Every patient looks a little different, and these images come from different machines and settings. Match the pattern (bright bone, black shadow, the two complexes in the window), not the exact picture.' }), 2),
+  );
+  const pickHost = el('div', { class: 'us-real-pick' });
+  box.append(pickHost, host, status);
+
+  let viewer = null;
+  let groups = [];
+  const show = (id) => {
+    const g = groups.find((x) => x.id === id) || groups[0];
+    if (!g) return;
+    viewer?.destroy();
+    viewer = mountRealScan(host, g.images, { labels: true });
+  };
+  Promise.all(REAL_GROUPS.map((g) => Promise.all(g.blocks.map((b) => loadRealScans(b, REAL_SCENE))).then((lists) => ({ ...g, images: lists.flat() }))))
+    .then((all) => {
+      groups = all.filter((g) => g.images.length);
+      if (!groups.length) { status.textContent = 'The real scans could not be loaded. Check your connection and reload the page.'; return; }
+      status.remove();
+      if (groups.length > 1) {
+        pickHost.append(segmented(groups.map((g) => ({ value: g.id, label: `${g.label} (${g.images.length})` })), {
+          label: 'Choose a view', value: groups[0].id, onChange: show,
+        }));
+      }
+      show(groups[0].id);
+    })
+    .catch((err) => { console.error('[spinal] real scans failed', err); status.textContent = 'The real scans could not be loaded. Reload the page to try again.'; });
+  return tier(box, 1);
 }
 
 export function mount(root) {
@@ -25,7 +75,7 @@ export function mount(root) {
       'It does not show the needle tip. Stop and get help if the scan and the feel do not agree.',
     ]),
     tier(el('p', { class: 'sp-lead', html: `A short scan before you start shows you the midline, the level and the depth to the dura. Most of the evidence is for this pre-procedure scan: mark the skin, wipe off the gel, then do the spinal as usual.` }), 1),
-    el('ul', { class: 'sp-jump', html: '<li><a href="#us-six">Scan in 6 steps</a></li><li><a href="#us-views">The views</a></li><li><a href="#us-viewer">Scan viewer</a></li><li><a href="#us-count">Counting levels</a></li><li><a href="#us-depth">Depth</a></li><li><a href="#us-setup">Probe and set-up</a></li><li><a href="#us-marking">Marking</a></li><li><a href="#us-scol">Scoliosis</a></li><li><a href="#us-realtime">Pre-procedure or real time</a></li><li><a href="#us-who">Who benefits</a></li><li><a href="#us-evidence">Evidence</a></li>' }),
+    el('ul', { class: 'sp-jump', html: '<li><a href="#us-six">Scan in 6 steps</a></li><li><a href="#us-views">The views</a></li><li><a href="#us-viewer">Scan viewer</a></li><li><a href="#us-real">Real scans</a></li><li><a href="#us-count">Counting levels</a></li><li><a href="#us-depth">Depth</a></li><li><a href="#us-setup">Probe and set-up</a></li><li><a href="#us-marking">Marking</a></li><li><a href="#us-scol">Scoliosis</a></li><li><a href="#us-realtime">Pre-procedure or real time</a></li><li><a href="#us-who">Who benefits</a></li><li><a href="#us-evidence">Evidence</a></li>' }),
   );
 
   // ------------------------------------------------------------ 6-step pre-procedure scan (MO)
@@ -88,6 +138,7 @@ export function mount(root) {
     caption: 'Simulated scans and diagrams drawn by this page from one model of an adult lumbar spine with typical depths. They are not patient images and are not to scale for any one patient. Sagittal views show cranial on the left; transverse views show the patient’s left on the left.',
   });
   root.append(tier(viewer.fig, 1)); // MO: the MO steps above refer to this viewer
+  root.append(realScans());
 
   // ------------------------------------------------------------ counting levels
   const count = el('div', { class: 'us-prose' });
@@ -221,6 +272,7 @@ export function mount(root) {
     { title: 'Horse head sign (paramedian sagittal oblique)', text: 'horse head PSO paramedian sagittal oblique', id: 'us-views' },
     { title: 'Sawtooth sign (paramedian sagittal lamina)', text: 'sawtooth saw tooth PSL laminae sacrum', id: 'us-views' },
     { title: 'Simulated scan viewer', text: 'simulated scan viewer caliper depth labels diagram B-mode', id: 'us-viewer' },
+    { title: 'Real scans (published ultrasound images)', text: 'real scans published ultrasound images colour key sacrum paramedian oblique transverse interlaminar thoracic lamina articular process sacral hiatus caudal frog face', id: 'us-real' },
   ]);
 
   root.append(count, depth, setup, marking, realtime, scol, who, ev);

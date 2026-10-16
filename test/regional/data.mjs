@@ -7,7 +7,7 @@
 // Checks:
 //   1. registry.js: regions valid, urls resolve to real pages and ids, aliases unique, anatomy3d / watch point at real
 //      plexus blocks / elements / animations, and every engine block has an entry (once WP10 fills it);
-//   2. ops modules (truncal, head-neck, lower-limb): ids unique, every block key resolves to a link, every link to a real
+//   2. ops modules (truncal, head-neck, lower-limb, upper-limb): ids unique, every block key resolves to a link, every link to a real
 //      page + id, map zones / dermatome levels exist in the figure modules;
 //   3. tiers: every tier / tiers value is 1, 2 or 3; SAFETY: no dose, LAST line or complications item tagged above 1;
 //   4. plexus data: no element in both target and covers (other overlaps warned), every listed element exists, every
@@ -16,7 +16,11 @@
 //   6. doses: "X ml of Y% (Z mg)" arithmetic everywhere; the glance dose agrees with dose{}; every dose the ops modules,
 //      the thigh planner and the animation index (RA_INDEX) give for a block appears in that block's own data or page
 //      (reviewed exceptions in data-allow.json);
-//   7. no cite( calls or refs.js imports in the regional data.
+//   7. no cite( calls or refs.js imports in the regional data;
+//   8. "If it goes wrong" guides (shared/regional/js/data/decisions.js): every guide sound (validateGuide: steps reachable,
+//      targets exist, no loops, an end), SAFETY: every guide and step tier 1, every registry and engine block maps to at
+//      least the core guides (LAST, pain on injection, vascular puncture, failed block, nerve injury) plus the extras
+//      that apply (pneumothorax, phrenic palsy, high block), and the LAST guide carries the lipid doses.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -25,7 +29,7 @@ import { args, BASE, ROOT, HERE, ENGINE_PAGES, LANDINGS, FORCE_CSS, launch, open
 const R = reporter('Data');
 const ALLOW = readJson(path.join(HERE, 'data-allow.json'), { doses: [] });
 const allowed = (key) => (ALLOW.doses || []).some((a) => (typeof a === 'string' ? a : a.key) === key);
-const OPS_FILES = { truncal: 'shared/regional/js/ops/ops-truncal.js', 'head-neck': 'shared/regional/js/ops/ops-headneck.js', 'lower-limb': 'shared/regional/js/ops/ops-lowerlimb.js' };
+const OPS_FILES = { truncal: 'shared/regional/js/ops/ops-truncal.js', 'head-neck': 'shared/regional/js/ops/ops-headneck.js', 'lower-limb': 'shared/regional/js/ops/ops-lowerlimb.js', 'upper-limb': 'shared/regional/js/ops/ops-upperlimb.js' };
 
 // ------------------------------------------------------------------ gather
 async function gatherModules(browser) {
@@ -49,8 +53,22 @@ async function gatherModules(browser) {
       out.plexus = {};
       for (const px of ['cervical', 'brachial', 'lumbar', 'sacral']) { try { out.plexus[px] = strip((await import(`/plexus/js/data/${px}.js`)).default); } catch (e) { out.errors.push(`plexus ${px}: ${e.message}`); } }
       try { const b = await import('/brachial-plexus/js/data.js'); out.brachial = { elements: Object.keys(b.ELEMENTS || {}), blocks: Object.keys(b.BLOCKS || {}) }; } catch (e) { out.errors.push(`brachial data: ${e.message}`); }
+      try {
+        const m = await import('/shared/regional/js/data/decisions.js');
+        const ids = Object.keys(m.GUIDES);
+        const reg = out.registry || {};
+        const engineIds = Object.values(out.blocks).flat().map((b) => b.id);
+        out.decisions = {
+          ids, order: [...m.GUIDE_ORDER], core: [...m.CORE_GUIDES], extra: strip(m.EXTRA_GUIDES),
+          problems: ids.flatMap((id) => m.validateGuide(m.GUIDES[id])),
+          tiers: ids.flatMap((id) => { const g = m.GUIDES[id]; return [[id, g.tier], ...Object.entries(g.steps).map(([k, v]) => [`${id}/${k}`, v.tier])].filter(([, t]) => t != null && Number(t) !== 1).map(([k, t]) => `${k}: tier ${t}`); }),
+          maps: Object.fromEntries([...new Set([...Object.keys(reg), ...engineIds])].map((id) => [id, m.guidesFor(id, reg[id]?.region || null)])),
+          lastText: JSON.stringify(m.GUIDES.last || {}),
+        };
+      } catch (e) { out.errors.push(`decisions.js: ${e.message}`); }
       try { const h = await import('/shared/regional/js/figures/head.js'); out.headZones = [...Object.keys(h.ZONES || {}), ...Object.keys(h.GROUPS || {})]; } catch (e) { out.errors.push(`head.js: ${e.message}`); }
       try { const l = await import('/shared/regional/js/figures/leg.js'); out.legZones = [...Object.keys(l.ZONES || {}), ...Object.keys(l.GROUPS || {})]; } catch (e) { out.errors.push(`leg.js: ${e.message}`); }
+      try { const a = await import('/shared/regional/js/figures/arm.js'); out.armZones = [...Object.keys(a.ZONES || {}), ...Object.keys(a.GROUPS || {})]; } catch (e) { out.errors.push(`arm.js: ${e.message}`); }
       return out;
     }, { engine: ENGINE_PAGES, opsFiles: OPS_FILES });
     data.errors.push(...log.pageErrors);
@@ -246,7 +264,7 @@ async function main() {
         for (const f of [op.cover?.from, op.cover?.to]) if (f && !o.SEGS.includes(f)) bad.push(`${op.id}: cover level ${f} not in SEGS`);
         for (const l of op.single?.levels || []) if (!o.SEGS.includes(l)) bad.push(`${op.id}: single-shot level ${l} not in SEGS`);
       }
-      const zones = region === 'head-neck' ? D.headZones : region === 'lower-limb' ? D.legZones : null;
+      const zones = region === 'head-neck' ? D.headZones : region === 'lower-limb' ? D.legZones : region === 'upper-limb' ? D.armZones : null;
       if (zones) for (const a of op.map?.areas || []) for (const z of a.zones || []) if (!zones.includes(z)) bad.push(`${op.id}: map zone "${z}" not in the figure`);
     }
     R.check(`ops ${region}: every block key and figure zone resolves`, !bad.length, bad.join('\n'));
@@ -379,6 +397,31 @@ async function main() {
     R.check('doses: ops, planner and animation-index doses match the block pages', !mism.length, mism.join('\n'));
   }
   if (args.verbose) console.log(`Doses compared:\n  ${verbose.join('\n  ')}\n`);
+
+  // 8. "If it goes wrong" decision guides
+  {
+    const dc = D.decisions;
+    if (!dc) R.fail('decision guides load', 'shared/regional/js/data/decisions.js did not import');
+    else {
+      R.check(`decision guides: ${dc.ids.length} guides, each sound (steps reachable, targets exist, no loops, an end)`, dc.ids.length >= 8 && !dc.problems.length, dc.problems.join('\n') || `only ${dc.ids.length} guides`);
+      R.check('SAFETY: every decision guide and step is tier 1 (MO)', !dc.tiers.length, dc.tiers.join('\n'));
+      const want = ['last', 'pain', 'vessel', 'failed', 'nerve'];
+      const missCore = want.filter((g) => !dc.core.includes(g) || !dc.ids.includes(g));
+      R.check('decision guides: the core set is LAST, pain on injection, vascular puncture, failed block and nerve injury', !missCore.length, `missing: ${missCore.join(', ')}`);
+      R.check('decision guides: GUIDE_ORDER lists every guide once', dc.order.length === dc.ids.length && dc.ids.every((id) => dc.order.includes(id)), `order ${dc.order.join(',')} vs ${dc.ids.join(',')}`);
+      const reg = D.registry || {};
+      const badRef = Object.entries(dc.extra).flatMap(([g, ids]) => [...(dc.ids.includes(g) ? [] : [`${g}: no such guide`]), ...ids.filter((id) => !reg[id]).map((id) => `${g}: "${id}" is not a registry id`)]);
+      R.check('decision guides: EXTRA_GUIDES names real guides and registry ids', !badRef.length, badRef.join('\n'));
+      const noCore = Object.entries(dc.maps).filter(([, gs]) => want.some((g) => !gs.includes(g))).map(([id, gs]) => `${id}: ${gs.join(', ')}`);
+      R.check(`decision guides: every block (${Object.keys(dc.maps).length} registry and engine ids) gets the core guides`, !noCore.length, noCore.join('\n'));
+      // Extras that must apply (clinical minimum; the owner approved the full lists in EXTRA_GUIDES).
+      const MUST = { pneumo: ['supraclavicular', 'infraclavicular', 'pvb', 'pecs'], phrenic: ['interscalene', 'supraclavicular'], high: ['spinal', 'pvb', 'esp'] };
+      const noExtra = Object.entries(MUST).flatMap(([g, ids]) => ids.filter((id) => !dc.maps[id]?.includes(g)).map((id) => `${id} lacks ${g}`));
+      R.check('decision guides: pneumothorax, phrenic palsy and high block guides reach the blocks that need them', !noExtra.length, noExtra.join('\n'));
+      const lipid = ['1.5 ml/kg', '15 ml/kg/h', '30 ml/kg/h', '12 ml/kg', '20% lipid emulsion', '1 microgram/kg'].filter((t) => !dc.lastText.includes(t));
+      R.check('decision guides: the LAST guide gives the lipid emulsion doses and the reduced adrenaline dose', !lipid.length, `missing: ${lipid.join(', ')}`);
+    }
+  }
 
   // 7. no cite( in regional data
   {
