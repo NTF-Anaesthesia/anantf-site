@@ -431,14 +431,16 @@ function registerTreeSearch(panelId, treeTitle, data) {
 
 // ---------------------------------------------------------------- If it goes wrong
 // The regional app's shared step-by-step guides (shared/regional/js/data/decisions.js, drawn by decide.js), the same
-// ones every block page has. Always MO level. The neuraxial set without "pain on injection" (paraesthesia during a
-// spinal has its own tree above). Anchors: #ts-wrong (the heading) and #ts-wrong-<guide> (opens that guide).
-const WRONG = guidesFor('spinal', 'neuraxial').filter((id) => id !== 'pain');
+// ones every block page has. Always MO level. Spinal's own trees above stay the main troubleshooting content; these are
+// an extra, limited to the guides that read true for a spinal (toxicity, high or total block, lasting numbness or
+// weakness). Paraesthesia, a bloody tap and a failed spinal have their own trees above, so the shared peripheral-block
+// versions are left out. Anchors: #ts-wrong (the heading) and #ts-wrong-<guide> (opens that guide).
+const WRONG = guidesFor('spinal', 'neuraxial').filter((id) => ['last', 'high', 'nerve'].includes(id));
 
 function wrongSection() {
   const sec = tier(el('section', { class: 'ts-wrong', 'aria-labelledby': 'ts-wrong' }), 1);
-  sec.append(el('h3', { id: 'ts-wrong', text: 'If it goes wrong: step-by-step guides' }));
-  sec.append(P('The same guides as on every regional block page. Open one and answer each question: it shows the next thing to do.', 'sp-lead'));
+  sec.append(el('h3', { id: 'ts-wrong', text: 'Also: the regional app’s emergency guides' }));
+  sec.append(P('For a failed spinal, a bloody tap or paraesthesia, use the trees above. These step-by-step guides are shared with every regional block page: open one and answer each question to see the next thing to do.', 'sp-lead'));
   const host = el('div', { class: 'ra-dg-host' });
   host.append(guideList(WRONG, { idPrefix: 'ts-wrong', headingLevel: 4 }));
   sec.append(host);
