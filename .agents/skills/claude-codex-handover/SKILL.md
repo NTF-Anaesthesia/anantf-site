@@ -1,6 +1,6 @@
 ---
 name: claude-codex-handover
-description: Prepare a GitHub handover, review a pushed checkpoint, or take over released work between Claude Code and Codex in anawj-site and anantf-site cloud environments.
+description: Prepare a GitHub handover, review a pushed checkpoint, or take over released work between Claude Code and Codex in anantf-site cloud environments.
 ---
 
 # Claude Code–Codex handover
@@ -105,19 +105,16 @@ Merge may publish the websites and deploy rules; handover itself does not author
 
 ## Checks and discovery
 
-- anawj-site: before merge run `node tools/check.mjs` and every test in
-  `evals/test/*.test.mjs`, `logbook/test/*.test.mjs`, `nuh-roster/test/*.test.mjs`.
-  Follow evals/README.md for evals UI e2e; app notes may specify further checks.
-- anantf-site: page changes require DESIGN.md and affected-page browser/console
+- Page changes require DESIGN.md and affected-page browser/console
   checks, plus the clinical and page-specific approvals in AGENTS.md.
 - Documentation-only changes: check links, template completeness, symlink discovery
   and the diff; explain any application checks not run.
 
 The canonical directory is `.agents/skills/claude-codex-handover/`.
 `.claude/skills/claude-codex-handover` is a relative symlink to it, so both assistants
-read the same skill and references. Each repository commits its own identical copy
-for independent cloud clones; update both via reviewed PRs, without a runtime download
-or third repository dependency. Skills arrive when the containing commit is cloned;
+read the same skill and references. The repository commits its own copy for
+independent cloud clones; update it via reviewed PRs, without a runtime download
+or another repository dependency. Skills arrive when the containing commit is cloned;
 do not change an active Claude branch just to install them.
 
 After merging, use `/claude-codex-handover` in Claude Code or

@@ -60,11 +60,10 @@ Lasting decisions for `bis/`. Status and next steps: `STATUS.md`.
 
 ## Address
 
-- `anantf.com/bis/` (this repo's folder `bis/`, GitHub Pages), unlisted and `noindex`. Moved here from the owner's
-  anawj.com repo on 16 Oct 2026 (owner); it was at `anaes.anawj.com/bis/` (14-15 Oct) and `anawj.com/bis-dsa/` before
-  that, and those addresses now forward here (set up in the anawj-site repo).
+- `anantf.com/bis/` (this repo's folder `bis/`, GitHub Pages), unlisted and `noindex`. Moved here from an earlier
+  address on 16 Oct 2026 (owner); the old addresses forward here.
 - Relative paths only, so the folder works wherever it is served.
-- First published as a private claude.ai artifact; this folder is now the copy to edit.
+- This folder is the copy to edit.
 
 ## How it works (`app.js`)
 
@@ -202,7 +201,7 @@ falls under 50 after about a minute of diathermy) → emergence with blinks → 
 
 ## Medtronic BIS screen is the default (owner, 14 Oct 2026)
 
-The owner's own monitor is a Medtronic (formerly Covidien) BIS monitor (photos; the owner says it is NOT a VISTA, so the
+The reference is photos of a real Medtronic BIS 2-channel monitor (Medtronic, formerly Covidien; not a VISTA, so the
 screen is labelled "Medtronic BIS"; the cabinet looks like the BIS Complete 2-channel). The internal ids still say
 `vista`. The page opens on it; the detail is in the next section. Numbers the real screen does not show (SQI %, EMG dB, TP,
 BC, zone) sit in the strip under it; "Teaching layout" in Display is the earlier screen (kept; the e2e test uses it for
@@ -219,7 +218,7 @@ Every element on all three screens is drawn each frame from the live simulation,
 | BIS Advance (`advance`) | Screen geometry (1246 x 779), left bar, alarm and message bars, tile menu tree, dialogs, colour values from the manual figures and 2021 marketing screens, DSA legend ramp | EEG sweep versus scroll, DSA cell size, Settings / Maintenance / INFO / Case Log pages (styled like seen dialogs), alarm bar flash rate, second-line wording of some alarms | Native screenshots of several pages, exact fonts and icons (redrawn; Selawik stands in for Segoe UI), ground check, trend lock, wireless, camera, the proprietary BIS and ASYM algorithms |
 | Masimo SedLine (`sedline`) | Root 800 x 1280 layout, status bar, four-channel EEG, trend rows, well, DSA with ASYM, colour bar, menu tree and its defaults, About texts, alarm and message names | Alarm priorities and delay, impedance colour limits, DSA Placement variants, Pediatric look, dialog artwork, sedated DSA colour profile, EEG character (own 178 Hz generator) | Typeface (Hind, a Frutiger-style open font, stands in), start-up splash, animation timing, Masimo's PSi algorithm (a straight-line stand-in from BIS), real EMG, Brightness slider, 2 h of earlier history |
 
-None of the three has been compared side by side with a live unit of that model by the owner except the Medtronic one (photos of his own monitor).
+None of the three has been compared side by side with a live unit of that model except the Medtronic one (photos of a real Medtronic BIS 2-channel monitor).
 
 ## Medtronic BIS 2-channel screen (rebuilt 14 Oct 2026)
 
@@ -377,7 +376,7 @@ also needs the teaching labels on), alarm audio, teaching labels, suppression ti
 ## Medtronic BIS Advance (rebuilt 14 Oct 2026, 'advance' skin)
 
 A near-exact clone of the BIS Advance monitor (10.1 in tablet, 16:10), built from the operator's manual figures (draft Rev A, FCC filing)
-and Medtronic's 2021 marketing screenshots. The owner's own photos are of the VISTA, not the Advance, so every number below comes from the
+and Medtronic's 2021 marketing screenshots. The reference photos are of a real Medtronic BIS 2-channel monitor, not the Advance, so every number below comes from the
 manual and the figures; nothing was copied into the repo (looking only).
 
 - Files: `adv-screen.js` (state `ADV`, DOM chrome, headers), `adv-draw.js` (layout and every plot on one canvas), `adv-live.js` (numerics,
@@ -486,7 +485,7 @@ stand-in is used). Flashing of the alarm bar is a 1 Hz step (inferred).
 
 A near-clone of the SedLine window on a Masimo Root (10.1 in, portrait 800 x 1280, 5:8). Sources: native screenshots in Masimo's operator's manuals
 (SedLine LAB-7373E, Smart SedLine LAB-13168B, SedLine 2.0 LAB-9925E, Root LAB-8425F), the Next Generation SedLine brochure, the quick reference guide and the
-Root product information. Looking only: nothing was copied into the repo. The owner's own photos are of the Medtronic monitor, so none of this was
+Root product information. Looking only: nothing was copied into the repo. The reference photos are of a real Medtronic BIS 2-channel monitor, so none of this was
 checked against a photo of a Root. Look chosen: the 2017/2018 builds (ADULT pill, network, Iris, battery, speaker, clock; Multitaper DSA).
 
 - Files: `sed-screen.js` (state `SED`, settings and their factory defaults, DOM, hit regions, alarms, sound, the frame hook `sedTick`), `sed-draw.js`

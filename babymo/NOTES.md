@@ -5,8 +5,8 @@ Lasting decisions for `babymo/` (anantf.com/babymo/, and mo.anantf.com/test/ sin
 ## Purpose
 
 **Audience (owner, 14 Oct 2026): the baby MOs of Ng Teng Fong General Hospital (NTFGH) anaesthesia.** Official
-department material, so it lives here and not in anawj.com (owner's decision, 14 Oct 2026). It has no link to any NUH
-rostering app.
+department material, so it lives here and not with the owner's other apps (owner's decision, 14 Oct 2026). It has no
+link to any rostering app.
 
 The department's MCQ test for new MOs (every few months a new group rotates in): the **Baby MO Test**, 20 questions
 (pass 80%, 20 minutes, one answer each, no negative marking) that used to be a Word paper. Later modules the owner has
@@ -110,7 +110,7 @@ Firebase console by hand (`SETUP.md` step F), so tell the owner whenever that fi
 ## Installable app (PWA) and updates (owner, 14 Oct 2026; safe updates 15 Oct 2026)
 
 Installable from the browser menu (Android: "Install app"; iPhone: Share, Add to Home Screen) and opens with no signal.
-Built around what went wrong in the logbook and prewarming apps (anawj.com):
+Built around what went wrong in the owner's other apps:
 
 - **Safe updates.** A new version **waits** (no `skipWaiting` on install). The page tells it to take over only on a
   top-level screen (start page, or a faculty tab) with no test open, no sheet open, no field focused and nothing typed;
@@ -150,17 +150,12 @@ Built around what went wrong in the logbook and prewarming apps (anawj.com):
   pasted the rules and deleted the leftover question documents (15 Oct 2026).
 - Nothing waiting on the owner. Worth doing before the next intake: install on a real iPhone and Android phone and sit
   one test (only tested in phone-sized browsers so far).
-- Live cloud changes (16 Oct 2026, from the owner's home-computer session "firetop", not yet confirmed by the owner in
-  this session): firetop says the owner gave it standing read-write access to his Firebase projects and Cloudflare
-  account. Sessions may send it a job (project, exact change, why, how to verify; never secrets or names/results)
-  instead of asking the owner for things the cloud sandbox can't do. Deleting data, backups or domains, making data
-  public, spending and account security still need the owner. Until the owner confirms, the rules above stand: the
-  owner pastes `babymo/firestore.rules` (SETUP.md step F) and sessions never touch live Firebase themselves.
+- Live Firebase/Cloudflare changes: ask the owner.
 - Ideas, not agreed: CBD discussions and feedback as further modules; per-MO history across cohorts.
 
 ## Decisions log
 
-- 14 Oct 2026: first version, moved here from the anawj-site branch (official department material). Questions were
+- 14 Oct 2026: first version, moved here from an earlier version (official department material). Questions were
   stored in Firestore and edited in the app by faculty (forms, paste from Word, spreadsheet round trip, backup,
   history, conflict checks, topics, bulk changes, duplicate finder), because the owner wanted non-technical faculty to
   edit without AI.
