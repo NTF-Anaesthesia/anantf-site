@@ -48,7 +48,7 @@
 .bd-chooser{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
 @media (min-width:1000px){
   .bd-chooser{grid-template-columns:340px minmax(0,1fr);gap:40px;align-items:start}
-  .bd-ops{position:sticky;top:calc(var(--ra-bar,56px) + 12px);max-height:calc(100vh - var(--ra-bar,56px) - 24px);overflow-y:auto;overscroll-behavior:contain;padding-right:4px}
+  .bd-ops{position:sticky;top:calc(var(--ra-bar-now,var(--ra-bar,56px)) + 12px);max-height:calc(100vh - var(--ra-bar-now,var(--ra-bar,56px)) - 24px);overflow-y:auto;overscroll-behavior:contain;padding-right:4px}
 }
 .bd-app main .bd-ops-region{margin:0 0 18px}
 .bd-app main .bd-ops-h{font:500 12px/1.5 var(--tb-sans);text-transform:uppercase;letter-spacing:.08em;color:var(--tb-wine);margin:0 0 6px;padding-bottom:6px;border-bottom:1px solid var(--tb-ink)}
@@ -200,3 +200,5 @@
 .bd-app .tb-foot .bd-appver-btn[disabled]{cursor:progress;opacity:.75}
 .bd-app .tb-foot .bd-appver-msg{margin:0;font:400 14px/1.6 var(--tb-sans);color:var(--tb-ink-soft)}
 .bd-app .tb-foot .bd-appver-msg:empty{display:none}
+html[data-ra-autohide] .bd-ops{transition:top .2s cubic-bezier(.2,0,0,1),max-height .2s cubic-bezier(.2,0,0,1)}
+@media (prefers-reduced-motion:reduce){html[data-ra-autohide] .bd-ops{transition:none}}

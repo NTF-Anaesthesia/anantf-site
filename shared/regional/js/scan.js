@@ -341,7 +341,9 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   let ctx = null;
   function measure(force = false) {
     const w = Math.max(200, Math.floor(stage.clientWidth));
-    const maxH = st.phone ? Math.max(170, window.innerHeight * 0.45) : Math.max(240, Math.min(window.innerHeight * 0.66, 620));
+    // --ra-stage-vh: a smaller share of the window where the scan is docked beside the text (regional.css, ≥ 1400 px)
+    const vh = st.phone ? 0.45 : (parseFloat(getComputedStyle(stage).getPropertyValue('--ra-stage-vh')) || 0.66);
+    const maxH = st.phone ? Math.max(170, window.innerHeight * vh) : Math.max(240, Math.min(window.innerHeight * vh, 620));
     let cssW = w, cssH = Math.round(w * g.H / g.W);
     if (cssH > maxH) { cssH = Math.round(maxH); cssW = Math.round(cssH * g.W / g.H); }
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -989,6 +991,15 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     if (e.key === 'ArrowRight') { e.preventDefault(); setStep(Math.min(3, st.step + 1), true); }
     else if (e.key === 'ArrowLeft') { e.preventDefault(); setStep(Math.max(0, st.step - 1), true); }
     else if (e.key === 'Escape' && (st.sel || st.test)) { e.preventDefault(); if (st.test) stopTest(); else select(null, true); }
+  });
+  // The step buttons too: with one focused, the left and right arrow keys move to the previous or next step (focus follows).
+  stepList.addEventListener('keydown', (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey || !e.target.closest?.('.tb-scan-step')) return;
+    const to = e.key === 'ArrowRight' ? Math.min(3, st.step + 1) : e.key === 'ArrowLeft' ? Math.max(0, st.step - 1) : e.key === 'Home' ? 0 : e.key === 'End' ? 3 : null;
+    if (to == null) return;
+    e.preventDefault();
+    setStep(to, true);
+    stepBtns[to]?.focus({ preventScroll: true });
   });
   const local = (e) => { const r = box.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top, r]; };
   let down = null;

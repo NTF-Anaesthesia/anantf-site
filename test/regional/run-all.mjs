@@ -19,15 +19,16 @@ const SUITES = [
   { id: 'static', cmd: ['test/regional/static.mjs'], what: 'shims unused, noindex, no FRCA, only the regional SW (regional paths only), no personal contacts, references exist' },
   { id: 'version', cmd: ['test/regional/version.test.mjs'], what: 'regional-sw.js file lists, VERSION and MEDIA match the files (stamp)' },
   { id: 'data', cmd: ['test/regional/data.mjs'], what: 'registry, ops keys, tiers + safety rule, plexus sets, scene ids, dose consistency, no cite(' },
-  { id: 'smoke', cmd: ['test/regional/smoke.mjs', ...(args.strict ? ['--strict'] : [])], what: '24 pages × 390/1440: errors, 4xx, overflow, scans, polish, lazy 3D/iframes, credit' },
+  { id: 'smoke', cmd: ['test/regional/smoke.mjs', ...(args.strict ? ['--strict'] : [])], what: '25 pages × 390/1440: errors, 4xx, overflow, scans, polish, lazy 3D/iframes, credit' },
   { id: 'deeplinks', cmd: ['test/regional/deeplinks.mjs'], what: 'old URLs and hashes land on the right visible element; shims; redirects; edit.html' },
   { id: 'levels', cmd: ['test/regional/levels.mjs'], what: 'MO / Resident / Consultant: hiding, hints, SAFETY at MO, persistence, migration, relax' },
   { id: 'parity', cmd: ['test/regional/parity.mjs'], what: 'every WP0 baseline line and dose string still on its page (Consultant)' },
+  { id: 'appframe', cmd: ['test/regional/appframe.mjs'], what: 'app frame: Settings page and links, bar auto-hide, desktop rail, docked scan, keyboard, prefetch, view transitions' },
   { id: 'offline', cmd: ['test/regional/offline.e2e.mjs'], what: 'offline: /blocks/ and block pages render with no signal; other pages and apps untouched' },
   { id: 'mo-content', cmd: ['mo/guide/test/content.test.mjs'], what: 'existing suite: MO guide content', existing: true },
   { id: 'babymo-logic', cmd: ['babymo/test/logic.test.mjs'], what: 'existing suite: Baby MO logic', existing: true },
 ];
-const GATES = { main: ['static', 'version', 'smoke', 'deeplinks'], pr: ['la', 'static', 'version', 'data', 'smoke', 'deeplinks', 'levels', 'parity', 'offline', 'mo-content', 'babymo-logic'] };
+const GATES = { main: ['static', 'version', 'smoke', 'deeplinks'], pr: ['la', 'static', 'version', 'data', 'smoke', 'deeplinks', 'levels', 'parity', 'appframe', 'offline', 'mo-content', 'babymo-logic'] };
 
 const list = (k) => (args[k] ? String(args[k]).split(',').filter(Boolean) : null);
 let pick = list('only') || (args.gate ? GATES[args.gate] : null) || SUITES.map((s) => s.id);

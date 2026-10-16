@@ -55,7 +55,9 @@ breadcrumb (`<span aria-current="page">Chest wall</span>`), and `page.css` if yo
   each patient."** and the credit **"Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>,
   NTF Anaesthesia"**, link back to `../`), then `ntf-footer`
 - `<body class="tb-app">`, stylesheets `../../assets/navigation.css`, `site-shell.css`, `header-nav.css`,
-  `../../shared/regional/css/regional.css?v=20261015`, and `<script type="module" src="js/page.js?v=20261015"></script>`
+  `../../shared/regional/css/regional.css?v=20261017` (it imports `appnav.css`: desktop frame and rail, bar auto-hide,
+  view transitions), and `<script type="module" src="js/page.js?v=20261017"></script>`
+- nothing else for the desktop layout: the shell wraps `<main>` in `.ra-frame` with the rail (ENGINE.md §2 "App frame")
 
 ## 2. `js/page.js`: `bootPage(config)`
 
@@ -90,11 +92,18 @@ bootPage({
 - **One sticky bar.** Inside app pages the site header scrolls away (`body.tb-app .ntf-header{position:static}`) and only
   `#tb-bar` sticks (56 px; CSS variable `--ra-bar` on `:root`). Deep-link targets land just below it
   (`scroll-padding-top` / `scroll-margin-top: calc(var(--ra-bar) + 8px)`); stick your own sticky things at
-  `top: var(--ra-bar)`. Programmatic jumps never smooth-scroll.
+  `top: var(--ra-bar-now, var(--ra-bar, 56px))`, so they move up with the bar when the reader has turned on "Hide the
+  bar while scrolling down" (Settings; `--ra-bar-now` is `0px` while the bar is away). Programmatic jumps never
+  smooth-scroll.
 - **Bar contents.** Home (on a chapter: this page's hub; on the hub: ← the region landing, `backShort`), Chapter ▾
   (inline links at ≥ 1240 px when they fit, else the menu), Search, Copy link (on phones ≤ 600 px it moves into the
-  chapter menu, which then spans the bar width), and the level control. The chapter menu also lists the region landing
-  and (when set) the front door. On phones the breadcrumb collapses to one "← <region>" line.
+  chapter menu, which then spans the bar width), and the level control. The chapter menu also lists the region landing,
+  (when set) the front door and **Settings** (`/blocks/settings/`). On phones the breadcrumb collapses to one
+  "← <region>" line. From 1024 px the chapters are also in the rail beside the page, so the bar shows the chapter menu
+  (the current chapter's name) rather than repeating the list inline.
+- **Desktop.** From 1024 px: the rail (this page's chapters, the region's pages, the other regions, the tools). From
+  1400 px a block chapter whose `block` has a `scene` docks its scan teacher in a sticky right column beside a reading
+  column of about 68 characters (`.ra-has-scan`, set by the shell); nothing to set in the data.
 - **Chapter `tier`.** `{ id, title, …, tier: 3 }` tags the chapter, its hub entry and its menu entries; a link or search
   result into it relaxes the level for that view.
 
@@ -112,8 +121,8 @@ bootPage({
   "(teaching slide 147)", "et al."). Write the content plainly. Named guidelines may appear as content
   ("PROSPECT recommends…"). `refs` / `refsIntro` in the config are ignored.
 - Sticky bar: Hub link and chapters are one `nav`; on screens under 1240 px the chapters are a disclosure menu
-  (`#tb-chmenu-btn`), not a `<select>`. Search opens with Ctrl+K / Cmd+K (no single-key shortcut). The hub shows the
-  disclaimer under the credit.
+  (`#tb-chmenu-btn`), not a `<select>`. Search opens with Ctrl+K / Cmd+K, or "/" when not typing in a box (the reader
+  can turn "/" off in Settings, WCAG 2.1.4). The hub shows the disclaimer under the credit.
 - Old deep links to the removed References chapter (`#ch-refs`, `#ref-…`) land on the hub.
 - Chapter ids must start `ch-`. A block chapter should be `ch-<blockId>`.
 
@@ -479,11 +488,14 @@ operations, block names and links come from `js/ops/` and `js/registry.js`, and 
 points at existing chapters. It holds the level picker, the "I need to…" tiles, the merged chooser, search across
 regions (registry + operations + pages + the region pages' synonyms), the "If it goes wrong" guides (`#wrong`,
 `#wrong-<guide>`), the region cards and, at the foot, the app version lines (`mountAppVersion` from `offline.js`). The
-dose calculator is `/blocks/calculator/` (`calculator.js` mounting `lacalc.js`).
+dose calculator is `/blocks/calculator/` (`calculator.js` mounting `lacalc.js`). Settings is `/blocks/settings/`
+(`settings.js`): the level control, "Hide the bar while scrolling down" (`ra-autohide`, off by default), "Press / to
+search" (`ra-slash`, on by default) and the same app version lines.
 - Deep links: `#op-<region>-<id>` (e.g. `#op-lower-limb-hipfx`); a bare `#op-<id>` works when the id is unique.
-- A new region page or planner: add it to `PAGES` in `blocks.js` and, if it is a new region, to `REGIONS` in the
-  registry. A new operation: add it to the region's ops module only.
+- A new region page or planner: add it to `PAGES` in `blocks.js`, to its region's `pages` in `REGION_NAV`
+  (`js/appnav.js`, the desktop rail) and, if it is a new region, to `REGIONS` in the registry. A new operation: add it
+  to the region's ops module only.
 
 ### Tests
 `node test/regional/run-all.mjs` runs every suite (dose maths, static, offline worker stamp, smoke, deep links, levels,
-data, content parity against the baseline, offline) plus the `mo/` and `babymo/` suites; see `test/regional/README.md`. Run it after any change to a regional page.
+data, content parity against the baseline, the app frame, offline) plus the `mo/` and `babymo/` suites; see `test/regional/README.md`. Run it after any change to a regional page.

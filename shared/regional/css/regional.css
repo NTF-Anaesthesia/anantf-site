@@ -4,6 +4,7 @@
    Teaching colours (nerves yellow, arteries red, veins blue, LA blue, ultrasound greys) are clinical codes. */
 
 @import url('levels.css?v=20261015');
+@import url('appnav.css?v=20261017'); /* desktop frame and rail, bar auto-hide, view transitions (shared with spinal/, brachial-plexus/, the landings) */
 @font-face{font-family:'NTF Serif';src:url('../../../fonts/fraunces-roman.woff2') format('woff2');font-weight:300 600;font-display:swap}
 @font-face{font-family:'NTF Serif';src:url('../../../fonts/fraunces-italic.woff2') format('woff2');font-style:italic;font-weight:300 600;font-display:swap}
 @font-face{font-family:'NTF Sans';src:url('../../../fonts/inter.woff2') format('woff2');font-weight:300 700;font-display:swap}
@@ -329,6 +330,30 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 .tb-app .tb-scan-labbtn[aria-pressed=false]{background:var(--tb-paper);color:var(--tb-ink);border-color:var(--tb-line-strong)}
 .tb-app .tb-scan-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px 24px;align-items:start}
 @media (min-width:1000px){.tb-app .tb-scan-grid{grid-template-columns:minmax(0,1fr) 320px}}
+/* The scan teacher fits its pane, not the window: two columns only when its own box is wide enough (from 1000 px, as
+   before, but not in the narrower reading column beside the desktop rail), and in the docked column on wide screens
+   (≥ 1400 px) image, steps, step text and Back · Play · Next come first. Phones (.is-phone) are laid out by scan.js. */
+@media (min-width:760px){.tb-app .tb-scan-wrap{container:ra-scan / inline-size}}
+@supports (container-type:inline-size){
+  @media (min-width:1000px){
+    .tb-app .tb-scan-grid{grid-template-columns:minmax(0,1fr)}
+    @container ra-scan (min-width:860px){.tb-app .tb-scan-grid{grid-template-columns:minmax(0,1fr) 320px}}
+  }
+  @container ra-scan (max-width:619px){
+    .tb-app .tb-scan:not(.is-phone) .tb-scan-grid{display:flex;flex-direction:column;align-items:stretch;gap:12px}
+    .tb-app .tb-scan:not(.is-phone) :is(.ra-scan-col,.tb-scan-panel){display:contents}
+    .tb-app .tb-scan:not(.is-phone) .tb-scan-stage{order:1}
+    .tb-app .tb-scan:not(.is-phone) .ra-scan-test{order:2}
+    .tb-app .tb-scan:not(.is-phone) .tb-scan-injwrap{order:3}
+    .tb-app .tb-scan:not(.is-phone) .tb-scan-steps{order:4}
+    .tb-app .tb-scan:not(.is-phone) .tb-scan-text{order:5;min-height:0}
+    .tb-app .tb-scan:not(.is-phone) .tb-scan-nav{order:6}
+    .tb-app .tb-scan:not(.is-phone) .ra-scan-info{order:7}
+    .tb-app .tb-scan:not(.is-phone) .ra-scan-cov{order:8}
+    .tb-app .tb-scan:not(.is-phone) .ra-scan-legend{order:9}
+    .tb-app .tb-scan:not(.is-phone) .tb-scan-probe{order:10}
+  }
+}
 .tb-app .tb-scan-stage{position:relative;display:flex;justify-content:center;background:var(--tb-panel);min-height:200px;outline-offset:4px}
 .tb-app .tb-scan-stage.is-us{background:#111}
 .tb-app .tb-scan-box{position:relative;max-width:100%}
@@ -457,3 +482,30 @@ body.tb-app.tb-chapters-on .tb-chapter:not(.is-current){display:none}
 }
 /* footer copyright: no text under 12px (the site footer sets 10px) */
 body.tb-app .ntf-footer .ntf-footer-identity>.ntf-copyright{font-size:12px}
+
+/* ------------------------------------------------------------------ desktop: rail beside the chapters, scan teacher docked
+   (frame and rail: appnav.css). With the rail, the bar names the chapter in its menu instead of repeating the list. */
+@media (min-width:1024px){
+  body.tb-app.ra-has-rail .tb-bar .tb-chlist{display:none!important}
+  body.tb-app.ra-has-rail .tb-bar .tb-chmenu{display:block!important}
+  body.tb-app.ra-has-rail .tb-hub{padding-top:28px}
+}
+/* Bars without a menu at this width show Settings as a button (js/appnav.js settingsButton). */
+.tb-app .tb-bar .ra-settings-btn{display:none}
+@media (min-width:1240px){.tb-app .tb-bar:not(.tb-bar--menu) .ra-settings-btn{display:inline-flex}}
+body.tb-app.ra-has-rail .tb-bar .ra-settings-btn:not(.is-always){display:none!important}
+.tb-app .tb-bar .ra-settings-btn.is-always{display:inline-flex}
+.tb-app .tb-chmenu-extra .ra-settings-li svg{stroke:var(--tb-wine)}
+/* Wide screens: a block chapter with a scan keeps the scan teacher in view (a sticky column on the right) while the
+   reader goes through position, approach and sonoanatomy in a reading column of about 68 characters. */
+@media (min-width:1400px){
+  body.tb-app.ra-has-rail.tb-chapters-on .tb-chapter.ra-has-scan.is-current{display:grid;grid-template-columns:minmax(0,680px) minmax(360px,1fr);column-gap:var(--ra-rail-gap,48px);align-items:start}
+  body.tb-app.ra-has-rail .tb-chapter.ra-has-scan.is-current>*{grid-column:1;min-width:0}
+  body.tb-app.ra-has-rail .tb-chapter.ra-has-scan.is-current>.tb-scan-wrap{grid-column:2;grid-row:1 / span 200;position:sticky;z-index:5;
+    top:calc(var(--ra-bar-now,var(--ra-bar,56px)) + 16px);margin:28px 0 0;max-height:calc(100vh - var(--ra-bar-now,var(--ra-bar,56px)) - 32px);
+    overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;background:var(--tb-paper);--ra-stage-vh:.42}
+  body.tb-app.ra-has-rail .tb-chapter.ra-has-scan.is-current>.tb-scan-wrap .tb-scan{border-top-color:var(--tb-ink)}
+  html[data-ra-autohide] body.tb-app .tb-chapter.ra-has-scan>.tb-scan-wrap{transition:top .2s cubic-bezier(.2,0,0,1),max-height .2s cubic-bezier(.2,0,0,1)}
+}
+@media (prefers-reduced-motion:reduce){html[data-ra-autohide] body.tb-app .tb-chapter.ra-has-scan>.tb-scan-wrap{transition:none}}
+@media print{body.tb-app .tb-chapter.ra-has-scan.is-current{display:block!important}body.tb-app .tb-chapter>.tb-scan-wrap{position:static!important;max-height:none!important;overflow:visible!important}}

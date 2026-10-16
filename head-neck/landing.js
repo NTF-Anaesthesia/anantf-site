@@ -3,6 +3,7 @@
    No sources or references are shown (as on the truncal pages). */
 import { registerOffline } from '../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { OPS, LINKS, headNeckCoverageMap } from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
+import { initAppFeel, mountRail, headingItems } from '../shared/regional/js/appnav.js?v=20261017'; // app bar auto-hide, desktop rail, prefetch
 
 /* ------------------------------------------------------------------ helpers */
 const $ = (s, r = document) => r.querySelector(s);
@@ -79,3 +80,7 @@ function init() {
 
 init();
 registerOffline();
+
+/* ------------------------------------------------------------------ app frame: bar (auto-hide in Settings), desktop rail */
+initAppFeel({ bar: document.getElementById('ra-sbar') });
+mountRail({ label: 'On this page', items: headingItems(), spy: true });

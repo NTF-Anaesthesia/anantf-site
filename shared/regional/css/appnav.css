@@ -1,0 +1,90 @@
+/* Regional anaesthesia app: the frame every regional page shares (ENGINE.md §2 "App frame"), with js/appnav.js.
+   Desktop frame and navigation rail (≥ 1024 px), "Hide the bar while scrolling down", the plain app bar of pages
+   without chapters (.ra-sbar), the Settings button, and cross-document view transitions.
+   Loaded by regional.css (@import), truncal/landing.css (every region landing), spinal/ and brachial-plexus/.
+   DESIGN.md: paper, ink, one wine accent, square edges, hairlines, light only, nothing under 12px, 44px targets.
+   Literal colours (this file is shared by pages with different token names). */
+
+:root{--ra-frame-w:1600px;--ra-frame-g:32px;--ra-rail-w:232px;--ra-rail-gap:40px}
+@media (min-width:1280px){:root{--ra-frame-g:40px;--ra-rail-w:248px;--ra-rail-gap:48px}}
+
+/* ------------------------------------------------------------------ desktop frame (≥ 1024 px; phones and tablets as before)
+   The bar, breadcrumbs, main and foot share one width (centred, never wider than 1600 px). The site header is not
+   touched. Pages with a rail reserve its column before the script builds it, so nothing jumps sideways. */
+@media (min-width:1024px){
+  body:is(.tb-app,.ra-app,.spinal-app) :is(.tb-bar-inner,.sp-bar-inner,.ra-sbar-inner,.tb-sheet-inner,.sp-sheet-inner).site-container,
+  body:is(.tb-app,.ra-app,.spinal-app)>.ntf-crumbs,
+  body:is(.tb-app,.ra-app,.spinal-app) :is(.tb-foot,.sp-foot)>.site-container{max-width:var(--ra-frame-w);padding-inline:var(--ra-frame-g)}
+  body:is(.tb-app,.spinal-app):not(.plexus-app)>main#main.site-container{max-width:var(--ra-frame-w);padding-right:var(--ra-frame-g);padding-left:calc(var(--ra-frame-g) + var(--ra-rail-w) + var(--ra-rail-gap))}
+  body.plexus-app.tb-app>main#main.site-container{max-width:var(--ra-frame-w);padding-inline:var(--ra-frame-g)}
+  .ra-frame{display:grid;grid-template-columns:var(--ra-rail-w) minmax(0,1fr);column-gap:var(--ra-rail-gap);align-items:start;box-sizing:border-box;width:100%;max-width:var(--ra-frame-w);margin-inline:auto;padding-inline:var(--ra-frame-g)}
+  body .ra-frame>main#main.site-container{grid-column:2;max-width:none;width:auto;margin:0;padding-inline:0;min-width:0}
+}
+
+/* ------------------------------------------------------------------ the rail */
+.ra-rail{display:none}
+.ra-rail,.ra-rail *,.ra-sbar,.ra-sbar *{box-sizing:border-box}
+@media (min-width:1024px){
+  .ra-rail{display:block;grid-column:1;grid-row:1;position:sticky;top:var(--ra-bar-now,var(--ra-bar,56px));box-sizing:border-box;
+    max-height:calc(100vh - var(--ra-bar-now,var(--ra-bar,56px)));overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;
+    margin-right:calc(var(--ra-rail-gap) * -.5);padding:20px 12px 32px 0;border-right:1px solid #d7d2c8;
+    font-family:'NTF Sans',Inter,Arial,sans-serif;color:#272722}
+  html[data-ra-autohide] .ra-rail{transition:top .2s cubic-bezier(.2,0,0,1),max-height .2s cubic-bezier(.2,0,0,1)}
+}
+.ra-rail-g{padding:14px 0 12px;border-top:1px solid #d7d2c8}
+.ra-rail-g:first-child{border-top:0;padding-top:0}
+.ra-rail-k{margin:0 0 4px;padding:0 10px;font:400 12px/1.6 'NTF Mono','JetBrains Mono',ui-monospace,monospace;text-transform:uppercase;letter-spacing:.08em;color:#55534d}
+.ra-rail-list{list-style:none;margin:0;padding:0}
+.ra-rail-list li{margin:0;max-width:none}
+.ra-rail-list a{display:flex;align-items:center;min-height:44px;padding:6px 10px;color:#272722;font:15px/1.3 'NTF Sans',Inter,Arial,sans-serif;text-decoration:none;border:0}
+.ra-rail-list a:hover{background:#e9e5dc;color:#272722}
+.ra-rail-list a:focus-visible{outline:2px solid #633d3c;outline-offset:-3px;background:#e9e5dc}
+.ra-rail-list a[aria-current]{background:#e8ded7;box-shadow:inset 3px 0 0 #633d3c;font-weight:500;color:#272722}
+.ra-rail-g--tools a{color:#504e47}
+
+/* ------------------------------------------------------------------ app bars: hide while scrolling down (Settings, off by default)
+   js/appnav.js puts .ra-appbar on the page's bar and sets html[data-ra-bar=hidden] and --ra-bar-now: 0px while it is
+   away, so anything that sticks under the bar (rail, scan column, chooser lists) moves up with it. */
+html[data-ra-autohide] .ra-appbar{transition:transform .2s cubic-bezier(.2,0,0,1)}
+html[data-ra-bar=hidden] .ra-appbar{transform:translateY(calc(-100% - 2px))}
+@media (prefers-reduced-motion:reduce){
+  html[data-ra-autohide] :is(.ra-appbar,.ra-rail){transition:none!important}
+}
+
+/* ------------------------------------------------------------------ plain app bar (region landings, settings): back, title, Settings */
+.ra-sbar{position:sticky;top:0;z-index:50;background:#f7f5ef;border-bottom:1px solid #d7d2c8;font-family:'NTF Sans',Inter,Arial,sans-serif}
+.ra-sbar-inner{display:flex;align-items:center;gap:8px;min-height:55px;padding-block:4px;box-sizing:border-box}
+.ra-sbar :is(.ra-sbar-back,.ra-sbar-btn){display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;min-width:44px;min-height:44px;padding:0 12px 0 8px;
+  border:1px solid #8f8574;border-radius:0;background:#f7f5ef;color:#272722;font:500 15px/1 'NTF Sans',Inter,Arial,sans-serif;text-decoration:none;box-sizing:border-box}
+.ra-sbar :is(.ra-sbar-back,.ra-sbar-btn):hover{border-color:#633d3c;background:#e9e5dc;color:#272722}
+.ra-sbar :is(.ra-sbar-back,.ra-sbar-btn):focus-visible{outline:2px solid #633d3c;outline-offset:4px}
+.ra-sbar .ra-sbar-btn{padding:0 14px;font-weight:400}
+.ra-sbar :is(.ra-sbar-back,.ra-sbar-btn) svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.ra-sbar-title{flex:1;min-width:0;margin:0;font:500 16px/1.25 'NTF Sans',Inter,Arial,sans-serif;color:#272722;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:600px){
+  .ra-sbar-inner{gap:6px}
+  .ra-sbar .ra-sbar-btn{width:44px;padding:0}
+  .ra-sbar .ra-sbar-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+}
+html:has(body .ra-sbar){scroll-padding-top:calc(var(--ra-bar,56px) + 8px)}
+:root:has(body .ra-sbar){--ra-bar:56px}
+
+/* Settings as a bar button: where the bar has no menu (shown by each bar's own rules) */
+.ra-settings-btn{text-decoration:none!important}
+.ra-settings-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.ra-settings-li svg{fill:none;stroke-linecap:round;stroke-linejoin:round}
+
+/* ------------------------------------------------------------------ cross-document view transitions
+   Moving between regional pages: the site header and the app bar stay put, the rest cross-fades quickly.
+   Browsers without them (Firefox today) simply change page. Off with reduced motion. */
+@media (prefers-reduced-motion:no-preference){
+  @view-transition{navigation:auto}
+  /* the header's own stacking order (its phone menu must stay above the sticky bar) */
+  body:is(.tb-app,.ra-app,.spinal-app)>.ntf-header{view-transition-name:ra-site-header;position:relative;z-index:60}
+  :is(#tb-bar,#sp-bar,#bp-bar,.ra-sbar){view-transition-name:ra-appbar}
+  ::view-transition-group(ra-site-header),::view-transition-group(ra-appbar){animation-duration:0s}
+  ::view-transition-old(ra-site-header),::view-transition-old(ra-appbar){display:none}
+  ::view-transition-new(ra-site-header),::view-transition-new(ra-appbar){animation:none}
+  ::view-transition-old(root),::view-transition-new(root){animation-duration:160ms;animation-timing-function:cubic-bezier(.2,0,0,1)}
+}
+@media print{.ra-rail,.ra-sbar{display:none!important}.ra-frame{display:block!important;padding:0!important}}

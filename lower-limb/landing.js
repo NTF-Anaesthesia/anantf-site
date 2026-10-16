@@ -3,6 +3,7 @@
    No sources or references are shown on the page (as on the truncal and head and neck pages). */
 import { registerOffline } from '../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { LINKS as L, OP_REGIONS as REGIONS, OPS, lowerLimbCoverageMap } from '../shared/regional/js/ops/ops-lowerlimb.js?v=20261015';
+import { initAppFeel, mountRail, headingItems } from '../shared/regional/js/appnav.js?v=20261017'; // app bar auto-hide, desktop rail, prefetch
 
 /* ------------------------------------------------------------------ helpers */
 const $ = (s, r = document) => r.querySelector(s);
@@ -95,3 +96,7 @@ function init() {
 
 init();
 registerOffline();
+
+/* ------------------------------------------------------------------ app frame: bar (auto-hide in Settings), desktop rail */
+initAppFeel({ bar: document.getElementById('ra-sbar') });
+mountRail({ label: 'On this page', items: headingItems(), spy: true });

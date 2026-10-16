@@ -1,0 +1,42 @@
+/* /blocks/settings/ (prefix st-). On top of regional.css. DESIGN.md: paper, ink, one wine accent, square edges,
+   hairline rules, light only, nothing under 12px, 44px targets. */
+.st-app .st-bar-title{flex:1;min-width:0;margin:0;font:500 16px/1.2 var(--tb-sans);color:var(--tb-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-hero{padding:28px 0 8px}
+.st-app main .st-hero h1{font:400 clamp(40px,5.5vw,64px)/1.08 var(--tb-serif);letter-spacing:-.03em;margin:0 0 14px;max-width:18ch}
+.st-section{padding:26px 0 8px;border-top:1px solid var(--tb-line);margin-top:20px;max-width:760px}
+.st-app main .st-h{font:400 clamp(24px,2.6vw,28px)/1.2 var(--tb-serif);letter-spacing:-.015em;margin:0 0 10px;max-width:none}
+.st-app main .st-intro{font-size:16px;line-height:1.6;color:var(--tb-ink-soft);margin:0 0 14px;max-width:68ch}
+.st-level{margin:0 0 14px}
+.st-app main .st-levels{margin:0;max-width:68ch}
+.st-levels>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 14px;padding:10px 12px;border-top:1px solid var(--tb-line)}
+.st-levels>div:last-child{border-bottom:1px solid var(--tb-line)}
+.st-levels>div.is-on{background:var(--tb-blush);box-shadow:inset 3px 0 0 var(--tb-wine)}
+.st-levels dt{font:500 15px/1.5 var(--tb-sans)}
+.st-app main .st-levels dd{margin:0;font-size:15px;line-height:1.5;color:var(--tb-ink-soft)}
+.st-app main .st-rows{list-style:none;margin:0;padding:0}
+.st-app main .st-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 10px;align-items:start;margin:0;max-width:none;padding:10px 0;border-top:1px solid var(--tb-line);border-bottom:1px solid var(--tb-line)}
+/* the switch: a square box, wine with a tick when on (DESIGN.md: square; the word on/off is read out by role=switch) */
+.st-check{-webkit-appearance:none;appearance:none;box-sizing:border-box;width:44px;height:44px;margin:0;border:0;background:none;cursor:pointer;position:relative}
+.st-check::before{content:'';position:absolute;left:10px;top:10px;width:24px;height:24px;box-sizing:border-box;border:1.6px solid var(--tb-control);background:var(--tb-paper)}
+.st-check:checked::before{background:var(--tb-wine);border-color:var(--tb-wine)}
+.st-check:checked::after{content:'';position:absolute;left:19px;top:14px;width:6px;height:12px;border:solid var(--tb-ivory);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.st-check:hover::before{border-color:var(--tb-wine)}
+.st-check:focus-visible{outline:2px solid var(--tb-wine);outline-offset:0}
+.st-row-t label{display:flex;align-items:center;min-height:44px;font:500 17px/1.35 var(--tb-sans);color:var(--tb-ink);cursor:pointer}
+.st-app main .st-row-d{margin:0 0 4px;font-size:15px;line-height:1.6;color:var(--tb-ink-soft);max-width:62ch}
+.st-app main .st-keys{margin:16px 0 0;max-width:68ch}
+.st-keys>div{display:grid;grid-template-columns:minmax(0,1fr);gap:2px;padding:8px 0;border-top:1px solid var(--tb-line)}
+@media (min-width:700px){.st-keys>div{grid-template-columns:260px minmax(0,1fr);gap:4px 16px}}
+.st-keys dt{font-size:15px;line-height:1.6}
+.st-app main .st-keys dd{margin:0;font-size:15px;line-height:1.6;color:var(--tb-ink-soft)}
+.st-app kbd{display:inline-block;min-width:1.6em;padding:1px 6px;border:1px solid var(--tb-line-strong);background:var(--tb-paper);font:500 13px/1.5 var(--tb-mono);text-align:center}
+.st-appver{margin:4px 0 0}
+.st-app main .st-appver-line{margin:0;font:400 14px/1.6 var(--tb-sans);color:var(--tb-muted)}
+.st-appver-btn{display:inline-flex;align-items:center;min-height:44px;margin:0;padding:0;border:0;border-radius:0;background:none;
+  font:400 14px/1.4 var(--tb-sans);color:var(--tb-muted);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;cursor:pointer}
+.st-appver-btn:hover{color:var(--tb-wine);text-decoration-thickness:2px}
+.st-appver-btn:focus-visible{outline:2px solid var(--tb-wine);outline-offset:4px}
+.st-appver-btn[disabled]{cursor:progress;opacity:.75}
+.st-app main .st-appver-msg{margin:0;font:400 14px/1.6 var(--tb-sans);color:var(--tb-ink-soft)}
+.st-app main .st-appver-msg:empty{display:none}
+@media (max-width:600px){.st-levels>div{grid-template-columns:minmax(0,1fr)}}

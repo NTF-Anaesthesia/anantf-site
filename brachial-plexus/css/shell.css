@@ -118,3 +118,12 @@ body.ra-app .ntf-footer .ntf-copyright { font-size: 12px !important; }
 .ra-app .guide .bp-wrong-lead { font-size: 15px; line-height: 1.6; color: var(--bp-muted); max-width: 68ch; margin: 0 0 8px; }
 .ra-app .guide .bp-wrong-more { font-size: 15px; margin: 12px 0 0; }
 .ra-app .guide .bp-wrong-more a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--bp-wine); }
+
+/* Settings (shared/regional/js/appnav.js): a bar button only while the chips replace the block menu. */
+.bp-bar .ra-settings-btn { display: none; }
+@media (min-width: 1180px) { .bp-bar .ra-settings-btn { display: inline-flex; } }
+.bp-blockmenu-act.ra-settings-link svg { stroke: var(--bp-wine); }
+/* Desktop: the same side gutters as the other regional pages' bars (shared/regional/css/appnav.css). */
+@media (min-width: 1024px) {
+  .ra-app :is(.top-inner, .bp-bar-inner, .foot-inner), .ra-app > main { padding-left: var(--ra-frame-g, 32px); padding-right: var(--ra-frame-g, 32px); }
+}

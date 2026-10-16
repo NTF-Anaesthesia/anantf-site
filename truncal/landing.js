@@ -2,6 +2,7 @@
    The operations, block links and torso figure live in /shared/regional/js/ops/ops-truncal.js (shared with /blocks/). */
 import { registerOffline } from '../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { OPS, BLOCK_LINKS, BLOCK_NAMES, PAGE_NAMES, truncalCoverageMap } from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
+import { initAppFeel, mountRail, headingItems } from '../shared/regional/js/appnav.js?v=20261017'; // app bar auto-hide, desktop rail, prefetch
 
 export { BLOCK_LINKS };
 window.BLOCK_LINKS = BLOCK_LINKS;
@@ -121,3 +122,7 @@ function init() {
 
 init();
 registerOffline();
+
+/* ------------------------------------------------------------------ app frame: bar (auto-hide in Settings), desktop rail */
+initAppFeel({ bar: document.getElementById('ra-sbar') });
+mountRail({ label: 'On this page', items: headingItems(), spy: true });

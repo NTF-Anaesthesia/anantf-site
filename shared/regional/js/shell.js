@@ -6,6 +6,7 @@ import { $, $$, el, fill, announce } from './ui.js';
 import { attachSearch, buildIndex, addSynonyms } from './search.js';
 import { renderBlock } from './block.js';
 import { registerOffline } from './offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
+import { initAppFeel, mountRail, settingsItem } from './appnav.js?v=20261017'; // desktop rail, Settings, bar auto-hide, keys, prefetch
 import { applyLevel, mountLevelControl, mountLevelPicker, hiddenHint, relaxFor, onLevel, tierOf, tierMax, setLevel, getLevel, LEVELS, TIER_NAMES } from './levels.js?v=20261015'; // same URL as brachial-plexus, plexus, spinal and /blocks/: one level state per page
 
 /** Site root, from this module's URL (works at any page depth and on a local server). */
@@ -172,7 +173,8 @@ export async function bootPage(cfg) {
     el('li', { class: 'tb-chmenu-search-li' }, menuSearch),
     el('li', { class: 'tb-chmenu-share-li' }, menuShare),
     el('li', {}, el('a', { class: 'tb-chmenu-act', href: backHref, html: `${ICON.back}<span></span>` })),
-    home ? el('li', {}, el('a', { class: 'tb-chmenu-act', href: home, html: `${ICON.home}<span>All regional blocks</span>` })) : null);
+    home ? el('li', {}, el('a', { class: 'tb-chmenu-act', href: home, html: `${ICON.home}<span>All regional blocks</span>` })) : null,
+    settingsItem('tb-chmenu-act'));
   menuExtra.querySelector(`a[href="${CSS.escape(backHref)}"] span`).textContent = backShort;
   const menuLabel = el('span', { class: 'tb-chmenu-cur', text: 'Hub' });
   const menuBtn = el('button', { type: 'button', class: 'tb-chmenu-btn', id: 'tb-chmenu-btn', 'aria-expanded': 'false', 'aria-controls': 'tb-chmenu' },
@@ -214,6 +216,8 @@ export async function bootPage(cfg) {
   bar.append(inner);
   if (!barHost) main.before(bar);
   if (useLevel) mountLevelControl(levelHost);
+  // Desktop (≥ 1024 px): the same chapters in a rail beside the page, with this region's pages and the other regions.
+  mountRail({ main, label: 'On this page', items: [{ href: '#ch-home', text: 'Hub (start here)', id: 'ch-home' }, ...chs.map((c) => ({ href: `#${c.id}`, text: c.title, id: c.id, tier: c.tier === 2 || c.tier === 3 ? c.tier : null }))] });
   const sheetQ = el('input', { type: 'search', class: 'tb-search-input', id: 'tb-sheet-q', placeholder: ph(), autocomplete: 'off', spellcheck: 'false', 'aria-label': 'Search this page' });
   const sheetRes = el('ul', { class: 'tb-sresults', id: 'tb-sheet-res' });
   const sheetClose = el('button', { type: 'button', class: 'tb-tool', text: 'Close' });
@@ -373,10 +377,9 @@ export async function bootPage(cfg) {
     sheet.hidden = false; searchBtn.setAttribute('aria-expanded', 'true'); fitBelowBar(sheet); sheetQ.focus();
   };
   searchBtn.addEventListener('click', () => { if (!sheet.hidden) closeSheet(); else openSearch(); });
-  // Ctrl+K / Cmd+K opens search (no single-character shortcuts: WCAG 2.1.4).
-  document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); openSearch(); }
-  });
+  // "/" (unless turned off in Settings: WCAG 2.1.4) and Ctrl+K / Cmd+K open search; the bar may hide while scrolling
+  // down (Settings, off by default); regional links are prefetched on hover (appnav.js).
+  initAppFeel({ bar, search: openSearch });
   window.addEventListener('hashchange', () => { closeSheet(); closeMenu(); });
 
   // ------------------------------------------------------------ render chapters
@@ -389,6 +392,7 @@ export async function bootPage(cfg) {
     const sec = sections.get(c.id);
     try {
       if (c.block) renderBlock(c.block, sec, { pageTitle: cfg.title });
+      if (sec.querySelector(':scope > .tb-scan-wrap')) sec.classList.add('ra-has-scan'); // docked beside the text on wide screens (regional.css)
       if (typeof c.render === 'function') await c.render(sec);
       tidyChapter(sec);
       if (useLevel) addHint(sec);

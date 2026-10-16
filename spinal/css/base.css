@@ -164,7 +164,7 @@ body.spinal-app :is(a,button,summary,select,input,textarea,[tabindex]):focus-vis
 .spinal-app .sp-split{display:grid;gap:32px}
 @media (min-width:1100px){
   .spinal-app .sp-split{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:start}
-  .spinal-app .sp-split>.sp-split-fig{position:sticky;top:calc(var(--ra-bar,56px) + 16px)}
+  .spinal-app .sp-split>.sp-split-fig{position:sticky;top:calc(var(--ra-bar-now,var(--ra-bar,56px)) + 16px)}
 }
 .spinal-app .sp-noscript{padding-block:16px;color:var(--sp-muted)}
 
@@ -541,3 +541,16 @@ body.spinal-app.sp-chapters-on .sp-chapter:not(.is-current){display:none}
   .spinal-app :is(.ntf-header,.ntf-footer,.sp-bar,.sp-sheet,.sp-pager,.sp-foot,.sp-skip,.sp-ch-kicker,.sp-ch-tools){display:none!important}
   body.spinal-app .sp-chapter:not(.is-current){display:none!important}
 }
+
+/* Desktop frame (≥ 1024 px; shared/regional/css/appnav.css): the chapters are in the rail, so the bar names the current
+   chapter in its menu instead of repeating the list; the figure-beside-text splits wait for room beside the rail. */
+@media (min-width:1024px){
+  .spinal-app.ra-has-rail .sp-bar .sp-chlist{display:none!important}
+  .spinal-app.ra-has-rail .sp-bar .sp-chmenu{display:block!important}
+}
+@media (min-width:1100px) and (max-width:1279px){
+  .spinal-app.ra-has-rail .sp-split{grid-template-columns:minmax(0,1fr)}
+  .spinal-app.ra-has-rail .sp-split>.sp-split-fig{position:static}
+}
+html[data-ra-autohide] .spinal-app .sp-split>.sp-split-fig{transition:top .2s cubic-bezier(.2,0,0,1)}
+@media (prefers-reduced-motion:reduce){html[data-ra-autohide] .spinal-app .sp-split>.sp-split-fig{transition:none}}

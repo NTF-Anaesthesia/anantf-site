@@ -8,6 +8,7 @@
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015d';
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../../shared/regional/js/levels.js?v=20261015';
+import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261017'; // Settings, bar auto-hide, keys, prefetch
 
 const V = '20261015c';
 const $ = (id) => document.getElementById(id);
@@ -122,7 +123,6 @@ window.addEventListener('hashchange', () => {
 });
 
 document.addEventListener('keydown', (ev) => {
-  if ((ev.ctrlKey || ev.metaKey) && !ev.altKey && !ev.shiftKey && (ev.key === 'k' || ev.key === 'K')) { ev.preventDefault(); openSearch(); return; }
   if (ev.key !== 'Escape') return;
   if (!ui.sheet.hidden) { closeSearch(true); return; }
   if (ev.target.closest?.('input, textarea, select, .px-v3-menu, .tb-chmenu')) return;
@@ -216,5 +216,10 @@ async function copyLink(btn) {
   }, 2200);
 }
 ui.share.addEventListener('click', () => copyLink(ui.share));
+// Settings: a row in the plexus menu, and a bar button while the four plexuses are listed in the bar (regional.css).
+// "/" and Ctrl+K / Cmd+K open search; the bar may hide while scrolling down (Settings); prefetch (appnav.js).
+ui.bar.querySelector('.tb-chmenu-extra')?.append(settingsItem('tb-chmenu-act'));
+ui.share.before(settingsButton('tb-tool tb-bar-btn'));
+initAppFeel({ bar: embed ? null : ui.bar, search: openSearch });
 ui.shareMenu.addEventListener('click', () => copyLink(ui.shareMenu));
 registerOffline();

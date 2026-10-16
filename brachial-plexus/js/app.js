@@ -3,6 +3,7 @@
 // Author: Dr Koh Wenjun, NTF Anaesthesia.
 
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
+import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261017'; // Settings, bar auto-hide, prefetch
 import { bus } from './bus.js';
 import {
   ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED,
@@ -525,6 +526,10 @@ function relaxForBlock(id) { if (id && BLOCKS[id]?.advanced) relaxFor(blockChip(
 const guideHint = hiddenHint(guideEl, { label: 'in this guide' });
 $('#guide-hint').append(guideHint);
 mountLevelControl($('#bp-level'), { label: false });
+// Settings: a row in the block menu (phones, narrow windows) and a bar button where the chips replace the menu.
+$('.bp-blockmenu-extra')?.append(settingsItem('bp-blockmenu-act'));
+$('#btn-share')?.before(settingsButton('bp-tool'));
+initAppFeel({ bar: $('#bp-bar') });
 // First visit: the one-screen level picker, except on a shared link (the reader came for that view).
 if (!location.hash) mountLevelPicker($('#bp-picker'));
 onLevel(() => {
