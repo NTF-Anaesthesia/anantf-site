@@ -44,10 +44,7 @@
 .bd-app main a.bd-ch-link::after{content:'→';margin-left:auto;color:var(--tb-wine);font-size:18px}
 .bd-app main a.bd-ch-link:hover,.bd-app main a.bd-ch-link:focus-visible{background:var(--tb-hover)}
 .bd-ch-t{font:500 17px/1.35 var(--tb-sans)}
-.bd-app main .bd-ch-head .bd-ch-t{text-transform:none;letter-spacing:0;margin:0;font:500 17px/1.35 var(--tb-sans)}
-.bd-app main .bd-ch-head{display:flex;align-items:center;gap:8px;min-height:48px;padding:6px 4px}
-.bd-app main .bd-ch-note{font-size:15px;line-height:1.5;color:var(--tb-muted);margin:0 0 6px 4px}
-.bd-app main .bd-ch--wrong{padding-bottom:12px}
+.bd-app main .bd-ch--safety{padding-bottom:12px}
 .bd-app main a.bd-alert{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;margin:0 0 10px;padding:6px 12px;border-left:3px solid var(--tb-danger);background:var(--tb-danger-bg);color:var(--tb-danger);font:500 16px/1.4 var(--tb-sans);text-decoration:none}
 .bd-app main a.bd-alert:hover,.bd-app main a.bd-alert:focus-visible{background:var(--tb-danger-bg);text-decoration:underline}
 .bd-app main .bd-inline{list-style:none;margin:0 0 6px;padding:0 0 0 calc(2.2em + 12px);display:flex;flex-wrap:wrap;gap:0 18px}
@@ -55,7 +52,7 @@
 .bd-app main .bd-inline a{display:inline-flex;align-items:center;min-height:44px;font-size:15px}
 .bd-app main .bd-ch--3d{padding-bottom:0}
 
-/* folds: the dose planners, a Part's blocks, the index's chooser and A–Z. A "+" / "−" at the right, as the pages' own folds. */
+/* folds: a Part's blocks and the index's A–Z. A "+" / "−" at the right, as the pages' own folds. */
 .bd-app main :is(.bd-secs,.bd-idx)>summary{display:flex;align-items:center;gap:8px;min-height:48px;padding:6px 4px;cursor:pointer;list-style:none;color:var(--tb-ink)}
 .bd-app main :is(.bd-secs,.bd-idx)>summary::-webkit-details-marker{display:none}
 .bd-app main :is(.bd-secs,.bd-idx)>summary::after{content:'+';margin-left:auto;flex:none;width:20px;text-align:center;font:400 20px/1 var(--tb-mono);color:var(--tb-wine)}
@@ -72,8 +69,6 @@
 .bd-app main .bd-secs-list a{display:flex;align-items:baseline;gap:8px;min-height:44px;padding:9px 4px;font-size:15px;line-height:1.4;color:var(--tb-ink);text-decoration:none}
 .bd-app main .bd-secs-list a:hover,.bd-app main .bd-secs-list a:focus-visible{background:var(--tb-hover)}
 .bd-app main .bd-secs-list a .bd-n{font-size:13px}
-.bd-app main .bd-ch--more>.bd-secs>.bd-secs-list{padding-left:calc(2.2em + 12px)}
-.bd-app main .bd-ch--more>.bd-secs>.bd-secs-list li{border-top:1px solid var(--tb-line)}
 
 /* ------------------------------------------------------------------ index */
 .bd-index{padding:32px 0 40px}
@@ -83,10 +78,6 @@
 .bd-app main .bd-idx:last-child{border-bottom:1px solid var(--tb-line)}
 .bd-app main .bd-idx>summary{min-height:56px;font:400 clamp(20px,2.2vw,24px)/1.25 var(--tb-serif);letter-spacing:-.01em}
 .bd-idx-body{padding:6px 0 28px}
-.bd-app main .bd-idx>.bd-idx-a{display:flex;align-items:center;gap:8px;min-height:56px;padding:6px 4px;color:var(--tb-ink);text-decoration:none;font:400 clamp(20px,2.2vw,24px)/1.25 var(--tb-serif);letter-spacing:-.01em}
-.bd-app main .bd-idx>.bd-idx-a span:last-child{margin-left:auto;color:var(--tb-wine);font-family:var(--tb-mono)}
-.bd-app main .bd-idx>.bd-idx-a:hover{background:var(--tb-hover)}
-.bd-app main .bd-idx>.bd-idx-a:focus-visible{outline-offset:-3px}
 .bd-app main .bd-az-jump{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
 .bd-app main .bd-az-jump a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:1px solid var(--tb-line-strong);color:var(--tb-ink);font:500 15px/1 var(--tb-sans);text-decoration:none}
 .bd-app main .bd-az-jump a:hover,.bd-app main .bd-az-jump a:focus-visible{background:var(--tb-blush);border-color:var(--tb-wine)}

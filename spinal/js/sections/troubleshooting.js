@@ -444,7 +444,7 @@ function wrongSection() {
   const host = el('div', { class: 'ra-dg-host' });
   host.append(guideList(WRONG, { idPrefix: 'ts-wrong', headingLevel: 4 }));
   sec.append(host);
-  sec.append(el('p', { class: 'ts-wrong-more' }, el('a', { href: '../blocks/#wrong' }, 'Every guide on one page ', el('span', { 'aria-hidden': 'true', text: '→' }))));
+  sec.append(el('p', { class: 'ts-wrong-more' }, el('a', { href: '../blocks/safety/' }, 'Every guide on one page ', el('span', { 'aria-hidden': 'true', text: '→' }))));
   registerSearch(WRONG.map((id) => ({ title: GUIDES[id].title, text: `${GUIDES[id].short || ''} ${GUIDES[id].when.replace(/<[^>]+>/g, ' ')}`, id: `ts-wrong-${id}` })));
   // #ts-wrong-<guide> opens that guide (app.js then scrolls to it), on load and on later hash changes.
   queueMicrotask(() => openGuideFromHash());

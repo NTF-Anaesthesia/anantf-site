@@ -8,7 +8,6 @@
 .sf-seg{display:flex;width:100%;max-width:520px;margin:4px 0 24px}
 .sf-seg .tb-seg-btn{flex:1 1 0;min-width:0;white-space:normal;text-align:center}
 .sf-panel[hidden]{display:none}
-.sf-h{font:400 clamp(26px,3vw,34px)/1.2 var(--tb-serif);letter-spacing:-.01em;margin:0 0 8px}
 .sf-note{margin:0 0 16px;color:var(--tb-muted);font-size:15px;line-height:1.5}
 
 /* Ultrasound anatomy */

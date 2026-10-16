@@ -13,7 +13,8 @@
 //   2b. /blocks/indication/#op-<region>-<id> (every operation) opens that operation with its result on screen; #chooser
 //       lands on the chooser; /blocks/#chooser and /blocks/#op-… redirect there with the hash kept;
 //   2c. /blocks/safety/: #last opens the LAST guide, #calculator the calculator (a ?agent=… query too), the default is the
-//       emergency guides; #wrong-<guide> opens that guide;
+//       emergency guides; #wrong-<guide> opens that guide; #doses the planners under the calculator;
+//   2d. /blocks/#wrong, #wrong-<guide> and #doses redirect to /blocks/safety/ with the hash kept and the target on screen;
 //   3. every same-site link with a hash on any regional page points at an id that exists on its target page;
 //   4. brachial #block=…&el=…&tab=…, plexus #plexus=…&block=…&el=…;
 //   5. the spinal anchors used by mo/ (and any other spinal/#… link in the repo);
@@ -193,6 +194,28 @@ async function main() {
     R.check('blocks/safety/#calculator shows the dose calculator', o.r.calc && !o.r.guides && o.r.pressed[0] === 'Dose calculator' && o.r.inputs.length > 0 && !o.errs.length, JSON.stringify(o));
     o = await probe('blocks/safety/?agent=ropivacaine&pct=0.375&ml=20&kg=70');
     R.check('blocks/safety/?agent=… (the dose box link) opens the calculator, prefilled', o.r.calc && o.r.inputs.some((x) => /0\.375|20|70/.test(x)) && !o.errs.length, JSON.stringify(o));
+  }
+
+  // 3d. "If it goes wrong" and the dose planners left /blocks/ for /blocks/safety/ (owner, 17 Oct 2026: too many repeats):
+  // the old /blocks/#wrong, #wrong-<guide> and #doses redirect there with the hash kept, and the target is on screen.
+  // The Safety page's own #wrong and #doses work too (#doses opens the calculator half and scrolls to the planners).
+  if (want('blocks/safety/')) {
+    const GUIDES_ = ['last', 'high', 'pneumo', 'phrenic', 'pain', 'vessel', 'failed', 'nerve'];
+    const jobs = [['blocks/#wrong', 'wrong', 'guides'], ...GUIDES_.map((g) => [`blocks/#wrong-${g}`, `wrong-${g}`, `wrong-${g}`]), ['blocks/#doses', 'doses', 'doses'], ['blocks/safety/#wrong', 'wrong', 'guides'], ['blocks/safety/#doses', 'doses', 'doses']];
+    for (const [from, hash, target] of jobs) {
+      const { ctx, page, log } = await openContext(browser, { vp: VPS[0] });
+      try {
+        await page.goto(BASE + from, { waitUntil: 'load', timeout: 30000 });
+        await page.waitForURL(/blocks\/safety\/#/, { timeout: 8000 }).catch(() => {});
+        await page.waitForFunction(() => document.body.dataset.sfReady === 'true', null, { timeout: 20000 }).catch(() => {});
+        await page.waitForTimeout(900);
+        const url = page.url().replace(BASE, '/');
+        const res = await page.evaluate(landedFn, target);
+        const open = /^wrong-/.test(hash) ? await page.evaluate((id) => document.getElementById(id)?.open === true, target) : true;
+        const calc = hash === 'doses' ? await page.evaluate(() => !document.getElementById('calculator').hidden) : true;
+        R.check(`${from} lands on /blocks/safety/#${hash}, ${target} on screen${/^wrong-/.test(hash) ? ' and open' : ''}`, url === `/blocks/safety/#${hash}` && res.ok && open && calc && !log.pageErrors.length, `ended at ${url}; ${res.why || ''}; open ${open}; calc ${calc}; ${log.pageErrors.join(', ')}`);
+      } finally { await ctx.close(); }
+    }
   }
 
   // 4. Every same-site link with a hash on a regional page resolves to an id on its target page.

@@ -3,7 +3,7 @@
 // Author: Dr Koh Wenjun, NTF Anaesthesia.
 
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
-import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261023'; // Settings, bar auto-hide, prefetch
+import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261024'; // Settings, bar auto-hide, prefetch
 import { bus } from './bus.js';
 import {
   ELEMENTS, LEVELS, LEVEL_MNEMONIC, BLOCKS, BLOCK_ORDER, BLOCK_ORDER_ADVANCED,
@@ -433,7 +433,7 @@ function blockHTML(b) {
       <h4 id="bp-wrong-h">If it goes wrong</h4>
       <p class="bp-wrong-lead">Step-by-step guides for the problems this block can cause. Open one and answer each question: it shows the next thing to do.</p>
       <div class="ra-dg-host" id="bp-wrong-list"></div>
-      <p class="bp-wrong-more"><a href="../blocks/#wrong">Every guide on one page <span aria-hidden="true">→</span></a></p>
+      <p class="bp-wrong-more"><a href="../blocks/safety/">Every guide on one page <span aria-hidden="true">→</span></a></p>
       </div>
 
       <h4>Pearls</h4>

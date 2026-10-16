@@ -58,11 +58,11 @@ breadcrumb (`<span aria-current="page">Chest wall</span>`), and `page.css` if yo
   education only" notice, since the app is for the department's own juniors), then `ntf-footer`
 - `<body class="tb-app">`, stylesheets `../../assets/navigation.css`, `site-shell.css`, `header-nav.css`,
   `../../shared/regional/css/regional.css?v=20261018` (it imports `appnav.css`: desktop frame and rail, bar auto-hide,
-  view transitions), and `<script type="module" src="js/page.js?v=20261023"></script>`
+  view transitions), and `<script type="module" src="js/page.js?v=20261024"></script>`
 - **the two looks** (ENGINE.md §2 "Skins"): the one-line inline skin script right after the `robots` meta (copy it from
   `truncal/abdominal-wall/index.html`; the same text on every regional page, `test/regional/skin.mjs` checks it) and, after
   your own stylesheets and just before the manifest link,
-  `<link rel="stylesheet" href="../../shared/regional/css/skin-app.css?v=20261023">`
+  `<link rel="stylesheet" href="../../shared/regional/css/skin-app.css?v=20261024">`
 - nothing else for the desktop layout: the shell wraps `<main>` in `.ra-frame` with the rail (ENGINE.md §2 "App frame")
 
 ## 2. `js/page.js`: `bootPage(config)`
@@ -213,7 +213,7 @@ All text fields are **trusted HTML strings** (or arrays of HTML strings rendered
 | `last` | string | override the LAST line (default: "Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks or when combining blocks.") |
 | `coverage` | Coverage (§5) | map + "Covers" + Mechanism + "How dense, how reliable" + "What it misses" |
 | `complications` | HTML or HTML[] | section |
-| `wrong` | guide id[] or `false` | "If it goes wrong" section, after complications, always tier 1: the core guides plus those `EXTRA_GUIDES` in `js/data/decisions.js` gives this block id or region, plus any ids listed here; `false` hides it. Anchors `#<id>-wrong` and `#<id>-wrong-<guide>`; it links to `/blocks/#wrong`. Guide schema: [`ENGINE.md` §3.8](ENGINE.md#38-if-it-goes-wrong-guides-datadecisionsjs) |
+| `wrong` | guide id[] or `false` | "If it goes wrong" section, after complications, always tier 1: the core guides plus those `EXTRA_GUIDES` in `js/data/decisions.js` gives this block id or region, plus any ids listed here; `false` hides it. Anchors `#<id>-wrong` and `#<id>-wrong-<guide>`; it links to `/blocks/safety/`. Guide schema: [`ENGINE.md` §3.8](ENGINE.md#38-if-it-goes-wrong-guides-datadecisionsjs) |
 | `pearls` | HTML[] | "Practical pearls" list |
 | `sections` | `[{id, title, html, render(sec), tier?, safety?}]` | extra sections, inserted before the exam corner |
 | `rapid` | HTML or HTML[] | "The 20-second version" key box under the header (tier 1) |
@@ -493,8 +493,7 @@ All optional; existing scenes work unchanged.
 `blocks/index.html`, `blocks.js`, `blocks.css`; noindex, linked only from `regional.html`. It writes no clinical text:
 operations, block names and links come from `js/ops/` and `js/registry.js`, and its page list (`PAGES` in `blocks.js`)
 points at existing chapters. It holds the level picker, the "I need to…" tiles, the merged chooser, search across
-regions (registry + operations + pages + the region pages' synonyms), the "If it goes wrong" guides (`#wrong`,
-`#wrong-<guide>`), the region cards and, at the foot, the app version lines (`mountAppVersion` from `offline.js`). The
+regions (registry + operations + pages + the region pages' synonyms; its guide and planner results open `/blocks/safety/#wrong-<guide>` and `#doses`), Part I "Tools" (four rows), the region Parts and, at the foot, the app version lines (`mountAppVersion` from `offline.js`). The
 dose calculator is `/blocks/calculator/` (`calculator.js` mounting `lacalc.js`). Settings is `/blocks/settings/`
 (`settings.js`): the level control, "Hide the bar while scrolling down" (`ra-autohide`, off by default), "Press / to
 search" (`ra-slash`, on by default) and the same app version lines.

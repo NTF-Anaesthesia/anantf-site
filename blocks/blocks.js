@@ -4,17 +4,16 @@
    - search across every region: the block registry, every operation and the main pages and planners;
    - search finds the operations too (their results open the chooser on /blocks/indication/, where "Which block for which
      operation" lives; chooser.js has the data and the component, shared with this page);
-   - the contents: Part I (principles and safety) and one numbered Part per region, built from the registry; the Index at the
-     end holds a row to the chooser and an A–Z of blocks (/blocks/#chooser and #op-… move to /blocks/indication/ with the hash kept);
-   - "If it goes wrong": every decision guide (shared/regional/js/data/decisions.js, drawn by decide.js).
+   - the contents: Part I "Tools" (four rows, each once: Safety, Which block for which operation, Ultrasound anatomy,
+     Anatomy in 3D) and one numbered Part per region, built from the registry; the Index at the end is the A–Z of blocks
+     (/blocks/#chooser and #op-… move to /blocks/indication/, #wrong, #wrong-<guide> and #doses to /blocks/safety/, hash kept).
    No clinical text is written here: operations, block names, guides and links come from the ops modules, the guide data
    and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
 import { registerOffline, mountAppVersion } from '../shared/regional/js/offline.js?v=20261016';
-import { initAppFeel, settingsItem, settingsButton } from '../shared/regional/js/appnav.js?v=20261023';
+import { initAppFeel, settingsItem, settingsButton } from '../shared/regional/js/appnav.js?v=20261024';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
-import { $, $$, esc, ICON, SRC, OPS, opHaystack, norm, parse, score } from './chooser.js?v=20261023';
-import { guideList, openGuideFromHash } from '../shared/regional/js/decide.js?v=20261017';
+import { $, $$, esc, ICON, SRC, OPS, opHaystack, norm, parse, score } from './chooser.js?v=20261024';
 import { GUIDES, GUIDE_ORDER } from '../shared/regional/js/data/decisions.js';
 
 
@@ -54,7 +53,7 @@ const PAGES = [
   { t: 'Complications and aftercare', d: 'Spinal anaesthesia', href: '../spinal/#ch-complications', k: 'Neuraxial' },
   { t: 'Local anaesthetic systemic toxicity (LAST)', d: 'The emergency steps, lipid doses and total-dose limits', href: '../spinal/#cx-last', k: 'Emergency' },
   { t: 'Anatomy in 3D', d: 'Brachial, cervical, lumbar and sacral plexuses, linked to a labelled diagram', href: '#anatomy3d', k: 'On this page' },
-  { t: 'Maximum local anaesthetic dose', d: 'Dose planners and total-dose limits', href: '#doses', k: 'On this page' },
+  { t: 'Maximum local anaesthetic dose', d: 'Dose planners and total-dose limits', href: 'safety/#doses', k: 'Safety' },
   { t: 'Emergency guides and dose calculator', d: 'Local anaesthetic toxicity first, then every “If it goes wrong” guide, and the dose calculator', href: 'safety/', k: 'Safety' },
   { t: 'Ultrasound anatomy', d: 'Every ultrasound-guided block by region, with a real scan where one is shown', href: 'ultrasound/', k: 'Ultrasound' },
   { t: 'Which block for which operation', d: 'Choose an operation to see the block options, doses and what they miss', href: 'indication/', k: 'Indication' },
@@ -73,7 +72,7 @@ function buildIndex() {
   for (const p of PAGES) out.push({ kind: 'Page', where: p.k, t: p.t, d: p.d, href: p.href, tl: norm(p.t), ml: norm(`${p.d} ${p.k}`) });
   for (const id of GUIDE_ORDER) {
     const g = GUIDES[id];
-    out.push({ kind: 'Page', where: 'If it goes wrong', t: g.title, d: 'Step-by-step guide', href: `#wrong-${id}`, tl: norm(`${g.title} ${g.short}`), ml: norm(`emergency complication went wrong ${g.when.replace(/<[^>]+>/g, ' ')}`) });
+    out.push({ kind: 'Page', where: 'If it goes wrong', t: g.title, d: 'Step-by-step guide', href: `safety/#wrong-${id}`, tl: norm(`${g.title} ${g.short}`), ml: norm(`emergency complication went wrong ${g.when.replace(/<[^>]+>/g, ' ')}`) });
   }
   return out;
 }
@@ -196,9 +195,9 @@ function azIndex() {
 }
 
 /* ------------------------------------------------------------------ app bar */
-const SECTIONS = [['start', 'Start'], ['principles', 'Principles and safety'], ['regions', 'Regions'], ['index', 'Index']];
+const SECTIONS = [['start', 'Start'], ['principles', 'Tools'], ['regions', 'Regions'], ['index', 'Index']];
 // Shorter names for the menu button on phones (the button is about 150px wide there).
-const SHORT = { start: 'Start', principles: 'Principles', regions: 'Regions', index: 'Index' };
+const SHORT = { start: 'Start', principles: 'Tools', regions: 'Regions', index: 'Index' };
 function appBar() {
   const bar = $('#tb-bar');
   bar.className = 'tb-bar bd-bar';
@@ -302,14 +301,8 @@ function appBar() {
   paint();
 }
 
-/* ------------------------------------------------------------------ "Something has gone wrong": every guide */
-function wrongGuides() {
-  const host = $('#bd-wrong');
-  if (host) host.append(guideList(GUIDE_ORDER, { idPrefix: 'wrong', headingLevel: 3 }));
-}
-
 /* ------------------------------------------------------------------ hash routing */
-/** Open the folds a hash points into (or at): the chooser, the dose planners, the A–Z. A closed fold has nothing to scroll to. */
+/** Open the folds a hash points into (or at): a Part's blocks, the A–Z. A closed fold has nothing to scroll to. */
 function openForHash(hash) {
   let id = String(hash || '').replace(/^#/, '');
   if (!id) return;
@@ -319,7 +312,6 @@ function openForHash(hash) {
 }
 function route({ initial = false } = {}) {
   openForHash(location.hash);
-  openGuideFromHash();
   if (initial && location.hash.length > 1) {
     let id = location.hash.slice(1);
     try { id = decodeURIComponent(id); } catch { /* keep as is */ }
@@ -337,15 +329,17 @@ document.addEventListener('click', (e) => {
 });
 
 /* ------------------------------------------------------------------ boot */
-// The chooser moved to /blocks/indication/ (16 Oct 2026): old links to #chooser and #op-… keep working (the page also does
-// this in an inline script in its <head>, before anything is drawn).
-const MOVED = /^#(chooser|op-[\w-]+)$/;
-addEventListener('hashchange', () => { if (MOVED.test(location.hash)) location.replace(`indication/${location.search}${location.hash}`); });
+// Parts of this page moved to their own screens (the page also does this in an inline script in its <head>, before anything
+// is drawn; keep the two in step). The chooser went to /blocks/indication/ (16 Oct 2026): #chooser and #op-… keep working.
+// "If it goes wrong" and the dose planners went to /blocks/safety/ (17 Oct 2026, owner: the list had too many repeats):
+// #wrong, #wrong-<guide> and #doses keep working, and the hash is kept (safety.js opens the right half).
+const MOVED = [[/^#(chooser|op-[\w-]+)$/, 'indication/'], [/^#(wrong(-[\w-]+)?|doses)$/, 'safety/']];
+function moved() { const hit = MOVED.find(([re]) => re.test(location.hash)); if (hit) location.replace(`${hit[1]}${location.search}${location.hash}`); }
+addEventListener('hashchange', moved);
 applyLevel();
 appBar();
 mountLevelPicker($('#bd-picker'));
 wireSearch();
-wrongGuides();
 contents();
 azIndex();
 route({ initial: true });

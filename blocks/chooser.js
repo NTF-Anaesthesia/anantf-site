@@ -2,7 +2,7 @@
    /blocks/indication/ (where the chooser lives). No clinical text is written here: operations, block names and links come
    from the ops modules (shared/regional/js/ops/); each region's own coverage figure is drawn for the open operation.
    mountChooser() expects the markup of blocks/indication/index.html (#bd-chips, #bd-opq, #bd-ops, #bd-result-col …) and
-   returns { open(key, opts), close(), current }. Import it as chooser.js?v=20261023 from both pages. */
+   returns { open(key, opts), close(), current }. Import it as chooser.js?v=20261024 from both pages. */
 import * as UL from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
 import * as HN from '../shared/regional/js/ops/ops-headneck.js?v=20261015';

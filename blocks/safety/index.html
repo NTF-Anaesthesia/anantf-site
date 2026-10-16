@@ -15,9 +15,9 @@
 <script defer src="../../assets/navigation.js?v=20261008"></script>
 <link rel="stylesheet" href="../../shared/regional/css/regional.css?v=20261018">
 <link rel="stylesheet" href="../../shared/regional/css/lacalc.css?v=20261017">
-<link rel="stylesheet" href="../pages.css?v=20261023">
-<script type="module" src="safety.js?v=20261023"></script>
-<link rel="stylesheet" href="../../shared/regional/css/skin-app.css?v=20261023">
+<link rel="stylesheet" href="../pages.css?v=20261024">
+<script type="module" src="safety.js?v=20261024"></script>
+<link rel="stylesheet" href="../../shared/regional/css/skin-app.css?v=20261024">
 <link rel="manifest" href="../../blocks/manifest.webmanifest">
 <link rel="apple-touch-icon" href="../../blocks/icons/apple-touch-icon.png">
 <meta name="theme-color" content="#f7f5ef">
@@ -39,23 +39,32 @@
     <button type="button" class="tb-seg-btn" id="sf-b-calculator" aria-pressed="false" aria-controls="calculator">Dose calculator</button>
   </div>
   <section class="sf-panel" id="guides" aria-labelledby="sf-guides-heading">
-    <h2 class="sf-h" id="sf-guides-heading">Emergency guides</h2>
+    <h2 class="sf-h tb-sr" id="sf-guides-heading">Emergency guides</h2>
     <p class="sf-note">Open a guide and answer each question.</p>
     <div id="sf-wrong"></div>
     <noscript><p class="bd-note">The guides need JavaScript. For local anaesthetic toxicity, see <a href="../../spinal/#cx-last">the emergency steps and lipid doses</a>.</p></noscript>
   </section>
   <section class="sf-panel" id="calculator" aria-labelledby="sf-calc-h" hidden>
-    <h2 class="sf-h" id="sf-calc-h">Dose calculator</h2>
+    <h2 class="sf-h tb-sr" id="sf-calc-h">Dose calculator</h2>
     <p class="tb-hub-disclaimer">The calculator is a check, not a prescription.</p>
     <div id="lc-calc" class="lc-host">
       <noscript><p class="tb-noscript">The calculator needs JavaScript. Work it out by hand: mg = ml × % × 10, and keep within the maximum for the patient’s weight.</p></noscript>
     </div>
+    <section class="lc-more sf-doses" id="doses" aria-labelledby="sf-doses-h">
+      <h3 class="lc-h" id="sf-doses-h">Planners and total-dose limits</h3>
+      <ul class="lc-links">
+        <li><a href="../../lower-limb/thigh/#ch-combinations"><span class="lc-link-t">Block combinations for the whole lower limb</span></a></li>
+        <li><a href="../../lower-limb/thigh/#ch-amputation"><span class="lc-link-t">Amputation planner</span></a></li>
+        <li><a href="../../head-neck/airway/#ch-topical"><span class="lc-link-t">Topical lidocaine dose for awake intubation</span></a></li>
+        <li><a href="../../spinal/#cx-last"><span class="lc-link-t">Local anaesthetic systemic toxicity (LAST)</span></a></li>
+      </ul>
+    </section>
   </section>
 </main>
 
 <section class="tb-foot" aria-label="Credits"><div class="site-container">
   <p>Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia.</p>
-  <p><a href="../calculator/">Dose calculator</a> · <a href="../">Regional blocks</a> · <a href="../../regional.html">Regional anaesthesia</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
+  <p><a href="../">Regional blocks</a> · <a href="../../regional.html">Regional anaesthesia</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
 </div></section>
 <footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer>
 </body>

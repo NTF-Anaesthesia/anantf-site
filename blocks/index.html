@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <script>(function(){var d=document.documentElement,p='auto',a=0;try{p=localStorage.getItem('ra-skin')||'auto'}catch(e){}try{var s=sessionStorage;if(/\/blocks\/(index\.html)?$/.test(location.pathname)&&/[?&]app(&|=|$)/.test(location.search))s.setItem('ra-in-app','1');a=s.getItem('ra-in-app')?1:0}catch(e){}try{if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)a=1}catch(e){}d.dataset.skin=p==='app'||p==='web'?p:a?'app':'web'})()</script>
-<script>if(/^#(chooser|op-[\w-]+)$/.test(location.hash))location.replace('indication/'+location.search+location.hash)</script>
+<script>(function(){var h=location.hash,t=/^#(chooser|op-[\w-]+)$/.test(h)?'indication/':/^#(wrong(-[\w-]+)?|doses)$/.test(h)?'safety/':'';if(t)location.replace(t+location.search+h)})()</script>
 <meta name="color-scheme" content="light">
 <title>Regional blocks — NTF Anaesthesia</title>
 <meta name="description" content="Regional anaesthesia for medical officers, residents and consultants: contents by region, search, an index of operations and blocks, and the 3D plexus anatomy.">
@@ -18,9 +18,9 @@
 <link rel="stylesheet" href="../head-neck/shared/css/headneck.css?v=20261015">
 <link rel="stylesheet" href="../lower-limb/shared/css/lowerlimb.css?v=1">
 <link rel="stylesheet" href="../upper-limb/shared/css/upperlimb.css?v=20261016">
-<link rel="stylesheet" href="blocks.css?v=20261023">
-<script type="module" src="blocks.js?v=20261023"></script>
-<link rel="stylesheet" href="../shared/regional/css/skin-app.css?v=20261023">
+<link rel="stylesheet" href="blocks.css?v=20261024">
+<script type="module" src="blocks.js?v=20261024"></script>
+<link rel="stylesheet" href="../shared/regional/css/skin-app.css?v=20261024">
 <link rel="manifest" href="../blocks/manifest.webmanifest">
 <link rel="apple-touch-icon" href="../blocks/icons/apple-touch-icon.png">
 <meta name="theme-color" content="#f7f5ef">
@@ -52,28 +52,14 @@
       <div class="bd-toc-col">
         <section class="bd-part bd-part--first" id="principles" aria-labelledby="bd-p1-h">
           <p class="bd-part-k">Part I</p>
-          <h3 class="bd-part-t" id="bd-p1-h">Principles and safety</h3>
-          <p class="bd-part-l">Levels: MO shows the essentials, Resident adds detail, Consultant shows everything. Choose in the top bar.</p>
+          <h3 class="bd-part-t" id="bd-p1-h">Tools</h3>
           <ol class="bd-toc-list">
-            <li class="bd-ch"><a class="bd-ch-link" href="calculator/"><span class="bd-n">1</span><span class="bd-ch-t">Dose calculator</span></a></li>
-            <li class="bd-ch bd-ch--more">
-              <details class="bd-secs" id="doses">
-                <summary><span class="bd-n">2</span><span class="bd-ch-t">Maximum dose and planners</span></summary>
-                <ul class="bd-secs-list">
-                  <li><a href="../lower-limb/thigh/#ch-combinations">Block combinations for the whole lower limb</a></li>
-                  <li><a href="../lower-limb/thigh/#ch-amputation">Amputation planner</a></li>
-                  <li><a href="../head-neck/airway/#ch-topical">Topical lidocaine dose for awake intubation</a></li>
-                  <li><a href="../spinal/#cx-last">Local anaesthetic systemic toxicity (LAST)</a></li>
-                </ul>
-              </details>
+            <li class="bd-ch bd-ch--safety">
+              <a class="bd-ch-link" href="safety/"><span class="bd-n">1</span><span class="bd-ch-t">Emergency guides and dose calculator</span></a>
+              <a class="bd-alert" href="safety/#wrong-last"><span>Local anaesthetic toxicity (LAST): emergency steps</span><span aria-hidden="true">→</span></a>
             </li>
-            <li class="bd-ch bd-ch--wrong" id="wrong">
-              <div class="bd-ch-head"><span class="bd-n">3</span><h4 class="bd-ch-t">If it goes wrong</h4></div>
-              <p class="bd-ch-note">Open a guide and answer each question.</p>
-              <a class="bd-alert" href="../spinal/#cx-last"><span>Local anaesthetic toxicity (LAST): emergency steps</span><span aria-hidden="true">→</span></a>
-              <div id="bd-wrong"></div>
-              <noscript><p class="bd-note">The guides need JavaScript. For local anaesthetic toxicity, see <a href="../spinal/#cx-last">the emergency steps and lipid doses</a>.</p></noscript>
-            </li>
+            <li class="bd-ch"><a class="bd-ch-link" href="indication/"><span class="bd-n">2</span><span class="bd-ch-t">Which block for which operation</span></a></li>
+            <li class="bd-ch"><a class="bd-ch-link" href="ultrasound/"><span class="bd-n">3</span><span class="bd-ch-t">Ultrasound anatomy</span></a></li>
             <li class="bd-ch bd-ch--3d" id="anatomy3d">
               <a class="bd-ch-link" href="../plexus/"><span class="bd-n">4</span><span class="bd-ch-t">Anatomy in 3D</span></a>
               <ul class="bd-inline" id="bd-3d" aria-label="Plexuses in 3D">
@@ -83,10 +69,6 @@
                 <li><a href="../plexus/#plexus=sacral">Sacral</a></li>
               </ul>
             </li>
-            <li class="bd-ch"><a class="bd-ch-link" href="settings/"><span class="bd-n">5</span><span class="bd-ch-t">Settings</span></a></li>
-            <li class="bd-ch"><a class="bd-ch-link" href="safety/"><span class="bd-n">6</span><span class="bd-ch-t">Emergency guides and dose calculator</span></a></li>
-            <li class="bd-ch"><a class="bd-ch-link" href="ultrasound/"><span class="bd-n">7</span><span class="bd-ch-t">Ultrasound anatomy</span></a></li>
-            <li class="bd-ch"><a class="bd-ch-link" href="indication/"><span class="bd-n">8</span><span class="bd-ch-t">Which block for which operation</span></a></li>
           </ol>
         </section>
         <section class="bd-part" id="part-upper-limb" data-region="upper-limb" aria-labelledby="bd-p2-h">
@@ -117,11 +99,9 @@
   </section>
 
   <section class="bd-index" id="index" aria-labelledby="bd-index-h">
-    <p class="bd-part-k">Index</p>
-    <h2 class="bd-h2" id="bd-index-h">Look it up</h2>
-    <div class="bd-idx" id="chooser-row"><a class="bd-idx-a" href="indication/"><span>Which block for which operation</span><span aria-hidden="true">→</span></a></div>
+    <h2 class="bd-h2" id="bd-index-h">Index</h2>
     <details class="bd-idx" id="bd-az">
-      <summary>A–Z of blocks</summary>
+      <summary>Blocks A to Z</summary>
       <div class="bd-idx-body" id="bd-az-body"></div>
     </details>
   </section>
@@ -129,7 +109,7 @@
 
 <section class="tb-foot" aria-label="Credits"><div class="site-container">
   <p>Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia. Diagrams are drawn by the page in your browser and are schematic.</p>
-  <p><a href="../regional.html">Regional anaesthesia</a> · <a href="settings/">Settings</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
+  <p><a href="../regional.html">Regional anaesthesia</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
   <div class="bd-appver" id="ra-appver">
     <p class="bd-appver-line" data-appver-line hidden></p>
     <button type="button" class="bd-appver-btn" data-appver-btn>Not updating? Get the latest version</button>

@@ -16,7 +16,7 @@
 //   of the bar into a row under it (so the bar holds back, search, Safety and the level control at 360 px). See js/skin.js
 //   and css/skin-app.css (ENGINE.md §2 "Skins").
 //
-// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261023 (one instance per page).
+// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261024 (one instance per page).
 // Cross-document view transitions are pure CSS (@view-transition in css/appnav.css).
 
 import { getSkin, onSkin } from './skin.js?v=20261018';

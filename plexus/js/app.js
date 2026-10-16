@@ -8,7 +8,7 @@
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015d';
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../../shared/regional/js/levels.js?v=20261015';
-import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261023'; // Settings, bar auto-hide, keys, prefetch
+import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261024'; // Settings, bar auto-hide, keys, prefetch
 
 const V = '20261015c';
 const $ = (id) => document.getElementById(id);

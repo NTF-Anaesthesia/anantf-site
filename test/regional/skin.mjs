@@ -482,5 +482,51 @@ for (const vp of VPS) {
   //  hiding the header and breadcrumbs there only while no skin is set, and "Website look" shows them again.)
 }
 
+// ------------------------------------------------------------------ 6. the front door is short: nothing listed twice (owner, 17 Oct 2026)
+{
+  for (const skin of ['app', 'web']) {
+    const { ctx, page } = await open('blocks/', { vp: '390', storage: { 'ra-skin': skin } });
+    await waitReady(page, { idle: false });
+    const s = await page.evaluate(() => {
+      const main = document.getElementById('main');
+      const rows = [...main.querySelectorAll('#principles .bd-ch-link')].map((a) => a.getAttribute('href'));
+      const txt = (re) => [...main.querySelectorAll('a')].filter((a) => re.test(a.textContent)).length;
+      return {
+        rows, nRows: main.querySelectorAll('#principles .bd-ch').length, guides: main.querySelectorAll('.ra-dg-item, #bd-wrong, #wrong').length,
+        settings: [...main.querySelectorAll('a')].filter((a) => /\/settings\/?$/.test(a.getAttribute('href') || '')).length,
+        chooser: txt(/which block for which operation/i), us: txt(/^\s*\d*\s*Ultrasound anatomy/i), safety: txt(/emergency guides and dose calculator/i),
+        indexFolds: main.querySelectorAll('#index details').length, indexLinks: main.querySelectorAll('#index > a, #index .bd-idx-a').length, doses: main.querySelectorAll('#doses').length,
+        partFolds: [...main.querySelectorAll('.bd-part[data-region]')].map((p) => p.querySelectorAll('details').length),
+        last: main.querySelector('#principles a.bd-alert')?.getAttribute('href'),
+      };
+    });
+    R.check(`blocks/ (${skin} look): Part I has four rows, each once (Safety, Indication, Ultrasound, Anatomy in 3D), no guide rows, no dose fold, no Settings row; the Index is the A to Z only; at most one "All N blocks" fold per region`,
+      JSON.stringify(s.rows) === JSON.stringify(['safety/', 'indication/', 'ultrasound/', '../plexus/']) && s.nRows === 4 && s.guides === 0 && s.settings === 0 && s.chooser === 1 && s.us === 1 && s.safety === 1
+        && s.indexFolds === 1 && s.indexLinks === 0 && s.doses === 0 && s.partFolds.every((n) => n <= 1) && /safety\/#wrong-last$/.test(s.last || ''), JSON.stringify(s));
+    await ctx.close();
+  }
+  // The old front-door hashes move to the screens that hold them, hash kept (deeplinks.mjs checks the target is on screen).
+  for (const h of ['#wrong', '#wrong-pneumo', '#doses']) {
+    const { ctx, page } = await open(`blocks/${h}`, { vp: '390', storage: { 'ra-skin': 'app' } });
+    await page.waitForURL(/blocks\/safety\//, { timeout: 8000 }).catch(() => {});
+    R.check(`blocks/${h} moves to blocks/safety/${h}`, page.url().endsWith(`/blocks/safety/${h}`), page.url());
+    await ctx.close();
+  }
+  // The bar and the tab bar are all but opaque: text scrolling under them must not show through (owner, 17 Oct 2026).
+  for (const p of ['blocks/', 'truncal/back/', 'blocks/safety/']) {
+    const { ctx, page } = await open(p, { vp: '390', storage: { 'ra-skin': 'app' } });
+    await waitReady(page, { idle: false });
+    await page.evaluate(() => scrollTo(0, 600));
+    await page.waitForTimeout(500);
+    const a = await page.evaluate(() => {
+      const alpha = (c) => { const m = c.match(/rgba?\(([^)]+)\)/); if (!m) return 0; const v = m[1].split(/[ ,/]+/).filter(Boolean); return v.length > 3 ? Number(v[3]) : 1; };
+      const bar = document.querySelector('.ra-appbar');
+      return { collapsed: document.documentElement.hasAttribute('data-ra-collapsed'), bar: alpha(getComputedStyle(bar, '::before').backgroundColor), barOn: getComputedStyle(bar, '::before').opacity, tab: alpha(getComputedStyle(document.querySelector('.ra-tabbar')).backgroundColor) };
+    });
+    R.check(`${p}: scrolled, the app bar and the tab bar are at least 97% opaque`, a.collapsed && a.bar >= 0.97 && Number(a.barOn) === 1 && a.tab >= 0.97, JSON.stringify(a));
+    await ctx.close();
+  }
+}
+
 await browser.close();
 process.exit(R.finish());

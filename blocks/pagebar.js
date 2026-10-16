@@ -2,7 +2,7 @@
    name, the level control and, in the app look, the search and Safety buttons (appnav.js adds those). One call per page.
    The same bar as /blocks/calculator/'s, so the pages feel like one app. */
 import { mountLevelControl } from '../shared/regional/js/levels.js?v=20261015';
-import { initAppFeel, settingsButton } from '../shared/regional/js/appnav.js?v=20261023';
+import { initAppFeel, settingsButton } from '../shared/regional/js/appnav.js?v=20261024';
 
 const BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5.5M11 5.5 4.5 12l6.5 6.5"/></svg>';
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));

@@ -8,7 +8,7 @@ import { applyLevel } from '../../shared/regional/js/levels.js?v=20261015';
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016';
 import { REGIONS, blocksIn } from '../../shared/regional/js/registry.js';
 import { loadRealScans } from '../../shared/regional/js/realscan.js';
-import { pageBar } from '../pagebar.js?v=20261023';
+import { pageBar } from '../pagebar.js?v=20261024';
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
