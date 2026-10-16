@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="color-scheme" content="light">
 <title>Regional blocks — NTF Anaesthesia</title>
-<meta name="description" content="Regional anaesthesia for medical officers, residents and consultants: choose a block for the operation, search every block, and open the upper limb, trunk, head and neck, lower limb and spinal pages and the 3D plexus anatomy.">
+<meta name="description" content="Regional anaesthesia for medical officers, residents and consultants: contents by region, search, an index of operations and blocks, and the 3D plexus anatomy.">
 <link rel="icon" href="../ana-ntf-monogram.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../assets/navigation.css?v=20261008">
 <link rel="stylesheet" href="../assets/site-shell.css?v=20261008">
@@ -16,8 +16,8 @@
 <link rel="stylesheet" href="../head-neck/shared/css/headneck.css?v=20261015">
 <link rel="stylesheet" href="../lower-limb/shared/css/lowerlimb.css?v=1">
 <link rel="stylesheet" href="../upper-limb/shared/css/upperlimb.css?v=20261016">
-<link rel="stylesheet" href="blocks.css?v=20261017">
-<script type="module" src="blocks.js?v=20261017"></script>
+<link rel="stylesheet" href="blocks.css?v=20261018">
+<script type="module" src="blocks.js?v=20261018"></script>
 <link rel="manifest" href="../blocks/manifest.webmanifest">
 <link rel="apple-touch-icon" href="../blocks/icons/apple-touch-icon.png">
 <meta name="theme-color" content="#f7f5ef">
@@ -32,7 +32,7 @@
   <section class="bd-hero" id="start" aria-labelledby="bd-title">
     <p class="tb-eyebrow">Regional anaesthesia</p>
     <h1 id="bd-title">Regional blocks</h1>
-    <p class="tb-lead">Every block in one place: choose one for the operation in front of you, find it by name, and open its scan, dose and coverage.</p>
+    <p class="tb-lead">Choose a part, search, or use the index.</p>
     <div id="bd-picker"></div>
     <div class="bd-search" id="search" role="search">
       <label class="bd-search-k" for="bd-q">Search every block, operation and page</label>
@@ -42,72 +42,97 @@
     </div>
   </section>
 
-  <section class="bd-section" id="need" aria-labelledby="bd-need-h">
-    <h2 class="bd-h2" id="bd-need-h">I need to…</h2>
-    <ul class="tb-tiles bd-tiles">
-      <li><a class="tb-tile" href="#chooser"><span class="tb-tile-t">Choose a block for an operation</span><span class="tb-tile-d">Upper limb, trunk, head and neck, and lower limb in one list</span></a></li>
-      <li><a class="tb-tile" href="calculator/"><span class="tb-tile-t">Work out a safe dose</span><span class="tb-tile-d">Dose calculator: weight, lean body weight, every agent added up</span></a></li>
-      <li><a class="tb-tile" href="#doses"><span class="tb-tile-t">Check the maximum local anaesthetic dose</span><span class="tb-tile-d">Dose planners and total-dose limits</span></a></li>
-      <li><a class="tb-tile bd-tile--alert" href="#wrong"><span class="tb-tile-t">Something has gone wrong</span><span class="tb-tile-d">Step-by-step guides: toxicity, high block, pneumothorax, failed block, nerve injury</span></a></li>
-      <li><a class="tb-tile bd-tile--alert" href="../spinal/#cx-last"><span class="tb-tile-t">Treat local anaesthetic toxicity (LAST)</span><span class="tb-tile-d">Emergency steps and lipid doses</span></a></li>
-      <li><a class="tb-tile" href="../spinal/"><span class="tb-tile-t">Do a spinal</span><span class="tb-tile-d">Ward card, technique, troubleshooting</span></a></li>
-      <li><a class="tb-tile" href="#anatomy3d"><span class="tb-tile-t">See the nerves in 3D</span><span class="tb-tile-d">Brachial, cervical, lumbar and sacral plexuses</span></a></li>
-      <li><a class="tb-tile" href="#regions"><span class="tb-tile-t">Browse blocks by region</span><span class="tb-tile-d">Upper limb, trunk, head and neck, lower limb, neuraxial</span></a></li>
-    </ul>
-  </section>
-
-  <section class="bd-section" id="wrong" aria-labelledby="bd-wrong-h">
-    <p class="tb-eyebrow">If it goes wrong</p>
-    <h2 class="bd-h2" id="bd-wrong-h">Something has gone wrong</h2>
-    <p class="bd-intro">Step-by-step guides for the problems a block can cause. Open one and answer each question: it shows the next thing to do. Every block page shows the guides that apply to that block, in its “If it goes wrong” section.</p>
-    <div id="bd-wrong"></div>
-    <noscript><p class="bd-note">The guides need JavaScript. For local anaesthetic toxicity, see <a href="../spinal/#cx-last">the emergency steps and lipid doses</a>.</p></noscript>
-  </section>
-
-  <section class="bd-section" id="chooser" aria-labelledby="bd-chooser-h">
-    <p class="tb-eyebrow">Across every region</p>
-    <h2 class="bd-h2" id="bd-chooser-h">Which block for this operation</h2>
-    <p class="bd-intro">Pick an operation to see the area to cover, the block options (and the ones to avoid), and a link straight to each block.</p>
-    <div class="bd-filter">
-      <div class="bd-chips" id="bd-chips" role="group" aria-label="Show operations for"></div>
-      <div class="tb-search-row bd-opq-row"><input type="search" class="tb-search-input" id="bd-opq" placeholder="Filter operations, e.g. knee, hernia" autocomplete="off" spellcheck="false" aria-label="Filter operations" aria-controls="bd-ops"></div>
+  <section class="bd-contents" id="contents" aria-labelledby="bd-contents-h">
+    <span class="bd-alias" id="need"></span>
+    <h2 class="bd-h2" id="bd-contents-h">Contents</h2>
+    <div class="bd-toc" id="bd-cards">
+      <div class="bd-toc-col">
+        <section class="bd-part bd-part--first" id="principles" aria-labelledby="bd-p1-h">
+          <p class="bd-part-k">Part I</p>
+          <h3 class="bd-part-t" id="bd-p1-h">Principles and safety</h3>
+          <p class="bd-part-l">Levels: MO shows the essentials, Resident adds detail, Consultant shows everything. Choose in the top bar.</p>
+          <ol class="bd-toc-list">
+            <li class="bd-ch"><a class="bd-ch-link" href="calculator/"><span class="bd-n">1</span><span class="bd-ch-t">Dose calculator</span></a></li>
+            <li class="bd-ch bd-ch--more">
+              <details class="bd-secs" id="doses">
+                <summary><span class="bd-n">2</span><span class="bd-ch-t">Maximum dose and planners</span></summary>
+                <ul class="bd-secs-list">
+                  <li><a href="../lower-limb/thigh/#ch-combinations">Block combinations for the whole lower limb</a></li>
+                  <li><a href="../lower-limb/thigh/#ch-amputation">Amputation planner</a></li>
+                  <li><a href="../head-neck/airway/#ch-topical">Topical lidocaine dose for awake intubation</a></li>
+                  <li><a href="../spinal/#cx-last">Local anaesthetic systemic toxicity (LAST)</a></li>
+                </ul>
+              </details>
+            </li>
+            <li class="bd-ch bd-ch--wrong" id="wrong">
+              <div class="bd-ch-head"><span class="bd-n">3</span><h4 class="bd-ch-t">If it goes wrong</h4></div>
+              <p class="bd-ch-note">Open a guide and answer each question.</p>
+              <a class="bd-alert" href="../spinal/#cx-last"><span>Local anaesthetic toxicity (LAST): emergency steps</span><span aria-hidden="true">→</span></a>
+              <div id="bd-wrong"></div>
+              <noscript><p class="bd-note">The guides need JavaScript. For local anaesthetic toxicity, see <a href="../spinal/#cx-last">the emergency steps and lipid doses</a>.</p></noscript>
+            </li>
+            <li class="bd-ch bd-ch--3d" id="anatomy3d">
+              <a class="bd-ch-link" href="../plexus/"><span class="bd-n">4</span><span class="bd-ch-t">Anatomy in 3D</span></a>
+              <ul class="bd-inline" id="bd-3d" aria-label="Plexuses in 3D">
+                <li><a href="../plexus/#plexus=cervical">Cervical</a></li>
+                <li><a href="../plexus/#plexus=brachial">Brachial</a></li>
+                <li><a href="../plexus/#plexus=lumbar">Lumbar</a></li>
+                <li><a href="../plexus/#plexus=sacral">Sacral</a></li>
+              </ul>
+            </li>
+            <li class="bd-ch"><a class="bd-ch-link" href="settings/"><span class="bd-n">5</span><span class="bd-ch-t">Settings</span></a></li>
+          </ol>
+        </section>
+        <section class="bd-part" id="part-upper-limb" data-region="upper-limb" aria-labelledby="bd-p2-h">
+          <span class="bd-alias" id="regions"></span>
+          <p class="bd-part-k">Part II</p>
+          <h3 class="bd-part-t" id="bd-p2-h"><a href="../upper-limb/">Upper limb</a></h3>
+        </section>
+        <section class="bd-part" id="part-trunk" data-region="trunk" aria-labelledby="bd-p3-h">
+          <p class="bd-part-k">Part III</p>
+          <h3 class="bd-part-t" id="bd-p3-h"><a href="../truncal/">Trunk</a></h3>
+        </section>
+      </div>
+      <div class="bd-toc-col">
+        <section class="bd-part" id="part-head-neck" data-region="head-neck" aria-labelledby="bd-p4-h">
+          <p class="bd-part-k">Part IV</p>
+          <h3 class="bd-part-t" id="bd-p4-h"><a href="../head-neck/">Head and neck</a></h3>
+        </section>
+        <section class="bd-part" id="part-lower-limb" data-region="lower-limb" aria-labelledby="bd-p5-h">
+          <p class="bd-part-k">Part V</p>
+          <h3 class="bd-part-t" id="bd-p5-h"><a href="../lower-limb/">Lower limb</a></h3>
+        </section>
+        <section class="bd-part" id="part-neuraxial" data-region="neuraxial" aria-labelledby="bd-p6-h">
+          <p class="bd-part-k">Part VI</p>
+          <h3 class="bd-part-t" id="bd-p6-h"><a href="../spinal/">Neuraxial</a></h3>
+        </section>
+      </div>
     </div>
-    <p class="tb-sr" id="bd-ops-status" role="status" aria-live="polite" aria-atomic="true"></p>
-    <div class="bd-chooser">
-      <div class="bd-ops" id="bd-ops"></div>
-      <div class="bd-result-col" id="bd-result-col"></div>
-    </div>
-    <p class="bd-note" id="bd-chooser-note">No operation list yet for spinals: see <a href="../spinal/">spinal anaesthesia</a>. The <a href="../brachial-plexus/">brachial plexus app</a> compares the upper-limb blocks on a 3D model.</p>
-    <noscript><p class="bd-note">The operation chooser and the search need JavaScript. The region links below work without it.</p></noscript>
   </section>
 
-  <section class="bd-section" id="doses" aria-labelledby="bd-doses-h">
-    <h2 class="bd-h2" id="bd-doses-h">Maximum local anaesthetic dose</h2>
-    <p class="bd-intro">Every block chapter has a dose box with its volume and concentration. When you give more than one block, or a block beside a spinal, add the doses up with the calculator, or see the planners:</p>
-    <ul class="bd-rows">
-      <li><a href="calculator/"><span class="bd-row-t">Dose calculator</span><span class="bd-row-d">Weight, lean body weight in obesity, and every agent and injection added up against the maximum</span></a></li>
-      <li><a href="../lower-limb/thigh/#ch-combinations"><span class="bd-row-t">Block combinations for the whole lower limb</span><span class="bd-row-d">Operation, blocks and total dose for every lower-limb operation</span></a></li>
-      <li><a href="../lower-limb/thigh/#ch-amputation"><span class="bd-row-t">Amputation planner</span><span class="bd-row-d">Above- and below-knee amputation under nerve blocks: which nerves, what dose</span></a></li>
-      <li><a href="../head-neck/airway/#ch-topical"><span class="bd-row-t">Check the lidocaine dose</span><span class="bd-row-d">Topical anaesthesia for awake intubation: maximum 9 mg/kg topically</span></a></li>
-      <li><a href="../spinal/#cx-last"><span class="bd-row-t">Local anaesthetic systemic toxicity (LAST)</span><span class="bd-row-d">The emergency steps, lipid doses and total-dose limits</span></a></li>
-    </ul>
-  </section>
-
-  <section class="bd-section" id="regions" aria-labelledby="bd-regions-h">
-    <h2 class="bd-h2" id="bd-regions-h">Blocks by region</h2>
-    <ul class="bd-cards" id="bd-cards">
-      <li class="bd-card"><h3><a href="../upper-limb/">Upper limb</a></h3><p>Shoulder, arm, forearm and hand blocks; the brachial plexus app for the 3D model and labelled diagram.</p></li>
-      <li class="bd-card"><h3><a href="../truncal/">Trunk</a></h3><p>Back, chest wall and abdominal wall blocks.</p></li>
-      <li class="bd-card"><h3><a href="../head-neck/">Head and neck</a></h3><p>Cervical plexus, scalp, face, airway and eye blocks.</p></li>
-      <li class="bd-card"><h3><a href="../lower-limb/">Lower limb</a></h3><p>Hip, knee, foot and ankle, and thigh and amputation blocks.</p></li>
-      <li class="bd-card"><h3><a href="../spinal/">Neuraxial</a></h3><p>Spinal anaesthesia: technique, troubleshooting and ultrasound.</p></li>
-    </ul>
-  </section>
-
-  <section class="bd-section" id="anatomy3d" aria-labelledby="bd-3d-h">
-    <h2 class="bd-h2" id="bd-3d-h">Anatomy in 3D</h2>
-    <p class="bd-intro">Turn the cervical, brachial, lumbar and sacral plexuses in 3D, linked to a labelled diagram: tap a nerve to see where it runs and which blocks reach it. <a href="../plexus/">Open Anatomy in 3D</a>.</p>
-    <ul class="bd-rows bd-rows--3d" id="bd-3d"></ul>
+  <section class="bd-index" id="index" aria-labelledby="bd-index-h">
+    <p class="bd-part-k">Index</p>
+    <h2 class="bd-h2" id="bd-index-h">Look it up</h2>
+    <details class="bd-idx" id="chooser">
+      <summary>Which block for which operation</summary>
+      <div class="bd-idx-body">
+        <div class="bd-filter">
+          <div class="bd-chips" id="bd-chips" role="group" aria-label="Show operations for"></div>
+          <div class="tb-search-row bd-opq-row"><input type="search" class="tb-search-input" id="bd-opq" placeholder="Filter operations, e.g. knee, hernia" autocomplete="off" spellcheck="false" aria-label="Filter operations" aria-controls="bd-ops"></div>
+        </div>
+        <p class="tb-sr" id="bd-ops-status" role="status" aria-live="polite" aria-atomic="true"></p>
+        <div class="bd-chooser">
+          <div class="bd-ops" id="bd-ops"></div>
+          <div class="bd-result-col" id="bd-result-col"></div>
+        </div>
+        <p class="bd-note" id="bd-chooser-note">No operation list yet for spinals: see <a href="../spinal/">spinal anaesthesia</a>. The <a href="../brachial-plexus/">brachial plexus app</a> compares the upper-limb blocks on a 3D model.</p>
+        <noscript><p class="bd-note">The operation chooser and the search need JavaScript. The links in the contents work without it.</p></noscript>
+      </div>
+    </details>
+    <details class="bd-idx" id="bd-az">
+      <summary>A–Z of blocks</summary>
+      <div class="bd-idx-body" id="bd-az-body"></div>
+    </details>
   </section>
 </main>
 
