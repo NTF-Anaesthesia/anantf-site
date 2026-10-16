@@ -1,0 +1,16 @@
+{
+  "name": "Regional blocks · NTF Anaesthesia",
+  "short_name": "Blocks",
+  "description": "Regional anaesthesia blocks for the NTFGH anaesthesia department: technique, ultrasound, doses and what to do if it goes wrong.",
+  "id": "/blocks/",
+  "start_url": "/blocks/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f5ef",
+  "theme_color": "#f7f5ef",
+  "icons": [
+    { "src": "/blocks/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/blocks/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/blocks/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

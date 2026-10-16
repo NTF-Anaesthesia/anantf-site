@@ -165,7 +165,7 @@ before, apart from the Settings entry and the plain app bar on the region landin
   the page's search (engine pages, `/blocks/`, `spinal/`, `plexus/`); pages without search ignore them. On a scan
   teacher, the left and right arrow keys change step on the image and on the step buttons (focus follows; Home / End).
 
-Added to the home screen (`display-mode: standalone`), `appnav.css` hides the NTF Anaesthesia site header and the breadcrumbs, so only the app bar shows (owner, 16 Oct 2026). No manifest is published yet, so this only applies where a browser opens the page standalone.
+Added to the home screen (`display-mode: standalone`), `appnav.css` hides the NTF Anaesthesia site header and the breadcrumbs, so only the app bar shows (owner, 16 Oct 2026). The app is installable: `blocks/manifest.webmanifest` (id and start `/blocks/`, scope `/`, standalone, paper colours; icons in `blocks/icons/`, an "RA" mark in the MO guide's style) is linked from every regional page, which also gives each page a theme colour and an Apple touch icon. `/blocks/settings/` explains how to add it and shows an Install button where the browser offers one. `static.mjs` checks the manifest and the links.
 
 ### Shims at old paths
 
