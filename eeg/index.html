@@ -407,8 +407,8 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
       <div class="softkeys keyrow" id="keySeg" hidden role="group" aria-label="Monitor settings">
         <button id="kSmooth">Smoothing 15 s</button><button id="kScale">EEG ±100 µV</button><button id="kSweep">EEG sweep auto</button><button id="kTrend">Trend 5 min</button><button id="kBottom">Bottom: BIS trend</button>
       </div>
-    <div class="tline" id="tLine"><div class="tbar"><canvas id="tCv" aria-hidden="true"></canvas><span id="tNow">Case 0:00</span></div>
-   <label class="time-label" for="timeScrub">Drag to explore time <output id="timePreview"></output></label><input id="timeScrub" type="range" min="0" max="600" value="0" step="1" aria-describedby="timeHelp"><p id="timeHelp" class="caption">Drag forwards to advance; rewind to restore earlier settings. Changing controls after rewinding creates a new continuation.</p></div>
+    <div class="tline" id="tLine"><div class="tbar"><canvas id="tCv" aria-hidden="true"></canvas><span id="tNow">0:00</span><output id="timePreview" aria-hidden="true"></output></div>
+   <input id="timeScrub" type="range" min="0" max="600" value="0" step="1" aria-label="Simulation time"></div>
     <div class="teachstrip" id="teachStrip" aria-label="Readouts the real monitor does not show as numbers">
       <span class="ts" id="bilSum" hidden></span><span class="ts"><b>SQI</b> <span id="s2Sqi">--</span>%</span><span class="ts"><b>EMG</b> <span id="s2Emg">--</span> dB</span><span class="ts"><b>SR</b> <span id="s2Sr">0</span>%</span><span class="ts"><b>SEF</b> <span id="s2Sef">--</span> Hz</span><span class="ts"><b>TP</b> <span id="s2Tp">--</span></span><span class="ts"><b>BC</b> <span id="s2Bc">0</span>/min</span><span class="ts zone" id="s2Zone">--</span><span class="ts"><b>Suppression</b> <span id="s2Sup">0:00</span></span><span class="ts"><b>BIS&lt;40</b> <span id="s2Low">0:00</span></span><button type="button" class="tclr" id="tReset2" aria-label="Reset the suppression and BIS under 40 timers">Reset</button>
     </div>

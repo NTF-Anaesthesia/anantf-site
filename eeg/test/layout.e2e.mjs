@@ -23,7 +23,9 @@ try{
    }
    if(skin==='advance'){
     assert.ok(await page.evaluate(()=>{advData();return ADV.d.dsa.L.nData>200;}),'Advance immediately displays the existing DSA history');
+    await page.click('#settingsButton');
     for(const ch of ['2','4']){await page.selectOption('#channelChoice',ch);await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>ADV.ch),+ch);}
+    await page.click('#closeSettings');
    }
   }
   console.log(`PASS layout ${width}×${height}: five monitors in page and fullscreen`);

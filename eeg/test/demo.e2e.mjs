@@ -24,7 +24,9 @@ try{
   await page.selectOption('#monitorChoice',skin);await page.waitForTimeout(250);
   assert.equal(await page.evaluate(()=>mon.skin),skin);
   if(skin==='advance'){
+   await page.click('#settingsButton');
    for(const ch of ['2','4']){await page.selectOption('#channelChoice',ch);await page.waitForTimeout(200);assert.equal(await page.evaluate(()=>ADV.ch),+ch);assert.ok(await page.locator('#advCv').isVisible());}
+   await page.click('#closeSettings');
   }
  }
  await page.selectOption('#agentChoice','mix');assert.ok(await page.locator('#mixRows').isVisible());

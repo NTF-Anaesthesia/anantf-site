@@ -47,10 +47,10 @@ function tlJump(T){if(TL.busy)return;T=Math.round(T);const lo=TL.snaps.length?TL
  if(T<simT){let i=TL.snaps.length-1;while(i>0&&TL.snaps[i].t>T-20)i--;const s=TL.snaps[i];
   stopStory();tlSetUi(s.ui);
   tlSetChan(s.L,mods);swapCh();try{tlSetChan(s.R,modsR);}finally{swapCh();}
-  Object.assign(nm,s.nm);story=s.story?Object.assign({},s.story):null;if(story)$('storyBtn').textContent='Stop the case';
+  Object.assign(nm,s.nm);story=s.story?Object.assign({},s.story):null;if(story)storyButtonUI('Stop demonstration');
   simT=s.t;TL.snaps.length=i+1;TL.events=TL.events.filter(t=>t<=simT);}
  let left=Math.round(T-simT);const total=Math.max(1,left);
- const slice=()=>{const n=Math.min(left,60);tlRun(n);left-=n;tlDraw();const tn=$('tNow');tn._t=null;tn.textContent=`Jumping… ${Math.round(100*(1-left/total))}%`;if(left>0)setTimeout(slice,0);else finish();};
+ const slice=()=>{const n=Math.min(left,60);tlRun(n);left-=n;tlDraw();const tn=$('tNow');tn._t=null;tn.textContent=`${Math.round(100*(1-left/total))}%`;if(left>0)setTimeout(slice,0);else finish();};
  slice();}
 // ----- the bar -----
 function tlFmt(s){s=Math.max(0,Math.round(s));const h=Math.floor(s/3600),m=Math.floor(s/60)%60,x=s%60,p=n=>String(n).padStart(2,'0');return (h?h+':'+p(m):String(m))+':'+p(x);}
@@ -63,9 +63,10 @@ function tlDraw(){const cv=$('tCv');if(!cv||TL.t0==null)return;const w=cv.client
  c.fillStyle='#78bdff';c.fillRect(4,y-4,X(simT)-4,8);
  c.fillStyle='#f0c040';for(const t of TL.events)c.fillRect(Math.round(X(t))-1,y-9,2,18);
  const x=X(simT);c.fillStyle='#fff';c.beginPath();c.arc(x,y,7,0,7);c.fill();c.strokeStyle='#002f6c';c.lineWidth=2;c.stroke();
- const el=$('tNow'),txt2=`Time ${tlFmt(simT-t0)}`+(TL.max-simT>=1?` · ${tlFmt(TL.max-simT)} ahead was rewound`:'');if(el._t!==txt2){el._t=txt2;el.textContent=txt2;}
+ const el=$('tNow'),txt2=tlFmt(simT-t0);if(el._t!==txt2){el._t=txt2;el.textContent=txt2;}
+ el.title=TL.max-simT>=1?`Rewound ${tlFmt(TL.max-simT)}`:'Elapsed simulation time';
  const slider=$('timeScrub');if(slider&&!TL.scrubbing){slider.max=Math.max(900,Math.ceil((TL.max-t0+300)/300)*300);slider.value=Math.round(simT-t0);slider.setAttribute('aria-valuetext',tlFmt(simT-t0));}if(slider)slider.disabled=TL.busy;}
-function tlBusyUI(on){$('tLine').classList.toggle('busy',on);const tn=$('tNow');tn._t=null;if(on)tn.textContent='Jumping…';}
+function tlBusyUI(on){$('tLine').classList.toggle('busy',on);$('tLine').setAttribute('aria-busy',String(on));const tn=$('tNow');tn._t=null;if(on)tn.textContent='…';}
 document.querySelectorAll('#tBtns button').forEach(b=>b.onclick=()=>tlJump(simT+(+b.dataset.j)));
 $('tCv').addEventListener('click',e=>{if(TL.t0==null)return;const r=e.currentTarget.getBoundingClientRect(),w=r.width,span=Math.max(600,TL.max-TL.t0,simT-TL.t0);
  tlJump(TL.t0+Math.max(0,Math.min(1,(e.clientX-r.left-4)/(w-8)))*span);});

@@ -658,3 +658,14 @@ The workspace now has an explicit full width and a measured stage. `fitMonitor()
 Advance starts with the existing five-minute EEG history and labels the short trend window in minutes. Both unilateral and bilateral configurations remain available. Saved BIS Vista selection now restores correctly. No engine, dosing or physiology equations changed.
 
 `test/layout.e2e.mjs` checks all five monitors in page and fullscreen at 1440 × 900, 1366 × 768, 1920 × 1080, 1024 × 768, 390 × 844 and 844 × 390. It measures usable LCD area, viewport clipping and dock overlap, plus saved selections, initial Advance DSA history, alternate Teaching views and reachable fullscreen combination sliders. It is a CI gate alongside the induction/emergence interaction suites.
+
+## 16 October 2026 — control and navigation refinement
+
+The owner's follow-up screenshots showed that the large monitor was working, but the surrounding interface still read as a dense form. The design-critique review identified three competing settings columns, repeated instructional copy, strongly outlined selectors, and inconsistent button emphasis. The refinement applies the requested calmer, Apple-inspired hierarchy while retaining the site's warm paper, wine accent and square surfaces.
+
+- The toolbar contains monitor choice, a labelled settings icon and an enter/exit-fullscreen icon. SVG icons share stroke weight and 44 px targets, with tooltips and keyboard focus states.
+- Anaesthetic and depth form one group in the dock. A single transport group contains play/pause, elapsed time, timeline and a speed popover. Induce, Emerge and a compact Demo action remain available for teaching.
+- The settings sheet contains Advance channel selection, patient/artefact options, display adjustments and observation notes. It is a native modal dialog inside the fullscreen workspace, with keyboard focus containment, Escape/outside-click dismissal and focus return. On phones it becomes a bottom sheet.
+- Removed both requested timeline instructions and the three inline settings columns. A rewind note is available on the time readout's tooltip. Drug combinations keep the anaesthetic picker available so the user can leave combination mode.
+
+`test/controls.e2e.mjs` checks icons and target sizes, settings interactions, both Advance channel modes, keyboard focus, Escape, reachable/unobscured speed sliders, timeline keyboard control and leaving combination mode at desktop, portrait-phone and landscape-phone sizes. The existing layout and induction/emergence suites remain CI gates.
