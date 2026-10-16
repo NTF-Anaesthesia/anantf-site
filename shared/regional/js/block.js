@@ -13,6 +13,7 @@ import { coverageMap } from './dermatomes.js';
 import { prepare } from './scene.js';
 import { tierBadge } from './levels.js?v=20261015'; // same URL as brachial-plexus, plexus, spinal and /blocks/: one level state per page
 import { getBlock } from './registry.js';
+import { doseQuery } from './la.js';
 
 export const LAST_LINE = 'Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks or when combining blocks.';
 
@@ -117,6 +118,20 @@ export function doseBox(b) {
   if (d.note) box.append(fill(el('p', { class: 'tb-dose-note' }), d.note));
   box.append(el('p', { class: 'tb-dose-last', 'data-safety': 'last' }, el('strong', { text: 'Local anaesthetic toxicity: ' }), b.last || LAST_LINE));
   return box;
+}
+
+/** URL of the dose calculator, prefilled with what the block's dose box says where that reads unambiguously. */
+export function doseCheckHref(b) {
+  let q = '';
+  try { q = doseQuery(b?.dose); } catch { q = ''; }
+  return `${ROOT}blocks/calculator/${q ? `?${q}` : ''}`;
+}
+
+/** "Check the dose for this patient →" under the dose box (tier 1 with it). `dose.calc: false` leaves it out. */
+function doseCheck(b) {
+  if (b.dose?.calc === false) return null;
+  return el('p', { class: 'tb-dose-check', id: `${b.id}-dose-check`, style: { margin: '14px 0 0' } },
+    el('a', { class: 'tb-btn', href: doseCheckHref(b) }, 'Check the dose for this patient ', el('span', { 'aria-hidden': 'true', text: '→' })));
 }
 
 function glance(b) {
@@ -326,7 +341,7 @@ export function renderBlock(b, host) {
     host.append(section(b, 'sonoanatomy', 'Sonoanatomy', t, content ? asNode(content, 'div', 'tb-prose', t) : null, b.scene ? layerList(b.scene) : null));
   }
   if (b.target) host.append(plain('target', 'Target and deposition'));
-  if (b.dose) host.append(section(b, 'dose', 'Dose', 1, doseBox(b)));
+  if (b.dose) host.append(section(b, 'dose', 'Dose', 1, doseBox(b), doseCheck(b)));
   if (b.coverage) {
     const c = b.coverage;
     const t = sectionTier(b, 'coverage', clampTier(Number(c.tier)));

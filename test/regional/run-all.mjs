@@ -15,16 +15,17 @@ import path from 'node:path';
 import { args, ROOT, ensureServer } from './lib.mjs';
 
 const SUITES = [
+  { id: 'la', cmd: ['test/regional/la.test.mjs'], what: 'local anaesthetic dose maths: maxima, mg/ml, lean weight, combined fraction, dose-box parsing' },
   { id: 'static', cmd: ['test/regional/static.mjs'], what: 'shims unused, noindex, no FRCA, no SW, no personal contacts, references exist' },
   { id: 'data', cmd: ['test/regional/data.mjs'], what: 'registry, ops keys, tiers + safety rule, plexus sets, scene ids, dose consistency, no cite(' },
-  { id: 'smoke', cmd: ['test/regional/smoke.mjs', ...(args.strict ? ['--strict'] : [])], what: '19 pages × 390/1440: errors, 4xx, overflow, scans, polish, lazy 3D/iframes, credit' },
+  { id: 'smoke', cmd: ['test/regional/smoke.mjs', ...(args.strict ? ['--strict'] : [])], what: '20 pages × 390/1440: errors, 4xx, overflow, scans, polish, lazy 3D/iframes, credit' },
   { id: 'deeplinks', cmd: ['test/regional/deeplinks.mjs'], what: 'old URLs and hashes land on the right visible element; shims; redirects; edit.html' },
   { id: 'levels', cmd: ['test/regional/levels.mjs'], what: 'MO / Resident / Consultant: hiding, hints, SAFETY at MO, persistence, migration, relax' },
   { id: 'parity', cmd: ['test/regional/parity.mjs'], what: 'every WP0 baseline line and dose string still on its page (Consultant)' },
   { id: 'mo-content', cmd: ['mo/test/content.test.mjs'], what: 'existing suite: MO guide content', existing: true },
   { id: 'babymo-logic', cmd: ['babymo/test/logic.test.mjs'], what: 'existing suite: Baby MO logic', existing: true },
 ];
-const GATES = { main: ['static', 'smoke', 'deeplinks'], pr: ['static', 'data', 'smoke', 'deeplinks', 'levels', 'parity', 'mo-content', 'babymo-logic'] };
+const GATES = { main: ['static', 'smoke', 'deeplinks'], pr: ['la', 'static', 'data', 'smoke', 'deeplinks', 'levels', 'parity', 'mo-content', 'babymo-logic'] };
 
 const list = (k) => (args[k] ? String(args[k]).split(',').filter(Boolean) : null);
 let pick = list('only') || (args.gate ? GATES[args.gate] : null) || SUITES.map((s) => s.id);
