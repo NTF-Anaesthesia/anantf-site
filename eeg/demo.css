@@ -83,3 +83,18 @@ body.presenting{overflow:hidden}
  #monitor.presenting .panel .story button:last-child{font-size:12px}
  #monitor.presenting .sedwrap,#monitor.presenting .vwrap,#monitor.presenting .advwrap,#monitor.presenting .pvwrap{max-width:100%}
 }
+#monitor #tNow{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:900px){
+ #monitor.presenting .panel{align-items:start}
+ #monitor.presenting .panel .ctl{display:block}
+ #monitor.presenting .panel select{width:100%;height:44px}
+ #monitor.presenting .panel .ticks{display:none}
+ #monitor.presenting #classicWrap .statusbar,#monitor.presenting #classicWrap .bars,#monitor.presenting #classicWrap .params,#monitor.presenting #classicWrap #wTrend{display:none}
+ #monitor.presenting #classicWrap .readouts{display:block;padding:0;margin:0}
+ #monitor.presenting #classicWrap .bisbox{display:flex;align-items:center;gap:12px;padding:4px 8px}
+ #monitor.presenting #classicWrap .bisbox .v{font-size:32px;line-height:1}
+ #monitor.presenting #classicWrap .bisbox .zone{font-size:12px}
+ #monitor.presenting #classicWrap #cDsa{max-height:15vh}
+ #monitor.presenting #classicWrap #cEeg{max-height:9vh}
+ #monitor.presenting #classicWrap .glass{padding:4px}
+}
