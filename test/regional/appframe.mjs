@@ -264,5 +264,45 @@ for (const vp of [390, 1024, 1180, 1440]) {
   R.check('view transitions: off with reduced motion', off.header === 'none' && off.bar === 'none', JSON.stringify(off));
 }
 
+// ------------------------------------------------------------------ 8. Look (skin) in Settings
+// (the full skin matrix, tab bar and no-overflow checks are in skin.mjs)
+{
+  const { ctx, page, log } = await open('blocks/settings/', { vp: 390 });
+  const look = () => page.evaluate(() => ({
+    skin: document.documentElement.dataset.skin,
+    pref: document.querySelector('input[name="st-skin"]:checked')?.value,
+    saved: (() => { try { return localStorage.getItem('ra-skin'); } catch { return 'blocked'; } })(),
+    tabs: document.querySelectorAll('.ra-tabbar .ra-tab').length,
+    header: !!document.querySelector('.ntf-header')?.getClientRects().length,
+    rail: [...document.querySelectorAll('.ra-rail a[data-rail]')].map((a) => a.textContent.trim()),
+    labels: [...document.querySelectorAll('.st-skin-opt span')].map((s) => s.textContent.trim()),
+    now: document.getElementById('st-skin-now')?.textContent,
+  }));
+  const a = await look();
+  R.check('settings: a "Look" section comes first, with Automatic · App look · Website look', JSON.stringify(a.labels) === '["Automatic","App look","Website look"]' && await page.evaluate(() => document.querySelector('main section.st-section')?.id === 'look'), JSON.stringify(a));
+  R.check('settings: Look is Automatic by default (a normal tab shows the website look, no tab bar)', a.pref === 'auto' && a.skin === 'web' && a.tabs === 0 && a.header && a.saved === null, JSON.stringify(a));
+  await page.locator('.st-skin-opt:has(input[value="app"])').click();
+  await page.waitForTimeout(150);
+  const b = await look();
+  R.check('settings: "App look" switches at once, with no reload: the tab bar appears, the site header goes, ra-skin=app is saved', b.skin === 'app' && b.tabs === 5 && !b.header && b.saved === 'app' && b.pref === 'app', JSON.stringify(b));
+  await page.locator('.st-skin-opt:has(input[value="web"])').click();
+  await page.waitForTimeout(150);
+  const c = await look();
+  R.check('settings: "Website look" switches back at once: no tab bar, the site header is back, ra-skin=web is saved', c.skin === 'web' && c.tabs === 0 && c.header && c.saved === 'web' && /website/.test(c.now), JSON.stringify(c));
+  await page.locator('.st-skin-opt:has(input[value="auto"])').click();
+  await page.waitForTimeout(150);
+  const d = await look();
+  R.check('settings: "Automatic" goes back to the default (website look in a normal tab)', d.skin === 'web' && d.pref === 'auto', JSON.stringify(d));
+  R.check('settings: no errors while switching', !errs(log).length, errs(log).join(' | '));
+  await ctx.close();
+}
+{
+  // The rail lists Look first (website look, wide screen); in the app look the tab rail replaces it.
+  const { ctx, page } = await open('blocks/settings/', { vp: 1440 });
+  const rail = await page.evaluate(() => [...document.querySelectorAll('.ra-rail .ra-rail-g--page a')].map((a) => a.textContent.trim()));
+  R.check('settings: the rail lists Look first, then Level of detail', rail[0] === 'Look' && rail[1] === 'Level of detail', JSON.stringify(rail));
+  await ctx.close();
+}
+
 await browser.close();
 process.exit(R.finish());

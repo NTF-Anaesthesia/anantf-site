@@ -55,8 +55,12 @@ breadcrumb (`<span aria-current="page">Chest wall</span>`), and `page.css` if yo
   NTF Anaesthesia"**, only here at the foot of the page and never at the top, with a link back to `../`; no "for
   education only" notice, since the app is for the department's own juniors), then `ntf-footer`
 - `<body class="tb-app">`, stylesheets `../../assets/navigation.css`, `site-shell.css`, `header-nav.css`,
-  `../../shared/regional/css/regional.css?v=20261017` (it imports `appnav.css`: desktop frame and rail, bar auto-hide,
-  view transitions), and `<script type="module" src="js/page.js?v=20261017"></script>`
+  `../../shared/regional/css/regional.css?v=20261018` (it imports `appnav.css`: desktop frame and rail, bar auto-hide,
+  view transitions), and `<script type="module" src="js/page.js?v=20261018"></script>`
+- **the two looks** (ENGINE.md §2 "Skins"): the one-line inline skin script right after the `robots` meta (copy it from
+  `truncal/abdominal-wall/index.html`; the same text on every regional page, `test/regional/skin.mjs` checks it) and, after
+  your own stylesheets and just before the manifest link,
+  `<link rel="stylesheet" href="../../shared/regional/css/skin-app.css?v=20261018">`
 - nothing else for the desktop layout: the shell wraps `<main>` in `.ra-frame` with the rail (ENGINE.md §2 "App frame")
 
 ## 2. `js/page.js`: `bootPage(config)`

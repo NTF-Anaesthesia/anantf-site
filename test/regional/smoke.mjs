@@ -266,7 +266,7 @@ async function main() {
     const byPath = {};
     for (const u of r.log.requests || []) { const m2 = u.match(/^\/?(shared\/regional\/js\/[\w/.-]+\.js)(\?.*)?$/); if (m2) (byPath[m2[1]] ||= new Set()).add(m2[2] || ''); }
     const dups = Object.entries(byPath).filter(([, q]) => q.size > 1).map(([f, q]) => `${f} as ${[...q].map((x) => x || '(no query)').join(' and ')}`);
-    const stateDups = dups.filter((d) => /\/(levels|ui|search|registry|status|shell|scan|head|leg)\.js /.test(d)); // figures/head.js and leg.js keep pattern counters
+    const stateDups = dups.filter((d) => /\/(levels|ui|search|registry|status|shell|scan|head|leg|skin|appnav)\.js /.test(d)); // figures/head.js and leg.js keep pattern counters
     if (stateDups.length) problems.push(`stateful engine module loaded twice (two instances): ${stateDups.join('; ')}`);
     if (dups.length > stateDups.length) notes.push(`modules loaded under two URLs: ${dups.filter((d) => !stateDups.includes(d)).join('; ')}`);
     const otherSw = (m.serviceWorkers || []).filter((u) => u !== new URL('regional-sw.js', BASE).href);

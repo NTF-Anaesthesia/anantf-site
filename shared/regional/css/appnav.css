@@ -91,8 +91,10 @@ html[data-ra-bar=hidden] .ra-appbar{transform:translateY(calc(-100% - 2px))}
 @media print{.ra-rail,.ra-sbar{display:none!important}.ra-frame{display:block!important;padding:0!important}}
 
 /* Added to the home screen (display-mode: standalone): the app is the whole screen, so the NTF Anaesthesia site header and
-   the breadcrumbs into the rest of the site are not shown. In a normal browser tab nothing changes. */
+   the breadcrumbs into the rest of the site are not shown. In a normal browser tab nothing changes. This is the rule for a
+   page with no skin yet (script blocked); with a skin chosen (js/skin.js, css/skin-app.css) the app look hides them on every
+   regional page, in a tab or on the home screen, and the website look, picked in Settings, shows them even there. */
 @media (display-mode: standalone){
-  body:is(.tb-app,.ra-app,.spinal-app,.px,.brachial-app)>:is(.ntf-header,.ntf-crumbs),
-  body:is(.tb-app,.ra-app,.spinal-app,.px,.brachial-app) :is(.ntf-header,.ntf-crumbs){display:none}
+  html:not([data-skin]) body:is(.tb-app,.ra-app,.spinal-app,.px,.brachial-app)>:is(.ntf-header,.ntf-crumbs),
+  html:not([data-skin]) body:is(.tb-app,.ra-app,.spinal-app,.px,.brachial-app) :is(.ntf-header,.ntf-crumbs){display:none}
 }

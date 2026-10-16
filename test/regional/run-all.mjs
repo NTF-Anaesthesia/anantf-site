@@ -24,11 +24,12 @@ const SUITES = [
   { id: 'levels', cmd: ['test/regional/levels.mjs'], what: 'MO / Resident / Consultant: hiding, hints, SAFETY at MO, persistence, migration, relax' },
   { id: 'parity', cmd: ['test/regional/parity.mjs'], what: 'every WP0 baseline line and dose string still on its page (Consultant)' },
   { id: 'appframe', cmd: ['test/regional/appframe.mjs'], what: 'app frame: Settings page and links, bar auto-hide, desktop rail, docked scan, keyboard, prefetch, view transitions' },
+  { id: 'skin', cmd: ['test/regional/skin.mjs'], what: 'two looks: skin resolution (home screen, /blocks/?app, settings), app look tab bar and no overflow, same content in both' },
   { id: 'offline', cmd: ['test/regional/offline.e2e.mjs'], what: 'offline: /blocks/ and block pages render with no signal; other pages and apps untouched' },
   { id: 'mo-content', cmd: ['mo/guide/test/content.test.mjs'], what: 'existing suite: MO guide content', existing: true },
   { id: 'babymo-logic', cmd: ['babymo/test/logic.test.mjs'], what: 'existing suite: Baby MO logic', existing: true },
 ];
-const GATES = { main: ['static', 'version', 'smoke', 'deeplinks'], pr: ['la', 'static', 'version', 'data', 'smoke', 'deeplinks', 'levels', 'parity', 'appframe', 'offline', 'mo-content', 'babymo-logic'] };
+const GATES = { main: ['static', 'version', 'smoke', 'deeplinks'], pr: ['la', 'static', 'version', 'data', 'smoke', 'deeplinks', 'levels', 'parity', 'appframe', 'skin', 'offline', 'mo-content', 'babymo-logic'] };
 
 const list = (k) => (args[k] ? String(args[k]).split(',').filter(Boolean) : null);
 let pick = list('only') || (args.gate ? GATES[args.gate] : null) || SUITES.map((s) => s.id);

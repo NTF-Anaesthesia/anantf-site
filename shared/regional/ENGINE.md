@@ -19,7 +19,7 @@ Every page is unlisted and `noindex`; the owner shares the links personally (don
 |---|---|---|
 | Front door | `/blocks/` | its own script, reading `registry.js`, `ops/` and `data/decisions.js` (no clinical text of its own); app version lines at the foot |
 | Dose calculator | `/blocks/calculator/` | its own `calculator.js`, mounting `lacalc.js` |
-| Settings | `/blocks/settings/` | its own `settings.js`: level, "Hide the bar while scrolling down", "Press / to search", app version lines (§2 "App frame") |
+| Settings | `/blocks/settings/` | its own `settings.js`: the look (Automatic · App look · Website look, §2 "Skins"), level, "Hide the bar while scrolling down", "Press / to search", app version lines (§2 "App frame") |
 | Truncal landing + 3 pages | `/truncal/`, `back/`, `chest-wall/`, `abdominal-wall/` | landing chooser + engine (`bootPage`) |
 | Head and neck landing + 5 pages | `/head-neck/`, `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` | landing chooser + engine |
 | Lower-limb landing + 4 pages | `/lower-limb/`, `hip/`, `knee/`, `foot-ankle/`, `thigh/` | landing chooser + engine; Dr Chew Shi Hao's animations from `lower-limb/anim/` |
@@ -57,7 +57,8 @@ Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level co
 | `lacalc.js` | `mountLaCalc(host, prefill)`: the dose calculator form; styles in `css/lacalc.css` (prefix `lc-`) |
 | `decide.js` | the "If it goes wrong" guides: `mountGuide(host, guide, {idPrefix, headingLevel})`, `guideList(ids, {idPrefix, headingLevel, lazy})`, `openGuideFromHash()`, `ensureDecideCss()` (links `css/decide.css`, prefix `ra-dg-`). No imports |
 | `data/decisions.js` | the guide data (§3.8): `GUIDES`, `GUIDE_ORDER`, `CORE_GUIDES`, `EXTRA_GUIDES`, `guidesFor(id, region, extra)`, `validateGuide` |
-| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`. No imports. Always imported as `appnav.js?v=20261017` |
+| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`; while the app look is on it also draws the bottom tab bar (`TABS`, `currentTab`). Its only import is `skin.js`. Always imported as `appnav.js?v=20261018` |
+| `skin.js` | the two looks (§2 "Skins"): `getSkinPref` / `setSkinPref` (`localStorage` `ra-skin`: `auto` · `app` · `web`), `resolveSkin`, `getSkin`, `applySkin`, `onSkin(fn)`, `openedAsApp`. No imports, no DOM beyond `<html data-skin>`. Always imported as `skin.js?v=20261018` |
 | `offline.js` | `registerOffline()` registers `/regional-sw.js` once the page has loaded and gone quiet; `mountAppVersion(host)` draws the version lines at the foot of `/blocks/`. Always imported as `offline.js?v=20261016` |
 | `search.js` | page search index and synonyms |
 | `ui.js` | DOM helpers (`el`, `sv`, `fill`, `callout`, `table`, `details`, `stepper`, …) |
@@ -67,7 +68,7 @@ CSS in `shared/regional/css/`: `regional.css` (all shared `tb-` styles; imports 
 `appnav.css` (desktop frame and rail, bar auto-hide, the plain bar `.ra-sbar` of the region landings, cross-document view
 transitions; also imported by `truncal/landing.css` and linked by `spinal/` and `brachial-plexus/`), `scan.css` and
 `realscan.css` (linked by the scan modules themselves), `status.css`, `levels.css`, `lacalc.css`, `decide.css` (linked by
-`decide.js`).
+`decide.js`), and `skin-app.css` (the app look, linked by every regional page; §2 "Skins").
 
 `shared/regional/tools/stamp.mjs` stamps the offline worker `/regional-sw.js` (§6).
 
@@ -165,7 +166,49 @@ before, apart from the Settings entry and the plain app bar on the region landin
   the page's search (engine pages, `/blocks/`, `spinal/`, `plexus/`); pages without search ignore them. On a scan
   teacher, the left and right arrow keys change step on the image and on the step buttons (focus follows; Home / End).
 
-Added to the home screen (`display-mode: standalone`), `appnav.css` hides the NTF Anaesthesia site header and the breadcrumbs, so only the app bar shows (owner, 16 Oct 2026). The app is installable: `blocks/manifest.webmanifest` (id and start `/blocks/`, scope `/`, standalone, paper colours; icons in `blocks/icons/`, an "RA" mark in the MO guide's style) is linked from every regional page, which also gives each page a theme colour and an Apple touch icon. `/blocks/settings/` explains how to add it and shows an Install button where the browser offers one. `static.mjs` checks the manifest and the links.
+Added to the home screen (`display-mode: standalone`), the app look is on (§2 "Skins"), which hides the NTF Anaesthesia site header and the breadcrumbs, so only the app bar and the tab bar show (owner, 16 Oct 2026; `appnav.css` keeps hiding them in home-screen mode only for a page that has no skin yet). The app is installable: `blocks/manifest.webmanifest` (id and start `/blocks/`, scope `/`, standalone, paper colours; icons in `blocks/icons/`, an "RA" mark in the MO guide's style) is linked from every regional page, which also gives each page a theme colour and an Apple touch icon. `/blocks/settings/` explains how to add it and shows an Install button where the browser offers one. `static.mjs` checks the manifest and the links.
+
+### Skins (website look and app look)
+
+The same pages, content, levels, doses, anchors and hashes in two looks (owner, 16 Oct 2026): the **website look**
+(`DESIGN.md`, as the pages always were) and the **app look** (`DESIGN-APP.md`, like the MO guide and Baby MO: soft corners,
+grouped lists on a warm ground, a translucent bar, a bottom tab bar that becomes a 96 px left rail from 1024 px). Only the
+skin differs; nothing in the data or the engine's DOM depends on it.
+
+- **Which look.** `html[data-skin]` is `app` or `web`, set before first paint by one inline `<script>` in the `<head>` of every
+  regional page (the same text on all of them: copy it from `truncal/abdominal-wall/index.html`; `skin.mjs` checks it) and
+  again by `js/skin.js`. The reader's choice is `localStorage` `ra-skin`: **`auto`** (default), `app` or `web`, set in
+  Settings ▸ Look and applied at once, no reload. With `auto` the app look is used only when the block app is *opened*:
+  from the home screen (`display-mode: standalone`, or `navigator.standalone` on older iPhones), or through the block-app
+  link `/blocks/?app`, which sets `sessionStorage` `ra-in-app` for that tab (so the rest of that visit is the app look;
+  a new tab, a shared deep link or a plain visit is the website look). An explicit choice always wins. Every storage
+  read and write is in try/catch (blocked storage: website look). `?app` does nothing on any other page.
+- **The skin sheet.** `css/skin-app.css` is linked from every regional page and **every rule in it is under
+  `html[data-skin="app"]`**, so the website look is byte-for-byte what it was (`skin.mjs` fails on a loose rule; the
+  before and after screenshots of the pages are identical). It holds the `--app-*` tokens (copied from
+  `assets/app/app.css`, which is stamped into other apps and is not linked here), the ground (`#f1ede4`) and surface
+  (`#fbfaf6`: the engine's `--tb-paper` becomes the surface), the translucent blurred bar with a hairline, soft corners on
+  controls, press states, the large title (34px), the grouped-list and switch primitives used by Settings, and the tab bar.
+  Add app-look rules there, never to the shared CSS; never recolour clinical colours.
+- **Tab bar.** `initAppFeel` (appnav.js) draws `nav.ra-tabbar` while the app look is on and removes it when it is off, so the
+  website look has no extra element: **Blocks** (`/blocks/`), **Search** (the page's own search: the same function as the bar's
+  search, "/" and Ctrl+K; on a page with no search it goes to `/blocks/#search`), **Guides** ("If it goes wrong",
+  `/blocks/#wrong`), **Calculator** and **Settings**. The current tab (`currentTab()`: calculator and Settings have their
+  own, `/blocks/#wrong` is Guides, everything else is Blocks) has `aria-current="page"`, a blush pill behind the icon and a
+  semibold wine label. Line icons, 12px labels, 52 px plus the home-indicator inset; the page's bottom padding clears it
+  (reserved in CSS, so nothing jumps). From 1024 px it is a 96 px rail, `body` gets 96 px of left padding, and the desktop
+  navigation rail (`mountRail`, still built) is hidden: a page's chapters are in the app bar's chapter menu, as they
+  already are wherever the rail was. No tab bar in an iframe or `body.px-embed` (the embedded explorer).
+- **The bar and the header.** In the app look the NTF site header and the breadcrumbs are hidden on every regional page
+  (the app is the whole screen); the website look keeps them, in a browser tab and (if chosen in Settings) on the home
+  screen too. `appnav.css` still hides them in home-screen mode for a page that has no skin yet (script blocked). Still one
+  sticky bar at the top (≤ 56 px at 390 px); the tab bar is a bottom bar and does not count. Anything that sticks under the
+  bar still uses `top: var(--ra-bar-now, var(--ra-bar, 56px))`.
+- **Phase 2.** The core above restyles the frame (bars, tabs, controls, tiles, Settings). The content components (scan
+  viewer, tables, callouts, the chooser, cards, the brachial and spinal panels) still look as in the website look on the
+  app's ground; restyle them in `skin-app.css`, group by group.
+- **Adding a regional page.** Put the skin script and the `skin-app.css` link in its `<head>` (§DATA.md 1), call
+  `initAppFeel` as before; nothing else.
 
 ### Shims at old paths
 
@@ -179,8 +222,8 @@ them**, and don't delete them (`static.mjs` and `deeplinks.mjs` check both).
   landings. Bump them when you change what they load. `static.mjs` allows digits only in `js/page.js?v=`, so for a
   second bump on the same day use the next date, not a letter suffix.
 - **Stateful modules must load under one URL per page**, or they run twice and split their state. `levels.js` and
-  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016` and `appnav.js` as
-  `…?v=20261017`, from every module and every app. If you bump one, change
+  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, and `appnav.js` and `skin.js` as
+  `…?v=20261018`, from every module and every app. If you bump one, change
   every import of it in the same commit (grep for the file name). Other engine modules import each other without a
   query. `smoke.mjs` fails on a stateful module loaded under two URLs.
 - Never write `?v=…?v=…` (`static.mjs` checks).
@@ -561,7 +604,8 @@ to a regional page or the engine. Details: [`test/regional/README.md`](../../tes
 | `smoke.mjs` | every page in `PAGES` (25, including `blocks/calculator/` and `blocks/settings/`) at 390 and 1440 px: no console or page errors or failed requests, no horizontal overflow, every scan through 4 steps × each view, credit line, no service worker other than `/regional-sw.js`, lazy three.js and animation iframes, one instance per stateful module; polish targets with `--strict` |
 | `deeplinks.mjs` | every `#ch-*`, `#<block>-step-*`, `#<block>-inj-*`, `#op-*`, app state hashes, redirects, shims, `edit.html?page=` |
 | `levels.mjs` | one level control per page, correct hiding per level, hints, MO always shows dose, LAST, complications, the "If it goes wrong" section (core guides, nothing above tier 1, the LAST guide steps forward) and scan, persistence never in the URL, spinal migration, relaxing |
-| `appframe.mjs` | the app frame: Settings page (defaults, saving, level control, version lines), Settings reachable from every kind of app bar at 390 and 1440, bar ≤ 56 px, auto-hide off by default and working when on (scroll down / up, top, open menu, phone scan column follows), a page's own scrolling never hides it, rail at 1024 / 1180 / 1440 on the pages that have one and none at 390 or on the landings and `/blocks/`, the bar lined up with the site header, no overflow, the document scrolls, the scan teacher in the page flow, "/" and Ctrl+K, arrow keys on the step buttons, speculation rules (prefetch only), view-transition names (none with reduced motion) |
+| `appframe.mjs` | the app frame: Settings page (defaults, saving, level control, version lines), Settings reachable from every kind of app bar at 390 and 1440, bar ≤ 56 px, auto-hide off by default and working when on (scroll down / up, top, open menu, phone scan column follows), a page's own scrolling never hides it, rail at 1024 / 1180 / 1440 on the pages that have one and none at 390 or on the landings and `/blocks/`, the bar lined up with the site header, no overflow, the document scrolls, the scan teacher in the page flow, "/" and Ctrl+K, arrow keys on the step buttons, speculation rules (prefetch only), view-transition names (none with reduced motion), the Look control in Settings (Automatic by default, App look and Website look switch at once and are saved, the rail lists Look first) |
+| `skin.mjs` | the two looks: every page has the one inline skin script and links `skin-app.css`, every `skin-app.css` rule is under `html[data-skin="app"]`; skin resolution (a plain visit is the website look; home screen (stubbed `display-mode: standalone`), `/blocks/?app` for that tab only, an explicit choice beating both, blocked storage); in the app look on nine pages at 390 and 1440: no console errors, no overflow, five tabs with one current, 12px labels, a bottom bar (52px) or 96px rail, site header, breadcrumbs and desktop rail hidden, bar ≤ 56px; the Search and Guides tabs; the text of `<main>` identical in both looks (scan and 3D labels that follow the width excepted); the website look unchanged (no tab bar, square controls, paper ground) |
 | `parity.mjs` | at Consultant, every line of the baseline text is still on its page, and doses are identical (guide text isn't captured; `data.mjs` covers it) |
 | `offline.e2e.mjs` | its own server: `/blocks/` installs the worker and shows the version; with no signal block pages, `spinal/` and `lower-limb/` render; home and `mo/` are not answered; "Get the latest version" removes only the regional caches |
 

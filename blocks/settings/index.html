@@ -4,17 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<script>(function(){var d=document.documentElement,p='auto',a=0;try{p=localStorage.getItem('ra-skin')||'auto'}catch(e){}try{var s=sessionStorage;if(/\/blocks\/(index\.html)?$/.test(location.pathname)&&/[?&]app(&|=|$)/.test(location.search))s.setItem('ra-in-app','1');a=s.getItem('ra-in-app')?1:0}catch(e){}try{if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)a=1}catch(e){}d.dataset.skin=p==='app'||p==='web'?p:a?'app':'web'})()</script>
 <meta name="color-scheme" content="light">
 <title>Settings — Regional blocks — NTF Anaesthesia</title>
-<meta name="description" content="Settings for the regional anaesthesia pages on this device: level of detail, hiding the bar while scrolling, the keyboard shortcut for search, and the app version.">
+<meta name="description" content="Settings for the regional anaesthesia pages on this device: the look (app or website), level of detail, hiding the bar while scrolling, the keyboard shortcut for search, and the app version.">
 <link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml">
 <link rel="stylesheet" href="../../assets/navigation.css?v=20261008">
 <link rel="stylesheet" href="../../assets/site-shell.css?v=20261008">
 <link rel="stylesheet" href="../../assets/header-nav.css?v=20261008">
 <script defer src="../../assets/navigation.js?v=20261008"></script>
-<link rel="stylesheet" href="../../shared/regional/css/regional.css?v=20261017">
-<link rel="stylesheet" href="settings.css?v=20261017">
-<script type="module" src="settings.js?v=20261017"></script>
+<link rel="stylesheet" href="../../shared/regional/css/regional.css?v=20261018">
+<link rel="stylesheet" href="settings.css?v=20261018">
+<script type="module" src="settings.js?v=20261018"></script>
+<link rel="stylesheet" href="../../shared/regional/css/skin-app.css?v=20261018">
 <link rel="manifest" href="../../blocks/manifest.webmanifest">
 <link rel="apple-touch-icon" href="../../blocks/icons/apple-touch-icon.png">
 <meta name="theme-color" content="#f7f5ef">
@@ -33,6 +35,23 @@
     <p class="tb-eyebrow">Regional anaesthesia</p>
     <h1 id="st-title">Settings</h1>
     <p class="tb-lead">How the regional block pages look and behave on this device. Your choices are kept in this browser only and apply to every regional page.</p>
+  </section>
+
+  <section class="st-section" id="look" aria-labelledby="st-look-h">
+    <h2 class="st-h" id="st-look-h">Look</h2>
+    <p class="st-intro">The same pages and the same content in two looks. The app look has a tab bar along the bottom (a rail down the left on a wide screen) and softer shapes; the website look is the one used across anantf.com. Changes apply straight away.</p>
+    <fieldset class="st-skin-seg" id="st-skin">
+      <legend class="tb-sr">Look</legend>
+      <label class="st-skin-opt"><input type="radio" name="st-skin" value="auto"><span>Automatic</span></label>
+      <label class="st-skin-opt"><input type="radio" name="st-skin" value="app"><span>App look</span></label>
+      <label class="st-skin-opt"><input type="radio" name="st-skin" value="web"><span>Website look</span></label>
+    </fieldset>
+    <dl class="st-levels st-looks" id="st-looks">
+      <div data-skin="auto"><dt>Automatic</dt><dd>The app look when you open the block app from your home screen or its link, the website look otherwise. This is the default.</dd></div>
+      <div data-skin="app"><dt>App look</dt><dd>Always the app look, with the tab bar and no NTF Anaesthesia website header.</dd></div>
+      <div data-skin="web"><dt>Website look</dt><dd>Always the website look, with its header and breadcrumbs, whichever way you opened the pages.</dd></div>
+    </dl>
+    <p class="st-skin-now" id="st-skin-now" role="status" aria-live="polite"></p>
   </section>
 
   <section class="st-section" id="level" aria-labelledby="st-level-h">
@@ -71,7 +90,7 @@
 
   <section class="st-section" id="home" aria-labelledby="st-home-h">
     <h2 class="st-h" id="st-home-h">Add it to your home screen</h2>
-    <p class="st-intro">Opened from the home screen, the regional blocks fill the whole screen with no browser bar and no NTF Anaesthesia website header, like any other app. It still works without signal once you have opened the pages.</p>
+    <p class="st-intro">Opened from the home screen, the regional blocks fill the whole screen with no browser bar, in the app look (see Look, above), like any other app. It still works without signal once you have opened the pages.</p>
     <ul class="st-rows">
       <li class="st-row"><div class="st-row-t"><strong>iPhone or iPad (Safari)</strong>
         <p class="st-row-d">Tap the Share button, then <em>Add to Home Screen</em>.</p></div></li>

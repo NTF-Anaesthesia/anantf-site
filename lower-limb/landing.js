@@ -3,7 +3,7 @@
    No sources or references are shown on the page (as on the truncal and head and neck pages). */
 import { registerOffline } from '../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { LINKS as L, OP_REGIONS as REGIONS, OPS, lowerLimbCoverageMap } from '../shared/regional/js/ops/ops-lowerlimb.js?v=20261015';
-import { initAppFeel } from '../shared/regional/js/appnav.js?v=20261017'; // app bar auto-hide (Settings), keys, prefetch
+import { initAppFeel } from '../shared/regional/js/appnav.js?v=20261018'; // app bar auto-hide (Settings), keys, prefetch
 
 /* ------------------------------------------------------------------ helpers */
 const $ = (s, r = document) => r.querySelector(s);
