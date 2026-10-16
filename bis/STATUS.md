@@ -15,7 +15,7 @@ Each session keeps its own line in `status/<session>.md`. Read them before start
 ## Next (ideas, not agreed)
 
 1. More states: nitrous oxide, opioid-heavy, hypothermia.
-2. Owner to compare each skin with his own unit or photos (only the Medtronic one was built from the owner's photos); known gaps per skin are in `NOTES.md`, "The three monitor skins at a glance".
+2. Owner to compare each skin with a real unit or photos (only the Medtronic one was built from photos of a real Medtronic BIS 2-channel monitor); known gaps per skin are in `NOTES.md`, "The three monitor skins at a glance".
 3. Planned with the owner, not started: DSATrainer-inspired additions (CSA and power-spectrum panels, ECG R-wave bleed-through case,
    multitaper option, burst-suppression parameters), built our own.
 4. IntelliVue: alarm sounds, SQI triangle / EMG bar (Release L+) if the owner wants them.
@@ -42,7 +42,7 @@ Each session keeps its own line in `status/<session>.md`. Read them before start
 
 - Effect-site lag fast up (12 s) and slow down (120 s) so emergence unzips slowly and induction is quick, plus an Emergence key; depth slider shows the target BIS (forecast), effect-site marker and a green 40-60 band; relaxant default "At induction" (Off / On now keys); suppression and BIS<40 time box.
 
-- Moved to `anantf.com/bis/` (16 Oct 2026, owner); the old anawj addresses forward here.
+- Moved to `anantf.com/bis/` (16 Oct 2026, owner); the old addresses forward here.
 
 - Phase 2 (14 Oct 2026, branch ccr-0e0d2acf-njkx9t): relaxant two-stage fall, remifentanil and Bruhn rules, drug
   spectra refit, `test/engine.check.mjs`; SQI/EMG/messages like the monitor; trend, DSA MF, EEG scale, smoothing;

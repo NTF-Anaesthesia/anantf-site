@@ -80,7 +80,7 @@ Main findings:
 
 ## De-risking MODEL.md section 2 (IV PK, TCI, neuromuscular block) with a throwaway Node prototype
 
-I built a small dependency-free ES-module prototype (3-compartment + effect-site engine, two TCI controllers, rocuronium/sugammadex NMB with 1:1 binding, and suxamethonium) and ran it against every MODEL.md section-2 target. No files under /home/user/anawj-site were added or changed.
+I built a small dependency-free ES-module prototype (3-compartment + effect-site engine, two TCI controllers, rocuronium/sugammadex NMB with 1:1 binding, and suxamethonium) and ran it against every MODEL.md section-2 target.
 
 PK engine: explicit Euler at dt=0.1 s matches an RK4 reference at dt=0.01 s to 2-3 decimals for every drug (peaks and times differ by <0.002), and an independent eigenvalue calc of the Schnider matrix agrees with the simulated decay half-lives. The MODEL.md PK target table is REACHED as written: Marsh 140 mg bolus Cp0 8.77 mcg/mL (Cp 6.70/5.16/2.51 at 1/2/5 min); Marsh ke0 0.26 Ce peak 3.21 at 3.92 min and ke0 1.2 Ce peak 5.70 at 1.62 min; Schnider TTPE 1.52 min at 40 y (1.45 at 25 y, 1.71 at 75 y); Minto TTPE 1.43 min (1.23/2.26 at 20/80 y); fentanyl Shafer ke0 0.147 TTPE 3.16 min (ke0 0.117 gives 3.60). Context-sensitive half-times: Schnider ~2/3/8 min, Marsh ~6.7/8.6/12, Minto flat ~2.1 (short vs measured 3.2; assert with tolerance), fentanyl 17.8/70/256 min. All matched.
 
@@ -127,7 +127,7 @@ Suxamethonium (Roy 2002): the published ke0 0.058/min gives the right fast onset
 
 ### Caveats
 
-Prototype, not clinically reviewed; numbers are throwaway integrations to test structure, not the real engine. The directional-ke0 fix for rocuronium is my own design choice [D], not a published model — it is a pragmatic way to reconcile onset and reversal in one effect compartment; a physiologically purer alternative (sugammadex pulling drug out of a biophase sink, or modelling receptor occupancy with a junctional safety margin) was not prototyped. ke0_off, Ce50 0.95 and Hill 3.5 are tuning choices, as are the suxamethonium retuned ke0/Ce50/Hill; sources cited are for the TARGETS, not these values. TCI plasma-overshoot numbers depend on the assumed max infusion rate (1200 mL/h of 10 mg/mL propofol, 50 mcg/mL remifentanil). The PTC model remains an unvalidated heuristic. I could not pull the Kleijn 2011 full text (PMC/Europe PMC both failed with rate-limit/500); rocuronium PK equations were cross-checked against the opentiva Kleijn implementation and the research notes instead. Kinetic-binding kon was an assumed value (no in-vitro rate constant to hand) used only to demonstrate stiffness. Nothing was written to the anawj-site repository.
+Prototype, not clinically reviewed; numbers are throwaway integrations to test structure, not the real engine. The directional-ke0 fix for rocuronium is my own design choice [D], not a published model — it is a pragmatic way to reconcile onset and reversal in one effect compartment; a physiologically purer alternative (sugammadex pulling drug out of a biophase sink, or modelling receptor occupancy with a junctional safety margin) was not prototyped. ke0_off, Ce50 0.95 and Hill 3.5 are tuning choices, as are the suxamethonium retuned ke0/Ce50/Hill; sources cited are for the TARGETS, not these values. TCI plasma-overshoot numbers depend on the assumed max infusion rate (1200 mL/h of 10 mg/mL propofol, 50 mcg/mL remifentanil). The PTC model remains an unvalidated heuristic. I could not pull the Kleijn 2011 full text (PMC/Europe PMC both failed with rate-limit/500); rocuronium PK equations were cross-checked against the opentiva Kleijn implementation and the research notes instead. Kinetic-binding kon was an assumed value (no in-vitro rate constant to hand) used only to demonstrate stiffness.
 
 ## Gas exchange and control of breathing (MODEL.md sections 7-8): de-risking the planned structure with a throwaway Node prototype
 
@@ -192,7 +192,7 @@ CAPNOGRAM/TIDAL QUESTION: Per-breath tidal ventilation at dt 0.1 s is NOT needed
 
 ### Caveats
 
-Prototype only; nothing under /home/user/anawj-site was added or changed (plan-only, as instructed). Explicit Euler at dt=0.1 s was stable for every scenario here (no stiffness seen); the PK/effect-site and CO2 relaxations have time constants >>0.1 s. Tuning choices [D] not from a primary source: vvO2 5200 mL, VO2 apnoea 210-230, the CO2 venous transient (Jmax 8.5, tau 22 s), Feff exponent 1.5, apnoeic-threshold kAT 0.11-0.12, and the per-condition FRC/shunt/CO/VO2 scalings for obese and pregnant - all chosen to fit the published targets, which should be owner-reviewed before any number is called validated. Sourced numbers (ODC, apnoea times, CO2 rates, Bouillon/Schnider/Minto params, Nieuwenhuijs, Drummond) are from the existing research notes with PMIDs. The air scenario relies on the separately-planned ~30 s oximeter lag (monitor.js) to reach 1 min; the raw gas model gives ~34 s, so the gas model and the display lag must be validated together. The single well-mixed alveolar compartment washes O2 in faster than real tidal breathing (EtO2 0.9 at ~77 s vs clinical ~3 min) - fine for teaching the FRC/VA time-constant law but not a literal pre-ox duration. Open-airway apnoeic oxygenation needs the PACO2-into-alveolar-gas-equation coupling (rec 5) before its duration is trustworthy.
+Prototype only (plan-only, as instructed). Explicit Euler at dt=0.1 s was stable for every scenario here (no stiffness seen); the PK/effect-site and CO2 relaxations have time constants >>0.1 s. Tuning choices [D] not from a primary source: vvO2 5200 mL, VO2 apnoea 210-230, the CO2 venous transient (Jmax 8.5, tau 22 s), Feff exponent 1.5, apnoeic-threshold kAT 0.11-0.12, and the per-condition FRC/shunt/CO/VO2 scalings for obese and pregnant - all chosen to fit the published targets, which should be owner-reviewed before any number is called validated. Sourced numbers (ODC, apnoea times, CO2 rates, Bouillon/Schnider/Minto params, Nieuwenhuijs, Drummond) are from the existing research notes with PMIDs. The air scenario relies on the separately-planned ~30 s oximeter lag (monitor.js) to reach 1 min; the raw gas model gives ~34 s, so the gas model and the display lag must be validated together. The single well-mixed alveolar compartment washes O2 in faster than real tidal breathing (EtO2 0.9 at ~77 s vs clinical ~3 min) - fine for teaching the FRC/VA time-constant law but not a literal pre-ox duration. Open-airway apnoeic oxygenation needs the PACO2-into-alveolar-gas-equation coupling (rec 5) before its duration is trustworthy.
 
 ## circulation (MODEL.md section 5; research/cardio.md sections 1-3)
 
@@ -311,7 +311,6 @@ Results against each target:
 - **Ordering of the tuning:** awake haemorrhage, BRS and propofol were tuned before the final change to Cp 25. run-all.mjs re-ran them with the final parameters, and those consolidated numbers are the ones reported. The propofol mapping was not re-tuned for the age-75 case.
 - **Not tested:** fluids, other drugs, Sjøen 2026, Roizen 1981, filling-time loss and atrial kick.
 - **Precision:** conservation holds to floating-point rounding only, not bitwise. Math.exp and Math.log feed the state, so golden tests across browsers need a tolerance.
-- **Repository untouched:** nothing under /home/user/anawj-site was changed.
 
 ## Deterministic maths (fmath.js, rng) and the MODEL.md section 4 drug-effect surfaces
 
@@ -430,4 +429,3 @@ PART B, surfaces.
 - The Bouillon BIS parameters remain [S] (PAS transcription).
 - Plausibility of BIS around 49-55 at 1 MAC sevoflurane, and around 81 at MAC-awake, is from memory [U].
 - The ECMA-262 2025 HTML spec was downloaded to the scratchpad folder specdl/ and only parsed as text.
-- Nothing under /home/user/anawj-site was changed.

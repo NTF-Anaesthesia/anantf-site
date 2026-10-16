@@ -66,8 +66,8 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `ra.html`, `draft-ra.html` | Redirects to the lower-limb pages (old links) | No |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
 | `pocus/{cardiac,lung,shock,efast,dvt}/` | Draft POCUS tutorials, reached from `draft.html` | No (draft) |
-| `bis/` | BIS to DSA teaching simulator: processed EEG on Medtronic BIS, BIS Advance, Masimo SedLine and Philips IntelliVue screens, with a timeline (one static page, synthetic EEG, no data). Moved from anawj.com on 16 Oct 2026. Start with `bis/NOTES.md`; tests in `.github/workflows/checks.yml` | No (unlisted, noindex) |
-| `ot/` | Operating-theatre simulator for teaching: a general anaesthetic, the vitals monitor and crisis scenarios (one static site, synthetic physiology, no data). Moved from anawj.com on 16 Oct 2026. Start with `ot/NOTES.md`, then `ot/PLAN.md`; run `tools/test-ot.sh` | No (unlisted, noindex) |
+| `bis/` | BIS to DSA teaching simulator: processed EEG on Medtronic BIS, BIS Advance, Masimo SedLine and Philips IntelliVue screens, with a timeline (one static page, synthetic EEG, no data). Moved from an earlier address on 16 Oct 2026. Start with `bis/NOTES.md`; tests in `.github/workflows/checks.yml` | No (unlisted, noindex) |
+| `ot/` | Operating-theatre simulator for teaching: a general anaesthetic, the vitals monitor and crisis scenarios (one static site, synthetic physiology, no data). Moved from an earlier address on 16 Oct 2026. Start with `ot/NOTES.md`, then `ot/PLAN.md`; run `tools/test-ot.sh` | No (unlisted, noindex) |
 | `edit.html` | Page editor for the maintainers (see "Edits sent from the page editor") | No (unlisted, noindex) |
 
 The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
@@ -116,7 +116,7 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   and `MEDIA` in `regional-sw.js` (`node test/regional/version.test.mjs` checks). Its version lines are at the foot of
   `/blocks/`. Its offline test is `node test/regional/offline.e2e.mjs`; both run in `node test/regional/run-all.mjs`.
 - Every installable app (one with a service worker, today `babymo/`, `mo/`, `qbank/` and the regional app) ends its settings or start page with two lines of small
-  muted text (owner, 14 Oct 2026, as on anawj.com): `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
+  muted text (owner, 14 Oct 2026): `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
   read from the app's cache name) and a `Not updating? Get the latest version` button that checks for signal, then
   removes only that app's service worker and caches and reloads, never touching saved answers or sign-in.
 - After editing a page, open it in a browser (or a local static server) and check it still loads

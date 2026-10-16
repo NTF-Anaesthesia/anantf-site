@@ -79,7 +79,7 @@ ot/
   fonts/                  copied from bis/fonts/ with its README.md (licences)
   test/*.test.mjs         model tests in Node (fast; run by CI on every PR)
   test/model.check.mjs    calibration table: every tuning target in MODEL.md with its value and pass/fail
-  test/soak.mjs           hours of simulated time for firetop (not *.test.mjs, so CI does not run it)
+  test/soak.mjs           hours of simulated time, a long local run (not *.test.mjs, so CI does not run it)
   test/e2e.mjs            browser test, phone and desktop, axe
 ```
 
@@ -124,8 +124,8 @@ step and no dependencies (`NOTES.md`). Each module stays under about 400 lines s
   A check (model test from M0.1) fails on `**`, `Math.pow`, `exp`, `log`, `log2`, `log10`, `log1p`, `expm1`, `sin`,
   `cos`, `tan`, `atan`, `atan2`, `sinh`, `cosh`, `tanh`, `cbrt`, `hypot` or `Math.random` anywhere in `js/model/`;
   squares and cubes are written `x*x`, `x*x*x`. Edge cases are defined: pow(0, y > 0) = 0; log(x ≤ 0) throws in tests;
-  sigmoids written as 1/(1 + U^−γ) with U ≤ 0 giving 0. Firetop (home computer) runs a WebKit replay check before
-  release; CI optionally runs the model tests under Bun (JavaScriptCore) too.
+  sigmoids written as 1/(1 + U^−γ) with U ≤ 0 giving 0. A WebKit replay check (a long local run or a real-device
+  check) runs before release; CI optionally runs the model tests under Bun (JavaScriptCore) too.
 - **Cost.** About 3–4 µs a step in the prototypes (the circulation with ventilator, its two bisections, the drug
   models); 20x is 200 steps a second, under 1 ms a second of CPU. A 30-minute fast-forward (18,000 steps) takes about
   0.1 s on a desktop and under a second on a slow phone.
@@ -191,8 +191,7 @@ preset counts towards the fast-forward budget above.
 - `?test` (tests only) exposes `step(n)`, `pause()` and `state` on `window` so the e2e test advances the model directly
   instead of waiting in real time.
 - `?demo` is not needed (no data, no sign-in). Share links (M5.2) are relative (`?case=…&run=…`), never absolute.
-- Moved to `anantf.com/ot/` on 16 Oct 2026 (owner); the old addresses `anaes.anawj.com/ot/` and `anawj.com/ot/`
-  forward here (set up in the anawj-site repo).
+- Moved to `anantf.com/ot/` from an earlier address on 16 Oct 2026 (owner); the old addresses forward here.
 
 ### Per-device settings
 
@@ -262,7 +261,7 @@ time whatever the speed, so 20x does not mean 20 DOM writes a second.
   `step(n)`, pauses before each axe run; axe on every screen and every control tab; no horizontal scroll; no console
   errors; no network requests outside the folder; speed keys; an induction by clicks with the numbers moving the right
   way; a deep link showing non-blank lanes within 1.5 s; the alarm bar's text; at 20x, VF and PEA draw no pleth pulse.
-- **Soak** (`test/soak.mjs`, firetop or a long local run): 8 simulated hours of maintenance at 20x per scenario seed,
+- **Soak** (`test/soak.mjs`, a long local run): 8 simulated hours of maintenance at 20x per scenario seed,
   checking no NaN, no negative volumes, values inside physiological bounds, memory flat.
 - `tools/test-ot.sh` already runs the model tests and the browser test; PRs that
   add screens or source links also run `node tools/proofread.mjs`.
@@ -319,7 +318,7 @@ subsystem (M1.4 runs before the circulation exists, so `pd.auto` is tested on it
 - **Phone performance.** Incremental canvas drawing with a history refill, DPR capped at 2, numerics at most twice a
   second, no layout work per frame.
 - **Cross-browser replay.** `fmath.js`, tested bit-identical on V8 and JavaScriptCore; SpiderMonkey and iOS Safari are
-  checked by firetop before release.
+  checked before release (a long local run or a real-device check).
 - **Two sessions at once.** One session per milestone; others plan only (`AGENTS.md`).
 
 ## Questions for the owner (with the default used until answered)

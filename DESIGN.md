@@ -4,9 +4,8 @@ The default look for every new or edited page on anantf.com. Warm paper, ink tex
 square edges and hairline rules. Light only. The archived popliteal block page (`popliteal-animation/`) is the reference
 for interactive teaching apps.
 
-The full design system (brand book, tokens, component previews, logos and illustrations) is the
-"NTF Anaesthesia" Design System artifact: https://claude.ai/artifact/ToxR5xJfay9WZuScHZxTVp
-(private to its owner; this file holds everything needed to build a page).
+The full design system (brand book, tokens, component previews, logos and illustrations) is kept privately by the
+owner; this file holds everything needed to build a page.
 
 ## Rules
 

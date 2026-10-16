@@ -238,8 +238,8 @@ tools, crisis cards or other site pages. Interactive ids: tools/figures/crises/d
   controlled DM delays gastric emptying (RSI) (HB23).
 - heart (C) Heart disease: hypertension (thresholds per PEC guideline; ≥ 180/110 flag), IHD and stents (dual antiplatelets:
   never stop without cardiology), heart failure, aortic stenosis (avoid hypotension and tachycardia), AF and anticoagulation,
-  pacemakers and ICDs (device details and last check, diathermy, magnet locations from the handbook: A&E P1, OT control
-  room, ICU pods 2 and 3, cardiac lab control room; vendor on-call numbers are on the intranet).
+  pacemakers and ICDs (device details and last check, diathermy, where the magnets are kept per local policy; vendor
+  on-call numbers are on the intranet).
 - lungs (C) Lung disease: asthma (continue inhalers, salbutamol before, avoid triggers), COPD, recent URTI (discuss; often
   postpone elective cases within 2–4 weeks with symptoms), smoking.
 - kidney-liver (C) Kidney and liver disease: dialysis the day before, potassium, fistula arm (no BP or IV), drug choice
@@ -318,71 +318,10 @@ tests, MAC values, fasting, 4-2-1, ABL, blood volumes, LA maximums), asa (ASA gr
 blood thinners before surgery), crisis (First actions in a crisis), kit (Sizes and equipment), local (NTFGH: where things
 are, smartphrases, rules for baby MOs).
 
-## AMENDMENTS (15 Oct, after a gap check against the handbook): these override anything above
+## Amendments (15 Oct, after a gap check against the handbook)
 
-Handbook items to add:
-- pacu/pacu-job: the PACU MO is physically present in PACU at all times; for an urgent break tell the OTC and the APN first (HB9).
-- preop/history: cardiac also cardiomyopathies, previous cardiac interventions and the latest echo or cardiac scan; respiratory
-  severity markers (previous admissions or intubations, triggers, signs of right-heart strain, control and compliance); GI
-  alcohol intake and continue liver medicines; endocrine thyroid control and latest TFT, Cushing's (HB14–15).
-- preop/airway: also facial trauma or deformity, deviated nasal septum and nasal polyps (matter before a nasal airway or tube) (HB15).
-- maintenance/depth: the inhalational agents (HB33): all volatiles are bronchodilators, MH triggers, eliminated by
-  ventilation, greenhouse gases; sevoflurane non-irritant (gas induction), compound A below 2 L/min (handbook); desflurane
-  airway irritant, expensive, highest warming potential, not stocked in OT; nitrous oxide cheap, less myocardial
-  depression, lowers volatile need, but expands gas spaces, raises PVR, emetogenic, lowers FiO2, ~109-year lifetime. MAC-awake:
-  the handbook says about 0.2 MAC; most texts give 0.3–0.4: say both.
-- patients/heart: pacemaker magnets: A&E P1 (1, nurse in charge), OT control room (1, nurse in charge), ICU pods 2 and 3
-  (2, nurse in charge), cardiac lab (CVL 2) control room (1, CVL technician or sister in charge) (HB37). Vendor numbers
-  stay on the intranet.
-
-Missing beginner content to add:
-- start/first-week checklist: also find the arrest trolley and defibrillator, the MH box with dantrolene, Intralipid,
-  sugammadex stock, and learn how to call an emergency in OT and how the massive transfusion protocol is activated.
-- preop/medicines: continue beta-blockers and statins; ticagrelor (stop 5 days before when the surgeon and cardiologist agree;
-  3–5 days in some guidance), edoxaban (2–3 days; longer before neuraxial), warfarin (usually 5 days; INR on the day; bridging
-  decided by the team); aspirin is usually CONTINUED for secondary prevention (stents, IHD, stroke) unless the surgeon asks
-  otherwise — present the handbook's 5–7 days as "if the surgeon wants it stopped"; DOAC intervals are longer with poor kidney
-  function (especially dabigatran), high-bleeding-risk surgery and neuraxial blocks (link ../spinal/#tq-anticoag); ticlopidine
-  is rarely seen now. Never stop antiplatelets after a recent stent without cardiology.
-- induction/intubation: record a difficult airway: Cormack–Lehane grade, what worked (device, blade, bougie), and tell the
-  patient / airway alert letter; consultant leads.
-- emergence/reversal: neostigmine only once the TOF count is 4 (fade present); at lower counts use sugammadex or wait; always
-  confirm a TOF ratio ≥ 0.9; sugammadex reduces hormonal contraception: advise extra contraception for 7 days.
-- pain-aps: add topic **pdph** (C) "Headache after a spinal or epidural": recognise post-dural puncture headache (postural,
-  within days), red flags for other causes (fever, neck stiffness, focal signs, non-postural, severe), first-line care,
-  when to escalate to the APS consultant (epidural blood patch is a consultant decision). Add topic **opioid-tolerant** (B)
-  "Patients already on opioids": chronic opioids, buprenorphine and methadone (continue; don't stop; involve APS), higher
-  needs, multimodal.
-- pain/PACU morphine: titrate morphine 1–2 mg every 5–10 min (it peaks at 15–20 min, so doses stack in the elderly, renal
-  impairment and OSA) up to a ceiling of about 0.1 mg/kg in PACU, then call the primary anaesthetist.
-- pacu: add topic **day-surgery** (B) "Day surgery and going home": who is suitable (ASA, BMI, OSA, escort and a responsible
-  adult for 24 h), criteria for going home (not just leaving PACU), advice and when to come back.
-- maintenance: add topic **blood** (B) "Blood products and transfusion reactions": group and screen vs crossmatch, the
-  hospital's maximum blood ordering list, checking blood at the bedside, reactions (ABO incompatibility, allergic, febrile,
-  TACO, TRALI): stop, call, supportive care; patients who refuse blood (plan with the consultant).
-- good: add topic **infection** (C) "Infection control and sharps": one needle, one syringe, one patient; never reuse a
-  syringe or share vials between patients; aseptic non-touch technique for drugs and lines, full asepsis for neuraxial;
-  PPE for aerosol-generating procedures; sharps; needlestick injury: wash, report, follow the protocol. Add topic
-  **incidents** (C) "When something goes wrong": drug error or critical incident: treat the patient, tell your consultant,
-  document facts, file an incident report, open disclosure led by the consultant, debrief, look after yourself.
-- New crisis card id **equipment-failure** "Oxygen, ventilator or power failure": pipeline O2 failure (switch to the
-  cylinder, low flows, self-inflating bag on room air if needed), ventilator failure (hand ventilate), power failure
-  (battery, torch), vaporiser unusable → TIVA; call for help.
-
-Corrections and levels:
-- induction/rsi and the rsi tool: rocuronium for RSI is 1–1.2 mg/kg; the handbook's "1 mg/kg (lean body weight)" under-doses
-  most non-obese adults (lean weight ≈ 0.8 × total). Teach: 1–1.2 mg/kg on ideal body weight (= total weight in a non-obese
-  adult; in obesity, ideal or lean weight — the consultant decides), and state the handbook's wording. Sugammadex 16 mg/kg
-  is a way to wake the patient up after rocuronium, not a guaranteed airway rescue.
-- setup/airway-kit: i-gel sizes are 3 = 30–60 kg, 4 = 50–90 kg, 5 = over 90 kg; classic LMA 3 = 30–50, 4 = 50–70, 5 = 70–100 kg.
-- maintenance/fluids-blood: put the caveat in the core text: patients drink clear fluids until 2 h before, so the
-  handbook's deficit sum and large "insensible loss" figures overestimate; replace losses, avoid overload. Blood volume:
-  adult men 70 mL/kg, women 65 mL/kg (the handbook's 60 and 50 look low: say so).
-- pacu/discharge: state plainly that ASA III patients are excluded from nurse-led discharge EXCEPT ASA III cataract patients.
-- pacu/ponv: metoclopramide and haloperidol are contraindicated in Parkinson's disease (link patients/neuro).
-- Make these CORE (not beyond): setup? the WHO checklist part of start/the-list; induction/difficult-airway;
-  induction/preoxygenation; preop/fasting; emergence/emergence-problems; pain-aps/epidurals. Scenarios cant-intubate and
-  last-block: core.
+Additions and corrections from the gap check were applied to the content on 15 Oct 2026. Corrections to the source
+handbook were raised privately with the department; the guide already uses the corrected values.
 
 ## Fixed ids for the MO guide (all authors use exactly these)
 

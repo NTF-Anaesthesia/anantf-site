@@ -71,10 +71,7 @@ performance on a mid-range phone (no dropped frames at 20x), offline use if the 
 - Branch per milestone from latest `main`; PR title starts "OT sim: …"; merge your own once checks are green and
   report with the PR link. Do not touch other apps' files except the registration lines (routes, labeler, checks).
 - If a milestone is large, split it, but keep each PR small enough to review on a phone.
-- If blocked (cloud limits, a long test run, a secret), hand to the home computer ("firetop", the owner's always-on
-  Claude Code session with his own credentials) per `OPERATIONS.md`, "The home computer"; do not stop. For this app it
-  is useful for: soak runs of the model (hours of simulated time at 20x), Safari/WebKit and real-phone checks, and
-  anything needing a sign-in. `ot/` has no live project, so firetop needs no sign-in for it. Send it the branch,
-  what to run, and what to report back; it changes live projects only with the owner's OK.
+- If blocked (cloud limits, a long test run such as a soak run, a Safari/WebKit or real-phone check, a secret), ask
+  the owner; carry on with the rest meanwhile.
 - Never add the page to the homepage or other apps. Keep `noindex`.
 - Save state (`/save-state`) before compacting and when ending.

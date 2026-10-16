@@ -29,21 +29,11 @@ addresses.
   `assets/app/` still means `node mo/guide/tools/stamp.mjs` (and the other apps' stamps), exactly as before.
 - Cost: Cloudflare's free plan (100,000 Worker requests a day); only this one address uses it.
 
-## The owner's Cloudflare clicks (once, after this is merged)
+## Setup
 
-`anantf.com`'s DNS is already on Cloudflare (nameservers `*.ns.cloudflare.com`), so this needs no DNS move.
-
-1. <https://dash.cloudflare.com> → **Workers & Pages** → **Create** → **Import a repository** (Workers Builds) → choose
-   `NTF-Anaesthesia/anantf-site` (install the Cloudflare GitHub app on that repo if asked). Worker name **`anantf-mo`**
-   (it must match `wrangler.jsonc`), production branch `main`, leave the build command empty and the deploy command
-   `npx wrangler deploy`.
-2. When the first build has finished: **Workers & Pages** → `anantf-mo` → **Settings** → **Domains & Routes** → **Add** →
-   **Custom domain** → `mo.anantf.com` → **Add domain**. Cloudflare creates the DNS record and certificate itself (a few
-   minutes).
-3. **For the Baby MO test only:** in the Firebase console, project `ntf-mo-portal` → **Authentication → Settings →
-   Authorized domains → Add domain** → `mo.anantf.com`. Until then faculty Google sign-in fails on `mo.anantf.com/test/` (MOs
-   signing in with the passphrase use anonymous sign-in and don't need it). If the project's API key is restricted by website in
-   Google Cloud (Credentials), add `mo.anantf.com/*` there too. The guide has no sign-in and needs nothing.
+The one-time Cloudflare and Firebase console setup (the Worker, the `mo.anantf.com` custom domain, and adding
+`mo.anantf.com` to the Baby MO test's Firebase authorised domains, as in `babymo/SETUP.md` step B) is done by the owner:
+ask the owner.
 
 Check: `mo.anantf.com/` shows the landing page, `/guide/` the guide, `/test/` the Baby MO test (`?demo` works without Firebase;
 sign in as faculty once the domain is added), `/babymo/` forwards to `/test/`, and `anantf.com/` still answers from GitHub Pages

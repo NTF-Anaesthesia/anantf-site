@@ -10,7 +10,7 @@ Lasting decisions for `ot/`. Status and next steps: `STATUS.md`. The build brief
   gives advice for a real patient. Say so on the page.
 - One static site: no data, no sign-in, no storage beyond per-device settings. All patients are synthetic.
   Public repo: no real patient, case or hospital data, and no names.
-- Lives at `anantf.com/ot/` (this repo's folder `ot/`, GitHub Pages; moved from anawj.com on 16 Oct 2026, owner). Unlisted: `noindex`, never
+- Lives at `anantf.com/ot/` (this repo's folder `ot/`, GitHub Pages; moved from an earlier address on 16 Oct 2026, owner). Unlisted: `noindex`, never
   linked from the homepage. Relative paths only.
 - Related: `bis/` (processed EEG; reuse its engine ideas, fonts and monitor look rather than redoing them).
 
@@ -288,23 +288,3 @@ CI and process:
   (every subsystem reads the previous step); `fmath.js` measured bit-identical on V8 and JavaScriptCore; the PR order
   now puts gas exchange before volatile agents and adds scenario drugs (M4.0) and resuscitation (M2.8). "What is not
   modelled" and the known misses are kept in `MODEL.md`.
-
-## Permissions for unattended sessions (14 Oct 2026)
-
-`.claude/settings.json` allows what a milestone loop needs without a prompt: the test scripts (`tools/test-*.sh`,
-`node ot/test/*` and other apps' tests), local static servers and `curl` to localhost, `git add/commit/checkout/
-merge origin/main/pull`, pushes to `claude/*` branches, reading sources (web search and fetch, PubMed tools), and the
-PR loop (open, update, read checks, merge your own PR). Sessions may edit `.claude/settings.json` to keep this list
-current (owner's OK, 14 Oct 2026); widen it only for what the work needs, and say what you added in the PR.
-It still **asks** for Codex, Firebase and anything that signs in to a live project (`CLAUDE.md`); never add allow rules
-for a force-push to `main`, secrets or live-project sign-in.
-Firestore rules (owner, 14 Oct 2026): a session may merge a PR that changes a `firestore.rules` without waiting for the
-owner, because rules and data are the owner's biggest headache and he does not want to intervene. Do it carefully: run
-`tools/test-rules.sh` (local emulator, fake accounts) first, merge only when the Checks are green, then confirm the
-"Deploy Firestore rules" run succeeded, and say in the report which rules changed and what they now allow or deny. The
-deploy compiles the rules first, so a syntax error leaves the live rules as they were. `ot/` itself has no
-Firestore (no data, no sign-in).
-The permission *mode* is set in the app, not in the repo: pick **Auto** from the mode dropdown when starting the build
-session. Settings are read from `main`, so they apply to new sessions once the PR is merged.
-Network (checked 14 Oct 2026): GitHub, npm, PubMed/NCBI, ANZCA and MHAUS are reachable. If a guideline site is denied,
-the owner adds the host under Allowed domains in the environment settings.
