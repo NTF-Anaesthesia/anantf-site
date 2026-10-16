@@ -18,7 +18,7 @@ function advLay(){
  const S=[];
  tr.forEach((p,i)=>{
   if(p==='bis')S.push({k:'bisH',fix:two?36:37},{k:'bis',w:grp?3.35:1});
-  else if(p==='dsa'){S.push({k:'dsaH',fix:two?36:37});if(grp)S.push({k:'dsaL',w:1.15},{k:'asymP',w:1.7},{k:'dsaR',w:1.15});else S.push({k:'dsa',w:1});}
+  else if(p==='dsa'){S.push({k:'dsaH',fix:two?36:37});if(grp)S.push({k:'dsaL',w:1.15},{k:'asymP',w:.7},{k:'dsaR',w:1.15});else S.push({k:'dsa',w:1});}
   else if(p==='asym')S.push({k:'asymH',fix:24},{k:'asym',w:1});
   if(i<tr.length-1)S.push({k:'gap',fix:two?4:14});});
  if(tr.length)S.push({k:'axis',fix:two?36:22});
@@ -94,7 +94,7 @@ const advV=(ctx,x,y0,y1,col,dash)=>{ctx.beginPath();if(dash)ctx.setLineDash(dash
 function advFrame(ctx,y,h){ctx.strokeStyle=AC.frame;ctx.lineWidth=1;ctx.strokeRect(ADV_X+.5,Math.round(y)+.5,ADV_PX,Math.round(h));}
 const advXt=(D,t)=>ADV_X+(t-D.tL)/D.win*ADV_PX;
 function advTicks(D){ // labelled ticks: every 10 min for 1 h, hourly for 6 h, 2-hourly for 12 h, 4-hourly for 24 h (the manual shows the 1 h scale)
- const stepMin={60:10,360:60,720:120,1440:240}[ADV.win]||10,out=[],base=Math.floor(T0/1000),a=D.tL+base,s=stepMin*60;
+ const stepMin={5:1,15:5,60:10,360:60,720:120,1440:240}[ADV.win]||10,out=[],base=Math.floor(T0/1000),a=D.tL+base,s=stepMin*60;
  for(let t=Math.ceil(a/s)*s;t<=D.tL+D.win+base+1e-6;t+=s)out.push(t-base);return out;}
 function advFmtT(t,secs){const d=new Date(T0+t*1000),p=n=>String(n).padStart(2,'0');let hh=d.getHours();
  if(!ADV.hr24){const ap=hh>=12?'PM':'AM';hh=hh%12||12;return `${hh}:${p(d.getMinutes())}${secs?':'+p(d.getSeconds()):''} ${ap}`;}
@@ -105,7 +105,7 @@ function advLine(ctx,pts,yf,D,col,lw,connect){ctx.beginPath();let pen=false;ctx.
 // ----- panels -----
 const ADV_SECAX={emg:{lo:30,hi:80,step:10,col:AC.emg},sr:{lo:0,hi:100,step:20,col:AC.sr},sqi:{lo:0,hi:100,step:20,col:AC.sqi},burst:{lo:0,hi:30,step:5,col:AC.burst},bis:{lo:0,hi:100,step:20,col:AC.bisR}};
 // vertical gridlines at the labelled times: all alike, every third one brighter
-function advGrid(ctx,D,y0,y1,dim){const tk=advTicks(D),s=({60:10,360:60,720:120,1440:240}[ADV.win]||10)*60,base=Math.floor(T0/1000);
+function advGrid(ctx,D,y0,y1,dim){const tk=advTicks(D),s=({5:1,15:5,60:10,360:60,720:120,1440:240}[ADV.win]||10)*60,base=Math.floor(T0/1000);
  for(const t of tk)advV(ctx,advXt(D,t),y0,y1,Math.round((t+base)/s)%3===0?'#6a6e76':dim||'#4a4e56');}
 // the shared vertical gridlines run over the DSA field too (faint, black)
 function advGridDim(ctx,D,y0,y1){for(const t of advTicks(D))advV(ctx,advXt(D,t),y0,y1,'rgba(0,0,0,.32)');}

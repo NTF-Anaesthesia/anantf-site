@@ -340,7 +340,10 @@ function paintOff(){if(mon.skin!=='classic')return;const d=offImg.data;const sta
  offCtx.putImageData(offImg,0,0);}
 let view='both';
 // lane heights: smaller on phones so the monitor and the controls fit one screen
-const laneH=()=>{const n=innerWidth<600;return view==='both'?{dsa:n?150:190,eeg:n?90:110}:{dsa:n?260:300,eeg:n?220:280};};
+const laneH=()=>{const n=innerWidth<600;
+ const height=id=>{const lane=$(id);if(!lane||lane.hidden)return 0;return Math.max(30,lane.clientHeight-lane.querySelector('.lbl').offsetHeight-6);};
+ if($('monitor')?.dataset.skin==='classic')return {dsa:height('wDsa'),eeg:height('wEeg')};
+ return view==='both'?{dsa:n?150:190,eeg:n?90:110}:{dsa:n?260:300,eeg:n?220:280};};
 // monitor clock: sim time from page open (the warm start's 5 min end now), so the trend axis matches the clock at any speed
 const T0=Date.now()-300e3,clk=t=>{const d=new Date(T0+t*1000);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');};
 const AMBER='#ffb454',MFC='#b47cff',EMGC='#5fd08f';
@@ -633,7 +636,7 @@ $('tReset2').onclick=()=>{tim.sup=tim.low=R.tim.sup=R.tim.low=0;dirty=true;};
 function setTeach(on){mon.teach=on;$('mTeach').checked=on;$('vZone').hidden=!on;$('tgtCap').hidden=!on;dirty=true;try{localStorage.setItem('bisdsa.teach',on?'1':'0');}catch(e){}}
 $('mTeach').onchange=e=>setTeach(e.target.checked);
 try{if(localStorage.getItem('bisdsa.teach')==='0')setTeach(false);}catch(e){}
-let skin0='classic';try{{const q=localStorage.getItem('bisdsa.skin');if(['classic','advance','sedline','philips'].includes(q))skin0=q;}}catch(e){}
+let skin0='classic';try{{const q=localStorage.getItem('bisdsa.skin');if(['vista','classic','advance','sedline','philips'].includes(q))skin0=q;}}catch(e){}
 applySkin(skin0,true,true);
 try{const d=JSON.parse(localStorage.getItem('bisdsa.disp')||'null');if(d&&['auto',4,8,16].includes(d.sweep)){mon.sweep=d.sweep;dispUI(false);}}catch(e){}
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',paused);$('pause').textContent=paused?'Resume':'Pause';};

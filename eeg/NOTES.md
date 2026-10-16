@@ -648,3 +648,13 @@ BIS Vista is labelled correctly. BIS Advance has a direct unilateral (2-channel 
 `demo.js` owns the compact control layout and browser full-screen/CSS fallback. The same controls remain mounted in presentation mode. On narrow screens the monitor scrolls above a compact control area. Existing clinical teaching text and synthetic-engine limitations remain.
 
 Validation: `node eeg/test/engine.check.mjs`; `node eeg/test/demo.e2e.mjs` with `BIS_VIEW=phone` and `desktop`. The new UI suite replaces the old button-driven browser gates, which refer to deliberately retired controls. Legacy monitor test sources remain as reference for future migration. The new suite covers induction/emergence, rewind, keyboard seeking, all five monitors, both Advance channel configurations, drug combinations, fullscreen and the old-address redirect.
+
+## 16 October 2026 — monitor size correction after live review
+
+The simplified layout shipped with an intrinsic-size regression: auto margins on the monitor grid, combined with inline-size-contained device LCDs, left no useful intrinsic width. At a 1440 × 900 viewport the actual LCD widths were 32 px (Vista), 209 px (Advance), 49 px (SedLine) and 14 px (IntelliVue); fullscreen could collapse to zero. The earlier browser suite checked visibility, which did not detect this. A design-critique review also found that the sidebar, wide bezels and optional settings competed with the signal display.
+
+The workspace now has an explicit full width and a measured stage. `fitMonitor()` fits each complete device to that stage while preserving its proportions; Teaching allocates actual canvas heights to the available space. Essential controls form one dock below the monitor, moving to the side on short landscape screens. The stage grows in fullscreen, with controls still reachable. Optional explanations/settings sit below the workspace; drug-combination sliders move into the fullscreen dock when selected. Slimmer Advance/IntelliVue bezels and a smaller Advance asymmetry panel give the EEG/DSA more space.
+
+Advance starts with the existing five-minute EEG history and labels the short trend window in minutes. Both unilateral and bilateral configurations remain available. Saved BIS Vista selection now restores correctly. No engine, dosing or physiology equations changed.
+
+`test/layout.e2e.mjs` checks all five monitors in page and fullscreen at 1440 × 900, 1366 × 768, 1920 × 1080, 1024 × 768, 390 × 844 and 844 × 390. It measures usable LCD area, viewport clipping and dock overlap, plus saved selections, initial Advance DSA history, alternate Teaching views and reachable fullscreen combination sliders. It is a CI gate alongside the induction/emergence interaction suites.

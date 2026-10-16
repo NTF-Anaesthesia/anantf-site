@@ -1,100 +1,162 @@
-/* Focused teaching workspace. Equipment screens retain their clinical colours. */
-#monitor{max-width:1600px;margin:auto}
-#monitor .monhead{align-items:center;gap:16px;flex-wrap:wrap}
-#monitor .apptitle{font-size:clamp(24px,3vw,36px);line-height:1.15}
-.demo-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px}
-.demo-toolbar label{display:flex;align-items:center;gap:8px}
-.demo-toolbar [hidden]{display:none}
-#monitor select{font:inherit;font-size:15px;min-height:44px;max-width:100%;padding:6px 10px;border:1px solid #827b6d;border-radius:0;background:#f7f5ef;color:#272722}
-#monitor .sim{grid-template-columns:minmax(0,1fr) 310px;gap:24px;align-items:start}
-#monitor .panel{padding:0 0 0 20px;border:0;border-left:1px solid #d7d2c8;background:transparent;display:flex;flex-direction:column;gap:14px}
-#monitor .panel .ctl{margin:0;padding:0 0 12px;border-bottom:1px solid #d7d2c8}
-#monitor .panel .story{order:0;margin:0;padding:0;border:0}
-#monitor .panel .reading{order:1;font-size:15px}
-#monitor .panel details{order:2}
-#monitor summary{font-size:15px;min-height:44px;display:list-item;align-content:center;cursor:pointer}
-#monitor summary:focus-visible,#monitor select:focus-visible,#monitor input:focus-visible{outline:2px solid #633d3c;outline-offset:3px}
-#monitor .panel button,#fullScreen{min-height:44px;font-size:15px}
-#monitor .panel .caption,#monitor .tgtnote{font-size:13px;line-height:1.45}
-.playback-row{display:flex;align-items:center;gap:12px}
-.playback-row input{flex:1;min-width:0}
-#monitor input[type=range]{accent-color:#633d3c;min-height:44px;cursor:ew-resize;width:100%;margin:0}
-#monitor .tline{margin-top:12px;border:0;padding:0;background:transparent}
-#monitor .tbar{display:block}#tCv{display:none}
-#monitor .time-label{display:flex;justify-content:space-between;font-size:14px;margin-top:6px}
-#monitor #timeHelp{font-size:13px;line-height:1.4;margin:0;color:#55534d}
-#tNow{font-size:15px;font-variant-numeric:tabular-nums}
-#monitor .teachstrip{display:none!important}
-#monitor .advsim{display:none}
-#monitor .story .row{gap:8px}#monitor .story button{flex:1}
-#monitor .story button:last-child{flex-basis:100%}
-#monitor .ticks{font-size:12px}
-body.presenting{overflow:hidden}
-#monitor.presenting{position:fixed;inset:0;z-index:10000;max-width:none;margin:0;padding:16px 20px;background:#f7f5ef;width:100%;height:100dvh;box-sizing:border-box;overflow:auto;display:flex;flex-direction:column}
-#monitor.presenting .monhead{flex:none;margin:0 0 12px;padding:0}
-#monitor.presenting .sim{flex:1;min-height:0}
-#monitor.presenting .panel{max-height:calc(100dvh - 90px);overflow:auto}
-#monitor.presenting .screens{min-width:0}
-#monitor.presenting .sedwrap{max-width:calc((100dvh - 230px)*.625);margin:auto}
-#monitor.presenting .vwrap,#monitor.presenting .advwrap,#monitor.presenting .pvwrap{max-width:calc((100dvh - 230px)*1.55);margin:auto}
-#monitor.presenting #classicWrap canvas{max-height:20vh}
-@media(max-width:900px){
- #monitor .sim{grid-template-columns:1fr}
- #monitor .panel{border-left:0;border-top:1px solid #d7d2c8;padding:16px 0 0}
- #monitor.presenting .sim{display:block;overflow:auto}
- #monitor.presenting .panel{max-height:none;overflow:visible;display:grid;grid-template-columns:1fr 1fr;gap:12px}
- #monitor.presenting .panel .story,#monitor.presenting .panel .reading,#monitor.presenting #mixCtl{grid-column:1/-1}
- #monitor.presenting{padding:10px}
-}
-@media(max-width:520px){#monitor .apptitle{font-size:25px}.demo-toolbar{gap:6px}.demo-toolbar>label:first-child{display:none}#monitor.presenting .panel{grid-template-columns:1fr}}
-
+/* Monitor-first workspace. Explicit widths are essential: the device screens use
+   inline-size containment and cannot provide their parent's intrinsic width. */
+.wrap{width:100%;max-width:none;box-sizing:border-box;padding:14px 24px 56px}
+.wrap> :not(#monitor){width:100%;max-width:1180px;margin-inline:auto}
+#monitor{width:100%;max-width:1920px;min-width:0;margin-inline:auto;gap:12px}
 #monitor [hidden]{display:none!important}
-#fullScreen{background:#f7f5ef;color:#633d3c;border:1px solid #827b6d;padding:8px 14px;cursor:pointer}
-#monitor.presenting #classicWrap{padding:8px}
-#monitor.presenting #classicWrap .bisbox .v{font-size:56px}
-#monitor.presenting #classicWrap .top{padding:0}
-#monitor.presenting #classicWrap canvas{max-height:16vh}
-#monitor.presenting #classicWrap .timers{display:none}
-
-#monitor .panel .tline{order:0;margin:0;padding:0 0 12px;border-bottom:1px solid #d7d2c8}
-#monitor .panel .reading{order:2}
-#monitor .panel details{order:3}
-#monitor.presenting #classicWrap canvas{max-height:14vh}
-#monitor.presenting .monhead{display:flex;justify-content:space-between}
-#monitor.presenting .apptitle{font-size:26px}
-@media(max-width:900px){
- #monitor.presenting{overflow:hidden}
- #monitor.presenting .monhead{gap:8px;margin-bottom:8px}
- #monitor.presenting .apptitle{font-size:22px}
- #monitor.presenting .sim{display:flex;flex-direction:column;overflow:hidden}
- #monitor.presenting .screens{flex:1;min-height:0;overflow:auto}
- #monitor.presenting .panel{flex:none;max-height:48dvh;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;padding-top:6px}
- #monitor.presenting .panel .ctl{padding-bottom:4px}
- #monitor.presenting .panel .reading,#monitor.presenting .panel details,#monitor.presenting .panel .story .caption,#monitor.presenting .panel .tgtnote{display:none}
- #monitor.presenting .panel .tline{grid-column:1/-1;order:-1;padding-bottom:0}
- #monitor.presenting .panel .time-label,#monitor.presenting #timeHelp{display:none}
- #monitor.presenting .panel .story{grid-column:1/-1}
- #monitor.presenting .panel .story button:last-child{flex-basis:auto}
- #monitor.presenting .panel .tgt{font-size:12px;margin:0}
- #monitor.presenting .panel .ticks{font-size:12px}
- #monitor.presenting .panel label.t{margin:0;font-size:12px}
- #monitor.presenting .panel input[type=range]{min-height:36px}
- #monitor.presenting .panel button{font-size:13px;padding:5px}
- #monitor.presenting .panel .story button:last-child{font-size:12px}
- #monitor.presenting .sedwrap,#monitor.presenting .vwrap,#monitor.presenting .advwrap,#monitor.presenting .pvwrap{max-width:100%}
+#monitor .monhead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#monitor .apptitle{font-size:clamp(22px,2.2vw,32px);line-height:1.15;margin:0}
+.demo-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:14px}
+.demo-toolbar label{display:flex;align-items:center;gap:7px}
+#monitor select,#fullScreen{font:inherit;font-size:14px;min-height:44px;padding:6px 10px;border:1px solid #827b6d;border-radius:0;background:#f7f5ef;color:#272722;max-width:100%}
+#fullScreen{color:#633d3c;cursor:pointer}
+#monitor .sim{width:100%;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:12px;min-width:0}
+#monitor .screens{width:100%;height:clamp(360px,calc(100svh - 300px),1000px);min-width:0;display:flex;align-items:center;justify-content:center;gap:0;overflow:hidden;background:#eae6de}
+#monitor .screens> :is(.vwrap,.advwrap,.sedwrap,.pvwrap,.mon){flex:none;width:100%;max-width:none;min-width:0;margin:0;box-sizing:border-box}
+#monitor .sedcase{width:100%;max-width:none}
+#monitor .sedctl,#monitor .advsim,#monitor .teachstrip{display:none!important}
+/* The fitted stage carries the screen. Explanations and optional adjustments
+   live below the workspace, not beside or on top of the monitor. */
+#monitor .panel{width:100%;box-sizing:border-box;padding:10px 0 0;border:0;border-top:1px solid #d7d2c8;border-radius:0;background:transparent;display:grid;grid-template-columns:minmax(240px,1.2fr) minmax(140px,.55fr) minmax(260px,1.1fr) minmax(230px,1fr);gap:10px 22px;align-items:start}
+#monitor .panel .ctl,#monitor .panel .story,#monitor .panel .tline{margin:0;padding:0;border:0;min-width:0;display:block}
+#monitor .panel #depthCtl{grid-column:1}
+#monitor .panel .playback{grid-column:2}
+#monitor .panel #tLine{grid-column:3}
+#monitor .panel .story{grid-column:4}
+#monitor .panel label.t{font-size:12px;margin:0;line-height:18px}
+#monitor .track{height:36px}
+#monitor input[type=range]{width:100%;height:36px;min-height:36px;margin:0;accent-color:#633d3c;cursor:ew-resize}
+#monitor .track input{height:36px}
+#monitor .effmark{bottom:3px}
+#monitor .ticks{font-size:12px;line-height:16px;gap:8px}
+#monitor .tgt{font-size:13px;line-height:1.4;margin:5px 0 0}
+#monitor .tgtnote{font-size:13px;line-height:1.4}
+#monitor #zoneNote{display:none}
+.playback-row{display:flex;align-items:center;gap:10px;min-height:44px}
+.playback-row input{flex:1;min-width:0}
+#monitor .panel button{min-height:44px;padding:7px 10px;font-size:14px}
+#monitor .story .row{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#monitor .story button:last-child{grid-column:1/-1}
+#tCv{display:none}
+#monitor .tbar{display:block}
+#monitor #tNow{display:block;font-size:13px;line-height:18px;white-space:normal;font-variant-numeric:tabular-nums}
+#monitor .time-label{display:flex;justify-content:space-between;font-size:12px;line-height:18px}
+#monitor #timeHelp{font-size:12px;line-height:1.4;margin:0;color:#55534d}
+#workspaceNotes{width:100%;display:flex;align-items:start;gap:16px;border-top:1px solid #d7d2c8;padding-top:8px;flex-wrap:wrap}
+#workspaceNotes>details{flex:1;min-width:220px;padding:0}
+#monitor summary{font-size:15px;min-height:44px;align-content:center;cursor:pointer}
+#monitor :is(select,input,summary,button):focus-visible{outline:2px solid #633d3c;outline-offset:3px}
+#workspaceNotes .reading{padding:12px;margin:0;font-size:15px}
+#workspaceNotes .caption{font-size:14px;line-height:1.5}
+#workspaceNotes .mixrows{max-width:700px}
+/* Teaching display: allocate actual canvas heights, not CSS clipping. */
+#monitor #classicWrap{height:100%;padding:8px}
+#monitor #classicWrap .glass{height:100%;box-sizing:border-box;padding:8px;gap:5px;grid-template-rows:auto auto auto minmax(0,1fr) minmax(0,.55fr) auto}
+#monitor #classicWrap .readouts{grid-template-columns:1.2fr 1fr 1fr;gap:10px;align-items:stretch}
+#monitor #classicWrap .bisbox{display:flex;align-items:center;justify-content:flex-start;gap:12px}
+#monitor #classicWrap .bisbox .v{font-size:clamp(36px,4vw,64px);line-height:1}
+#monitor #classicWrap .bars{display:flex;gap:6px}
+#monitor #classicWrap .bar{flex:1;padding:4px 6px}
+#monitor #classicWrap .params{display:grid;grid-template-columns:1fr 1fr;grid-column:auto;gap:4px}
+#monitor #classicWrap .timers{display:none}
+#monitor #classicWrap .lane{grid-template-rows:auto minmax(0,1fr);min-height:0;overflow:hidden}
+#monitor #classicWrap canvas{max-height:none}
+#monitor #classicWrap .softkeys{min-height:32px}
+#monitor #classicWrap .bar .u{display:none}
+body.presenting{overflow:hidden}
+#monitor.presenting{position:fixed;inset:0;z-index:10000;max-width:none;margin:0;padding:10px 16px;width:100%;height:100dvh;box-sizing:border-box;display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;overflow:hidden;background:#f7f5ef}
+#monitor.presenting .apptitle{font-size:20px}
+#monitor.presenting .sim{min-height:0;grid-template-rows:minmax(0,1fr) auto}
+#monitor.presenting .screens{height:100%;min-height:0}
+#monitor.presenting #workspaceNotes{display:none}
+#monitor.presenting .panel{align-self:end}
+/* Keep complete monitor proportions while reserving room for the controls. */
+@media(max-width:1100px){
+ #monitor .panel{grid-template-columns:minmax(210px,1fr) minmax(150px,.65fr) minmax(230px,1fr);gap:8px 16px}
+ #monitor .panel .story{grid-column:3;grid-row:1}
+ #monitor .panel #tLine{grid-column:1/-1;grid-row:2;display:grid;grid-template-columns:minmax(110px,auto) minmax(0,1fr);gap:0 14px;align-items:center}
+ #monitor .panel #tLine .time-label,#monitor .panel #timeHelp{display:none}
+ #monitor .screens{height:clamp(340px,calc(100svh - 340px),900px)}
 }
-#monitor #tNow{white-space:normal;overflow-wrap:anywhere}
-@media(max-width:900px){
- #monitor.presenting .panel{align-items:start}
- #monitor.presenting .panel .ctl{display:block}
- #monitor.presenting .panel select{width:100%;height:44px}
- #monitor.presenting .panel .ticks{display:none}
- #monitor.presenting #classicWrap .statusbar,#monitor.presenting #classicWrap .bars,#monitor.presenting #classicWrap .params,#monitor.presenting #classicWrap #wTrend{display:none}
- #monitor.presenting #classicWrap .readouts{display:block;padding:0;margin:0}
- #monitor.presenting #classicWrap .bisbox{display:flex;align-items:center;gap:12px;padding:4px 8px}
- #monitor.presenting #classicWrap .bisbox .v{font-size:32px;line-height:1}
- #monitor.presenting #classicWrap .bisbox .zone{font-size:12px}
- #monitor.presenting #classicWrap #cDsa{max-height:15vh}
- #monitor.presenting #classicWrap #cEeg{max-height:9vh}
- #monitor.presenting #classicWrap .glass{padding:4px}
+@media(max-width:650px){
+ .wrap{padding-inline:10px}
+ #monitor .monhead{gap:8px}
+ #monitor .apptitle{font-size:23px}
+ .demo-toolbar{gap:6px;display:grid;grid-template-columns:minmax(0,1fr) auto;width:100%}
+ .demo-toolbar>label[for=monitorChoice]{display:none}
+ #monitorChoice{width:100%;grid-column:1;grid-row:1}
+ #fullScreen{grid-column:2;grid-row:1}
+ .demo-agent{grid-column:1;grid-row:2;min-width:0}
+ .demo-agent span{display:none}
+ #agentChoice{width:100%}
+ #advanceChannels{grid-column:2;grid-row:2;font-size:0}
+ #advanceChannels select{font-size:13px;width:100%}
+ #monitor .screens{height:clamp(280px,50svh,500px)}
+ #monitor .panel{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px}
+ #monitor .panel #depthCtl{grid-column:1/-1;grid-row:1}
+ #monitor .panel .playback{grid-column:1;grid-row:3}
+ #monitor .panel .story{grid-column:2;grid-row:3}
+ #monitor .panel #tLine{grid-column:1/-1;grid-row:2;grid-template-columns:85px minmax(0,1fr);gap:8px}
+ #monitor .panel .tgt,#monitor .panel .ticks{display:none}
+ #monitor .panel button{font-size:13px;padding:6px}
+ #monitor #tNow{font-size:12px;line-height:1.2}
+ #monitor .story button:last-child{font-size:12px}
+ #monitor.presenting{padding:8px;gap:8px}
+ #monitor.presenting .apptitle{display:none}
+ #monitor #classicWrap .statusbar,#monitor #classicWrap .bars,#monitor #classicWrap #wTrend{display:none}
+ #monitor #classicWrap .glass{padding:2px;grid-template-rows:auto minmax(0,1fr) minmax(0,.65fr) auto}
+ #monitor #classicWrap .readouts{display:block}
+ #monitor #classicWrap .params{display:none}
+ #monitor #classicWrap .bisbox{padding:3px 6px}
+ #monitor #classicWrap .bisbox .v{font-size:32px}
+ #monitor #classicWrap .zone{font-size:12px}
+ #monitor #classicWrap .softkeys button{font-size:11px}
+}
+@media(max-height:550px) and (min-width:651px){
+ #monitor.presenting .apptitle{display:none}
+ #monitor.presenting .monhead{justify-content:flex-end}
+ #monitor.presenting .panel{grid-template-columns:1fr .65fr 1fr .9fr;gap:8px}
+ #monitor.presenting .panel .story{grid-column:4;grid-row:1}
+ #monitor.presenting .panel #tLine{grid-column:3;grid-row:1;display:block}
+ #monitor.presenting .panel .ticks,#monitor.presenting .panel .tgt{display:none}
+ #monitor.presenting .panel .story button{min-height:34px;font-size:12px}
+}
+
+#monitor .advcase{padding:8px;border-radius:12px}
+#monitor .advband{padding:8px 8px 0;border-radius:6px}
+#monitor .advbrand{height:28px;padding-bottom:0}
+#monitor .advbrand b{font-size:18px}
+#monitor .pvcase{padding:22px 10px 26px;border-radius:12px}
+#monitor #classicWrap .statusbar{grid-area:status}
+#monitor #classicWrap .readouts{grid-area:nums}
+#monitor #classicWrap #wTrend{grid-area:trend}
+#monitor #classicWrap #wDsa{grid-area:dsa}
+#monitor #classicWrap #wEeg{grid-area:eeg}
+#monitor #classicWrap #viewSeg{grid-area:keys}
+#monitor #classicWrap .glass{grid-template-areas:'status' 'nums' 'trend' 'dsa' 'eeg' 'keys'}
+#monitor[data-view=dsa] #classicWrap .glass{grid-template-rows:auto auto auto minmax(0,1fr) 0 auto}
+#monitor[data-view=eeg] #classicWrap .glass{grid-template-rows:auto auto auto 0 minmax(0,1fr) auto}
+#monitor .panel #combinations{grid-column:1/-1;max-height:28vh;overflow:auto}
+#monitor .panel #combinations .mixrows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 18px}
+@media(max-width:650px){
+ #monitor .advcase{padding:4px}
+ #monitor .advband{padding:4px 4px 0}
+ #monitor .advbrand{height:20px}
+ #monitor .advbrand b{font-size:13px}
+ #monitor #classicWrap .glass{grid-template-areas:'nums' 'dsa' 'eeg' 'keys'}
+ #monitor[data-view=dsa] #classicWrap .glass{grid-template-rows:auto minmax(0,1fr) 0 auto}
+ #monitor[data-view=eeg] #classicWrap .glass{grid-template-rows:auto 0 minmax(0,1fr) auto}
+ #monitor .panel #combinations .mixrows{grid-template-columns:1fr 1fr}
+}
+@media(max-height:550px) and (min-width:651px){
+ #monitor.presenting .sim{grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:minmax(0,1fr)}
+ #monitor.presenting .panel{height:100%;min-height:0;overflow:auto;align-self:stretch;display:flex;flex-direction:column;border-top:0;border-left:1px solid #d7d2c8;padding:0 0 0 12px;gap:8px}
+ #monitor.presenting .panel .ctl,#monitor.presenting .panel .story,#monitor.presenting .panel #tLine{width:100%}
+ #monitor.presenting .panel .time-label,#monitor.presenting .panel #timeHelp{display:none}
+ #monitor.presenting .panel .story .row{grid-template-columns:1fr 1fr}
+ #monitor #classicWrap .statusbar,#monitor #classicWrap #wTrend{display:none}
+ #monitor #classicWrap .glass{padding:2px;grid-template-areas:'nums' 'dsa' 'eeg' 'keys';grid-template-rows:auto minmax(0,1fr) minmax(0,.65fr) auto}
+ #monitor #classicWrap .bisbox .v{font-size:32px}
+ #monitor[data-view=dsa] #classicWrap .glass{grid-template-rows:auto minmax(0,1fr) 0 auto}
+ #monitor[data-view=eeg] #classicWrap .glass{grid-template-rows:auto 0 minmax(0,1fr) auto}
 }
