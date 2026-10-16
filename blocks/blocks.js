@@ -4,13 +4,17 @@
    - search across every region: the block registry, every operation and the main pages and planners;
    - one "Which block for this operation" chooser over the trunk, head and neck and lower-limb operations, drawing each
      region's own coverage figure (data and figures from /shared/regional/js/ops/, shared with the region landings);
-   - region cards built from the registry, and the "Anatomy in 3D" links.
-   No clinical text is written here: operations, block names and links come from the ops modules and the registry. */
+   - region cards built from the registry, and the "Anatomy in 3D" links;
+   - "Something has gone wrong": every decision guide (shared/regional/js/data/decisions.js, drawn by decide.js).
+   No clinical text is written here: operations, block names, guides and links come from the ops modules, the guide data
+   and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
 import * as HN from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
 import * as LL from '../shared/regional/js/ops/ops-lowerlimb.js?v=20261015';
+import { guideList, openGuideFromHash } from '../shared/regional/js/decide.js?v=20261016';
+import { GUIDES, GUIDE_ORDER } from '../shared/regional/js/data/decisions.js';
 
 /* ------------------------------------------------------------------ helpers */
 const $ = (s, r = document) => r.querySelector(s);
@@ -164,6 +168,10 @@ function buildIndex() {
     out.push({ kind: 'Operation', where: SRC[o.region].title, t: o.name, href: `#op-${o.key}`, op: o.key, tl: norm(o.name), ml: opHaystack(o) });
   }
   for (const p of PAGES) out.push({ kind: 'Page', where: p.k, t: p.t, d: p.d, href: p.href, tl: norm(p.t), ml: norm(`${p.d} ${p.k}`) });
+  for (const id of GUIDE_ORDER) {
+    const g = GUIDES[id];
+    out.push({ kind: 'Page', where: 'If it goes wrong', t: g.title, d: 'Step-by-step guide', href: `#wrong-${id}`, tl: norm(`${g.title} ${g.short}`), ml: norm(`emergency complication went wrong ${g.when.replace(/<[^>]+>/g, ' ')}`) });
+  }
   return out;
 }
 let INDEX = null;
@@ -516,9 +524,9 @@ function anatomyRows() {
 }
 
 /* ------------------------------------------------------------------ app bar */
-const SECTIONS = [['start', 'Start'], ['need', 'I need to…'], ['chooser', 'Operation chooser'], ['doses', 'Maximum dose'], ['regions', 'Blocks by region'], ['anatomy3d', 'Anatomy in 3D']];
+const SECTIONS = [['start', 'Start'], ['need', 'I need to…'], ['wrong', 'If it goes wrong'], ['chooser', 'Operation chooser'], ['doses', 'Maximum dose'], ['regions', 'Blocks by region'], ['anatomy3d', 'Anatomy in 3D']];
 // Shorter names for the menu button on phones (the button is about 150px wide there).
-const SHORT = { start: 'Start', need: 'I need to', chooser: 'Chooser', doses: 'Doses', regions: 'Regions', anatomy3d: 'In 3D' };
+const SHORT = { start: 'Start', need: 'I need to', wrong: 'Gone wrong', chooser: 'Chooser', doses: 'Doses', regions: 'Regions', anatomy3d: 'In 3D' };
 function appBar() {
   const bar = $('#tb-bar');
   bar.className = 'tb-bar bd-bar';
@@ -621,8 +629,15 @@ function appBar() {
   paint();
 }
 
+/* ------------------------------------------------------------------ "Something has gone wrong": every guide */
+function wrongGuides() {
+  const host = $('#bd-wrong');
+  if (host) host.append(guideList(GUIDE_ORDER, { idPrefix: 'wrong', headingLevel: 3 }));
+}
+
 /* ------------------------------------------------------------------ hash routing */
 function route({ initial = false } = {}) {
+  openGuideFromHash();
   const m = location.hash.match(/^#op-([\w-]+)$/);
   if (m) {
     if (chooser.open(m[1], { scroll: true, focus: !initial, announce: !initial })) return;
@@ -640,6 +655,7 @@ applyLevel();
 appBar();
 mountLevelPicker($('#bd-picker'));
 wireSearch();
+wrongGuides();
 regionCards();
 anatomyRows();
 route({ initial: true });

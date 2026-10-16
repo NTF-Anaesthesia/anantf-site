@@ -1,11 +1,11 @@
 // Regional anaesthesia app: renders one block chapter from a data object (schema: shared/regional/DATA.md, "Block schema").
 // Order: header + at a glance, scan viewer, position, equipment, landmarks and scanning, approach, sonoanatomy,
 // target and deposition, dose (+ LAST reminder), coverage (map, mechanism, density), Anatomy in 3D, Watch the
-// animation, complications, pearls, extra sections, exam corner. Element ids are prefixed with the block id,
+// animation, complications, "If it goes wrong" decision guides, pearls, extra sections, exam corner. Element ids are prefixed with the block id,
 // e.g. #tap-dose, #tap-exam, #tap-step-needle.
 //
 // Levels (plan §5): every section gets data-tier="1|2|3" from DEFAULT_TIERS (or the block's `tiers` map, a section's
-// own `tier`, or `safety: true`). Dose, LAST line and complications are always tier 1. Pearls: the first 3 are tier 1,
+// own `tier`, or `safety: true`). Dose, LAST line, complications and the "If it goes wrong" guides are always tier 1. Pearls: the first 3 are tier 1,
 // the rest tier 2. Array items may be {tier, html} (or {safety: true, html}) instead of a plain string.
 import { el, fill, callout } from './ui.js';
 import { mountScan } from './scan.js';
@@ -13,6 +13,8 @@ import { coverageMap } from './dermatomes.js';
 import { prepare } from './scene.js';
 import { tierBadge } from './levels.js?v=20261015'; // same URL as brachial-plexus, plexus, spinal and /blocks/: one level state per page
 import { getBlock } from './registry.js';
+import { guideList } from './decide.js';
+import { guidesFor } from './data/decisions.js';
 
 export const LAST_LINE = 'Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks or when combining blocks.';
 
@@ -21,11 +23,11 @@ const ROOT = new URL('../../../', import.meta.url).href;
 
 /** Default tier for each top-level section key (plan §5). */
 export const DEFAULT_TIERS = Object.freeze({
-  head: 1, intro: 1, rapid: 1, scan: 1, position: 1, equipment: 1, dose: 1, complications: 1, pearls: 1, warning: 1,
+  head: 1, intro: 1, rapid: 1, scan: 1, position: 1, equipment: 1, dose: 1, complications: 1, wrong: 1, pearls: 1, warning: 1,
   landmarks: 2, approach: 2, sonoanatomy: 2, target: 2, coverage: 2, anatomy3d: 2, watch: 2, exam: 2, sections: 2,
 });
 /** Sections that can never be hidden at MO level (enforced here and by test/regional/levels.mjs). */
-export const SAFETY_KEYS = Object.freeze(['dose', 'complications']);
+export const SAFETY_KEYS = Object.freeze(['dose', 'complications', 'wrong']);
 /** Pearls shown at MO level before the rest become Resident. */
 export const MO_PEARLS = 3;
 
@@ -344,6 +346,15 @@ export function renderBlock(b, host) {
   const w = b.watch === false ? null : (b.watch || getBlock(b.id)?.watch);
   if (w) { const card = watchCard(b, w, sectionTier(b, 'watch', clampTier(Number(w.tier)))); if (card) host.append(card); }
   if (b.complications) host.append(section(b, 'complications', 'Complications and how to avoid them', 1, asNode(unwrap(b.complications).content, 'div', 'tb-prose tb-list', 1)));
+  // "If it goes wrong": the decision guides for this block (shared/regional/js/data/decisions.js), always MO level.
+  // b.wrong: false hides the section; an array of guide ids adds guides to the ones the block id and region give.
+  const wrong = b.wrong === false ? [] : guidesFor(b.id, getBlock(b.id)?.region || null, Array.isArray(b.wrong) ? b.wrong : []);
+  if (wrong.length) {
+    host.append(section(b, 'wrong', 'If it goes wrong', 1,
+      el('p', { class: 'ra-dg-lead', text: 'Step-by-step guides for the problems this block can cause. Open one and answer each question: it shows the next thing to do.' }),
+      guideList(wrong, { idPrefix: `${b.id}-wrong`, headingLevel: 4 }),
+      el('p', { class: 'ra-dg-more' }, el('a', { href: `${ROOT}blocks/#wrong` }, 'Every guide on one page ', el('span', { 'aria-hidden': 'true', text: '→' })))));
+  }
   if (b.pearls?.length) {
     // First MO_PEARLS plain pearls are MO; the rest Resident. A pearl's own {tier} or {safety:true} wins.
     host.append(section(b, 'pearls', 'Practical pearls', 1, list(b.pearls, 'tb-pearls', (i) => (i < MO_PEARLS ? 1 : 2), 1)));
