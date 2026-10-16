@@ -1,0 +1,2 @@
+- bis-dsa (14 Oct 2026, sedline skin session): Masimo SedLine screen rebuilt (see NOTES.md, "Masimo SedLine"); local commits, not pushed. Not checked against a photo of a real Root.
+- 14 Oct 2026 (sedline third pass, local commit): reviewer's 7/10 items fixed (live Layout page and shared screens, strip, no-data states, PSi alarm without arming, type, analog, dialogs); see NOTES.md, "third fidelity pass". adv.e2e.mjs is flaky on its own (fails on the untouched tree too).
