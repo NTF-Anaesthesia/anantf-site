@@ -1,16 +1,17 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#0a0f18">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#f7f5ef">
+<meta name="color-scheme" content="light">
 <title>BIS to DSA Simulator</title>
 <meta name="description" content="Teaching simulator for anaesthesia residents: how a frontal EEG becomes the BIS number and the density spectral array (DSA), for propofol, sevoflurane, ketamine and dexmedetomidine.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23002f6c'/%3E%3Ctext x='16' y='22' font-size='13' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='700'%3EBIS%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="icon" href="../ana-ntf-monogram.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site-shell.css?v=20261008">
+<link rel="stylesheet" href="../assets/header-nav.css?v=20261008">
+<script defer src="../assets/navigation.js?v=20261008"></script>
 <style>
 /* Bundled fonts for the BIS VISTA screen (bis/fonts/README.md): look-alikes, the manufacturer's on-screen typeface is not published */
 @font-face{font-family:"Arimo";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/Arimo-latin-var.woff2) format("woff2")}
@@ -18,49 +19,53 @@
 @font-face{font-family:"DejaVu Sans Web";font-style:normal;font-weight:400;font-display:swap;src:url(fonts/DejaVuSans-latin.woff2) format("woff2")}
 @font-face{font-family:"DejaVu Sans Web";font-style:normal;font-weight:700;font-display:swap;src:url(fonts/DejaVuSans-Bold-latin.woff2) format("woff2")}
 @font-face{font-family:"Archivo Narrow";font-style:normal;font-weight:400 700;font-display:swap;src:url(fonts/ArchivoNarrow-latin-var.woff2) format("woff2")}
-/* Layout: always dark, like the anaesthetic machine's monitor. The screens are near-black; the page around them is a dark slate. */
+/* Site fonts (DESIGN.md) */
+@font-face{font-family:"NTF Serif";src:url(../fonts/fraunces-roman.woff2) format("woff2");font-weight:400 600;font-display:swap}
+@font-face{font-family:"NTF Serif";src:url(../fonts/fraunces-italic.woff2) format("woff2");font-style:italic;font-weight:400 600;font-display:swap}
+@font-face{font-family:"NTF Sans";src:url(../fonts/inter.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"Inter";src:url(../fonts/inter.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:"NTF Mono";src:url(../fonts/jetbrains-mono.woff2) format("woff2");font-weight:100 800;font-display:swap}
+/* Layout: the page follows the anantf.com design language (DESIGN.md): warm paper, ink, one wine accent, square, hairlines. The monitor screens stay dark, like the real equipment (--scr-*). */
 :root{
-  --bg:#0a0f18; --card:#121a28; --fg:#e6edf7; --muted:#9aa8bf; --line:#253247;
-  --accent:#8cc4ff; --accent-ink:#06101f; --accent-soft:#16243b; --good:#5fd08f; --bad:#ff7b84;
+  --bg:#f7f5ef; --card:#eeece5; --inset:#eee9df; --fg:#272722; --muted:#55534d; --line:#d7d2c8; --line-strong:#8f8574; --control:#827b6d;
+  --accent:#633d3c; --accent-hover:#4b2e2d; --accent-ink:#fffaf0; --accent-soft:#e8ded7; --good:#2d6a3e; --bad:#9b1c1c;
   --scr:#020406; --scr-2:#0a1018; --scr-fg:#e8f0fb; --scr-mute:#7d8ca6; --scr-grid:#1a2538; --bisc:#ffffff; --sefc:#ffffff;
   --q1:#e57200; --q2:#e4002b; --q3:#178fd7; --q4:#002f6c;
-  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
-  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  color-scheme:dark;
+  --f-display:"NTF Serif", Georgia, "Times New Roman", serif;
+  --f-body:"NTF Sans", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono:"NTF Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.55;margin:0}
-.sitebar{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:18px;align-items:center;max-width:1200px;margin:0 auto;padding:2px 16px;font:600 13px/1.2 var(--f-mono)}.sitebar::-webkit-scrollbar{display:none}.sitebar a{color:var(--muted);text-decoration:none;padding:12px 0;white-space:nowrap}.sitebar a:hover,.sitebar a[aria-current]{color:var(--fg)}.sitebar a[aria-current]{border-bottom:2px solid var(--q1)}.sitebar .home{margin-right:auto}
-.band{display:grid;grid-template-columns:repeat(4,1fr);height:6px}
-.band i:nth-child(1){background:var(--q1)}.band i:nth-child(2){background:var(--q2)}.band i:nth-child(3){background:var(--q3)}.band i:nth-child(4){background:var(--q4)}
-.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:12px 56px;display:grid;gap:44px}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.65;margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(22px, env(safe-area-inset-left, 0px));padding-right:max(22px, env(safe-area-inset-right, 0px));padding-block:14px 56px;display:grid;gap:44px}
+@media (min-width:760px){.wrap{padding-inline:56px}}
 #monitor{gap:10px}
-header{display:grid;gap:10px;max-width:72ch}
-.eyebrow{font:600 12px/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-h1{font-family:var(--f-display);font-weight:800;font-size:clamp(30px,5vw,50px);line-height:1.04;margin:0;text-wrap:balance;letter-spacing:-.01em}
-h2{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,3vw,30px);line-height:1.15;margin:0;text-wrap:balance}
-h3{font-family:var(--f-display);font-weight:600;font-size:18px;margin:0}
+.intro{display:grid;gap:10px;max-width:72ch}
+.eyebrow{font:500 12px/1.5 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,5vw,50px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.03em}
+h2{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,3vw,34px);line-height:1.2;margin:0;text-wrap:balance;letter-spacing:-.02em}
+h3{font-family:var(--f-display);font-weight:400;font-size:24px;line-height:1.2;margin:0;letter-spacing:-.01em}
 p{margin:0}
-.lede{font-size:18px;color:var(--muted)}
-header p{color:var(--muted)}
-.apptitle{font-family:var(--f-display);font-weight:800;font-size:20px;line-height:1.2;margin:0;letter-spacing:0}
-.apptitle span{color:var(--muted);font-weight:600}
+.lede{font-size:19px;line-height:1.6;color:var(--muted)}
+.intro p{color:var(--muted)}
+.apptitle{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,3.4vw,38px);line-height:1.1;margin:0;letter-spacing:-.03em}
+.apptitle span{color:var(--muted)}
 .monhead{display:grid;gap:10px}
 .monswitch{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-@media (max-width:600px){.monswitch{gap:4px}.monswitch button{font-size:11.5px;padding:5px 2px}}
-.monswitch button{min-height:44px;padding:6px 4px;font:600 13px/1.15 var(--f-body);color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.monswitch button{min-height:44px;padding:6px 4px;font:500 14px/1.15 var(--f-body);color:var(--fg);background:var(--bg);border:1px solid var(--control);border-radius:0;cursor:pointer}
+.monswitch button:hover{background:#e9e5dc}
 .monswitch button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.monswitch button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@media (max-width:600px){.monswitch{gap:4px}.monswitch button{font-size:12px;padding:5px 1px;letter-spacing:-.01em}}
 /* the case timeline under the monitor switch: a bar (tap to jump there) and jump buttons */
 .tline{display:grid;gap:6px}
 .tbar{position:relative;display:flex;align-items:center;gap:10px}
 .tbar canvas{flex:1;min-width:0;height:28px;cursor:pointer;touch-action:manipulation}
-.tbar span{font:600 13px/1.2 var(--f-mono);color:var(--muted);white-space:nowrap}
+.tbar span{font:500 13px/1.2 var(--f-mono);color:var(--muted);white-space:nowrap}
 .tbtns{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
-.tbtns button{min-height:40px;padding:4px 2px;font:600 13px/1 var(--f-body);color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.tbtns button{min-height:44px;padding:4px 2px;font:500 13px/1 var(--f-body);color:var(--fg);background:var(--bg);border:1px solid var(--control);border-radius:0;cursor:pointer}
+.tbtns button:hover:not(:disabled){background:#e9e5dc}
 .tbtns button:disabled{opacity:.45;cursor:default}
-.tbtns button:focus-visible{outline:3px solid #fff;outline-offset:2px}
 .tline.busy .tbar span{color:var(--fg)}
 @media (max-width:600px){.tbar{flex-direction:column;align-items:stretch;gap:2px}.tbar canvas{flex:none;width:100%}.tbtns{gap:4px}.tbtns button{font-size:12px}}
 section{display:grid;gap:16px;min-width:0}
@@ -70,7 +75,7 @@ section{display:grid;gap:16px;min-width:0}
 /* Monitor */
 .sim{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
 @media (max-width:900px){.sim{grid-template-columns:minmax(0,1fr)}}
-.screen{background:var(--scr);border:1px solid #1d2838;color:var(--scr-fg);border-radius:14px;padding:14px;display:grid;gap:10px;min-width:0;box-shadow:0 1px 0 var(--line),0 10px 30px -18px rgba(0,0,0,.6)}
+.screen{background:var(--scr);border:1px solid #1d2838;color:var(--scr-fg);border-radius:0;padding:14px;display:grid;gap:10px;min-width:0}
 .screen.mon{background:#1b2230;padding:6px;border:1px solid #2b3446;border-radius:18px}
 .mon .glass{background:#000;border-radius:8px;padding:8px;display:grid;gap:6px;min-width:0}
 .statusbar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:8px;font:600 11px/1.2 var(--f-mono);color:var(--scr-mute);letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid #1a2333;padding-bottom:6px}
@@ -108,34 +113,38 @@ section{display:grid;gap:16px;min-width:0}
 .softkeys button[aria-pressed="true"]{background:#d9e4f5;color:#000;border-color:#fff}
 .lbl{font:600 11px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--scr-mute);display:flex;justify-content:space-between;gap:8px}
 canvas{display:block;width:100%;max-width:100%}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:16px;min-width:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:0;padding:20px;display:grid;gap:18px;min-width:0}
 .ctl{display:grid;gap:8px}.ctl[hidden]{display:none}
-.ctl > .t{font:600 12px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ctl > .t{font:500 12px/1.5 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
 button{font:inherit;cursor:pointer}
-.seg button,.btn{border:1px solid var(--line);background:var(--bg);color:var(--fg);padding:7px 12px;border-radius:8px;font-size:14px}
+.seg button,.btn{border:1px solid var(--control);background:var(--bg);color:var(--fg);padding:9px 14px;min-height:44px;border-radius:0;font-size:15px;font-weight:500}
+.seg button:hover,.btn:hover{background:#e9e5dc}
 .seg button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
-button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.seg button[aria-pressed="true"]:hover{background:var(--accent-hover)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.screen button:focus-visible,.screens button:focus-visible,.vista button:focus-visible{outline:3px solid #fff;outline-offset:2px}
 input[type=range]{width:100%;accent-color:var(--accent)}
 .ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
 .track{position:relative;height:34px}
 .track input[type=range]{position:absolute;inset:0 0 auto 0;height:22px;margin:0;width:100%;background:transparent}
-.zoneband{position:absolute;top:2px;height:18px;border-radius:4px;background:color-mix(in srgb,var(--good) 38%,transparent);outline:1px solid color-mix(in srgb,var(--good) 70%,transparent);pointer-events:none}
+.zoneband{position:absolute;top:2px;height:18px;border-radius:0;background:color-mix(in srgb,var(--good) 38%,transparent);outline:1px solid color-mix(in srgb,var(--good) 70%,transparent);pointer-events:none}
 .effmark{position:absolute;bottom:0;width:0;height:0;margin-left:-6px;border:6px solid transparent;border-bottom:9px solid var(--fg);border-top:0;transition:left .25s linear;pointer-events:none}
-.pop{position:absolute;bottom:calc(100% + 8px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font:600 14px/1 var(--f-mono);padding:6px 9px;border-radius:7px;white-space:nowrap;pointer-events:none;z-index:3;box-shadow:0 2px 8px rgba(0,0,0,.45)}
+.pop{position:absolute;bottom:calc(100% + 8px);transform:translateX(-50%);background:var(--fg);color:var(--bg);font:600 14px/1 var(--f-mono);padding:6px 9px;border-radius:0;white-space:nowrap;pointer-events:none;z-index:3;box-shadow:0 4px 12px rgba(39,39,34,.25)}
 .pop::after{content:"";position:absolute;left:50%;top:100%;margin-left:-5px;border:5px solid transparent;border-top-color:var(--fg);border-bottom:0}
-.pop.in{background:var(--good);color:#04130a}.pop.in::after{border-top-color:var(--good)}
-.tgt{font-size:15px}.tgt b{font-family:var(--f-mono);font-weight:600}.tgt span{color:var(--muted)}
+.pop.in{background:var(--good);color:#fffaf0}.pop.in::after{border-top-color:var(--good)}
+.tgt{font-size:15px;line-height:1.6}.tgt b{font-family:var(--f-mono);font-weight:600}.tgt span{color:var(--muted)}
 .tgtnote{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
-.swatch{display:inline-block;width:18px;height:10px;border-radius:3px;background:color-mix(in srgb,var(--good) 38%,transparent);outline:1px solid color-mix(in srgb,var(--good) 70%,transparent)}
+.swatch{display:inline-block;width:18px;height:10px;border-radius:0;background:color-mix(in srgb,var(--good) 38%,transparent);outline:1px solid color-mix(in srgb,var(--good) 70%,transparent)}
 .nmbrow{display:grid;gap:6px;font-size:15px}
 .rngbox{display:grid;gap:6px;margin-top:6px}.rngt{font-size:14px;color:var(--muted)}
 .rng{display:flex;justify-content:space-between;font-size:15px}.rng output{font:600 14px/1 var(--f-mono);color:var(--accent)}
 .chk{display:flex;gap:8px;align-items:flex-start;font-size:15px}
 .chk input{margin-top:4px;accent-color:var(--accent)}
-.reading{background:var(--accent-soft);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
-.reading b{font-family:var(--f-display);font-size:17px}
+.reading{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0;padding:12px 14px;display:grid;gap:4px}
+.reading b{font-family:var(--f-display);font-weight:400;font-size:20px;letter-spacing:-.01em}
 .reading p{font-size:15px}
 .story{display:grid;gap:8px}
 .mixrows{display:grid;gap:6px}
@@ -147,49 +156,56 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .key{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-left:4px;border-radius:2px}
 .key.bis{background:#fff}.key.emg{background:#5fd08f;height:1px}
 .err{font-size:14px;color:var(--bad)}
-.caption{min-height:3.2em;font-size:15px;border-left:3px solid var(--q1);padding-left:10px}
+.caption{min-height:3.2em;font-size:15px;border-left:3px solid var(--accent);padding-left:10px}
 .caption:empty{display:none}
 
 /* Explainer */
 .steps{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:0;padding:0}
-.steps button{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:99px;padding:5px 12px;font-size:14px}
+.steps button{border:1px solid var(--control);background:var(--bg);color:var(--muted);border-radius:0;padding:9px 14px;min-height:44px;font-size:15px}
 .steps button[aria-current="step"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.excap{font-size:17px;max-width:72ch;min-height:3.2em}
+.excap{font-size:17px;line-height:1.65;max-width:72ch;min-height:3.2em}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 
 /* Library */
 .lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px;align-content:start;min-width:0}
-.card canvas{border-radius:6px;background:var(--scr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:0;padding:14px;display:grid;gap:8px;align-content:start;min-width:0}
+.card canvas{border-radius:0;background:var(--scr)}
 .card .meta{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.card .bis{font:600 13px/1 var(--f-mono);color:var(--muted);white-space:nowrap}
+.card .bis{font:500 13px/1 var(--f-mono);color:var(--muted);white-space:nowrap}
 .card p{font-size:15px;color:var(--muted)}
 
 /* Quiz */
 .quiz{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:18px;align-items:start}
 @media (max-width:800px){.quiz{grid-template-columns:minmax(0,1fr)}}
 .opts{display:grid;gap:8px}
-.opts button{text-align:left;border:1px solid var(--line);background:var(--card);color:var(--fg);padding:10px 12px;border-radius:10px;font-size:15px}
+.opts button{text-align:left;border:1px solid var(--control);background:var(--bg);color:var(--fg);padding:11px 14px;min-height:44px;border-radius:0;font-size:15px}
+.opts button:hover:not(.right):not(.wrong){background:#e9e5dc}
 .opts button.right{border-color:var(--good);box-shadow:inset 4px 0 0 var(--good)}
 .opts button.wrong{border-color:var(--bad);box-shadow:inset 4px 0 0 var(--bad)}
 .fb{font-size:15px;min-height:1.5em}
-.score{font:600 13px/1 var(--f-mono);color:var(--muted)}
+.score{font:500 13px/1 var(--f-mono);color:var(--muted)}
 
 .pit{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px;margin:0;padding:0;list-style:none}
-.pit li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px}
-.pit b{display:block;font-family:var(--f-display);font-size:16px;margin-bottom:2px}
-a{color:var(--accent)}
-a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pit li{background:var(--card);border:1px solid var(--line);border-radius:0;padding:14px 16px;font-size:15px;line-height:1.6}
+.pit b{display:block;font-family:var(--f-display);font-weight:400;font-size:20px;line-height:1.25;margin-bottom:4px}
+a{color:var(--accent);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px}
+a:hover{color:var(--accent-hover)}
+/* the site header keeps its own link look (the shared navigation.css is not loaded here, see NOTES.md) */
+.ntf-header a{color:#272722;text-decoration:none}
+.ntf-header .ntf-nav a:hover{color:var(--accent)}
+.ntf-header .ntf-nav a[aria-current="page"]{color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:8px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 .pit small{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
-.ev{width:100%;border-collapse:collapse;font-size:14px}
+.ev{width:100%;border-collapse:collapse;font-size:15px;line-height:1.6}
 .ev th,.ev td{text-align:left;vertical-align:top;padding:7px 8px;border-bottom:1px solid var(--line)}
-.ev th{font-size:13px;color:var(--muted);font-weight:600}
+.ev th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
 .tblwrap{overflow-x:auto}
-footer{font-size:13px;color:var(--muted);max-width:80ch;border-top:1px solid var(--line);padding-top:14px}
+footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-top:1px solid var(--line);padding-top:14px}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 
 /* BIS VISTA-style screen: absolute layout in container units (cqw) taken from the owner's photos of the real monitor */
 .screens{display:grid;gap:10px;min-width:0}
+.screen.vwrap{border-radius:18px}
 .vwrap{background:#1b2230;padding:6px;border:1px solid #2b3446;border-radius:18px;display:block}
 /* the Medtronic BIS case: warm light-grey plastic around the screen, a dark gasket at the glass (owner photos) */
 #vistaWrap{background:linear-gradient(#e4e2dc,#cfccc4);border:1px solid #b9b6ae;border-radius:18px;padding:12px;box-shadow:inset 0 1px 0 #f4f3ef,0 10px 30px -18px rgba(0,0,0,.7)}
@@ -315,17 +331,16 @@ footer{font-size:13px;color:var(--muted);max-width:80ch;border-top:1px solid var
 .vwrap[hidden],#bilSum[hidden]{display:none}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px}.keyrow button{flex:1 1 auto}
 .vmsg[hidden],.keyrow[hidden],.vwrap[hidden],.screen[hidden],.teachstrip[hidden]{display:none}
-.teachstrip{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);font:600 13px/1.3 var(--f-mono);color:var(--muted)}
+.teachstrip{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;padding:8px 12px;border:1px solid var(--line);border-radius:0;background:var(--inset);font:500 13px/1.3 var(--f-mono);color:var(--muted)}
 .teachstrip b{color:var(--fg);font-weight:600}
-.teachstrip .zone{color:var(--fg)}
+.teachstrip .zone{background:var(--accent-soft);color:var(--fg);border-radius:0}
 </style>
 <link rel="stylesheet" href="adv.css">
 <link rel="stylesheet" href="sed.css">
 <link rel="stylesheet" href="pv.css">
 </head>
 <body>
-<nav class="sitebar" aria-label="NTF Anaesthesia"><a class="home" href="../index.html">← NTF Anaesthesia</a><a href="../airway.html">Airway</a><a href="../regional.html">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="./" aria-current="page">pEEG</a><a href="../exams/">Exam Prep</a></nav>
-<div class="band" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../airway.html">Airway</a><a href="../regional.html">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="../bis/" aria-current="page">pEEG</a><a href="../exams/">Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
 <div class="wrap">
 <section id="monitor" aria-labelledby="h-mon">
   <div class="monhead"><h1 class="apptitle" id="h-mon">BIS to DSA <span>simulator</span></h1>
@@ -464,7 +479,7 @@ footer{font-size:13px;color:var(--muted);max-width:80ch;border-top:1px solid var
   </div>
 </section>
 
-<header>
+<header class="intro">
   <div class="eyebrow">Anaesthesia teaching · processed EEG</div>
   <h2>From the BIS sensor to the DSA</h2>
   <p class="lede">The BIS number is one summary of a frontal EEG. The density spectral array (DSA) shows the whole spectrum over time, so you can see <em>why</em> the number is what it is. Move the drug and depth controls and watch the raw EEG, the number and the DSA change together.</p>

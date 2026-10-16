@@ -215,7 +215,7 @@ try {
     await page.click('#viewSeg [data-view="both"]');
     await page.waitForFunction(([d, e]) => document.querySelector('#cEeg').clientHeight === e && document.querySelector('#cDsa').clientHeight === d, [dsa0, eeg0]);
     // monitor first: on a phone the monitor and the drug and depth controls are near the top
-    if (viewport.width === 390) assert.ok(await page.$eval('#classicWrap', e => e.getBoundingClientRect().top + scrollY) < 180, 'monitor near the top (under the monitor switch)');
+    if (viewport.width === 390) assert.ok(await page.$eval('#classicWrap', e => e.getBoundingClientRect().top + scrollY) < 230, 'monitor near the top (under the site header and the monitor switch)');
     // facial EMG raises the EMG reading (no relaxant on board)
     await page.click('#nmbSeg [data-nmb="off"]');
     const emg0 = await page.$eval('#vEmg', e => +e.textContent);
