@@ -7,6 +7,8 @@ import { el, callout, table, cite, announce, tier, keyPoints, registerSearch, de
 import { createTree, treeOutline, numberCites } from '../troubleshooting/tree.js';
 import { redirectGuide } from '../troubleshooting/redirect.js';
 import * as T from '../troubleshooting/trees.js';
+import { guideList, openGuideFromHash } from '../../../shared/regional/js/decide.js?v=20261017';
+import { GUIDES, guidesFor } from '../../../shared/regional/js/data/decisions.js';
 
 export const meta = { id: 'troubleshooting', prefix: 'ts', title: 'Troubleshooting' };
 
@@ -427,6 +429,29 @@ function registerTreeSearch(panelId, treeTitle, data) {
   registerSearch(items.map(({ title, text, id }) => ({ title, text, id })));
 }
 
+// ---------------------------------------------------------------- If it goes wrong
+// The regional app's shared step-by-step guides (shared/regional/js/data/decisions.js, drawn by decide.js), the same
+// ones every block page has. Always MO level. Spinal's own trees above stay the main troubleshooting content; these are
+// an extra, limited to the guides that read true for a spinal (toxicity, high or total block, lasting numbness or
+// weakness). Paraesthesia, a bloody tap and a failed spinal have their own trees above, so the shared peripheral-block
+// versions are left out. Anchors: #ts-wrong (the heading) and #ts-wrong-<guide> (opens that guide).
+const WRONG = guidesFor('spinal', 'neuraxial').filter((id) => ['last', 'high', 'nerve'].includes(id));
+
+function wrongSection() {
+  const sec = tier(el('section', { class: 'ts-wrong', 'aria-labelledby': 'ts-wrong' }), 1);
+  sec.append(el('h3', { id: 'ts-wrong', text: 'Also: the regional app’s emergency guides' }));
+  sec.append(P('For a failed spinal, a bloody tap or paraesthesia, use the trees above. These step-by-step guides are shared with every regional block page: open one and answer each question to see the next thing to do.', 'sp-lead'));
+  const host = el('div', { class: 'ra-dg-host' });
+  host.append(guideList(WRONG, { idPrefix: 'ts-wrong', headingLevel: 4 }));
+  sec.append(host);
+  sec.append(el('p', { class: 'ts-wrong-more' }, el('a', { href: '../blocks/#wrong' }, 'Every guide on one page ', el('span', { 'aria-hidden': 'true', text: '→' }))));
+  registerSearch(WRONG.map((id) => ({ title: GUIDES[id].title, text: `${GUIDES[id].short || ''} ${GUIDES[id].when.replace(/<[^>]+>/g, ' ')}`, id: `ts-wrong-${id}` })));
+  // #ts-wrong-<guide> opens that guide (app.js then scrolls to it), on load and on later hash changes.
+  queueMicrotask(() => openGuideFromHash());
+  window.addEventListener('hashchange', () => openGuideFromHash());
+  return sec;
+}
+
 // ---------------------------------------------------------------- mount
 export function mount(root) {
   root.append(emergencyCard());
@@ -501,6 +526,8 @@ export function mount(root) {
     panels.set(p.id, art);
     host.append(art);
   });
+
+  root.append(wrongSection());
 
   // One printable, searchable list of every tree. Built now so every ref the trees cite is in the DOM
   // when app.js numbers the references.

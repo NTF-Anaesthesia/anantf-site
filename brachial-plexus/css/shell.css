@@ -2,13 +2,13 @@
    One sticky bar (home · block · copy link · level); the site header scrolls away. DESIGN.md: paper, ink, one wine
    accent, square edges, hairlines, nothing under 12px, 44px targets. */
 :root:has(body.ra-app) { --ra-bar: 56px; }
-html:has(body.ra-app) { scroll-padding-top: calc(var(--ra-bar) + 8px); }
+html:has(body.ra-app) { scroll-padding-top: calc(var(--ra-bar, 56px) + 8px); }
 body.ra-app .ntf-header { position: static; }
 body.ra-app {
   --bp-paper: #f7f5ef; --bp-ink: #272722; --bp-muted: #55534d; --bp-line: #d7d2c8; --bp-line-strong: #b8ad9e;
   --bp-control: #827b6d; --bp-wine: #633d3c; --bp-hover: #e9e5dc; --bp-blush: #ece3dc; --bp-ivory: #fffaf0;
 }
-.ra-app main [id], .ra-app .panel { scroll-margin-top: calc(var(--ra-bar) + 8px); }
+.ra-app main [id], .ra-app .panel { scroll-margin-top: calc(var(--ra-bar, 56px) + 8px); }
 
 /* ------------------------------------------------------------ the one sticky bar */
 .bp-bar { position: sticky; top: 0; z-index: 50; background: var(--bp-paper); border-bottom: 1px solid var(--bp-line); }
@@ -112,3 +112,9 @@ body.ra-app .ntf-footer .ntf-copyright { font-size: 12px !important; }
 .ra-app .foot .credit { color: var(--bp-ink); }
 
 @media print { .bp-bar { display: none !important; } }
+
+/* "If it goes wrong" guides (shared/regional/js/decide.js, styles in shared/regional/css/decide.css): this app's fonts. */
+.ra-app .ra-dg-host { --tb-sans: var(--font); }
+.ra-app .guide .bp-wrong-lead { font-size: 15px; line-height: 1.6; color: var(--bp-muted); max-width: 68ch; margin: 0 0 8px; }
+.ra-app .guide .bp-wrong-more { font-size: 15px; margin: 12px 0 0; }
+.ra-app .guide .bp-wrong-more a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--bp-wine); }
