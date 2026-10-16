@@ -63,7 +63,7 @@ export function buildIndex() {
     if (chapter.id === 'ch-home') continue;
     let head = null;
     for (const node of $$(TEXT, chapter)) {
-      if (node.closest('.sp-adv-digest,.sp-pager,.sp-sr,[aria-hidden="true"],script,style')) continue;
+      if (node.closest('.sp-adv-digest,.sp-pager,.sp-sr,[aria-hidden="true"],script,style,.sp-topics-top,.ra-rs')) continue; // topic chips and real-scan viewers: navigation, not content
       const text = (node.textContent || '').replace(/\s+/g, ' ').trim();
       if (text.length < 3) continue;
       const isHead = node.matches(HEAD);

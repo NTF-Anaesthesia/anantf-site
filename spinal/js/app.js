@@ -5,7 +5,8 @@
 // levels.js (search.js), so they share one module instance.
 import { $, $$, el, announce } from './ui.js?v=1';
 import { registerRefs, finalise } from './refs.js?v=1';
-import { attachSearch, buildIndex } from './search.js?v=4';
+import { attachSearch, buildIndex } from './search.js?v=5';
+import { initTopics } from './topics.js?v=1';
 import {
   applyLevel, getLevel, onLevel, mountLevelControl, mountLevelPicker, relaxFor as relaxLevel,
   getPearlsOnly, setPearlsOnly, hiddenHint,
@@ -49,6 +50,7 @@ const ALIAS = { sixty: 'ch-card', populations: 'ch-technique', quiz: 'ch-exam' }
 const prefixChapter = new Map(); // module prefix -> chapter element
 const BASE_TITLE = 'Spinal anaesthesia — NTF Anaesthesia';
 let current = null;
+let topics = null; // in-chapter topic navigation (topics.js), set up once the sections have mounted
 
 // Chapter kicker and previous/next buttons.
 chapters.forEach((c, i) => {
@@ -149,6 +151,7 @@ function showChapter(ch) {
   document.body.dataset.chapter = ch.id;
   document.title = ch.id === 'ch-home' ? BASE_TITLE : `${ch.dataset.title} — ${BASE_TITLE}`;
   paintChapterNav();
+  topics?.setChapter(ch);
   kickResize();
   return true;
 }
@@ -220,6 +223,7 @@ function togglePearls() {
   if (on && document.body.dataset.spReady) buildDigests();
   pearlsOn = on;
   setPearlsOnly(on);
+  requestAnimationFrame(() => topics?.refresh());
 }
 function addChapterTools(chapter) {
   const hint = hiddenHint(chapter, { label: 'in this chapter' });
@@ -246,6 +250,7 @@ onLevel((lv) => {
   paintPearls();
   fitChapters();
   kickResize();
+  requestAnimationFrame(() => topics?.refresh());
 });
 
 mountLevelControl($('#sp-bar-level'));
@@ -396,7 +401,7 @@ async function boot() {
     const direct = chapterById.get(id0) || chapterById.get(ALIAS[id0]) || document.getElementById(id0)?.closest('.sp-chapter');
     if (direct) showChapter(direct); else if (!id0) showChapter(chapterById.get('ch-home'));
   }
-  const loaded = await Promise.allSettled(mods.map((m) => import(`./sections/${m}.js?v=3`)));
+  const loaded = await Promise.allSettled(mods.map((m) => import(`./sections/${m}.js?v=4`)));
   // Register every module's refs before any mount, so cross-section citations resolve.
   loaded.forEach((r, i) => {
     if (r.status !== 'fulfilled') return;
@@ -424,6 +429,7 @@ async function boot() {
   paintPearls();
   fitChapters();
   try { buildIndex(); } catch (err) { console.error('[spinal] search index failed', err); }
+  try { topics = initTopics(chapters); topics.setChapter(current); } catch (err) { console.error('[spinal] topic list failed', err); }
   document.body.classList.remove('sp-booting');
   document.body.classList.add('sp-chapters-on');
   document.body.dataset.spReady = 'true';

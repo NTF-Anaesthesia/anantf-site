@@ -94,3 +94,19 @@
 .spinal-app .us-anchor[hidden]{display:none}
 .spinal-app .us-anchor:focus{outline:none}
 .spinal-app .us-sv-tilt text,.spinal-app .us-sv-t{paint-order:stroke;stroke:var(--sp-surface-2);stroke-width:3px;stroke-linejoin:round}
+
+/* ------------------------------------------------------------------ real scans (shared viewer: shared/regional/js/realscan.js)
+   The viewer brings its own realscan.css; these rules only fit it into the spinal page (its main p / ul margins and
+   the engine's tb-btn, which this page does not load). The overlay colours are the clinical code: never recoloured. */
+.spinal-app .us-real{max-width:none}
+.spinal-app .us-real-pick{margin:0 0 14px}
+.spinal-app .us-real-host{max-width:980px;margin:0 0 8px}
+.spinal-app .us-real-status{font-size:15px;color:var(--sp-muted)}
+.spinal-app main .ra-rs :is(p,ul,ol){max-width:none}
+.spinal-app main .ra-rs .ra-rs-cap p{margin:0 0 4px;max-width:70ch}
+.spinal-app main .ra-rs :is(.ra-rs-keyk,.ra-rs-hint,.ra-rs-your-note,.ra-rs-name p){margin:0}
+.spinal-app main .ra-rs ul.ra-rs-key{margin:0}
+.spinal-app main .ra-rs .ra-rs-links a{color:var(--sp-accent)}
+.spinal-app .ra-rs .tb-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 16px;border:1px solid var(--sp-line-strong);border-radius:0;background:transparent;color:var(--sp-ink);font:14px/1.3 var(--sp-sans);cursor:pointer}
+.spinal-app .ra-rs .tb-btn:hover{border-color:var(--sp-accent);background:var(--sp-accent-soft)}
+@media print{.spinal-app .ra-rs-your,.spinal-app .ra-rs-keywrap{display:none}}
