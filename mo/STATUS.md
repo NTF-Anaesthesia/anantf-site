@@ -7,8 +7,9 @@ pick up from "Not done yet" below.
 
 - 16 Oct: the guide moved to `mo/guide/` (anantf.com/mo/guide/) and `anantf.com/mo/` is now a landing page for new MOs
   (guide and Baby MO test). `mo/sw.js` is a retired worker that moves phones off the old install. The question bank is not
-  on the landing page (it is department-wide); a `mo.anantf.com` subdomain is a possible later step (needs Cloudflare on
-  anantf.com and Shi Hao's agreement).
+  on the landing page (it is department-wide); `mo.anantf.com` is a Cloudflare Worker (`MO.md`; the owner's setup clicks are listed there): it serves the landing page and
+  the guide, and forwards other paths to anantf.com. anantf.com's DNS was already on Cloudflare, so the apex and Shi Hao's
+  pages are untouched.
 
 - #103 first version: engine, calculators, 14 modules, drugs, crisis cards, scenarios, flashcards, offline install.
 - #108 the remaining clinical and teaching checks (crisis cards, figures, good, pacu, patients, regional, pain-aps, cases,

@@ -1,9 +1,10 @@
-# Tests for the BIS to DSA simulator (bis/) and the OT simulator (ot/), on every PR that changes them.
+# Tests for the BIS to DSA simulator (bis/), the OT simulator (ot/), the mo.anantf.com Worker (worker/) and the MO guide's
+# unit tests, on every PR that changes them.
 # Each browser suite runs as its own job, side by side; "browser" is green only when all of them passed.
 name: Checks
 on:
   pull_request:
-    paths: ['bis/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', '.github/workflows/checks.yml']
+    paths: ['bis/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', '.github/workflows/checks.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,6 +22,10 @@ jobs:
         run: for f in ot/test/*.test.mjs; do echo "== $f"; node "$f"; done
       - name: BIS engine tuning
         run: node bis/test/engine.check.mjs
+      - name: mo.anantf.com routes
+        run: node worker/test/routes.test.mjs
+      - name: MO guide unit tests
+        run: for f in calc content version; do node mo/guide/test/$f.test.mjs; done
 
   browser-suite:
     runs-on: ubuntu-latest
