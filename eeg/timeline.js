@@ -13,7 +13,7 @@ function tlChan(){return {eng:tlCloneEng(eng),sup:sup.slice(),bisS,lastSef,lastM
  sefH:sefH.slice(),mfH:mfH.slice(),prevSup,isoN,outN,outV,sefAge,lastN:HIST.length?HIST[HIST.length-1].n:-1};}
 function tlSetChan(s,m){eng=tlEng(s.eng,m);SIG=[];EYE=[];sup=s.sup.slice();bisS=s.bisS;lastSef=s.lastSef;lastMf=s.lastMf;produced=s.produced;tim=Object.assign({},s.tim);
  artH=s.artH.slice();bcH=s.bcH.slice();rawH=s.rawH.slice();sefH=s.sefH.slice();mfH=s.mfH.slice();prevSup=s.prevSup;isoN=s.isoN;outN=s.outN;outV=s.outV;sefAge=s.sefAge;
- while(HIST.length&&HIST[HIST.length-1].n>s.lastN)HIST.pop();while(COLS.length&&COLS[COLS.length-1].n>s.lastN)COLS.pop();}
+ while(HIST.length&&HIST[HIST.length-1].n>s.lastN)HIST.pop();COLS=HIST.slice(-COLMAX);}
 // the drug controls as they were
 function tlUi(){return {mode,drug,lastSingle,dv:$('depth').value,mix:Object.assign({},mix),mods:{elderly:mods.elderly,emg:mods.emg,diathermy:mods.diathermy,blink:mods.blink,warmer:mods.warmer,nmbMode:mods.nmbMode,caseLen:mods.caseLen,asym:mods.asym}};}
 function tlSetUi(u){const m=u.mods;mods.elderly=!!m.elderly;$('mElder').checked=mods.elderly;for(const [k,id] of SMODS){mods[k]=!!m[k];$(id).checked=mods[k];}mods.warmer=!!m.warmer;
@@ -63,9 +63,14 @@ function tlDraw(){const cv=$('tCv');if(!cv||TL.t0==null)return;const w=cv.client
  c.fillStyle='#78bdff';c.fillRect(4,y-4,X(simT)-4,8);
  c.fillStyle='#f0c040';for(const t of TL.events)c.fillRect(Math.round(X(t))-1,y-9,2,18);
  const x=X(simT);c.fillStyle='#fff';c.beginPath();c.arc(x,y,7,0,7);c.fill();c.strokeStyle='#002f6c';c.lineWidth=2;c.stroke();
- const el=$('tNow'),txt2=`Case ${tlFmt(simT-t0)}`+(TL.max-simT>=1?` · ${tlFmt(TL.max-simT)} ahead was rewound`:'');if(el._t!==txt2){el._t=txt2;el.textContent=txt2;}
- document.querySelectorAll('#tBtns button').forEach(b=>{const j=+b.dataset.j;b.disabled=TL.busy||(j<0&&simT-t0<1);});}
+ const el=$('tNow'),txt2=`Time ${tlFmt(simT-t0)}`+(TL.max-simT>=1?` · ${tlFmt(TL.max-simT)} ahead was rewound`:'');if(el._t!==txt2){el._t=txt2;el.textContent=txt2;}
+ const slider=$('timeScrub');if(slider&&!TL.scrubbing){slider.max=Math.max(900,Math.ceil((TL.max-t0+300)/300)*300);slider.value=Math.round(simT-t0);slider.setAttribute('aria-valuetext',tlFmt(simT-t0));}if(slider)slider.disabled=TL.busy;}
 function tlBusyUI(on){$('tLine').classList.toggle('busy',on);const tn=$('tNow');tn._t=null;if(on)tn.textContent='Jumping…';}
 document.querySelectorAll('#tBtns button').forEach(b=>b.onclick=()=>tlJump(simT+(+b.dataset.j)));
 $('tCv').addEventListener('click',e=>{if(TL.t0==null)return;const r=e.currentTarget.getBoundingClientRect(),w=r.width,span=Math.max(600,TL.max-TL.t0,simT-TL.t0);
  tlJump(TL.t0+Math.max(0,Math.min(1,(e.clientX-r.left-4)/(w-8)))*span);});
+
+// Native range provides pointer dragging, touch and keyboard seeking without duplicate step buttons.
+$('timeScrub').addEventListener('input',e=>{TL.scrubbing=true;$('timePreview').textContent=tlFmt(+e.target.value);e.target.setAttribute('aria-valuetext',tlFmt(+e.target.value));});
+$('timeScrub').addEventListener('change',e=>{const t=+e.target.value;TL.scrubbing=false;$('timePreview').textContent='';if(TL.t0!=null)tlJump(TL.t0+t);});
+$('timeScrub').addEventListener('pointercancel',()=>{TL.scrubbing=false;$('timePreview').textContent='';tlDraw();});

@@ -1,12 +1,12 @@
 // Browser test of the Masimo SedLine screen (the 'sedline' skin): the 800 x 1280 Root screen, status bar, the four-channel EEG, trend rows,
 // well, DSA with ASYM, scrub bar, Trend and Analog views, electrode strip, alarms (PSi limits, window messages, bell, audio pause), the
 // Root-style menu tree with the manual's names and defaults, and the settings that change the picture. Run with a static server on port 8080:
-// node bis/test/sed.e2e.mjs  (also run by e2e.mjs)
+// node eeg/test/sed.e2e.mjs  (also run by e2e.mjs)
 const { chromium } = await import(process.env.PLAYWRIGHT_PATH || '/opt/node22/lib/node_modules/playwright/index.mjs');
 import assert from 'node:assert/strict';
 
 const AXE = new URL('../../tools/vendor/axe.min.js', import.meta.url).pathname;
-const BASE = `http://localhost:${process.env.PORT || 8080}/bis/`;
+const BASE = `http://localhost:${process.env.PORT || 8080}/eeg/`;
 const b = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH, args: ['--no-sandbox'] } : {});
 const errors = [];
 const txt = (p, sel) => p.$eval(sel, e => e.textContent.trim());

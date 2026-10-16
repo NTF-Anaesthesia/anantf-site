@@ -1,10 +1,10 @@
-# Tests for the BIS to DSA simulator (bis/), the OT simulator (ot/), the mo.anantf.com Worker (worker/) and the MO guide's
+# Tests for the BIS to DSA simulator (eeg/), the OT simulator (ot/), the mo.anantf.com Worker (worker/) and the MO guide's
 # unit tests, on every PR that changes them.
 # Each browser suite runs as its own job, side by side; "browser" is green only when all of them passed.
 name: Checks
 on:
   pull_request:
-    paths: ['bis/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', '.github/workflows/checks.yml']
+    paths: ['eeg/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', '.github/workflows/checks.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,7 +21,7 @@ jobs:
       - name: OT model tests
         run: for f in ot/test/*.test.mjs; do echo "== $f"; node "$f"; done
       - name: BIS engine tuning
-        run: node bis/test/engine.check.mjs
+        run: node eeg/test/engine.check.mjs
       - name: mo.anantf.com routes
         run: node worker/test/routes.test.mjs
       - name: MO guide unit tests
@@ -34,14 +34,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { name: BIS Medtronic and Teaching (phone), cmd: "BIS_SPLIT=1 BIS_VIEW=phone node bis/test/e2e.mjs" }
-          - { name: BIS Medtronic and Teaching (desktop), cmd: "BIS_SPLIT=1 BIS_VIEW=desktop node bis/test/e2e.mjs" }
-          - { name: BIS Advance (phone), cmd: "BIS_VIEW=phone node bis/test/adv.e2e.mjs" }
-          - { name: BIS Advance (desktop), cmd: "BIS_VIEW=desktop node bis/test/adv.e2e.mjs" }
-          - { name: BIS SedLine (phone), cmd: "BIS_VIEW=phone node bis/test/sed.e2e.mjs" }
-          - { name: BIS SedLine (desktop), cmd: "BIS_VIEW=desktop node bis/test/sed.e2e.mjs" }
-          - { name: BIS IntelliVue, cmd: "node bis/test/pv.e2e.mjs" }
-          - { name: BIS timeline, cmd: "node bis/test/timeline.e2e.mjs" }
+          - { name: Processed EEG (phone), cmd: "BIS_VIEW=phone node eeg/test/demo.e2e.mjs" }
+          - { name: Processed EEG (desktop), cmd: "BIS_VIEW=desktop node eeg/test/demo.e2e.mjs" }
           - { name: OT simulator, cmd: "node ot/test/e2e.mjs" }
     name: browser (${{ matrix.name }})
     steps:

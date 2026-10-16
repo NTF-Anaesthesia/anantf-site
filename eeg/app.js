@@ -1,4 +1,4 @@
-// BIS to DSA teaching simulator (bis/NOTES.md). Synthetic EEG -> FFT -> DSA columns -> a teaching BIS estimate.
+// BIS to DSA teaching simulator (eeg/NOTES.md). Synthetic EEG -> FFT -> DSA columns -> a teaching BIS estimate.
 // ===== EEG engine (shared with page) =====
 const FS=128, NWIN=256, HOP=128, DF=FS/NWIN; // 0.5 Hz bins
 const OSC_F=[]; for(let f=0.5;f<=47;f+=0.5) OSC_F.push(f);
@@ -344,7 +344,7 @@ const laneH=()=>{const n=innerWidth<600;return view==='both'?{dsa:n?150:190,eeg:
 // monitor clock: sim time from page open (the warm start's 5 min end now), so the trend axis matches the clock at any speed
 const T0=Date.now()-300e3,clk=t=>{const d=new Date(T0+t*1000);return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');};
 const AMBER='#ffb454',MFC='#b47cff',EMGC='#5fd08f';
-function txt(id,t){const el=$(id);if(el.textContent!==t)el.textContent=t;}
+function txt(id,t){const el=$(id);if(el && el.textContent!==t)el.textContent=t;}
 function drawEeg(){if(view==='dsa'||mon.skin!=='classic')return;const {ctx,w,h}=fit(cEeg,laneH().eeg);ctx.fillStyle=SCR.bg;ctx.fillRect(0,0,w,h);
  const secs=mon.sweep==='auto'?(w<500?5:8):mon.sweep,N=secs*FS,s=mon.scale,sc=(h/2)/s; // 'auto': about 5 s across a phone, 8 s on a desktop; ±scale full height
  ctx.strokeStyle=SCR.grid;ctx.lineWidth=1;for(let k=0;k<=secs;k++){const x=Math.round(w*k/secs)+.5;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
@@ -484,7 +484,7 @@ function syncMix(){MIXROWS.forEach(([k,,,,,f])=>{$('mx-'+k).value=mix[k];$('o-'+
 MIXROWS.forEach(([k,,,,,f])=>$('mx-'+k).oninput=e=>{stopStory();mix[k]=+e.target.value;$('o-'+k).textContent=f(mix[k]);applyTarget();});
 document.querySelectorAll('#presetSeg button').forEach(b=>b.onclick=()=>{stopStory();Object.assign(mix,MIX0,PRESETS[b.dataset.preset]);syncMix();applyTarget();});
 function showMode(m){mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
- $('mixCtl').hidden=m!=='mix';$('depthCtl').hidden=$('drugCtl').hidden=m==='mix';}
+ $('mixCtl').hidden=m!=='mix';$('depthCtl').hidden=m==='mix';}
 let lastSingle='propofol';
 document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick=()=>{stopStory();if(b.dataset.mode==='mix'){showMode('mix');drug='mix';depth=mix;syncMix();applyTarget();}else setDrug(lastSingle);});
 function setDrug(dn){showMode('single');lastSingle=dn;depth=$('depth').value/100;drug=dn;document.querySelectorAll('#drugSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.drug===dn));
@@ -508,7 +508,7 @@ $('mElder').onchange=e=>{mods.elderly=e.target.checked;applyTarget();};
 $('mEmg').onchange=e=>{mods.emg=e.target.checked;applyTarget();};
 // muscle relaxant (owner, 14 Oct 2026: on by default): 'auto' gives it at induction and reverses it at emergence, so the
 // awake patient still reads 90s; 'on' paralyses an awake patient now (the awake-paralysis pitfall); 'off' for the EMG teaching
-mods.nmbMode='auto';
+mods.nmbMode='off';
 function setNmb(m){mods.nmbMode=m;document.querySelectorAll('#nmbSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.nmb===m));applyTarget();}
 document.querySelectorAll('#nmbSeg button').forEach(b=>b.onclick=()=>setNmb(b.dataset.nmb));
 // ===== relaxant buttons and the nerve-stimulator readout =====
@@ -522,17 +522,13 @@ function nmUI(){const r=nmRead(),t=`T1 ${Math.round(r.t1)}% · TOF count ${r.tof
  txt('nmRead',nm.given||nm.ce>0.05?t:'No relaxant given');txt('nmHint',nmHint(r));txt('s2Nm',nm.given||nm.ce>0.05?`TOFc ${r.tofc}`+(r.tofr!=null?` · ${r.tofr.toFixed(2)}`:r.ptc!=null?` · PTC ${r.ptc}`:''):'none');}
 function setAsym(a){mods.asym=a;document.querySelectorAll('#asymSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.asym===a));applyTarget();}
 document.querySelectorAll('#asymSeg button').forEach(b=>b.onclick=()=>setAsym(b.dataset.asym));
-$('nmBolus').onclick=()=>{if(mods.nmbMode==='off')setNmb('auto');nmDose(0.6);};
-$('nmTop').onclick=()=>{if(mods.nmbMode==='off')setNmb('auto');nmDose(0.15);};
-$('nmSug2').onclick=()=>nmSug(2);$('nmSug4').onclick=()=>nmSug(4);
-
 // emergence: stop every drug; the effect site falls slowly (the relaxant is reversed once the patient is light)
 function setCase(c){mods.caseLen=c;document.querySelectorAll('#caseSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.case===c));}
 mods.caseLen='medium';
 document.querySelectorAll('#caseSeg button').forEach(b=>b.onclick=()=>setCase(b.dataset.case));
 $('wakeBtn').onclick=()=>{stopStory();nmSug(2);
  if(drug==='mix'){Object.assign(mix,MIX0);syncMix();depth=mix;}else{depth=0;$('depth').value=0;}
- applyTarget();$('storyCap').textContent='Emergence: drugs stopped. The effect site falls over a few minutes (longer after a long case: propofol and dexmedetomidine accumulate, remifentanil does not), so the DSA unzips back: the alpha band fades first, then slow waves, beta returns and BIS rises through the 60s and 70s. The relaxant is reversed once the patient is light. Speed up to watch it.';};
+ applyTarget();if(paused)$('pause').click();$('storyCap').textContent='Emergence: drug targets are zero. Watch the evolving EEG and DSA as the modelled effect wears off; the processed index responds with a delay.';};
 $('tReset').onclick=()=>{tim.sup=tim.low=R.tim.sup=R.tim.low=0;dirty=true;};
 $('mDia').onchange=e=>{mods.diathermy=e.target.checked;applyTarget();};
 $('mBlink').onchange=e=>{mods.blink=e.target.checked;applyTarget();};
@@ -576,7 +572,7 @@ function slideUI(){if(drug==='mix'){fcUI();return;}$('effMark').style.left=`calc
 // surgical stimulus: 100 sim-s of arousal; the button shows pressed while it lasts
 let stimOn=false;function stimUI(){const on=eng.stT>0;if(on!==stimOn){stimOn=on;$('stimBtn').setAttribute('aria-pressed',on);$('stimBtn').textContent=on?'Stimulus running…':'Surgical stimulus';describe();}}
 $('stimBtn').onclick=()=>{stimAll();stimUI();};
-function setSpeed(s){speed=s;document.querySelectorAll('#speedSeg button[data-speed]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.speed===s));}
+function setSpeed(s){speed=s;if($('playSpeed'))$('playSpeed').value=s;if($('speedValue'))$('speedValue').textContent=s+'×';document.querySelectorAll('#speedSeg button[data-speed]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.speed===s));}
 document.querySelectorAll('#speedSeg button[data-speed]').forEach(b=>b.onclick=()=>setSpeed(+b.dataset.speed));
 function setView(v){view=v;document.querySelectorAll('#viewSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.view===v));$('wDsa').hidden=v==='eeg';$('wEeg').hidden=v==='dsa';dirty=true;}
 document.querySelectorAll('#viewSeg button').forEach(b=>b.onclick=()=>setView(b.dataset.view));
@@ -600,14 +596,14 @@ function scaleUI(){$('kScale').textContent=`EEG ±${mon.scale} µV`;}
 function trendUI(){$('kTrend').textContent=`Trend ${mon.trend} min`;$('kBottom').textContent='Bottom: '+(mon.bottom==='emg'?'BIS + EMG':mon.bottom==='sr'?'BIS + SR':'BIS trend');
  txt('dsaRange',(mon.dbLo===DB_LO&&mon.dbHi===DB_HI?'':`${mon.dbLo}…${mon.dbHi} dB · `)+`last ${mon.trend} min`);}
 let menuOpen=false; // the on-screen Menu (VISTA and two-sided screens)
-function applySkin(s,reset,init){mon.skin=s;mtApply();$('vistaWrap').hidden=s!=='vista';$('sedWrap').hidden=s!=='sedline';if(s==='sedline')sedApply();$('advWrap').hidden=s!=='advance';if(s==='advance')advApply();$('pvWrap').hidden=s!=='philips';if(s==='philips')pvApply();$('classicWrap').hidden=s!=='classic';$('teachStrip').hidden=s==='classic';$('bilSum').hidden=s!=='sedline'&&s!=='advance'&&s!=='philips';
+function applySkin(s,reset,init){mon.skin=s;if($('monitorChoice'))$('monitorChoice').value=s;mtApply();$('vistaWrap').hidden=s!=='vista';$('sedWrap').hidden=s!=='sedline';if(s==='sedline')sedApply();$('advWrap').hidden=s!=='advance';if(s==='advance')advApply();$('pvWrap').hidden=s!=='philips';if(s==='philips')pvApply();$('classicWrap').hidden=s!=='classic';$('teachStrip').hidden=s==='classic';$('bilSum').hidden=s!=='sedline'&&s!=='advance'&&s!=='philips';
  document.querySelectorAll('#skinSeg button,#monSwitch button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.skin===s));
  $('keySeg').hidden=s!=='classic';if(s==='classic')closeMenu(true);
  if(reset){mon.scale=s==='classic'?100:50;mon.sweep=s==='classic'?'auto':8;}
  scaleUI();dispUI(false);trendUI();if(!init){dirty=true;try{localStorage.setItem('bisdsa.skin',s);}catch(e){}if(reset)saveDisp();}}
 document.querySelectorAll('#skinSeg button,#monSwitch button').forEach(b=>b.onclick=()=>applySkin(b.dataset.skin,true));
 // the Menu: tap an item to step through its values; settings are the same ones the soft keys and Display panel change
-const RANGES=[[-3,31],[0,25],[5,20],[-9,40]],SKINS=[['vista','Medtronic BIS'],['advance','BIS Advance'],['sedline','SedLine'],['philips','IntelliVue']];
+const RANGES=[[-3,31],[0,25],[5,20],[-9,40]],SKINS=[['vista','BIS Vista'],['advance','BIS Advance'],['sedline','SedLine'],['philips','IntelliVue']];
 const MENU=[
  ['Smoothing rate',()=>mon.smooth+' s',()=>$('kSmooth').click()],
  ['EEG scale',()=>`±${mon.scale} µV`,()=>$('kScale').click()],
@@ -637,36 +633,31 @@ $('tReset2').onclick=()=>{tim.sup=tim.low=R.tim.sup=R.tim.low=0;dirty=true;};
 function setTeach(on){mon.teach=on;$('mTeach').checked=on;$('vZone').hidden=!on;$('tgtCap').hidden=!on;dirty=true;try{localStorage.setItem('bisdsa.teach',on?'1':'0');}catch(e){}}
 $('mTeach').onchange=e=>setTeach(e.target.checked);
 try{if(localStorage.getItem('bisdsa.teach')==='0')setTeach(false);}catch(e){}
-let skin0='vista';try{{const q=localStorage.getItem('bisdsa.skin');if(['classic','advance','sedline','philips'].includes(q))skin0=q;}}catch(e){}
+let skin0='classic';try{{const q=localStorage.getItem('bisdsa.skin');if(['classic','advance','sedline','philips'].includes(q))skin0=q;}}catch(e){}
 applySkin(skin0,true,true);
 try{const d=JSON.parse(localStorage.getItem('bisdsa.disp')||'null');if(d&&['auto',4,8,16].includes(d.sweep)){mon.sweep=d.sweep;dispUI(false);}}catch(e){}
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',paused);$('pause').textContent=paused?'Resume':'Pause';};
 
 // ===== the case story =====
 const STORY=[
- {at:0,drug:'propofol',d:0,snap:true,mods:{blink:true},cap:'Pre-induction. Awake EEG: small, fast, disorganised. Thin power across the DSA and BIS in the 90s. Blinks put slow swings on the raw EEG and a little brightness along the bottom of the DSA.'},
- {at:25,d:0.17,cap:'Propofol bolus. Beta power rises first (paradoxical excitation), so BIS barely moves even though the patient is drifting off.'},
- {at:50,d:0.57,mods:{},cap:'Loss of consciousness, and the relaxant is given. The effect site takes a minute or two to catch up, so the DSA unzips gradually: beta fades while two bands grow, alpha 8–12 Hz and slow-delta under 4 Hz. SEF95 drops and BIS settles at 40–60 a little after the DSA does.'},
- {at:130,d:0.93,cap:'Infusion left high and the blood pressure falls. Alpha fades, slow waves dominate, then dark vertical stripes appear: burst suppression. SR climbs; BIS falls into the 30s and then, once SR passes 40%, below 30.'},
- {at:220,d:0.57,cap:'Infusion reduced. The alpha band comes back within a minute or two. Notice the DSA recovers before the smoothed BIS number does.'},
- {at:280,d:0.5,mods:{emg:true,nmb:false},stim:'alpha',cap:'Incision with no opioid and no relaxant on board: the alpha band dips and EMG and BIS rise, though the hypnotic dose has not changed.'},
- {at:330,d:0.5,mods:{},cap:'Analgesia topped up and the relaxant on board again. EMG falls and the alpha band recovers with no change in propofol, so more hypnotic was not needed. Check the patient isn’t lightening before you paralyse.'},
- {at:400,d:0.5,mods:{diathermy:true},cap:'Diathermy. Interference swamps the EEG: SQI falls, BIS shows hollow (and -- once SQI is under 15), and the artefact bar marks the trend. Don’t act on the number until the signal is clean.'},
- {at:460,d:0.5,mods:{},cap:'Diathermy stops. SQI climbs back over the next minute (it looks back 63 s) and BIS returns to where it was.'},
- {at:500,d:0.12,mods:{blink:true},cap:'Infusion stopped at the end (any relaxant reversed). Alpha dims, slow waves fade, beta returns, blinks come back and BIS rises towards 80–90 as the patient wakes.'},
- {at:680,end:true,cap:'End of case. Scroll the DSA back in your head: two bands for propofol GA, stripes for too deep, a dipping alpha band and high fast power for stimulus without analgesia, stripes of interference for diathermy.'}];
+ {at:0,drug:'propofol',d:0,snap:true,mods:{},cap:'Awake baseline. Compare the raw EEG with the broad, low-power DSA.'},
+ {at:25,d:0.17,cap:'Induction begins. Watch the early change in faster activity.'},
+ {at:50,d:0.57,mods:{},cap:'Induction: slow-delta and alpha power develop as the effect increases. The processed index follows with a delay.'},
+ {at:230,d:0.57,cap:'Maintenance. Compare the sustained alpha and slow-delta bands with the raw EEG.'},
+ {at:320,d:0,mods:{},cap:'Emergence: the drug target is zero. Watch the bands change as the modelled effect wears off.'},
+ {at:650,end:true,cap:'Demonstration complete. Drag the timeline back to compare induction and emergence, or adjust depth to explore further.'}];
 let story=null;const SMODS=[['emg','mEmg'],['diathermy','mDia'],['blink','mBlink']];
-function stopStory(){if(!story)return;story=null;$('storyBtn').textContent='Play a case: induction to emergence';}
+function stopStory(){if(!story)return;story=null;$('storyBtn').textContent='Play induction → emergence';}
 $('storyBtn').onclick=()=>{if(story){stopStory();$('storyCap').textContent='';return;}
- nmReset();story={t0:simT,i:-1};mods.elderly=false;$('mElder').checked=false;for(const [k,id] of SMODS){mods[k]=false;$(id).checked=false;}setNmb('auto');eng.stT=R.eng.stT=0;tim.sup=tim.low=R.tim.sup=R.tim.low=0;setSpeed(10);
- if(paused)$('pause').click();$('storyBtn').textContent='Stop the case';};
+ nmReset();story={t0:simT,i:-1};mods.elderly=false;$('mElder').checked=false;for(const [k,id] of SMODS){mods[k]=false;$(id).checked=false;}setNmb('off');eng.stT=R.eng.stT=0;tim.sup=tim.low=R.tim.sup=R.tim.low=0;setSpeed(10);
+ if(paused)$('pause').click();$('storyBtn').textContent='Stop demonstration';};
 function runStory(){if(!story)return;const t=simT-story.t0;
  while(story.i+1<STORY.length&&t>=STORY[story.i+1].at){story.i++;const s=STORY[story.i];
   if(s.drug)setDrug(s.drug);if(s.d!=null){depth=s.d;$('depth').value=Math.round(s.d*100);}
-  if(s.mods){for(const [k,id] of SMODS){mods[k]=!!s.mods[k];$(id).checked=mods[k];}setNmb(s.mods.nmb===false?'off':s.mods.nmb===true?'on':'auto');}
+  if(s.mods){for(const [k,id] of SMODS){mods[k]=!!s.mods[k];$(id).checked=mods[k];}setNmb(s.mods.nmb===false?'off':s.mods.nmb===true?'on':'off');}
   if(s.stim)stimAll(s.stim);else if(s.mods)eng.stT=R.eng.stT=0;
   applyTarget();if(s.snap)snapAll();$('storyCap').textContent=`${story.i+1}/${STORY.length} · ${s.cap}`;
-  if(s.end){story=null;$('storyBtn').textContent='Play the case again';setSpeed(1);return;}}}
+  if(s.end){story=null;$('storyBtn').textContent='Replay demonstration';setSpeed(1);return;}}}
 
 // ===== explainer animation =====
 const cEx=$('cEx');

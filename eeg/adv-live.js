@@ -170,4 +170,4 @@ function advTick(dirty){if(!ADV.built)advBuild();const now=Date.now();advBootTic
  if(ADV.review&&ADV.d){const k=ADV.review.t+'|'+ADV.d.tL+'|'+ADV.view;if(ADV.tipKey!==k){ADV.tipKey=k;advReviewTip();}}
  advSound(now);advUI(now);advSensorTick&&advSensorTick(now);advDrawAll(false);}
 // applying the skin
-function advApply(){advBuild();ADV.lay=null;ADV.d=null;ADV.full=true;advHeaders();advChrome();if(!ADV.booted){ADV.booted=true;advBootBegin();advBootEnd();}} // straight to the main screen; "Start-up sequence" under the screen replays the boot messages and sensor check
+function advApply(){advBuild();ADV.lay=null;ADV.d=null;ADV.full=true;advHeaders();advChrome();if(!ADV.booted){ADV.booted=true;ADV.t0=simT;}} // straight to the main screen; "Start-up sequence" under the screen replays the boot messages and sensor check

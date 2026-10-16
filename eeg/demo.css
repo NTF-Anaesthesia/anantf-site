@@ -1,0 +1,100 @@
+/* Focused teaching workspace. Equipment screens retain their clinical colours. */
+#monitor{max-width:1600px;margin:auto}
+#monitor .monhead{align-items:center;gap:16px;flex-wrap:wrap}
+#monitor .apptitle{font-size:clamp(24px,3vw,36px);line-height:1.15}
+.demo-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:15px}
+.demo-toolbar label{display:flex;align-items:center;gap:8px}
+.demo-toolbar [hidden]{display:none}
+#monitor select{font:inherit;font-size:15px;min-height:44px;max-width:100%;padding:6px 10px;border:1px solid #827b6d;border-radius:0;background:#f7f5ef;color:#272722}
+#monitor .sim{grid-template-columns:minmax(0,1fr) 310px;gap:24px;align-items:start}
+#monitor .panel{padding:0 0 0 20px;border:0;border-left:1px solid #d7d2c8;background:transparent;display:flex;flex-direction:column;gap:14px}
+#monitor .panel .ctl{margin:0;padding:0 0 12px;border-bottom:1px solid #d7d2c8}
+#monitor .panel .story{order:0;margin:0;padding:0;border:0}
+#monitor .panel .reading{order:1;font-size:15px}
+#monitor .panel details{order:2}
+#monitor summary{font-size:15px;min-height:44px;display:list-item;align-content:center;cursor:pointer}
+#monitor summary:focus-visible,#monitor select:focus-visible,#monitor input:focus-visible{outline:2px solid #633d3c;outline-offset:3px}
+#monitor .panel button,#fullScreen{min-height:44px;font-size:15px}
+#monitor .panel .caption,#monitor .tgtnote{font-size:13px;line-height:1.45}
+.playback-row{display:flex;align-items:center;gap:12px}
+.playback-row input{flex:1;min-width:0}
+#monitor input[type=range]{accent-color:#633d3c;min-height:44px;cursor:ew-resize;width:100%;margin:0}
+#monitor .tline{margin-top:12px;border:0;padding:0;background:transparent}
+#monitor .tbar{display:block}#tCv{display:none}
+#monitor .time-label{display:flex;justify-content:space-between;font-size:14px;margin-top:6px}
+#monitor #timeHelp{font-size:13px;line-height:1.4;margin:0;color:#55534d}
+#tNow{font-size:15px;font-variant-numeric:tabular-nums}
+#monitor .teachstrip{display:none!important}
+#monitor .advsim{display:none}
+#monitor .story .row{gap:8px}#monitor .story button{flex:1}
+#monitor .story button:last-child{flex-basis:100%}
+#monitor .ticks{font-size:12px}
+body.presenting{overflow:hidden}
+#monitor.presenting{position:fixed;inset:0;z-index:10000;max-width:none;margin:0;padding:16px 20px;background:#f7f5ef;width:100%;height:100dvh;box-sizing:border-box;overflow:auto;display:flex;flex-direction:column}
+#monitor.presenting .monhead{flex:none;margin:0 0 12px;padding:0}
+#monitor.presenting .sim{flex:1;min-height:0}
+#monitor.presenting .panel{max-height:calc(100dvh - 90px);overflow:auto}
+#monitor.presenting .screens{min-width:0}
+#monitor.presenting .sedwrap{max-width:calc((100dvh - 230px)*.625);margin:auto}
+#monitor.presenting .vwrap,#monitor.presenting .advwrap,#monitor.presenting .pvwrap{max-width:calc((100dvh - 230px)*1.55);margin:auto}
+#monitor.presenting #classicWrap canvas{max-height:20vh}
+@media(max-width:900px){
+ #monitor .sim{grid-template-columns:1fr}
+ #monitor .panel{border-left:0;border-top:1px solid #d7d2c8;padding:16px 0 0}
+ #monitor.presenting .sim{display:block;overflow:auto}
+ #monitor.presenting .panel{max-height:none;overflow:visible;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ #monitor.presenting .panel .story,#monitor.presenting .panel .reading,#monitor.presenting #mixCtl{grid-column:1/-1}
+ #monitor.presenting{padding:10px}
+}
+@media(max-width:520px){#monitor .apptitle{font-size:25px}.demo-toolbar{gap:6px}.demo-toolbar>label:first-child{display:none}#monitor.presenting .panel{grid-template-columns:1fr}}
+
+#monitor [hidden]{display:none!important}
+#fullScreen{background:#f7f5ef;color:#633d3c;border:1px solid #827b6d;padding:8px 14px;cursor:pointer}
+#monitor.presenting #classicWrap{padding:8px}
+#monitor.presenting #classicWrap .bisbox .v{font-size:56px}
+#monitor.presenting #classicWrap .top{padding:0}
+#monitor.presenting #classicWrap canvas{max-height:16vh}
+#monitor.presenting #classicWrap .timers{display:none}
+
+#monitor .panel .tline{order:0;margin:0;padding:0 0 12px;border-bottom:1px solid #d7d2c8}
+#monitor .panel .reading{order:2}
+#monitor .panel details{order:3}
+#monitor.presenting #classicWrap canvas{max-height:14vh}
+#monitor.presenting .monhead{display:flex;justify-content:space-between}
+#monitor.presenting .apptitle{font-size:26px}
+@media(max-width:900px){
+ #monitor.presenting{overflow:hidden}
+ #monitor.presenting .monhead{gap:8px;margin-bottom:8px}
+ #monitor.presenting .apptitle{font-size:22px}
+ #monitor.presenting .sim{display:flex;flex-direction:column;overflow:hidden}
+ #monitor.presenting .screens{flex:1;min-height:0;overflow:auto}
+ #monitor.presenting .panel{flex:none;max-height:48dvh;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;padding-top:6px}
+ #monitor.presenting .panel .ctl{padding-bottom:4px}
+ #monitor.presenting .panel .reading,#monitor.presenting .panel details,#monitor.presenting .panel .story .caption,#monitor.presenting .panel .tgtnote{display:none}
+ #monitor.presenting .panel .tline{grid-column:1/-1;order:-1;padding-bottom:0}
+ #monitor.presenting .panel .time-label,#monitor.presenting #timeHelp{display:none}
+ #monitor.presenting .panel .story{grid-column:1/-1}
+ #monitor.presenting .panel .story button:last-child{flex-basis:auto}
+ #monitor.presenting .panel .tgt{font-size:12px;margin:0}
+ #monitor.presenting .panel .ticks{font-size:12px}
+ #monitor.presenting .panel label.t{margin:0;font-size:12px}
+ #monitor.presenting .panel input[type=range]{min-height:36px}
+ #monitor.presenting .panel button{font-size:13px;padding:5px}
+ #monitor.presenting .panel .story button:last-child{font-size:12px}
+ #monitor.presenting .sedwrap,#monitor.presenting .vwrap,#monitor.presenting .advwrap,#monitor.presenting .pvwrap{max-width:100%}
+}
+#monitor #tNow{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:900px){
+ #monitor.presenting .panel{align-items:start}
+ #monitor.presenting .panel .ctl{display:block}
+ #monitor.presenting .panel select{width:100%;height:44px}
+ #monitor.presenting .panel .ticks{display:none}
+ #monitor.presenting #classicWrap .statusbar,#monitor.presenting #classicWrap .bars,#monitor.presenting #classicWrap .params,#monitor.presenting #classicWrap #wTrend{display:none}
+ #monitor.presenting #classicWrap .readouts{display:block;padding:0;margin:0}
+ #monitor.presenting #classicWrap .bisbox{display:flex;align-items:center;gap:12px;padding:4px 8px}
+ #monitor.presenting #classicWrap .bisbox .v{font-size:32px;line-height:1}
+ #monitor.presenting #classicWrap .bisbox .zone{font-size:12px}
+ #monitor.presenting #classicWrap #cDsa{max-height:15vh}
+ #monitor.presenting #classicWrap #cEeg{max-height:9vh}
+ #monitor.presenting #classicWrap .glass{padding:4px}
+}

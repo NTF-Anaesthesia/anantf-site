@@ -1,5 +1,5 @@
-// Node check of the BIS to DSA engine against the tuning targets (bis/NOTES.md, "Tuning targets").
-// Runs the page's engine without a browser: node bis/test/engine.check.mjs. Prints a table; exits 1 on a miss.
+// Node check of the BIS to DSA engine against the tuning targets (eeg/NOTES.md, "Tuning targets").
+// Runs the page's engine without a browser: node eeg/test/engine.check.mjs. Prints a table; exits 1 on a miss.
 import fs from 'node:fs';
 
 const SRC = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');

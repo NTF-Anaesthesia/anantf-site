@@ -1,6 +1,6 @@
 # BIS to DSA notes
 
-Lasting decisions for `bis/`. Status and next steps: `STATUS.md`.
+Lasting decisions for `eeg/`. Status and next steps: `STATUS.md`.
 
 ## Purpose and audience
 
@@ -60,7 +60,7 @@ Lasting decisions for `bis/`. Status and next steps: `STATUS.md`.
 
 ## Address
 
-- `anantf.com/bis/` (this repo's folder `bis/`, GitHub Pages), unlisted and `noindex`. Moved here from an earlier
+- `anantf.com/eeg/` (this repo's folder `eeg/`, GitHub Pages), unlisted and `noindex`. Moved here from an earlier
   address on 16 Oct 2026 (owner); the old addresses forward here.
 - Relative paths only, so the folder works wherever it is served.
 - This folder is the copy to edit.
@@ -87,7 +87,7 @@ Lasting decisions for `bis/`. Status and next steps: `STATUS.md`.
   the EMG readout is a parametric muscle term, not the monitor's measured 70–110 Hz band (the 30–47 Hz muscle power in
   the EEG is what moves BIS; the intro and explainer step 1 say so); blink rejection as a fixed 85% subtraction; the
   warmer as a fixed noise term. SQI blanking at 15 is a convention, not in the Covidien manual.
-- Check the tuning with `node bis/test/engine.check.mjs` (runs the engine in Node, no browser, about a minute; also in
+- Check the tuning with `node eeg/test/engine.check.mjs` (runs the engine in Node, no browser, about a minute; also in
   the Checks workflow). It prints the table below, plus SQI, messages, MF and smoothing rows.
 - The footer says it is a teaching approximation; keep that.
 
@@ -575,7 +575,7 @@ checked against a photo of a Root. Look chosen: the 2017/2018 builds (ADULT pill
 
 ## Tests (final integration, 14 Oct 2026)
 
-- `node bis/test/e2e.mjs` runs the teaching-layout and Medtronic checks, then `adv.e2e.mjs` and `sed.e2e.mjs`; the whole run takes over 10 minutes, so give a shell command a background run.
+- `node eeg/test/e2e.mjs` runs the teaching-layout and Medtronic checks, then `adv.e2e.mjs` and `sed.e2e.mjs`; the whole run takes over 10 minutes, so give a shell command a background run.
 - An earlier note said `adv.e2e.mjs` was flaky. The cause was the battery-low check: it read `#aBatT` straight after switching the Simulate button off, before the next frame had redrawn it
   (`'10%' !== '100%'`, about one run in two). The test now waits for the text; the assertion is unchanged. Six runs in a row passed after the fix.
 
@@ -636,3 +636,15 @@ a tap on the bar jumps there. It works the same on every monitor.
 - What came after is dropped (shown hatched on the bar, "… ahead was rewound"); marks made in it (Medtronic gaps, BIS Advance
   snapshots and events, SedLine gaps) go with it. The start of the case (the page's first live second) is the earliest point.
 - Drug-control changes show as yellow ticks on the bar. Medtronic keeps DSA + AMPL under the DSA (owner, 15 Oct 2026).
+
+## 16 October 2026 — focused Processed EEG simulator
+
+The owner requested `/eeg/`, title “Processed EEG simulator”, fewer controls and a full-screen teaching workspace. `/bis/` redirects, including query and hash. Older links in separate apps intentionally remain valid through that redirect.
+
+The primary controls are monitor choice, anaesthetic, depth, playback speed, pause, induction, emergence and one native time slider. Patient/artefact and display options are collapsed. Detailed rocuronium/sugammadex dosing, case length, duplicate monitor selectors, step-time buttons and equipment fault toggles are removed from the interface. The muscle suppression toggle retains the EMG-confounding lesson without dosing. The engine retains its internal block/washout models with fixed defaults; this is not a dosing simulator.
+
+BIS Vista is labelled correctly. BIS Advance has a direct unilateral (2-channel sensor) / bilateral (4-channel sensor) selector; selecting a monitor no longer resets the patient. The guided demonstration focuses on induction, maintenance and emergence. Timeline rewind rebuilds the recent DSA from retained history. Forward motion after rewind remains a new simulation, not exact replay.
+
+`demo.js` owns the compact control layout and browser full-screen/CSS fallback. The same controls remain mounted in presentation mode. On narrow screens the monitor scrolls above a compact control area. Existing clinical teaching text and synthetic-engine limitations remain.
+
+Validation: `node eeg/test/engine.check.mjs`; `node eeg/test/demo.e2e.mjs` with `BIS_VIEW=phone` and `desktop`. The new UI suite replaces the old button-driven browser gates, which refer to deliberately retired controls. Legacy monitor test sources remain as reference for future migration. The new suite covers induction/emergence, rewind, keyboard seeking, all five monitors, both Advance channel configurations, drug combinations, fullscreen and the old-address redirect.

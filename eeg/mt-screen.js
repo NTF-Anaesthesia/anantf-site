@@ -1,5 +1,5 @@
 // Medtronic BIS 2-channel monitor screen (the 'vista' skin): a 640 x 480 virtual LCD, built from the owner's photos and the
-// manufacturer's manuals (bis/NOTES.md, "Medtronic BIS 2-channel screen"). Loaded before app.js; the functions here are
+// manufacturer's manuals (eeg/NOTES.md, "Medtronic BIS 2-channel screen"). Loaded before app.js; the functions here are
 // called from app.js and read its globals (mon, HIST, COLS, SIG, R, simT ...) only when called, never at load.
 const mq=id=>document.getElementById(id);
 function mtD(){try{dirty=true;}catch(e){}} // app.js declares `dirty` after the first applySkin call
