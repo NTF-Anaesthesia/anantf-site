@@ -11,7 +11,9 @@
 //   3. hidden-count hints at MO: the number in each "n items hidden" line equals the hidden tagged items in its chapter,
 //      every chapter with hidden items has a hint, and "Show all" shows everything for this view only;
 //   4. SAFETY: at MO, every block with a dose shows its dose box and LAST line, and every block with complications shows
-//      all of them (nothing inside is tiered above 1); the scan viewer is MO;
+//      all of them (nothing inside is tiered above 1); the scan viewer is MO; every block shows its "If it goes wrong"
+//      section with at least the core decision guides (LAST, pain on injection, vascular puncture, failed block, nerve
+//      injury), nothing in it above tier 1, and its LAST guide opens and steps forward;
 //   5. the level persists across reload and across apps (truncal ↔ spinal ↔ brachial-plexus ↔ plexus), and never goes in
 //      the URL;
 //   6. spinal's old spinal-level / spinal-tier keys migrate once;
@@ -186,6 +188,34 @@ async function safetyCheck(browser, p) {
           else {
             const hid = [...sec.querySelectorAll('*')].filter((n) => n.textContent.trim() && getComputedStyle(n).display === 'none' && !n.closest('details:not([open]) > :not(summary)'));
             if (hid.length) out.push(`${b.id}: ${hid.length} complication item(s) hidden at MO`);
+          }
+        }
+        if (b.wrong !== false) {
+          checked++;
+          const sec = document.getElementById(`${b.id}-wrong`);
+          const CORE = ['last', 'pain', 'vessel', 'failed', 'nerve'];
+          if (!sec) out.push(`${b.id}: "If it goes wrong" section not rendered`);
+          else if (tierUp(sec) > 1) out.push(`${b.id}: "If it goes wrong" sits inside tier-${tierUp(sec)} content`);
+          else if (!seen(sec)) out.push(`${b.id}: "If it goes wrong" hidden at MO`);
+          else {
+            const have = [...sec.querySelectorAll('details.ra-dg-item')].map((d) => d.dataset.guide);
+            const miss = CORE.filter((g) => !have.includes(g));
+            if (miss.length) out.push(`${b.id}: "If it goes wrong" lacks ${miss.join(', ')}`);
+            const up = [...sec.querySelectorAll('[data-tier]')].filter((n) => Number(n.dataset.tier) > 1);
+            if (up.length) out.push(`${b.id}: ${up.length} item(s) in "If it goes wrong" tagged above MO`);
+            const d = sec.querySelector('details.ra-dg-item[data-guide="last"]');
+            if (d) {
+              d.open = true;
+              await new Promise((r) => setTimeout(r, 30));
+              const next = d.querySelector('.ra-dg-next');
+              const before = d.querySelector('.ra-dg')?.dataset.step;
+              next?.click();
+              const after = d.querySelector('.ra-dg')?.dataset.step;
+              if (!next || !before || before === after) out.push(`${b.id}: the LAST guide did not open or step forward`);
+              else if (!seen(d.querySelector('.ra-dg-step'))) out.push(`${b.id}: the LAST guide step is hidden at MO`);
+              d.querySelector('.ra-dg-again')?.click();
+              d.open = false;
+            }
           }
         }
         if (b.scene) {
@@ -456,7 +486,7 @@ async function main() {
 
   const sr = await pool(ENGINE, W, (p) => safetyCheck(browser, p), (p) => `safety ${p}`);
   ENGINE.forEach((p, i) => {
-    R.check(`SAFETY at MO: dose box, LAST line, complications and scan on ${p}${sr[i]?.checked ? ` (${sr[i].blocks} blocks)` : ''}`, sr[i]?.ok, sr[i]?.why || sr[i]?.error);
+    R.check(`SAFETY at MO: dose box, LAST line, complications, "If it goes wrong" guides and scan on ${p}${sr[i]?.checked ? ` (${sr[i].blocks} blocks)` : ''}`, sr[i]?.ok, sr[i]?.why || sr[i]?.error);
     if (sr[i]?.free?.length) R.warn(`${p}: ${sr[i].free.length} dose string(s) in tiered content outside the plan's tier-2/3 section types (owner to review)`, sr[i].free.slice(0, 8).join('\n     '));
   });
   if (PAGES.includes('spinal/')) {
