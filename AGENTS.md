@@ -92,7 +92,7 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   navigation or the POCUS and Regional hubs. To publish a draft: add its card to the right hub, remove it from `draft.html`,
   and drop "draft" from its breadcrumb.
 
-- The main navigation is Airway, Regional Anaesthesia, POCUS, Exam Prep and pEEG (the BIS to DSA simulator in `bis/`, a standalone tab since 16 Oct 2026; its own slim bar replaces the site header). Don't add department, recruitment or handbook pages back.
+- The main navigation is Airway, Regional Anaesthesia, POCUS, pEEG and Exam Prep (the BIS to DSA simulator in `bis/`, a standalone tab since 16 Oct 2026; its own slim bar replaces the site header). Don't add department, recruitment or handbook pages back.
 - Changing `worker/`, `wrangler.jsonc` or `.assetsignore` redeploys the `mo.anantf.com` Worker on merge (Workers Builds; `MO.md`): run `node worker/test/routes.test.mjs` first. Paths the guide links with `../../` must work on both `anantf.com/mo/guide/` and `mo.anantf.com/guide/`.
 - Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/` or `ot/` from the homepage (`bis/` is in the main navigation as pEEG), and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
