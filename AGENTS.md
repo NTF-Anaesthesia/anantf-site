@@ -39,7 +39,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | Path | What it is | Listed on homepage? |
 |---|---|---|
 | `index.html` | Homepage | — |
-| `exams/index.html` | MMed exam resources by Dr Chew Shi Hao (his design) | In main navigation (noindex) |
+| `exams/index.html` | MMed exam resources by Dr Chew Shi Hao (his design); nav label "Exam Prep" | In main navigation (noindex) |
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
 | `popliteal/index.html` | Popliteal sciatic block animation by Dr Chew Shi Hao | No (unlisted) |
 | `brachial-plexus/index.html` | Interactive brachial plexus + regional block teaching app (its own scan teacher, 3D model and real scans in `brachial-plexus/us/`); the same blocks are also on the engine pages in `upper-limb/` | No (unlisted; card on Regional) |
@@ -67,7 +67,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `ra.html`, `draft-ra.html` | Redirects to the lower-limb pages (old links) | No |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
 | `pocus/{cardiac,lung,shock,efast,dvt}/` | Draft POCUS tutorials, reached from `draft.html` | No (draft) |
-| `bis/` | BIS to DSA teaching simulator: processed EEG on Medtronic BIS, BIS Advance, Masimo SedLine and Philips IntelliVue screens, with a timeline (one static page, synthetic EEG, no data). Moved from an earlier address on 16 Oct 2026. Start with `bis/NOTES.md`; tests in `.github/workflows/checks.yml` | No (unlisted, noindex) |
+| `bis/` | BIS to DSA teaching simulator: processed EEG on Medtronic BIS, BIS Advance, Masimo SedLine and Philips IntelliVue screens, with a timeline (one static page, synthetic EEG, no data). Moved from an earlier address on 16 Oct 2026. Start with `bis/NOTES.md`; tests in `.github/workflows/checks.yml` | In main navigation as "pEEG" (noindex kept) |
 | `ot/` | Operating-theatre simulator for teaching: a general anaesthetic, the vitals monitor and crisis scenarios (one static site, synthetic physiology, no data). Moved from an earlier address on 16 Oct 2026. Start with `ot/NOTES.md`, then `ot/PLAN.md`; run `tools/test-ot.sh` | No (unlisted, noindex) |
 | `edit.html` | Page editor for the maintainers (see "Edits sent from the page editor") | No (unlisted, noindex) |
 
@@ -92,9 +92,9 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   navigation or the POCUS and Regional hubs. To publish a draft: add its card to the right hub, remove it from `draft.html`,
   and drop "draft" from its breadcrumb.
 
-- The main navigation is Airway, Regional Anaesthesia, POCUS and MMed Exam Prep. Don't add department, recruitment or handbook pages back.
+- The main navigation is Airway, Regional Anaesthesia, POCUS, Exam Prep and pEEG (the BIS to DSA simulator in `bis/`, a standalone tab since 16 Oct 2026; its own slim bar replaces the site header). Don't add department, recruitment or handbook pages back.
 - Changing `worker/`, `wrangler.jsonc` or `.assetsignore` redeploys the `mo.anantf.com` Worker on merge (Workers Builds; `MO.md`): run `node worker/test/routes.test.mjs` first. Paths the guide links with `../../` must work on both `anantf.com/mo/guide/` and `mo.anantf.com/guide/`.
-- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `bis/` or `ot/` from the homepage, and keep their
+- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/` or `ot/` from the homepage (`bis/` is in the main navigation as pEEG), and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - The regional pages (`blocks/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `brachial-plexus/`, `plexus/`, `spinal/`) are one
   app: same app bar, the credit line "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" (Dr Chew Shi Hao
