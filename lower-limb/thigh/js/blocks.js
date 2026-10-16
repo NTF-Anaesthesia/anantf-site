@@ -146,7 +146,8 @@ export const BLOCKS = [
         },
       },
       {
-        id: 'pfcn', title: 'The posterior femoral cutaneous nerve block',
+        // Tier 1: the scan viewer offers its separate injection at MO level, so its dose (counted in the total) shows too.
+        id: 'pfcn', title: 'The posterior femoral cutaneous nerve block', tier: 1,
         html: `<p>The <strong>posterior femoral cutaneous nerve</strong> (S1–S3) leaves the pelvis below piriformis with the sciatic nerve and the inferior gluteal vessels, runs down under gluteus maximus <strong>superficial to the sciatic nerve</strong> (medial to it higher in the buttock; at the gluteal crease its side varies and it is often slightly lateral), and then under the fascia lata down the middle of the back of the thigh. It supplies the <strong>skin of the back of the thigh and the popliteal fossa</strong>, often the upper calf, the lower buttock (inferior cluneal branches) and part of the perineum. It is purely sensory.</p>
 <p><strong>When it matters:</strong> above-knee and through-knee amputation (the posterior flap), incisions or skin graft donor sites on the back of the thigh, and a calf or popliteal fossa incision. It matters <strong>less for a thigh tourniquet</strong> than for an incision: the deep nerves matter most under a cuff, but the skin of the back of the thigh under it is still this nerve.</p>
 <ul><li><strong>Ultrasound, subgluteal</strong>: from the sciatic view, look just superficial to the sciatic nerve, under gluteus maximus, for a small oval beside a small artery; search the whole superficial surface, as its side varies. A thin fascia separates the two nerves and usually stops fluid crossing between them, so give it <a href="#sciatic-inj-pfcn">its own injection</a>: <strong>5–10 ml of 0.5% ropivacaine (25–50 mg)</strong>, counted in the total.</li>

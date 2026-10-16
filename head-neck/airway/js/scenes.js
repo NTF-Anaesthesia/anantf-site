@@ -1,6 +1,6 @@
 // Airway: ultrasound scenes (millimetres; x across the screen from the left, y = depth from the skin).
 // Schema: ../../../shared/regional/DATA.md ("Scene schema"). Original geometry from typical adult depths.
-import { E, P, L } from '../../../shared/regional/js/scene.js';
+import { E, P, PS, L } from '../../../shared/regional/js/scene.js';
 import { headProbeInset } from '../../../shared/regional/js/figures/head.js?v=20261015';
 
 export const SCENES = {
@@ -112,6 +112,50 @@ export const SCENES = {
       inject: '<p>Aspirate, then inject (dose box below). Repeat on the other side.</p>',
     },
     probe: { view: 'airway', points: [[114, 128]], key: 'Needle entry', label: 'inside the mouth, at the base of the posterior tonsillar pillar (each side in turn).' },
+    probeInset: headProbeInset,
+  },
+  // Glossopharyngeal nerve by the peristyloid route, with ultrasound (Consultant level). Right side, probe horizontal
+  // just below the ear lobe, between the mastoid tip (posterior, left) and the angle of the mandible (anterior, right).
+  // Depth into the screen is medial. The styloid process is a bright dot with a shadow about 2 cm deep; the internal
+  // carotid artery lies just deep and behind it, the internal jugular vein behind that, and the vagus between the two.
+  // The glossopharyngeal nerve curves forward just deep to the styloid, superficial to the carotid: too small to see.
+  gpnUs: {
+    id: 'hn-aw-gpus', title: 'Glossopharyngeal nerve: transverse view between the mastoid and the angle of the jaw', width: 40, depth: 40, focus: 22, skin: 1.1,
+    view: 'Horizontal view on the right side of the upper neck just below the ear lobe, between the mastoid tip (posterior, left) and the angle of the mandible (anterior, right). Deeper on the screen is medial.',
+    orient: { left: 'Posterior (mastoid)', right: 'Anterior (jaw)', marker: 'right' },
+    layers: [
+      { id: 'sc', kind: 'fat', label: 'Subcutaneous fat', short: 'Fat', bottom: [[0, 3.6], [40, 4]], labelX: 20 },
+      { id: 'dc', kind: 'fat-deep', label: 'Deep tissues of the upper neck', nolabel: true, echo: 0.3, edge: 0, bottom: 60 },
+    ],
+    shapes: [
+      { id: 'scm', kind: 'muscle', label: 'Sternocleidomastoid', short: 'SCM', shape: P([0, 3.7], [12, 3.9], [16.5, 6.4], [13, 10.6], [0, 11.4]), at: [7, 7.4], lab: [7, 7.4] },
+      { id: 'par', kind: 'organ', label: 'Parotid gland (tail)', short: 'Parotid', shape: P([17.5, 4], [40, 4.1], [40, 14.6], [30, 14.2], [21, 12.4], [16.8, 8.4]), at: [29, 9], lab: [29, 9] },
+      { id: 'dig', kind: 'muscle', label: 'Posterior belly of digastric', short: 'Digastric', shape: P([5, 13.2], [16, 13], [28, 15.4], [36, 17.2], [35, 19.2], [26, 18.2], [14, 16.4], [5, 16]), at: [21, 15.8], lab: [12.6, 21.4] },
+      { id: 'mas', kind: 'bone', label: 'Mastoid process', short: 'Mastoid', shape: PS([0, 12], [3.6, 12.6], [4.2, 40], [0, 40]), at: [1.8, 12.2], lab: [5.4, 36.6] },
+      { id: 'ram', kind: 'bone', label: 'Ramus of the mandible', short: 'Mandible', shape: PS([36.4, 16], [40, 15.2], [40, 40], [37, 40]), at: [38, 15.8], lab: [33.4, 36.6] },
+      { id: 'sty', kind: 'bone', label: 'Styloid process', short: 'Styloid', shape: E(25, 21.4, 1.7, 1.05), lab: [30.6, 23.2],
+        desc: 'A bright dot with a dark shadow about 2 cm deep, halfway between the mastoid tip and the angle of the jaw. The landmark of this block: the target is just behind and deep to it.' },
+      { id: 'eca', kind: 'artery', label: 'External carotid artery', short: 'ECA', shape: E(31, 18.6, 1.3, 1.2), lab: [33.4, 12.4] },
+      { id: 'ica', kind: 'artery', label: 'Internal carotid artery', short: 'ICA', shape: E(19, 27.4, 2.9, 2.8), lab: [23.6, 31.6],
+        desc: 'Round, pulsatile, just deep and behind the styloid process. Check it with colour Doppler before every pass: the needle tip stays superficial to it.' },
+      { id: 'ijv', kind: 'vein', label: 'Internal jugular vein', short: 'IJV', shape: E(10.6, 28.8, 4, 3), lab: [8.6, 33.8] },
+      { id: 'x', kind: 'nerve', label: 'Vagus nerve (X)', short: 'X', shape: E(15.2, 31.2, 0.9, 0.75), lab: [14.6, 37.4],
+        desc: 'Between the carotid and the jugular vein, deeper: local anaesthetic often reaches it (hoarseness), so block one side only with this approach.' },
+      { id: 'ix', kind: 'nerve', label: 'Glossopharyngeal nerve (IX)', short: 'IX', shape: E(22.6, 23.8, 0.65, 0.5), lab: [27.6, 27.4],
+        desc: 'Curves forward just deep to the styloid, superficial to the internal carotid. Too small to see: the target is the space behind the styloid, not the nerve.' },
+    ],
+    target: { at: [22, 23.6], r: 2 },
+    injections: [
+      { id: 'gpus', label: 'Behind the styloid process', entry: [-4, 4.6], tip: [21.4, 23.3],
+        spread: { along: [[17, 23.9], [21.6, 24.1], [24.6, 23.6]], x0: 17.4, x1: 24.4, from: 21.4, thick: 1.8, up: 0.9, above: 4 } },
+    ],
+    steps: {
+      scan: '<p>Patient supine, head turned slightly away. Probe <strong>horizontal just below the ear lobe</strong>, between the mastoid tip and the angle of the jaw. Slide until you see the <strong>styloid process</strong>: a bright dot with a shadow, about 2 cm deep. Colour Doppler on.</p>',
+      identify: '<p>Under the skin: sternocleidomastoid behind, the tail of the parotid in front, then the posterior belly of digastric. Deeper: the <strong>styloid process</strong>, with the <strong>internal carotid artery</strong> just deep and behind it and the <strong>internal jugular vein</strong> behind that; the vagus lies between them. The glossopharyngeal nerve is too small to see: it curves forward just deep to the styloid.</p>',
+      needle: '<p>In-plane <strong>from behind</strong>, a short-bevel needle towards the back of the styloid process. Stop in the space <strong>just behind and deep to it</strong>, superficial to the carotid. Never advance towards the artery or deep to it.</p>',
+      inject: '<p>Aspirate, then inject <strong>slowly in small increments</strong>, aspirating between them and talking to the patient: arterial injection here goes straight to the brain. Watch the fluid collect behind the styloid. <strong>One side only</strong> with this approach.</p>',
+    },
+    probe: { view: 'side', x: 101, y: 135, angle: 0, marker: 'right', label: 'horizontal just below the right ear lobe, between the mastoid tip and the angle of the jaw.' },
     probeInset: headProbeInset,
   },
 };

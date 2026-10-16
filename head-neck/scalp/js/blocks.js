@@ -1,6 +1,17 @@
 // Scalp and occipital: block data (schema: ../../../shared/regional/DATA.md, "Block schema").
 import { headCoverageMap, viewsFigure } from '../../../shared/regional/js/figures/head.js?v=20261015';
-import { SCENES } from './scenes.js?v=20261015';
+import { el } from '../../../shared/regional/js/ui.js';
+import { mountScan } from '../../../shared/regional/js/scan.js';
+import { SCENES } from './scenes.js?v=20261016';
+
+// An extra scan viewer inside a block section (its own deep links: #<blockId>-step-…, #<blockId>-inj-…).
+function extraScan(scene, blockId) {
+  return (sec) => {
+    const wrap = el('div', { class: 'tb-scan-wrap' });
+    sec.append(wrap);
+    mountScan(wrap, scene, { blockId });
+  };
+}
 
 /** The seven injection sites, numbered to match the key. */
 export function scalpPointsFigure() {
@@ -81,6 +92,11 @@ export const BLOCKS = [
       {
         id: 'awake', title: 'Awake craniotomy',
         html: `<p>Used when the patient has to talk or move during the operation: tumours near the speech or motor cortex, epilepsy surgery and deep brain stimulation. The scalp block makes pinning, incision and the craniotomy bearable with light sedation, and gives analgesia afterwards.</p>`,
+      },
+      {
+        id: 'atn-us', title: 'Auriculotemporal nerve with ultrasound',
+        html: `<p>The landmark injection works, but a small probe in front of the ear shows exactly where the <strong>superficial temporal artery</strong> is, so the needle can stay behind it. The nerve itself is often too small to see: put the local anaesthetic in the tissue <strong>just behind the artery and vein</strong>, superficial to the deep temporal fascia. Step through it below.</p>`,
+        render: extraScan(SCENES.atn, 'atn'),
       },
     ],
     exam: [

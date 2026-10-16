@@ -40,6 +40,47 @@ export const SCENES = {
     probe: { view: 'back', x: 117, y: 154, angle: -24, label: 'oblique on the right side of the upper neck at C2, along obliquus capitis inferior (lateral end up towards the mastoid).' },
     probeInset: headProbeInset,
   },
+  // Auriculotemporal nerve with ultrasound (an option within the scalp block). Right side, a high-frequency (hockey-stick)
+  // probe horizontal just in front of the ear, about 1 cm above the tragus, marker anterior. The superficial temporal
+  // artery and vein run in the temporoparietal fascia with the nerve just behind them; the deep temporal fascia covers
+  // temporalis, which thins towards the ear, over the squamous temporal bone. Typical adult depths; nerve about 1 mm.
+  atn: {
+    id: 'hn-sc-atn', title: 'Auriculotemporal nerve: transverse view in front of the ear', width: 24, depth: 14, focus: 4, skin: 0.9,
+    view: 'Horizontal view just in front of the right ear, about 1 cm above the tragus. Posterior (towards the ear) on the left, anterior on the right.',
+    orient: { left: 'Posterior (ear)', right: 'Anterior', marker: 'right' },
+    layers: [
+      { id: 'sc', kind: 'fat', label: 'Subcutaneous tissue', short: 'Subcut.', bottom: [[0, 2.3], [24, 2.5]], labelX: 20 },
+      { id: 'tpf', kind: 'aponeurosis', label: 'Temporoparietal fascia', short: 'TPF', bottom: [[0, 3.8], [24, 4]], edge: 0.5, at: [20.5, 3.2], lab: [20.5, 3.2] },
+      { id: 'lat', kind: 'connective', label: 'Loose areolar tissue', short: 'Areolar', nolabel: true, edge: 0, bottom: [[0, 4.5], [24, 4.7]] },
+      { id: 'tm', kind: 'muscle', label: 'Temporalis', short: 'Temporalis', stri: 6, echo: 0.13, edge: 0, bottom: [[0, 6.2], [10, 7], [24, 8.6]], labelX: 17 },
+      { id: 'deep', kind: 'none', label: 'Skull', nolabel: true, edge: 0, bottom: 20 },
+    ],
+    lines: [
+      { id: 'dtf', kind: 'fascia', label: 'Deep temporal fascia', short: 'Deep fascia', amp: 0.9, w: 0.3, pts: [[0, 4.55], [12, 4.65], [24, 4.75]], at: [6, 4.58], lab: [4.6, 9.4] },
+    ],
+    shapes: [
+      { id: 'bone', kind: 'bone', label: 'Temporal bone', short: 'Bone', shape: L(0.7, [0, 6.3], [10, 7.1], [24, 8.7]), at: [18, 8], lab: [18, 11.6] },
+      { id: 'sta', kind: 'artery', label: 'Superficial temporal artery', short: 'STA', shape: E(14.6, 3.1, 0.95, 0.85), lab: [16.6, 1.4],
+        desc: 'Round, pulsatile and not compressible: colour Doppler shows it at once. It is the landmark: the nerve lies just behind it.' },
+      { id: 'stv', kind: 'vein', label: 'Superficial temporal vein', short: 'STV', shape: E(11.8, 3.15, 1.05, 0.65), lab: [11.4, 1.3],
+        desc: 'Just behind the artery; flattens under light probe pressure.' },
+      { id: 'atn', kind: 'nerve', label: 'Auriculotemporal nerve', short: 'ATN', shape: E(9.3, 3.15, 0.6, 0.45), lab: [5.4, 1.4],
+        desc: 'A small dot just behind the vessels, often too small to see clearly. Aim for the tissue behind the vein, not for the nerve itself.' },
+    ],
+    target: { at: [9.3, 3.1], r: 1.3 },
+    injections: [
+      { id: 'atn', label: 'Behind the superficial temporal vessels', entry: [-5, 0.9], tip: [8.2, 3.1],
+        spread: { along: [[3, 3.25], [9, 3.25], [12.4, 3.3]], x0: 4, x1: 11.4, from: 8.2, thick: 1.5, up: 0.6, above: 2.2 } },
+    ],
+    steps: {
+      scan: '<p>A small high-frequency probe <strong>horizontal just in front of the ear</strong>, about 1 cm above the tragus, marker anterior. Light pressure: the vein collapses easily. Colour Doppler finds the <strong>superficial temporal artery</strong> at once.</p>',
+      identify: '<p>From the skin down: subcutaneous tissue, the <strong>temporoparietal fascia</strong> carrying the superficial temporal <strong>artery</strong> and, just behind it, the <strong>vein</strong>; then the bright <strong>deep temporal fascia</strong> over temporalis, and the bright temporal bone with its shadow. The <strong>auriculotemporal nerve</strong> is a small dot just behind the vessels, often too small to see: the artery is your landmark.</p>',
+      needle: '<p>In-plane <strong>from behind</strong> (the ear side), a fine needle just under the skin to the tissue <strong>behind the vein</strong>, away from the artery. Stay superficial to the deep temporal fascia, and stay <strong>above the tragus</strong>: the facial nerve is close below.</p>',
+      inject: '<p>Aspirate, then inject the auriculotemporal share of the dose (dose box below), watching it surround the nerve behind the vessels. Press on the site afterwards.</p>',
+    },
+    probe: { view: 'side', x: 112, y: 91, angle: 0, marker: 'right', label: 'horizontal just in front of the right ear, about 1 cm above the tragus.' },
+    probeInset: headProbeInset,
+  },
   // Scalp block at the temple (landmark block: schematic section, no ultrasound). A horizontal section through the
   // right temple about 2 cm above the zygomatic arch, turned so that depth into the head runs down the screen: the ear
   // (posterior) on the left, the lateral orbital rim (anterior) on the right. This one plane holds both temple sites:
