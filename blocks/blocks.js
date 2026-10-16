@@ -7,6 +7,7 @@
    - region cards built from the registry, and the "Anatomy in 3D" links.
    No clinical text is written here: operations, block names and links come from the ops modules and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
+import { registerOffline, mountAppVersion } from '../shared/regional/js/offline.js?v=20261016';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
 import * as HN from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
@@ -645,3 +646,5 @@ anatomyRows();
 route({ initial: true });
 addEventListener('hashchange', () => route());
 document.body.dataset.bdReady = 'true';
+mountAppVersion(document.getElementById('ra-appver'));
+registerOffline();

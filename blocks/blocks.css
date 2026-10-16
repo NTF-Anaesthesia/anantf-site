@@ -187,3 +187,16 @@
 /* component lists: no running-list spacing between items */
 .bd-app main :is(.bd-card-pages,.bd-card-blocks,.bd-rows,.bd-ops-list,.bd-opts,.bd-cards,.bd-legend)>li+li{margin-top:0}
 .bd-app main .bd-card-pages a{min-width:44px;justify-content:center}
+
+/* ------------------------------------------------------------------ app version (foot of the page) */
+/* Two lines of small muted text, as on every installable app (AGENTS.md): the saved version, read from the cache name,
+   and "Not updating? Get the latest version" (shared/regional/js/offline.js). */
+.bd-app .tb-foot .bd-appver{margin:18px 0 0;padding-top:12px;border-top:1px solid var(--tb-line)}
+.bd-app .tb-foot .bd-appver-line{margin:0;font:400 14px/1.6 var(--tb-sans);color:var(--tb-muted)}
+.bd-app .tb-foot .bd-appver-btn{display:inline-flex;align-items:center;min-height:44px;margin:0;padding:0;border:0;border-radius:0;background:none;
+  font:400 14px/1.4 var(--tb-sans);color:var(--tb-muted);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;cursor:pointer}
+.bd-app .tb-foot .bd-appver-btn:hover{color:var(--tb-wine);text-decoration-thickness:2px}
+.bd-app .tb-foot .bd-appver-btn:focus-visible{outline:2px solid var(--tb-wine);outline-offset:4px}
+.bd-app .tb-foot .bd-appver-btn[disabled]{cursor:progress;opacity:.75}
+.bd-app .tb-foot .bd-appver-msg{margin:0;font:400 14px/1.6 var(--tb-sans);color:var(--tb-ink-soft)}
+.bd-app .tb-foot .bd-appver-msg:empty{display:none}

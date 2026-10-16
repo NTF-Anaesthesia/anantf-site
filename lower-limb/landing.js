@@ -1,6 +1,7 @@
 /* Lower-limb blocks landing page: "Which block for which operation" chooser.
    The operations, block links and leg figure live in /shared/regional/js/ops/ops-lowerlimb.js (shared with /blocks/).
    No sources or references are shown on the page (as on the truncal and head and neck pages). */
+import { registerOffline } from '../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { LINKS as L, OP_REGIONS as REGIONS, OPS, lowerLimbCoverageMap } from '../shared/regional/js/ops/ops-lowerlimb.js?v=20261015';
 
 /* ------------------------------------------------------------------ helpers */
@@ -93,3 +94,4 @@ function init() {
 }
 
 init();
+registerOffline();

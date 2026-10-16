@@ -8,15 +8,17 @@
 //      lower-limb/shared/js/leg.js), and nothing points at the old brachial-plexus/vendor/three;
 //   2. every regional page keeps its noindex tag;
 //   3. no "FRCA" in the regional pages (say exam / MMed);
-//   4. no service worker registered by the regional pages;
+//   4. the only service worker the regional pages register is /regional-sw.js (from shared/regional/js/offline.js), and
+//      that worker only answers the regional paths (loaded in a sandbox and asked about regional and other paths);
 //   5. no personal e-mail addresses (only contact@anantf.com) or phone numbers in the regional pages;
 //   6. engine entry points are versioned (?v=) once, never "?v=…?v=…";
 //   7. every relative import / script / stylesheet in the regional pages points at a file that exists;
 //   8. the test allow-lists are valid JSON with a reason for every entry.
 
 import fs from 'node:fs';
+import vm from 'node:vm';
 import path from 'node:path';
-import { ROOT, HERE, reporter, walk } from './lib.mjs';
+import { ROOT, HERE, PAGES, reporter, walk } from './lib.mjs';
 
 const R = reporter('Static');
 const REGIONAL_DIRS = ['truncal', 'head-neck', 'lower-limb', 'brachial-plexus', 'plexus', 'spinal', 'shared/regional', 'blocks'];
@@ -55,6 +57,7 @@ function refsOf(f, src) {
 function resolveRef(f, spec) {
   if (/^(https?:)?\/\//.test(spec) || /^(data|blob|mailto):/.test(spec) || spec.startsWith('#') || /^[a-z@][\w./-]*$/i.test(spec) && !spec.includes('/') && !spec.endsWith('.js') && !spec.endsWith('.css')) return null;
   if (/^(three|three\/addons\/)/.test(spec)) return null; // bare specifiers resolved by the import map
+  if (/^node:/.test(spec)) return null; // Node built-ins (shared/regional/tools/)
   if (spec.includes('${')) return null; // template literal, built at run time
   const clean = spec.split(/[?#]/)[0];
   const abs = clean.startsWith('/') ? clean.slice(1) : path.posix.normalize(path.posix.join(path.posix.dirname(f), clean));
@@ -109,10 +112,44 @@ function resolveRef(f, spec) {
   R.check('no "FRCA" in the regional pages (say exam / MMed)', !hits.length, hits.join('\n'));
 }
 
-// 4. service workers
+// 4. service workers: only the regional offline worker, and it only claims regional paths
 {
-  const hits = files.filter((f) => /serviceWorker\s*\.\s*register\s*\(/.test(read(f)));
-  R.check('no service worker registered by the regional pages', !hits.length, hits.join(', '));
+  const OFFLINE = 'shared/regional/js/offline.js';
+  const hits = [...files, ...htmlFiles].filter((f) => f !== OFFLINE && /serviceWorker\s*\.\s*register\s*\(/.test(read(f)));
+  R.check('no regional page registers a service worker except through shared/regional/js/offline.js', !hits.length, hits.join(', '));
+  const off = fs.existsSync(path.join(ROOT, OFFLINE)) ? read(OFFLINE) : '';
+  const regs = [...off.matchAll(/serviceWorker\s*\.\s*register\s*\(([^,)]+)/g)].map((m) => m[1].trim());
+  R.check('offline.js registers only /regional-sw.js', regs.length === 1 && regs[0] === 'SW_URL.href' && /const SW_URL = new URL\('\.\.\/\.\.\/\.\.\/regional-sw\.js', import\.meta\.url\)/.test(off), `registers: ${regs.join(', ') || 'nothing'}`);
+  const delOk = off.split('\n').filter((l) => /caches\.delete\(/.test(l)).every((l) => /startsWith\(PREFIX\)/.test(l)) && /const PREFIX = 'regional-';/.test(off);
+  R.check('"Get the latest version" deletes only the regional- caches', delOk);
+
+  // Load the worker in a sandbox (as served from https://anantf.com/regional-sw.js) and ask it about paths.
+  const src = read('regional-sw.js');
+  const ctx = vm.createContext({ self: { location: new URL('https://anantf.com/regional-sw.js'), addEventListener() {} }, URL, Set });
+  let sw = null;
+  try { vm.runInContext(src, ctx); sw = vm.runInContext('({ claims, strategy, PREFIXES, PAGES, SHELL, SITE, SITE_MEDIA, VERSION, MEDIA })', ctx); } catch (e) { R.check('regional-sw.js loads', false, e.message); }
+  if (sw) {
+    const ALLOWED = ['blocks/', 'truncal/', 'head-neck/', 'lower-limb/', 'upper-limb/', 'brachial-plexus/', 'plexus/', 'spinal/', 'shared/regional/', 'shared/us/', 'shared/vendor/three-r160/'];
+    const badPrefix = sw.PREFIXES.filter((p) => !ALLOWED.includes(p.replace(/^\//, '')));
+    R.check('regional-sw.js claims only the regional folders', !badPrefix.length && sw.PAGES.every((p) => p === '/regional.html'), `extra: ${[...badPrefix, ...sw.PAGES.filter((p) => p !== '/regional.html')].join(', ')}`);
+    const inRegional = (f) => ALLOWED.some((d) => f.startsWith(d)) || f === 'regional.html';
+    const badShell = sw.SHELL.filter((f) => !inRegional(f));
+    const badSite = [...sw.SITE, ...sw.SITE_MEDIA].filter((f) => !/^(assets\/[\w./-]+\.(css|js|svg|png|webp|jpe?g)|fonts\/[\w.-]+\.woff2|[\w.-]+\.svg)$/.test(f));
+    R.check('precache lists hold only regional files and shared site styles, scripts, pictures and fonts', !badShell.length && !badSite.length, [...badShell, ...badSite].join(', '));
+    const mustClaim = ['/blocks/', '/regional.html', '/shared/regional/js/shell.js', '/shared/us/truncal/esp-1.jpg', '/plexus/model/lumbar.glb', '/shared/vendor/three-r160/build/three.module.min.js',
+      ...PAGES.map((p) => '/' + p), '/fonts/inter.woff2'];
+    const mustNot = ['/', '/index.html', '/airway.html', '/edit.html', '/draft.html', '/resources.html', '/regional-sw.js', '/mo/', '/mo/index.html', '/mo/sw.js', '/mo/js/app.js', '/mo/style.css',
+      '/qbank/', '/qbank/sw.js', '/qbank/bank/questions.json', '/babymo/', '/babymo/sw.js', '/babymo/js/app.js', '/exams/', '/exams/reference/x.pdf', '/pocus/cardiac/',
+      '/popliteal/', '/popliteal-animation/', '/assets/app/specimen.html', '/assets/regional-x.css', '/shared/vendor/other/x.js', '/blocks-old/', '/spinalx/'];
+    const missed = mustClaim.filter((p) => !sw.claims(p));
+    const wrong = mustNot.filter((p) => sw.claims(p));
+    R.check(`regional-sw.js answers the regional paths (${mustClaim.length} checked)`, !missed.length, `not claimed: ${missed.join(', ')}`);
+    R.check(`regional-sw.js leaves every other path alone (${mustNot.length} checked: home, mo/, qbank/, babymo/, exams/, …)`, !wrong.length, `claimed: ${wrong.join(', ')}`);
+    const swDel = src.split('\n').filter((l) => /caches\.delete\(/.test(l));
+    R.check('regional-sw.js caches are named regional-… and it deletes only those', /^regional-/.test(sw.VERSION) && /^regional-media-/.test(sw.MEDIA) && swDel.length > 0 && swDel.every((l) => /startsWith\('regional-'\)/.test(l)), swDel.join('\n'));
+    const guard = /addEventListener\('fetch'[\s\S]*?if \(req\.method !== 'GET'\) return;[\s\S]*?if \(url\.origin !== self\.location\.origin \|\| !claims\(url\.pathname\)\) return;/.test(src);
+    R.check('regional-sw.js returns without respondWith for other origins, non-GET requests and unclaimed paths', guard);
+  }
 }
 
 // 5. personal contact details
