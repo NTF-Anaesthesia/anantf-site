@@ -1,8 +1,11 @@
 # Files the Cloudflare Worker doesn't upload (MO.md); GitHub Pages ignores this file.
-# Only the MO folder, the app kit, the fonts and the logo mark are served from Cloudflare: everything else stays on
+# Only the MO folder, the Baby MO test, the question bank (its data is all the Worker serves), the app kit, the fonts and
+# the logo mark are uploaded; only the folders in worker/routes.js are served from Cloudflare: everything else stays on
 # GitHub Pages (anantf.com), and mo.anantf.com sends those addresses there.
 /*
 !/mo/
+!/babymo/
+!/qbank/
 !/assets/
 !/fonts/
 !/ana-ntf-monogram.svg

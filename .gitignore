@@ -6,3 +6,5 @@
 firebase-debug.log
 firestore-debug.log
 node_modules
+.wrangler/
+node_modules/

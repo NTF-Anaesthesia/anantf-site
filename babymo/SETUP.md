@@ -17,7 +17,7 @@ Do them once, signed in to Google as the account that should own the project.
 3. Click **Add new provider**, choose **Anonymous**, switch it **Enable**, **Save**. (MOs use this: they never need a
    Google account. They are let in by the passphrase, not by this.)
 4. Open the **Settings** tab, then **Authorized domains**. Click **Add domain** and add `anantf.com`, then add
-   `www.anantf.com` the same way. (`localhost` and the project's own domains are already there.)
+   `www.anantf.com` the same way. (`localhost` and the project's own domains are already there.) Also add `mo.anantf.com`: the test is served there too (`MO.md`).
 
 ## C. Create the database
 
