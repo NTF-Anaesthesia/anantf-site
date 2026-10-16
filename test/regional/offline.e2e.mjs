@@ -7,11 +7,11 @@
 // with context.setOffline), then:
 //   1. opens /blocks/ with signal: the worker registers, takes control and saves the app; the "App version" line
 //      shows the saved version, read from the cache name; a block page is opened too;
-//   2. a non-regional page (/index.html, /mo/) is not answered by the worker;
+//   2. a non-regional page (/index.html, /mo/guide/) is not answered by the worker;
 //   3. with no signal: /blocks/, the block page and a page never opened (precached) still render after a reload, and
 //      the homepage is not served from the worker (it fails, as it would with no worker);
 //   4. "Not updating? Get the latest version" with no signal changes nothing; with signal it removes only the regional
-//      worker and caches (the saved level, the mo/ worker and its caches stay) and reloads.
+//      worker and caches (the saved level, the mo/guide/ worker and its caches stay) and reloads.
 
 import http from 'node:http';
 import fs from 'node:fs';
@@ -99,11 +99,11 @@ try {
   // ------------------------------------------------------------------ 2. online: other pages are left alone
   resp = await page.goto(BASE + 'index.html', { waitUntil: 'load' });
   R.check('the homepage is not answered by the regional worker', resp?.ok() && !resp.fromServiceWorker(), `from worker ${resp?.fromServiceWorker()}`);
-  resp = await page.goto(BASE + 'mo/', { waitUntil: 'load' });
-  R.check('/mo/ is not answered by the regional worker', resp?.ok() && !resp.fromServiceWorker(), `from worker ${resp?.fromServiceWorker()}`);
-  const moReg = await until(() => navigator.serviceWorker.getRegistrations().then((rs) => rs.some((r) => /\/mo\/$/.test(r.scope) && (r.active))));
+  resp = await page.goto(BASE + 'mo/guide/', { waitUntil: 'load' });
+  R.check('/mo/guide/ is not answered by the regional worker', resp?.ok() && !resp.fromServiceWorker(), `from worker ${resp?.fromServiceWorker()}`);
+  const moReg = await until(() => navigator.serviceWorker.getRegistrations().then((rs) => rs.some((r) => /\/mo\/guide\/$/.test(r.scope) && (r.active))));
   st = await swState();
-  R.check('mo/ keeps its own worker (scope /mo/) beside the regional one', !!moReg && st.regs.some((r) => r.script === BASE + 'mo/sw.js' && r.scope === BASE + 'mo/') && st.regs.some((r) => r.script === BASE + 'regional-sw.js'), JSON.stringify(st.regs));
+  R.check('mo/guide/ keeps its own worker (scope /mo/guide/) beside the regional one', !!moReg && st.regs.some((r) => r.script === BASE + 'mo/guide/sw.js' && r.scope === BASE + 'mo/guide/') && st.regs.some((r) => r.script === BASE + 'regional-sw.js'), JSON.stringify(st.regs));
 
   // ------------------------------------------------------------------ 3. offline
   await ctx.setOffline(true);
@@ -158,7 +158,7 @@ try {
   }), VERSION);
   R.check('with signal, it removes the regional caches and reloads', !markers.regional, JSON.stringify(markers));
   R.check('…and keeps another app\'s cache', markers.other, JSON.stringify(markers));
-  R.check('…and keeps the saved level, the mo/ worker and the mo- caches', levelAfter === levelBefore && levelAfter === 'resident' && after.regs.some((r) => r.script === BASE + 'mo/sw.js') && moCachesBefore.every((k) => after.caches.includes(k)) && moCachesBefore.length > 0,
+  R.check('…and keeps the saved level, the mo/guide/ worker and the mo- caches', levelAfter === levelBefore && levelAfter === 'resident' && after.regs.some((r) => r.script === BASE + 'mo/guide/sw.js') && moCachesBefore.every((k) => after.caches.includes(k)) && moCachesBefore.length > 0,
     `level ${levelBefore} → ${levelAfter}; mo caches ${moCachesBefore.join(',')} → ${after.caches.join(',')}`);
   const back = await until(() => navigator.serviceWorker.controller?.scriptURL || '');
   R.check('…and the regional worker registers again afterwards', back === BASE + 'regional-sw.js', `controller ${back}`);
