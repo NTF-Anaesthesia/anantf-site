@@ -5,6 +5,7 @@
 // Maximum doses are single-shot totals for an adult by injection (perineural or infiltration), the conservative
 // mainstream values used in UK and European practice. Each agent has a mg/kg maximum (plain and with adrenaline) and an
 // absolute ceiling in mg: the maximum for a patient is whichever is lower. They are a ceiling, not a target.
+// The mg/kg maxima and the absolute ceilings were confirmed by the owner (Dr Koh Wenjun) on 16 Oct 2026.
 
 /** Agents in the order the calculator lists them. mgPerKg/capMg: [plain, with adrenaline]. */
 export const AGENTS = Object.freeze({
