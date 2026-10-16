@@ -1,6 +1,6 @@
 # MO guide notes
 
-Lasting decisions for `mo/` (anantf.com/mo/). How the content is written: `CONTENT.md`.
+Lasting decisions for `mo/` (anantf.com/mo/guide/). How the content is written: `CONTENT.md`.
 
 ## Purpose (owner, 15 Oct 2026)
 
@@ -53,10 +53,10 @@ progress kept on the phone. It sits beside the Baby MO test (`../babymo/`), whic
 
 ## Tests
 
-`node mo/test/calc.test.mjs` (every calculation), `node mo/test/content.test.mjs` (every data file: ids, links, block
-fields, scenario graphs, British spelling, no phone numbers or HTML), `node mo/test/version.test.mjs` (offline file list
-and version), `node mo/test/e2e.mjs` (every screen at phone size + axe), `node mo/test/pwa.e2e.mjs` (install, offline,
-updates). `SHOTS=<dir> node mo/test/e2e.mjs` saves phone screenshots.
+`node mo/guide/test/calc.test.mjs` (every calculation), `node mo/guide/test/content.test.mjs` (every data file: ids, links, block
+fields, scenario graphs, British spelling, no phone numbers or HTML), `node mo/guide/test/version.test.mjs` (offline file list
+and version), `node mo/guide/test/e2e.mjs` (every screen at phone size + axe), `node mo/guide/test/pwa.e2e.mjs` (install, offline,
+updates). `SHOTS=<dir> node mo/guide/test/e2e.mjs` saves phone screenshots.
 
 ## Installable app (offline) and updates
 
@@ -66,8 +66,8 @@ install, never with a calculator half filled, mid-scenario, mid-flashcards or on
 updates when it comes to the front. It also caches the shared app kit stylesheet and its fonts (`SITE` in `sw.js`, found by
 `tools/stamp.mjs` following the page's links and `@import`/`url()`) so the guide looks right with no signal.
 
-**After changing any file in `mo/` (content included) run `node mo/tools/stamp.mjs`**: it rewrites the file lists and
-`VERSION` (`mo-<date>-<hash>`) in `sw.js`. `node mo/test/version.test.mjs` fails if you forget. The start page and About
+**After changing any file in `mo/guide/` (content included) run `node mo/guide/tools/stamp.mjs`**: it rewrites the file lists and
+`VERSION` (`mo-<date>-<hash>`) in `sw.js`. `node mo/guide/test/version.test.mjs` fails if you forget. The start page and About
 end with "App version <date> (<hash>)" and "Not updating? Get the latest version", which clears only this app's worker
 and `mo-` caches (never progress) after checking for a signal.
 

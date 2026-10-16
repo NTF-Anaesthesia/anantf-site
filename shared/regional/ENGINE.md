@@ -456,7 +456,7 @@ In rough priority order:
 1. **Brachial scenes not on the engine.** `brachial-plexus/js/ultrasound.js` keeps its own 7 `SCENES_MM` and renderer;
    port them to the scene schema, then move its real scans into `shared/us/upper-limb/` (empty today).
 2. **No single-page app and no offline use.** Pages are separate; a `#/block/<id>` app with redirect stubs and a
-   service worker (on the `mo/` pattern) is not built. Regional pages must not register a service worker until then.
+   service worker (on the `mo/guide/` pattern) is not built. Regional pages must not register a service worker until then.
 3. **No structured dose data.** Dose text is repeated in the block, glance, ops, planners and animation headers and
    kept in step by `data.mjs`; no shared local anaesthetic calculator yet.
 4. **No decision trees** per block (failed block, LAST, vascular puncture): new clinical prose needing owner review.

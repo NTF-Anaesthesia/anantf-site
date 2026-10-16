@@ -21,7 +21,7 @@ const SUITES = [
   { id: 'deeplinks', cmd: ['test/regional/deeplinks.mjs'], what: 'old URLs and hashes land on the right visible element; shims; redirects; edit.html' },
   { id: 'levels', cmd: ['test/regional/levels.mjs'], what: 'MO / Resident / Consultant: hiding, hints, SAFETY at MO, persistence, migration, relax' },
   { id: 'parity', cmd: ['test/regional/parity.mjs'], what: 'every WP0 baseline line and dose string still on its page (Consultant)' },
-  { id: 'mo-content', cmd: ['mo/test/content.test.mjs'], what: 'existing suite: MO guide content', existing: true },
+  { id: 'mo-content', cmd: ['mo/guide/test/content.test.mjs'], what: 'existing suite: MO guide content', existing: true },
   { id: 'babymo-logic', cmd: ['babymo/test/logic.test.mjs'], what: 'existing suite: Baby MO logic', existing: true },
 ];
 const GATES = { main: ['static', 'smoke', 'deeplinks'], pr: ['static', 'data', 'smoke', 'deeplinks', 'levels', 'parity', 'mo-content', 'babymo-logic'] };

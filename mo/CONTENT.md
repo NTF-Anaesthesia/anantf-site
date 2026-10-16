@@ -2,7 +2,7 @@
 
 Everything the app teaches is data in `js/content/*.js` (learn modules) and `js/data/*.js` (drugs, crisis cards,
 scenarios, flashcards). The engine in `js/` draws it. To change a page, edit the data; you never touch HTML.
-`node mo/test/content.test.mjs` checks every file against the rules below (ids, links, drug and tool names, banned
+`node mo/guide/test/content.test.mjs` checks every file against the rules below (ids, links, drug and tool names, banned
 words), so run it after any edit.
 
 ## Voice and rules
