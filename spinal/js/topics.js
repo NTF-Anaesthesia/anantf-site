@@ -1,4 +1,4 @@
-// In-chapter topic navigation for the long spinal chapters (ENGINE.md backlog item 5).
+// In-chapter topic navigation for the long spinal chapters (ENGINE.md §9, "Long spinal chapters are not split").
 // Nothing in the chapters is moved or reworded: this module only reads them and adds two things.
 //   1. A "Topics" button fixed at the bottom of the screen. It appears once the reader has scrolled into a long
 //      chapter, shows where they are ("4/16 · Anticoagulants"), and opens the chapter's topic list; each topic is one
