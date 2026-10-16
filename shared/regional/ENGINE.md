@@ -300,6 +300,12 @@ the top of the file:
   more with `wrong: [ids]` or hide the section with `wrong: false`.
 - The section sits after Complications at `#<block>-wrong`, each guide at `#<block>-wrong-<guide>`; on `/blocks/` they
   are at `#wrong` and `#wrong-<guide>` (which opens it).
+- **brachial-plexus/** shows `guidesFor(<block>, 'upper-limb')` in the Block guide tab, after Complications (MO level),
+  ids `<block>-wrong-<guide>`; the app's own `#block=…&tab=…` hash is unchanged (guides have no deep link there).
+- **spinal/** shows the neuraxial set without "pain on injection" (its paraesthesia tree covers that) at the end of
+  Troubleshooting: heading `#ts-wrong` (in the Topics list), each guide at `#ts-wrong-<guide>` (which opens it).
+- Apps that don't load `regional.css` wrap the list in `.ra-dg-host`: `decide.css` gives it the engine tokens and the
+  `tb-btn` / `tb-details` styles, and the app may map the tokens to its own (spinal does, so its dark mode follows).
 - To add a guide: add it to `GUIDES` and `GUIDE_ORDER`, map it in `EXTRA_GUIDES` (or `CORE_GUIDES`), and run `data.mjs`
   (`validateGuide`: every step reachable, every target exists, no loops, an end).
 
@@ -515,7 +521,9 @@ The usual site rules apply: branch and pull request, browser check, tests green,
 ## 9. Known limits and backlog
 
 In rough priority order. Done since 15 Oct 2026: upper-limb blocks on the engine with their chooser and real scans,
-offline use (`/regional-sw.js`), the dose calculator and structured maxima (`la.js`), the "If it goes wrong" guides,
+offline use (`/regional-sw.js`), the dose calculator and structured maxima (`la.js`), the "If it goes wrong" guides
+(on the engine blocks, `/blocks/`, and since 17 Oct 2026 the brachial plexus app and `spinal/`), a `var(--ra-bar, 56px)`
+fallback everywhere the bar height is used (Firefox ESR 115 has no `:has()`, which sets it),
 spinal topic navigation and real scans, and the scalp, glossopharyngeal and V2/V3 diagram and ultrasound scenes
 (`hn-sc-temple`, `hn-aw-gpn`, `hn-fa-deep`, `hn-sc-atn`, `hn-aw-gpus`, `hn-fa-ppf`).
 
@@ -526,18 +534,12 @@ spinal topic navigation and real scans, and the scalp, glossopharyngeal and V2/V
 3. **Block dose text is free text.** The calculator has structured maxima, but dose text is still repeated in the
    block, glance, ops, planners and animation headers and kept in step by `data.mjs`. Next step: structured
    `{agent, pct, ml}` dose fields.
-4. **Guides not yet in `brachial-plexus/` and `spinal/`.** Those apps don't use the block template; their blocks are
-   already in the guide mapping and `decide.js` has no imports, so they can mount it.
-5. **Long spinal chapters are not split** into per-topic screens; they have in-chapter topic navigation
+4. **Long spinal chapters are not split** into per-topic screens; they have in-chapter topic navigation
    (`spinal/js/topics.js`).
-6. **Real scans are thin.** None yet for the costoclavicular, suprascapular and forearm blocks, or for the new head and
+5. **Real scans are thin.** None yet for the costoclavicular, suprascapular and forearm blocks, or for the new head and
    neck scenes (auriculotemporal, peristyloid glossopharyngeal, pterygopalatine fossa); several blocks have one image or
    none.
-7. **Animations** for iPACK, genicular, obturator, saphenous and sciatic blocks (Dr Chew Shi Hao's call).
-8. **Owner to confirm:** the absolute mg ceilings in `la.js` `AGENTS`, and the lipid bolus "1.5 ml/kg over 2–3 minutes"
+6. **Animations** for iPACK, genicular, obturator, saphenous and sciatic blocks (Dr Chew Shi Hao's call).
+7. **Owner to confirm:** the absolute mg ceilings in `la.js` `AGENTS`, and the lipid bolus "1.5 ml/kg over 2–3 minutes"
    in the LAST guide (matched to `/spinal/#cx-last`; the older guideline says over 1 minute).
-9. **Firefox ESR 115** (end of life) lacks `:has()`, so `--ra-bar` isn't set there: deep links land under the bar.
-   Fix with a `var(--ra-bar, 56px)` fallback in `shared/regional/css/regional.css` and
-   `brachial-plexus/css/shell.css` (needs a `regional.css?v=` bump on every page). `plexus/` and `brachial-plexus/`
-   passed a static ESR check on 16 Oct 2026 with this as the only gap.
-10. Problems inside `lower-limb/anim/`, `popliteal-animation/` and `exams/` are reported to Dr Chew Shi Hao, not fixed.
+8. Problems inside `lower-limb/anim/`, `popliteal-animation/` and `exams/` are reported to Dr Chew Shi Hao, not fixed.

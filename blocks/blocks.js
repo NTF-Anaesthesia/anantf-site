@@ -15,7 +15,7 @@ import * as UL from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
 import * as HN from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
 import * as LL from '../shared/regional/js/ops/ops-lowerlimb.js?v=20261015';
-import { guideList, openGuideFromHash } from '../shared/regional/js/decide.js?v=20261016';
+import { guideList, openGuideFromHash } from '../shared/regional/js/decide.js?v=20261017';
 import { GUIDES, GUIDE_ORDER } from '../shared/regional/js/data/decisions.js';
 
 /* ------------------------------------------------------------------ helpers */
