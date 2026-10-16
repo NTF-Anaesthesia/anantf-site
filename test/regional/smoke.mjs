@@ -21,12 +21,12 @@
 //   - records the §11.1 polish metrics: text under 12 px (SVG text by its rendered height), tap targets under 44 px
 //     (inline links under 24 px), sticky/fixed bars at the top after scrolling, axe serious/critical violations,
 //     time until the app is interactive;
-//   - no service worker; no three.js before "Open here" on block pages; no animation iframe before "Watch"
+//   - the only service worker is /regional-sw.js (the regional offline worker); no three.js before "Open here" on block pages; no animation iframe before "Watch"
 //     (lower-limb); plexus: rapid tab switching leaves one 3D canvas;
 //   - captures the text of every chapter / section (all chapters shown, every <details> open) and every dose / volume /
 //     concentration string.
 // Compare mode fails on: any console or page error, any response >= 400, new failed requests (any failed HEAD),
-// new horizontal overflow, a service worker, early three.js or animation iframes, extra plexus canvases, any baseline
+// new horizontal overflow, a service worker other than /regional-sw.js, early three.js or animation iframes, extra plexus canvases, any baseline
 // text line missing (except the reviewed ones in parity-allow.json), any change in the dose strings.
 
 import fs from 'node:fs';
@@ -85,8 +85,13 @@ async function metrics(page, isPhone) {
     }).filter((e, _, all) => !all.some((o) => o !== e && o.contains(e)));
     const barBottom = stuck.reduce((m, e) => Math.max(m, e.getBoundingClientRect().bottom), 0);
     window.scrollTo({ top: y0, behavior: 'instant' });
-    let sw = 0;
-    try { sw = (await navigator.serviceWorker?.getRegistrations?.() || []).length + (navigator.serviceWorker?.controller ? 1 : 0); } catch { /* none */ }
+    // Service workers on this page: every registration and the controller (script URLs). Only /regional-sw.js may appear.
+    let sw = [];
+    try {
+      const regs = await navigator.serviceWorker?.getRegistrations?.() || [];
+      sw = regs.map((r) => (r.active || r.waiting || r.installing)?.scriptURL || '(none)');
+      if (navigator.serviceWorker?.controller) sw.push(navigator.serviceWorker.controller.scriptURL);
+    } catch { /* none */ }
     return {
       overflow: de.scrollWidth > de.clientWidth + 1 ? de.scrollWidth - de.clientWidth : 0,
       smallText: small, smallTextEx: smallEx, smallTargets: tiny, smallTargetsEx: tinyEx,
@@ -264,7 +269,8 @@ async function main() {
     const stateDups = dups.filter((d) => /\/(levels|ui|search|registry|status|shell|scan|head|leg)\.js /.test(d)); // figures/head.js and leg.js keep pattern counters
     if (stateDups.length) problems.push(`stateful engine module loaded twice (two instances): ${stateDups.join('; ')}`);
     if (dups.length > stateDups.length) notes.push(`modules loaded under two URLs: ${dups.filter((d) => !stateDups.includes(d)).join('; ')}`);
-    if (m.serviceWorkers) problems.push(`a service worker is registered (${m.serviceWorkers}); regional pages must not register one (§11.8)`);
+    const otherSw = (m.serviceWorkers || []).filter((u) => u !== new URL('regional-sw.js', BASE).href);
+    if (otherSw.length) problems.push(`a service worker other than /regional-sw.js is registered (${[...new Set(otherSw)].join(', ')}); regional pages may only register the regional offline worker`);
     // three.js only on brachial-plexus/ and plexus/ (and after "Open here", which the smoke never taps).
     if (!['brachial-plexus/', 'plexus/'].includes(r.page) && (r.threeAfterScans || r.threeEarly || []).length) problems.push(`three.js / GLB requested without "Open here": ${(r.threeAfterScans || r.threeEarly).join(', ')}`);
     if (b?.three?.length) { const lost = b.three.filter((x) => x.startsWith('2')).length; const now = s.three.filter((x) => x.startsWith('2')).length; if (now < lost) problems.push(`three.js/GLB/Draco loads dropped from ${lost} to ${now}`); }
