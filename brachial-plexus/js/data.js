@@ -18,8 +18,6 @@
 //     (e.g. suprascapular for infraclavicular, intercostobrachial for all).
 
 export const DISCLAIMER =
-  'For education only. This is a simplified teaching aid and not a substitute for ' +
-  'supervised clinical training, local guidelines or your own clinical judgement. ' +
   'Anatomy varies between patients; always confirm with ultrasound (including colour ' +
   'Doppler) and follow your department’s safety practice.';
 

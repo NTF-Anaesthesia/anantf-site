@@ -29,7 +29,7 @@ Every page is unlisted and `noindex`; the owner shares the links personally (don
 | Anatomy in 3D | `/plexus/` | plexus explorer (cervical, brachial, lumbar, sacral); uses levels and status colours |
 | Hub card | `/regional.html` | static page; the only public way in |
 
-All of them share one app bar (with a Settings item), one credit line ("Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia", Dr Chew
+All of them share one app bar (with a Settings item), one credit line in the page footer ("Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia", Dr Chew
 Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level control (§4).
 
 ---
@@ -164,6 +164,8 @@ before, apart from the Settings entry and the plain app bar on the region landin
 - **Keyboard.** "/" (not while typing in a box, and not when turned off in Settings) and Ctrl+K / Cmd+K open or focus
   the page's search (engine pages, `/blocks/`, `spinal/`, `plexus/`); pages without search ignore them. On a scan
   teacher, the left and right arrow keys change step on the image and on the step buttons (focus follows; Home / End).
+
+Added to the home screen (`display-mode: standalone`), `appnav.css` hides the NTF Anaesthesia site header and the breadcrumbs, so only the app bar shows (owner, 16 Oct 2026). No manifest is published yet, so this only applies where a browser opens the page standalone.
 
 ### Shims at old paths
 
@@ -484,7 +486,7 @@ The brachial plexus app has its own renderer (`brachial-plexus/js/ultrasound.js`
 ### Add a region page
 
 1. Copy `truncal/abdominal-wall/` (the reference page) and change title, description, breadcrumbs and paths
-   ([`DATA.md` §1](DATA.md#1-page-template-truncalpageindexhtml)). Keep `noindex`, the credit and the disclaimer.
+   ([`DATA.md` §1](DATA.md#1-page-template-truncalpageindexhtml)). Keep `noindex` and the footer credit.
 2. Write `js/page.js` with `bootPage({…, backLabel, backShort})`.
 3. Link it from its region landing; add it to `PAGES` (and `PAGES_BY_REGION`) in `blocks/blocks.js` and to its
    region's `pages` in `REGION_NAV` (`js/appnav.js`, the desktop rail). A brand-new

@@ -98,7 +98,8 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - The regional pages (`blocks/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `brachial-plexus/`, `plexus/`, `spinal/`) are one
   app: same app bar, the credit line "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" (Dr Chew Shi Hao
-  linked to https://chewshihao.com/), and the same MO · Resident · Consultant level control (`shared/regional/js/levels.js`).
+  linked to https://chewshihao.com/) at the foot of the page only, never at the top, no "for education only" notice
+  (the owner, 16 Oct 2026: only the department's own juniors use the app), and the same MO · Resident · Consultant level control (`shared/regional/js/levels.js`).
   Levels are cumulative: MO sees tier 1, Resident tiers 1–2, Consultant everything; with no choice saved the level is
   Consultant, so nothing is hidden by surprise. The choice is kept on the phone (`ra-level`), never in the URL. Mark
   content with `data-tier` or a `tier` field in the data (`shared/regional/DATA.md` §2b). **Doses, the LAST line,
@@ -119,7 +120,7 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
 - Every regional page calls `initAppFeel({bar, search})` from `shared/regional/js/appnav.js` (and `mountRail()` except on
   `brachial-plexus/` and `plexus/`); import it under one URL (`appnav.js?v=…`). Anything that sticks under the bar uses
   `top: var(--ra-bar-now, var(--ra-bar, 56px))`, and a new region page goes into `REGION_NAV` in `appnav.js`. The look is
-  `DESIGN.md` as before: no rounded cards, tab bars, dark mode or splashy motion. The site header stays unchanged. There is no
+  `DESIGN.md` as before: no rounded cards, tab bars, dark mode or splashy motion. The site header stays unchanged in a browser tab; when the app is added to the home screen (`display-mode: standalone`) the NTF Anaesthesia header and the breadcrumbs are hidden, since the block app is all that screen is used for (rule in `appnav.css`). There is no
   web app manifest or install prompt yet (held until Dr Chew Shi Hao has seen the result).
 - Every installable app (one with a service worker, today `babymo/`, `mo/`, `qbank/` and the regional app) ends its settings or start page with two lines of small
   muted text (owner, 14 Oct 2026): `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
