@@ -10,10 +10,13 @@
 //                               then this region's pages, the other regions and the tools. Wraps <main> in .ra-frame.
 //   settingsItem(cls)           <li><a> "Settings" for an app bar menu; settingsButton(cls) the same as a bar button
 //   getAutoHide/setAutoHide, getSlash/setSlash, SETTINGS_URL, REGION_NAV, TOOL_NAV, regionOf(path)
-//   (app look) initAppFeel also draws the bottom tab bar (a left rail from 1024 px) while html[data-skin="app"]: Blocks,
-//   Search, Guides, Calculator, Settings; see js/skin.js and css/skin-app.css (ENGINE.md §2 "Skins").
+//   (app look) initAppFeel also draws, while html[data-skin="app"]: the bottom tab bar (a left rail from 1024 px) with
+//   five topic tabs (Blocks, 3D anatomy, Ultrasound, Indication, Settings); a Safety button and, where the page's bar has
+//   no search of its own, a search button in the top bar (mountBarActions); and, below 480 px, the chapter menu moved out
+//   of the bar into a row under it (so the bar holds back, search, Safety and the level control at 360 px). See js/skin.js
+//   and css/skin-app.css (ENGINE.md §2 "Skins").
 //
-// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261019 (one instance per page).
+// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261022 (one instance per page).
 // Cross-document view transitions are pure CSS (@view-transition in css/appnav.css).
 
 import { getSkin, onSkin } from './skin.js?v=20261018';
@@ -190,58 +193,112 @@ export function mountRail({ main = document.getElementById('main'), label = 'On 
 
 // ------------------------------------------------------------------ app look: the bottom tab bar (left rail from 1024 px)
 // Rendered only while html[data-skin="app"] (so the website look has no extra element) and removed again when the reader
-// switches back in Settings. Five tabs, every one reachable from every regional page. The Search tab opens the page's own
-// search (the app bar's search, "/" and Ctrl+K) and, on a page with none, goes to the search box on /blocks/.
+// switches back in Settings. Five topic tabs, every one reachable from every regional page. Search and Safety are in the
+// top bar (mountBarActions), not here.
 const TAB_SVG = {
   blocks: '<rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/>',
-  search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
-  guides: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/><path d="m6 6 3.5 3.5M14.5 14.5 18 18M18 6l-3.5 3.5M9.5 14.5 6 18"/>',
-  calculator: '<rect x="5" y="3" width="14" height="18" rx="2.6"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/>',
+  anatomy: '<path d="M12 3 4.5 7.3v9.4L12 21l7.5-4.3V7.3L12 3z"/><path d="m4.5 7.3 7.5 4.3 7.5-4.3M12 11.6V21"/>',
+  ultrasound: '<path d="M12 3.5 3.8 17.2a11.6 11.6 0 0 0 16.4 0L12 3.5z"/><path d="M7.4 12.6a6.4 6.4 0 0 0 9.2 0"/>',
+  indication: '<rect x="5" y="4" width="14" height="17" rx="2.6"/><path d="M9 4V2.8h6V4M8.5 10h7M8.5 14h7M8.5 17.5h4"/>',
   settings: '<path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.5"/><circle cx="10" cy="17" r="2.5"/>',
 };
-/** id, label, path from the site root (null: a button, not a link). */
+/** id, label, path from the site root. */
 export const TABS = Object.freeze([
   ['blocks', 'Blocks', 'blocks/'],
-  ['search', 'Search', null],
-  ['guides', 'Guides', 'blocks/#wrong'],
-  ['calculator', 'Calculator', 'blocks/calculator/'],
+  ['anatomy', '3D anatomy', 'plexus/'],
+  ['ultrasound', 'Ultrasound', 'blocks/ultrasound/'],
+  ['indication', 'Indication', 'blocks/indication/'],
   ['settings', 'Settings', 'blocks/settings/'],
 ]);
-/** Which tab the current page belongs to: the calculator and Settings have their own; "If it goes wrong" is /blocks/#wrong;
- *  everything else is a block page, so Blocks. Exactly one. */
-export function currentTab(path = here(), hash = location.hash) {
-  if (path === 'blocks/calculator/') return 'calculator';
+/** Which tab the current page belongs to: Settings, Anatomy in 3D, and the Ultrasound and Indication screens have their
+ *  own; every other page (the front door, the region landings, every block page, spinal, the brachial plexus app, the
+ *  calculator and Safety) is Blocks. A block page reached from Ultrasound or Indication is Blocks, not that tab. Exactly one. */
+export function currentTab(path = here()) {
   if (path === 'blocks/settings/') return 'settings';
-  if (path === 'blocks/' && /^#wrong(-|$)/.test(hash)) return 'guides';
+  if (path === 'plexus/') return 'anatomy';
+  if (path === 'blocks/ultrasound/') return 'ultrasound';
+  if (path === 'blocks/indication/') return 'indication';
   return 'blocks';
 }
 let TAB_BAR = null;
-function mountTabBar(search) {
+function mountTabBar() {
   if (TAB_BAR || typeof document === 'undefined' || !document.body) return;
   // An iframe (the explorer inside a block page) and the embedded explorer are not the app's screen: no tab bar there.
   try { if (window.top !== window.self) return; } catch { return; }
   if (document.body.classList.contains('px-embed')) return;
   const nav = make('nav', { class: 'ra-tabbar', 'aria-label': 'Regional anaesthesia app' });
   const inner = make('div', { class: 'ra-tabbar-in' });
+  const cur = currentTab();
   for (const [id, label, href] of TABS) {
-    const t = href ? make('a', { class: 'ra-tab', href: R(href), 'data-tab': id }) : make('button', { class: 'ra-tab', type: 'button', 'data-tab': id });
+    const t = make('a', { class: 'ra-tab', href: R(href), 'data-tab': id });
     t.innerHTML = `<span class="ra-tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${TAB_SVG[id]}</svg></span><span class="ra-tab-label">${label}</span>`;
-    if (id === 'search') t.addEventListener('click', () => { if (typeof search === 'function') search(); else location.href = `${R('blocks/')}#search`; });
+    if (id === cur) t.setAttribute('aria-current', 'page');
     inner.append(t);
   }
   nav.append(inner);
   document.body.append(nav);
-  const paint = () => { const cur = currentTab(); for (const t of inner.children) { if (t.dataset.tab === cur) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); } };
-  paint();
-  addEventListener('hashchange', paint);
-  TAB_BAR = { nav, off: () => removeEventListener('hashchange', paint) };
+  TAB_BAR = { nav };
 }
 function unmountTabBar() {
   if (!TAB_BAR) return;
-  TAB_BAR.off();
   TAB_BAR.nav.remove();
   TAB_BAR = null;
 }
+
+// ------------------------------------------------------------------ app look: the top bar's search and Safety buttons
+// Every regional page's bar, in the app look: the page's own search button (engine pages, /blocks/, spinal, Anatomy in
+// 3D) or, where the bar has none (the region landings, the calculator, Settings, the brachial plexus app, Safety …), a
+// search button that goes to the search box on /blocks/; and a red "Safety" button to /blocks/safety/ (emergency guides
+// and the dose calculator). Both are added by script while the app look is on and removed when it is off, so the website
+// look's bar is exactly what it was. Below 480 px the chapter / block / plexus menu moves out of the bar into a row under
+// it (the bar then holds back, search, Safety and the level control, which is all that fits at 360 px); it moves back
+// when the window is wider or the website look is chosen.
+const SEARCH_BTN = '#tb-search-open,#sp-search-open';
+const MENU_SEL = '.tb-chmenu,.sp-chmenu,.bp-blockmenu';
+const LEVEL_SEL = '.tb-bar-level,.sp-bar-level,.bp-level';
+export const SAFETY_URL = R('blocks/safety/');
+const BAR_SVG = {
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+  safety: '<path d="M12 3.8 2.9 19.2h18.2L12 3.8z"/><path d="M12 10v4.2M12 16.9v.01"/>',
+};
+let BAR_ACT = null;
+function mountBarActions(bar, search) {
+  if (BAR_ACT || !bar) return;
+  const inner = bar.querySelector(':scope > .tb-bar-inner, :scope > .ra-sbar-inner, :scope > .sp-bar-inner, :scope > .bp-bar-inner') || bar;
+  const added = [];
+  const level = inner.querySelector(LEVEL_SEL);
+  const put = (n) => { added.push(n); if (level) level.before(n); else inner.append(n); };
+  if (!inner.querySelector(SEARCH_BTN)) {
+    const b = make('button', { class: 'ra-bact ra-bsearch', type: 'button', 'aria-label': 'Search' });
+    b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${BAR_SVG.search}</svg>`;
+    b.addEventListener('click', () => { if (typeof search === 'function') search(); else location.href = `${R('blocks/')}#search`; });
+    put(b);
+  }
+  const s = make('a', { class: 'ra-bact ra-safety', href: SAFETY_URL });
+  s.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${BAR_SVG.safety}</svg><span>Safety</span>`;
+  if (here() === 'blocks/safety/') s.setAttribute('aria-current', 'page');
+  put(s);
+
+  // The menu row under the bar on phones.
+  const menu = inner.querySelector(MENU_SEL);
+  let row = null; let home = null; let mq = null; let place = null;
+  if (menu) {
+    home = { parent: menu.parentElement, next: menu.nextSibling };
+    row = make('div', { class: 'ra-titlerow' });
+    mq = matchMedia('(max-width: 479.98px)');
+    place = () => {
+      if (mq.matches) { if (menu.parentElement !== row) { bar.after(row); row.append(menu); } }
+      else if (menu.parentElement === row) { home.parent.insertBefore(menu, home.next && home.next.parentNode === home.parent ? home.next : null); row.remove(); }
+    };
+    mq.addEventListener?.('change', place);
+    place();
+  }
+  BAR_ACT = { off() {
+    added.forEach((n) => n.remove());
+    if (menu) { mq.removeEventListener?.('change', place); if (menu.parentElement === row) home.parent.insertBefore(menu, home.next && home.next.parentNode === home.parent ? home.next : null); row.remove(); }
+  } };
+}
+function unmountBarActions() { if (BAR_ACT) { BAR_ACT.off(); BAR_ACT = null; } }
 
 // ------------------------------------------------------------------ app look: the large title collapses into the bar
 // While the page's first heading (the large title) is showing, the bar is transparent on the ground; once the title has
@@ -253,7 +310,8 @@ function mountLargeTitle() {
   const html = document.documentElement;
   let io = null; let target = null; let raf = 0; let forced = false;
   const barH = () => { const b = document.querySelector('.ra-appbar, .ra-sbar'); return b ? Math.round(b.getBoundingClientRect().height) : 0; };
-  const pick = () => { for (const h of document.querySelectorAll('h1')) { if (!h.closest('.ra-appbar, .ra-sbar, .ra-tabbar, dialog') && h.getClientRects().length) return h; } return null; };
+  // Under 480px the chapter menu is a row under the bar: the bar gets its surface once that row has scrolled under it.
+  const pick = () => { const row = document.querySelector('.ra-titlerow'); if (row && row.getClientRects().length) return row; for (const h of document.querySelectorAll('h1')) { if (!h.closest('.ra-appbar, .ra-sbar, .ra-tabbar, dialog') && h.getClientRects().length) return h; } return null; };
   const set = (c) => html.toggleAttribute('data-ra-collapsed', c);
   const aim = () => {
     raf = 0;
@@ -301,6 +359,7 @@ function initAutoHide(bar) {
   const naturalTop = () => { let p = bar.previousElementSibling; while (p && !p.getClientRects().length) p = p.previousElementSibling; return p ? p.getBoundingClientRect().bottom + scrollY : 0; };
   const busy = () => bar.contains(document.activeElement)
     || !!bar.querySelector('[aria-expanded="true"]')
+    || !!document.querySelector('.ra-titlerow [aria-expanded="true"]')
     || [...bar.querySelectorAll('[role="dialog"], .tb-sheet, .sp-sheet')].some((d) => !d.hidden && d.getClientRects().length);
   const show = () => { if (!hidden) return; hidden = false; html.removeAttribute('data-ra-bar'); html.style.removeProperty('--ra-bar-now'); };
   const hide = () => { if (hidden) return; hidden = true; html.dataset.raBar = 'hidden'; html.style.setProperty('--ra-bar-now', '0px'); };
@@ -396,9 +455,9 @@ export function initAppFeel({ bar = null, search = null } = {}) {
   try { initSpeculation(); } catch { /* never block the page */ }
   initKeys(search);
   if (bar) { bar.classList.add('ra-appbar'); initAutoHide(bar); } else syncAutoHide();
-  // The app look's tab bar: drawn while html[data-skin="app"] on every regional page, and live when Settings switches the look.
+  // The app look's tab bar and bar buttons: drawn while html[data-skin="app"] on every regional page, and live when Settings switches the look.
   const sync = (skin) => {
-    try { if (skin === 'app') { mountTabBar(search); mountLargeTitle(); } else { unmountTabBar(); unmountLargeTitle(); } } catch (err) { console.error('[appnav] tab bar', err); }
+    try { if (skin === 'app') { mountTabBar(); mountBarActions(bar, search); mountLargeTitle(); } else { unmountTabBar(); unmountBarActions(); unmountLargeTitle(); } } catch (err) { console.error('[appnav] tab bar', err); }
   };
   sync(getSkin());
   onSkin(sync);

@@ -83,6 +83,10 @@
 .bd-app main .bd-idx:last-child{border-bottom:1px solid var(--tb-line)}
 .bd-app main .bd-idx>summary{min-height:56px;font:400 clamp(20px,2.2vw,24px)/1.25 var(--tb-serif);letter-spacing:-.01em}
 .bd-idx-body{padding:6px 0 28px}
+.bd-app main .bd-idx>.bd-idx-a{display:flex;align-items:center;gap:8px;min-height:56px;padding:6px 4px;color:var(--tb-ink);text-decoration:none;font:400 clamp(20px,2.2vw,24px)/1.25 var(--tb-serif);letter-spacing:-.01em}
+.bd-app main .bd-idx>.bd-idx-a span:last-child{margin-left:auto;color:var(--tb-wine);font-family:var(--tb-mono)}
+.bd-app main .bd-idx>.bd-idx-a:hover{background:var(--tb-hover)}
+.bd-app main .bd-idx>.bd-idx-a:focus-visible{outline-offset:-3px}
 .bd-app main .bd-az-jump{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}
 .bd-app main .bd-az-jump a{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;border:1px solid var(--tb-line-strong);color:var(--tb-ink);font:500 15px/1 var(--tb-sans);text-decoration:none}
 .bd-app main .bd-az-jump a:hover,.bd-app main .bd-az-jump a:focus-visible{background:var(--tb-blush);border-color:var(--tb-wine)}

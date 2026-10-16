@@ -112,7 +112,12 @@ try {
   R.check('with no signal, /blocks/ opens from the saved copy', !resp?.err && resp?.ok() && resp.fromServiceWorker() && await blocksReady(), resp?.err ? String(resp.err.message).split('\n')[0] : `status ${resp?.status()}`);
   await page.reload({ waitUntil: 'load' }).catch(() => {});
   const h1 = await page.locator('h1').first().textContent().catch(() => '');
-  R.check('with no signal, /blocks/ still renders after a reload (title, region cards, operation chooser)', h1.trim() === 'Regional blocks' && await blocksReady() && await page.locator('#bd-chips button, #bd-chips [role=button], #bd-chips input').count() > 0, `h1 "${h1}"`);
+  R.check('with no signal, /blocks/ still renders after a reload (title, region cards, contents)', h1.trim() === 'Regional blocks' && await blocksReady() && await page.locator('#bd-cards li').count() > 0, `h1 "${h1}"`);
+  for (const [p, ready] of [['blocks/indication/', 'document.querySelectorAll("#bd-chips button").length > 0'], ['blocks/safety/', 'document.body.dataset.sfReady === "true" && document.querySelectorAll("details.ra-dg-item").length === 8'], ['blocks/ultrasound/', 'document.body.dataset.usReady === "true" && document.querySelectorAll(".us-row").length > 30']]) {
+    resp = await page.goto(BASE + p, { waitUntil: "load" }).catch((e) => ({ err: e }));
+    const ok = !resp?.err && resp?.ok() && await page.waitForFunction(ready, null, { timeout: 25000 }).then(() => true).catch(() => false);
+    R.check(`with no signal, ${p} opens from the saved copy and renders`, ok, resp?.err ? String(resp.err.message).split('\n')[0] : `status ${resp?.status()}`);
+  }
   resp = await page.goto(BASE + 'truncal/back/', { waitUntil: 'load' }).catch((e) => ({ err: e }));
   R.check('with no signal, the block page opens and renders its chapters', !resp?.err && resp?.ok() && await engineReady(), resp?.err ? String(resp.err.message).split('\n')[0] : `status ${resp?.status()}`);
   await page.reload({ waitUntil: 'load' }).catch(() => {});

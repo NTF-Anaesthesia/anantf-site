@@ -13,10 +13,13 @@
 //      "opened as app" flag, so a page opened later in the same tab is the app look and a fresh tab is the website look;
 //      ?app on any other page does nothing; an explicit 'web' beats standalone and the flag; an explicit 'app' works on a
 //      plain visit; 'auto' is the default; blocked storage gives the website look with no errors;
-//   3. in the app look, on each page at 390 and 1440 px: no console errors, no horizontal overflow, the tab bar (five tabs,
-//      one current, words as well as icons, 12px labels, along the bottom at 390 and a 96px rail at 1440), the NTF site
-//      header and breadcrumbs hidden, the desktop navigation rail hidden (the tab rail replaces it), the app bar ≤ 56px,
-//      the page clears the tab bar; the right tab is current; Search opens the page's search (or /blocks/ search);
+//   3. in the app look, on each page at 390 and 1440 px: no console errors, no horizontal overflow, the tab bar (five topic
+//      tabs: Blocks, 3D anatomy, Ultrasound, Indication, Settings; one current, words as well as icons, 12px labels, along
+//      the bottom at 390 and a 96px rail at 1440), the NTF site header and breadcrumbs hidden, the desktop navigation rail
+//      hidden (the tab rail replaces it), the app bar ≤ 56px, the page clears the tab bar; the right tab is current;
+//      3a. the top bar on every regional page: a search button (44px; it opens the page's own search, or /blocks/#search),
+//      the red Safety button (the word, 44px, danger colours, to /blocks/safety/), fits at 360px with no overflow, and the
+//      website look has neither;
 //   3b. polish in the app look: no text under 12px, no button or block link under 44px, every link and button 4.5:1;
 //   4. the content is the same in both looks: the text of <main> (textContent, and the visible text lowercased) is
 //      identical in the website look and the app look, apart from the "Showing the … look now" line in Settings;
@@ -179,11 +182,11 @@ const skinNow = (page) => page.evaluate(() => document.documentElement.dataset.s
 }
 
 // ------------------------------------------------------------------ 3. the app look on each page
-const APP_PAGES = (only || ['blocks/', 'truncal/back/', 'blocks/settings/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'truncal/', 'lower-limb/hip/']);
-const WANT_CURRENT = { 'blocks/settings/': 'Settings', 'blocks/calculator/': 'Calculator', 'blocks/#wrong': 'Guides' };
-const TAB_WORDS = ['Blocks', 'Search', 'Guides', 'Calculator', 'Settings'];
+const APP_PAGES = (only || ['blocks/', 'truncal/back/', 'blocks/settings/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'truncal/', 'lower-limb/hip/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
+const WANT_CURRENT = { 'blocks/settings/': 'Settings', 'plexus/': '3D anatomy', 'blocks/ultrasound/': 'Ultrasound', 'blocks/indication/': 'Indication' };
+const TAB_WORDS = ['Blocks', '3D anatomy', 'Ultrasound', 'Indication', 'Settings'];
 for (const vp of VPS) {
-  for (const p of [...APP_PAGES, ...(!only ? ['blocks/#wrong'] : [])]) {
+  for (const p of APP_PAGES) {
     const { ctx, page, log } = await open(p, { vp, storage: { 'ra-skin': 'app' } });
     await waitReady(page, { idle: false });
     await page.waitForFunction(() => !document.body.classList.contains('spinal-app') || document.body.dataset.spReady === 'true', null, { timeout: 20000 }).catch(() => {});
@@ -221,8 +224,8 @@ for (const vp of VPS) {
     const wide = Number(vp) >= 1024;
     R.check(`${at}: app look, no console errors`, s.skin === 'app' && !errs(log).length, `${s.skin}; ${errs(log).join(' | ')}`);
     R.check(`${at}: no horizontal overflow`, s.overflow <= 0, `${s.overflow}px`);
-    R.check(`${at}: one tab bar with five tabs (Blocks, Search, Guides, Calculator, Settings), each an icon and a word`, s.tabbars === 1 && JSON.stringify(s.labels) === JSON.stringify(TAB_WORDS) && s.icons.every(Boolean) && !s.emoji && !!s.nav, JSON.stringify(s));
-    const wantCur = p.includes('#wrong') ? 'Guides' : (WANT_CURRENT[p] || 'Blocks');
+    R.check(`${at}: one tab bar with five tabs (Blocks, 3D anatomy, Ultrasound, Indication, Settings), each an icon and a word`, s.tabbars === 1 && JSON.stringify(s.labels) === JSON.stringify(TAB_WORDS) && s.icons.every(Boolean) && !s.emoji && !!s.nav, JSON.stringify(s));
+    const wantCur = WANT_CURRENT[p] || 'Blocks';
     R.check(`${at}: exactly one tab is current (${wantCur})`, s.current.length === 1 && s.current[0] === wantCur, JSON.stringify(s.current));
     R.check(`${at}: tab labels are 12px and tabs are at least 44px (52px tall below 1024px)`, s.fontPx.join() === '12px' && s.tabH.every((h) => h >= (wide ? 44 : 50)), `${s.fontPx} ${s.tabH}`);
     if (wide) {
@@ -241,7 +244,7 @@ for (const vp of VPS) {
 
 // 3b. Polish in the app look (the review of 16 Oct 2026): no text under 12px, no tap target under 44px (inline links in a sentence
 // excepted), and every link and button readable (4.5:1 against what is behind it: a link inside the wine dose card was wine on wine).
-const POLISH_PAGES = (only || ['truncal/back/#ch-esp', 'lower-limb/thigh/#ch-sciatic', 'blocks/', 'spinal/#ch-technique', 'plexus/', 'brachial-plexus/', 'blocks/calculator/', 'blocks/settings/']);
+const POLISH_PAGES = (only || ['truncal/back/#ch-esp', 'lower-limb/thigh/#ch-sciatic', 'blocks/', 'spinal/#ch-technique', 'plexus/', 'brachial-plexus/', 'blocks/calculator/', 'blocks/settings/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
 for (const vp of VPS) {
   for (const p of POLISH_PAGES) {
     const { ctx, page } = await open(p, { vp, storage: { 'ra-skin': 'app' } });
@@ -282,32 +285,109 @@ for (const vp of VPS) {
   }
 }
 
-// Tab behaviour at 390.
+// Tab behaviour and the top bar's search and Safety buttons.
 {
   const { ctx, page } = await open('truncal/back/', { vp: '390', storage: { 'ra-skin': 'app' } });
   await waitReady(page, { idle: false });
   const hrefs = await page.evaluate(() => [...document.querySelectorAll('.ra-tabbar .ra-tab')].map((t) => t.getAttribute('href') || t.tagName));
-  R.check('tabs: Blocks, Guides, Calculator and Settings are links to /blocks/, /blocks/#wrong, /blocks/calculator/ and /blocks/settings/; Search is a button',
-    JSON.stringify(hrefs.map((h) => h.replace(/^.*?(\/blocks\/)/, '$1'))) === JSON.stringify(['/blocks/', 'BUTTON', '/blocks/#wrong', '/blocks/calculator/', '/blocks/settings/']), JSON.stringify(hrefs));
-  await page.locator('.ra-tab[data-tab="search"]').click();
-  await page.waitForTimeout(250);
-  const open1 = await page.evaluate(() => ({ focus: document.activeElement?.id, sheet: !document.getElementById('tb-sheet')?.hidden }));
-  R.check('tabs: Search opens the block page’s own search (the same as the app bar search)', open1.focus === 'tb-sheet-q' || open1.focus === 'tb-hub-q' || open1.sheet, JSON.stringify(open1));
+  R.check('tabs: Blocks, 3D anatomy, Ultrasound, Indication and Settings are links to /blocks/, /plexus/, /blocks/ultrasound/, /blocks/indication/ and /blocks/settings/',
+    JSON.stringify(hrefs.map((h) => h.replace(/^https?:\/\/[^/]+/, ''))) === JSON.stringify(['/blocks/', '/plexus/', '/blocks/ultrasound/', '/blocks/indication/', '/blocks/settings/']), JSON.stringify(hrefs));
+  // A block page reached from Ultrasound or Indication is Blocks again: the tab only marks those two screens.
+  const cur = await page.evaluate(() => document.querySelector('.ra-tab[aria-current="page"]')?.dataset.tab);
+  R.check('tabs: a block page (truncal/back/) is the Blocks tab, whichever screen it was reached from', cur === 'blocks', String(cur));
   await ctx.close();
 }
 {
-  const { ctx, page } = await open('truncal/', { vp: '390', storage: { 'ra-skin': 'app' } });
-  await waitReady(page, { idle: false });
-  await page.locator('.ra-tab[data-tab="search"]').click();
-  await page.waitForURL(/blocks\/#search/, { timeout: 8000 }).catch(() => {});
-  await page.waitForTimeout(600);
-  const r = await page.evaluate(() => ({ url: location.pathname + location.hash, focus: document.activeElement?.id, skin: document.documentElement.dataset.skin }));
-  R.check('tabs: Search on a page with no search of its own goes to the search box on /blocks/', /\/blocks\/#search$/.test(r.url) && r.focus === 'bd-q' && r.skin === 'app', JSON.stringify(r));
-  await page.locator('.ra-tab[data-tab="guides"]').click();
-  await page.waitForTimeout(400);
-  const g = await page.evaluate(() => ({ cur: document.querySelector('.ra-tab[aria-current="page"] .ra-tab-label')?.textContent, hash: location.hash }));
-  R.check('tabs: Guides goes to "If it goes wrong" on /blocks/ and becomes the current tab', g.cur === 'Guides' && g.hash === '#wrong', JSON.stringify(g));
-  await ctx.close();
+  // Every regional page: the bar has a search button and the Safety button in the app look, and neither in the website look.
+  const BAR_PAGES = only || ['blocks/', 'truncal/', 'truncal/back/', 'lower-limb/hip/', 'upper-limb/', 'head-neck/', 'lower-limb/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'blocks/settings/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/'];
+  for (const vp of ['360', '390', '1440']) {
+    for (const p of BAR_PAGES) {
+      const { ctx, page, log } = await open(p, { vp: vp === '1440' ? '1440' : '390', storage: { 'ra-skin': 'app' } });
+      if (vp === '360') await page.setViewportSize({ width: 360, height: 780 });
+      await waitReady(page, { idle: false });
+      await page.waitForFunction(() => !document.body.classList.contains('spinal-app') || document.body.dataset.spReady === 'true', null, { timeout: 20000 }).catch(() => {});
+      await page.waitForTimeout(300);
+      const b = await page.evaluate(() => {
+        const bar = document.querySelector('.ra-appbar');
+        const r = (n) => { if (!n) return null; const q = n.getBoundingClientRect(); return { w: Math.round(q.width), h: Math.round(q.height), l: Math.round(q.left), r: Math.round(q.right), vis: n.getClientRects().length > 0 }; };
+        const saf = bar?.querySelector('a.ra-safety');
+        const sbtn = bar?.querySelector('#tb-search-open, #sp-search-open, .ra-bsearch');
+        const cs = saf && getComputedStyle(saf);
+        const level = bar?.querySelector('.ra-level-seg');
+        const inner = bar?.firstElementChild;
+        const kids = [...bar.querySelectorAll('a,button')].filter((n) => n.getClientRects().length && !n.closest('[hidden],.tb-sheet,.sp-sheet,.tb-chmenu-panel,.sp-chmenu-panel,.bp-blockmenu-panel'));
+        return {
+          safety: r(saf), href: saf?.getAttribute('href'), text: saf?.textContent.trim(), fg: cs?.color, bg: cs?.backgroundColor,
+          search: r(sbtn), level: level ? r(level) : null, bar: r(bar), vw: innerWidth,
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          outside: kids.filter((n) => { const q = n.getBoundingClientRect(); return q.right > innerWidth + 0.5 || q.left < -0.5; }).map((n) => n.className || n.id).slice(0, 3),
+          small: kids.filter((n) => { const q = n.getBoundingClientRect(); return Math.min(q.width, q.height) < 43.5; }).map((n) => `${n.id || n.className} ${Math.round(n.getBoundingClientRect().width)}x${Math.round(n.getBoundingClientRect().height)}`).slice(0, 4),
+          menuInBar: !!bar.querySelector('.tb-chmenu,.sp-chmenu,.bp-blockmenu'), menuRow: !!document.querySelector('.ra-titlerow .tb-chmenu,.ra-titlerow .sp-chmenu,.ra-titlerow .bp-blockmenu'),
+        };
+      });
+      const at = `${p} @${vp}`;
+      R.check(`${at}: the bar has the Safety button (the word, a link to /blocks/safety/, at least 44px) and a search button of 44px`,
+        b.safety?.vis && b.text === 'Safety' && /\/blocks\/safety\/$/.test(b.href || '') && b.safety.h >= 44 && b.safety.w >= 44 && b.search?.vis && b.search.w >= 44 && b.search.h >= 44, JSON.stringify(b));
+      R.check(`${at}: Safety is a danger-colour pair (red on pale red)`, b.fg === 'rgb(161, 42, 28)' && b.bg === 'rgb(246, 225, 223)', `${b.fg} on ${b.bg}`);
+      R.check(`${at}: the bar fits (nothing outside the window, no sideways scroll, every target at least 44px, bar ≤ 56px)`, !b.outside.length && b.overflow <= 0 && !b.small.length && b.bar.h <= 57, JSON.stringify({ outside: b.outside, overflow: b.overflow, small: b.small, bar: b.bar }));
+      if (vp !== '1440') R.check(`${at}: below 480px the chapter menu is the row under the bar, not in it`, !b.menuInBar || !b.menuRow || (b.menuRow && !b.menuInBar), JSON.stringify({ inBar: b.menuInBar, row: b.menuRow }));
+      R.check(`${at}: no console errors`, !errs(log).length, errs(log).join(' | '));
+      await ctx.close();
+    }
+  }
+  // The website look has neither button, and the menu is back in the bar.
+  for (const p of ['truncal/back/', 'blocks/', 'spinal/', 'truncal/', 'blocks/safety/']) {
+    const { ctx, page } = await open(p, { vp: '390', storage: { 'ra-skin': 'web' } });
+    await waitReady(page, { idle: false });
+    const n = await page.evaluate(() => ({ safety: document.querySelectorAll('.ra-safety').length, bsearch: document.querySelectorAll('.ra-bsearch').length, row: document.querySelectorAll('.ra-titlerow').length }));
+    R.check(`${p}: the website look has no Safety button, no extra search button and no menu row`, n.safety === 0 && n.bsearch === 0 && n.row === 0, JSON.stringify(n));
+    await ctx.close();
+  }
+  // Switching the look live adds and removes them (and puts the menu back).
+  {
+    const { ctx, page } = await open('truncal/back/', { vp: '390', storage: { 'ra-skin': 'app' } });
+    await waitReady(page, { idle: false });
+    const r = await page.evaluate(async () => {
+      const m = await import(new URL('shared/regional/js/skin.js?v=20261018', location.origin + '/').href);
+      const q = () => [document.querySelectorAll('.ra-safety').length, document.querySelectorAll('.ra-titlerow').length, document.querySelectorAll('.ra-appbar .tb-chmenu').length];
+      const a = q(); m.setSkinPref('web'); const w = q(); m.setSkinPref('app'); const a2 = q();
+      return { a, w, a2 };
+    });
+    R.check('switching the look live adds and removes the Safety button and the menu row, and puts the chapter menu back in the bar', r.a.join() === '1,1,0' && r.w.join() === '0,0,1' && r.a2.join() === '1,1,0', JSON.stringify(r));
+    await ctx.close();
+  }
+  // The search button opens the page's own search; on a page with none it goes to /blocks/#search.
+  for (const [p, want] of [['truncal/back/', (f) => f.id === 'tb-sheet-q' || f.id === 'tb-hub-q'], ['spinal/', (f) => ['sp-sheet-q', 'sp-hub-q'].includes(f.id)], ['plexus/', (f) => f.type === 'search' || /search|sheet/i.test(f.id)]]) {
+    const { ctx, page } = await open(p, { vp: '390', storage: { 'ra-skin': 'app' } });
+    await waitReady(page, { idle: false });
+    await page.waitForFunction(() => !document.body.classList.contains('spinal-app') || document.body.dataset.spReady === 'true', null, { timeout: 20000 }).catch(() => {});
+    await page.locator('.ra-appbar #tb-search-open, .ra-appbar #sp-search-open, .ra-appbar .ra-bsearch').first().click();
+    await page.waitForTimeout(350);
+    const f = await page.evaluate(() => ({ id: document.activeElement?.id || '', type: document.activeElement?.type || '' }));
+    R.check(`${p}: the bar's search button opens this page's own search`, want(f), JSON.stringify(f));
+    await ctx.close();
+  }
+  for (const p of ['truncal/', 'blocks/calculator/', 'brachial-plexus/', 'blocks/settings/']) {
+    const { ctx, page } = await open(p, { vp: '390', storage: { 'ra-skin': 'app' } });
+    await waitReady(page, { idle: false });
+    await page.locator('.ra-appbar .ra-bsearch').click();
+    await page.waitForURL(/blocks\/#search$/, { timeout: 8000 }).catch(() => {});
+    await page.waitForTimeout(700);
+    const r = await page.evaluate(() => ({ url: location.pathname + location.hash, focus: document.activeElement?.id, skin: document.documentElement.dataset.skin }));
+    R.check(`${p}: with no search of its own, the bar's search button goes to the search box on /blocks/`, /\/blocks\/#search$/.test(r.url) && r.focus === 'bd-q' && r.skin === 'app', JSON.stringify(r));
+    await ctx.close();
+  }
+  // Safety goes to /blocks/safety/ and opens on the emergency guides.
+  {
+    const { ctx, page } = await open('lower-limb/hip/', { vp: '390', storage: { 'ra-skin': 'app' } });
+    await waitReady(page, { idle: false });
+    await page.locator('.ra-appbar a.ra-safety').click();
+    await page.waitForURL(/blocks\/safety\/$/, { timeout: 8000 }).catch(() => {});
+    await page.waitForFunction(() => document.body.dataset.sfReady === 'true', null, { timeout: 10000 }).catch(() => {});
+    const r = await page.evaluate(() => ({ url: location.pathname, guides: !document.getElementById("guides").hidden, calc: document.getElementById('calculator').hidden, first: document.querySelector('.ra-dg-item')?.dataset.guide, aria: document.querySelector('.ra-safety')?.getAttribute('aria-current') }));
+    R.check('the Safety button opens /blocks/safety/ on the emergency guides, LAST first', /\/blocks\/safety\/$/.test(r.url) && r.guides && r.calc && r.first === 'last' && r.aria === 'page', JSON.stringify(r));
+    await ctx.close();
+  }
 }
 {
   // Ctrl+K and "/" still open the page's search in the app look.
@@ -322,7 +402,7 @@ for (const vp of VPS) {
 
 // ------------------------------------------------------------------ 4. the same content in both looks
 {
-  const PAGES_SAME = (only || ['blocks/', 'truncal/back/', 'blocks/settings/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'truncal/', 'lower-limb/hip/', 'upper-limb/']);
+  const PAGES_SAME = (only || ['blocks/', 'truncal/back/', 'blocks/settings/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'truncal/', 'lower-limb/hip/', 'upper-limb/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
   const grab = async (p, vp, skin) => {
     const { ctx, page } = await open(p, { vp, storage: { 'ra-skin': skin } });
     await waitReady(page, { idle: true });

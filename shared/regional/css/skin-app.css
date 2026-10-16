@@ -100,6 +100,37 @@ html[data-skin="app"] body.spinal-app :is(.sp-tool,.sp-bar-home) span{position:a
 html[data-skin="app"] body.spinal-app .sp-bar:not(.sp-bar--menu) .sp-chlist{display:none}
 html[data-skin="app"] body.spinal-app .sp-bar:not(.sp-bar--menu) .sp-chmenu{display:block}
 html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar) :is(a,button,summary,select,input,[tabindex]):focus-visible{outline:2px solid var(--app-wine);outline-offset:2px;border-radius:var(--app-r-md)}
+/* The top bar's own buttons (js/appnav.js adds them while the app look is on): a search button where the page's bar has none,
+   and the red Safety button (emergency guides and the dose calculator). Both are at least 44px; Safety is a danger-pair pill
+   with the word, so it reads as a button and not as a link, and not by colour alone. Settings is a tab, so the bar's
+   Settings button goes. */
+html[data-skin="app"] .ra-bact{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:none;box-sizing:border-box;min-width:44px;min-height:44px;margin:0;padding:0;
+  border:0;border-radius:var(--app-r-md);background:transparent;color:var(--app-wine);cursor:pointer;
+  font:600 14px/1 var(--app-sans);letter-spacing:0;text-decoration:none!important;-webkit-appearance:none;appearance:none;
+}
+html[data-skin="app"] .ra-bact svg{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+html[data-skin="app"] .ra-bsearch:hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] .ra-bsearch:active{background:var(--app-pressed-ground);opacity:.55;transition-duration:0ms}
+html[data-skin="app"] .ra-safety{padding:0 11px 0 8px;background:var(--app-bad-bg);color:var(--app-bad)}
+html[data-skin="app"] .ra-safety svg{width:20px;height:20px;stroke-width:1.9}
+html[data-skin="app"] .ra-safety:hover{background:#efd2cf;color:var(--app-bad)}
+html[data-skin="app"] .ra-safety:active{background:#e9c4c0;transition-duration:0ms}
+html[data-skin="app"] .ra-safety[aria-current="page"]{box-shadow:inset 0 0 0 2px var(--app-bad)}
+html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar) .ra-bact:focus-visible{outline:2px solid var(--app-wine);outline-offset:2px}
+html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar) .ra-settings-btn{display:none!important}
+/* the bar's search button shows at every width (the menu that gave it a place on very narrow phones is the row under the bar) */
+html[data-skin="app"] body.tb-app #tb-search-open{display:inline-flex}
+html[data-skin="app"] body.tb-app .tb-chmenu-search-li{display:none}
+html[data-skin="app"] body :is(.tb-bar,.sp-bar) :is(.tb-tool,.sp-tool) svg{width:22px;height:22px;stroke-width:1.7}
+/* Phones: the bar holds back, search, Safety and the level control (about 330px) at 360px wide, so the bar's side padding
+   is 8px and the gaps 2px; below 480px the chapter menu is the row under the bar (.ra-titlerow). */
+@media (max-width:479.98px){
+  html[data-skin="app"] :is(.tb-bar-inner,.ra-sbar-inner,.sp-bar-inner,.bp-bar-inner){gap:2px;padding-inline:8px}
+}
+html[data-skin="app"] .ra-titlerow{box-sizing:border-box;width:100%;max-width:var(--site-width,752px);margin:0 auto;padding:2px var(--site-gutter,16px) 6px}
+html[data-skin="app"] .ra-titlerow :is(.tb-chmenu,.sp-chmenu,.bp-blockmenu){position:static;width:100%;min-width:0;flex:none}
+html[data-skin="app"] .ra-titlerow :is(.tb-chmenu-btn,.sp-chmenu-btn,.bp-blockmenu-btn){width:100%}
 html[data-skin="app"] .bp-bar .chip{border-radius:var(--app-r-full)}
 html[data-skin="app"] .ra-sbar-title{font:600 17px/1.25 var(--app-sans);color:var(--app-ink)}
 /* the level control becomes a segmented control: a fill track and a raised thumb */
@@ -655,8 +686,8 @@ html[data-skin="app"] body :is(.tb-sres-none,.sp-sres-none){border:0;background:
 /* ------------------------------------------------------------------ 13. /blocks/ (contents, index, chooser) and the region landings
    The contents page is a textbook's contents as grouped lists: each Part a title2 heading over a raised card of chapter rows
    with chevrons; folds are rows; the index and the A-Z are folds. The landings use the same pieces. */
-html[data-skin="app"] .ra-sbar-title,html[data-skin="app"] .lc-bar-title{opacity:0;transition:opacity var(--app-d-fast) var(--app-ease)}
-html[data-skin="app"][data-ra-collapsed] :is(.ra-sbar-title,.lc-bar-title){opacity:1}
+html[data-skin="app"] .ra-sbar-title,html[data-skin="app"] .lc-bar-title,html[data-skin="app"] .bd-pbar-title{opacity:0;transition:opacity var(--app-d-fast) var(--app-ease)}
+html[data-skin="app"][data-ra-collapsed] :is(.ra-sbar-title,.lc-bar-title,.bd-pbar-title){opacity:1}
 html[data-skin="app"] body.bd-app main{padding-bottom:var(--app-s6)}
 html[data-skin="app"] body.bd-app .bd-hero{padding:var(--app-s2) 0 0;border-bottom:0}
 html[data-skin="app"] body.bd-app .bd-search{max-width:none;margin-top:var(--app-s4)}
@@ -720,6 +751,10 @@ html[data-skin="app"] body.bd-app main .bd-idx{margin:0 0 var(--app-s2);border:0
 html[data-skin="app"] body.bd-app main .bd-idx+.bd-idx,html[data-skin="app"] body.bd-app main .bd-idx:last-child{border:0}
 html[data-skin="app"] body.bd-app main .bd-idx>summary{border-radius:var(--app-r-lg);min-height:56px;font:500 17px/1.35 var(--app-sans);letter-spacing:0}
 html[data-skin="app"] body.bd-app .bd-idx-body{padding:0 var(--app-s4) var(--app-s4)}
+html[data-skin="app"] body.bd-app main .bd-idx>.bd-idx-a{min-height:56px;padding:var(--app-s2) var(--app-s4);gap:var(--app-s3);border-radius:var(--app-r-lg);font:500 17px/1.35 var(--app-sans);letter-spacing:0}
+html[data-skin="app"] body.bd-app main .bd-idx>.bd-idx-a:hover{background:transparent}
+html[data-skin="app"] body.bd-app main .bd-idx>.bd-idx-a:active{background:var(--app-pressed)}
+html[data-skin="app"] body.bd-app main .bd-idx>.bd-idx-a span:last-child{font-family:var(--app-sans)}
 /* A to Z */
 html[data-skin="app"] body.bd-app main .bd-az-jump a{min-width:44px;border:0;border-radius:var(--app-r-md);background:var(--app-inset);color:var(--app-wine);font-weight:600;text-decoration:none}
 html[data-skin="app"] body.bd-app main .bd-az-jump a:is(:hover,:focus-visible){background:var(--app-blush);border:0}
@@ -1248,3 +1283,38 @@ html[data-skin="app"] body :is(.tb-search-input,.sp-search-input,.bd-search inpu
 @media (prefers-reduced-motion:reduce){html[data-skin="app"] *,html[data-skin="app"] *::before,html[data-skin="app"] *::after{transition-duration:1ms!important;animation-duration:1ms!important;scroll-behavior:auto!important}}
 
 @media print{html[data-skin="app"] .ra-tabbar{display:none!important}html[data-skin="app"] body{padding:0!important}}
+
+/* ------------------------------------------------------------------ 21. phase 3: the new screens under /blocks/ (Safety, Indication, Ultrasound anatomy)
+   Safety is a 720px reading column (body.lc-app) with a segmented control; Indication reuses the /blocks/ chooser rules above
+   (body.bd-app); Ultrasound anatomy is a grouped list per region with a thumbnail on each row. */
+html[data-skin="app"] body.sf-app .sf-seg{max-width:none;margin:var(--app-s2) 0 var(--app-s5)}
+html[data-skin="app"] body.sf-app .sf-seg .tb-seg-btn{min-height:44px}
+html[data-skin="app"] body.sf-app .sf-h{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:0 0 var(--app-s2)}
+html[data-skin="app"] body.sf-app .ra-dg-item--danger{background:var(--app-bad-bg)}
+html[data-skin="app"] body.sf-app .ra-dg-item--danger>summary .ra-dg-sum{color:var(--app-bad);font-weight:600}
+html[data-skin="app"] body.sf-app .sf-note{font:400 15px/1.45 var(--app-sans);color:var(--app-muted);margin:0 0 var(--app-s3)}
+html[data-skin="app"] body.bd-app .bd-index--page{padding:var(--app-s2) 0 var(--app-s6)}
+html[data-skin="app"] body.bd-app .bd-index--page .bd-idx-body{padding:var(--app-s2) 0 0}
+html[data-skin="app"] body.bd-app .us-jump{margin:var(--app-s3) 0 0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(var(--site-gutter) * -1);padding-inline:var(--site-gutter)}
+html[data-skin="app"] body.bd-app .us-jump::-webkit-scrollbar{display:none}
+html[data-skin="app"] body.bd-app .us-jump-a{flex:none;min-height:44px;padding:0 var(--app-s4);border:0;border-radius:var(--app-r-full);background:var(--app-surface);color:var(--app-wine);font:600 15px/1 var(--app-sans)}
+html[data-skin="app"] body.bd-app .us-jump-a:hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] body.bd-app .us-jump-a:focus-visible{outline:2px solid var(--app-wine);outline-offset:2px}
+html[data-skin="app"] body.bd-app .us-region{padding:var(--app-s5) 0 0}
+html[data-skin="app"] body.bd-app .us-h{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:0 0 var(--app-s2) var(--app-s1)}
+html[data-skin="app"] body.bd-app .us-n{font:600 12px/1 var(--app-sans);letter-spacing:.07em;color:var(--app-muted)}
+html[data-skin="app"] body.bd-app .us-list{border:0;border-radius:var(--app-r-lg);background:var(--app-surface);overflow:hidden;column-gap:0}
+html[data-skin="app"] body.bd-app .us-list>li{border:0}
+html[data-skin="app"] body.bd-app .us-list>li+li .us-row::before{content:'';position:absolute;left:calc(96px + var(--app-s4) + var(--app-s3));right:0;top:0;height:.5px;background:var(--app-line)}
+@media (min-width:900px){html[data-skin="app"] body.bd-app .us-list>li:nth-child(2) .us-row::before{display:none}}
+html[data-skin="app"] body.bd-app .us-row{color:var(--app-ink);position:relative;gap:var(--app-s3);min-height:92px;padding:var(--app-s3) var(--app-s4)}
+html[data-skin="app"] body.bd-app .us-row:hover{background:transparent}
+html[data-skin="app"] body.bd-app .us-row:active{background:var(--app-pressed)}
+html[data-skin="app"] body.bd-app .us-row:focus-visible{outline:2px solid var(--app-wine);outline-offset:-3px;border-radius:var(--app-r-lg)}
+html[data-skin="app"] body.bd-app .us-thumb{border-radius:var(--app-r-sm)}
+html[data-skin="app"] body.bd-app .us-thumb--none{background:var(--app-inset);border:0}
+html[data-skin="app"] body.bd-app .us-t{font:500 17px/1.3 var(--app-sans)}
+html[data-skin="app"] body.bd-app .us-l{font:400 15px/1.4 var(--app-sans);color:var(--app-muted)}
+html[data-skin="app"] body.bd-app .us-go{color:var(--app-wine);font-family:var(--app-sans)}
+html[data-skin="app"] body.bd-app .us-foot{font:400 13px/1.45 var(--app-sans);color:var(--app-muted);margin:var(--app-s4) var(--app-s1) 0}
+@media (max-width:420px){html[data-skin="app"] body.bd-app .us-list>li+li .us-row::before{left:calc(80px + var(--app-s4) + var(--app-s3))}}

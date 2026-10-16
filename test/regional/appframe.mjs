@@ -38,6 +38,8 @@ async function open(path, { vp = 1440, storage = {}, reducedMotion = 'reduce' } 
   await waitReady(page, { idle: false });
   // spinal/ boots its chapters after load (body[data-sp-ready]); its widgets re-measure on resize while it does.
   await page.waitForFunction(() => !document.body.classList.contains('spinal-app') || document.body.dataset.spReady === 'true', null, { timeout: 20000 }).catch(() => {});
+  // /blocks/ultrasound/ builds its list from the block pages' data after load (body[data-us-ready]).
+  await page.waitForFunction(() => !document.getElementById('us-list') || document.body.dataset.usReady === 'true', null, { timeout: 30000 }).catch(() => {});
   await page.waitForTimeout(300);
   return { ctx, page, log };
 }
@@ -83,7 +85,7 @@ async function scrollSteps(page, dy, n = 6) {
 }
 
 // ------------------------------------------------------------------ 2. Settings from every app bar
-const KINDS = ['truncal/back/', 'lower-limb/hip/', 'truncal/', 'upper-limb/', 'blocks/', 'blocks/calculator/', 'spinal/', 'brachial-plexus/', 'plexus/'];
+const KINDS = ['truncal/back/', 'lower-limb/hip/', 'truncal/', 'upper-limb/', 'blocks/', 'blocks/calculator/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/'];
 for (const vp of [390, 1440]) {
   for (const p of KINDS) {
     const { ctx, page } = await open(p, { vp });
@@ -166,9 +168,9 @@ for (const p of ['truncal/back/#ch-esp', 'truncal/', 'spinal/#ch-technique', 'br
 }
 
 // ------------------------------------------------------------------ 4. rail, overflow, the site column, scan in the flow
-const RAIL = new Set(['truncal/back/#ch-esp', 'lower-limb/hip/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/calculator/']);
+const RAIL = new Set(['truncal/back/#ch-esp', 'lower-limb/hip/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/calculator/', 'blocks/safety/']);
 for (const vp of [390, 1024, 1180, 1440]) {
-  for (const p of ['truncal/back/#ch-esp', 'lower-limb/hip/', 'head-neck/', 'upper-limb/', 'blocks/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/calculator/']) {
+  for (const p of ['truncal/back/#ch-esp', 'lower-limb/hip/', 'head-neck/', 'upper-limb/', 'blocks/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/calculator/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']) {
     const { ctx, page, log } = await open(p, { vp });
     const r = await page.evaluate(() => {
       const rail = document.querySelector('.ra-rail');

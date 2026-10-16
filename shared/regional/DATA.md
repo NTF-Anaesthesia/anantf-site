@@ -31,6 +31,8 @@ shared/regional/
   js/la.js, lacalc.js local anaesthetic dose maths (no DOM) and the dose calculator form (/blocks/calculator/)
   js/decide.js        the "If it goes wrong" decision guides; their data is js/data/decisions.js
   js/offline.js       registers the offline worker /regional-sw.js; app version lines on /blocks/
+  (blocks/)           chooser.js (operation data + the chooser component, shared by /blocks/ search and /blocks/indication/),
+                      pagebar.js (the bar of the small screens), safety/, indication/ and ultrasound/ (each with its own script)
   css/levels.css      level control and tier hiding (body[data-tier-max] hides [data-tier] above it)
 ```
 
@@ -56,11 +58,11 @@ breadcrumb (`<span aria-current="page">Chest wall</span>`), and `page.css` if yo
   education only" notice, since the app is for the department's own juniors), then `ntf-footer`
 - `<body class="tb-app">`, stylesheets `../../assets/navigation.css`, `site-shell.css`, `header-nav.css`,
   `../../shared/regional/css/regional.css?v=20261018` (it imports `appnav.css`: desktop frame and rail, bar auto-hide,
-  view transitions), and `<script type="module" src="js/page.js?v=20261018"></script>`
+  view transitions), and `<script type="module" src="js/page.js?v=20261022"></script>`
 - **the two looks** (ENGINE.md §2 "Skins"): the one-line inline skin script right after the `robots` meta (copy it from
   `truncal/abdominal-wall/index.html`; the same text on every regional page, `test/regional/skin.mjs` checks it) and, after
   your own stylesheets and just before the manifest link,
-  `<link rel="stylesheet" href="../../shared/regional/css/skin-app.css?v=20261021">`
+  `<link rel="stylesheet" href="../../shared/regional/css/skin-app.css?v=20261022">`
 - nothing else for the desktop layout: the shell wraps `<main>` in `.ra-frame` with the rail (ENGINE.md §2 "App frame")
 
 ## 2. `js/page.js`: `bootPage(config)`
@@ -103,6 +105,10 @@ bootPage({
   (when set) the front door and **Settings** (`/blocks/settings/`). On phones the breadcrumb collapses to one
   "← <region>" line. From 1024 px the chapters are also in the rail beside the page, so the bar shows the chapter menu
   (the current chapter's name) rather than repeating the list inline.
+- **Bar in the app look (16 Oct 2026).** The same bar gains, by script (`appnav.js`, not in the page data): a Safety button
+  (red, to `/blocks/safety/`) and, where the bar has no search, a search button; below 480 px the chapter menu moves into a row
+  under the bar (`.ra-titlerow`). Nothing to configure. The website look's bar is unchanged. Don't look the chapter menu up
+  inside `#tb-bar` in page code (use `document`).
 - **Desktop.** From 1024 px: the rail (this page's chapters, the region's pages, the other regions, the tools) inside
   the site's 1240 px column; nothing to set in the data.
 - **Chapter `tier`.** `{ id, title, …, tier: 3 }` tags the chapter, its hub entry and its menu entries; a link or search
