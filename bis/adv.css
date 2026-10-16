@@ -228,12 +228,12 @@
 .advs .boot .xbtn{height:calc(34*var(--u));font-size:calc(15*var(--u));min-width:calc(190*var(--u))}
 .advs .spin2{display:block;width:calc(30*var(--u));height:calc(30*var(--u));border-radius:50%;border:calc(3*var(--u)) solid #55637a;border-top-color:#3f8fd6;animation:advspin 1s linear infinite}
 /* the controls under the screen, outside the monitor */
-.advsim{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 0;font:13px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;color:#9aa3b2}
+.advsim{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 0;font:14px/1.3 var(--f-body);color:var(--muted)}
 .advsim .sl{margin-left:6px}
-.advsim button{font:inherit;color:#c9d1de;background:transparent;border:1px solid #3a4352;border-radius:15px;padding:5px 12px;cursor:pointer}
-.advsim button[aria-pressed="true"]{background:#2d4f7c;border-color:#3f8fd6;color:#fff}
+.advsim button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--control);border-radius:0;padding:8px 14px;min-height:44px;cursor:pointer}
+.advsim button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .advsim button[hidden]{display:none}
-.advsim button:focus-visible{outline:2px solid #178fd7;outline-offset:2px}
+.advsim button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 .advsim .nt{margin-left:auto;opacity:.75}
 /* case review: the title sits where the alarm bar goes */
 .advs .abar.rv{background:transparent;color:#fff}

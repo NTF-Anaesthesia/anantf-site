@@ -7,7 +7,7 @@ Lasting decisions for `bis/`. Status and next steps: `STATUS.md`.
 - Anaesthesia residents learning processed EEG: how the frontal EEG becomes the BIS number and the density spectral
   array (DSA), and how to read the DSA for propofol, sevoflurane, ketamine and dexmedetomidine (owner, 14 Oct 2026).
 - One static page, no data, no sign-in, no storage. Synthetic EEG only.
-- Always dark, like an anaesthetic monitor (owner, 14 Oct 2026); BIS big on the left, SR/SEF95/EMG stacked on the right.
+- **Look (owner, 16 Oct 2026, replacing "always dark"):** the page follows anantf.com's `DESIGN.md` (warm paper, ink, one wine accent, square edges, hairlines, Fraunces / Inter / JetBrains Mono from `../fonts/`, the real site header with pEEG current). Only the monitor screens stay dark, because they copy real equipment; everything outside them (switches, panels, strips, the controls under each screen in `adv.css` and `sed.css`) uses the light tokens in `:root`. Do not load `assets/navigation.css` here: it pulls in `couture.css`, whose `body .wrap .row button{min-height:44px}` and `.card`, `.bar` rules stretch the monitors' hit areas; `site-shell.css` and `header-nav.css` are enough for the header. BIS big on the left, SR/SEF95/EMG stacked on the right.
 - Screen order like a BIS monitor (owner, 14 Oct 2026): BIS and EMG trends, then DSA above, raw EEG below; a view
   toggle (DSA + EEG, DSA + BIS, EEG) shows one large.
 - Monitor look (owner, 14 Oct 2026; made closer to a BIS Complete/VISTA, Oct 2026): bezel, status line ("BIS · Case

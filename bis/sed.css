@@ -68,17 +68,17 @@
 .seds .sdtile svg{width:calc(100*var(--u));height:calc(100*var(--u));display:block}
 .seds .sdlay{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(30*var(--u)) calc(16*var(--u));padding:calc(10*var(--u)) calc(30*var(--u)) calc(20*var(--u))}
 .seds .sdlt{position:relative;display:block;width:100%;border-radius:calc(14*var(--u))}.seds .sdlt svg{display:block;width:100%;height:auto;overflow:visible}
-.sedsim{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 0;font:13px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;color:#9aa3b2}
+.sedsim{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:10px 0 0;font:14px/1.3 var(--f-body);color:var(--muted)}
 .sedsim .sl{margin-left:6px}
-.sedsim button{font:inherit;color:#c9d1de;background:transparent;border:1px solid #3a4352;border-radius:15px;padding:5px 12px;cursor:pointer}
-.sedsim button[aria-pressed="true"]{background:#2d4f7c;border-color:#3f8fd6;color:#fff}
-.sedsim button:focus-visible{outline:2px solid #178fd7;outline-offset:2px}
+.sedsim button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--control);border-radius:0;padding:8px 14px;min-height:44px;cursor:pointer}
+.sedsim button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sedsim button:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 .sedwrap .bilkeys{max-width:min(100%,540px);margin:8px auto 0}
 .sedwrap .sedsim{max-width:min(100%,540px);margin:10px auto 0}
-.sedctl{max-width:min(100%,540px);margin:6px auto 0;font:12px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;color:#7d8696}
-.sedctl>summary{cursor:pointer;display:inline-block;padding:3px 6px;border-radius:6px;color:#7d8696;list-style:none}
+.sedctl{max-width:min(100%,540px);margin:6px auto 0;font:14px/1.5 var(--f-body);color:var(--muted)}
+.sedctl>summary{cursor:pointer;display:inline-block;padding:3px 6px;border-radius:0;color:var(--muted);list-style:none}
 .sedctl>summary::-webkit-details-marker{display:none}
 .sedctl>summary::before{content:"\25B8";margin-right:5px}.sedctl[open]>summary::before{content:"\25BE"}
-.sedctl>summary:focus-visible{outline:2px solid #178fd7;outline-offset:2px}
-.sedctl .sednote{margin:6px 0 0;color:#9aa3b2}
+.sedctl>summary:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.sedctl .sednote{margin:6px 0 0;color:var(--muted)}
 .sedctl .bilkeys,.sedctl .sedsim{max-width:none}
