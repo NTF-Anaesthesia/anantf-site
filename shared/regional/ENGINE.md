@@ -534,10 +534,8 @@ spinal topic navigation and real scans, and the scalp, glossopharyngeal and V2/V
    neck scenes (auriculotemporal, peristyloid glossopharyngeal, pterygopalatine fossa); several blocks have one image or
    none.
 7. **Animations** for iPACK, genicular, obturator, saphenous and sciatic blocks (Dr Chew Shi Hao's call).
-8. **Owner to confirm:** the absolute mg ceilings in `la.js` `AGENTS`, and the lipid bolus "1.5 ml/kg over 2–3 minutes"
-   in the LAST guide (matched to `/spinal/#cx-last`; the older guideline says over 1 minute).
-9. **Firefox ESR 115** (end of life) lacks `:has()`, so `--ra-bar` isn't set there: deep links land under the bar.
+8. **Firefox ESR 115** (end of life) lacks `:has()`, so `--ra-bar` isn't set there: deep links land under the bar.
    Fix with a `var(--ra-bar, 56px)` fallback in `shared/regional/css/regional.css` and
    `brachial-plexus/css/shell.css` (needs a `regional.css?v=` bump on every page). `plexus/` and `brachial-plexus/`
    passed a static ESR check on 16 Oct 2026 with this as the only gap.
-10. Problems inside `lower-limb/anim/`, `popliteal-animation/` and `exams/` are reported to Dr Chew Shi Hao, not fixed.
+9. Problems inside `lower-limb/anim/`, `popliteal-animation/` and `exams/` are reported to Dr Chew Shi Hao, not fixed.

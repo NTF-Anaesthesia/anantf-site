@@ -15,6 +15,7 @@
 //     } }
 // Every step must be reachable from `start`, every `to` / `yes` / `no` / `next` must exist, and there are no loops
 // (validateGuide). Text is trusted HTML. British spelling, plain English; doses in ml/kg as on the spinal page.
+// Lipid bolus "1.5 ml/kg over 2–3 minutes" (as on /spinal/#cx-last) confirmed by the owner on 16 Oct 2026.
 
 const B = (s) => `<strong>${s}</strong>`;
 
