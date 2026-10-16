@@ -1,0 +1,68 @@
+# Tests for the BIS to DSA simulator (bis/) and the OT simulator (ot/), on every PR that changes them.
+# Each browser suite runs as its own job, side by side; "browser" is green only when all of them passed.
+name: Checks
+on:
+  pull_request:
+    paths: ['bis/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', '.github/workflows/checks.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: OT model tests
+        run: for f in ot/test/*.test.mjs; do echo "== $f"; node "$f"; done
+      - name: BIS engine tuning
+        run: node bis/test/engine.check.mjs
+
+  browser-suite:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: BIS Medtronic and Teaching (phone), cmd: "BIS_SPLIT=1 BIS_VIEW=phone node bis/test/e2e.mjs" }
+          - { name: BIS Medtronic and Teaching (desktop), cmd: "BIS_SPLIT=1 BIS_VIEW=desktop node bis/test/e2e.mjs" }
+          - { name: BIS Advance (phone), cmd: "BIS_VIEW=phone node bis/test/adv.e2e.mjs" }
+          - { name: BIS Advance (desktop), cmd: "BIS_VIEW=desktop node bis/test/adv.e2e.mjs" }
+          - { name: BIS SedLine (phone), cmd: "BIS_VIEW=phone node bis/test/sed.e2e.mjs" }
+          - { name: BIS SedLine (desktop), cmd: "BIS_VIEW=desktop node bis/test/sed.e2e.mjs" }
+          - { name: BIS IntelliVue, cmd: "node bis/test/pv.e2e.mjs" }
+          - { name: BIS timeline, cmd: "node bis/test/timeline.e2e.mjs" }
+          - { name: OT simulator, cmd: "node ot/test/e2e.mjs" }
+    name: browser (${{ matrix.name }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install a browser
+        run: |
+          npm install -g playwright@1.56.1
+          playwright install --with-deps chromium
+      - name: Test
+        run: |
+          export PLAYWRIGHT_PATH="$(npm root -g)/playwright/index.mjs"
+          (python3 -m http.server 8080 >/dev/null 2>&1 &)
+          sleep 1
+          ${{ matrix.cmd }}
+
+  browser:
+    needs: browser-suite
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    env:
+      RESULT: ${{ needs.browser-suite.result }}
+    steps:
+      - run: |
+          echo "browser suites $RESULT"
+          [ "$RESULT" = success ]

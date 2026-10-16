@@ -1,0 +1,28 @@
+/* Philips IntelliVue screen (the 'philips' skin): a 1440 x 900 design-pixel canvas that scales as a unit, in a dark glossy case with the
+   brand on the frame, as in the owner's photo of an MX800. See NOTES.md, "Philips IntelliVue". */
+.pvwrap{display:block;min-width:0}
+.pvwrap[hidden]{display:none}
+.pvcase{position:relative;background:linear-gradient(#2c2d30,#141517 55%,#1d1e21);border-radius:22px;padding:28px 22px 34px;box-shadow:inset 0 0 0 1px #45474c,inset 0 2px 0 #4b4d52,0 10px 30px -18px rgba(0,0,0,.8)}
+.pvbrand{position:absolute;right:58px;top:6px;font:400 14px/1 Selawik,"Segoe UI",system-ui,sans-serif;color:#c9ccd2;letter-spacing:.02em}
+.pvbrand b{font-weight:600;margin-left:6px;letter-spacing:.06em}
+.pvled{position:absolute;right:22px;top:7px;width:11px;height:11px;border-radius:50%;background:#7fe08a;box-shadow:0 0 6px #6fd07a}
+.pvlogo{position:absolute;left:0;right:0;bottom:9px;text-align:center;font:700 14px/1 Arimo,Arial,sans-serif;letter-spacing:.18em;color:#d6d8dc}
+.pvs{position:relative;aspect-ratio:16/10;background:#000;overflow:hidden;border-radius:3px;box-shadow:0 0 0 2px #050505;user-select:none;-webkit-user-select:none}
+.pvs canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.pvhits{position:absolute;inset:0}
+.pvhit{position:absolute;background:transparent;border:0;padding:0;margin:0;cursor:pointer;border-radius:4px}
+.pvhit:focus-visible{outline:2px solid #8ab4ff;outline-offset:-2px}
+.pvmenu{position:absolute;left:47%;top:7%;width:40%;max-height:84%;overflow:auto;background:#cfc8bc;border:1px solid #8c857a;border-radius:4px;box-shadow:0 6px 18px rgba(0,0,0,.6);
+ font:400 clamp(9px,1.35cqw,15px)/1.2 Selawik,"Segoe UI",system-ui,sans-serif;color:#111;container-type:normal}
+.pvmenu[hidden]{display:none}
+.pvmt{display:flex;align-items:center;justify-content:space-between;padding:4px 8px;background:#e8e3da;border-bottom:1px solid #a49c90;font-weight:600}
+.pvmt button{border:0;background:none;font:inherit;cursor:pointer;padding:2px 6px;color:#111}
+.pvml{display:flex;flex-direction:column}
+.pvml button{display:flex;justify-content:space-between;gap:10px;border:0;border-bottom:1px solid #b9b2a6;background:transparent;padding:5px 10px;font:inherit;color:#111;text-align:left;cursor:pointer}
+.pvml button:hover,.pvml button:focus-visible{background:#2f6fe0;color:#fff;outline:none}
+.pvml b{font-weight:400}
+.pvsensor{left:22%;width:56%}
+.pvsensor svg{display:block;width:100%;height:auto}
+.pvmb{display:flex;justify-content:space-between;align-items:center;padding:6px 8px}
+.pvmb button{font:inherit;border:1px solid #6f685e;border-radius:3px;background:linear-gradient(#f1ede6,#cfc8bc);padding:3px 10px;cursor:pointer}
+@media (max-width:640px){.pvcase{padding:16px 8px 22px;border-radius:14px}.pvbrand{font-size:10px;right:34px;top:3px}.pvled{right:12px;top:4px;width:8px;height:8px}.pvlogo{font-size:10px;bottom:6px}}

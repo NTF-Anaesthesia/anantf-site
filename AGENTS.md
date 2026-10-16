@@ -61,6 +61,8 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `ra.html`, `draft-ra.html` | Redirects to the lower-limb pages (old links) | No |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
 | `pocus/{cardiac,lung,shock,efast,dvt}/` | Draft POCUS tutorials, reached from `draft.html` | No (draft) |
+| `bis/` | BIS to DSA teaching simulator: processed EEG on Medtronic BIS, BIS Advance, Masimo SedLine and Philips IntelliVue screens, with a timeline (one static page, synthetic EEG, no data). Moved from anawj.com on 16 Oct 2026. Start with `bis/NOTES.md`; tests in `.github/workflows/checks.yml` | No (unlisted, noindex) |
+| `ot/` | Operating-theatre simulator for teaching: a general anaesthetic, the vitals monitor and crisis scenarios (one static site, synthetic physiology, no data). Moved from anawj.com on 16 Oct 2026. Start with `ot/NOTES.md`, then `ot/PLAN.md`; run `tools/test-ot.sh` | No (unlisted, noindex) |
 | `edit.html` | Page editor for the maintainers (see "Edits sent from the page editor") | No (unlisted, noindex) |
 
 The NAPS 2026 site is a separate repo (NTF-Anaesthesia/naps2026-site).
@@ -84,7 +86,7 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   and drop "draft" from its breadcrumb.
 
 - The main navigation is Airway, Regional Anaesthesia, POCUS and MMed Exam Prep. Don't add department, recruitment or handbook pages back.
-- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/` or `mo/` from the homepage, and keep their
+- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `bis/` or `ot/` from the homepage, and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - The regional pages (`blocks/`, `truncal/`, `head-neck/`, `lower-limb/`, `brachial-plexus/`, `plexus/`, `spinal/`) are one
   app: same app bar, the credit line "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" (Dr Chew Shi Hao
