@@ -1,6 +1,6 @@
 // Chest wall page: wires the shared shell to this page's chapters and data.
 import { bootPage } from '../../../shared/regional/js/shell.js';
-import { BLOCKS } from './blocks.js?v=20261015';
+import { BLOCKS } from './blocks.js?v=20261016';
 import { renderAnatomy } from './anatomy.js?v=20261015';
 
 const byId = Object.fromEntries(BLOCKS.map((b) => [b.id, b]));

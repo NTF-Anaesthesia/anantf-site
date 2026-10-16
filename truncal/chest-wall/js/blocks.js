@@ -56,7 +56,8 @@ export const BLOCKS = [
     ],
     sections: [
       {
-        id: 'ribs', title: 'Rib fractures',
+        // Tier 1: it carries the chest wall catheter regimen, a dose an MO may set up or look after on the ward.
+        id: 'ribs', title: 'Rib fractures', tier: 1,
         html: `<p>Count the broken ribs on imaging and centre the block on the fractures. A serratus block or catheter only helps fractures in the <strong>front two-thirds</strong> of the hemithorax, because it does not reach the dorsal rami. It can be done supine and in anticoagulated patients, but the evidence is limited to case reports and observational studies.</p><p>Rib fracture pain lasts days, so plan a <strong>catheter</strong> rather than a single shot. For posterior fractures, or as a first choice, use an <a href="../back/#ch-esp">ESP</a> or <a href="../back/#ch-pvb">paravertebral</a> catheter. Run chest wall catheters on 0.2% ropivacaine, typically 5 ml/h with a 5 ml patient bolus no more than hourly.</p><p><strong>Why analgesia matters:</strong> pain stops deep breaths and coughing, which leads to atelectasis, retained secretions and pneumonia, often on top of a lung contusion. Thoracic epidural has traditionally had the best evidence; paravertebral, ESP, intercostal and serratus blocks or catheters may work as well in suitable patients, with fewer and less serious complications.</p>`,
       },
     ],

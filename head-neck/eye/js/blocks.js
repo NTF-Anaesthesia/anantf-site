@@ -55,7 +55,8 @@ export const BLOCKS = [
         ],
       },
     ],
-    sections: [{ id: 'drugs', title: 'Drugs for eye blocks', html: drugs }],
+    // Tier 1: the dose box gives volumes only, so the drug and its strongest safe concentration show at MO level too.
+    sections: [{ id: 'drugs', title: 'Drugs for eye blocks', tier: 1, html: drugs }],
   },
   {
     id: 'st',

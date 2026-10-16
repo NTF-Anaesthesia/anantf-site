@@ -279,7 +279,9 @@ export function renderAmputation(sec) {
 <li><strong>Pre-emptive epidural</strong> analgesia started the day before and continued after amputation did not prevent phantom or stump pain in a randomised trial.</li>
 <li><strong>Treating established phantom pain</strong>: a six-day ambulatory perineural infusion of ropivacaine (sciatic and femoral, or brachial plexus) reduced established phantom pain a month later in a multicentre placebo-controlled trial, with little benefit left at a year.</li>
 <li>For the ward: regular paracetamol, an NSAID only if the kidneys allow, opioid by need (not by habit), and early pain team input. Gabapentinoids have not been shown to prevent phantom pain. Address pain before the operation: it is the strongest risk factor you can still change.</li></ul>`));
-  cath.append(details({
+  // The catheter set-up carries a bolus and infusion the ward looks after (and counts in the daily dose): MO level.
+  const cathHow = tierPart(sec, 1, false);
+  cathHow.append(details({
     id: 'th-amp-cath-how', summary: 'How a surgeon-placed sciatic catheter is usually set up',
     body: '<p>Before the sciatic nerve is divided, the surgeon passes a catheter (an epidural catheter works) into the <strong>nerve sheath</strong>, proximally for several centimetres, and brings it out through the skin away from the wound. A bolus (for example 10 ml of 0.125–0.25% bupivacaine-family local anaesthetic) is given before the end of the operation, then an infusion of a few millilitres an hour of a dilute solution for three to five days. Count it in the daily dose, label it clearly as a perineural line, and agree who removes it.</p>',
   }));
