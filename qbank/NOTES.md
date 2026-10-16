@@ -63,7 +63,7 @@ auto-applying suggestions from a named list of faculty. Not built.
 
 ## Other apps
 
-The MO guide (`mo/js/data/scenarios.js`, `cards.js`), the spinal page's exam section and some anawj.com apps have
+The MO guide (`mo/guide/js/data/scenarios.js`, `cards.js`), the spinal page's exam section and some anawj.com apps have
 quiz-like items in their own formats. The owner wants one bank "for everyone" eventually, but those apps are being
 heavily edited (15 Oct 2026), so nothing is pulled in automatically yet. When an app settles: it publishes its items as
 a file in this format (or a small converter writes one) and the file's URL goes in `sources.json`. Keep each app the
