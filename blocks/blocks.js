@@ -2,12 +2,13 @@
    - the app bar (home, section menu, search, copy link, MO · Res · Con level control) in the engine's tb- classes;
    - the first-visit level picker;
    - search across every region: the block registry, every operation and the main pages and planners;
-   - one "Which block for this operation" chooser over the trunk, head and neck and lower-limb operations, drawing each
+   - one "Which block for this operation" chooser over the upper-limb, trunk, head and neck and lower-limb operations, drawing each
      region's own coverage figure (data and figures from /shared/regional/js/ops/, shared with the region landings);
    - region cards built from the registry, and the "Anatomy in 3D" links.
    No clinical text is written here: operations, block names and links come from the ops modules and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
+import * as UL from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
 import * as HN from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
 import * as LL from '../shared/regional/js/ops/ops-lowerlimb.js?v=20261015';
@@ -28,9 +29,13 @@ const ICON = {
   link: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg>',
 };
 
-/* ------------------------------------------------------------------ operations from the three ops modules */
+/* ------------------------------------------------------------------ operations from the four ops modules */
 // Each region: where its pages live (relative to /blocks/), its landing, and how to turn a block key into a link.
 const SRC = {
+  'upper-limb': {
+    title: 'Upper limb', short: 'Upper limb', base: '../upper-limb/', mod: UL,
+    link: (k) => (UL.LINKS[k] ? { href: `../upper-limb/${UL.LINKS[k][0]}`, name: UL.LINKS[k][1], page: UL.LINKS[k][2] } : null),
+  },
   trunk: {
     title: 'Trunk', short: 'Trunk', base: '../truncal/', mod: TR,
     link: (k) => (TR.BLOCK_LINKS[k] ? { href: `../truncal/${TR.BLOCK_LINKS[k]}`, name: TR.BLOCK_NAMES[k] || k, page: TR.PAGE_NAMES[TR.BLOCK_LINKS[k].split('#')[0]] } : null),
@@ -45,9 +50,11 @@ const SRC = {
   },
 };
 const LL_GROUPS = Object.fromEntries(LL.OP_REGIONS);
+const UL_GROUPS = Object.fromEntries(UL.OP_REGIONS);
 
 /** One list of operations: {key, region, id, name, group, op}. key is the deep link: #op-<region>-<id>. */
 const OPS = [
+  ...UL.OPS.map((op) => ({ region: 'upper-limb', op, group: UL_GROUPS[op.region] || '' })),
   ...TR.OPS.map((op) => ({ region: 'trunk', op, group: '' })),
   ...HN.OPS.map((op) => ({ region: 'head-neck', op, group: '' })),
   ...LL.OPS.map((op) => ({ region: 'lower-limb', op, group: LL_GROUPS[op.region] || '' })),
@@ -86,6 +93,8 @@ const SYN = [
   ['spinal', 'sab', 'subarachnoid', 'intrathecal', 'neuraxial'], ['pdph', 'post-dural puncture headache', 'headache'],
   ['3d', 'three d', 'anatomy in 3d', '3d model'], ['isb', 'interscalene', 'shoulder'],
   ['axillary', 'hand', 'forearm', 'elbow'], ['supraclavicular', 'scb'], ['infraclavicular', 'icb'],
+  ['avf', 'fistula', 'arteriovenous fistula'], ['ctr', 'carpal tunnel', 'carpal tunnel release'], ['rotator cuff', 'cuff repair', 'shoulder arthroscopy'],
+  ['phrenic', 'diaphragm', 'hemidiaphragm'], ['icbn', 'intercostobrachial'], ['ssnb', 'suprascapular'],
   ['anaesthesia', 'anesthesia'], ['haematoma', 'hematoma'], ['oedema', 'edema'], ['exam', 'mmed', 'osce', 'viva'],
 ];
 function norm(s) { return String(s || '').toLowerCase().replace(/[’‘]/g, "'").replace(/[–—-]/g, ' ').replace(/[()/,.:;]/g, ' ').replace(/\s+/g, ' ').trim(); }
@@ -141,6 +150,10 @@ const PAGES = [
   { t: 'Hip fracture: the regional pathway', d: 'ED block, positioning for spinal, block by operation', href: '../lower-limb/hip/#ch-pathway', k: 'Lower limb' },
   { t: 'Amputation planner', d: 'Above- and below-knee amputation under nerve blocks: which nerves, what dose', href: '../lower-limb/thigh/#ch-amputation', k: 'Lower limb' },
   { t: 'Block combinations for the whole lower limb', d: 'Operation, blocks and total dose for every lower-limb operation', href: '../lower-limb/thigh/#ch-combinations', k: 'Lower limb' },
+  { t: 'Upper-limb blocks', d: 'Shoulder, arm, forearm and hand; the upper-limb operation chooser', href: '../upper-limb/', k: 'Upper limb' },
+  { t: 'Shoulder', d: 'Interscalene, superior trunk, suprascapular and axillary nerve blocks; sparing the diaphragm', href: '../upper-limb/shoulder/', k: 'Upper limb' },
+  { t: 'Arm', d: 'Supraclavicular, infraclavicular, costoclavicular, RAPTIR and axillary blocks', href: '../upper-limb/arm/', k: 'Upper limb' },
+  { t: 'Forearm and hand', d: 'Median, ulnar and radial nerve blocks, the wrist block, testing and rescue', href: '../upper-limb/forearm-hand/', k: 'Upper limb' },
   { t: 'Brachial plexus', d: '3D model, labelled diagram, ultrasound and coverage for the brachial plexus blocks', href: '../brachial-plexus/', k: 'Upper limb' },
   { t: 'Cervical, brachial, lumbar and sacral plexuses in 3D', d: 'Anatomy in 3D linked to a labelled diagram', href: '../plexus/', k: 'Anatomy in 3D' },
   { t: 'Spinal anaesthesia', d: 'Ward card, anatomy, pharmacology, technique, troubleshooting, complications', href: '../spinal/', k: 'Neuraxial' },
@@ -278,7 +291,7 @@ function resultHtml(o) {
     facts.push(['Area to cover', val(op.cover)]);
     if (op.tq) facts.push(['Tourniquet', `<span class="bd-dd">${esc(op.tq)}</span>`]);
     if (op.map) figHtml = '<div class="bd-fig bd-fig-slot"></div>';
-    if (op.more) more = `<div class="bd-more">${optLinks('lower-limb', op.more)}</div>`;
+    if (op.more) more = `<div class="bd-more">${optLinks(o.region, op.more)}</div>`;
   }
   const factHtml = facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('');
   const landing = `${SRC[o.region].base}#op-${op.id}`;
@@ -306,7 +319,9 @@ function mountFigure(o, box) {
   if (!slot) return;
   let fig = null;
   try {
-    fig = o.region === 'head-neck' ? HN.headNeckCoverageMap(o.op, { id: `bd-map-${o.key}` }) : LL.lowerLimbCoverageMap(o.op, { id: `bd-map-${o.key}` });
+    if (o.region === 'head-neck') fig = HN.headNeckCoverageMap(o.op, { id: `bd-map-${o.key}` });
+    else if (o.region === 'upper-limb') fig = UL.upperLimbCoverageMap(o.op, { id: `bd-map-${o.key}` });
+    else fig = LL.lowerLimbCoverageMap(o.op, { id: `bd-map-${o.key}` });
   } catch (err) { console.error('[blocks] figure failed', err); }
   if (fig) slot.append(fig); else slot.remove();
 }
@@ -470,11 +485,12 @@ const chooser = (() => {
 
 /* ------------------------------------------------------------------ region cards and 3D links (from the registry) */
 const PAGES_BY_REGION = {
+  'upper-limb': [['Shoulder', '../upper-limb/shoulder/'], ['Arm', '../upper-limb/arm/'], ['Forearm and hand', '../upper-limb/forearm-hand/'], ['Brachial plexus app', '../brachial-plexus/']],
   trunk: [['Back', '../truncal/back/'], ['Chest wall', '../truncal/chest-wall/'], ['Abdominal wall', '../truncal/abdominal-wall/']],
   'head-neck': [['Cervical plexus', '../head-neck/cervical/'], ['Scalp and occipital', '../head-neck/scalp/'], ['Face', '../head-neck/face/'], ['Airway', '../head-neck/airway/'], ['Eye', '../head-neck/eye/']],
   'lower-limb': [['Hip', '../lower-limb/hip/'], ['Knee', '../lower-limb/knee/'], ['Foot and ankle', '../lower-limb/foot-ankle/'], ['Thigh and amputation', '../lower-limb/thigh/']],
 };
-const OPEN_WORDS = { 'upper-limb': 'Open the brachial plexus app', trunk: 'Open truncal blocks', 'head-neck': 'Open head and neck blocks', 'lower-limb': 'Open lower-limb blocks', neuraxial: 'Open spinal anaesthesia' };
+const OPEN_WORDS = { 'upper-limb': 'Open upper-limb blocks', trunk: 'Open truncal blocks', 'head-neck': 'Open head and neck blocks', 'lower-limb': 'Open lower-limb blocks', neuraxial: 'Open spinal anaesthesia' };
 function regionCards() {
   const ul = $('#bd-cards');
   const byHref = new Map(REGIONS.map((r) => [`..${r.url}`, r]));

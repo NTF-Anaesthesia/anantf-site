@@ -47,7 +47,7 @@ export function hasRealScans(blockId, scene) { return realScansFor(blockId, scen
 
 // ---------------------------------------------------------------- sources.json
 const REGION_DIR = { trunk: 'truncal', truncal: 'truncal', 'head-neck': 'head-neck', 'lower-limb': 'lower-limb', neuraxial: 'neuraxial', 'upper-limb': 'upper-limb' };
-const PATH_DIR = { truncal: 'truncal', 'head-neck': 'head-neck', 'lower-limb': 'lower-limb', spinal: 'neuraxial', 'brachial-plexus': 'upper-limb', blocks: null };
+const PATH_DIR = { truncal: 'truncal', 'head-neck': 'head-neck', 'lower-limb': 'lower-limb', spinal: 'neuraxial', 'brachial-plexus': 'upper-limb', 'upper-limb': 'upper-limb', blocks: null };
 const US_ROOT = new URL('../../us/', import.meta.url);
 const cache = new Map(); // region dir -> Promise<entries[]>
 
