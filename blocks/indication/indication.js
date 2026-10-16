@@ -4,11 +4,11 @@
    operation; a bare #op-<id> works when the id is unique). /blocks/#chooser and /blocks/#op-… land here. */
 import { applyLevel } from '../../shared/regional/js/levels.js?v=20261015';
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016';
-import { pageBar } from '../pagebar.js?v=20261022';
-import { mountChooser, $ } from '../chooser.js?v=20261022';
+import { pageBar } from '../pagebar.js?v=20261023';
+import { mountChooser, $ } from '../chooser.js?v=20261023';
 
 applyLevel();
-pageBar({ title: 'Which block for which operation', search: () => { const q = $('#bd-opq'); q.scrollIntoView({ block: 'center' }); q.focus({ preventScroll: true }); } });
+pageBar({ title: 'Indication', search: () => { const q = $('#bd-opq'); q.scrollIntoView({ block: 'center' }); q.focus({ preventScroll: true }); } });
 const chooser = mountChooser();
 
 function route({ initial = false } = {}) {

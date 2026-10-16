@@ -20,7 +20,7 @@ Every page is unlisted and `noindex`; the owner shares the links personally (don
 | Front door | `/blocks/` | its own script, reading `registry.js`, `ops/` (through `chooser.js`) and `data/decisions.js` (no clinical text of its own); app version lines at the foot. The Index holds a row to Indication and the A to Z; Part I lists Safety, Ultrasound anatomy and Indication |
 | Dose calculator | `/blocks/calculator/` | its own `calculator.js`, mounting `lacalc.js` |
 | Safety | `/blocks/safety/` | its own `safety.js`: a segmented control "Emergency guides \| Dose calculator". The guides are `guideList(GUIDE_ORDER)` from `decide.js` (the same as `/blocks/#wrong`, LAST first and red), the calculator is `mountLaCalc` (the same as `/blocks/calculator/`, prefilled by the query). `#last`, `#wrong-<guide>` and `#calculator` open the right half. An additional entry: `/blocks/#wrong`, `/blocks/calculator/` and the "Check the dose" links are unchanged |
-| Indication | `/blocks/indication/` | "Which block for which operation": the chooser moved out of the Index of `/blocks/`. `blocks/chooser.js` (data from `ops/`, `mountChooser`) is shared with `/blocks/`'s search; `#chooser` and `#op-<region>-<id>`; `/blocks/#chooser` and `/blocks/#op-…` redirect here (inline script in the head of `/blocks/`, plus `hashchange`), hash kept |
+| Indication | `/blocks/indication/` | "Which block for which operation": the chooser moved out of the Index of `/blocks/`. `blocks/chooser.js` (data from `ops/`, `mountChooser`) is shared with `/blocks/`'s search; `#chooser` and `#op-<region>-<id>`; `/blocks/#chooser` and `/blocks/#op-…` redirect here (inline script in the head of `/blocks/`, plus `hashchange`), hash kept. `open(key,{scroll})` scrolls the page itself (`window.scrollTo` to the row's `scroll-margin-top`), not `scrollIntoView`: the operation lists are `overflow:hidden`, which makes them scroll containers, and the first operation ended up under the bar. In the app look the result is one column at every width (the page column is 1048px at most beside the rail) |
 | Ultrasound anatomy | `/blocks/ultrasound/` | its own `ultrasound.js`: every ultrasound-guided block by region (registry titles, the first sentence of the scene's own `view` text, a thumbnail from `shared/us/<region>/sources.json` via `loadRealScans`), linking to `#<block>-scan`; Neuraxial lists `spinal/`'s real scans by view. No clinical text of its own |
 | Settings | `/blocks/settings/` | its own `settings.js`: the look (Automatic · App look · Website look, §2 "Skins"), level, "Hide the bar while scrolling down", "Press / to search", app version lines (§2 "App frame") |
 | Truncal landing + 3 pages | `/truncal/`, `back/`, `chest-wall/`, `abdominal-wall/` | landing chooser + engine (`bootPage`) |
@@ -60,7 +60,7 @@ Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level co
 | `lacalc.js` | `mountLaCalc(host, prefill)`: the dose calculator form; styles in `css/lacalc.css` (prefix `lc-`) |
 | `decide.js` | the "If it goes wrong" guides: `mountGuide(host, guide, {idPrefix, headingLevel})`, `guideList(ids, {idPrefix, headingLevel, lazy})`, `openGuideFromHash()`, `ensureDecideCss()` (links `css/decide.css`, prefix `ra-dg-`). No imports |
 | `data/decisions.js` | the guide data (§3.8): `GUIDES`, `GUIDE_ORDER`, `CORE_GUIDES`, `EXTRA_GUIDES`, `guidesFor(id, region, extra)`, `validateGuide` |
-| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`; while the app look is on it also draws the bottom tab bar (`TABS`, `currentTab`), adds the top bar's search and Safety buttons and moves the chapter menu under the bar below 480 px (`mountBarActions`, `SAFETY_URL`), and runs the large-title observer (`mountLargeTitle`: html `data-ra-collapsed`). Its only import is `skin.js`. Always imported as `appnav.js?v=20261022` |
+| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`; while the app look is on it also draws the bottom tab bar (`TABS`, `currentTab`), adds the top bar's search and Safety buttons and moves the chapter menu under the bar below 480 px (`mountBarActions`, `SAFETY_URL`), and runs the large-title observer (`mountLargeTitle`: html `data-ra-collapsed`). Its only import is `skin.js`. Always imported as `appnav.js?v=20261023` |
 | `skin.js` | the two looks (§2 "Skins"): `getSkinPref` / `setSkinPref` (`localStorage` `ra-skin`: `auto` · `app` · `web`), `resolveSkin`, `getSkin`, `applySkin`, `onSkin(fn)`, `openedAsApp`. No imports, no DOM beyond `<html data-skin>`. Always imported as `skin.js?v=20261018` |
 | `offline.js` | `registerOffline()` registers `/regional-sw.js` once the page has loaded and gone quiet; `mountAppVersion(host)` draws the version lines at the foot of `/blocks/`. Always imported as `offline.js?v=20261016` |
 | `search.js` | page search index and synonyms |
@@ -242,7 +242,11 @@ skin differs; nothing in the data or the engine's DOM depends on it.
   pill behind the icon and a semibold wine label. Line icons, 12px labels, 52 px plus the home-indicator inset; the page's
   bottom padding clears it (reserved in CSS, so nothing jumps). From 1024 px it is a 96 px rail, `body` gets 96 px of left padding, and the desktop
   navigation rail (`mountRail`, still built) is hidden: a page's chapters are in the app bar's chapter menu, as they
-  already are wherever the rail was. No tab bar in an iframe or `body.px-embed` (the embedded explorer).
+  already are wherever the rail was. No tab bar in an iframe or `body.px-embed` (the embedded explorer). Reading order follows
+  the picture: the bottom bar is the last element of `body`; from 1024 px (a rail down the left) `mountTabBar` moves it to just
+  after the skip link, and back when the window narrows. The five labels share the width, so at 360 px "3D anatomy" (semibold when
+  current) must fit without an ellipsis (no side padding on a tab; at 320 px the current tab is not semibold and the letters are a
+  little tighter): `audit` any new label at 320 and 360.
 - **The top bar (app look).** On every regional page the bar holds: back (or home) as before, the chapter / block / plexus menu
   (as the title), a **search** button (44 px; the page's own search button where it has one, otherwise `.ra-bsearch`, which goes to
   `/blocks/#search`), the red **Safety** button (`a.ra-safety`: the word and a warning-triangle icon, danger colour pair, 44 px, to
@@ -252,6 +256,10 @@ skin differs; nothing in the data or the engine's DOM depends on it.
   `.bp-blockmenu` element moves into `div.ra-titlerow` under the bar (not sticky; the bar then gets its surface once that row has
   scrolled under it) and moves back when the window is wider or the look is switched. Page code must not look the menu up inside
   the bar (`bar.querySelector('.tb-chmenu…')`): use `document`. The bar's Settings button is hidden in the app look (Settings is a tab).
+  Where the bar also holds the level control (`.lc-bar`: Safety, Indication, Ultrasound, the calculator) the page name in the bar
+  is hidden below 480 px (it would be "S…"); the tab, the large title and the Safety button say where you are, so keep the bar
+  titles short ("Indication", "Ultrasound") for the wider windows. At 320 px the bar's side padding is 3px and the Safety button
+  tighter (everything stays 44 px).
 - **The bar and the header.** In the app look the NTF site header and the breadcrumbs are hidden on every regional page
   (the app is the whole screen); the website look keeps them, in a browser tab and (if chosen in Settings) on the home
   screen too. `appnav.css` still hides them in home-screen mode for a page that has no skin yet (script blocked). Still one
@@ -275,8 +283,8 @@ them**, and don't delete them (`static.mjs` and `deeplinks.mjs` check both).
   landings. Bump them when you change what they load. Under `blocks/`, `pagebar.js?v=` and `chooser.js?v=` (shared by `/blocks/`, Safety, Indication and Ultrasound) follow the same date. `static.mjs` allows digits only in `js/page.js?v=`, so for a
   second bump on the same day use the next date, not a letter suffix.
 - **Stateful modules must load under one URL per page**, or they run twice and split their state. `levels.js` and
-  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, `appnav.js` as `…?v=20261022` and `skin.js` as
-  `…?v=20261018`, from every module and every app. `skin-app.css` is one URL on every page (`?v=20261022`); bump it on every page that links it. If you bump one, change
+  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, `appnav.js` as `…?v=20261023` and `skin.js` as
+  `…?v=20261018`, from every module and every app. `skin-app.css` is one URL on every page (`?v=20261023`); bump it on every page that links it. If you bump one, change
   every import of it in the same commit (grep for the file name). Other engine modules import each other without a
   query. `smoke.mjs` fails on a stateful module loaded under two URLs.
 - Never write `?v=…?v=…` (`static.mjs` checks).

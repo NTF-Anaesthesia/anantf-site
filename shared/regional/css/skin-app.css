@@ -128,6 +128,16 @@ html[data-skin="app"] body :is(.tb-bar,.sp-bar) :is(.tb-tool,.sp-tool) svg{width
 @media (max-width:479.98px){
   html[data-skin="app"] :is(.tb-bar-inner,.ra-sbar-inner,.sp-bar-inner,.bp-bar-inner){gap:2px;padding-inline:8px}
 }
+/* Where the bar also holds the level control there is no room left for the page's name at phone widths (a "S…" or "Calc…"
+   is worse than none): the name is hidden, and the bottom tab, the large title and the Safety button say where you are. */
+@media (max-width:479.98px){
+  html[data-skin="app"] .lc-bar:has(.tb-bar-level) :is(.lc-bar-title,.bd-pbar-title){visibility:hidden}
+}
+/* 320px phones: 12px short, so the bar's side padding goes and the Safety button is a little tighter (all four buttons stay 44px) */
+@media (max-width:339.98px){
+  html[data-skin="app"] :is(.tb-bar-inner,.ra-sbar-inner,.sp-bar-inner,.bp-bar-inner){padding-inline:3px;gap:1px}
+  html[data-skin="app"] .ra-safety{padding:0 7px 0 5px;gap:3px}
+}
 html[data-skin="app"] .ra-titlerow{box-sizing:border-box;width:100%;max-width:var(--site-width,752px);margin:0 auto;padding:2px var(--site-gutter,16px) 6px}
 html[data-skin="app"] .ra-titlerow :is(.tb-chmenu,.sp-chmenu,.bp-blockmenu){position:static;width:100%;min-width:0;flex:none}
 html[data-skin="app"] .ra-titlerow :is(.tb-chmenu-btn,.sp-chmenu-btn,.bp-blockmenu-btn){width:100%}
@@ -223,7 +233,7 @@ html[data-skin="app"] .ra-tabbar{
 html[data-skin="app"] .ra-tabbar-in{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%;max-width:560px;margin:0}
 html[data-skin="app"] .ra-tab{
   position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-sizing:border-box;
-  min-height:var(--app-tab-h);min-width:0;margin:0;padding:4px 2px 3px;border:0;border-radius:0;background:none;cursor:pointer;
+  min-height:var(--app-tab-h);min-width:0;margin:0;padding:4px 0 3px;border:0;border-radius:0;background:none;cursor:pointer;
   color:var(--app-muted);font:500 12px/1.2 'NTF Sans',Inter,system-ui,sans-serif;letter-spacing:.005em;text-decoration:none!important;
   -webkit-appearance:none;appearance:none;
 }
@@ -232,6 +242,8 @@ html[data-skin="app"] .ra-tab-icon svg{width:24px;height:24px;fill:none;stroke:c
 html[data-skin="app"] .ra-tab-label{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 /* the current tab: a blush pill behind the icon, a wine label in semibold (shape and weight, not colour alone) */
 html[data-skin="app"] .ra-tab[aria-current="page"]{color:var(--app-wine);font-weight:600}
+/* five labels share the width, so the longest ("3D anatomy", semibold when current) must fit at 360px and at 320px: no ellipsis */
+@media (max-width:339.98px){html[data-skin="app"] .ra-tab[aria-current="page"]{font-weight:500}html[data-skin="app"] .ra-tab-label{letter-spacing:-.045em}}
 html[data-skin="app"] .ra-tab[aria-current="page"] .ra-tab-icon{background:var(--app-blush)}
 html[data-skin="app"] .ra-tab:active .ra-tab-icon{background:var(--app-pressed-ground)}
 html[data-skin="app"] .ra-tab:focus-visible{outline:2px solid var(--app-wine);outline-offset:-4px;border-radius:var(--app-r-md)}
@@ -1293,6 +1305,11 @@ html[data-skin="app"] body.sf-app .sf-h{font:400 22px/1.25 var(--app-serif);lett
 html[data-skin="app"] body.sf-app .ra-dg-item--danger{background:var(--app-bad-bg)}
 html[data-skin="app"] body.sf-app .ra-dg-item--danger>summary .ra-dg-sum{color:var(--app-bad);font-weight:600}
 html[data-skin="app"] body.sf-app .sf-note{font:400 15px/1.45 var(--app-sans);color:var(--app-muted);margin:0 0 var(--app-s3)}
+/* The result of an operation is one column in the app look at every width: with the tab rail the page column is 1048px at most,
+   so the chooser's result column is about 620px, too narrow for the figure and the facts side by side (the website look's
+   two columns start at 1300px of window, where its page column is wider). */
+html[data-skin="app"] body.bd-app .bd-res-grid:not(.bd-res-grid--text){grid-template-columns:minmax(0,1fr);gap:var(--app-s4)}
+html[data-skin="app"] body.bd-app .bd-fig .tb-cov{max-width:440px}
 html[data-skin="app"] body.bd-app .bd-index--page{padding:var(--app-s2) 0 var(--app-s6)}
 html[data-skin="app"] body.bd-app .bd-index--page .bd-idx-body{padding:var(--app-s2) 0 0}
 html[data-skin="app"] body.bd-app .us-jump{margin:var(--app-s3) 0 0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(var(--site-gutter) * -1);padding-inline:var(--site-gutter)}
@@ -1318,3 +1335,5 @@ html[data-skin="app"] body.bd-app .us-l{font:400 15px/1.4 var(--app-sans);color:
 html[data-skin="app"] body.bd-app .us-go{color:var(--app-wine);font-family:var(--app-sans)}
 html[data-skin="app"] body.bd-app .us-foot{font:400 13px/1.45 var(--app-sans);color:var(--app-muted);margin:var(--app-s4) var(--app-s1) 0}
 @media (max-width:420px){html[data-skin="app"] body.bd-app .us-list>li+li .us-row::before{left:calc(80px + var(--app-s4) + var(--app-s3))}}
+/* 320px: the plexus and brachial bars (declared later in section 14) lose their side padding too */
+@media (max-width:339.98px){html[data-skin="app"] body.plexus-app:not(.px) .bp-bar-inner{padding-inline:3px}}

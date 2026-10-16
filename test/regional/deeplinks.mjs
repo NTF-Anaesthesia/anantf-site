@@ -382,6 +382,10 @@ async function chooserLanding(browser, url, key, vp) {
       if (row.getAttribute('aria-expanded') !== 'true') return { ok: false, why: 'operation not open' };
       const t = document.getElementById('bd-res-title');
       if (!t || !t.getClientRects().length) return { ok: false, why: 'no visible result title' };
+      // On a phone the row goes to the top of the page under the bar, never behind it (scrollIntoView lost the margin once).
+      const barB = document.querySelector('.ra-appbar, #tb-bar')?.getBoundingClientRect().bottom || 0;
+      const lr = li.getBoundingClientRect();
+      if (innerWidth < 900 && scrollY > 0 && lr.top < barB - 1) return { ok: false, why: `the operation row is under the bar (top ${Math.round(lr.top)}, bar bottom ${Math.round(barB)})` };
       const rr = t.getBoundingClientRect();
       if (rr.bottom < 0 || rr.top > innerHeight - 20) return { ok: false, why: `result title off screen (top ${Math.round(rr.top)})` };
       const want = row.textContent.trim().replace(/\s+/g, ' ').toLowerCase().slice(0, 18);

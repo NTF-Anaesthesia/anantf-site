@@ -2,7 +2,7 @@
    /blocks/indication/ (where the chooser lives). No clinical text is written here: operations, block names and links come
    from the ops modules (shared/regional/js/ops/); each region's own coverage figure is drawn for the open operation.
    mountChooser() expects the markup of blocks/indication/index.html (#bd-chips, #bd-opq, #bd-ops, #bd-result-col …) and
-   returns { open(key, opts), close(), current }. Import it as chooser.js?v=20261022 from both pages. */
+   returns { open(key, opts), close(), current }. Import it as chooser.js?v=20261023 from both pages. */
 import * as UL from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
 import * as HN from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
@@ -332,7 +332,9 @@ export function mountChooser() {
       requestAnimationFrame(() => {
         const r = target.getBoundingClientRect();
         const bar = $('#tb-bar')?.getBoundingClientRect().bottom || 0;
-        if (r.top < bar || r.top > innerHeight * 0.45) target.scrollIntoView({ block: 'start', behavior: scroll === 'smooth' && !reduceMotion() ? 'smooth' : 'auto' });
+        // scrollIntoView is not used: the operation lists are overflow:hidden boxes, which count as scroll containers, and in the
+        // app look the first operation ended up under the bar (scroll-margin-top lost). Scroll the page itself to the margin.
+        if (r.top < bar || r.top > innerHeight * 0.45) window.scrollTo({ top: Math.max(0, r.top + scrollY - (parseFloat(getComputedStyle(target).scrollMarginTop) || 0)), behavior: scroll === 'smooth' && !reduceMotion() ? 'smooth' : 'auto' });
       });
     }
     if (focus) $('#bd-res-title', result)?.focus({ preventScroll: true });

@@ -300,10 +300,10 @@ for (const vp of VPS) {
 {
   // Every regional page: the bar has a search button and the Safety button in the app look, and neither in the website look.
   const BAR_PAGES = only || ['blocks/', 'truncal/', 'truncal/back/', 'lower-limb/hip/', 'upper-limb/', 'head-neck/', 'lower-limb/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'blocks/settings/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/'];
-  for (const vp of ['360', '390', '1440']) {
+  for (const vp of ['320', '360', '390', '1440']) {
     for (const p of BAR_PAGES) {
       const { ctx, page, log } = await open(p, { vp: vp === '1440' ? '1440' : '390', storage: { 'ra-skin': 'app' } });
-      if (vp === '360') await page.setViewportSize({ width: 360, height: 780 });
+      if (vp === '320' || vp === '360') await page.setViewportSize({ width: Number(vp), height: 780 });
       await waitReady(page, { idle: false });
       await page.waitForFunction(() => !document.body.classList.contains('spinal-app') || document.body.dataset.spReady === 'true', null, { timeout: 20000 }).catch(() => {});
       await page.waitForTimeout(300);
@@ -322,6 +322,7 @@ for (const vp of VPS) {
           overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
           outside: kids.filter((n) => { const q = n.getBoundingClientRect(); return q.right > innerWidth + 0.5 || q.left < -0.5; }).map((n) => n.className || n.id).slice(0, 3),
           small: kids.filter((n) => { const q = n.getBoundingClientRect(); return Math.min(q.width, q.height) < 43.5; }).map((n) => `${n.id || n.className} ${Math.round(n.getBoundingClientRect().width)}x${Math.round(n.getBoundingClientRect().height)}`).slice(0, 4),
+          tabClipped: [...document.querySelectorAll('.ra-tabbar .ra-tab-label')].filter((l) => l.scrollWidth > l.clientWidth + 0.5).map((l) => l.textContent.trim()),
           menuInBar: !!bar.querySelector('.tb-chmenu,.sp-chmenu,.bp-blockmenu'), menuRow: !!document.querySelector('.ra-titlerow .tb-chmenu,.ra-titlerow .sp-chmenu,.ra-titlerow .bp-blockmenu'),
         };
       });
@@ -331,9 +332,20 @@ for (const vp of VPS) {
       R.check(`${at}: Safety is a danger-colour pair (red on pale red)`, b.fg === 'rgb(161, 42, 28)' && b.bg === 'rgb(246, 225, 223)', `${b.fg} on ${b.bg}`);
       R.check(`${at}: the bar fits (nothing outside the window, no sideways scroll, every target at least 44px, bar ≤ 56px)`, !b.outside.length && b.overflow <= 0 && !b.small.length && b.bar.h <= 57, JSON.stringify({ outside: b.outside, overflow: b.overflow, small: b.small, bar: b.bar }));
       if (vp !== '1440') R.check(`${at}: below 480px the chapter menu is the row under the bar, not in it`, !b.menuInBar || !b.menuRow || (b.menuRow && !b.menuInBar), JSON.stringify({ inBar: b.menuInBar, row: b.menuRow }));
+      R.check(`${at}: every tab label is shown in full (no ellipsis on "3D anatomy", the longest)`, !b.tabClipped.length, b.tabClipped.join(', '));
       R.check(`${at}: no console errors`, !errs(log).length, errs(log).join(' | '));
       await ctx.close();
     }
+  }
+  // The Indication result at 1440 beside the tab rail: the text beside the figure was squeezed to one word a line.
+  {
+    const { ctx, page } = await open('blocks/indication/#op-upper-limb-arthroscopy', { vp: '1440', storage: { 'ra-skin': 'app' } });
+    await waitReady(page, { idle: false });
+    await page.waitForFunction(() => document.body.dataset.bdReady === 'true', null, { timeout: 20000 }).catch(() => {});
+    await page.waitForTimeout(500);
+    const w = await page.evaluate(() => ({ dd: [...document.querySelectorAll('#bd-result-col .bd-facts dd')].map((d) => Math.round(d.getBoundingClientRect().width)), fig: Math.round(document.querySelector('#bd-result-col .tb-cov')?.getBoundingClientRect().width || 0) }));
+    R.check('blocks/indication/ @1440 (app look): the facts beside an operation are wide enough to read and the figure is not enlarged', w.dd.length > 0 && w.dd.every((x) => x >= 240) && w.fig > 0 && w.fig <= 441, JSON.stringify(w));
+    await ctx.close();
   }
   // The website look has neither button, and the menu is back in the bar.
   for (const p of ['truncal/back/', 'blocks/', 'spinal/', 'truncal/', 'blocks/safety/']) {

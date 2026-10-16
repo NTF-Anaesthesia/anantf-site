@@ -11,9 +11,9 @@
    and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
 import { registerOffline, mountAppVersion } from '../shared/regional/js/offline.js?v=20261016';
-import { initAppFeel, settingsItem, settingsButton } from '../shared/regional/js/appnav.js?v=20261022';
+import { initAppFeel, settingsItem, settingsButton } from '../shared/regional/js/appnav.js?v=20261023';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
-import { $, $$, esc, ICON, SRC, OPS, opHaystack, norm, parse, score } from './chooser.js?v=20261022';
+import { $, $$, esc, ICON, SRC, OPS, opHaystack, norm, parse, score } from './chooser.js?v=20261023';
 import { guideList, openGuideFromHash } from '../shared/regional/js/decide.js?v=20261017';
 import { GUIDES, GUIDE_ORDER } from '../shared/regional/js/data/decisions.js';
 

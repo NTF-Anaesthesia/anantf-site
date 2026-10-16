@@ -16,7 +16,7 @@
 //   of the bar into a row under it (so the bar holds back, search, Safety and the level control at 360 px). See js/skin.js
 //   and css/skin-app.css (ENGINE.md §2 "Skins").
 //
-// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261022 (one instance per page).
+// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261023 (one instance per page).
 // Cross-document view transitions are pure CSS (@view-transition in css/appnav.css).
 
 import { getSkin, onSkin } from './skin.js?v=20261018';
@@ -236,11 +236,20 @@ function mountTabBar() {
     inner.append(t);
   }
   nav.append(inner);
-  document.body.append(nav);
-  TAB_BAR = { nav };
+  // Keyboard and screen-reader order follows the picture: the bottom bar comes last in the page; from 1024 px the bar is a
+  // rail down the left, so it comes first (after the skip link), and Tab does not have to cross the whole page to reach it.
+  const wide = typeof matchMedia === 'function' ? matchMedia('(min-width: 1024px)') : null;
+  const place = () => {
+    if (wide?.matches) { const skip = document.querySelector('body > a[href="#main"]'); if (skip) skip.after(nav); else document.body.prepend(nav); }
+    else document.body.append(nav);
+  };
+  place();
+  wide?.addEventListener?.('change', place);
+  TAB_BAR = { nav, off: () => wide?.removeEventListener?.('change', place) };
 }
 function unmountTabBar() {
   if (!TAB_BAR) return;
+  TAB_BAR.off?.();
   TAB_BAR.nav.remove();
   TAB_BAR = null;
 }

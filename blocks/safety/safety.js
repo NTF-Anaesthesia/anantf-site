@@ -6,12 +6,12 @@
    working as they were: this page is one more way in. Everything here is MO level. */
 import { applyLevel } from '../../shared/regional/js/levels.js?v=20261015';
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016';
-import { mountRail } from '../../shared/regional/js/appnav.js?v=20261022';
+import { mountRail } from '../../shared/regional/js/appnav.js?v=20261023';
 import { guideList, openGuideFromHash } from '../../shared/regional/js/decide.js?v=20261017';
 import { GUIDES, GUIDE_ORDER } from '../../shared/regional/js/data/decisions.js';
 import { mountLaCalc } from '../../shared/regional/js/lacalc.js';
 import { parseQuery } from '../../shared/regional/js/la.js';
-import { pageBar } from '../pagebar.js?v=20261022';
+import { pageBar } from '../pagebar.js?v=20261023';
 
 const $ = (s, r = document) => r.querySelector(s);
 applyLevel();

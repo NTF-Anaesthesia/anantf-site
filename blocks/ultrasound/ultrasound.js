@@ -8,7 +8,7 @@ import { applyLevel } from '../../shared/regional/js/levels.js?v=20261015';
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016';
 import { REGIONS, blocksIn } from '../../shared/regional/js/registry.js';
 import { loadRealScans } from '../../shared/regional/js/realscan.js';
-import { pageBar } from '../pagebar.js?v=20261022';
+import { pageBar } from '../pagebar.js?v=20261023';
 
 const $ = (s, r = document) => r.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -17,7 +17,7 @@ const firstSentence = (t) => { const s = strip(t); const m = s.match(/^.*?[a-z0-
 const ENGINE_DIR = /^\/((?:truncal|head-neck|lower-limb|upper-limb)\/[a-z-]+)\//;
 
 applyLevel();
-pageBar({ title: 'Ultrasound anatomy', search: () => { (document.querySelector('.us-row') || document.body).scrollIntoView({ block: 'start' }); } });
+pageBar({ title: 'Ultrasound' }); // no search of its own: the bar's search button goes to the search box on /blocks/
 registerOffline();
 
 const host = $('#us-list');
