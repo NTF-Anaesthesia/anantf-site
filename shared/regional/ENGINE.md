@@ -184,7 +184,7 @@ Blocked / Variable / Spared chips from the same `coverage`.
 
 ### 3.4 Real scans (`shared/us/<region>/sources.json`)
 
-Folders: `truncal`, `head-neck`, `lower-limb`, `neuraxial`, `upper-limb` (9 images; multi-panel figures cropped). Each
+Folders: `truncal`, `head-neck`, `lower-limb`, `neuraxial`, `upper-limb` (19 images; multi-panel figures cropped). Each
 `sources.json` is an array, one entry per image file in the same folder. The `neuraxial` entries are matched by
 `blockId` alone (`pso`, `sacrum`, `transverse`, `articular`, `lamina`, `caudal`) with no `view` field, because spinal
 calls `loadRealScans(blockId, { realRegion: 'neuraxial' })` with no scene; they are grouped in `REAL_GROUPS` in
@@ -440,6 +440,13 @@ The brachial plexus app has its own renderer (`brachial-plexus/js/ultrasound.js`
    block's sonoanatomy uses. Add `needle` and `la` when the authors show them, `block: true` on the target structures.
 5. Open the block, choose "Real", check every pill and fill at 390 px and 1440 px, and run the tests.
 
+Finding images: search Europe PMC for open-access articles (`OPEN_ACCESS:y AND LICENSE:"cc by"`) and read the figure
+captions and licence from its full-text XML (`/europepmc/webservices/rest/PMC…/fullTextXML`). The PMC article pages
+often refuse scripts, but the PMC open-access bucket serves the same figure files and the article XML with its
+`ali:license_ref` (`https://pmc-oa-opendata.s3.amazonaws.com/PMC….1/<figure file>`). Keep each label's `text` to about
+26 characters: the colour-key chips do not wrap beside the image. Labels are painted in order, so list a large target
+area (`kind: 'point'`) before the nerve and artery inside it.
+
 Upper-limb engine pages read `shared/us/upper-limb/`; the brachial plexus app still shows its own copies from
 `brachial-plexus/us/`.
 
@@ -530,9 +537,17 @@ spinal topic navigation and real scans, and the scalp, glossopharyngeal and V2/V
    already in the guide mapping and `decide.js` has no imports, so they can mount it.
 5. **Long spinal chapters are not split** into per-topic screens; they have in-chapter topic navigation
    (`spinal/js/topics.js`).
-6. **Real scans are thin.** None yet for the costoclavicular, suprascapular and forearm blocks, or for the new head and
-   neck scenes (auriculotemporal, peristyloid glossopharyngeal, pterygopalatine fossa); several blocks have one image or
-   none.
+6. **Real scans: one image only for some blocks.** On 16 Oct 2026, 20 images were added: costoclavicular,
+   suprascapular, axillary nerve and median nerve in the forearm (two each), ulnar nerve in the forearm and radial nerve
+   at the elbow (one each), auriculotemporal and peristyloid glossopharyngeal (two each), pterygopalatine fossa (one),
+   inferomedial genicular, proximal obturator and transgluteal sciatic (one each), and transverse paravertebral (two more).
+   Still one image: `pvb`, `parasternal`, `rsb`, `iih`, `scp`, `dcp`, `saphenous`, `sciatic`, `genicular` (SMGN),
+   `gen-slgn`, `gen-imgn`, `acb-canal`, `obturator`, `sciatic-tg`, `ulnar-forearm`, `radial-elbow`, `ppf` (the ulnar,
+   radial and sciatic-tg images are photographs of the screen; replace them when a cleaner open-licence scan turns up).
+   No real scan, by design for now: the diagram-only scenes (scalp block at the temple, intraoral glossopharyngeal,
+   maxillary and mandibular nerves at the coronoid notch, peribulbar and sub-Tenon's, below-knee saphenous field block,
+   wrist block). Searched without success on 16 Oct 2026 (Europe PMC, open-access CC BY): a second superficial cervical
+   plexus, rectus sheath and ilioinguinal image.
 7. **Animations** for iPACK, genicular, obturator, saphenous and sciatic blocks (Dr Chew Shi Hao's call).
 8. **Owner to confirm:** the absolute mg ceilings in `la.js` `AGENTS`, and the lipid bolus "1.5 ml/kg over 2–3 minutes"
    in the LAST guide (matched to `/spinal/#cx-last`; the older guideline says over 1 minute).

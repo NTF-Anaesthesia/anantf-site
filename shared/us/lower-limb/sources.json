@@ -1739,5 +1739,213 @@
     "view": [
       "ll-th-sg"
     ]
+  },
+  {
+    "file": "genicular-3.jpg",
+    "block": "genicular",
+    "blockId": "genicular",
+    "blockIds": [
+      "gen-imgn"
+    ],
+    "view": [
+      "ll-kn-imgn"
+    ],
+    "page": "lower-limb/knee/",
+    "articleTitle": "Ultrasound-Guided Genicular Nerve Blocks for Anterior Cruciate Ligament Reconstruction Surgery in an Outpatient Setting: A Case Series",
+    "authors": "Ramanujam V, DiMaria S, Varma V",
+    "journal": "Cureus",
+    "year": 2023,
+    "doi": "10.7759/cureus.44550",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10544945/",
+    "pmcid": "PMC10544945",
+    "licence": "CC BY 3.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/3.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 1C",
+    "credit": "Ramanujam V, DiMaria S, Varma V. Cureus 2023, Figure 1C. CC BY 3.0. Cropped; labels on the image are the authors'.",
+    "caption": "Inferomedial genicular nerve block: local anaesthetic laid on the medial tibia beside the genicular artery, below the medial tibial condyle.",
+    "originalCaption": "Ultrasound images of genicular nerve blocks. 1A: Superomedial genicular nerve block. 1B: Superolateral genicular nerve block. 1C: Inferomedial genicular nerve block.",
+    "alt": "Coronal ultrasound of the inner side of the upper tibia: the bright tibial surface sloping up to the condyle on the right, a needle from the left and a small red circle on the artery.",
+    "orientation": {
+      "left": "caudad",
+      "right": "cephalad"
+    },
+    "burnedInLabels": "Caudad / Cephalad; Needle, Local Anesthetic, Genicular Artery (red circle), Tibial Medial Condyle, Tibial Shaft; panel label 1C",
+    "modifications": "Cropped to panel 1C from a three-panel figure; re-saved as optimised JPEG.",
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/3.0/.",
+    "labels": [
+      {
+        "text": "Genicular artery",
+        "kind": "artery",
+        "x": 0.48,
+        "y": 0.485,
+        "tx": 0.44,
+        "ty": 0.58,
+        "shape": [[0.502, 0.485], [0.499, 0.493], [0.491, 0.499], [0.48, 0.501], [0.469, 0.499], [0.461, 0.493], [0.458, 0.485], [0.461, 0.477], [0.469, 0.471], [0.48, 0.469], [0.491, 0.471], [0.499, 0.477]]
+      },
+      {
+        "text": "Local anaesthetic",
+        "kind": "la",
+        "x": 0.5,
+        "y": 0.47,
+        "tx": 0.6,
+        "ty": 0.36,
+        "shape": [[0.36, 0.47], [0.45, 0.43], [0.56, 0.43], [0.64, 0.45], [0.6, 0.5], [0.5, 0.52], [0.4, 0.52]]
+      },
+      {
+        "text": "Medial tibial condyle",
+        "kind": "bone",
+        "x": 0.68,
+        "y": 0.42,
+        "line": [[0.55, 0.55], [0.65, 0.47], [0.7, 0.38], [0.78, 0.28], [0.9, 0.21], [1.0, 0.17]]
+      },
+      {
+        "text": "Tibial shaft",
+        "kind": "bone",
+        "x": 0.25,
+        "y": 0.62,
+        "line": [[0.0, 0.61], [0.2, 0.63], [0.4, 0.6], [0.55, 0.55]]
+      },
+      {
+        "text": "Needle",
+        "kind": "point",
+        "x": 0.3,
+        "y": 0.42,
+        "line": [[0.18, 0.39], [0.38, 0.45]]
+      }
+    ]
+  },
+  {
+    "file": "obturator-3.jpg",
+    "block": "obturator",
+    "blockId": "obturator",
+    "view": [
+      "ll-kn-obtp"
+    ],
+    "page": "lower-limb/knee/",
+    "articleTitle": "Ultrasound-Guided Obturator Nerve Block: A Focused Review on Anatomy and Updated Techniques",
+    "authors": "Yoshida T, Nakamoto T, Kamibayashi T",
+    "journal": "BioMed Research International",
+    "year": 2017,
+    "doi": "10.1155/2017/7023750",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5322453/",
+    "pmcid": "PMC5322453",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 3(b)",
+    "credit": "Yoshida T, Nakamoto T, Kamibayashi T. BioMed Research International 2017, Figure 3(b). CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "caption": "Proximal obturator approach: the target is the fascia between pectineus (PE) and obturator externus (OE), running on from the superior pubic ramus (SPR); open triangles mark it, and the dotted lines are the in-plane and out-of-plane needle paths.",
+    "originalCaption": "Ultrasound images obtained during obturator nerve block. (a) A preprocedure view of the distal approach, which is obtained with the transducer located as in Figure 2(a). The anterior branch of the obturator nerve is located at the hyperechoic thick fascia between the adductor brevis muscle and the pectineus (arrows) or adductor longus (open triangles) muscles. The posterior branch of the obturator nerve lies within the fascia between the adductor brevis and adductor magnus muscles (closed triangles). A needle is introduced into these fasciae in a medial-to-lateral (red dotted lines) or lateral-to-medial direction under in-plane ultrasound guidance. (b) A preprocedure view obtained with the transducer located as in Figure 2(b). A hyperechoic structure with an acoustic shadow (arrows) represents the superior pubic ramus. The target for injection of local anesthetic is the fascia, which is seen as contiguous with the superior pubic ramus and located between the pectineus and obturator externus muscles (open triangles). In the approach used by Taha [23], a needle is introduced into this plane under out-of-plane ultrasound guidance (yellow dotted line). In the approach used by Lin et al. [42], a needle is inserted into this plane under in-plane ultrasound guidance in a lateral-to-medial direction (red dotted line). (c) A preprocedure view obtained with the transducer located as in Figure 2(c). Hyperechoic thick fascia between the pectineus and obturator externus muscles (open triangles) is seen inferior to a hyperechoic structure with an acoustic shadow, which represents the superior pubic ramus (arrows). A needle is inserted into this fascia under in-plane ultrasound guidance in an inferior-to-superior direction (red dotted line). (d) A preprocedure view obtained with the transducer located as in Figure 2(d). The obturator externus muscle is seen superficial to the superior pubic ramus (arrows) and the pectineus muscle is seen anterior to the obturator externus muscle. A hyperechoic thick fascia between the pectineus and obturator externus muscles (open triangles) is the target plane. As a needle is inserted 3 cm cephalad from the anterior side of the transducer and advanced in-plane with the transducer toward this fascia in this case (red dotted line), the needle-ultrasound beam angles come to be almost perpendicular. AL, adductor longus muscle; AB, adductor brevis muscle; AM, adductor magnus muscle; PE, pectineus muscle; OE, obturator externus muscle; SPR, superior pubic ramus; GR, gracilis muscle.",
+    "alt": "Ultrasound below the inguinal crease: pectineus over obturator externus, the bright pubic ramus on the left, and dotted needle paths meeting at the fascia between the two muscles.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "[Lateral] / [Medial]; PE, OE, AB, SPR; arrows, open triangles; red and yellow dotted needle paths",
+    "modifications": "Cropped to panel (b) from a four-panel figure (blank margin removed); re-saved as optimised JPEG.",
+    "licenceNote": "The licence sentence names no version; the article XML licence link (ali:license_ref) is https://creativecommons.org/licenses/by/4.0/.",
+    "needle": [[0.02, 0.17], [0.27, 0.42]],
+    "labels": [
+      {
+        "text": "Target fascia",
+        "kind": "fascia",
+        "x": 0.3,
+        "y": 0.43,
+        "line": [[0.2, 0.43], [0.3, 0.43], [0.4, 0.44], [0.5, 0.47], [0.6, 0.5]],
+        "block": true,
+        "desc": "The fascia between pectineus and obturator externus: both branches of the obturator nerve run in it here."
+      },
+      {
+        "text": "Superior pubic ramus",
+        "kind": "bone",
+        "x": 0.1,
+        "y": 0.42,
+        "line": [[0.0, 0.43], [0.08, 0.42], [0.17, 0.42], [0.23, 0.43]]
+      },
+      {
+        "text": "Pectineus",
+        "kind": "muscle",
+        "x": 0.35,
+        "y": 0.3
+      },
+      {
+        "text": "Obturator externus",
+        "kind": "muscle",
+        "x": 0.36,
+        "y": 0.55
+      },
+      {
+        "text": "Adductor brevis",
+        "kind": "muscle",
+        "x": 0.62,
+        "y": 0.43
+      }
+    ]
+  },
+  {
+    "file": "sciatic-2.jpg",
+    "block": "sciatic",
+    "blockId": "sciatic",
+    "blockIds": [
+      "sciatic-tg"
+    ],
+    "view": [
+      "ll-th-tg"
+    ],
+    "page": "lower-limb/thigh/",
+    "articleTitle": "Ultrasound-Guided Sciatic Nerve Block vs. Caudal Analgesia in Cerebral Palsy Undergoing Lower Limb Surgeries",
+    "authors": "Fahim HM, Mahrose R, Kasem AA, et al.",
+    "journal": "Anesthesiology and Pain Medicine",
+    "year": 2023,
+    "doi": "10.5812/aapm-142479",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12535662/",
+    "pmcid": "PMC12535662",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This open-access article is available under the Creative Commons Attribution 4.0 (CC BY 4.0) International License (https://creativecommons.org/licenses/by/4.0/), which allows for unrestricted use, distribution, and reproduction in any medium, provided that the original work is properly cited.",
+    "figure": "Figure 2",
+    "credit": "Fahim HM, Mahrose R, Kasem AA, et al. Anesthesiology and Pain Medicine 2023, Figure 2. CC BY 4.0. Labels on the image are the authors'.",
+    "caption": "Sciatic nerve between the greater trochanter (GT) and the ischial tuberosity (IT), deep to gluteus maximus (GMM): the needle comes in plane from the trochanter side and local anaesthetic (LA) collects beside the nerve (SN). The authors call this a subgluteal approach; it is the level of the transgluteal view.",
+    "originalCaption": "Ultrasound-guided subgluteal sciatic nerve block. The LA was injected to surround the sciatic nerve in the targeted subgluteal plane. SN (sciatic nerve), GT (greater trochanter), (IT) ischial tuberosity, (GMM) gluteus maximus muscle, (LA) local anesthetic",
+    "alt": "Curved-probe ultrasound of the buttock: gluteus maximus superficially, the trochanter on the left, the ischial tuberosity on the right, and the flat bright sciatic nerve between them with fluid beside it.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "GMM, LA, SN, GT, IT",
+    "modifications": "White page margins trimmed; re-saved as optimised JPEG. It is a photograph of the ultrasound screen. Orientation inferred from the trochanter (lateral) and the ischial tuberosity (medial).",
+    "needle": [[0.12, 0.22], [0.5, 0.42]],
+    "la": [[0.48, 0.42], [0.55, 0.39], [0.6, 0.41], [0.6, 0.47], [0.53, 0.49], [0.47, 0.47]],
+    "labels": [
+      {
+        "text": "Sciatic nerve",
+        "kind": "nerve",
+        "x": 0.64,
+        "y": 0.47,
+        "shape": [[0.69, 0.47], [0.683, 0.487], [0.665, 0.5], [0.64, 0.505], [0.615, 0.5], [0.597, 0.487], [0.59, 0.47], [0.597, 0.452], [0.615, 0.44], [0.64, 0.435], [0.665, 0.44], [0.683, 0.452]],
+        "block": true,
+        "desc": "Flat and bright, deep to gluteus maximus, nearer the ischial tuberosity."
+      },
+      {
+        "text": "Ischial tuberosity",
+        "kind": "bone",
+        "x": 0.73,
+        "y": 0.6,
+        "line": [[0.7, 0.47], [0.72, 0.55], [0.73, 0.65], [0.74, 0.75]]
+      },
+      {
+        "text": "Greater trochanter",
+        "kind": "bone",
+        "x": 0.2,
+        "y": 0.58
+      },
+      {
+        "text": "Gluteus maximus",
+        "kind": "muscle",
+        "x": 0.49,
+        "y": 0.28
+      }
+    ]
   }
 ]

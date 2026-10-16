@@ -3415,5 +3415,562 @@
       }
     ],
     "credit": "Lin TY et al. Life 2025, Figure 1 panel D. CC BY 4.0. Cropped to the ultrasound panel without the photo inset; the label and arrow on the image are the authors'."
+  },
+  {
+    "file": "atn-1.jpg",
+    "block": "atn",
+    "blockId": "atn",
+    "page": "head-neck/scalp/",
+    "articleTitle": "Ultrasound-Guided Intervention for Treatment of Trigeminal Neuralgia: An Updated Review of Anatomy and Techniques",
+    "authors": "Allam AES, Khalil AAF, Eltawab BA, et al.",
+    "journal": "Pain Research & Management",
+    "year": 2018,
+    "doi": "10.1155/2018/5480728",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5902000/",
+    "pmcid": "PMC5902000",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 6(b)",
+    "credit": "Allam AES, Khalil AAF, Eltawab BA, et al. Pain Research & Management 2018, Figure 6(b). CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "caption": "Auriculotemporal nerve just in front of the ear: the nerve (white arrow) above the zygomatic arch (open arrows), under the lateral temporal cheek fat (LTCF).",
+    "originalCaption": "Sonoanatomy and ultrasound-guided injection technique for the auriculotemporal nerve: (a) the transducer position (yellow rectangle), (b) ultrasound imaging of the auriculotemporal nerve (white solid arrow), (c) introducing the needle in the posterior-to-anterior direction using the in-plane approach to target the auriculotemporal nerve, and (d) the power Doppler image of the superficial temporal artery. The empty white arrows denote the zygomatic arch. The yellow dashed arrow indicates the needle trajectory. MCFC: middle cheek fat compartment and LTCF: lateral temporal cheek fat. All the pictures were obtained from the face of the first author.",
+    "alt": "High-frequency ultrasound in front of the ear: thin layers of fat and fascia, a small nerve marked by an arrow at the back, and the bright zygomatic arch deep.",
+    "orientation": {
+      "left": "posterior",
+      "right": "anterior"
+    },
+    "burnedInLabels": "LTCF, MCFC, Posterior; white arrow (nerve), open arrows (zygomatic arch)",
+    "modifications": "Cropped to panel (b) from a four-panel figure (the photographs and Doppler panel removed); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Auriculotemporal nerve",
+        "kind": "nerve",
+        "x": 0.15,
+        "y": 0.3,
+        "shape": [
+          [
+            0.18,
+            0.3
+          ],
+          [
+            0.176,
+            0.32
+          ],
+          [
+            0.165,
+            0.335
+          ],
+          [
+            0.15,
+            0.34
+          ],
+          [
+            0.135,
+            0.335
+          ],
+          [
+            0.124,
+            0.32
+          ],
+          [
+            0.12,
+            0.3
+          ],
+          [
+            0.124,
+            0.28
+          ],
+          [
+            0.135,
+            0.265
+          ],
+          [
+            0.15,
+            0.26
+          ],
+          [
+            0.165,
+            0.265
+          ],
+          [
+            0.176,
+            0.28
+          ]
+        ],
+        "block": true,
+        "desc": "Small and superficial, just behind the superficial temporal artery in front of the tragus."
+      },
+      {
+        "text": "Zygomatic arch",
+        "kind": "bone",
+        "x": 0.6,
+        "y": 0.59,
+        "line": [
+          [
+            0.25,
+            0.69
+          ],
+          [
+            0.4,
+            0.65
+          ],
+          [
+            0.55,
+            0.6
+          ],
+          [
+            0.7,
+            0.56
+          ],
+          [
+            0.85,
+            0.52
+          ],
+          [
+            0.98,
+            0.52
+          ]
+        ]
+      },
+      {
+        "text": "Lateral temporal cheek fat",
+        "kind": "fat",
+        "x": 0.27,
+        "y": 0.17
+      },
+      {
+        "text": "Middle cheek fat",
+        "kind": "fat",
+        "x": 0.77,
+        "y": 0.17
+      }
+    ]
+  },
+  {
+    "file": "atn-2.jpg",
+    "block": "atn",
+    "blockId": "atn",
+    "page": "head-neck/scalp/",
+    "articleTitle": "Ultrasound-Guided Intervention for Treatment of Trigeminal Neuralgia: An Updated Review of Anatomy and Techniques",
+    "authors": "Allam AES, Khalil AAF, Eltawab BA, et al.",
+    "journal": "Pain Research & Management",
+    "year": 2018,
+    "doi": "10.1155/2018/5480728",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5902000/",
+    "pmcid": "PMC5902000",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 6(d)",
+    "credit": "Allam AES, Khalil AAF, Eltawab BA, et al. Pain Research & Management 2018, Figure 6(d). CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "caption": "Power Doppler shows the superficial temporal artery (the coloured spot) right beside the auriculotemporal nerve (white arrow); the dashed arrow is the needle path from behind.",
+    "originalCaption": "Sonoanatomy and ultrasound-guided injection technique for the auriculotemporal nerve: (a) the transducer position (yellow rectangle), (b) ultrasound imaging of the auriculotemporal nerve (white solid arrow), (c) introducing the needle in the posterior-to-anterior direction using the in-plane approach to target the auriculotemporal nerve, and (d) the power Doppler image of the superficial temporal artery. The empty white arrows denote the zygomatic arch. The yellow dashed arrow indicates the needle trajectory. MCFC: middle cheek fat compartment and LTCF: lateral temporal cheek fat. All the pictures were obtained from the face of the first author.",
+    "alt": "The same view in front of the ear with a bright coloured Doppler signal from the artery next to the nerve arrow, and a dashed line showing the needle path.",
+    "orientation": {
+      "left": "posterior",
+      "right": "anterior"
+    },
+    "burnedInLabels": "Posterior; white arrow (nerve), dashed yellow arrow (needle path), open arrows (zygomatic arch); Doppler colour bar",
+    "modifications": "Cropped to panel (d) from a four-panel figure; re-saved as optimised JPEG.",
+    "needle": [
+      [
+        0.08,
+        0.07
+      ],
+      [
+        0.19,
+        0.24
+      ]
+    ],
+    "labels": [
+      {
+        "text": "Auriculotemporal nerve",
+        "kind": "nerve",
+        "x": 0.2,
+        "y": 0.27,
+        "shape": [
+          [
+            0.23,
+            0.27
+          ],
+          [
+            0.226,
+            0.29
+          ],
+          [
+            0.215,
+            0.305
+          ],
+          [
+            0.2,
+            0.31
+          ],
+          [
+            0.185,
+            0.305
+          ],
+          [
+            0.174,
+            0.29
+          ],
+          [
+            0.17,
+            0.27
+          ],
+          [
+            0.174,
+            0.25
+          ],
+          [
+            0.185,
+            0.235
+          ],
+          [
+            0.2,
+            0.23
+          ],
+          [
+            0.215,
+            0.235
+          ],
+          [
+            0.226,
+            0.25
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Temporal artery",
+        "kind": "artery",
+        "x": 0.29,
+        "y": 0.36,
+        "shape": [
+          [
+            0.325,
+            0.36
+          ],
+          [
+            0.32,
+            0.387
+          ],
+          [
+            0.307,
+            0.408
+          ],
+          [
+            0.29,
+            0.415
+          ],
+          [
+            0.272,
+            0.408
+          ],
+          [
+            0.26,
+            0.387
+          ],
+          [
+            0.255,
+            0.36
+          ],
+          [
+            0.26,
+            0.333
+          ],
+          [
+            0.272,
+            0.312
+          ],
+          [
+            0.29,
+            0.305
+          ],
+          [
+            0.307,
+            0.312
+          ],
+          [
+            0.32,
+            0.332
+          ]
+        ],
+        "desc": "The superficial temporal artery, pulsatile and right beside the nerve: aspirate and keep the needle just behind it."
+      },
+      {
+        "text": "Zygomatic arch",
+        "kind": "bone",
+        "x": 0.65,
+        "y": 0.55,
+        "line": [
+          [
+            0.35,
+            0.6
+          ],
+          [
+            0.5,
+            0.58
+          ],
+          [
+            0.65,
+            0.55
+          ],
+          [
+            0.8,
+            0.52
+          ],
+          [
+            0.95,
+            0.5
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "file": "gpus-1.jpg",
+    "block": "gpn",
+    "blockId": "gpus",
+    "page": "head-neck/airway/",
+    "articleTitle": "Evaluation of ultrasound-guided glossopharyngeal nerve block technique: A prospective observational study☆",
+    "authors": "Bansal A, Gautam S, Manogaran R, et al.",
+    "journal": "Interventional Pain Medicine",
+    "year": 2026,
+    "doi": "10.1016/j.inpm.2026.100744",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12950420/",
+    "pmcid": "PMC12950420",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Fig. 2B",
+    "credit": "Bansal A, Gautam S, Manogaran R, et al. Interventional Pain Medicine 2026, Fig. 2B. CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "caption": "Between the mastoid and the angle of the jaw: the styloid process is a bright curve with a dark acoustic shadow. The glossopharyngeal nerve is too small to see; the target is just behind and deep to the styloid.",
+    "originalCaption": "Ultrasound guided Glossopharyngeal Nerve Block. A. Hockey stick probe placement B. Ultrasound image demonstrating the styloid process and the acoustic shadow C. Ultrasound image demonstrating the Needle track (solid arrows).",
+    "alt": "Ultrasound of the upper neck with a short bright curved line, the styloid process, casting a dark shadow below it.",
+    "burnedInLabels": "B; Styloid Process (arrow); depth 3.1",
+    "modifications": "Cropped to panel B from a three-panel figure (the probe photograph and the needle panel are separate); re-saved as optimised JPEG.",
+    "labels": [
+      {
+        "text": "Styloid process",
+        "kind": "bone",
+        "x": 0.4,
+        "y": 0.34,
+        "line": [
+          [
+            0.32,
+            0.37
+          ],
+          [
+            0.37,
+            0.34
+          ],
+          [
+            0.42,
+            0.33
+          ],
+          [
+            0.46,
+            0.34
+          ],
+          [
+            0.49,
+            0.37
+          ]
+        ],
+        "block": true,
+        "desc": "The landmark: a bright curve with a shadow. Inject just behind and deep to it, superficial to the carotid."
+      },
+      {
+        "text": "Acoustic shadow",
+        "kind": "shadow",
+        "x": 0.41,
+        "y": 0.6,
+        "shape": [
+          [
+            0.32,
+            0.39
+          ],
+          [
+            0.5,
+            0.39
+          ],
+          [
+            0.5,
+            0.85
+          ],
+          [
+            0.32,
+            0.85
+          ]
+        ]
+      }
+    ],
+    "orientation": null
+  },
+  {
+    "file": "gpus-2.jpg",
+    "block": "gpn",
+    "blockId": "gpus",
+    "page": "head-neck/airway/",
+    "articleTitle": "Evaluation of ultrasound-guided glossopharyngeal nerve block technique: A prospective observational study☆",
+    "authors": "Bansal A, Gautam S, Manogaran R, et al.",
+    "journal": "Interventional Pain Medicine",
+    "year": 2026,
+    "doi": "10.1016/j.inpm.2026.100744",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12950420/",
+    "pmcid": "PMC12950420",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article under the CC BY license (http://creativecommons.org/licenses/by/4.0/).",
+    "figure": "Fig. 2C",
+    "credit": "Bansal A, Gautam S, Manogaran R, et al. Interventional Pain Medicine 2026, Fig. 2C. CC BY 4.0. Cropped; labels on the image are the authors'.",
+    "caption": "The needle (arrowheads) advanced in plane towards the space behind the styloid process. Aspirate and inject in small amounts: the internal carotid artery is just deep.",
+    "originalCaption": "Ultrasound guided Glossopharyngeal Nerve Block. A. Hockey stick probe placement B. Ultrasound image demonstrating the styloid process and the acoustic shadow C. Ultrasound image demonstrating the Needle track (solid arrows).",
+    "alt": "Ultrasound of the upper neck with a straight bright needle line coming in from the upper right, marked by three arrowheads.",
+    "burnedInLabels": "C; arrowheads (needle); depth 2.6",
+    "modifications": "Cropped to panel C from a three-panel figure; re-saved as optimised JPEG.",
+    "needle": [
+      [
+        0.82,
+        0.16
+      ],
+      [
+        0.39,
+        0.37
+      ]
+    ],
+    "labels": [],
+    "orientation": null
+  },
+  {
+    "file": "ppf-1.jpg",
+    "block": "ppf",
+    "blockId": "ppf",
+    "page": "head-neck/face/",
+    "articleTitle": "Intraoperative Ultrasound-Guided Selective Glossopharyngeal Nerve Block for Post-tonsillectomy Analgesia: A Case Report",
+    "authors": "Sekiguchi M, Kojima Y, Oue A, et al.",
+    "journal": "Cureus",
+    "year": 2024,
+    "doi": "10.7759/cureus.56748",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11033452/",
+    "pmcid": "PMC11033452",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the terms of the Creative Commons Attribution License CC-BY 4.0., which permits unrestricted use, distribution, and reproduction in any medium, provided the original author and source are credited.",
+    "figure": "Figure 1",
+    "credit": "Sekiguchi M, Kojima Y, Oue A, et al. Cureus 2024, Figure 1. CC BY 4.0. Labels on the image are the authors'.",
+    "caption": "Infrazygomatic view of the maxillary nerve block: between the maxillary tuberosity (MT) and the coronoid process (C), local anaesthetic (LA, dashed) injected once the needle tip touched the lateral pterygoid plate (LP), at the entrance to the pterygopalatine fossa.",
+    "originalCaption": "Ultrasound images of an ultrasound-guided maxillary nerve blockLocal anesthesia is injected after the block needle tip hits the lateral pterygoid plate.C, coronoid; LA, local anesthetic; LP, lateral plate of the pterygoid process; MT, maxillary tuberosity.",
+    "alt": "Ultrasound below the cheekbone: the dark maxilla on the left, the dark coronoid on the right, and between them a dashed outline of local anaesthetic above the bright pterygoid plate.",
+    "burnedInLabels": "MT, C, LA (dashed outline), LP; 1 cm scale bar",
+    "modifications": "None to the image (re-saved as optimised JPEG).",
+    "la": [
+      [
+        0.64,
+        0.5
+      ],
+      [
+        0.785,
+        0.535
+      ],
+      [
+        0.79,
+        0.59
+      ],
+      [
+        0.74,
+        0.62
+      ],
+      [
+        0.66,
+        0.635
+      ],
+      [
+        0.5,
+        0.635
+      ],
+      [
+        0.48,
+        0.555
+      ],
+      [
+        0.56,
+        0.515
+      ]
+    ],
+    "labels": [
+      {
+        "text": "Lateral pterygoid plate",
+        "kind": "bone",
+        "x": 0.68,
+        "y": 0.66,
+        "line": [
+          [
+            0.6,
+            0.665
+          ],
+          [
+            0.68,
+            0.66
+          ],
+          [
+            0.76,
+            0.67
+          ]
+        ],
+        "block": true,
+        "desc": "The needle tip touches it, then local anaesthetic spreads into the fossa just beyond."
+      },
+      {
+        "text": "Maxillary tuberosity",
+        "kind": "bone",
+        "x": 0.2,
+        "y": 0.27,
+        "line": [
+          [
+            0.02,
+            0.27
+          ],
+          [
+            0.15,
+            0.25
+          ],
+          [
+            0.25,
+            0.28
+          ],
+          [
+            0.3,
+            0.34
+          ]
+        ]
+      },
+      {
+        "text": "Coronoid process",
+        "kind": "bone",
+        "x": 0.84,
+        "y": 0.25,
+        "line": [
+          [
+            0.96,
+            0.3
+          ],
+          [
+            0.88,
+            0.25
+          ],
+          [
+            0.8,
+            0.27
+          ],
+          [
+            0.77,
+            0.33
+          ]
+        ]
+      }
+    ],
+    "orientation": null
   }
 ]
