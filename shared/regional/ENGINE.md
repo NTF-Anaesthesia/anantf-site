@@ -196,7 +196,7 @@ skin differs; nothing in the data or the engine's DOM depends on it.
   whole selector to ID weight: use `.sp-bar` and `.bp-bar`, not `#sp-bar`).
 - **The frame.** In the app look `--site-gutter` is 16 px (24 px from 768 px) and `--site-width` is 752 / 768 px, so the
   engine pages, spinal, the calculator and Settings are a centred 720 px reading column (`.site-container` and the bar use
-  the same variables, so they line up); `/blocks/`, the landings and plexus use 1048 px, brachial 1344 px (its diagram
+  the same variables, so they line up); `/blocks/` and the landings use 1048 px, plexus 1240 px (the website look's width, so its two panes and the bar line up), brachial 1344 px (its diagram
   must stay at least 760 px wide beside the 3D model, or `bpd` switches to its narrow layout and the text differs).
   From 1024 px the scan teacher and the wide tables of an engine page break out of the column to 880 px (`margin-inline:
   -80px`); the 96 px tab rail is `body` padding. **Large title:** the page's first visible `h1` is 34 px Fraunces; the bar
@@ -226,6 +226,8 @@ skin differs; nothing in the data or the engine's DOM depends on it.
   | 16 brachial plexus | `.top`, `.panel*`, `.tabs`, `.chip`, `.bpus-*`, `.bpd-*`, `.v3d-*`, `.cv-*` (frames and controls; canvases and clinical colours untouched) |
   | 17 plexus | `body.px` column and title (the page already uses the app kit's pieces) |
   | 18 foot | `.tb-foot`, `.sp-foot`, `.foot`, `.ntf-footer` |
+  | 19 page-local widgets | the choosers, planners and figure frames defined in single pages' own CSS (hip fracture chooser, knee plan, thigh planner, foot and ankle panels, back quiz, `*-fig-stage` frames, the spinal pager, real-scan picker, neuro check, tier badges), mono-capital labels as captions, fields, the brachial bar order, scroll padding above the tab bar, `max-height` of sheets (`!important`: the page scripts set it inline) |
+  | 20 review fixes | small corrections found by looking at every page type at 390, 768 and 1440 px: links inside the wine dose card are ivory, hub chapters are a grouped list like the lists above them, planner choices are a two-column grid on a phone, plexus kickers and level buttons in the shared type, the brachial bar is 56px, the page clears the tab bar by 16px more than its height |
 
 - **Tab bar.** `initAppFeel` (appnav.js) draws `nav.ra-tabbar` while the app look is on and removes it when it is off, so the
   website look has no extra element: **Blocks** (`/blocks/`), **Search** (the page's own search: the same function as the bar's
@@ -260,7 +262,7 @@ them**, and don't delete them (`static.mjs` and `deeplinks.mjs` check both).
   second bump on the same day use the next date, not a letter suffix.
 - **Stateful modules must load under one URL per page**, or they run twice and split their state. `levels.js` and
   `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, `appnav.js` as `…?v=20261019` and `skin.js` as
-  `…?v=20261018`, from every module and every app. `skin-app.css` is one URL on every page (`?v=20261019`); bump it on every page that links it. If you bump one, change
+  `…?v=20261018`, from every module and every app. `skin-app.css` is one URL on every page (`?v=20261021`); bump it on every page that links it. If you bump one, change
   every import of it in the same commit (grep for the file name). Other engine modules import each other without a
   query. `smoke.mjs` fails on a stateful module loaded under two URLs.
 - Never write `?v=…?v=…` (`static.mjs` checks).
@@ -642,7 +644,7 @@ to a regional page or the engine. Details: [`test/regional/README.md`](../../tes
 | `deeplinks.mjs` | every `#ch-*`, `#<block>-step-*`, `#<block>-inj-*`, `#op-*`, app state hashes, redirects, shims, `edit.html?page=` |
 | `levels.mjs` | one level control per page, correct hiding per level, hints, MO always shows dose, LAST, complications, the "If it goes wrong" section (core guides, nothing above tier 1, the LAST guide steps forward) and scan, persistence never in the URL, spinal migration, relaxing |
 | `appframe.mjs` | the app frame: Settings page (defaults, saving, level control, version lines), Settings reachable from every kind of app bar at 390 and 1440, bar ≤ 56 px, auto-hide off by default and working when on (scroll down / up, top, open menu, phone scan column follows), a page's own scrolling never hides it, rail at 1024 / 1180 / 1440 on the pages that have one and none at 390 or on the landings and `/blocks/`, the bar lined up with the site header, no overflow, the document scrolls, the scan teacher in the page flow, "/" and Ctrl+K, arrow keys on the step buttons, speculation rules (prefetch only), view-transition names (none with reduced motion), the Look control in Settings (Automatic by default, App look and Website look switch at once and are saved, the rail lists Look first) |
-| `skin.mjs` | the two looks: every page has the one inline skin script and links `skin-app.css`, every `skin-app.css` rule is under `html[data-skin="app"]`; skin resolution (a plain visit is the website look; home screen (stubbed `display-mode: standalone`), `/blocks/?app` for that tab only, an explicit choice beating both, blocked storage); in the app look on nine pages at 390 and 1440: no console errors, no overflow, five tabs with one current, 12px labels, a bottom bar (52px) or 96px rail, site header, breadcrumbs and desktop rail hidden, bar ≤ 56px; the Search and Guides tabs; the text of `<main>` identical in both looks (scan and 3D labels that follow the width excepted); the website look unchanged (no tab bar, square controls, paper ground) |
+| `skin.mjs` | the two looks: every page has the one inline skin script and links `skin-app.css`, every `skin-app.css` rule is under `html[data-skin="app"]`; skin resolution (a plain visit is the website look; home screen (stubbed `display-mode: standalone`), `/blocks/?app` for that tab only, an explicit choice beating both, blocked storage); in the app look on nine pages at 390 and 1440: no console errors, no overflow, five tabs with one current, 12px labels, a bottom bar (52px) or 96px rail, site header, breadcrumbs and desktop rail hidden, bar ≤ 56px; the Search and Guides tabs; polish in the app look on eight pages (no text under 12px, no button or block link under 44px, every link and button 4.5:1 against what is behind it); the text of `<main>` identical in both looks (scan and 3D labels that follow the width excepted); the website look unchanged (no tab bar, square controls, paper ground). `RA_SKIN=app node test/regional/<suite>.mjs` runs `smoke`, `deeplinks`, `levels`, `appframe` and the others in the app look |
 | `parity.mjs` | at Consultant, every line of the baseline text is still on its page, and doses are identical (guide text isn't captured; `data.mjs` covers it) |
 | `offline.e2e.mjs` | its own server: `/blocks/` installs the worker and shows the version; with no signal block pages, `spinal/` and `lower-limb/` render; home and `mo/` are not answered; "Get the latest version" removes only the regional caches |
 

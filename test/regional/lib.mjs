@@ -95,6 +95,8 @@ export async function launch() {
 export async function openContext(browser, { vp = '390', level = null, storage = null, dismissPicker = true, reducedMotion = 'reduce' } = {}) {
   const ctx = await browser.newContext({ ...VIEWPORTS[vp], reducedMotion });
   const init = { ...(storage || {}) };
+  // RA_SKIN=app (or web) runs any suite in that look (the default is the website look, as a visitor gets it).
+  if (process.env.RA_SKIN && !('ra-skin' in init)) init['ra-skin'] = process.env.RA_SKIN;
   if (level) init['ra-level'] = level;
   if (dismissPicker && !('ra-level-picker' in init)) init['ra-level-picker'] = 'dismissed';
   if (Object.keys(init).length) {

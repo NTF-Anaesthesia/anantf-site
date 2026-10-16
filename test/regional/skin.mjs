@@ -17,6 +17,7 @@
 //      one current, words as well as icons, 12px labels, along the bottom at 390 and a 96px rail at 1440), the NTF site
 //      header and breadcrumbs hidden, the desktop navigation rail hidden (the tab rail replaces it), the app bar ≤ 56px,
 //      the page clears the tab bar; the right tab is current; Search opens the page's search (or /blocks/ search);
+//   3b. polish in the app look: no text under 12px, no button or block link under 44px, every link and button 4.5:1;
 //   4. the content is the same in both looks: the text of <main> (textContent, and the visible text lowercased) is
 //      identical in the website look and the app look, apart from the "Showing the … look now" line in Settings;
 //   5. the website look has no tab bar and no app-look styling (computed: square controls, the site header shown).
@@ -234,6 +235,49 @@ for (const vp of VPS) {
     R.check(`${at}: the NTF site header and the breadcrumbs are hidden`, !s.header && !s.crumbs, JSON.stringify({ header: s.header, crumbs: s.crumbs }));
     if (s.bar != null) R.check(`${at}: one sticky app bar at the top, at most 56px`, s.bar <= 57 && s.barSticky === 'sticky', `${s.bar}px ${s.barSticky}`);
     R.check(`${at}: the ground is the app's warm ground`, s.bg === 'rgb(241, 237, 228)', s.bg);
+    await ctx.close();
+  }
+}
+
+// 3b. Polish in the app look (the review of 16 Oct 2026): no text under 12px, no tap target under 44px (inline links in a sentence
+// excepted), and every link and button readable (4.5:1 against what is behind it: a link inside the wine dose card was wine on wine).
+const POLISH_PAGES = (only || ['truncal/back/#ch-esp', 'lower-limb/thigh/#ch-sciatic', 'blocks/', 'spinal/#ch-technique', 'plexus/', 'brachial-plexus/', 'blocks/calculator/', 'blocks/settings/']);
+for (const vp of VPS) {
+  for (const p of POLISH_PAGES) {
+    const { ctx, page } = await open(p, { vp, storage: { 'ra-skin': 'app' } });
+    await waitReady(page, { idle: false });
+    await page.waitForFunction(() => !document.body.classList.contains('spinal-app') || document.body.dataset.spReady === 'true', null, { timeout: 20000 }).catch(() => {});
+    await page.waitForTimeout(400);
+    const s = await page.evaluate(() => {
+      const vis = (e) => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none' && !e.closest('[hidden],svg,canvas,.sr-only,.tb-sr,.sp-sr,.ra-sr'); };
+      const nm = (e) => `${e.tagName.toLowerCase()}${e.id ? '#' + e.id : ''}.${String(e.className).split(' ')[0]} "${(e.getAttribute('aria-label') || e.textContent || '').trim().slice(0, 18)}"`;
+      const small = [], tiny = [], dim = [];
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) {
+        const e = n.parentElement; if (!e || !n.textContent.trim() || e.closest('script,style,noscript')) continue; if (!vis(e)) continue;
+        if (parseFloat(getComputedStyle(e).fontSize) < 11.95) small.push(nm(e));
+      }
+      const parse = (s) => { const m = s.match(/rgba?\(([^)]+)\)/); if (!m) return null; const q = m[1].split(/[ ,\/]+/).filter(Boolean).map(Number); return [q[0], q[1], q[2], q.length > 3 ? q[3] : 1]; };
+      const mix = (f, b) => [f[0] * f[3] + b[0] * (1 - f[3]), f[1] * f[3] + b[1] * (1 - f[3]), f[2] * f[3] + b[2] * (1 - f[3])];
+      const lum = (c) => { const g = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * g(c[0]) + 0.7152 * g(c[1]) + 0.0722 * g(c[2]); };
+      const back = (e) => { const st = []; for (let n = e; n && n.nodeType === 1; n = n.parentElement) { const cs = getComputedStyle(n); if (cs.backgroundImage !== 'none') return null; const c = parse(cs.backgroundColor); if (c && c[3] > 0) { st.push(c); if (c[3] >= 1) break; } } let b = [255, 255, 255]; for (let i = st.length - 1; i >= 0; i--) b = mix(st[i], b); return b; };
+      for (const e of document.querySelectorAll('a[href],button,summary,select,input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=range]),textarea,[role=button],[role=tab]')) {
+        if (!vis(e)) continue; const cs = getComputedStyle(e); const r = e.getBoundingClientRect();
+        if (e.matches('.tb-skip,.skip,.sr-only') || e.closest('.sr-only')) continue;
+        const inline = e.tagName === 'A' && cs.display === 'inline';
+        if (!inline && Math.min(r.width, r.height) < 43.5) tiny.push(`${nm(e)} ${Math.round(r.width)}x${Math.round(r.height)}`);
+        if (e.tagName === 'A' || e.tagName === 'BUTTON') {
+          const fg = parse(cs.color), bg = back(e); if (!fg || !bg || !(e.textContent || '').trim()) continue;
+          const f = mix([fg[0], fg[1], fg[2], fg[3]], bg); const L1 = lum(f), L2 = lum(bg); const ratio = (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+          if (ratio < 4.5) dim.push(`${nm(e)} ${ratio.toFixed(2)}`);
+        }
+      }
+      return { small: [...new Set(small)].slice(0, 5), tiny: [...new Set(tiny)].slice(0, 6), dim: [...new Set(dim)].slice(0, 5) };
+    });
+    const at = `${p} @${vp}`;
+    R.check(`${at}: app look, no text under 12px`, !s.small.length, s.small.join('; '));
+    R.check(`${at}: app look, no button or block link under 44px (inline links in a sentence excepted)`, !s.tiny.length, s.tiny.join('; '));
+    R.check(`${at}: app look, every link and button is readable (4.5:1 against what is behind it)`, !s.dim.length, s.dim.join('; '));
     await ctx.close();
   }
 }
