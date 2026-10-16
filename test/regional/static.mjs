@@ -19,7 +19,7 @@ import path from 'node:path';
 import { ROOT, HERE, reporter, walk } from './lib.mjs';
 
 const R = reporter('Static');
-const REGIONAL_DIRS = ['truncal', 'head-neck', 'lower-limb', 'brachial-plexus', 'plexus', 'spinal', 'shared/regional', 'blocks'];
+const REGIONAL_DIRS = ['truncal', 'head-neck', 'lower-limb', 'upper-limb', 'brachial-plexus', 'plexus', 'spinal', 'shared/regional', 'blocks'];
 const EXCLUDE = (f) => f.startsWith('lower-limb/anim/') || f.startsWith('test/') || f.includes('/vendor/') || f.startsWith('shared/vendor/');
 const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const files = walk(REGIONAL_DIRS, ['.js', '.mjs', '.html', '.css']).filter((f) => !EXCLUDE(f));
@@ -129,7 +129,7 @@ function resolveRef(f, spec) {
 // 6. versioned entry points
 {
   const bad = [];
-  for (const f of htmlFiles.filter((x) => /^(truncal|head-neck|lower-limb)\/[\w-]+\/index\.html$/.test(x))) {
+  for (const f of htmlFiles.filter((x) => /^(truncal|head-neck|lower-limb|upper-limb)\/[\w-]+\/index\.html$/.test(x))) {
     const src = read(f);
     if (!/src=["']js\/page\.js\?v=\d+["']/.test(src)) bad.push(`${f}: js/page.js has no ?v=`);
     if (!/regional\.css\?v=\d+/.test(src)) bad.push(`${f}: regional.css has no ?v=`);

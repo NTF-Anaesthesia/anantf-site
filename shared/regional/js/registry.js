@@ -14,7 +14,7 @@
 //   anatomyLink(idOrAlias)         -> '/plexus/#plexus=…&block=…' or '/brachial-plexus/#block=…&tab=…', or null
 
 export const REGIONS = Object.freeze([
-  { id: 'upper-limb', title: 'Upper limb', url: '/brachial-plexus/' },
+  { id: 'upper-limb', title: 'Upper limb', url: '/upper-limb/' },
   { id: 'trunk', title: 'Trunk', url: '/truncal/' },
   { id: 'head-neck', title: 'Head and neck', url: '/head-neck/' },
   { id: 'lower-limb', title: 'Lower limb', url: '/lower-limb/' },
@@ -22,8 +22,8 @@ export const REGIONS = Object.freeze([
 ]);
 
 /**
- * One entry per block (WP10). Keys are the block ids used in the page data and in #ch-<id> links; brachial plexus
- * blocks use that app's own ids (#block=<id>); a few entries are approaches or variants that have their own anchor
+ * One entry per block (WP10). Keys are the block ids used in the page data and in #ch-<id> links; the upper-limb
+ * blocks that the brachial plexus app also teaches keep that app's ids (its #block=<id> links still work); a few entries are approaches or variants that have their own anchor
  * inside a parent block's chapter, or blocks that so far live only in the 3D explorer (url → /plexus/).
  * Aliases: the ops-module keys (stap, acb, pop …), common abbreviations and other names, for /blocks/ search.
  * No alias may equal another entry's id (data.mjs checks that aliases are unique).
@@ -32,21 +32,36 @@ export const REGIONS = Object.freeze([
  * Titles are the page's own block titles, word for word.
  */
 export const REGISTRY = Object.freeze({
-  // ---------------------------------------------------------------- Upper limb (brachial plexus app)
-  interscalene: { title: 'Interscalene block', region: 'upper-limb', url: '/brachial-plexus/#block=interscalene',
+  // ---------------------------------------------------------------- Upper limb (upper-limb/ pages on the engine)
+  // The ids are the brachial plexus app's own; that app keeps its #block=<id> links, so old URLs still work.
+  interscalene: { title: 'Interscalene block', region: 'upper-limb', url: '/upper-limb/shoulder/#ch-interscalene',
     aliases: ['ISB', 'interscalene brachial plexus block'], anatomy3d: { plexus: 'brachial', block: 'interscalene' } },
-  'superior-trunk': { title: 'Superior trunk block', region: 'upper-limb', url: '/brachial-plexus/#block=superior-trunk',
+  'superior-trunk': { title: 'Superior trunk block', region: 'upper-limb', url: '/upper-limb/shoulder/#ch-superior-trunk',
     aliases: ['STB', 'upper trunk block'], anatomy3d: { plexus: 'brachial', block: 'superior-trunk' } },
-  supraclavicular: { title: 'Supraclavicular block', region: 'upper-limb', url: '/brachial-plexus/#block=supraclavicular',
+  suprascapular: { title: 'Suprascapular nerve block', region: 'upper-limb', url: '/upper-limb/shoulder/#ch-suprascapular',
+    aliases: ['SSNB', 'suprascapular nerve', 'suprascapular nerve block'], anatomy3d: { plexus: 'brachial', el: 'n-suprascapular' } },
+  'axillary-nerve': { title: 'Axillary nerve block', region: 'upper-limb', url: '/upper-limb/shoulder/#ch-axillary-nerve',
+    aliases: ['axillary nerve', 'ANB', 'quadrilateral space block'], anatomy3d: { plexus: 'brachial', el: 'n-axillary' } },
+  supraclavicular: { title: 'Supraclavicular block', region: 'upper-limb', url: '/upper-limb/arm/#ch-supraclavicular',
     aliases: ['SCB', 'supraclavicular brachial plexus block'], anatomy3d: { plexus: 'brachial', block: 'supraclavicular' } },
-  infraclavicular: { title: 'Infraclavicular block (coracoid / parasagittal)', region: 'upper-limb', url: '/brachial-plexus/#block=infraclavicular',
+  infraclavicular: { title: 'Infraclavicular block (coracoid / parasagittal)', region: 'upper-limb', url: '/upper-limb/arm/#ch-infraclavicular',
     aliases: ['ICB', 'coracoid block', 'lateral sagittal infraclavicular'], anatomy3d: { plexus: 'brachial', block: 'infraclavicular' } },
-  costoclavicular: { title: 'Costoclavicular block', region: 'upper-limb', url: '/brachial-plexus/#block=costoclavicular',
+  costoclavicular: { title: 'Costoclavicular block', region: 'upper-limb', url: '/upper-limb/arm/#ch-costoclavicular',
     aliases: ['CCB', 'costoclavicular brachial plexus block'], anatomy3d: { plexus: 'brachial', block: 'costoclavicular' } },
-  raptir: { title: 'RAPTIR (retroclavicular) block', region: 'upper-limb', url: '/brachial-plexus/#block=raptir',
+  raptir: { title: 'RAPTIR (retroclavicular) block', region: 'upper-limb', url: '/upper-limb/arm/#ch-raptir',
     aliases: ['retroclavicular block', 'retroclavicular'], anatomy3d: { plexus: 'brachial', block: 'raptir' } },
-  axillary: { title: 'Axillary block', region: 'upper-limb', url: '/brachial-plexus/#block=axillary',
+  axillary: { title: 'Axillary block', region: 'upper-limb', url: '/upper-limb/arm/#ch-axillary',
     aliases: ['axillary brachial plexus block', 'AXB'], anatomy3d: { plexus: 'brachial', block: 'axillary' } },
+  intercostobrachial: { title: 'Intercostobrachial nerve block', region: 'upper-limb', url: '/upper-limb/arm/#axillary-icbn',
+    aliases: ['ICBN', 'intercostobrachial nerve', 'intercostobrachial nerve block'], anatomy3d: { plexus: 'brachial', el: 'n-intercostobrachial' } },
+  'median-forearm': { title: 'Median nerve block in the forearm', region: 'upper-limb', url: '/upper-limb/forearm-hand/#ch-median-forearm',
+    aliases: ['median nerve block', 'median nerve', 'forearm median nerve block'], anatomy3d: { plexus: 'brachial', el: 'n-median' } },
+  'ulnar-forearm': { title: 'Ulnar nerve block in the forearm', region: 'upper-limb', url: '/upper-limb/forearm-hand/#ch-ulnar-forearm',
+    aliases: ['ulnar nerve block', 'ulnar nerve', 'forearm ulnar nerve block'], anatomy3d: { plexus: 'brachial', el: 'n-ulnar' } },
+  'radial-elbow': { title: 'Radial nerve block at the elbow', region: 'upper-limb', url: '/upper-limb/forearm-hand/#ch-radial-elbow',
+    aliases: ['radial nerve block', 'radial nerve', 'radial nerve at the elbow'], anatomy3d: { plexus: 'brachial', el: 'n-radial' } },
+  wrist: { title: 'Wrist block', region: 'upper-limb', url: '/upper-limb/forearm-hand/#ch-wrist',
+    aliases: ['wrist nerve block', 'wrist nerve blocks', 'wrist blocks'] },
 
   // ---------------------------------------------------------------- Trunk
   esp: { title: 'Erector spinae plane block', region: 'trunk', url: '/truncal/back/#ch-esp',

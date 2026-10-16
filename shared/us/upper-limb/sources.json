@@ -1,0 +1,1784 @@
+[
+  {
+    "file": "interscalene-1.jpg",
+    "block": "interscalene",
+    "blockId": "interscalene",
+    "blockIds": [
+      "superior-trunk"
+    ],
+    "page": "upper-limb/shoulder/",
+    "articleTitle": "Don't be perplexed by the plexus! A practical approach to brachial plexus ultrasound",
+    "authors": "Griffith JF",
+    "journal": "BJR|Open",
+    "year": 2025,
+    "doi": "10.1093/bjro/tzaf003",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11951253/",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (https://creativecommons.org/licenses/by/4.0/), which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 3",
+    "credit": "Griffith JF. BJR|Open 2025, Figure 3A. CC BY 4.0. Labels on the image are the author's.",
+    "caption": "The interscalene gap low in the neck: the upper (U), middle (M) and lower (L) trunks between the anterior (Sa) and middle (Sm) scalene. The neat \"traffic light\" is not always seen. The open arrow marks the phrenic nerve on the anterior scalene.",
+    "originalCaption": "(A) Transverse ultrasound of the interscalene gap shows the monofascicular upper (U), middle (M), and lower (L) trunks of the brachial plexus. The classic “traffic light sign” is not always seen. The phrenic nerve is shown (open arrow). (B) Transverse ultrasound of the interscalene gap shows the dorsal scapular artery (arrowhead) passing through the middle and upper trunks of the brachial plexus. The suprascapular nerve is shown (block arrow). Abbreviations: Sa = scalenus anterior muscle; Sm = scalenus medius muscle.",
+    "alt": "Transverse ultrasound of the interscalene gap: three round hypoechoic trunks stacked between the anterior and middle scalene muscles, with the subclavian artery deep at the edge.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "A; U, M, L, Sa, Sm, ScA; open arrow (phrenic nerve)",
+    "modifications": "Cropped to panel A of the original figure (copied from brachial-plexus/us/interscalene-1.jpg); re-saved as JPEG. Orientation inferred from the authors' labels (anterior scalene on the right).",
+    "labels": [
+      {
+        "text": "Superior trunk",
+        "kind": "nerve",
+        "x": 0.27,
+        "y": 0.31,
+        "shape": [
+          [
+            0.34,
+            0.31
+          ],
+          [
+            0.327,
+            0.363
+          ],
+          [
+            0.292,
+            0.396
+          ],
+          [
+            0.248,
+            0.396
+          ],
+          [
+            0.213,
+            0.363
+          ],
+          [
+            0.2,
+            0.31
+          ],
+          [
+            0.213,
+            0.257
+          ],
+          [
+            0.248,
+            0.224
+          ],
+          [
+            0.292,
+            0.224
+          ],
+          [
+            0.327,
+            0.257
+          ]
+        ],
+        "block": true,
+        "elementId": "trunk-sup",
+        "desc": "Upper trunk (C5–C6): the target for a superior trunk block."
+      },
+      {
+        "text": "Middle trunk",
+        "kind": "nerve",
+        "x": 0.445,
+        "y": 0.5,
+        "shape": [
+          [
+            0.52,
+            0.5
+          ],
+          [
+            0.506,
+            0.553
+          ],
+          [
+            0.468,
+            0.586
+          ],
+          [
+            0.422,
+            0.586
+          ],
+          [
+            0.384,
+            0.553
+          ],
+          [
+            0.37,
+            0.5
+          ],
+          [
+            0.384,
+            0.447
+          ],
+          [
+            0.422,
+            0.414
+          ],
+          [
+            0.468,
+            0.414
+          ],
+          [
+            0.506,
+            0.447
+          ]
+        ],
+        "elementId": "trunk-mid"
+      },
+      {
+        "text": "Inferior trunk",
+        "kind": "nerve",
+        "x": 0.56,
+        "y": 0.765,
+        "shape": [
+          [
+            0.64,
+            0.765
+          ],
+          [
+            0.625,
+            0.824
+          ],
+          [
+            0.585,
+            0.86
+          ],
+          [
+            0.535,
+            0.86
+          ],
+          [
+            0.495,
+            0.824
+          ],
+          [
+            0.48,
+            0.765
+          ],
+          [
+            0.495,
+            0.706
+          ],
+          [
+            0.535,
+            0.67
+          ],
+          [
+            0.585,
+            0.67
+          ],
+          [
+            0.625,
+            0.706
+          ]
+        ],
+        "elementId": "trunk-inf"
+      },
+      {
+        "text": "Anterior scalene",
+        "kind": "muscle",
+        "x": 0.69,
+        "y": 0.31,
+        "shape": [
+          [
+            0.43,
+            0.2
+          ],
+          [
+            0.6,
+            0.17
+          ],
+          [
+            0.8,
+            0.19
+          ],
+          [
+            0.99,
+            0.22
+          ],
+          [
+            0.99,
+            0.52
+          ],
+          [
+            0.84,
+            0.56
+          ],
+          [
+            0.68,
+            0.58
+          ],
+          [
+            0.56,
+            0.5
+          ],
+          [
+            0.5,
+            0.36
+          ]
+        ]
+      },
+      {
+        "text": "Middle scalene",
+        "kind": "muscle",
+        "x": 0.22,
+        "y": 0.66,
+        "shape": [
+          [
+            0.01,
+            0.45
+          ],
+          [
+            0.15,
+            0.5
+          ],
+          [
+            0.3,
+            0.57
+          ],
+          [
+            0.4,
+            0.66
+          ],
+          [
+            0.46,
+            0.8
+          ],
+          [
+            0.44,
+            0.98
+          ],
+          [
+            0.01,
+            0.98
+          ]
+        ]
+      },
+      {
+        "text": "Subclavian artery",
+        "kind": "artery",
+        "x": 0.93,
+        "y": 0.81,
+        "shape": [
+          [
+            0.995,
+            0.81
+          ],
+          [
+            0.983,
+            0.875
+          ],
+          [
+            0.95,
+            0.915
+          ],
+          [
+            0.91,
+            0.915
+          ],
+          [
+            0.877,
+            0.875
+          ],
+          [
+            0.865,
+            0.81
+          ],
+          [
+            0.877,
+            0.745
+          ],
+          [
+            0.91,
+            0.705
+          ],
+          [
+            0.95,
+            0.705
+          ],
+          [
+            0.983,
+            0.745
+          ]
+        ]
+      },
+      {
+        "text": "Phrenic nerve",
+        "kind": "nerve",
+        "x": 0.43,
+        "y": 0.22,
+        "elementId": "n-phrenic",
+        "desc": "On the anterior surface of the anterior scalene: why interscalene and superior trunk blocks can weaken the diaphragm."
+      }
+    ]
+  },
+  {
+    "file": "interscalene-2.jpg",
+    "block": "interscalene",
+    "blockId": "interscalene",
+    "blockIds": [
+      "superior-trunk"
+    ],
+    "page": "upper-limb/shoulder/",
+    "articleTitle": "Don't be perplexed by the plexus! A practical approach to brachial plexus ultrasound",
+    "authors": "Griffith JF",
+    "journal": "BJR|Open",
+    "year": 2025,
+    "doi": "10.1093/bjro/tzaf003",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11951253/",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (https://creativecommons.org/licenses/by/4.0/), which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 3",
+    "credit": "Griffith JF. BJR|Open 2025, Figure 3B. CC BY 4.0. Labels and arrows on the image are the author's.",
+    "caption": "A vessel in the needle path: the dorsal scapular artery (arrowhead) crossing between the middle and upper trunks. The block arrow marks the suprascapular nerve leaving the upper trunk. Colour Doppler before every neck block.",
+    "originalCaption": "(A) Transverse ultrasound of the interscalene gap shows the monofascicular upper (U), middle (M), and lower (L) trunks of the brachial plexus. The classic “traffic light sign” is not always seen. The phrenic nerve is shown (open arrow). (B) Transverse ultrasound of the interscalene gap shows the dorsal scapular artery (arrowhead) passing through the middle and upper trunks of the brachial plexus. The suprascapular nerve is shown (block arrow). Abbreviations: Sa = scalenus anterior muscle; Sm = scalenus medius muscle.",
+    "alt": "Transverse ultrasound of the interscalene gap with a tubular artery running obliquely across the trunks, beneath the anterior scalene.",
+    "orientation": {
+      "left": "lateral",
+      "right": "medial"
+    },
+    "burnedInLabels": "B; U, M, L, Sa, Sm; arrows, block arrow (suprascapular nerve), arrowhead (dorsal scapular artery)",
+    "modifications": "Cropped to panel B of the original figure (copied from brachial-plexus/us/interscalene-1.jpg); re-saved as JPEG.",
+    "labels": [
+      {
+        "text": "Superior trunk",
+        "kind": "nerve",
+        "x": 0.38,
+        "y": 0.29,
+        "block": true,
+        "elementId": "trunk-sup"
+      },
+      {
+        "text": "Suprascapular nerve",
+        "kind": "nerve",
+        "x": 0.25,
+        "y": 0.22,
+        "elementId": "n-suprascapular",
+        "desc": "Leaving the upper trunk laterally: inject before it leaves for a superior trunk block."
+      },
+      {
+        "text": "Dorsal scapular artery",
+        "kind": "artery",
+        "x": 0.76,
+        "y": 0.58,
+        "line": [
+          [
+            0.4,
+            0.45
+          ],
+          [
+            0.55,
+            0.5
+          ],
+          [
+            0.7,
+            0.56
+          ],
+          [
+            0.82,
+            0.62
+          ],
+          [
+            0.95,
+            0.68
+          ]
+        ],
+        "desc": "Crosses the plexus here: find it with colour Doppler before the needle."
+      },
+      {
+        "text": "Middle trunk",
+        "kind": "nerve",
+        "x": 0.57,
+        "y": 0.62,
+        "elementId": "trunk-mid"
+      },
+      {
+        "text": "Inferior trunk",
+        "kind": "nerve",
+        "x": 0.68,
+        "y": 0.71,
+        "elementId": "trunk-inf"
+      },
+      {
+        "text": "Anterior scalene",
+        "kind": "muscle",
+        "x": 0.73,
+        "y": 0.3,
+        "shape": [
+          [
+            0.45,
+            0.07
+          ],
+          [
+            0.99,
+            0.07
+          ],
+          [
+            0.99,
+            0.38
+          ],
+          [
+            0.8,
+            0.41
+          ],
+          [
+            0.62,
+            0.42
+          ],
+          [
+            0.5,
+            0.36
+          ],
+          [
+            0.45,
+            0.2
+          ]
+        ]
+      },
+      {
+        "text": "Middle scalene",
+        "kind": "muscle",
+        "x": 0.21,
+        "y": 0.71,
+        "shape": [
+          [
+            0.01,
+            0.52
+          ],
+          [
+            0.2,
+            0.53
+          ],
+          [
+            0.38,
+            0.6
+          ],
+          [
+            0.5,
+            0.75
+          ],
+          [
+            0.54,
+            0.98
+          ],
+          [
+            0.01,
+            0.98
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "file": "supraclavicular-1.jpg",
+    "block": "supraclavicular",
+    "blockId": "supraclavicular",
+    "page": "upper-limb/arm/",
+    "articleTitle": "Don't be perplexed by the plexus! A practical approach to brachial plexus ultrasound",
+    "authors": "Griffith JF",
+    "journal": "BJR|Open",
+    "year": 2025,
+    "doi": "10.1093/bjro/tzaf003",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11951253/",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (https://creativecommons.org/licenses/by/4.0/), which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 4",
+    "credit": "Griffith JF. BJR|Open 2025, Figure 4A. CC BY 4.0. Labels and arrows on the image are the author's.",
+    "caption": "The \"bunch of grapes\": the divisions of the plexus (between the arrows) clustered beside and above the subclavian artery (ScA).",
+    "originalCaption": "(A) Transverse ultrasound of the posterior triangle showing the “bunch of grapes” appearance of the divisions (arrows) aligned superomedial to the subclavian artery (ScA). (B) Transverse colour Doppler ultrasound shows the transverse cervical artery passing over the divisions of the brachial plexus.",
+    "alt": "Ultrasound of the posterior triangle: a cluster of small round hypoechoic nodules above a large dark round subclavian artery.",
+    "burnedInLabels": "A; ScA; arrows",
+    "modifications": "Cropped to panel A of the original figure (copied from brachial-plexus/us/supraclavicular-1.jpg); re-saved as JPEG.",
+    "labels": [
+      {
+        "text": "Trunks and divisions",
+        "kind": "nerve",
+        "x": 0.47,
+        "y": 0.45,
+        "block": true,
+        "shape": [
+          [
+            0.22,
+            0.47
+          ],
+          [
+            0.33,
+            0.34
+          ],
+          [
+            0.5,
+            0.31
+          ],
+          [
+            0.68,
+            0.34
+          ],
+          [
+            0.76,
+            0.43
+          ],
+          [
+            0.66,
+            0.55
+          ],
+          [
+            0.46,
+            0.59
+          ],
+          [
+            0.28,
+            0.58
+          ]
+        ],
+        "elementId": "trunk-sup",
+        "desc": "Brachial plexus as a honeycomb / \"bunch of grapes\" cluster of hypoechoic nodules."
+      },
+      {
+        "text": "Subclavian artery",
+        "kind": "artery",
+        "x": 0.42,
+        "y": 0.71,
+        "shape": [
+          [
+            0.55,
+            0.72
+          ],
+          [
+            0.525,
+            0.791
+          ],
+          [
+            0.46,
+            0.834
+          ],
+          [
+            0.38,
+            0.834
+          ],
+          [
+            0.315,
+            0.791
+          ],
+          [
+            0.29,
+            0.72
+          ],
+          [
+            0.315,
+            0.649
+          ],
+          [
+            0.38,
+            0.606
+          ],
+          [
+            0.46,
+            0.606
+          ],
+          [
+            0.525,
+            0.649
+          ]
+        ],
+        "desc": "Pulsatile subclavian artery resting on the first rib."
+      }
+    ]
+  },
+  {
+    "file": "supraclavicular-2.jpg",
+    "block": "supraclavicular",
+    "blockId": "supraclavicular",
+    "page": "upper-limb/arm/",
+    "articleTitle": "Don't be perplexed by the plexus! A practical approach to brachial plexus ultrasound",
+    "authors": "Griffith JF",
+    "journal": "BJR|Open",
+    "year": 2025,
+    "doi": "10.1093/bjro/tzaf003",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11951253/",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (https://creativecommons.org/licenses/by/4.0/), which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 4",
+    "credit": "Griffith JF. BJR|Open 2025, Figure 4B. CC BY 4.0.",
+    "caption": "Why you ask for colour Doppler: the transverse cervical artery arching over the divisions of the plexus, right in the needle path.",
+    "originalCaption": "(A) Transverse ultrasound of the posterior triangle showing the “bunch of grapes” appearance of the divisions (arrows) aligned superomedial to the subclavian artery (ScA). (B) Transverse colour Doppler ultrasound shows the transverse cervical artery passing over the divisions of the brachial plexus.",
+    "alt": "Colour Doppler ultrasound: a red and blue arch of flow (the transverse cervical artery) running over the plexus.",
+    "burnedInLabels": "B; colour Doppler box",
+    "authorLabels": false,
+    "modifications": "Cropped to panel B of the original figure (copied from brachial-plexus/us/supraclavicular-1.jpg); re-saved as JPEG.",
+    "labels": [
+      {
+        "text": "Transverse cervical artery",
+        "kind": "artery",
+        "x": 0.5,
+        "y": 0.3,
+        "tx": 0.5,
+        "ty": 0.12,
+        "line": [
+          [
+            0.04,
+            0.67
+          ],
+          [
+            0.15,
+            0.55
+          ],
+          [
+            0.25,
+            0.43
+          ],
+          [
+            0.37,
+            0.32
+          ],
+          [
+            0.5,
+            0.3
+          ],
+          [
+            0.62,
+            0.37
+          ],
+          [
+            0.75,
+            0.49
+          ],
+          [
+            0.86,
+            0.6
+          ],
+          [
+            0.95,
+            0.62
+          ]
+        ],
+        "desc": "Dorsal scapular and suprascapular arteries may cross the plexus: colour Doppler."
+      },
+      {
+        "text": "Trunks and divisions",
+        "kind": "nerve",
+        "x": 0.52,
+        "y": 0.53,
+        "tx": 0.52,
+        "ty": 0.82,
+        "block": true,
+        "shape": [
+          [
+            0.36,
+            0.47
+          ],
+          [
+            0.5,
+            0.42
+          ],
+          [
+            0.64,
+            0.47
+          ],
+          [
+            0.67,
+            0.6
+          ],
+          [
+            0.5,
+            0.66
+          ],
+          [
+            0.37,
+            0.61
+          ]
+        ],
+        "elementId": "trunk-sup"
+      }
+    ]
+  },
+  {
+    "file": "infraclavicular-1.jpg",
+    "block": "infraclavicular",
+    "blockId": "infraclavicular",
+    "blockIds": [
+      "raptir"
+    ],
+    "page": "upper-limb/arm/",
+    "articleTitle": "Don't be perplexed by the plexus! A practical approach to brachial plexus ultrasound",
+    "authors": "Griffith JF",
+    "journal": "BJR|Open",
+    "year": 2025,
+    "doi": "10.1093/bjro/tzaf003",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11951253/",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (https://creativecommons.org/licenses/by/4.0/), which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 6",
+    "credit": "Griffith JF. BJR|Open 2025, Figure 6B. CC BY 4.0. Labels and arrows on the image are the author's.",
+    "caption": "Deep to pectoralis major (Pmj) and minor (Pmi): the cords (arrows) around the axillary artery (AxA), with the axillary vein (AxV) beside it.",
+    "originalCaption": "(A) Schematic diagram of infraclavicular area. (B) Transverse ultrasound examination showing the cords (arrows) aligned alongside the axillary artery (AxA). Abbreviations: Pmi = pectoralis minor; Pmj = pectoralis major; AxV = axillary vein.",
+    "alt": "Ultrasound below the clavicle: two layers of pectoral muscle over a round axillary artery with small cords around it and the axillary vein to one side.",
+    "burnedInLabels": "B; Pmj, Pmi, AxA, AxV; arrows",
+    "modifications": "Cropped to the ultrasound panel B (panel A, a 3D schematic, removed) (copied from brachial-plexus/us/infraclavicular-1.jpg); re-saved as JPEG.",
+    "labels": [
+      {
+        "text": "Pectoralis major",
+        "kind": "muscle",
+        "x": 0.39,
+        "y": 0.26,
+        "shape": [
+          [
+            0.0,
+            0.06
+          ],
+          [
+            1.0,
+            0.06
+          ],
+          [
+            1.0,
+            0.36
+          ],
+          [
+            0.0,
+            0.37
+          ]
+        ]
+      },
+      {
+        "text": "Pectoralis minor",
+        "kind": "muscle",
+        "x": 0.58,
+        "y": 0.53,
+        "shape": [
+          [
+            0.0,
+            0.44
+          ],
+          [
+            0.5,
+            0.47
+          ],
+          [
+            1.0,
+            0.45
+          ],
+          [
+            1.0,
+            0.62
+          ],
+          [
+            0.6,
+            0.62
+          ],
+          [
+            0.45,
+            0.6
+          ],
+          [
+            0.0,
+            0.56
+          ]
+        ]
+      },
+      {
+        "text": "Axillary artery",
+        "kind": "artery",
+        "x": 0.38,
+        "y": 0.68,
+        "shape": [
+          [
+            0.46,
+            0.68
+          ],
+          [
+            0.444,
+            0.739
+          ],
+          [
+            0.401,
+            0.775
+          ],
+          [
+            0.349,
+            0.775
+          ],
+          [
+            0.306,
+            0.739
+          ],
+          [
+            0.29,
+            0.68
+          ],
+          [
+            0.306,
+            0.621
+          ],
+          [
+            0.349,
+            0.585
+          ],
+          [
+            0.401,
+            0.585
+          ],
+          [
+            0.444,
+            0.621
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Axillary vein",
+        "kind": "vein",
+        "x": 0.74,
+        "y": 0.775,
+        "shape": [
+          [
+            0.85,
+            0.77
+          ],
+          [
+            0.829,
+            0.817
+          ],
+          [
+            0.774,
+            0.846
+          ],
+          [
+            0.706,
+            0.846
+          ],
+          [
+            0.651,
+            0.817
+          ],
+          [
+            0.63,
+            0.77
+          ],
+          [
+            0.651,
+            0.723
+          ],
+          [
+            0.706,
+            0.694
+          ],
+          [
+            0.774,
+            0.694
+          ],
+          [
+            0.829,
+            0.723
+          ]
+        ]
+      },
+      {
+        "text": "Cords",
+        "kind": "nerve",
+        "x": 0.28,
+        "y": 0.56,
+        "desc": "The cords lie around the axillary artery; you do not need to see them all: U-shaped spread around the artery is enough."
+      },
+      {
+        "text": "Cords",
+        "kind": "nerve",
+        "x": 0.29,
+        "y": 0.8
+      },
+      {
+        "text": "Cords",
+        "kind": "nerve",
+        "x": 0.5,
+        "y": 0.71
+      }
+    ]
+  },
+  {
+    "file": "infraclavicular-2.jpg",
+    "block": "infraclavicular",
+    "blockId": "raptir",
+    "blockIds": [
+      "infraclavicular"
+    ],
+    "page": "upper-limb/arm/",
+    "articleTitle": "Posterior parasagittal in-plane ultrasound-guided infraclavicular brachial plexus block—a case series",
+    "authors": "Beh ZY, Hasan MS, Lai HY, Kassim NM, Md Zin SR, Chin KF",
+    "journal": "BMC Anesthesiology",
+    "year": 2015,
+    "doi": "10.1186/s12871-015-0090-0",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4509774/",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly credited.",
+    "figure": "Fig. 6",
+    "originalCaption": "Ultrasound guided posterior parasagittal in-plane infraclavicular brachial plexus block (a) needle trajectory - horizontal, easy direction towards target point, good needle visualization in most cases (b) LA deposit on posterolateral aspect of axillary artery, creating double bubble sign",
+    "orientation": {
+      "left": "cranial",
+      "right": "caudal"
+    },
+    "credit": "Beh ZY, Hasan MS, Lai HY, et al. BMC Anesthesiology 2015, Fig. 6a. CC BY 4.0. Labels on the image are the authors'.",
+    "caption": "The needle from behind the clavicle (posterior parasagittal, the RAPTIR path): it enters cranially, under the clavicle, and runs almost flat towards the back of the axillary artery (AA), so the shaft is easy to see.",
+    "alt": "Dark parasagittal ultrasound: pectoral muscles near the top, the axillary artery, and a needle coming in nearly horizontally from the cranial side.",
+    "burnedInLabels": "A; skin, pectoralis muscles, clavicle, AA, Needle, cranial, caudal, lung, posterior",
+    "modifications": "Cropped to panel A of the original figure (copied from brachial-plexus/us/infraclavicular-2.jpg); re-saved as JPEG.",
+    "needle": [
+      [
+        0.12,
+        0.52
+      ],
+      [
+        0.64,
+        0.44
+      ]
+    ],
+    "labels": [
+      {
+        "text": "Axillary artery",
+        "kind": "artery",
+        "x": 0.72,
+        "y": 0.38,
+        "shape": [
+          [
+            0.79,
+            0.38
+          ],
+          [
+            0.777,
+            0.421
+          ],
+          [
+            0.742,
+            0.447
+          ],
+          [
+            0.698,
+            0.447
+          ],
+          [
+            0.663,
+            0.421
+          ],
+          [
+            0.65,
+            0.38
+          ],
+          [
+            0.663,
+            0.339
+          ],
+          [
+            0.698,
+            0.313
+          ],
+          [
+            0.742,
+            0.313
+          ],
+          [
+            0.777,
+            0.339
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Pectoral muscles",
+        "kind": "muscle",
+        "x": 0.64,
+        "y": 0.22,
+        "shape": [
+          [
+            0.2,
+            0.16
+          ],
+          [
+            1.0,
+            0.16
+          ],
+          [
+            1.0,
+            0.31
+          ],
+          [
+            0.2,
+            0.3
+          ]
+        ]
+      },
+      {
+        "text": "Clavicle (shadow)",
+        "kind": "shadow",
+        "x": 0.1,
+        "y": 0.4,
+        "shape": [
+          [
+            0.0,
+            0.12
+          ],
+          [
+            0.19,
+            0.12
+          ],
+          [
+            0.19,
+            0.95
+          ],
+          [
+            0.0,
+            0.95
+          ]
+        ],
+        "desc": "Clavicle acoustic shadow at the cephalad edge of the image: the needle shaft is hidden there at first."
+      },
+      {
+        "text": "Lung",
+        "kind": "pleura",
+        "x": 0.85,
+        "y": 0.65
+      }
+    ]
+  },
+  {
+    "file": "infraclavicular-3.jpg",
+    "block": "infraclavicular",
+    "blockId": "raptir",
+    "blockIds": [
+      "infraclavicular"
+    ],
+    "page": "upper-limb/arm/",
+    "articleTitle": "Posterior parasagittal in-plane ultrasound-guided infraclavicular brachial plexus block—a case series",
+    "authors": "Beh ZY, Hasan MS, Lai HY, Kassim NM, Md Zin SR, Chin KF",
+    "journal": "BMC Anesthesiology",
+    "year": 2015,
+    "doi": "10.1186/s12871-015-0090-0",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4509774/",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (http://creativecommons.org/licenses/by/4.0), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly credited.",
+    "figure": "Fig. 6",
+    "originalCaption": "Ultrasound guided posterior parasagittal in-plane infraclavicular brachial plexus block (a) needle trajectory - horizontal, easy direction towards target point, good needle visualization in most cases (b) LA deposit on posterolateral aspect of axillary artery, creating double bubble sign",
+    "orientation": {
+      "left": "cranial",
+      "right": "caudal"
+    },
+    "credit": "Beh ZY, Hasan MS, Lai HY, et al. BMC Anesthesiology 2015, Fig. 6b. CC BY 4.0. Labels on the image are the authors'.",
+    "caption": "After the injection: local anaesthetic behind the axillary artery, the \"double bubble\" that predicts a good block.",
+    "alt": "Dark parasagittal ultrasound: the axillary artery with a dark crescent of local anaesthetic deep to it, and the needle from the cranial side.",
+    "burnedInLabels": "B; skin, pectoralis muscles, clavicle, AA, Needle, cranial, caudal, lung, posterior, 'LA spread double bubble sign'",
+    "modifications": "Cropped to panel B of the original figure (copied from brachial-plexus/us/infraclavicular-2.jpg); re-saved as JPEG.",
+    "needle": [
+      [
+        0.08,
+        0.62
+      ],
+      [
+        0.44,
+        0.56
+      ]
+    ],
+    "la": [
+      [
+        0.4,
+        0.53
+      ],
+      [
+        0.5,
+        0.57
+      ],
+      [
+        0.62,
+        0.55
+      ],
+      [
+        0.66,
+        0.62
+      ],
+      [
+        0.52,
+        0.7
+      ],
+      [
+        0.38,
+        0.65
+      ]
+    ],
+    "labels": [
+      {
+        "text": "Axillary artery",
+        "kind": "artery",
+        "x": 0.525,
+        "y": 0.475,
+        "shape": [
+          [
+            0.595,
+            0.46
+          ],
+          [
+            0.582,
+            0.501
+          ],
+          [
+            0.547,
+            0.527
+          ],
+          [
+            0.503,
+            0.527
+          ],
+          [
+            0.468,
+            0.501
+          ],
+          [
+            0.455,
+            0.46
+          ],
+          [
+            0.468,
+            0.419
+          ],
+          [
+            0.503,
+            0.393
+          ],
+          [
+            0.547,
+            0.393
+          ],
+          [
+            0.582,
+            0.419
+          ]
+        ],
+        "block": true
+      },
+      {
+        "text": "Pectoral muscles",
+        "kind": "muscle",
+        "x": 0.6,
+        "y": 0.23,
+        "shape": [
+          [
+            0.15,
+            0.17
+          ],
+          [
+            1.0,
+            0.17
+          ],
+          [
+            1.0,
+            0.3
+          ],
+          [
+            0.15,
+            0.3
+          ]
+        ]
+      },
+      {
+        "text": "Clavicle (shadow)",
+        "kind": "shadow",
+        "x": 0.08,
+        "y": 0.4,
+        "shape": [
+          [
+            0.0,
+            0.12
+          ],
+          [
+            0.16,
+            0.12
+          ],
+          [
+            0.16,
+            0.95
+          ],
+          [
+            0.0,
+            0.95
+          ]
+        ]
+      },
+      {
+        "text": "Lung",
+        "kind": "pleura",
+        "x": 0.84,
+        "y": 0.64
+      }
+    ]
+  },
+  {
+    "file": "axillary-1.jpg",
+    "block": "axillary",
+    "blockId": "axillary",
+    "page": "upper-limb/arm/",
+    "articleTitle": "Don't be perplexed by the plexus! A practical approach to brachial plexus ultrasound",
+    "authors": "Griffith JF",
+    "journal": "BJR|Open",
+    "year": 2025,
+    "doi": "10.1093/bjro/tzaf003",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11951253/",
+    "licence": "CC BY 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an Open Access article distributed under the terms of the Creative Commons Attribution License (https://creativecommons.org/licenses/by/4.0/), which permits unrestricted reuse, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 7",
+    "credit": "Griffith JF. BJR|Open 2025, Figure 7. CC BY 4.0. Labels on the image are the author's.",
+    "caption": "The axillary view: median (M), ulnar (U) and radial (R) nerves around the axillary artery (AxA), veins (V), and the musculocutaneous nerve (arrow) between biceps (B) and coracobrachialis (CB).",
+    "originalCaption": "Transverse ultrasound of axillary fossa showing the musculocutaneous nerve (MCN) lying between the biceps (B) and coracobrachialis (Cb) muscles. The median nerve (M) consistently lies closest to the biceps muscle. The radial nerve (R) tends to lie towards the posterior of the axillary artery while the ulnar nerve lies superomedial to the axillary artery between the radial and medial nerves.",
+    "alt": "Transverse ultrasound of the axilla: a dark round axillary artery with three nerves around it, veins, and the biceps and coracobrachialis on one side.",
+    "orientation": {
+      "left": "biceps side",
+      "right": "triceps side"
+    },
+    "burnedInLabels": "B, CB, M, U, R, AxA, V; arrow",
+    "modifications": "None (copied from brachial-plexus/us/axillary-1.jpg).",
+    "labels": [
+      {
+        "text": "Median nerve",
+        "kind": "nerve",
+        "x": 0.486,
+        "y": 0.28,
+        "shape": [
+          [
+            0.54,
+            0.29
+          ],
+          [
+            0.53,
+            0.322
+          ],
+          [
+            0.505,
+            0.342
+          ],
+          [
+            0.475,
+            0.342
+          ],
+          [
+            0.45,
+            0.322
+          ],
+          [
+            0.44,
+            0.29
+          ],
+          [
+            0.45,
+            0.258
+          ],
+          [
+            0.475,
+            0.238
+          ],
+          [
+            0.505,
+            0.238
+          ],
+          [
+            0.53,
+            0.258
+          ]
+        ],
+        "block": true,
+        "elementId": "n-median"
+      },
+      {
+        "text": "Ulnar nerve",
+        "kind": "nerve",
+        "x": 0.686,
+        "y": 0.32,
+        "shape": [
+          [
+            0.73,
+            0.33
+          ],
+          [
+            0.72,
+            0.359
+          ],
+          [
+            0.695,
+            0.378
+          ],
+          [
+            0.665,
+            0.378
+          ],
+          [
+            0.64,
+            0.359
+          ],
+          [
+            0.63,
+            0.33
+          ],
+          [
+            0.64,
+            0.301
+          ],
+          [
+            0.665,
+            0.282
+          ],
+          [
+            0.695,
+            0.282
+          ],
+          [
+            0.72,
+            0.301
+          ]
+        ],
+        "block": true,
+        "elementId": "n-ulnar"
+      },
+      {
+        "text": "Radial nerve",
+        "kind": "nerve",
+        "x": 0.73,
+        "y": 0.535,
+        "shape": [
+          [
+            0.795,
+            0.535
+          ],
+          [
+            0.783,
+            0.57
+          ],
+          [
+            0.75,
+            0.592
+          ],
+          [
+            0.71,
+            0.592
+          ],
+          [
+            0.677,
+            0.57
+          ],
+          [
+            0.665,
+            0.535
+          ],
+          [
+            0.677,
+            0.5
+          ],
+          [
+            0.71,
+            0.478
+          ],
+          [
+            0.75,
+            0.478
+          ],
+          [
+            0.783,
+            0.5
+          ]
+        ],
+        "block": true,
+        "elementId": "n-radial",
+        "desc": "Deep (posterior) to the artery: often the hardest to see."
+      },
+      {
+        "text": "Musculocutaneous nerve",
+        "kind": "nerve",
+        "x": 0.09,
+        "y": 0.73,
+        "block": true,
+        "elementId": "n-musculocutaneous",
+        "desc": "Between biceps and coracobrachialis: it needs its own injection."
+      },
+      {
+        "text": "Axillary artery",
+        "kind": "artery",
+        "x": 0.555,
+        "y": 0.485,
+        "shape": [
+          [
+            0.615,
+            0.49
+          ],
+          [
+            0.6,
+            0.561
+          ],
+          [
+            0.56,
+            0.604
+          ],
+          [
+            0.51,
+            0.604
+          ],
+          [
+            0.47,
+            0.561
+          ],
+          [
+            0.455,
+            0.49
+          ],
+          [
+            0.47,
+            0.419
+          ],
+          [
+            0.51,
+            0.376
+          ],
+          [
+            0.56,
+            0.376
+          ],
+          [
+            0.6,
+            0.419
+          ]
+        ]
+      },
+      {
+        "text": "Veins",
+        "kind": "vein",
+        "x": 0.4,
+        "y": 0.35
+      },
+      {
+        "text": "Veins",
+        "kind": "vein",
+        "x": 0.62,
+        "y": 0.235
+      },
+      {
+        "text": "Veins",
+        "kind": "vein",
+        "x": 0.89,
+        "y": 0.33
+      },
+      {
+        "text": "Biceps",
+        "kind": "muscle",
+        "x": 0.108,
+        "y": 0.4,
+        "shape": [
+          [
+            0.0,
+            0.17
+          ],
+          [
+            0.33,
+            0.2
+          ],
+          [
+            0.36,
+            0.3
+          ],
+          [
+            0.32,
+            0.45
+          ],
+          [
+            0.2,
+            0.55
+          ],
+          [
+            0.0,
+            0.62
+          ]
+        ]
+      },
+      {
+        "text": "Coracobrachialis",
+        "kind": "muscle",
+        "x": 0.243,
+        "y": 0.74,
+        "shape": [
+          [
+            0.0,
+            0.63
+          ],
+          [
+            0.2,
+            0.57
+          ],
+          [
+            0.33,
+            0.5
+          ],
+          [
+            0.4,
+            0.6
+          ],
+          [
+            0.38,
+            0.8
+          ],
+          [
+            0.3,
+            0.95
+          ],
+          [
+            0.0,
+            0.98
+          ]
+        ]
+      }
+    ]
+  },
+  {
+    "file": "axillary-2.jpg",
+    "block": "axillary",
+    "blockId": "axillary",
+    "page": "upper-limb/arm/",
+    "articleTitle": "Axillary Brachial Plexus Block",
+    "authors": "Satapathy AR, Coventry DM",
+    "journal": "Anesthesiology Research and Practice",
+    "year": 2011,
+    "doi": "10.1155/2011/173796",
+    "articleUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3119420/",
+    "licence": "CC BY (Creative Commons Attribution License; version not stated)",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "licenceQuote": "This is an open access article distributed under the Creative Commons Attribution License, which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited.",
+    "figure": "Figure 2",
+    "credit": "Satapathy AR, Coventry DM. Anesthesiology Research and Practice 2011, Figure 2. CC BY. Labels on the image are the authors'.",
+    "caption": "An in-plane axillary block: the whole needle shaft visible, local anaesthetic (LA) around the musculocutaneous nerve (mu), and the median (m), ulnar (u) and radial (r) nerves around the axillary artery (AA).",
+    "originalCaption": "Ultrasound scan of axilla. AA: axillary artery, LA: local anaesthetics, r: radial nerve, mu: musculocutaneous nerve, m: median nerve, and u: ulnar nerve. This is an in-plane approach, with the whole length of the needle shaft visible under ultrasound.",
+    "alt": "Ultrasound of the axilla with an in-plane needle from the left, a pool of local anaesthetic deep in the image, and the axillary artery with nerves around it.",
+    "burnedInLabels": "GE logo and grey scale bar; 3 cm depth; Skin, Needle shaft, m, u, r, mu, AA, LA, Humerus",
+    "modifications": "None (copied from brachial-plexus/us/axillary-2.jpg).",
+    "needle": [
+      [
+        0.06,
+        0.22
+      ],
+      [
+        0.25,
+        0.5
+      ]
+    ],
+    "la": [
+      [
+        0.12,
+        0.5
+      ],
+      [
+        0.25,
+        0.47
+      ],
+      [
+        0.35,
+        0.5
+      ],
+      [
+        0.38,
+        0.58
+      ],
+      [
+        0.25,
+        0.61
+      ],
+      [
+        0.12,
+        0.58
+      ]
+    ],
+    "labels": [
+      {
+        "text": "Median nerve",
+        "kind": "nerve",
+        "x": 0.47,
+        "y": 0.22,
+        "shape": [
+          [
+            0.508,
+            0.205
+          ],
+          [
+            0.5,
+            0.231
+          ],
+          [
+            0.48,
+            0.248
+          ],
+          [
+            0.456,
+            0.248
+          ],
+          [
+            0.436,
+            0.231
+          ],
+          [
+            0.428,
+            0.205
+          ],
+          [
+            0.436,
+            0.179
+          ],
+          [
+            0.456,
+            0.162
+          ],
+          [
+            0.48,
+            0.162
+          ],
+          [
+            0.5,
+            0.179
+          ]
+        ],
+        "block": true,
+        "elementId": "n-median"
+      },
+      {
+        "text": "Ulnar nerve",
+        "kind": "nerve",
+        "x": 0.66,
+        "y": 0.25,
+        "shape": [
+          [
+            0.71,
+            0.25
+          ],
+          [
+            0.7,
+            0.279
+          ],
+          [
+            0.675,
+            0.298
+          ],
+          [
+            0.645,
+            0.298
+          ],
+          [
+            0.62,
+            0.279
+          ],
+          [
+            0.61,
+            0.25
+          ],
+          [
+            0.62,
+            0.221
+          ],
+          [
+            0.645,
+            0.202
+          ],
+          [
+            0.675,
+            0.202
+          ],
+          [
+            0.7,
+            0.221
+          ]
+        ],
+        "block": true,
+        "elementId": "n-ulnar"
+      },
+      {
+        "text": "Radial nerve",
+        "kind": "nerve",
+        "x": 0.607,
+        "y": 0.366,
+        "block": true,
+        "elementId": "n-radial"
+      },
+      {
+        "text": "Musculocutaneous nerve",
+        "kind": "nerve",
+        "x": 0.36,
+        "y": 0.56,
+        "block": true,
+        "elementId": "n-musculocutaneous"
+      },
+      {
+        "text": "Axillary artery",
+        "kind": "artery",
+        "x": 0.504,
+        "y": 0.35,
+        "shape": [
+          [
+            0.57,
+            0.355
+          ],
+          [
+            0.558,
+            0.402
+          ],
+          [
+            0.525,
+            0.431
+          ],
+          [
+            0.485,
+            0.431
+          ],
+          [
+            0.452,
+            0.402
+          ],
+          [
+            0.44,
+            0.355
+          ],
+          [
+            0.452,
+            0.308
+          ],
+          [
+            0.485,
+            0.279
+          ],
+          [
+            0.525,
+            0.279
+          ],
+          [
+            0.558,
+            0.308
+          ]
+        ]
+      },
+      {
+        "text": "Humerus",
+        "kind": "bone",
+        "x": 0.21,
+        "y": 0.91,
+        "line": [
+          [
+            0.05,
+            0.92
+          ],
+          [
+            0.2,
+            0.9
+          ],
+          [
+            0.35,
+            0.92
+          ]
+        ]
+      }
+    ]
+  }
+]

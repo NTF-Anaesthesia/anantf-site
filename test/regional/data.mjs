@@ -7,7 +7,7 @@
 // Checks:
 //   1. registry.js: regions valid, urls resolve to real pages and ids, aliases unique, anatomy3d / watch point at real
 //      plexus blocks / elements / animations, and every engine block has an entry (once WP10 fills it);
-//   2. ops modules (truncal, head-neck, lower-limb): ids unique, every block key resolves to a link, every link to a real
+//   2. ops modules (truncal, head-neck, lower-limb, upper-limb): ids unique, every block key resolves to a link, every link to a real
 //      page + id, map zones / dermatome levels exist in the figure modules;
 //   3. tiers: every tier / tiers value is 1, 2 or 3; SAFETY: no dose, LAST line or complications item tagged above 1;
 //   4. plexus data: no element in both target and covers (other overlaps warned), every listed element exists, every
@@ -25,7 +25,7 @@ import { args, BASE, ROOT, HERE, ENGINE_PAGES, LANDINGS, FORCE_CSS, launch, open
 const R = reporter('Data');
 const ALLOW = readJson(path.join(HERE, 'data-allow.json'), { doses: [] });
 const allowed = (key) => (ALLOW.doses || []).some((a) => (typeof a === 'string' ? a : a.key) === key);
-const OPS_FILES = { truncal: 'shared/regional/js/ops/ops-truncal.js', 'head-neck': 'shared/regional/js/ops/ops-headneck.js', 'lower-limb': 'shared/regional/js/ops/ops-lowerlimb.js' };
+const OPS_FILES = { truncal: 'shared/regional/js/ops/ops-truncal.js', 'head-neck': 'shared/regional/js/ops/ops-headneck.js', 'lower-limb': 'shared/regional/js/ops/ops-lowerlimb.js', 'upper-limb': 'shared/regional/js/ops/ops-upperlimb.js' };
 
 // ------------------------------------------------------------------ gather
 async function gatherModules(browser) {
@@ -51,6 +51,7 @@ async function gatherModules(browser) {
       try { const b = await import('/brachial-plexus/js/data.js'); out.brachial = { elements: Object.keys(b.ELEMENTS || {}), blocks: Object.keys(b.BLOCKS || {}) }; } catch (e) { out.errors.push(`brachial data: ${e.message}`); }
       try { const h = await import('/shared/regional/js/figures/head.js'); out.headZones = [...Object.keys(h.ZONES || {}), ...Object.keys(h.GROUPS || {})]; } catch (e) { out.errors.push(`head.js: ${e.message}`); }
       try { const l = await import('/shared/regional/js/figures/leg.js'); out.legZones = [...Object.keys(l.ZONES || {}), ...Object.keys(l.GROUPS || {})]; } catch (e) { out.errors.push(`leg.js: ${e.message}`); }
+      try { const a = await import('/shared/regional/js/figures/arm.js'); out.armZones = [...Object.keys(a.ZONES || {}), ...Object.keys(a.GROUPS || {})]; } catch (e) { out.errors.push(`arm.js: ${e.message}`); }
       return out;
     }, { engine: ENGINE_PAGES, opsFiles: OPS_FILES });
     data.errors.push(...log.pageErrors);
@@ -246,7 +247,7 @@ async function main() {
         for (const f of [op.cover?.from, op.cover?.to]) if (f && !o.SEGS.includes(f)) bad.push(`${op.id}: cover level ${f} not in SEGS`);
         for (const l of op.single?.levels || []) if (!o.SEGS.includes(l)) bad.push(`${op.id}: single-shot level ${l} not in SEGS`);
       }
-      const zones = region === 'head-neck' ? D.headZones : region === 'lower-limb' ? D.legZones : null;
+      const zones = region === 'head-neck' ? D.headZones : region === 'lower-limb' ? D.legZones : region === 'upper-limb' ? D.armZones : null;
       if (zones) for (const a of op.map?.areas || []) for (const z of a.zones || []) if (!zones.includes(z)) bad.push(`${op.id}: map zone "${z}" not in the figure`);
     }
     R.check(`ops ${region}: every block key and figure zone resolves`, !bad.length, bad.join('\n'));

@@ -1,0 +1,296 @@
+// Shoulder blocks: block data (schema: ../../../shared/regional/DATA.md, "Block schema"; arm figures:
+// ../../../shared/regional/js/figures/arm.js). Interscalene and superior trunk use the brachial plexus app's wording,
+// volumes, coverage, complications, pearls and exam questions (brachial-plexus/js/data.js), word for word where
+// possible. The suprascapular and axillary nerve blocks are new, written to mainstream UK and European practice.
+// No citations on these pages.
+import { armCoverageMap } from '../../../shared/regional/js/figures/arm.js';
+import { SCENES } from './scenes.js?v=20261016';
+
+const qa = (q, a) => ({ source: 'Practice question', q: `<p>${q}</p>`, points: a.split(/(?<=[.;])\s+(?=[A-Z])/) });
+const ul = (items) => `<ul>${items.map((t) => `<li>${t}</li>`).join('')}</ul>`;
+
+export const BLOCKS = [
+  // ------------------------------------------------------------------ interscalene
+  {
+    id: 'interscalene',
+    kicker: 'Shoulder · Roots',
+    title: 'Interscalene block',
+    summary: 'Local anaesthetic between the <strong>C5 and C6 roots</strong> in the interscalene groove. Upper roots (C5–C7): <strong>shoulder, lateral clavicle and proximal humerus</strong>. Sparing of C8–T1 is expected, so the ulnar territory is usually not blocked. The <strong>phrenic nerve</strong> is blocked in almost every patient.',
+    indications: ['Shoulder arthroscopy', 'Total shoulder arthroplasty', 'Proximal humerus fractures', 'Lateral clavicle surgery'],
+    glance: {
+      position: 'Supine or semi-sitting, head turned away, arm by the side',
+      probe: 'Linear, transverse across the neck at C6',
+      needle: '50 mm echogenic, in-plane, posterior to anterior',
+      dose: '15 ml of 0.5% ropivacaine',
+      covers: 'Shoulder, lateral clavicle and proximal humerus; C8–T1 (ulnar) spared',
+    },
+    anatomy3d: { plexus: 'brachial', block: 'interscalene', brachialApp: { block: 'interscalene' } },
+    scene: SCENES.interscalene,
+    position: '<p>Supine, head turned away, arm by the side. Donut under the head to create space for the needle. Head up slightly (less prominent neck veins), and ask the patient to reach towards the knee on the same side to drop the shoulder and give more room.</p>',
+    equipment: ['High-frequency linear probe with colour Doppler', '50 mm echogenic needle', '15 ml of 0.5% ropivacaine', 'Monitoring, IV access and the local anaesthetic toxicity kit within reach'],
+    landmarks: '<p>Interscalene groove at the level of C6 (cricoid cartilage). Probe transverse to the neck: identify the common carotid artery, then scan laterally.</p><p>Level check: C6 has the prominent anterior (Chassaignac) tubercle; C7 has a deficient anterior tubercle because the vertebral artery enters the transverse foramen at C6.</p>',
+    approach: '<p>In-plane, posterior to anterior (needle passes through or behind the middle scalene). Beware other branches in the needle path: dorsal scapular and long thoracic nerves in the middle scalene.</p>',
+    sonoanatomy: ul([
+      'Sternocleidomastoid (superficial)',
+      'Anterior scalene (medial) and middle scalene (lateral)',
+      'C5 and C6 roots (C6 often split) stacked as the "traffic light" between the scalenes',
+      'C7 root emerging beside the C7 transverse process (no prominent anterior tubercle)',
+      'Common carotid artery and internal jugular vein (medial)',
+      'Vertebral artery (deep, medial): ask for colour Doppler',
+      'Phrenic nerve on the anterior surface of the anterior scalene',
+      'Dorsal scapular and long thoracic nerves within the middle scalene',
+    ]),
+    target: '<p>Between the C5 and C6 roots, inside the interscalene sheath. Do not puncture the roots.</p><p>Inject between C5 and C6 so local anaesthetic surrounds both roots. Alternative: extrafascial injection (outside the sheath, lateral to the middle scalene fascia).</p>',
+    dose: { volume: '15 ml', conc: '0.5%', drug: 'ropivacaine', note: 'In 3–5 ml aliquots with aspiration. A lower volume (about 5 ml) reduces, but does not abolish, phrenic palsy, at some cost to duration and success.' },
+    coverage: {
+      map: armCoverageMap,
+      side: 'unilateral',
+      areas: [
+        { zones: ['shoulder-joint', 'humerus-prox', 'clavicle', 'upper-lat-arm', 'lat-forearm'], density: 'dense' },
+        { zones: ['cape', 'lower-lat-arm', 'post-arm', 'post-forearm', 'dorsum-lat-hand', 'palm-lat', 'humerus-dist', 'elbow'], density: 'patchy' },
+      ],
+      summary: 'Upper roots (C5–C7): shoulder, lateral clavicle and proximal humerus. Sparing of C8–T1 is expected, so the ulnar (medial forearm and hand) territory is usually not blocked.',
+      mechanism: '<p>Ventral rami of C5–T1 emerge between the anterior and middle scalene muscles (the interscalene groove). On ultrasound at C6–C7, C5 and a split C6 stack up as the "traffic light" between the scalenes. The phrenic nerve runs down the anterior surface of the anterior scalene, only millimetres from the C5 root.</p>',
+      density: '<p>Dense for the shoulder (C5–C6: suprascapular, axillary, lateral pectoral, musculocutaneous). C7 territory is variable; C8–T1 is usually spared. An interscalene injection may reach the supraclavicular nerves (the cape) by spread.</p>',
+      misses: ul([
+        '<strong>Ulnar territory</strong> (C8–T1): the medial forearm and hand.',
+        '<strong>Intercostobrachial nerve</strong> (T2): the axilla and upper inner arm; matters for a posterior port low in the axilla.',
+        '<strong>Supraclavicular nerves</strong>, sometimes: the cape of the shoulder (anterior and superior port sites).',
+      ]),
+    },
+    complications: [
+      'Phrenic nerve block causing hemidiaphragmatic paresis (caution / contraindication in significant respiratory disease)',
+      'Horner’s syndrome (cervical sympathetic chain)',
+      'Recurrent laryngeal nerve block (hoarseness)',
+      'Epidural spread or total spinal anaesthesia',
+      'Pneumothorax',
+      'Vertebral artery puncture or intravascular injection: seizures / local anaesthetic systemic toxicity',
+      'Bezold–Jarisch reflex (bradycardia and hypotension) in the sitting / beach-chair position',
+      'Rarely, phrenic nerve palsy persists after the block wears off (thought to be inflammation or entrapment rather than needle trauma)',
+    ],
+    pearls: [
+      'If the anatomy at C6 is ambiguous, use the "traceback" technique: find the plexus in the supraclavicular fossa and slide cephalad until the cluster separates into roots between the scalenes.',
+      'Use colour Doppler for the vertebral artery and other neck vessels; the neck is vascular.',
+      { safety: true, html: 'Never perform bilateral interscalene blocks (risk of bilateral phrenic palsy).' },
+      { safety: true, html: 'Aim the needle between the roots, never straight at one. If the tip touches a root, injection pressure rises: withdraw slightly before injecting.' },
+      'Beware other branches in the needle path: dorsal scapular and long thoracic nerves in the middle scalene.',
+      'Level check: C6 has the prominent anterior (Chassaignac) tubercle; C7 has a deficient anterior tubercle because the vertebral artery enters the transverse foramen at C6.',
+      'C6 (and C7) often look split into two circles. Do not inject between the two halves of one root, which risks an intraneural injection: inject between C5 and C6, superficial to C5 or deep to C6.',
+      'Variant: the C5 root can run through the anterior scalene for part of its course. Follow it distally until it enters the interscalene groove.',
+      'After the first 5–7 ml, keep the needle still and slide the probe down to the supraclavicular fossa: local anaesthetic around the trunks there confirms you injected in the right compartment.',
+      'If phrenic palsy matters, options are a lower volume (about 5 ml, at some cost to duration and success), a lower injection around C7, a superior trunk block, combined suprascapular and axillary nerve blocks, or a supraclavicular block. Check the diaphragm with ultrasound (M-mode, curvilinear probe under the costal margin) if in doubt.',
+    ],
+    exam: [
+      qa('Perform the block and name the structures. You are asked to scan medially: what do you see?', 'Common carotid artery and internal jugular vein medial to the scalenes; anterior and middle scalene with the C5/C6 "traffic light" between them; sternocleidomastoid superficially.'),
+      qa('After an interscalene block the patient becomes dyspnoeic. Differentials?', 'Phrenic nerve palsy (most common); pneumothorax; high spinal / epidural spread with respiratory muscle weakness; recurrent laryngeal nerve block (can feel like dyspnoea); anaphylaxis.'),
+      qa('The patient becomes hypotensive just before knife-to-skin for shoulder surgery. Differentials?', 'Bezold–Jarisch reflex in the beach-chair position (bradycardia and hypotension); high spinal / epidural spread; intravascular injection / LAST; anaphylaxis.'),
+      qa('Which part of the plexus does an interscalene block target, and what is typically spared?', 'The roots (mainly C5–C6, often C7). C8–T1 is commonly spared, so the ulnar territory is missed.'),
+    ],
+  },
+
+  // ------------------------------------------------------------------ superior trunk
+  {
+    id: 'superior-trunk',
+    kicker: 'Shoulder · Superior trunk',
+    title: 'Superior trunk block',
+    summary: 'Local anaesthetic beside the <strong>superior trunk</strong>, where C5 and C6 have just joined, <strong>before the suprascapular nerve leaves it</strong>. The same shoulder coverage as interscalene, further from the phrenic nerve: hemidiaphragmatic paresis is much less common, though not abolished.',
+    indications: ['Shoulder arthroscopy and rotator cuff repair', 'Shoulder arthroplasty', 'Proximal humerus surgery', 'When you want to reduce the risk of phrenic palsy'],
+    glance: {
+      position: 'Supine or semi-sitting, head turned away, arm by the side',
+      probe: 'Linear, transverse across the lower neck: start interscalene, slide caudally',
+      needle: '50 mm echogenic, in-plane, posterior to anterior',
+      dose: '15 ml of 0.5% ropivacaine',
+      covers: 'Shoulder and proximal humerus (C5–C6); C8–T1 spared',
+    },
+    anatomy3d: { plexus: 'brachial', block: 'superior-trunk', brachialApp: { block: 'superior-trunk' } },
+    scene: SCENES['superior-trunk'],
+    position: '<p>Supine or semi-sitting, head turned away, arm by the side (as for interscalene).</p>',
+    equipment: ['High-frequency linear probe with colour Doppler', '50 mm echogenic needle', '15 ml of 0.5% ropivacaine'],
+    landmarks: '<p>Start with interscalene, scan caudad until the C5 and C6 roots join as the superior trunk; stop before the suprascapular nerve leaves its lateral side (between the interscalene and supraclavicular levels).</p>',
+    approach: '<p>In-plane, posterior to anterior (lateral to medial), under the prevertebral (deep cervical) fascia and superficial to the middle scalene.</p>',
+    sonoanatomy: ul([
+      'Sternocleidomastoid (superficial, medial)',
+      'Superior trunk: a single larger hypoechoic structure where C5 and C6 have joined, often superficial / lateral to the anterior scalene',
+      'Suprascapular nerve: a small round structure just lateral to the superior trunk, about to leave it (inject proximal to its take-off)',
+      'Anterior scalene (medial) with the phrenic nerve on its anterior surface',
+      'Middle scalene (lateral and deep)',
+      'Subclavian artery and pleura coming into view caudally (scan too far and you are at the supraclavicular level)',
+    ]),
+    target: '<p>Lateral border of the superior trunk, deep to the prevertebral fascia, at a level where the suprascapular nerve has not yet branched off (so it is included).</p><p>Inject beside the superior trunk inside its sheath so local anaesthetic surrounds the trunk and the origin of the suprascapular nerve. Watch that spread does not track medially over the anterior scalene towards the phrenic nerve.</p>',
+    dose: { volume: '15 ml', conc: '0.5%', drug: 'ropivacaine', note: '10–15 ml is the commonly reported range. Two-step injection: about two-thirds behind and below the trunk, the rest in front of and above it.' },
+    coverage: {
+      map: armCoverageMap,
+      side: 'unilateral',
+      areas: [
+        { zones: ['shoulder-joint', 'humerus-prox', 'upper-lat-arm', 'lat-forearm'], density: 'dense' },
+        { zones: ['clavicle', 'lower-lat-arm', 'post-arm', 'post-forearm', 'dorsum-lat-hand', 'palm-lat', 'humerus-dist', 'elbow'], density: 'patchy' },
+      ],
+      summary: 'Same shoulder coverage as interscalene (C5–C6: suprascapular, axillary, lateral pectoral, musculocutaneous), with a lower but not zero rate of hemidiaphragmatic paresis. C7 territory is variable and C8–T1 (ulnar) is spared.',
+      mechanism: '<p>The superior trunk (C5 + C6) gives the suprascapular nerve and the nerve to subclavius. Injecting before the suprascapular nerve leaves it covers most of the shoulder joint; the C5 phrenic contribution lies proximal, so retrograde spread can still reach it.</p>',
+      density: '<p>In a randomised trial, hemidiaphragmatic paralysis was about 5% after superior trunk block versus about 71% after interscalene, with non-inferior pain scores. Phrenic sparing is reduced risk, not zero.</p>',
+      misses: ul([
+        '<strong>Supraclavicular nerves</strong> (cervical plexus): the cape of the shoulder; add a superficial cervical plexus block if needed.',
+        '<strong>Ulnar territory</strong> (C8–T1): does not matter for the shoulder.',
+        '<strong>Intercostobrachial nerve</strong> (T2): the axilla and upper inner arm.',
+      ]),
+    },
+    complications: [
+      'Phrenic nerve block / hemidiaphragmatic paresis: less frequent than interscalene, but not abolished (the phrenic nerve lies on the anterior scalene, just medial)',
+      'Horner’s syndrome and hoarseness (less often than interscalene)',
+      'Pneumothorax if the needle is taken too far caudally towards the pleura',
+      'Vascular puncture (transverse cervical, suprascapular and dorsal scapular arteries cross here: colour Doppler)',
+      'Nerve injury / intraneural injection',
+      'Dorsal scapular nerve injury (it runs through the middle scalene, where the needle passes)',
+    ],
+    pearls: [
+      'Start with interscalene, scan caudad until C5 and C6 roots join as the superior trunk; it is often superficial to the anterior scalene.',
+      'Inject proximal to where the suprascapular nerve leaves the trunk: the suprascapular nerve supplies most of the shoulder joint, so missing it defeats the point of the block.',
+      { safety: true, html: 'Still not for patients who cannot tolerate any loss of diaphragm function: phrenic sparing is reduced risk, not zero.' },
+      'Good for shoulder surgery while reducing the risk of phrenic palsy. In a randomised trial, hemidiaphragmatic paralysis was about 5% after superior trunk block versus about 71% after interscalene, with non-inferior pain scores.',
+      'First described as a refinement of the interscalene block: trace C5 and C6 distally to where they coalesce, proximal to the suprascapular take-off.',
+      'Two-step injection: with the needle coming from lateral, inject about two-thirds of the volume behind and below the trunk, then redirect in front of and above it (still lateral to it) for the rest (for example 10 ml then 5 ml).',
+    ],
+    exam: [
+      qa('Why choose a superior trunk block over an interscalene block for shoulder surgery?', 'It gives similar shoulder analgesia (C5–C6 including the suprascapular nerve) but is further from the phrenic nerve on the anterior scalene, so hemidiaphragmatic paresis is much less common (though not abolished).'),
+      qa('How do you find the superior trunk on ultrasound?', 'Start at the interscalene level, find the C5 and C6 roots, and scan caudally until they join into one trunk, often superficial to the anterior scalene. Inject before the suprascapular nerve branches off its lateral side.'),
+      qa('Which nerve must be included, and why?', 'The suprascapular nerve. It leaves the superior trunk and supplies most of the shoulder joint (posterior and superior capsule); if you inject distal to its take-off it may be missed.'),
+      qa('What is still not covered for shoulder surgery?', 'The supraclavicular nerves (cervical plexus) to the cape of the shoulder; add a superficial cervical plexus block if needed. C8–T1 (ulnar) is also spared, which does not matter for the shoulder.'),
+    ],
+  },
+
+  // ------------------------------------------------------------------ suprascapular nerve
+  {
+    id: 'suprascapular',
+    kicker: 'Shoulder · Peripheral nerve',
+    title: 'Suprascapular nerve block',
+    summary: 'The suprascapular nerve supplies <strong>most of the shoulder joint</strong> (the posterior and superior capsule) and the acromioclavicular joint, and the motor supply of supraspinatus and infraspinatus. Blocked <strong>on bone in the supraspinous fossa</strong> from behind, far from the phrenic nerve. With an <strong>axillary nerve block</strong> it is a phrenic-sparing choice for shoulder surgery.',
+    indications: ['Shoulder surgery when the diaphragm must be spared (with an axillary nerve block)', 'Shoulder arthroscopy as part of multimodal analgesia', 'Proximal humerus fracture or frozen shoulder pain', 'Chronic shoulder pain (diagnostic block)'],
+    glance: {
+      position: 'Sitting, arm by the side (or lateral, block side up)',
+      probe: 'Linear (curvilinear if deep), in the supraspinous fossa parallel to the spine of the scapula',
+      needle: '50–80 mm echogenic, in-plane, medial to lateral, to bone',
+      dose: '5–10 ml of 0.5% ropivacaine',
+      covers: 'Posterior and superior shoulder joint and the AC joint; no skin',
+    },
+    anatomy3d: { plexus: 'brachial', el: 'n-suprascapular', brachialApp: { el: 'n-suprascapular' } },
+    scene: SCENES.suprascapular,
+    position: '<p>Sitting, arm by the side, the operator behind the patient; or lateral with the block side up. The block can be done before or after induction.</p>',
+    equipment: ['Linear probe (curvilinear in a large patient) with colour Doppler', '50–80 mm echogenic needle', '5–10 ml of 0.5% ropivacaine'],
+    landmarks: '<p>Palpate the <strong>spine of the scapula</strong>. Place the probe in the <strong>supraspinous fossa</strong>, parallel to and just above the spine, and tilt it forwards until the bony floor of the fossa is a bright line. Slide laterally: the floor dips into the <strong>suprascapular notch</strong>, where the artery pulses on colour Doppler and the nerve lies beside it.</p>',
+    approach: '<p><strong>In-plane, medial to lateral</strong>, through trapezius and supraspinatus, until the tip touches bone beside the artery in the notch (or on the floor of the fossa nearby). Aspirate before injecting.</p><p><strong>Anterior approach</strong> (an alternative): in the supraclavicular fossa, follow the suprascapular nerve laterally from the superior trunk under omohyoid and inject around it with 5 ml. It is quicker in a supine patient but closer to the plexus, so some phrenic and plexus spread is possible.</p>',
+    sonoanatomy: ul([
+      'Trapezius, superficial; supraspinatus deep to it fills the fossa',
+      'The bony floor of the supraspinous fossa: bright, with a shadow beneath',
+      'The suprascapular notch, where the floor dips laterally',
+      'Suprascapular artery on bone in the notch (colour Doppler), with the nerve beside it',
+    ]),
+    target: '<p>The plane between supraspinatus and the bone of the floor of the fossa, beside the suprascapular artery. Correct: supraspinatus lifts off the bone and fluid spreads along the floor into the notch. Wrong: a swelling inside supraspinatus (short of bone).</p>',
+    dose: { volume: '5–10 ml', conc: '0.5%', drug: 'ropivacaine', note: '10 ml in the supraspinous fossa; about 5 ml for the anterior approach. Aspirate: the suprascapular artery is beside the nerve.' },
+    coverage: {
+      map: armCoverageMap,
+      side: 'unilateral',
+      areas: [
+        { zones: ['shoulder-joint'], density: 'dense' },
+        { zones: ['clavicle'], density: 'patchy' },
+      ],
+      summary: 'Most of the shoulder joint (posterior and superior capsule) and the acromioclavicular joint. No skin. Weakens supraspinatus and infraspinatus.',
+      mechanism: '<p>The suprascapular nerve (C5–C6) leaves the superior trunk, runs under trapezius and omohyoid, and passes through the suprascapular notch under the superior transverse scapular ligament into the supraspinous fossa, with its artery above the ligament. Articular branches reach the posterior and superior capsule and the acromioclavicular joint.</p>',
+      density: '<p>Good for posterior and superior joint pain. On its own it gives less analgesia than an interscalene block, especially in the first hours after surgery; adding an axillary nerve block closes much of the gap without blocking the phrenic nerve.</p>',
+      misses: ul([
+        '<strong>Anterior and inferior capsule</strong> (axillary and lateral pectoral nerves): add an axillary nerve block.',
+        '<strong>The skin</strong>: port sites and incisions (supraclavicular nerves and the axillary nerve’s cutaneous branch).',
+        '<strong>Subscapularis</strong> (subscapular nerves): relevant to anterior surgery.',
+      ]),
+    },
+    complications: [
+      'Vascular puncture or intravascular injection (the suprascapular artery lies beside the nerve)',
+      'Pneumothorax: rare from behind, but possible if the needle passes the anterior edge of the scapula; keep the tip on bone',
+      'Nerve injury (rare)',
+      'Weak shoulder abduction and external rotation while it lasts (supraspinatus and infraspinatus)',
+      'Anterior approach: phrenic nerve and plexus spread are possible',
+      'Local anaesthetic systemic toxicity, especially with other blocks or the surgeon’s infiltration',
+    ],
+    pearls: [
+      'Bone, notch, artery: find the floor of the fossa, slide laterally to the dip, and put colour Doppler on before the needle.',
+      'Keep the needle tip on bone: it protects the pleura.',
+      'The fluid should lift supraspinatus off the bone. A swelling inside the muscle means advance to bone.',
+      { safety: true, html: 'A good choice when the diaphragm matters (severe lung disease, obesity), but it is not a full shoulder block: plan the axillary nerve block and multimodal analgesia with it.' },
+      'For arthroscopy ports and the cape of the shoulder, ask for infiltration or add a superficial cervical plexus block.',
+    ],
+    sections: [
+      {
+        id: 'consultant', title: 'Consultant corner',
+        html: ul([
+          '<strong>Suprascapular plus axillary versus interscalene.</strong> Interscalene gives better analgesia in the first hours after shoulder surgery; the combination comes close later, with far less diaphragmatic paresis. Choose the combination when the diaphragm matters more than the first few hours of pain.',
+          '<strong>Anterior or posterior?</strong> The anterior approach is quick in a supine patient, but it is close to the plexus; the posterior approach in the fossa is further from the phrenic nerve and the plexus.',
+          '<strong>Chronic shoulder pain.</strong> The same nerve is a target for pulsed radiofrequency in frozen shoulder and arthritis in patients unfit for surgery.',
+        ]),
+      },
+    ],
+    exam: [
+      qa('Describe the nerve supply of the shoulder joint.', 'Suprascapular nerve: most of the joint, the posterior and superior capsule (about two-thirds). Axillary nerve: the anterior and inferior capsule. Lateral pectoral nerve: the anterior capsule and the acromioclavicular joint. Small contributions from the subscapular nerves and the musculocutaneous nerve. The skin of the cape is the supraclavicular nerves (cervical plexus).'),
+      qa('A patient with severe COPD is listed for shoulder arthroscopy. Plan the regional anaesthesia.', 'Avoid an interscalene block (phrenic palsy). Options: suprascapular plus axillary nerve blocks; or a superior trunk block with a lower volume, accepting a small risk of phrenic palsy. Add infiltration of the port sites, multimodal analgesia and a plan for rescue analgesia.'),
+    ],
+  },
+
+  // ------------------------------------------------------------------ axillary nerve
+  {
+    id: 'axillary-nerve',
+    kicker: 'Shoulder · Peripheral nerve',
+    title: 'Axillary nerve block',
+    summary: 'The axillary nerve supplies the <strong>anterior and inferior shoulder capsule</strong>, deltoid and teres minor, and the skin of the "regimental badge". It is blocked from behind where it leaves the <strong>quadrilateral space</strong> beside the posterior circumflex humeral artery. Usually given <strong>with a suprascapular nerve block</strong> for shoulder surgery.',
+    indications: ['With a suprascapular nerve block: phrenic-sparing shoulder analgesia', 'Shoulder arthroscopy and rotator cuff repair', 'Proximal humerus surgery (as part of a plan)'],
+    glance: {
+      position: 'Sitting or lateral, arm by the side',
+      probe: 'Linear, transverse on the back of the upper arm below the posterior acromion',
+      needle: '50 mm echogenic, in-plane, lateral to medial',
+      dose: '5–10 ml of 0.5% ropivacaine',
+      covers: 'Anterior and inferior shoulder capsule; the regimental badge skin',
+    },
+    anatomy3d: { plexus: 'brachial', el: 'n-axillary', brachialApp: { el: 'n-axillary' } },
+    scene: SCENES['axillary-nerve'],
+    position: '<p>Sitting with the arm by the side, or lateral with the block side up. Usually done straight after the suprascapular nerve block, in the same position.</p>',
+    equipment: ['Linear probe with colour Doppler', '50 mm echogenic needle', '5–10 ml of 0.5% ropivacaine'],
+    landmarks: '<p>Find the <strong>posterior corner of the acromion</strong>. Place the probe transversely on the back of the upper arm just below it, over the <strong>surgical neck of the humerus</strong>. Colour Doppler shows the <strong>posterior circumflex humeral artery</strong> on the bone deep to deltoid; the axillary nerve runs with it.</p>',
+    approach: '<p><strong>In-plane, lateral to medial</strong>, through deltoid, to the plane between deltoid and the humerus beside the artery. Aspirate before each 2–3 ml: the artery is right there.</p>',
+    sonoanatomy: ul([
+      'Deltoid is superficial; the nerve and artery run deep to it',
+      'The posterior surface of the surgical neck of the humerus: a bright curve with shadow',
+      'Teres minor and the long head of triceps medially, bordering the quadrilateral space',
+      'Posterior circumflex humeral artery on the bone (colour Doppler), with the small axillary nerve beside it',
+    ]),
+    target: '<p>The plane between deltoid and the humerus, around the posterior circumflex humeral artery, where the axillary nerve lies beside it. Correct: deltoid lifts off the bone and the fluid surrounds the artery.</p>',
+    dose: { volume: '5–10 ml', conc: '0.5%', drug: 'ropivacaine', note: 'Add this to the suprascapular nerve dose when you count the total; aspirate often.' },
+    coverage: {
+      map: armCoverageMap,
+      side: 'unilateral',
+      areas: [
+        { zones: ['upper-lat-arm'], density: 'dense' },
+        { zones: ['shoulder-joint'], density: 'patchy' },
+      ],
+      summary: 'The anterior and inferior shoulder capsule and the regimental badge skin. Weakens deltoid (shoulder abduction).',
+      mechanism: '<p>The axillary nerve (C5–C6) leaves the posterior cord high in the axilla, passes through the quadrilateral space with the posterior circumflex humeral artery and winds round the surgical neck of the humerus deep to deltoid. It gives articular branches to the anterior and inferior capsule, motor branches to deltoid and teres minor, and the superior lateral cutaneous nerve of the arm.</p>',
+      density: '<p>Covers the part of the joint the suprascapular nerve misses; together the two give most of the shoulder joint without touching the phrenic nerve. Neither covers the anterior skin or the cape.</p>',
+      misses: ul([
+        '<strong>The posterior and superior capsule</strong> (suprascapular nerve): give both blocks.',
+        '<strong>Lateral pectoral nerve</strong> branches to the anterior capsule.',
+        '<strong>The cape of the shoulder</strong> (supraclavicular nerves): anterior and superior port sites.',
+      ]),
+    },
+    complications: [
+      'Vascular puncture or intravascular injection (the posterior circumflex humeral artery is beside the nerve)',
+      'Nerve injury (rare)',
+      'Deltoid weakness while it lasts: support the arm',
+      'Local anaesthetic systemic toxicity, especially with other blocks',
+    ],
+    pearls: [
+      'Find the artery first: colour Doppler on the back of the surgical neck. The nerve is the small structure beside it.',
+      'Small volumes are enough; keep the tip beside, not into, the artery.',
+      { safety: true, html: 'Count both doses (suprascapular plus axillary) and any surgical infiltration towards the total.' },
+      'It numbs the regimental badge: test it there after 15–20 minutes.',
+    ],
+    exam: [
+      qa('Describe the course of the axillary nerve and its relevance to shoulder surgery.', 'From the posterior cord (C5–C6), through the quadrilateral space (teres minor above, teres major below, long head of triceps medially, the humerus laterally) with the posterior circumflex humeral artery, around the surgical neck deep to deltoid. It supplies the anterior and inferior capsule, deltoid and teres minor and the regimental badge skin. It is at risk in shoulder dislocation and proximal humerus fractures: document deltoid function and the badge sensation before any block.'),
+    ],
+  },
+];

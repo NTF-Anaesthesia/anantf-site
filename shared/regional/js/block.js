@@ -226,6 +226,12 @@ function anatomyCard(b, a, tier) {
     });
     actions.append(open);
   }
+  // Upper-limb blocks also open in the brachial plexus app (its 3D model, labelled diagram and coverage for this block):
+  // anatomy3d.brachialApp = {block?, el?, tab?}.
+  if (isPlexus && a.brachialApp) {
+    const href2 = anatomyHref({ app: 'brachial-plexus', ...a.brachialApp });
+    actions.append(el('a', { class: 'tb-btn ra-a3d-app', href: href2 }, 'Open in the brachial plexus app ', el('span', { 'aria-hidden': 'true', text: '→' })));
+  }
   body.append(actions, host);
   return section(b, 'anatomy3d', 'Anatomy in 3D', tier, body);
 }

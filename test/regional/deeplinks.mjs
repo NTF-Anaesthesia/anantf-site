@@ -193,7 +193,7 @@ async function main() {
   // 6. Spinal anchors used by mo/ and anywhere else in the repo.
   if (want('spinal/')) {
     const anchors = new Set(['tq-anticoag']);
-    for (const f of walk(['mo', 'babymo', 'truncal', 'head-neck', 'lower-limb', 'brachial-plexus', 'plexus', 'shared', 'blocks'], ['.js', '.mjs', '.html', '.json', '.md'])) {
+    for (const f of walk(['mo', 'babymo', 'truncal', 'head-neck', 'lower-limb', 'upper-limb', 'brachial-plexus', 'plexus', 'shared', 'blocks'], ['.js', '.mjs', '.html', '.json', '.md'])) {
       const src = fs.readFileSync(path.join(ROOT, f), 'utf8');
       for (const m of src.matchAll(/spinal\/(?:index\.html)?#([\w-]+)/g)) anchors.add(m[1]);
     }
