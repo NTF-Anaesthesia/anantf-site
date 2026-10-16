@@ -11,7 +11,7 @@
    and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
 import { registerOffline, mountAppVersion } from '../shared/regional/js/offline.js?v=20261016';
-import { initAppFeel, settingsItem, settingsButton } from '../shared/regional/js/appnav.js?v=20261018';
+import { initAppFeel, settingsItem, settingsButton } from '../shared/regional/js/appnav.js?v=20261019';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
 import * as UL from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';

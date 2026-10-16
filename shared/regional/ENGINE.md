@@ -57,7 +57,7 @@ Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level co
 | `lacalc.js` | `mountLaCalc(host, prefill)`: the dose calculator form; styles in `css/lacalc.css` (prefix `lc-`) |
 | `decide.js` | the "If it goes wrong" guides: `mountGuide(host, guide, {idPrefix, headingLevel})`, `guideList(ids, {idPrefix, headingLevel, lazy})`, `openGuideFromHash()`, `ensureDecideCss()` (links `css/decide.css`, prefix `ra-dg-`). No imports |
 | `data/decisions.js` | the guide data (§3.8): `GUIDES`, `GUIDE_ORDER`, `CORE_GUIDES`, `EXTRA_GUIDES`, `guidesFor(id, region, extra)`, `validateGuide` |
-| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`; while the app look is on it also draws the bottom tab bar (`TABS`, `currentTab`). Its only import is `skin.js`. Always imported as `appnav.js?v=20261018` |
+| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`; while the app look is on it also draws the bottom tab bar (`TABS`, `currentTab`) and runs the large-title observer (`mountLargeTitle`: html `data-ra-collapsed`). Its only import is `skin.js`. Always imported as `appnav.js?v=20261019` |
 | `skin.js` | the two looks (§2 "Skins"): `getSkinPref` / `setSkinPref` (`localStorage` `ra-skin`: `auto` · `app` · `web`), `resolveSkin`, `getSkin`, `applySkin`, `onSkin(fn)`, `openedAsApp`. No imports, no DOM beyond `<html data-skin>`. Always imported as `skin.js?v=20261018` |
 | `offline.js` | `registerOffline()` registers `/regional-sw.js` once the page has loaded and gone quiet; `mountAppVersion(host)` draws the version lines at the foot of `/blocks/`. Always imported as `offline.js?v=20261016` |
 | `search.js` | page search index and synonyms |
@@ -184,12 +184,49 @@ skin differs; nothing in the data or the engine's DOM depends on it.
   a new tab, a shared deep link or a plain visit is the website look). An explicit choice always wins. Every storage
   read and write is in try/catch (blocked storage: website look). `?app` does nothing on any other page.
 - **The skin sheet.** `css/skin-app.css` is linked from every regional page and **every rule in it is under
-  `html[data-skin="app"]`**, so the website look is byte-for-byte what it was (`skin.mjs` fails on a loose rule; the
-  before and after screenshots of the pages are identical). It holds the `--app-*` tokens (copied from
-  `assets/app/app.css`, which is stamped into other apps and is not linked here), the ground (`#f1ede4`) and surface
-  (`#fbfaf6`: the engine's `--tb-paper` becomes the surface), the translucent blurred bar with a hairline, soft corners on
-  controls, press states, the large title (34px), the grouped-list and switch primitives used by Settings, and the tab bar.
-  Add app-look rules there, never to the shared CSS; never recolour clinical colours.
+  `html[data-skin="app"]`**, so the website look is byte-for-byte what it was (`skin.mjs` fails on a loose rule, and
+  on any `@container`, `@font-face` or other at-rule that is not `@media`, `@supports` or `@layer`; the before and after
+  screenshots of the pages are identical). It holds the `--app-*` tokens (copied from `assets/app/app.css`, which is
+  stamped into other apps and is not linked here), the ground (`#f1ede4`) and surface (`#fbfaf6`: the engine's
+  `--tb-paper` becomes the surface), and, in this order, the sections listed in the "Components" table below. Add
+  app-look rules there, never to the shared CSS; never recolour clinical colours; keep every rule in `html[data-skin="app"]`
+  (write `html[data-skin="app"] body.tb-app …` for the engine pages, `body:is(.tb-app,.spinal-app)` where the `sp-` twin
+  has the same component, `body.bd-app`, `body.lc-app`, `body.st-app`, `body.spinal-app`, `body.plexus-app:not(.px)`
+  (brachial) and `body.px` (plexus) for the pages with their own CSS). Don't select by `#id` inside a `:is()` (it raises the
+  whole selector to ID weight: use `.sp-bar` and `.bp-bar`, not `#sp-bar`).
+- **The frame.** In the app look `--site-gutter` is 16 px (24 px from 768 px) and `--site-width` is 752 / 768 px, so the
+  engine pages, spinal, the calculator and Settings are a centred 720 px reading column (`.site-container` and the bar use
+  the same variables, so they line up); `/blocks/`, the landings and plexus use 1048 px, brachial 1344 px (its diagram
+  must stay at least 760 px wide beside the 3D model, or `bpd` switches to its narrow layout and the text differs).
+  From 1024 px the scan teacher and the wide tables of an engine page break out of the column to 880 px (`margin-inline:
+  -80px`); the 96 px tab rail is `body` padding. **Large title:** the page's first visible `h1` is 34 px Fraunces; the bar
+  is transparent on the ground while it shows, then (html `data-ra-collapsed`, set by `mountLargeTitle` in `appnav.js`
+  from one `IntersectionObserver` on that `h1`, re-aimed when the chapter changes) a blurred surface with a hairline,
+  drawn by `::before` on the bar (not the bar itself: a `backdrop-filter` on the bar would trap the `position: fixed` search
+  sheet inside it), and the bar title of the landings, calculator and Settings fades in. The bar is icon-only at every
+  width; the chapter menu is the title.
+- **Components.** All in `skin-app.css`; every one is the website look's markup with new CSS, no new elements:
+
+  | Part of the file | Components (selectors it restyles) |
+  |---|---|
+  | 1 tokens and frame | `--app-*`, `--site-gutter`, `--site-width` per page |
+  | 2 ground and bars | the bar surface, icon buttons, chapter / block menu button and panel, the level control (`.ra-level-seg`), sheets that open from the bar |
+  | 3 large title and type | `h1` title, kickers (`.tb-eyebrow`, `.tb-ch-kicker`, `.sp-eyebrow`…), `.tb-lead`, `h3` / `.tb-hv3` (title2), `h4` (headline), tier badges, hidden-level hint |
+  | 4 controls | `.tb-btn` / `.sp-btn` (outline, `--primary` wine), `.tb-seg` + `.tb-seg-btn` and `.sp-seg` (segmented control with a raised thumb), focus rings |
+  | 5 tab bar, 6 settings | `.ra-tabbar`, `.ra-tab`, the 96 px rail; `.st-*` grouped lists, the three-way Look control, switches |
+  | 7 chapter hub and lists | `.tb-hub*`, `.tb-tiles` / `.sp-tiles` and `.tb-hubch` / `.sp-hubch` (grouped lists with chevrons), `.tb-pager` (Previous / Next button row), the level picker, `.ra-a3d`, `.ra-watch` |
+  | 8 block chapter | `.tb-ind-list` (pills), `.tb-glance` (grouped rows), `.tb-bsec`, `.tb-layers`, `.tb-dose` (the one accent card, mono values; `.tb-dose-last` a warning panel), `.tb-cov*`, `.tb-bsec--complications` (warning panel), `.tb-pearls`, `.tb-exam*` |
+  | 9 callouts, tables, folds | `.tb-callout` / `.sp-callout` (`--warn` bad, `--pearl`, `--note`), `.tb-keypoints`, `.tb-steps`, `.tb-table-wrap` and `.sp-table-wrap` (rounded, scroll inside), `.tb-details` / `.sp-details` and `.ra-more` (rows with a chevron) |
+  | 10 scan teacher and real scans | `.tb-scan` card, `.tb-scan-views`, `.tb-scan-labbtn` (chip), `.tb-scan-steps` (button row), `.tb-scan-text`, `.tb-scan-nav`, `.ra-scan-chip` (pills), `.ra-scan-test`, `.ra-cov-chips`, `.ra-rs-*` (the Real view: picker, key as a grouped list with switches, `.ra-rs-switch`) |
+  | 11 guides | `.ra-dg-item` (folds), `.ra-dg-step*` (panels in the clinical colours), `.ra-dg-choice` (answer buttons) |
+  | 12 search and menus | `.tb-sheet` / `.sp-sheet` (bottom sheet on phones, centred dialog from 768 px; a wide `box-shadow` dims the page), `.tb-sresults`, the chapter menu panel as a bottom sheet below 768 px |
+  | 13 `/blocks/` and the landings | `.bd-*` (contents rows, folds, A to Z, chooser chips and rows, result lists), `.tb-hero`, `.tb-section`, `.tb-cards`, `.tb-op` (choice buttons), `.tb-facts`, `.tb-opts` |
+  | 14 calculator | `.lc-*`: box cards, filled inputs, segmented sex control, the adrenaline switch, agent rows, the result card (`data-status` near / over: amber and red with words and an icon), links list |
+  | 15 spinal | `.sp-*` chrome, `.sp-jump` (grouped list), `.sp-tabs`, `.ts-choice`, the boxed cards (`.tq-*`, `.cx-*`, `.sx-*`, `.cd-*`, `.ts-*`), the Topics button and sheet |
+  | 16 brachial plexus | `.top`, `.panel*`, `.tabs`, `.chip`, `.bpus-*`, `.bpd-*`, `.v3d-*`, `.cv-*` (frames and controls; canvases and clinical colours untouched) |
+  | 17 plexus | `body.px` column and title (the page already uses the app kit's pieces) |
+  | 18 foot | `.tb-foot`, `.sp-foot`, `.foot`, `.ntf-footer` |
+
 - **Tab bar.** `initAppFeel` (appnav.js) draws `nav.ra-tabbar` while the app look is on and removes it when it is off, so the
   website look has no extra element: **Blocks** (`/blocks/`), **Search** (the page's own search: the same function as the bar's
   search, "/" and Ctrl+K; on a page with no search it goes to `/blocks/#search`), **Guides** ("If it goes wrong",
@@ -204,11 +241,11 @@ skin differs; nothing in the data or the engine's DOM depends on it.
   screen too. `appnav.css` still hides them in home-screen mode for a page that has no skin yet (script blocked). Still one
   sticky bar at the top (≤ 56 px at 390 px); the tab bar is a bottom bar and does not count. Anything that sticks under the
   bar still uses `top: var(--ra-bar-now, var(--ra-bar, 56px))`.
-- **Phase 2.** The core above restyles the frame (bars, tabs, controls, tiles, Settings). The content components (scan
-  viewer, tables, callouts, the chooser, cards, the brachial and spinal panels) still look as in the website look on the
-  app's ground; restyle them in `skin-app.css`, group by group.
 - **Adding a regional page.** Put the skin script and the `skin-app.css` link in its `<head>` (§DATA.md 1), call
-  `initAppFeel` as before; nothing else.
+  `initAppFeel` as before; a new component class needs a rule in `skin-app.css` (in the right section) so it has an app look.
+- **Checks.** `test/regional/skin.mjs` (resolution, tab bar, frame, same text in both looks) and the website-look screenshots
+  of ten pages at 390 and 1440 px (`ra-skin=web`, before and after: they must be pixel-identical). Light only, nothing under
+  12 px, targets at least 44 px, focus rings visible, reduced motion respected, no emoji.
 
 ### Shims at old paths
 
@@ -222,8 +259,8 @@ them**, and don't delete them (`static.mjs` and `deeplinks.mjs` check both).
   landings. Bump them when you change what they load. `static.mjs` allows digits only in `js/page.js?v=`, so for a
   second bump on the same day use the next date, not a letter suffix.
 - **Stateful modules must load under one URL per page**, or they run twice and split their state. `levels.js` and
-  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, and `appnav.js` and `skin.js` as
-  `…?v=20261018`, from every module and every app. If you bump one, change
+  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, `appnav.js` as `…?v=20261019` and `skin.js` as
+  `…?v=20261018`, from every module and every app. `skin-app.css` is one URL on every page (`?v=20261019`); bump it on every page that links it. If you bump one, change
   every import of it in the same commit (grep for the file name). Other engine modules import each other without a
   query. `smoke.mjs` fails on a stateful module loaded under two URLs.
 - Never write `?v=…?v=…` (`static.mjs` checks).

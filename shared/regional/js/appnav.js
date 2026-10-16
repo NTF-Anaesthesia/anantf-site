@@ -13,7 +13,7 @@
 //   (app look) initAppFeel also draws the bottom tab bar (a left rail from 1024 px) while html[data-skin="app"]: Blocks,
 //   Search, Guides, Calculator, Settings; see js/skin.js and css/skin-app.css (ENGINE.md §2 "Skins").
 //
-// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261018 (one instance per page).
+// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261019 (one instance per page).
 // Cross-document view transitions are pure CSS (@view-transition in css/appnav.css).
 
 import { getSkin, onSkin } from './skin.js?v=20261018';
@@ -243,6 +243,47 @@ function unmountTabBar() {
   TAB_BAR = null;
 }
 
+// ------------------------------------------------------------------ app look: the large title collapses into the bar
+// While the page's first heading (the large title) is showing, the bar is transparent on the ground; once the title has
+// scrolled under it the bar gets its blurred surface and hairline (css/skin-app.css, html[data-ra-collapsed]). One
+// IntersectionObserver on the visible h1, re-aimed when the chapter changes. A page with no visible h1 is always collapsed.
+let LT = null;
+function mountLargeTitle() {
+  if (LT || typeof IntersectionObserver === 'undefined' || typeof document === 'undefined') return;
+  const html = document.documentElement;
+  let io = null; let target = null; let raf = 0; let forced = false;
+  const barH = () => { const b = document.querySelector('.ra-appbar, .ra-sbar'); return b ? Math.round(b.getBoundingClientRect().height) : 0; };
+  const pick = () => { for (const h of document.querySelectorAll('h1')) { if (!h.closest('.ra-appbar, .ra-sbar, .ra-tabbar, dialog') && h.getClientRects().length) return h; } return null; };
+  const set = (c) => html.toggleAttribute('data-ra-collapsed', c);
+  const aim = () => {
+    raf = 0;
+    const t = pick();
+    if (t === target && io && !forced) return;
+    forced = false;
+    io?.disconnect(); io = null; target = t;
+    if (!t) { set(true); return; }
+    io = new IntersectionObserver(([e]) => {
+      // An entry with no root bounds is the observer's answer for an element that has just been moved in the page (the
+      // desktop rail re-parents <main>): look again at once, on a fresh observer.
+      if (!e.rootBounds) { forced = true; soon(); return; }
+      set(!e.isIntersecting && e.boundingClientRect.bottom <= barH() + 2);
+    }, { rootMargin: `-${barH()}px 0px 0px 0px` });
+    io.observe(t);
+  };
+  const soon = (force) => { if (force === true) forced = true; if (!raf) raf = requestAnimationFrame(aim); };
+  const mo = new MutationObserver((list) => { if (list.some((m) => m.type === 'childList' || m.target.matches?.('.tb-chapter, main, [hidden]'))) soon(); });
+  const main = document.getElementById('main') || document.body;
+  mo.observe(main, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'hidden'] });
+  const on = ['hashchange', 'tb-chapter', 'tb-ready', 'resize', 'load'];
+  const again = () => soon();
+  for (const ev of on) addEventListener(ev, again);
+  document.addEventListener('tb-chapter', again);
+  const timer = setTimeout(() => soon(true), 400); // after the page has finished building itself
+  aim();
+  LT = { off() { clearTimeout(timer); io?.disconnect(); mo.disconnect(); for (const ev of on) removeEventListener(ev, again); document.removeEventListener('tb-chapter', again); html.removeAttribute('data-ra-collapsed'); } };
+}
+function unmountLargeTitle() { if (!LT) return; LT.off(); LT = null; }
+
 // ------------------------------------------------------------------ auto-hide
 let AH = null;
 function syncAutoHide() {
@@ -356,7 +397,9 @@ export function initAppFeel({ bar = null, search = null } = {}) {
   initKeys(search);
   if (bar) { bar.classList.add('ra-appbar'); initAutoHide(bar); } else syncAutoHide();
   // The app look's tab bar: drawn while html[data-skin="app"] on every regional page, and live when Settings switches the look.
-  const sync = (skin) => { try { if (skin === 'app') mountTabBar(search); else unmountTabBar(); } catch (err) { console.error('[appnav] tab bar', err); } };
+  const sync = (skin) => {
+    try { if (skin === 'app') { mountTabBar(search); mountLargeTitle(); } else { unmountTabBar(); unmountLargeTitle(); } } catch (err) { console.error('[appnav] tab bar', err); }
+  };
   sync(getSkin());
   onSkin(sync);
   // A page prerendered before the reader changed a setting: read the settings again when it is shown.
