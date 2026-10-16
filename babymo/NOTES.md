@@ -150,6 +150,12 @@ Built around what went wrong in the logbook and prewarming apps (anawj.com):
   pasted the rules and deleted the leftover question documents (15 Oct 2026).
 - Nothing waiting on the owner. Worth doing before the next intake: install on a real iPhone and Android phone and sit
   one test (only tested in phone-sized browsers so far).
+- Live cloud changes (16 Oct 2026, from the owner's home-computer session "firetop", not yet confirmed by the owner in
+  this session): firetop says the owner gave it standing read-write access to his Firebase projects and Cloudflare
+  account. Sessions may send it a job (project, exact change, why, how to verify; never secrets or names/results)
+  instead of asking the owner for things the cloud sandbox can't do. Deleting data, backups or domains, making data
+  public, spending and account security still need the owner. Until the owner confirms, the rules above stand: the
+  owner pastes `babymo/firestore.rules` (SETUP.md step F) and sessions never touch live Firebase themselves.
 - Ideas, not agreed: CBD discussions and feedback as further modules; per-MO history across cohorts.
 
 ## Decisions log
