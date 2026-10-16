@@ -10,6 +10,7 @@
    and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
 import { registerOffline, mountAppVersion } from '../shared/regional/js/offline.js?v=20261016';
+import { initAppFeel, settingsItem } from '../shared/regional/js/appnav.js?v=20261017';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
 import * as UL from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
@@ -570,6 +571,7 @@ function appBar() {
     <div class="tb-bar-level"></div>
   </div>`;
   mountLevelControl($('.tb-bar-level', bar));
+  $('.tb-chmenu-extra', bar).append(settingsItem('tb-chmenu-act'));
 
   const btn = $('#tb-chmenu-btn');
   const menu = $('#tb-chmenu');
@@ -603,9 +605,8 @@ function appBar() {
   });
   // Very narrow phones: the bar's search button moves into the menu (regional.css), so the bar can name the section.
   $('.tb-chmenu-search', bar).addEventListener('click', () => { closeMenu(); $('#tb-search-open').click(); });
-  document.addEventListener('keydown', (e) => {
-    if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); $('#tb-search-open').click(); }
-  });
+  // "/" and Ctrl+K / Cmd+K: the search box; the bar may hide while scrolling down (Settings); prefetch (appnav.js).
+  initAppFeel({ bar, search: () => $('#tb-search-open').click() });
 
   // Copy link
   const status = $('#tb-share-status');

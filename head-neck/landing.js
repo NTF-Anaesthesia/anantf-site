@@ -3,6 +3,7 @@
    No sources or references are shown (as on the truncal pages). */
 import { registerOffline } from '../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { OPS, LINKS, headNeckCoverageMap } from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
+import { initAppFeel } from '../shared/regional/js/appnav.js?v=20261017'; // app bar auto-hide (Settings), keys, prefetch
 
 /* ------------------------------------------------------------------ helpers */
 const $ = (s, r = document) => r.querySelector(s);
@@ -79,3 +80,7 @@ function init() {
 
 init();
 registerOffline();
+
+/* ------------------------------------------------------------------ app frame: the bar (Settings; auto-hide if turned on there).
+   No desktop rail here: the operation chooser needs the full width of the page (ENGINE.md §2). */
+initAppFeel({ bar: document.getElementById('ra-sbar') });

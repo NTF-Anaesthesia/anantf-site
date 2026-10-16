@@ -7,6 +7,9 @@
 .tb-app .tb-scan .tb-scan-stage{touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
 .tb-app .tb-scan .tb-scan-stage.is-pointing{cursor:pointer}
 .tb-app .tb-scan .tb-scan-stage.is-real{background:transparent;display:block;min-height:0}
+/* "Hide the bar while scrolling down" (Settings): the sticky image follows the bar up and down, never jumps. */
+html[data-ra-autohide] .tb-app .tb-scan.is-phone .ra-scan-col{transition:top .2s cubic-bezier(.2,0,0,1)}
+@media (prefers-reduced-motion:reduce){html[data-ra-autohide] .tb-app .tb-scan.is-phone .ra-scan-col{transition:none}}
 /* Real view: the caption, credit and "Your scan" belong with the image, so nothing is stuck or clipped */
 .tb-app .tb-scan.is-phone.is-real-view .ra-scan-col{position:static;box-shadow:none}
 .tb-app .tb-scan.is-phone.is-real-view .tb-scan-stage{max-height:none;overflow:visible}
@@ -14,7 +17,7 @@
 .tb-app main :is(ol.tb-scan-steps,ul.ra-scan-chips,ul.ra-cov-grp)>li{margin:0}
 
 /* Phones: the image and the step buttons stay on screen while the step text scrolls underneath. */
-.tb-app .tb-scan.is-phone .ra-scan-col{position:sticky;top:var(--ra-bar,calc(var(--tb-header-h,0px) + 57px));z-index:20;gap:0;
+.tb-app .tb-scan.is-phone .ra-scan-col{position:sticky;top:var(--ra-bar-now,var(--ra-bar,calc(var(--tb-header-h,0px) + 57px)));z-index:20;gap:0;
   background:var(--tb-paper);box-shadow:0 6px 10px -8px rgba(39,39,34,.35)}
 .tb-app .tb-scan.is-phone .tb-scan-stage{max-height:45vh;min-height:0;overflow:hidden}
 .tb-app .tb-scan.is-phone .tb-scan-steps{border-top:0}

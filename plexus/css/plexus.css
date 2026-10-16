@@ -26,7 +26,7 @@
 
 /* ------------------------------------------------------------ app bar: the regional app's bar (shared/regional/css/regional.css,
    tb- classes, built in index.html). The explorer's own toolbar (plexus tabs and block chips) sits at the top of main. */
-body.px.ra-app .ntf-header { position: static; }
+body.px.ra-app .ntf-header { position: relative; z-index: 60; } /* scrolls away; its phone menu stays above the bar and the page */
 .px .tb-bar .tb-chlist a[aria-current=page] { color: var(--text); border-bottom-color: var(--primary); font-weight: 500; }
 @media (max-width: 600px) { .px .px-cur-block { display: none; } }
 .px .tb-sres-none { padding: 10px 12px; color: var(--muted); font-size: 15px; }

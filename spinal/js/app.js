@@ -4,6 +4,7 @@
 // "Pearls only" digest at Consultant level. The specifier below must stay identical in every spinal module that imports
 // levels.js (search.js), so they share one module instance.
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
+import { initAppFeel, mountRail, settingsItem } from '../../shared/regional/js/appnav.js?v=20261017'; // desktop rail, Settings, bar auto-hide, keys, prefetch
 import { $, $$, el, announce } from './ui.js?v=1';
 import { registerRefs, finalise } from './refs.js?v=1';
 import { attachSearch, buildIndex } from './search.js?v=5';
@@ -69,6 +70,10 @@ chapters.forEach((c, i) => {
 // Bar: wide screens show the chapters inline; narrower screens (or when they don't fit) a "Chapter" disclosure menu
 // clamped to the viewport. The menu also carries "Copy link" on phones and the way back to the Regional hub.
 const bar = $('#sp-bar');
+// Settings (level, hiding the bar, keyboard, app version) from the chapter menu; on desktop (≥ 1024 px) the chapters
+// in a rail beside the page, with the other regions and the tools (shared/regional/js/appnav.js).
+$('.sp-chmenu-extra')?.append(settingsItem('sp-chmenu-act'));
+mountRail({ label: 'On this page', items: $$('.sp-chapter[id]').map((c) => ({ href: `#${c.id}`, text: c.id === 'ch-home' ? 'Hub (start here)' : (c.dataset.title || c.id), id: c.id, tier: Number(c.dataset.tier) > 1 ? Number(c.dataset.tier) : null })) });
 const chlist = $('#sp-chlist');
 const menuWrap = $('#sp-chmenu-wrap');
 const menuBtn = $('#sp-chmenu-btn');
@@ -380,9 +385,8 @@ document.addEventListener('click', (e) => {
     sheetQ.focus();
   };
   openBtn?.addEventListener('click', () => { if (sheet && !sheet.hidden) closeSheet(); else openSearch(); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '/' && !e.target.closest?.('input,textarea,select,[contenteditable]')) { e.preventDefault(); openSearch(); }
-  });
+  // "/" (unless turned off in Settings) and Ctrl+K / Cmd+K open search; the bar may hide while scrolling down (Settings).
+  initAppFeel({ bar, search: openSearch });
   window.addEventListener('hashchange', () => closeSheet());
 }
 

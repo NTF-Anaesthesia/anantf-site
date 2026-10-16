@@ -19,6 +19,7 @@ Every page is unlisted and `noindex`; the owner shares the links personally (don
 |---|---|---|
 | Front door | `/blocks/` | its own script, reading `registry.js`, `ops/` and `data/decisions.js` (no clinical text of its own); app version lines at the foot |
 | Dose calculator | `/blocks/calculator/` | its own `calculator.js`, mounting `lacalc.js` |
+| Settings | `/blocks/settings/` | its own `settings.js`: level, "Hide the bar while scrolling down", "Press / to search", app version lines (§2 "App frame") |
 | Truncal landing + 3 pages | `/truncal/`, `back/`, `chest-wall/`, `abdominal-wall/` | landing chooser + engine (`bootPage`) |
 | Head and neck landing + 5 pages | `/head-neck/`, `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` | landing chooser + engine |
 | Lower-limb landing + 4 pages | `/lower-limb/`, `hip/`, `knee/`, `foot-ankle/`, `thigh/` | landing chooser + engine; Dr Chew Shi Hao's animations from `lower-limb/anim/` |
@@ -28,7 +29,7 @@ Every page is unlisted and `noindex`; the owner shares the links personally (don
 | Anatomy in 3D | `/plexus/` | plexus explorer (cervical, brachial, lumbar, sacral); uses levels and status colours |
 | Hub card | `/regional.html` | static page; the only public way in |
 
-All of them share one app bar, one credit line ("Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia", Dr Chew
+All of them share one app bar (with a Settings item), one credit line ("Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia", Dr Chew
 Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level control (§4).
 
 ---
@@ -56,12 +57,15 @@ Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level co
 | `lacalc.js` | `mountLaCalc(host, prefill)`: the dose calculator form; styles in `css/lacalc.css` (prefix `lc-`) |
 | `decide.js` | the "If it goes wrong" guides: `mountGuide(host, guide, {idPrefix, headingLevel})`, `guideList(ids, {idPrefix, headingLevel, lazy})`, `openGuideFromHash()`, `ensureDecideCss()` (links `css/decide.css`, prefix `ra-dg-`). No imports |
 | `data/decisions.js` | the guide data (§3.8): `GUIDES`, `GUIDE_ORDER`, `CORE_GUIDES`, `EXTRA_GUIDES`, `guidesFor(id, region, extra)`, `validateGuide` |
+| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`. No imports. Always imported as `appnav.js?v=20261017` |
 | `offline.js` | `registerOffline()` registers `/regional-sw.js` once the page has loaded and gone quiet; `mountAppVersion(host)` draws the version lines at the foot of `/blocks/`. Always imported as `offline.js?v=20261016` |
 | `search.js` | page search index and synonyms |
 | `ui.js` | DOM helpers (`el`, `sv`, `fill`, `callout`, `table`, `details`, `stepper`, …) |
 | `refs.js` | kept for old data; renders nothing (the pages carry no citations) |
 
-CSS in `shared/regional/css/`: `regional.css` (all shared `tb-` styles; imports `levels.css`), `scan.css` and
+CSS in `shared/regional/css/`: `regional.css` (all shared `tb-` styles; imports `levels.css` and `appnav.css`),
+`appnav.css` (desktop frame and rail, bar auto-hide, the plain bar `.ra-sbar` of the region landings, cross-document view
+transitions; also imported by `truncal/landing.css` and linked by `spinal/` and `brachial-plexus/`), `scan.css` and
 `realscan.css` (linked by the scan modules themselves), `status.css`, `levels.css`, `lacalc.css`, `decide.css` (linked by
 `decide.js`).
 
@@ -106,6 +110,61 @@ a local `extraScan(scene, blockId)` helper in their `js/blocks.js`.
   `watch`; `lower-limb/shared/js/anim.js` (`animFigure`) is for sections outside block data. See
   [`lower-limb/shared/LEG.md`](../../lower-limb/shared/LEG.md).
 
+### App frame (desktop layout, page changes, Settings)
+
+Every regional page calls `initAppFeel({bar, search})` once; the engine block pages, `spinal/`, the calculator and
+Settings also call `mountRail()` (`js/appnav.js`, styles `css/appnav.css`). Phones and tablets (below 1024 px) look as
+before, apart from the Settings entry and the plain app bar on the region landings.
+
+- **Frame (≥ 1024 px).** DESIGN.md's column: the app bar, breadcrumbs, `<main>` and the foot keep the site's width
+  (`--site-width` 1240 px, `--site-gutter` 56 px; `--ra-frame-w` / `--ra-frame-g` point at them), so they line up with
+  the site header (`.ntf-header`), which is not changed: it scrolls away and only the app bar sticks (≤ 56 px). The
+  header has `position: relative; z-index: 60` (regional.css, landing.css, spinal, brachial-plexus, plexus) so its
+  phone menu opens above the sticky bar and the page. `brachial-plexus/` and `plexus/` keep their own layouts, without
+  a rail (they need the room for the 3D model and diagram); the region landings and `/blocks/` have no rail either
+  (their operation chooser needs the full column).
+- **Rail (≥ 1024 px).** `mountRail` wraps `<main>` in `.ra-frame` (a two-column grid inside the 1240 px column) with
+  `nav.ra-rail` on the left: this page's chapters or sections ("On this page"), then this region's landing and pages,
+  the other regions, and the tools (all blocks, dose calculator, Anatomy in 3D, Settings), from `REGION_NAV` /
+  `TOOL_NAV`. The current page is `aria-current="page"`, the current chapter or section `aria-current="location"`
+  (blush with a wine edge, as in the chapter menu). Engine pages and `spinal/` follow `body[data-chapter]`; Settings
+  follows the section in view (`spy: true`). The rail is sticky under the bar, scrolls itself when taller than the
+  window (never the page), and carries the chapters' `data-tier`, so the level hides the same entries as the chapter
+  menu. Its column is reserved in CSS before the script runs (not on `/blocks/` or the landings), so the page never
+  jumps sideways. With the rail, the bar shows the chapter menu (the current chapter's name) instead of repeating the
+  chapters inline. The document stays the scroller.
+- **Scan teacher width.** The scan teacher is a container (`container: ra-scan`): two columns (image + 320 px panel)
+  only when its own box is at least 780 px wide (and the window at least 1000 px, as before), so beside the rail it is
+  one column at 1024 px and two from about 1360 px; in a box under 620 px the image, steps, step text and
+  Back · Play · Next come first, then the structures, coverage chips and probe. It stays in the page flow.
+- **Page changes.** `@view-transition { navigation: auto }` in `appnav.css`: moving between regional pages, the site
+  header (`ra-site-header`) and the app bar (`ra-appbar`: `#tb-bar`, `#sp-bar`, `#bp-bar`, `.ra-sbar`) stay put and the
+  rest cross-fades in 160 ms. Off under `prefers-reduced-motion`; browsers without it (Firefox) just change page.
+  `initAppFeel` adds a `<script type="speculationrules">` (only where `HTMLScriptElement.supports('speculationrules')`):
+  links to regional pages on this site are **prefetched** (never prerendered: a prerendered page would run its scan
+  canvases and 3D models in the background and could show a level chosen after it was rendered) on hover or press
+  (`moderate`); never `lower-limb/anim/`, same-page `#` links, downloads or new-tab links.
+- **Settings (`/blocks/settings/`).** Reached from every app bar: a row in the chapter / block / plexus menu
+  (`settingsItem`), a bar button where the bar has no menu at that width (`settingsButton`: the landings' `.ra-sbar`,
+  the calculator, `brachial-plexus/` from 1180 px (an icon, so the block chips keep their room), `plexus/` while its four
+  plexuses are inline), and the rail's tools.
+  It holds the level control (the same `mountLevelControl`), **"Hide the bar while scrolling down"** (`localStorage`
+  `ra-autohide` = `on` / `off`; off by default), **"Press / to search"** (`ra-slash`; on unless `off`) and the app
+  version lines (also still at the foot of `/blocks/`). Every read and write is in try/catch.
+- **Bar auto-hide** (`ra-autohide` on). `initAppFeel` puts `.ra-appbar` on the bar. Scrolling down (more than 24 px,
+  once the bar has stuck) sets `html[data-ra-bar=hidden]` and `--ra-bar-now: 0px`; the bar slides up 200 ms (instant
+  with reduced motion). Any scroll up, the top of the page, focus inside the bar, or an open menu or search sheet brings
+  it back. Only the reader's own scrolling hides it (a wheel, a finger moving the page, a scroll key or the scrollbar
+  in the last 400 ms): scrolls the page makes itself (deep links, chapter changes, a scan step or Play reflowing the
+  text, scroll anchoring) never do, and taps, a finger on a scan image or 3D canvas, hash and chapter changes keep it
+  for a moment more. Everything that sticks
+  under the bar uses `top: var(--ra-bar-now, var(--ra-bar, 56px))` and moves with it: the rail, the
+  phone scan column (`scan.css`), the `/blocks/` and landing operation lists and `spinal/`'s figure splits. Use the
+  same for anything new that sticks.
+- **Keyboard.** "/" (not while typing in a box, and not when turned off in Settings) and Ctrl+K / Cmd+K open or focus
+  the page's search (engine pages, `/blocks/`, `spinal/`, `plexus/`); pages without search ignore them. On a scan
+  teacher, the left and right arrow keys change step on the image and on the step buttons (focus follows; Home / End).
+
 ### Shims at old paths
 
 `truncal/shared/js/*.js`, `truncal/shared/css/truncal.css`, `head-neck/shared/js/head.js` and
@@ -118,7 +177,8 @@ them**, and don't delete them (`static.mjs` and `deeplinks.mjs` check both).
   landings. Bump them when you change what they load. `static.mjs` allows digits only in `js/page.js?v=`, so for a
   second bump on the same day use the next date, not a letter suffix.
 - **Stateful modules must load under one URL per page**, or they run twice and split their state. `levels.js` and
-  `figures/head.js` are always imported as `…?v=20261015`, and `offline.js` as `…?v=20261016`, from every module and every app. If you bump one, change
+  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016` and `appnav.js` as
+  `…?v=20261017`, from every module and every app. If you bump one, change
   every import of it in the same commit (grep for the file name). Other engine modules import each other without a
   query. `smoke.mjs` fails on a stateful module loaded under two URLs.
 - Never write `?v=…?v=…` (`static.mjs` checks).
@@ -426,7 +486,8 @@ The brachial plexus app has its own renderer (`brachial-plexus/js/ultrasound.js`
 1. Copy `truncal/abdominal-wall/` (the reference page) and change title, description, breadcrumbs and paths
    ([`DATA.md` §1](DATA.md#1-page-template-truncalpageindexhtml)). Keep `noindex`, the credit and the disclaimer.
 2. Write `js/page.js` with `bootPage({…, backLabel, backShort})`.
-3. Link it from its region landing; add it to `PAGES` (and `PAGES_BY_REGION`) in `blocks/blocks.js`. A brand-new
+3. Link it from its region landing; add it to `PAGES` (and `PAGES_BY_REGION`) in `blocks/blocks.js` and to its
+   region's `pages` in `REGION_NAV` (`js/appnav.js`, the desktop rail). A brand-new
    region also needs a `REGIONS` entry in `registry.js`, an ops module, a figure provider and a `shared/us/` folder.
 4. Add it to `PAGES` and `ENGINE_PAGES` in `test/regional/lib.mjs` so the smoke, deep-link, level and data suites
    cover it. A new page has no baseline lines, so parity has nothing to keep for it.
@@ -495,9 +556,10 @@ to a regional page or the engine. Details: [`test/regional/README.md`](../../tes
 | `static.mjs` | no imports through shims, old vendor path gone, every relative import exists, `noindex`, no "FRCA", no service worker except `/regional-sw.js` registered through `offline.js` (the worker is loaded in a sandbox: it must answer the regional paths and leave the others alone), no personal contacts, `?v=` once on entry points (digits only in `page.js?v=`), allow-lists valid |
 | `version.test.mjs` | `regional-sw.js` file lists, `VERSION` and `MEDIA` match the files (`stamp.mjs` fixes it) |
 | `data.mjs` | registry and ops links resolve, aliases unique, tiers 1–3, dose and complications never above tier 1, plexus data sound, scene `ids` exist, dose consistency between pages, ops, planners and animations, no `cite(`; every guide sound and tier 1, every block gets the core guides and its required extras, the LAST guide carries the lipid and adrenaline doses |
-| `smoke.mjs` | every page in `PAGES` (24, including `blocks/calculator/`) at 390 and 1440 px: no console or page errors or failed requests, no horizontal overflow, every scan through 4 steps × each view, credit line, no service worker other than `/regional-sw.js`, lazy three.js and animation iframes, one instance per stateful module; polish targets with `--strict` |
+| `smoke.mjs` | every page in `PAGES` (25, including `blocks/calculator/` and `blocks/settings/`) at 390 and 1440 px: no console or page errors or failed requests, no horizontal overflow, every scan through 4 steps × each view, credit line, no service worker other than `/regional-sw.js`, lazy three.js and animation iframes, one instance per stateful module; polish targets with `--strict` |
 | `deeplinks.mjs` | every `#ch-*`, `#<block>-step-*`, `#<block>-inj-*`, `#op-*`, app state hashes, redirects, shims, `edit.html?page=` |
 | `levels.mjs` | one level control per page, correct hiding per level, hints, MO always shows dose, LAST, complications, the "If it goes wrong" section (core guides, nothing above tier 1, the LAST guide steps forward) and scan, persistence never in the URL, spinal migration, relaxing |
+| `appframe.mjs` | the app frame: Settings page (defaults, saving, level control, version lines), Settings reachable from every kind of app bar at 390 and 1440, bar ≤ 56 px, auto-hide off by default and working when on (scroll down / up, top, open menu, phone scan column follows), a page's own scrolling never hides it, rail at 1024 / 1180 / 1440 on the pages that have one and none at 390 or on the landings and `/blocks/`, the bar lined up with the site header, no overflow, the document scrolls, the scan teacher in the page flow, "/" and Ctrl+K, arrow keys on the step buttons, speculation rules (prefetch only), view-transition names (none with reduced motion) |
 | `parity.mjs` | at Consultant, every line of the baseline text is still on its page, and doses are identical (guide text isn't captured; `data.mjs` covers it) |
 | `offline.e2e.mjs` | its own server: `/blocks/` installs the worker and shows the version; with no signal block pages, `spinal/` and `lower-limb/` render; home and `mo/` are not answered; "Get the latest version" removes only the regional caches |
 
@@ -527,7 +589,9 @@ The usual site rules apply: branch and pull request, browser check, tests green,
 
 ## 9. Known limits and backlog
 
-In rough priority order. Done since 15 Oct 2026: upper-limb blocks on the engine with their chooser and real scans,
+In rough priority order. Done on 17 Oct 2026: the desktop layout (rail, container queries for the scan teacher), view
+transitions and prefetch between pages, the Settings page with "Hide the bar while scrolling down" and the "/" key
+(§2 "App frame"). Done since 15 Oct 2026: upper-limb blocks on the engine with their chooser and real scans,
 offline use (`/regional-sw.js`), the dose calculator and structured maxima (`la.js`), the "If it goes wrong" guides
 (on the engine blocks, `/blocks/`, and since 17 Oct 2026 the brachial plexus app and `spinal/`), a `var(--ra-bar, 56px)`
 fallback everywhere the bar height is used (Firefox ESR 115 has no `:has()`, which sets it),

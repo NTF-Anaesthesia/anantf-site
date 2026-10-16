@@ -990,6 +990,15 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
     else if (e.key === 'ArrowLeft') { e.preventDefault(); setStep(Math.max(0, st.step - 1), true); }
     else if (e.key === 'Escape' && (st.sel || st.test)) { e.preventDefault(); if (st.test) stopTest(); else select(null, true); }
   });
+  // The step buttons too: with one focused, the left and right arrow keys move to the previous or next step (focus follows).
+  stepList.addEventListener('keydown', (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey || !e.target.closest?.('.tb-scan-step')) return;
+    const to = e.key === 'ArrowRight' ? Math.min(3, st.step + 1) : e.key === 'ArrowLeft' ? Math.max(0, st.step - 1) : e.key === 'Home' ? 0 : e.key === 'End' ? 3 : null;
+    if (to == null) return;
+    e.preventDefault();
+    setStep(to, true);
+    stepBtns[to]?.focus({ preventScroll: true });
+  });
   const local = (e) => { const r = box.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top, r]; };
   let down = null;
   stage.addEventListener('pointerdown', (e) => {

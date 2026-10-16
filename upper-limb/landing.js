@@ -2,6 +2,7 @@
    The operations, block links and arm figure live in /shared/regional/js/ops/ops-upperlimb.js (shared with /blocks/).
    No sources or references are shown on the page (as on the other region landings). */
 import { LINKS as L, OP_REGIONS as REGIONS, OPS, upperLimbCoverageMap } from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
+import { initAppFeel } from '../shared/regional/js/appnav.js?v=20261017'; // app bar auto-hide (Settings), keys, prefetch
 
 /* ------------------------------------------------------------------ helpers */
 const $ = (s, r = document) => r.querySelector(s);
@@ -93,3 +94,7 @@ function init() {
 }
 
 init();
+
+/* ------------------------------------------------------------------ app frame: the bar (Settings; auto-hide if turned on there).
+   No desktop rail here: the operation chooser needs the full width of the page (ENGINE.md §2). */
+initAppFeel({ bar: document.getElementById('ra-sbar') });

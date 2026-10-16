@@ -1,4 +1,5 @@
 /* truncal/ landing page. NTF Anaesthesia design language (DESIGN.md): paper, ink, wine, hairlines, light only. */
+@import url('../shared/regional/css/appnav.css?v=20261017'); /* the app bar, desktop rail, auto-hide and view transitions shared by every regional page */
 @font-face{font-family:'NTF Serif';src:url('../fonts/fraunces-roman.woff2') format('woff2');font-weight:400 600;font-display:swap}
 @font-face{font-family:'NTF Sans';src:url('../fonts/inter.woff2') format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'NTF Mono';src:url('../fonts/jetbrains-mono.woff2') format('woff2');font-weight:400 500;font-display:swap}
@@ -13,7 +14,9 @@ body.tb-app{
   margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--sans);
   -webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip;
 }
-html{scroll-padding-top:24px}
+html{scroll-padding-top:64px} /* under the sticky app bar (.ra-sbar, 56px) */
+/* The site header scrolls away (only the app bar sticks, as on every regional page); its phone menu stays above the page */
+body.tb-app .ntf-header{position:relative;z-index:60}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 .tb-app *,.tb-app *::before,.tb-app *::after{box-sizing:border-box}
 .tb-app :is(a,button,summary,input,select,[tabindex]):focus-visible{outline:2px solid var(--wine);outline-offset:4px;border-radius:0}
@@ -60,7 +63,7 @@ html{scroll-padding-top:24px}
 
 /* chooser */
 .tb-chooser{display:grid;grid-template-columns:270px minmax(0,1fr);gap:40px;align-items:start}
-.tb-ops{border:0;padding:0;margin:0;min-width:0;position:sticky;top:108px}
+.tb-ops{border:0;padding:0;margin:0;min-width:0;position:sticky;top:calc(var(--ra-bar-now,var(--ra-bar,56px)) + 52px)}
 .tb-ops-legend{font:500 12px/1.5 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:0;margin:0 0 10px}
 .tb-ops-list{display:flex;flex-direction:column;border-top:1px solid var(--line)}
 .tb-op{position:relative;display:flex;align-items:center;min-height:48px;padding:10px 14px 10px 16px;border-bottom:1px solid var(--line);font:15px/1.35 var(--sans);color:var(--ink);cursor:pointer;transition:background-color .15s}
