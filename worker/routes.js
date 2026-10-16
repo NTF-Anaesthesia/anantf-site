@@ -6,14 +6,17 @@
 // files. Any other host (the PR previews on workers.dev) serves the files as they are.
 
 // host -> { root: 'mo/' }: the folder served at the address's root (the folder's own name works too: /mo/ is the same page)
+//         prefixes: more apps, one path each (/test/ is the Baby MO test, from babymo/)
+//         redirects: old paths that mean the same thing here (/babymo/ is /test/ on this address; the guide links ../../babymo/)
 export const SITES = {
-  'mo.anantf.com': { root: 'mo/' },
+  'mo.anantf.com': { root: 'mo/', prefixes: { '/test/': 'babymo/' }, redirects: { '/babymo/': '/test/' } },
 };
 
-// The folders and files every site host serves as they are: the shared app kit (styles), the fonts and the logo mark.
-// The guide links them as ../../assets/app/app.css, which resolves to /assets/app/app.css on both anantf.com/mo/guide/
-// and mo.anantf.com/guide/.
-export const SHARED = ['/assets/', '/fonts/', '/ana-ntf-monogram.svg'];
+// The folders and files every site host serves as they are: the shared app kit (styles), the fonts and the logo mark,
+// and the question bank's data the Baby MO test reads (the bank's code, the questions, the papers and the pictures: not
+// the qbank app itself, which stays on anantf.com). The apps link them as ../assets/app/app.css, ../qbank/bank/questions.json
+// and so on, which resolve to the same paths on anantf.com/<folder>/ and on mo.anantf.com/<path>/.
+export const SHARED = ['/assets/', '/fonts/', '/ana-ntf-monogram.svg', '/qbank/js/bank.js', '/qbank/bank/', '/qbank/papers/', '/qbank/img/'];
 
 // On any host not in SITES, /_sites/<host>/<path> serves <path> as that host would, so the mapping can be tried on a
 // PR preview before the real address exists: <preview>/_sites/mo.anantf.com/
@@ -46,6 +49,14 @@ function route(host, pathname) {
       if (p === s.slice(0, -1)) return { redirect: s };
       if (p.startsWith(s)) return { file: p.slice(1) };
     } else if (p === s) return { file: p.slice(1) };
+  }
+  for (const [from, to] of Object.entries(site.redirects || {})) {
+    if (p === from.slice(0, -1)) return { redirect: to };
+    if (p.startsWith(from)) return { redirect: to + p.slice(from.length) };
+  }
+  for (const [prefix, folder] of Object.entries(site.prefixes || {})) {
+    if (p === prefix.slice(0, -1)) return { redirect: prefix };
+    if (p.startsWith(prefix)) return { file: folder + p.slice(prefix.length) };
   }
   const own = '/' + site.root;
   if (p === own.slice(0, -1)) return { redirect: own };

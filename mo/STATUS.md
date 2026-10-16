@@ -5,6 +5,8 @@ pick up from "Not done yet" below.
 
 ## Recently done
 
+- 16 Oct: `mo.anantf.com` is live (landing page, `/guide/`) and the Baby MO test is served there at `/test/` too (`MO.md`). The owner adds
+  `mo.anantf.com` to the `ntf-mo-portal` Firebase authorised domains for faculty sign-in there.
 - 16 Oct: the guide moved to `mo/guide/` (anantf.com/mo/guide/) and `anantf.com/mo/` is now a landing page for new MOs
   (guide and Baby MO test). `mo/sw.js` is a retired worker that moves phones off the old install. The question bank is not
   on the landing page (it is department-wide); `mo.anantf.com` is a Cloudflare Worker (`MO.md`; the owner's setup clicks are listed there): it serves the landing page and

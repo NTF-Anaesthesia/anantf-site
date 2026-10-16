@@ -1,6 +1,6 @@
 # Baby MO test notes
 
-Lasting decisions for `babymo/` (anantf.com/babymo/). Cloud setup: `SETUP.md`. Status and the decisions log are at the end.
+Lasting decisions for `babymo/` (anantf.com/babymo/, and mo.anantf.com/test/ since 16 Oct 2026: same files, served by the Worker in `MO.md`; the Firebase authorised domains need both). Cloud setup: `SETUP.md`. Status and the decisions log are at the end.
 
 ## Purpose
 
