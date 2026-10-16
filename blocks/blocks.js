@@ -165,6 +165,7 @@ const PAGES = [
   { t: 'Local anaesthetic systemic toxicity (LAST)', d: 'The emergency steps, lipid doses and total-dose limits', href: '../spinal/#cx-last', k: 'Emergency' },
   { t: 'Anatomy in 3D', d: 'Brachial, cervical, lumbar and sacral plexuses, linked to a labelled diagram', href: '#anatomy3d', k: 'On this page' },
   { t: 'Maximum local anaesthetic dose', d: 'Dose planners and total-dose limits', href: '#doses', k: 'On this page' },
+  { t: 'Local anaesthetic dose calculator', d: 'Safe dose for this patient: weight, lean body weight, every agent and injection added up', href: 'calculator/', k: 'Doses' },
 ];
 const rel = (url) => (url.startsWith('/') ? `..${url}` : url);
 
