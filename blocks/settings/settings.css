@@ -14,7 +14,7 @@
 .st-levels dt{font:500 15px/1.5 var(--tb-sans)}
 .st-app main .st-levels dd{margin:0;font-size:15px;line-height:1.5;color:var(--tb-ink-soft)}
 .st-app main .st-rows{list-style:none;margin:0;padding:0}
-.st-app main .st-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 10px;align-items:start;margin:0;max-width:none;padding:10px 0;border-top:1px solid var(--tb-line);border-bottom:1px solid var(--tb-line)}
+.st-app main .st-row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:4px 10px;align-items:start;margin:0;max-width:none;padding:10px 0;border-top:1px solid var(--tb-line)}
 /* the switch: a square box, wine with a tick when on (DESIGN.md: square; the word on/off is read out by role=switch) */
 .st-check{-webkit-appearance:none;appearance:none;box-sizing:border-box;width:44px;height:44px;margin:0;border:0;background:none;cursor:pointer;position:relative}
 .st-check::before{content:'';position:absolute;left:10px;top:10px;width:24px;height:24px;box-sizing:border-box;border:1.6px solid var(--tb-control);background:var(--tb-paper)}

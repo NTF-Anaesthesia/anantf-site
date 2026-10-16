@@ -14,7 +14,9 @@ body.tb-app{
   margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--sans);
   -webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip;
 }
-html{scroll-padding-top:24px}
+html{scroll-padding-top:64px} /* under the sticky app bar (.ra-sbar, 56px) */
+/* The site header scrolls away (only the app bar sticks, as on every regional page); its phone menu stays above the page */
+body.tb-app .ntf-header{position:relative;z-index:60}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 .tb-app *,.tb-app *::before,.tb-app *::after{box-sizing:border-box}
 .tb-app :is(a,button,summary,input,select,[tabindex]):focus-visible{outline:2px solid var(--wine);outline-offset:4px;border-radius:0}

@@ -8,6 +8,9 @@
 .lc-app main .lc-hero h1{font:400 clamp(40px,5.5vw,64px)/1.08 var(--tb-serif);letter-spacing:-.03em;margin:0 0 14px;max-width:18ch}
 .lc-app .lc-hero .tb-hub-disclaimer{margin-bottom:8px}
 .lc-app .lc-bar-title{flex:1;min-width:0;margin:0;font:500 16px/1.2 var(--tb-sans);color:var(--tb-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Phones: the bar also holds Settings, so the title is the short word ("Dose calculator" is the page's heading) */
+.lc-app .lc-bar-t-short{display:none}
+@media (max-width:420px){.lc-app .lc-bar-t-long{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}.lc-app .lc-bar-t-short{display:inline}}
 .lc-app main .lc-h{font:400 clamp(24px,2.6vw,28px)/1.2 var(--tb-serif);letter-spacing:-.015em;margin:0 0 14px;padding:0;max-width:none;color:var(--tb-ink)}
 .lc-mono{font-family:var(--tb-mono)}
 .lc-muted{color:var(--tb-muted)}

@@ -5,18 +5,16 @@
    DESIGN.md: paper, ink, one wine accent, square edges, hairlines, light only, nothing under 12px, 44px targets.
    Literal colours (this file is shared by pages with different token names). */
 
-:root{--ra-frame-w:1600px;--ra-frame-g:32px;--ra-rail-w:232px;--ra-rail-gap:40px}
-@media (min-width:1280px){:root{--ra-frame-g:40px;--ra-rail-w:248px;--ra-rail-gap:48px}}
+:root{--ra-frame-w:var(--site-width,1240px);--ra-frame-g:var(--site-gutter,56px);--ra-rail-w:232px;--ra-rail-gap:40px}
+@media (min-width:1280px){:root{--ra-rail-w:248px;--ra-rail-gap:48px}}
 
 /* ------------------------------------------------------------------ desktop frame (≥ 1024 px; phones and tablets as before)
-   The bar, breadcrumbs, main and foot share one width (centred, never wider than 1600 px). The site header is not
-   touched. Pages with a rail reserve its column before the script builds it, so nothing jumps sideways. */
+   DESIGN.md: content max 1240px with 56px side gutters, the same column as the site header, so the header, breadcrumbs,
+   app bar and foot keep their usual width and alignment. The rail takes the left of that column; pages with a rail
+   reserve its space before the script builds it, so nothing jumps sideways. */
 @media (min-width:1024px){
-  body:is(.tb-app,.ra-app,.spinal-app) :is(.tb-bar-inner,.sp-bar-inner,.ra-sbar-inner,.tb-sheet-inner,.sp-sheet-inner).site-container,
-  body:is(.tb-app,.ra-app,.spinal-app)>.ntf-crumbs,
-  body:is(.tb-app,.ra-app,.spinal-app) :is(.tb-foot,.sp-foot)>.site-container{max-width:var(--ra-frame-w);padding-inline:var(--ra-frame-g)}
-  body:is(.tb-app,.spinal-app):not(.plexus-app)>main#main.site-container{max-width:var(--ra-frame-w);padding-right:var(--ra-frame-g);padding-left:calc(var(--ra-frame-g) + var(--ra-rail-w) + var(--ra-rail-gap))}
-  body.plexus-app.tb-app>main#main.site-container{max-width:var(--ra-frame-w);padding-inline:var(--ra-frame-g)}
+  body:is(.tb-app,.spinal-app):not(.plexus-app,.bd-app)>main#main.site-container{padding-left:calc(var(--ra-frame-g) + var(--ra-rail-w) + var(--ra-rail-gap))}
+  body:is(.tb-app,.ra-app):not(.ra-has-rail)>.ra-sbar~main#main.site-container{padding-left:var(--ra-frame-g)} /* region landings: no rail (their chooser needs the width) */
   .ra-frame{display:grid;grid-template-columns:var(--ra-rail-w) minmax(0,1fr);column-gap:var(--ra-rail-gap);align-items:start;box-sizing:border-box;width:100%;max-width:var(--ra-frame-w);margin-inline:auto;padding-inline:var(--ra-frame-g)}
   body .ra-frame>main#main.site-container{grid-column:2;max-width:none;width:auto;margin:0;padding-inline:0;min-width:0}
 }
@@ -66,8 +64,12 @@ html[data-ra-bar=hidden] .ra-appbar{transform:translateY(calc(-100% - 2px))}
   .ra-sbar .ra-sbar-btn{width:44px;padding:0}
   .ra-sbar .ra-sbar-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 }
-html:has(body .ra-sbar){scroll-padding-top:calc(var(--ra-bar,56px) + 8px)}
-:root:has(body .ra-sbar){--ra-bar:56px}
+/* Small phones: the back button is an arrow (as on the block pages' bars), so the title has room */
+@media (max-width:420px){
+  .ra-sbar .ra-sbar-back{width:44px;padding:0}
+  .ra-sbar .ra-sbar-back span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+}
+/* (the landings set scroll-padding-top for this bar in truncal/landing.css: no :has(), for Firefox 115) */
 
 /* Settings as a bar button: where the bar has no menu (shown by each bar's own rules) */
 .ra-settings-btn{text-decoration:none!important}
@@ -79,8 +81,7 @@ html:has(body .ra-sbar){scroll-padding-top:calc(var(--ra-bar,56px) + 8px)}
    Browsers without them (Firefox today) simply change page. Off with reduced motion. */
 @media (prefers-reduced-motion:no-preference){
   @view-transition{navigation:auto}
-  /* the header's own stacking order (its phone menu must stay above the sticky bar) */
-  body:is(.tb-app,.ra-app,.spinal-app)>.ntf-header{view-transition-name:ra-site-header;position:relative;z-index:60}
+  body:is(.tb-app,.ra-app,.spinal-app)>.ntf-header{view-transition-name:ra-site-header}
   :is(#tb-bar,#sp-bar,#bp-bar,.ra-sbar){view-transition-name:ra-appbar}
   ::view-transition-group(ra-site-header),::view-transition-group(ra-appbar){animation-duration:0s}
   ::view-transition-old(ra-site-header),::view-transition-old(ra-appbar){display:none}

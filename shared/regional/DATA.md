@@ -101,9 +101,8 @@ bootPage({
   (when set) the front door and **Settings** (`/blocks/settings/`). On phones the breadcrumb collapses to one
   "← <region>" line. From 1024 px the chapters are also in the rail beside the page, so the bar shows the chapter menu
   (the current chapter's name) rather than repeating the list inline.
-- **Desktop.** From 1024 px: the rail (this page's chapters, the region's pages, the other regions, the tools). From
-  1400 px a block chapter whose `block` has a `scene` docks its scan teacher in a sticky right column beside a reading
-  column of about 68 characters (`.ra-has-scan`, set by the shell); nothing to set in the data.
+- **Desktop.** From 1024 px: the rail (this page's chapters, the region's pages, the other regions, the tools) inside
+  the site's 1240 px column; nothing to set in the data.
 - **Chapter `tier`.** `{ id, title, …, tier: 3 }` tags the chapter, its hub entry and its menu entries; a link or search
   result into it relaxes the level for that view.
 

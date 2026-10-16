@@ -392,7 +392,6 @@ export async function bootPage(cfg) {
     const sec = sections.get(c.id);
     try {
       if (c.block) renderBlock(c.block, sec, { pageTitle: cfg.title });
-      if (sec.querySelector(':scope > .tb-scan-wrap')) sec.classList.add('ra-has-scan'); // docked beside the text on wide screens (regional.css)
       if (typeof c.render === 'function') await c.render(sec);
       tidyChapter(sec);
       if (useLevel) addHint(sec);

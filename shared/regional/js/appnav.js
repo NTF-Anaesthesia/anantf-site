@@ -4,8 +4,8 @@
 //                               search (search, optional). Turns on, for this page:
 //                                 - "Hide the bar while scrolling down" (Settings; localStorage 'ra-autohide', off by default)
 //                                 - the keyboard: "/" (unless turned off in Settings; 'ra-slash') and Ctrl+K / Cmd+K focus search
-//                                 - speculation rules: same-site regional links are prefetched / prerendered on hover
-//                                   (Chromium only; nothing happens in browsers without them)
+//                                 - speculation rules: same-site regional links are prefetched on hover (never prerendered;
+//                                   Chromium only; nothing happens in browsers without them)
 //   mountRail({main, groups})   desktop navigation rail (≥ 1024 px, css/appnav.css): this page's chapters or sections,
 //                               then this region's pages, the other regions and the tools. Wraps <main> in .ra-frame.
 //   settingsItem(cls)           <li><a> "Settings" for an app bar menu; settingsButton(cls) the same as a bar button
@@ -205,19 +205,29 @@ function initAutoHide(bar) {
   const show = () => { if (!hidden) return; hidden = false; html.removeAttribute('data-ra-bar'); html.style.removeProperty('--ra-bar-now'); };
   const hide = () => { if (hidden) return; hidden = true; html.dataset.raBar = 'hidden'; html.style.setProperty('--ra-bar-now', '0px'); };
   AH = { show };
+  // Only the reader scrolling hides the bar: a wheel, a finger moving the page, a scroll key or the scrollbar in the last
+  // moment. Scrolls the page makes itself (deep links, chapter changes, a scan step or Play changing the height of the
+  // text, scroll anchoring) never hide it, so the bar and the sticky scan image don't move on their own.
+  let userAt = -1e9;
+  const user = () => { userAt = now(); };
+  addEventListener('wheel', user, { passive: true, capture: true });
+  addEventListener('touchmove', user, { passive: true, capture: true });
+  let dragging = false; // the scrollbar (a press on the page's own edge)
+  addEventListener('pointerdown', (e) => { if (e.target === html) { dragging = true; user(); } }, { passive: true, capture: true });
+  addEventListener('pointerup', () => { dragging = false; }, { passive: true, capture: true });
   addEventListener('scroll', () => {
     const y = scrollY; const dy = y - lastY; lastY = y;
     if (!getAutoHide()) { show(); return; }
     if (y <= naturalTop() + 2) { show(); down = 0; return; } // at the top of the page
     if (dy < -1) { show(); down = 0; return; } // any scroll up brings it back
-    if (touching || now() < quietUntil || busy()) { down = 0; return; }
+    if (touching || now() < quietUntil || (!dragging && now() - userAt > 400) || busy()) { down = 0; return; }
     if (dy > 0) { down += dy; if (down > 24) hide(); }
   }, { passive: true });
   // Programmatic jumps (deep links, chapter changes) and anything a tap or key press makes reflow (a scan step, a
   // disclosure) are not the reader scrolling down: keep the bar where it is for a moment.
   const SCROLL_KEYS = new Set([' ', 'PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', 'Home', 'End']);
   document.addEventListener('click', () => quiet(), true);
-  document.addEventListener('keydown', (e) => { if (!SCROLL_KEYS.has(e.key) || e.target.closest?.('input,textarea,select,[contenteditable],.tb-scan,[role="group"]')) quiet(); }, true);
+  document.addEventListener('keydown', (e) => { if (!SCROLL_KEYS.has(e.key) || e.target.closest?.('input,textarea,select,[contenteditable],.tb-scan,[role="group"]')) quiet(); else user(); }, true);
   // A finger on a scan image (swipe to step) or a 3D model is not a page scroll.
   document.addEventListener('touchstart', (e) => { if (e.target.closest?.('.tb-scan-stage,.ra-scan-col,canvas,[data-ra-keepbar]')) touching = true; }, { passive: true, capture: true });
   const untouch = () => { if (touching) { touching = false; quiet(450); } };
@@ -238,25 +248,33 @@ function initKeys(search) {
   if (typeof search !== 'function') return;
   document.addEventListener('keydown', (e) => {
     if (e.defaultPrevented || e.isComposing) return;
-    const typing = !!e.target.closest?.('input,textarea,select,[contenteditable=""],[contenteditable="true"]');
+    const t = e.target;
+    const typing = !!(t?.isContentEditable || t?.closest?.('input,textarea,select,[contenteditable]:not([contenteditable="false"])'));
     if ((e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); search(); return; }
     if (e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey && getSlash()) { e.preventDefault(); search(); }
   });
 }
 
-// ------------------------------------------------------------------ speculation rules (prefetch / prerender)
+// ------------------------------------------------------------------ speculation rules (prefetch)
+// Prefetch only, never prerender: a prerendered page would run its scripts in the background (scan canvases, 3D models,
+// the level picker) and could show a level or setting chosen after it was rendered. Prefetching just fetches the next
+// page's HTML from this site when the reader hovers or presses on a link to another regional page.
 function initSpeculation() {
   if (typeof HTMLScriptElement === 'undefined' || typeof HTMLScriptElement.supports !== 'function' || !HTMLScriptElement.supports('speculationrules')) return;
   if (document.querySelector('script[type="speculationrules"][data-ra]')) return;
   const base = ROOT.pathname;
-  const light = ['blocks/', 'truncal/', 'head-neck/', 'lower-limb/', 'upper-limb/', 'spinal/'];
-  const heavy = ['brachial-plexus/', 'plexus/']; // three.js and models: fetch the page, never run it in the background
-  const pat = (dirs) => ({ or: dirs.map((d) => ({ href_matches: `${base}${d}*`, relative_to: 'document' })) });
-  const notHere = { not: { selector_matches: 'a[href^="#"], a[download], a[target="_blank"], [rel~="nofollow"] a' } };
-  const notAnim = { not: { href_matches: `${base}lower-limb/anim/*`, relative_to: 'document' } };
+  const dirs = ['blocks/', 'truncal/', 'head-neck/', 'lower-limb/', 'upper-limb/', 'spinal/', 'brachial-plexus/', 'plexus/'];
   const rules = {
-    prerender: [{ source: 'document', where: { and: [pat(light), notHere, notAnim] }, eagerness: 'moderate' }],
-    prefetch: [{ source: 'document', where: { and: [pat(heavy), notHere] }, eagerness: 'moderate' }],
+    prefetch: [{
+      source: 'document',
+      where: { and: [
+        { or: dirs.map((d) => ({ href_matches: `${base}${d}*`, relative_to: 'document' })) },
+        // not the animation player (Dr Chew Shi Hao's, shown in an iframe), links within this page, downloads or new tabs
+        { not: { href_matches: `${base}lower-limb/anim/*`, relative_to: 'document' } },
+        { not: { selector_matches: 'a[href^="#"], a[download], a[target="_blank"], [rel~="nofollow"]' } },
+      ] },
+      eagerness: 'moderate',
+    }],
   };
   const s = document.createElement('script');
   s.type = 'speculationrules';

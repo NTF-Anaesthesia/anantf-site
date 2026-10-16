@@ -3,7 +3,7 @@
    accent, square edges, hairlines, nothing under 12px, 44px targets. */
 :root:has(body.ra-app) { --ra-bar: 56px; }
 html:has(body.ra-app) { scroll-padding-top: calc(var(--ra-bar, 56px) + 8px); }
-body.ra-app .ntf-header { position: static; }
+body.ra-app .ntf-header { position: relative; z-index: 60; } /* scrolls away; its phone menu stays above the bar and the page */
 body.ra-app {
   --bp-paper: #f7f5ef; --bp-ink: #272722; --bp-muted: #55534d; --bp-line: #d7d2c8; --bp-line-strong: #b8ad9e;
   --bp-control: #827b6d; --bp-wine: #633d3c; --bp-hover: #e9e5dc; --bp-blush: #ece3dc; --bp-ivory: #fffaf0;
@@ -121,9 +121,5 @@ body.ra-app .ntf-footer .ntf-copyright { font-size: 12px !important; }
 
 /* Settings (shared/regional/js/appnav.js): a bar button only while the chips replace the block menu. */
 .bp-bar .ra-settings-btn { display: none; }
-@media (min-width: 1180px) { .bp-bar .ra-settings-btn { display: inline-flex; } }
+@media (min-width: 1180px) { .bp-bar .ra-settings-btn { display: inline-flex; width: 44px; padding: 0; } .bp-bar .ra-settings-btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; } }
 .bp-blockmenu-act.ra-settings-link svg { stroke: var(--bp-wine); }
-/* Desktop: the same side gutters as the other regional pages' bars (shared/regional/css/appnav.css). */
-@media (min-width: 1024px) {
-  .ra-app :is(.top-inner, .bp-bar-inner, .foot-inner), .ra-app > main { padding-left: var(--ra-frame-g, 32px); padding-right: var(--ra-frame-g, 32px); }
-}

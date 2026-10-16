@@ -100,7 +100,7 @@ html:root[data-theme=light]{color-scheme:light}
    No smooth scrolling: programmatic jumps across these long chapters are instant. */
 :root:has(body.spinal-app){--ra-bar:56px}
 html:has(body.spinal-app){scroll-padding-top:calc(var(--ra-bar,56px) + 8px)}
-body.spinal-app .ntf-header{position:static}
+body.spinal-app .ntf-header{position:relative;z-index:60} /* scrolls away; its phone menu stays above the bar and the page */
 body.spinal-app .ntf-footer .ntf-copyright{font-size:12px}
 
 /* ------------------------------------------------------------------ base type */

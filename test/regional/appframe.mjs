@@ -9,11 +9,14 @@
 //   2. every kind of regional page reaches Settings from its app bar (a visible link, or one inside the bar's menu);
 //   3. "Hide the bar while scrolling down": off by default (the bar never moves); when on, it slides away on a scroll
 //      down, comes back on a scroll up, stays while a menu is open, and the phone scan column follows it;
-//   4. desktop rail at 1024 and 1440 (current chapter marked, follows chapter changes), none at 390; no horizontal
-//      overflow; the document (not an inner box) scrolls; a scan chapter at 1440 keeps its scan teacher in view;
+//   4. desktop rail at 1024 and 1440 on the block pages, spinal and Settings (current chapter marked, follows chapter
+//      changes), none at 390 and none on the region landings and /blocks/ (their choosers need the width); the frame
+//      keeps the site's 1240px column (bar and breadcrumbs line up with the site header); no horizontal overflow;
+//      the document (not an inner box) scrolls; the scan teacher stays in the page flow (no inner scroll box);
 //   5. keyboard: "/" and Ctrl+K open search (not "/" while typing, not when turned off); arrow keys on a step button;
-//   6. speculation rules are added where the browser has them; view transitions are named for the header and the bar
-//      and switched off with reduced motion.
+//   6. speculation rules (prefetch only, regional pages on this site, never the animation player) are added where the
+//      browser has them; view transitions are named for the header and the bar and switched off with reduced motion.
+//   7. auto-hide on: a scroll the page makes itself (a jump to a section) never hides the bar.
 
 import { BASE, launch, waitReady, reporter, attachLog } from './lib.mjs';
 
@@ -43,7 +46,13 @@ const barState = (page) => page.evaluate(() => {
   const bar = document.querySelector('.ra-appbar');
   return { hidden: document.documentElement.dataset.raBar === 'hidden', top: bar ? Math.round(bar.getBoundingClientRect().top) : null };
 });
-async function scrollSteps(page, dy, n = 6) { for (let i = 0; i < n; i++) { await page.evaluate((d) => window.scrollBy(0, d), dy); await page.waitForTimeout(40); } await page.waitForTimeout(250); }
+// The reader scrolling (mouse wheel), not the page scrolling itself: only the reader's own scroll may hide the bar.
+async function scrollSteps(page, dy, n = 6) {
+  const vp = page.viewportSize();
+  await page.mouse.move(6, Math.round(vp.height * 0.7)); // in the side gutter: not on a 3D model or scan, which take the wheel themselves
+  for (let i = 0; i < n; i++) { await page.mouse.wheel(0, dy); await page.waitForTimeout(60); }
+  await page.waitForTimeout(250);
+}
 
 // ------------------------------------------------------------------ 1. settings page
 {
@@ -144,22 +153,39 @@ for (const p of ['truncal/back/#ch-esp', 'truncal/', 'spinal/#ch-technique', 'br
   await ctx.close();
 }
 
-// ------------------------------------------------------------------ 4. rail, overflow, docked scan
-for (const vp of [390, 1024, 1440]) {
-  for (const p of ['truncal/back/#ch-esp', 'head-neck/', 'blocks/', 'spinal/#ch-technique', 'blocks/settings/']) {
+{
+  // A jump the page makes itself (a section link, scrollIntoView, a #hash) is not the reader scrolling: the bar stays.
+  const { ctx, page } = await open('truncal/back/#ch-esp', { vp: 390, storage: { 'ra-autohide': 'on' } });
+  await page.evaluate(() => document.getElementById('esp-scan')?.scrollIntoView({ block: 'start' }));
+  await page.waitForTimeout(150);
+  await page.evaluate(() => window.scrollBy(0, 400));
+  await page.waitForTimeout(300);
+  const s = await barState(page);
+  R.check('truncal/back/ @390 auto-hide on: a scroll the page makes itself does not hide the bar', !s.hidden && s.top === 0, JSON.stringify(s));
+  await ctx.close();
+}
+
+// ------------------------------------------------------------------ 4. rail, overflow, the site column, scan in the flow
+const RAIL = new Set(['truncal/back/#ch-esp', 'lower-limb/hip/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/calculator/']);
+for (const vp of [390, 1024, 1180, 1440]) {
+  for (const p of ['truncal/back/#ch-esp', 'lower-limb/hip/', 'head-neck/', 'upper-limb/', 'blocks/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/calculator/']) {
     const { ctx, page, log } = await open(p, { vp });
     const r = await page.evaluate(() => {
       const rail = document.querySelector('.ra-rail');
       const de = document.documentElement;
+      const left = (sel) => { const n = document.querySelector(sel); if (!n) return null; const st = getComputedStyle(n); return Math.round(n.getBoundingClientRect().left + parseFloat(st.paddingLeft)); };
       return {
         shown: !!rail && rail.getClientRects().length > 0 && getComputedStyle(rail).display !== 'none',
         current: rail ? [...rail.querySelectorAll('a[aria-current]')].map((a) => a.textContent.trim()) : [],
         overflow: de.scrollWidth - de.clientWidth,
         docScrolls: de.scrollHeight > innerHeight + 100,
+        header: left('.ntf-header-inner'), crumbs: left('.ntf-crumbs'), bar: left('.ra-appbar :is(.tb-bar-inner,.sp-bar-inner,.ra-sbar-inner)'),
       };
     });
-    R.check(`${p} @${vp}: ${vp >= 1024 ? 'rail shown with the current item marked' : 'no rail on phones'}`, vp >= 1024 ? r.shown && r.current.length >= 1 : !r.shown, JSON.stringify(r));
+    const want = vp >= 1024 && RAIL.has(p);
+    R.check(`${p} @${vp}: ${want ? 'rail shown with the current item marked' : vp >= 1024 ? 'no rail (the page needs its width)' : 'no rail on phones'}`, want ? r.shown && r.current.length >= 1 : !r.shown, JSON.stringify(r));
     R.check(`${p} @${vp}: no horizontal overflow, the page itself scrolls`, r.overflow <= 1 && r.docScrolls, JSON.stringify(r));
+    if (vp >= 1024) R.check(`${p} @${vp}: the app bar lines up with the site header (DESIGN.md: 1240px column, 56px gutters)`, r.bar != null && Math.abs(r.bar - r.header) <= 1 && (r.crumbs == null || Math.abs(r.crumbs - r.header) <= 1), JSON.stringify(r));
     R.check(`${p} @${vp}: no errors`, !errs(log).length, errs(log).join(' | '));
     await ctx.close();
   }
@@ -171,10 +197,12 @@ for (const vp of [390, 1024, 1440]) {
   const b = await page.evaluate(() => [...document.querySelectorAll('.ra-rail a[aria-current="location"]')].map((x) => x.getAttribute('href')));
   R.check('truncal/back/ @1440: the rail marks the current chapter and follows chapter changes', a.join() === '#ch-esp' && b.join() === '#ch-pvb', `${a} → ${b}`);
   await page.evaluate(() => { location.hash = 'ch-esp'; }); await page.waitForTimeout(400);
-  const before = await page.evaluate(() => { const w = document.querySelector('#ch-esp > .tb-scan-wrap'); return { pos: getComputedStyle(w).position, col: getComputedStyle(w).gridColumnStart }; });
-  await page.evaluate(() => window.scrollTo(0, 2400)); await page.waitForTimeout(300);
-  const after = await page.evaluate(() => { const r = document.querySelector('#esp-scan .tb-scan-stage').getBoundingClientRect(); return { top: Math.round(r.top), bottom: Math.round(r.bottom), h: innerHeight, y: Math.round(scrollY) }; });
-  R.check('truncal/back/ @1440: the scan teacher is docked beside the text and stays in view while reading', before.pos === 'sticky' && before.col === '2' && after.top >= 56 && after.bottom <= after.h && after.y > 1500, `${JSON.stringify(before)} ${JSON.stringify(after)}`);
+  const w = await page.evaluate(() => {
+    const wrap = document.querySelector('#ch-esp > .tb-scan-wrap'); const cs = getComputedStyle(wrap);
+    const grid = document.querySelector('#esp-scan .tb-scan-grid');
+    return { pos: cs.position, oy: cs.overflowY, cols: getComputedStyle(grid).gridTemplateColumns.split(' ').length };
+  });
+  R.check('truncal/back/ @1440: the scan teacher stays in the page flow (no inner scroll box), image beside its step panel', w.pos === 'static' && w.oy === 'visible' && w.cols === 2, JSON.stringify(w));
   await ctx.close();
 }
 
@@ -199,7 +227,10 @@ for (const vp of [390, 1024, 1440]) {
   await page.keyboard.press('ArrowLeft'); await page.waitForTimeout(100);
   R.check('ArrowLeft goes back a step', await page.evaluate(() => document.querySelector('#esp-scan .tb-scan-step[aria-current="step"]')?.id) === 'esp-step-scan');
   const spec = await page.evaluate(() => { const s = document.querySelector('script[type="speculationrules"][data-ra]'); if (!s) return null; try { return JSON.parse(s.textContent); } catch { return 'bad json'; } });
-  R.check('speculation rules: prerender for regional pages, prefetch only for the 3D apps', spec && spec.prerender?.[0]?.eagerness === 'moderate' && JSON.stringify(spec.prefetch).includes('plexus/') && !JSON.stringify(spec.prerender).includes('plexus/'), JSON.stringify(spec));
+  const specS = JSON.stringify(spec);
+  R.check('speculation rules: prefetch only (no prerender), regional pages on this site, never the animation player', spec && !spec.prerender && spec.prefetch?.[0]?.eagerness === 'moderate'
+    && spec.prefetch[0].where.and[0].or.every((r) => r.relative_to === 'document' && r.href_matches.startsWith('/') && !r.href_matches.startsWith('//'))
+    && specS.includes('lower-limb/anim/*') && !/regional\.html|exams|popliteal|mo\/|qbank|babymo/.test(specS), specS);
   await ctx.close();
 }
 {

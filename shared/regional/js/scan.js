@@ -341,9 +341,7 @@ export function mountScan(host, scene, { blockId, coverage } = {}) {
   let ctx = null;
   function measure(force = false) {
     const w = Math.max(200, Math.floor(stage.clientWidth));
-    // --ra-stage-vh: a smaller share of the window where the scan is docked beside the text (regional.css, ≥ 1400 px)
-    const vh = st.phone ? 0.45 : (parseFloat(getComputedStyle(stage).getPropertyValue('--ra-stage-vh')) || 0.66);
-    const maxH = st.phone ? Math.max(170, window.innerHeight * vh) : Math.max(240, Math.min(window.innerHeight * vh, 620));
+    const maxH = st.phone ? Math.max(170, window.innerHeight * 0.45) : Math.max(240, Math.min(window.innerHeight * 0.66, 620));
     let cssW = w, cssH = Math.round(w * g.H / g.W);
     if (cssH > maxH) { cssH = Math.round(maxH); cssW = Math.round(cssH * g.W / g.H); }
     const dpr = Math.min(window.devicePixelRatio || 1, 2);

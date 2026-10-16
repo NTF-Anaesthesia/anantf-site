@@ -14,7 +14,7 @@ function appBar() {
   bar.className = 'tb-bar lc-bar';
   bar.innerHTML = `<div class="tb-bar-inner site-container">
     <a class="tb-bar-home tb-bar-home--back" href="../" aria-label="Back to Regional blocks">${BACK}<span>Blocks</span></a>
-    <p class="lc-bar-title">Dose calculator</p>
+    <p class="lc-bar-title"><span class="lc-bar-t-long">Dose calculator</span><span class="lc-bar-t-short" aria-hidden="true">Calculator</span></p>
     <div class="tb-bar-level"></div>
   </div>`;
   bar.querySelector('.tb-bar-level').before(settingsButton('tb-tool tb-bar-btn is-always'));

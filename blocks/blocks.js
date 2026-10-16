@@ -10,7 +10,7 @@
    and the registry. */
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../shared/regional/js/levels.js?v=20261015';
 import { registerOffline, mountAppVersion } from '../shared/regional/js/offline.js?v=20261016';
-import { initAppFeel, mountRail, settingsItem } from '../shared/regional/js/appnav.js?v=20261017';
+import { initAppFeel, settingsItem } from '../shared/regional/js/appnav.js?v=20261017';
 import { REGIONS, blocksIn } from '../shared/regional/js/registry.js?v=20261015';
 import * as UL from '../shared/regional/js/ops/ops-upperlimb.js?v=20261016';
 import * as TR from '../shared/regional/js/ops/ops-truncal.js?v=20261015';
@@ -672,8 +672,6 @@ function route({ initial = false } = {}) {
 /* ------------------------------------------------------------------ boot */
 applyLevel();
 appBar();
-// Desktop (≥ 1024 px): the sections in a rail, with every region and the tools.
-mountRail({ label: 'On this page', items: SECTIONS.map(([id, t]) => ({ href: `#${id}`, text: t, id })), spy: true });
 mountLevelPicker($('#bd-picker'));
 wireSearch();
 wrongGuides();

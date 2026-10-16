@@ -112,48 +112,53 @@ a local `extraScan(scene, blockId)` helper in their `js/blocks.js`.
 
 ### App frame (desktop layout, page changes, Settings)
 
-Every regional page calls `initAppFeel({bar, search})` once and, except `brachial-plexus/` and `plexus/`, `mountRail()`
-(`js/appnav.js`, styles `css/appnav.css`). Phones and tablets (below 1024 px) look as before.
+Every regional page calls `initAppFeel({bar, search})` once; the engine block pages, `spinal/`, the calculator and
+Settings also call `mountRail()` (`js/appnav.js`, styles `css/appnav.css`). Phones and tablets (below 1024 px) look as
+before, apart from the Settings entry and the plain app bar on the region landings.
 
-- **Frame (≥ 1024 px).** The app bar, breadcrumbs, `<main>` and the foot share one width: centred, at most 1600 px,
-  side gutters 32 px (40 px from 1280 px) (`--ra-frame-w`, `--ra-frame-g`). The site header (`.ntf-header`) is not
-  changed: it keeps its own 1240 px width and scrolls away; only the app bar sticks (≤ 56 px). `brachial-plexus/` and
-  `plexus/` use the same gutters and width, without a rail (they need the room for the 3D model and diagram).
-- **Rail (≥ 1024 px).** `mountRail` wraps `<main>` in `.ra-frame` (a two-column grid) with `nav.ra-rail` on the left:
-  this page's chapters or sections ("On this page"), then this region's landing and pages, the other regions, and the
-  tools (all blocks, dose calculator, Anatomy in 3D, Settings), from `REGION_NAV` / `TOOL_NAV`. The current page is
-  `aria-current="page"`, the current chapter or section `aria-current="location"` (blush with a wine edge, as in the
-  chapter menu). Engine pages and `spinal/` follow `body[data-chapter]`; landings, `/blocks/` and Settings follow the
-  section in view (`spy: true`). The rail is sticky under the bar, scrolls itself when taller than the window (never the
-  page), and carries the chapters' `data-tier`, so the level hides the same entries as the chapter menu. Its column is
-  reserved in CSS before the script runs, so the page never jumps sideways. With the rail, the bar shows the chapter
-  menu (the current chapter's name) instead of repeating the chapters inline. The document stays the scroller.
-- **Docked scan teacher (≥ 1400 px).** A block chapter with a scan (`.ra-has-scan`, set by the shell when
-  `renderBlock` put a `.tb-scan-wrap` in the chapter) becomes a grid: a reading column (at most 680 px, about 68
-  characters) and, on the right, the scan teacher, sticky under the bar (`max-height` the window; it scrolls itself if
-  it is taller). The scan teacher is a container (`container: ra-scan`): two columns (image + 320 px panel) only when its
-  own box is at least 860 px wide (and the window at least 1000 px, as before); in a box under 620 px (the docked column)
-  the image, steps, step text and Back · Play · Next come first, then the structures, coverage chips and probe.
-  `--ra-stage-vh` (0.42 in the dock, else 0.66) caps the image height (`scan.js` `measure()`).
+- **Frame (≥ 1024 px).** DESIGN.md's column: the app bar, breadcrumbs, `<main>` and the foot keep the site's width
+  (`--site-width` 1240 px, `--site-gutter` 56 px; `--ra-frame-w` / `--ra-frame-g` point at them), so they line up with
+  the site header (`.ntf-header`), which is not changed: it scrolls away and only the app bar sticks (≤ 56 px). The
+  header has `position: relative; z-index: 60` (regional.css, landing.css, spinal, brachial-plexus, plexus) so its
+  phone menu opens above the sticky bar and the page. `brachial-plexus/` and `plexus/` keep their own layouts, without
+  a rail (they need the room for the 3D model and diagram); the region landings and `/blocks/` have no rail either
+  (their operation chooser needs the full column).
+- **Rail (≥ 1024 px).** `mountRail` wraps `<main>` in `.ra-frame` (a two-column grid inside the 1240 px column) with
+  `nav.ra-rail` on the left: this page's chapters or sections ("On this page"), then this region's landing and pages,
+  the other regions, and the tools (all blocks, dose calculator, Anatomy in 3D, Settings), from `REGION_NAV` /
+  `TOOL_NAV`. The current page is `aria-current="page"`, the current chapter or section `aria-current="location"`
+  (blush with a wine edge, as in the chapter menu). Engine pages and `spinal/` follow `body[data-chapter]`; Settings
+  follows the section in view (`spy: true`). The rail is sticky under the bar, scrolls itself when taller than the
+  window (never the page), and carries the chapters' `data-tier`, so the level hides the same entries as the chapter
+  menu. Its column is reserved in CSS before the script runs (not on `/blocks/` or the landings), so the page never
+  jumps sideways. With the rail, the bar shows the chapter menu (the current chapter's name) instead of repeating the
+  chapters inline. The document stays the scroller.
+- **Scan teacher width.** The scan teacher is a container (`container: ra-scan`): two columns (image + 320 px panel)
+  only when its own box is at least 780 px wide (and the window at least 1000 px, as before), so beside the rail it is
+  one column at 1024 px and two from about 1360 px; in a box under 620 px the image, steps, step text and
+  Back · Play · Next come first, then the structures, coverage chips and probe. It stays in the page flow.
 - **Page changes.** `@view-transition { navigation: auto }` in `appnav.css`: moving between regional pages, the site
   header (`ra-site-header`) and the app bar (`ra-appbar`: `#tb-bar`, `#sp-bar`, `#bp-bar`, `.ra-sbar`) stay put and the
-  rest cross-fades in 160 ms. Off under `prefers-reduced-motion`; browsers without it (Firefox) just change page. The
-  header gets `position: relative; z-index: 60` with its name, so its phone menu stays above the sticky bar.
+  rest cross-fades in 160 ms. Off under `prefers-reduced-motion`; browsers without it (Firefox) just change page.
   `initAppFeel` adds a `<script type="speculationrules">` (only where `HTMLScriptElement.supports('speculationrules')`):
-  regional pages are prerendered on hover or press (`moderate`), `brachial-plexus/` and `plexus/` only prefetched
-  (three.js), never `lower-limb/anim/`, never same-page `#` links.
+  links to regional pages on this site are **prefetched** (never prerendered: a prerendered page would run its scan
+  canvases and 3D models in the background and could show a level chosen after it was rendered) on hover or press
+  (`moderate`); never `lower-limb/anim/`, same-page `#` links, downloads or new-tab links.
 - **Settings (`/blocks/settings/`).** Reached from every app bar: a row in the chapter / block / plexus menu
   (`settingsItem`), a bar button where the bar has no menu at that width (`settingsButton`: the landings' `.ra-sbar`,
-  the calculator, `brachial-plexus/` from 1180 px, `plexus/` while its four plexuses are inline), and the rail's tools.
+  the calculator, `brachial-plexus/` from 1180 px (an icon, so the block chips keep their room), `plexus/` while its four
+  plexuses are inline), and the rail's tools.
   It holds the level control (the same `mountLevelControl`), **"Hide the bar while scrolling down"** (`localStorage`
   `ra-autohide` = `on` / `off`; off by default), **"Press / to search"** (`ra-slash`; on unless `off`) and the app
   version lines (also still at the foot of `/blocks/`). Every read and write is in try/catch.
 - **Bar auto-hide** (`ra-autohide` on). `initAppFeel` puts `.ra-appbar` on the bar. Scrolling down (more than 24 px,
   once the bar has stuck) sets `html[data-ra-bar=hidden]` and `--ra-bar-now: 0px`; the bar slides up 200 ms (instant
   with reduced motion). Any scroll up, the top of the page, focus inside the bar, or an open menu or search sheet brings
-  it back. Taps, key presses, deep links, chapter changes and a finger on a scan image or 3D canvas don't count as
-  scrolling for half a second, so stepping a scan (which reflows the text) never hides it. Everything that sticks
-  under the bar uses `top: var(--ra-bar-now, var(--ra-bar, 56px))` and moves with it: the rail, the docked scan, the
+  it back. Only the reader's own scrolling hides it (a wheel, a finger moving the page, a scroll key or the scrollbar
+  in the last 400 ms): scrolls the page makes itself (deep links, chapter changes, a scan step or Play reflowing the
+  text, scroll anchoring) never do, and taps, a finger on a scan image or 3D canvas, hash and chapter changes keep it
+  for a moment more. Everything that sticks
+  under the bar uses `top: var(--ra-bar-now, var(--ra-bar, 56px))` and moves with it: the rail, the
   phone scan column (`scan.css`), the `/blocks/` and landing operation lists and `spinal/`'s figure splits. Use the
   same for anything new that sticks.
 - **Keyboard.** "/" (not while typing in a box, and not when turned off in Settings) and Ctrl+K / Cmd+K open or focus
@@ -554,7 +559,7 @@ to a regional page or the engine. Details: [`test/regional/README.md`](../../tes
 | `smoke.mjs` | every page in `PAGES` (25, including `blocks/calculator/` and `blocks/settings/`) at 390 and 1440 px: no console or page errors or failed requests, no horizontal overflow, every scan through 4 steps × each view, credit line, no service worker other than `/regional-sw.js`, lazy three.js and animation iframes, one instance per stateful module; polish targets with `--strict` |
 | `deeplinks.mjs` | every `#ch-*`, `#<block>-step-*`, `#<block>-inj-*`, `#op-*`, app state hashes, redirects, shims, `edit.html?page=` |
 | `levels.mjs` | one level control per page, correct hiding per level, hints, MO always shows dose, LAST, complications, the "If it goes wrong" section (core guides, nothing above tier 1, the LAST guide steps forward) and scan, persistence never in the URL, spinal migration, relaxing |
-| `appframe.mjs` | the app frame: Settings page (defaults, saving, level control, version lines), Settings reachable from every kind of app bar at 390 and 1440, bar ≤ 56 px, auto-hide off by default and working when on (scroll down / up, top, open menu, phone scan column follows), rail at 1024 / 1440 and none at 390, no overflow, the document scrolls, docked scan in view at 1440, "/" and Ctrl+K, arrow keys on the step buttons, speculation rules, view-transition names (none with reduced motion) |
+| `appframe.mjs` | the app frame: Settings page (defaults, saving, level control, version lines), Settings reachable from every kind of app bar at 390 and 1440, bar ≤ 56 px, auto-hide off by default and working when on (scroll down / up, top, open menu, phone scan column follows), a page's own scrolling never hides it, rail at 1024 / 1180 / 1440 on the pages that have one and none at 390 or on the landings and `/blocks/`, the bar lined up with the site header, no overflow, the document scrolls, the scan teacher in the page flow, "/" and Ctrl+K, arrow keys on the step buttons, speculation rules (prefetch only), view-transition names (none with reduced motion) |
 | `parity.mjs` | at Consultant, every line of the baseline text is still on its page, and doses are identical (guide text isn't captured; `data.mjs` covers it) |
 | `offline.e2e.mjs` | its own server: `/blocks/` installs the worker and shows the version; with no signal block pages, `spinal/` and `lower-limb/` render; home and `mo/` are not answered; "Get the latest version" removes only the regional caches |
 
@@ -584,7 +589,7 @@ The usual site rules apply: branch and pull request, browser check, tests green,
 
 ## 9. Known limits and backlog
 
-In rough priority order. Done on 17 Oct 2026: the desktop layout (rail, docked scan teacher, container queries), view
+In rough priority order. Done on 17 Oct 2026: the desktop layout (rail, container queries for the scan teacher), view
 transitions and prefetch between pages, the Settings page with "Hide the bar while scrolling down" and the "/" key
 (§2 "App frame"). Done since 15 Oct 2026: upper-limb blocks on the engine with their chooser and real scans,
 offline use (`/regional-sw.js`), the dose calculator and structured maxima (`la.js`), the "If it goes wrong" guides
