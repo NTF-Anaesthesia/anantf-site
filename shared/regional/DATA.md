@@ -4,7 +4,7 @@ For the architecture, data flow, ultrasound look, how-tos, tests, ownership and 
 [`ENGINE.md`](ENGINE.md). This file is the full data schema.
 
 Everything in `shared/regional/` (moved from `truncal/shared/` on 15 Oct 2026) is used by the truncal pages
-(`truncal/back/`, `truncal/chest-wall/`, `truncal/abdominal-wall/`), the head and neck pages and the lower-limb pages.
+(`truncal/back/`, `truncal/chest-wall/`, `truncal/abdominal-wall/`), the head and neck, lower-limb and upper-limb pages.
 **Pages do not edit `shared/regional/`**: they supply data. `truncal/abdominal-wall/` is the
 reference implementation: copy its structure.
 
@@ -27,7 +27,10 @@ shared/regional/
                       brachial-plexus/ and plexus/; css/status.css holds the same tokens as CSS variables
   js/registry.js      block id → {title, region, url, aliases, anatomy3d?, watch?} across all regions
   js/realscan.js      the "Real" scan view (open-licence images with label pills)
-  js/figures/         head.js (head and neck figures), leg.js (lower-limb figures)
+  js/figures/         head.js (head and neck figures), leg.js (lower-limb figures), arm.js (upper-limb figures)
+  js/la.js, lacalc.js local anaesthetic dose maths (no DOM) and the dose calculator form (/blocks/calculator/)
+  js/decide.js        the "If it goes wrong" decision guides; their data is js/data/decisions.js
+  js/offline.js       registers the offline worker /regional-sw.js; app version lines on /blocks/
   css/levels.css      level control and tier hiding (body[data-tier-max] hides [data-tier] above it)
 ```
 
@@ -122,8 +125,8 @@ bootPage({
   - `#<blockId>-step-scan`, `#<blockId>-step-identify`, `#<blockId>-step-needle`, `#<blockId>-step-inject`
   - `#<blockId>-inj-<injectionId>` (selects that injection, e.g. `#ql-inj-ql3`)
 - Section ids made by the block renderer: `#<id>-position`, `-equipment`, `-landmarks`, `-approach`, `-sonoanatomy`,
-  `-target`, `-dose`, `-coverage`, `-anatomy3d`, `-watch` (`-watch-anim` is the disclosure), `-complications`,
-  `-pearls`, `-exam`, `-<sectionId>` (extra sections), `-scan` (the viewer), `-covmap`, `-exam-1…`.
+  `-target`, `-dose`, `-dose-check`, `-coverage`, `-anatomy3d`, `-watch` (`-watch-anim` is the disclosure), `-complications`,
+  `-wrong` (each guide `-wrong-<guide>`), `-pearls`, `-exam`, `-<sectionId>` (extra sections), `-scan` (the viewer), `-covmap`, `-exam-1…`.
 - A deep link to content the reader's level hides shows it for that view (see §2b).
 - Cross-page links: `../back/#esp-step-needle` etc.
 - Ready signal for tests: `body[data-tb-ready="true"]`; event `tb-ready`; `tb-chapter` fires on chapter change.
@@ -155,7 +158,7 @@ API (frozen): `getLevel()`, `setLevel(l, {save})`, `onLevel(fn) → unsubscribe`
 
 | Tier | Sections |
 |---|---|
-| 1 MO | header, summary, "Use it for", at a glance, `rapid`, `intro`, scan viewer, position, equipment, **dose box + LAST line**, **complications**, the **first 3 pearls**, `warning`, any section with `safety: true`, extra sections titled "Contraindications…" |
+| 1 MO | header, summary, "Use it for", at a glance, `rapid`, `intro`, scan viewer, position, equipment, **dose box + LAST line**, **complications**, **If it goes wrong**, the **first 3 pearls**, `warning`, any section with `safety: true`, extra sections titled "Contraindications…" |
 | 2 Resident | landmarks, approach, sonoanatomy, target, coverage, Anatomy in 3D, Watch the animation, remaining pearls, exam corner, other extra `sections[]` |
 | 3 Consultant | extra sections with id `consultant`, `frontier`, `catheter(s)`, `nerve-stim…`, `landmark(s)`, `approaches`, `alt`, or titled "Consultant corner", "Frontier…", "Catheters", "Nerve stimulat…", "Alternative: …", "Landmark technique…", "Before ultrasound: landmark…" |
 
@@ -165,8 +168,10 @@ Overrides, in data:
 - Any section value or list item may be `{ tier: n, html }` (or `{ safety: true, html }`) instead of a plain string:
   a pearl `{ safety: true, html: '…' }` is promoted to MO. Plain strings inherit their section's tier.
 - `exam: [{ q, points, tier: 3 }]`.
-- **Safety rule:** `dose` and `complications` are always tier 1, whatever the data says (enforced in `block.js` and by
-  `test/regional/levels.mjs`). Region pages may promote, never demote, safety content.
+- **Safety rule:** `dose`, `complications` and `wrong` (the "If it goes wrong" guides) are always tier 1, whatever the
+  data says (`SAFETY_KEYS`, enforced in `block.js` and by `test/regional/levels.mjs` and `data.mjs`). Region pages may
+  promote, never demote, safety content. An extra section that carries a dose an MO may give or look after (a catheter
+  regimen, a separate injection in an MO-visible scan viewer) should be MO level too (`safety: true` or `tier: 1`).
 
 Badges ("Resident", "Consultant") are added by the engine on the first section of each run of that tier, as their own
 line above the heading. Long prose sections at tier 2–3 (more than 3 paragraphs, prose only) keep their first paragraph
@@ -188,15 +193,16 @@ All text fields are **trusted HTML strings** (or arrays of HTML strings rendered
 | `intro` | HTML | optional prose before the viewer |
 | `scene` | Scene (§4) | the scan viewer |
 | `position`, `equipment`, `landmarks`, `approach`, `sonoanatomy`, `target` | HTML or HTML[] | sections in this order; `landmarksTitle` renames "Landmarks and scanning" |
-| `dose` | `{volume, conc, drug, per, note}` or `{html, note}` | dose box: "20–30 ml of dilute 0.3% ropivacaine per side" + note + LAST reminder (a `source` field is ignored) |
+| `dose` | `{volume, conc, drug, per, note, calc?}` or `{html, note, calc?}` | dose box: "20–30 ml of dilute 0.3% ropivacaine per side" + note + LAST reminder (a `source` field is ignored), then "Check the dose for this patient" (`#<id>-dose-check`), a link to `/blocks/calculator/?agent=&pct=&ml=&adr=`. The link is prefilled only when the dose names exactly one agent with one strength and one volume (no ranges, no ml/kg); `calc: false` leaves it out |
 | `last` | string | override the LAST line (default: "Keep the total dose within the maximum for the patient’s weight, especially with bilateral blocks or when combining blocks.") |
 | `coverage` | Coverage (§5) | map + "Covers" + Mechanism + "How dense, how reliable" + "What it misses" |
 | `complications` | HTML or HTML[] | section |
+| `wrong` | guide id[] or `false` | "If it goes wrong" section, after complications, always tier 1: the core guides plus those `EXTRA_GUIDES` in `js/data/decisions.js` gives this block id or region, plus any ids listed here; `false` hides it. Anchors `#<id>-wrong` and `#<id>-wrong-<guide>`; it links to `/blocks/#wrong`. Guide schema: [`ENGINE.md` §3.8](ENGINE.md#38-if-it-goes-wrong-guides-datadecisionsjs) |
 | `pearls` | HTML[] | "Practical pearls" list |
 | `sections` | `[{id, title, html, render(sec), tier?, safety?}]` | extra sections, inserted before the exam corner |
 | `rapid` | HTML or HTML[] | "The 20-second version" key box under the header (tier 1) |
 | `tiers` | `{key: 1\|2\|3}` | override the default tier of a top-level section (see §2b) |
-| `anatomy3d` | `{plexus, block?, el?}` or `{app: 'brachial-plexus', block, el?, tab?}`; `false` = none | "Anatomy in 3D" card: a link to `/plexus/#plexus=…&block=…` (or `/brachial-plexus/#block=…&tab=…`) and, for `plexus`, an "Open here" button that imports `plexus/js/explorer.js` (`mountExplorer`) only when tapped. Falls back to `registry.js` (`getBlock(id).anatomy3d`) when absent |
+| `anatomy3d` | `{plexus, block?, el?, brachialApp?}` or `{app: 'brachial-plexus', block, el?, tab?}`; `false` = none | "Anatomy in 3D" card: a link to `/plexus/#plexus=…&block=…` (or `/brachial-plexus/#block=…&tab=…`) and, for `plexus`, an "Open here" button that imports `plexus/js/explorer.js` (`mountExplorer`) only when tapped. With `plexus`, `brachialApp: {block?, el?, tab?}` adds an "Open in the brachial plexus app" link next to it (upper-limb pages). Falls back to `registry.js` (`getBlock(id).anatomy3d`) when absent |
 | `watch` | `{anim, variant?, caption?, label?}`; `false` = none | "Watch it done" disclosure for Dr Chew Shi Hao's animation (`lower-limb/anim/?embed=1#anim/variant`). The iframe is made on first open and removed on close; one per page. Falls back to `registry.js` |
 | `exam` | `[{source, q, points[], id?}]` | Exam corner; `source` is the exam name only ("MMed OSCE 2025", "Practice question"), no provenance in brackets; `points` sit in a "Model answer points" disclosure |
 
@@ -341,6 +347,10 @@ Recipes:
 - **Transverse paravertebral:** TP bone medially, IIM as a `ligament` line continuous with the SCTL, pleura line.
 - **Chest wall:** layers pec major → pec minor → serratus anterior → intercostals; ribs as `PS`/`E` bone shapes
   (rounded hyperechoic tops with shadows) with pleura `lines` between and below.
+- **Out-of-plane needle:** set `entry` within about 0.5 mm of `tip`, so only the bright tip dot shows (as in `hn-fa-ppf`).
+- **A second scan viewer inside a section:** `lower-limb/knee`, `head-neck/scalp` and `head-neck/airway` have a local
+  `extraScan(scene, blockId)` helper in `js/blocks.js`; use it as a section's `render` (e.g.
+  `render: extraScan(SCENES.atn, 'atn')`), so its deep links are `#<blockId>-step-*`.
 
 ## 5. Coverage schema (dermatome map)
 
@@ -427,9 +437,9 @@ registry. **When you add a block to any region, add its registry entry**, or it 
 and the region cards there.
 
 ### Operation data (`js/ops/`)
-`ops-truncal.js`, `ops-headneck.js`, `ops-lowerlimb.js` hold the operations behind each region's "Which block for which
+`ops-truncal.js`, `ops-headneck.js`, `ops-lowerlimb.js`, `ops-upperlimb.js` hold the operations behind each region's "Which block for which
 operation" chooser and the merged chooser on `/blocks/` (data only, plus each region's coverage-figure function). Each
-exports `REGION {id, title, path}`, `OPS`, `BLOCK_LINKS` (head-neck and lower-limb also `LINKS`: key → [href, name]), `BLOCK_NAMES`, `PAGE_NAMES` and `blockHref(key, base)`; the
+exports `REGION {id, title, path}`, `OPS`, `BLOCK_LINKS` (head-neck, lower-limb and upper-limb also `LINKS`: key → [href, name]), `BLOCK_NAMES`, `PAGE_NAMES` and `blockHref(key, base)`; the
 operation schema is in the comment at the top of each file. Links are relative to the region folder. Every block key
 in `groups[].items[].blocks` must exist in that file's links (`data.mjs` checks). Edit an operation here once and both
 the region landing and `/blocks/` change.
@@ -446,7 +456,9 @@ All optional; existing scenes work unchanged.
 - `scene.realScans: [{ src, credit, licence, sourceUrl?, orientation?, alt?, caption?, labels: [{ text, x, y, tx?, ty?,
   ids? }] }]` (or `REAL_SCANS[blockId]` in `realscan.js`): adds the "Real" view. Open-licence images only, each with its
   credit and licence; label positions are fractions (0–1) of the image. Images by region and their licences are in
-  `shared/us/<region>/sources.json`.
+  `shared/us/<region>/sources.json` (fields in [`ENGINE.md` §3.4](ENGINE.md#34-real-scans-sharedusregionsourcesjson)).
+  The colour key's "On" setting and Block view fill only labels with `block: true` plus nerves, arteries, needle and
+  local anaesthetic: give a vein `block: true` if it should fill (as the internal jugular vein on the cervical images).
 - Status colours and line styles (target, covers, variable, spares; injection marker; LA blue) come from `js/status.js`
   and `css/status.css`. Don't hard-code them in pages; a colour change is one line there.
 
@@ -455,6 +467,9 @@ All optional; existing scenes work unchanged.
   `headProbeInset(probe, opts)` (use as `scene.probeInset`), `viewsFigure({…})`, `OUTLINE`, `ZONES`.
 - `leg.js`: `legFigure(view, opts)`, `legCoverageMap(cov, {id, title})`, `legProbeInset(probe, opts)`,
   `legViewsFigure({…})`, `OUTLINE`, `LANDMARKS`, `ZONES`, `GROUPS`, `VIEWS` (zone names in `lower-limb/shared/LEG.md`).
+- `arm.js`: `armFigure(view, opts)`, `armCoverageMap(cov, {id, title})` (use as `coverage.map`),
+  `armProbeInset(probe, opts)` (use as `scene.probeInset`), `OUTLINE`, `LANDMARKS`, `ZONES`, `GROUPS`, `VIEWS`. Zones
+  and landmarks are written once in front-view coordinates; the back view mirrors them.
 - The torso figures stay in `js/dermatomes.js`. SVG text must render at 12 px or more at 390 px wide.
 - `head-neck/shared/js/head.js` and `lower-limb/shared/js/leg.js` are re-export shims; import from `figures/`.
 
@@ -462,11 +477,13 @@ All optional; existing scenes work unchanged.
 `blocks/index.html`, `blocks.js`, `blocks.css`; noindex, linked only from `regional.html`. It writes no clinical text:
 operations, block names and links come from `js/ops/` and `js/registry.js`, and its page list (`PAGES` in `blocks.js`)
 points at existing chapters. It holds the level picker, the "I need to…" tiles, the merged chooser, search across
-regions (registry + operations + pages + the region pages' synonyms) and the region cards.
+regions (registry + operations + pages + the region pages' synonyms), the "If it goes wrong" guides (`#wrong`,
+`#wrong-<guide>`), the region cards and, at the foot, the app version lines (`mountAppVersion` from `offline.js`). The
+dose calculator is `/blocks/calculator/` (`calculator.js` mounting `lacalc.js`).
 - Deep links: `#op-<region>-<id>` (e.g. `#op-lower-limb-hipfx`); a bare `#op-<id>` works when the id is unique.
 - A new region page or planner: add it to `PAGES` in `blocks.js` and, if it is a new region, to `REGIONS` in the
   registry. A new operation: add it to the region's ops module only.
 
 ### Tests
-`node test/regional/run-all.mjs` runs every suite (smoke, deep links, levels, data, content parity against the
-baseline) plus the `mo/` and `babymo/` suites; see `test/regional/README.md`. Run it after any change to a regional page.
+`node test/regional/run-all.mjs` runs every suite (dose maths, static, offline worker stamp, smoke, deep links, levels,
+data, content parity against the baseline, offline) plus the `mo/` and `babymo/` suites; see `test/regional/README.md`. Run it after any change to a regional page.

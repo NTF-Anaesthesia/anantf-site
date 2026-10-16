@@ -19,7 +19,7 @@ const SUITES = [
   { id: 'static', cmd: ['test/regional/static.mjs'], what: 'shims unused, noindex, no FRCA, only the regional SW (regional paths only), no personal contacts, references exist' },
   { id: 'version', cmd: ['test/regional/version.test.mjs'], what: 'regional-sw.js file lists, VERSION and MEDIA match the files (stamp)' },
   { id: 'data', cmd: ['test/regional/data.mjs'], what: 'registry, ops keys, tiers + safety rule, plexus sets, scene ids, dose consistency, no cite(' },
-  { id: 'smoke', cmd: ['test/regional/smoke.mjs', ...(args.strict ? ['--strict'] : [])], what: '20 pages × 390/1440: errors, 4xx, overflow, scans, polish, lazy 3D/iframes, credit' },
+  { id: 'smoke', cmd: ['test/regional/smoke.mjs', ...(args.strict ? ['--strict'] : [])], what: '24 pages × 390/1440: errors, 4xx, overflow, scans, polish, lazy 3D/iframes, credit' },
   { id: 'deeplinks', cmd: ['test/regional/deeplinks.mjs'], what: 'old URLs and hashes land on the right visible element; shims; redirects; edit.html' },
   { id: 'levels', cmd: ['test/regional/levels.mjs'], what: 'MO / Resident / Consultant: hiding, hints, SAFETY at MO, persistence, migration, relax' },
   { id: 'parity', cmd: ['test/regional/parity.mjs'], what: 'every WP0 baseline line and dose string still on its page (Consultant)' },

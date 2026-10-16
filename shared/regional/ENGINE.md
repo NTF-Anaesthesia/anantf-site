@@ -5,7 +5,8 @@ The full data schema (every block, scene and coverage field, page template, leve
 [`DATA.md`](DATA.md); this guide links to it rather than repeating it. Test details are in
 [`test/regional/README.md`](../../test/regional/README.md).
 
-Static ES modules, no build step, no CDN, no service worker. Everything is plain files served by GitHub Pages.
+Static ES modules, no build step, no CDN. Everything is plain files served by GitHub Pages, with one root service worker,
+`/regional-sw.js`, for offline use (regional paths only; §6 "Stamp the offline worker").
 
 ---
 
@@ -16,11 +17,13 @@ Every page is unlisted and `noindex`; the owner shares the links personally (don
 
 | Page | URL | Built with |
 |---|---|---|
-| Front door | `/blocks/` | its own script, reading `registry.js` and `ops/` (no clinical text of its own) |
+| Front door | `/blocks/` | its own script, reading `registry.js`, `ops/` and `data/decisions.js` (no clinical text of its own); app version lines at the foot |
+| Dose calculator | `/blocks/calculator/` | its own `calculator.js`, mounting `lacalc.js` |
 | Truncal landing + 3 pages | `/truncal/`, `back/`, `chest-wall/`, `abdominal-wall/` | landing chooser + engine (`bootPage`) |
 | Head and neck landing + 5 pages | `/head-neck/`, `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` | landing chooser + engine |
 | Lower-limb landing + 4 pages | `/lower-limb/`, `hip/`, `knee/`, `foot-ankle/`, `thigh/` | landing chooser + engine; Dr Chew Shi Hao's animations from `lower-limb/anim/` |
-| Upper limb | `/brachial-plexus/` | its own app (own scan teacher, 3D, diagram); uses the engine's levels and status colours |
+| Upper-limb landing + 3 pages | `/upper-limb/`, `shoulder/`, `arm/`, `forearm-hand/` | landing chooser + engine |
+| Brachial plexus app | `/brachial-plexus/` | its own app (own scan teacher, 3D, diagram); uses the engine's levels and status colours |
 | Neuraxial | `/spinal/` | its own app; uses the engine's levels |
 | Anatomy in 3D | `/plexus/` | plexus explorer (cervical, brachial, lumbar, sacral); uses levels and status colours |
 | Hub card | `/regional.html` | static page; the only public way in |
@@ -44,17 +47,25 @@ Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level co
 | `diagram.js` | the idealised labelled diagram of the same scene (`COL` colours) |
 | `realscan.js` | the "Real" view: open-licence images from `shared/us/`, label pills, colour-key fills, needle / LA overlay, "Your scan" (a local image, never uploaded) |
 | `dermatomes.js` | torso coverage map `coverageMap`, torso probe inset `probeInset`, `OUTLINE` |
-| `figures/head.js`, `figures/leg.js` | head and leg figure providers: coverage maps, probe insets, view figures (§3.3) |
+| `figures/head.js`, `figures/leg.js`, `figures/arm.js` | head, leg and arm figure providers: coverage maps, probe insets, view figures (§3.3) |
 | `levels.js` | the level system (§4) |
 | `status.js` | status colours and line styles (target, covers, variable, spares), `INJECTION`, `LA`; twin of `css/status.css` |
 | `registry.js` | one entry per block across every region (§3.5) |
 | `ops/ops-*.js` | the operations behind each "which block for which operation" chooser (§3.6) |
+| `la.js` | local anaesthetic dose data and pure maths, no DOM (node imports it): `AGENTS` (mg/kg plain and with adrenaline, and an absolute mg ceiling), `NOTES`, `FORMULAS`, `maxMg`, `mgFromMl`, `mlForMg`, `bmi`, `leanBodyWeight` (Janmahasatian), `idealBodyWeight` (Devine), `doseWeight` (lean weight when BMI ≥ 30), `combinedFraction`, `fractionStatus`, `parseDose`, `doseQuery`, `parseQuery` |
+| `lacalc.js` | `mountLaCalc(host, prefill)`: the dose calculator form; styles in `css/lacalc.css` (prefix `lc-`) |
+| `decide.js` | the "If it goes wrong" guides: `mountGuide(host, guide, {idPrefix, headingLevel})`, `guideList(ids, {idPrefix, headingLevel, lazy})`, `openGuideFromHash()`, `ensureDecideCss()` (links `css/decide.css`, prefix `ra-dg-`). No imports |
+| `data/decisions.js` | the guide data (§3.8): `GUIDES`, `GUIDE_ORDER`, `CORE_GUIDES`, `EXTRA_GUIDES`, `guidesFor(id, region, extra)`, `validateGuide` |
+| `offline.js` | `registerOffline()` registers `/regional-sw.js` once the page has loaded and gone quiet; `mountAppVersion(host)` draws the version lines at the foot of `/blocks/`. Always imported as `offline.js?v=20261016` |
 | `search.js` | page search index and synonyms |
 | `ui.js` | DOM helpers (`el`, `sv`, `fill`, `callout`, `table`, `details`, `stepper`, …) |
 | `refs.js` | kept for old data; renders nothing (the pages carry no citations) |
 
 CSS in `shared/regional/css/`: `regional.css` (all shared `tb-` styles; imports `levels.css`), `scan.css` and
-`realscan.css` (linked by the scan modules themselves), `status.css`, `levels.css`.
+`realscan.css` (linked by the scan modules themselves), `status.css`, `levels.css`, `lacalc.css`, `decide.css` (linked by
+`decide.js`).
+
+`shared/regional/tools/stamp.mjs` stamps the offline worker `/regional-sw.js` (§6).
 
 ### Data flow on a block page
 
@@ -74,15 +85,19 @@ CSS in `shared/regional/css/`: `regional.css` (all shared `tb-` styles; imports 
 
 A page folder holds `index.html`, `page.css` (optional, page prefix such as `aw-`), and `js/page.js`, `js/blocks.js`
 (block data), `js/scenes.js` (scene data) and any page-only chapters (`anatomy.js`, planners). Region landings
-(`truncal/landing.js`, `head-neck/landing.js`, `lower-limb/landing.js`) render the chooser from `ops/`.
+(`truncal/landing.js`, `head-neck/landing.js`, `lower-limb/landing.js`, `upper-limb/landing.js`) render the chooser
+from `ops/`. For an extra scan viewer inside a section, `lower-limb/knee`, `head-neck/scalp` and `head-neck/airway` have
+a local `extraScan(scene, blockId)` helper in their `js/blocks.js`.
 
 ### Outside the engine
 
 - **brachial-plexus/** keeps its own scan teacher (`js/ultrasound.js`, `SCENES_MM`), 3D viewer and real scans
-  (`brachial-plexus/us/`, `js/real-scans.js`). It imports `levels.js` and `status.js` from the engine and links
-  `css/status.css` and `css/levels.css`.
+  (`brachial-plexus/us/`, `js/real-scans.js`); the upper-limb engine pages carry the same blocks. It imports
+  `levels.js` and `status.js` from the engine and links `css/status.css` and `css/levels.css`.
 - **spinal/** imports `levels.js` (its old tiers map to MO / Resident / Consultant; "Pearls only" is Consultant only)
-  and links `css/levels.css`.
+  and links `css/levels.css`. It also imports `realscan.js` (which loads `scan.css` and `realscan.css` itself) for the
+  neuraxial real scans at `#us-real`; `spinal/css/ultrasound.css` styles `.ra-rs .tb-btn` because spinal doesn't load
+  `regional.css`. Its in-chapter topic navigation is `spinal/js/topics.js`.
 - **plexus/** uses `levels.js`, `status.js` and `regional.css`. `plexus/js/explorer.js` is also loaded on demand by
   block pages. Pages without a `three` import map get the explorer in an iframe of `plexus/index.html?embed=1`.
 - **three.js** r160 and its Draco decoder live in `shared/vendor/three-r160/`, reached only through the import maps
@@ -99,10 +114,11 @@ them**, and don't delete them (`static.mjs` and `deeplinks.mjs` check both).
 
 ### Cache-busting (`?v=`)
 
-- Entry points carry `?v=YYYYMMDD` (with a letter suffix for same-day bumps): `js/page.js?v=…` and
-  `regional.css?v=…` in each page, and `landing.js?v=…` on landings. Bump them when you change what they load.
+- Entry points carry `?v=YYYYMMDD`: `js/page.js?v=…` and `regional.css?v=…` in each page, and `landing.js?v=…` on
+  landings. Bump them when you change what they load. `static.mjs` allows digits only in `js/page.js?v=`, so for a
+  second bump on the same day use the next date, not a letter suffix.
 - **Stateful modules must load under one URL per page**, or they run twice and split their state. `levels.js` and
-  `figures/head.js` are always imported as `…?v=20261015`, from every module and every app. If you bump one, change
+  `figures/head.js` are always imported as `…?v=20261015`, and `offline.js` as `…?v=20261016`, from every module and every app. If you bump one, change
   every import of it in the same commit (grep for the file name). Other engine modules import each other without a
   query. `smoke.mjs` fails on a stateful module loaded under two URLs.
 - Never write `?v=…?v=…` (`static.mjs` checks).
@@ -124,11 +140,16 @@ Full schema: [`DATA.md` §3](DATA.md#3-block-schema-renderblock). Text fields ar
   position: '…', equipment: '…', landmarks: '…', approach: '…', sonoanatomy: '…', target: '…',
   dose: { volume: '20 ml', conc: '0.2%', drug: 'ropivacaine', note: '…' },
   coverage: { map: legCoverageMap, side: 'unilateral', areas: [{ zones: ['hip-ant'], density: 'dense' }], summary: '…' },
-  complications: ['…'], pearls: ['…', { safety: true, html: '…' }],
+  complications: ['…'], wrong: ['pneumo'],   // extra "If it goes wrong" guides (§3.8); false hides the section
+  pearls: ['…', { safety: true, html: '…' }],
   sections: [{ id: 'consultant', title: 'Consultant corner', html: '…' }],
   watch: { anim: 'peng', caption: '…' }, anatomy3d: { plexus: 'lumbar', block: 'peng' },
   exam: [{ source: 'Practice question', q: '…', points: ['…'] }] }
 ```
+
+Each dose box ends with "Check the dose for this patient", a link to `/blocks/calculator/?agent=&pct=&ml=&adr=`. It is
+prefilled only when the dose names exactly one agent and gives one strength and one volume (no ranges, no ml/kg);
+`dose.calc: false` hides it. Block dose text is still free text (§9).
 
 ### 3.2 Scene (scan viewer)
 
@@ -155,6 +176,7 @@ The coverage map and probe inset come from a provider chosen in the data:
 | Trunk (default) | `coverageMap` (`dermatomes.js`, used when `coverage.map` is absent) | `probeInset` (default) | levels T2–L1 and torso zones: [`DATA.md` §5](DATA.md#5-coverage-schema-dermatome-map) |
 | Head and neck | `coverage.map: headCoverageMap` | `scene.probeInset: headProbeInset` | `ZONES`, `OUTLINE` in `figures/head.js` |
 | Lower limb | `coverage.map: legCoverageMap` | `scene.probeInset: legProbeInset` | `ZONES`, `GROUPS`, `LANDMARKS`, `VIEWS` in `figures/leg.js`; listed in `LEG.md` |
+| Upper limb | `coverage.map: armCoverageMap` | `scene.probeInset: armProbeInset` | `ZONES`, `GROUPS`, `LANDMARKS` in `figures/arm.js`, written once in front-view coordinates; the back view mirrors them |
 
 `coverage.map: false` gives text only. Density (`dense`, `moderate`, `patchy`) maps to status colours through
 `DENSITY_STATUS` in `status.js`, and is shown by fill, pattern and words. The scan's Inject step builds its
@@ -162,8 +184,11 @@ Blocked / Variable / Spared chips from the same `coverage`.
 
 ### 3.4 Real scans (`shared/us/<region>/sources.json`)
 
-Folders: `truncal`, `head-neck`, `lower-limb`, `neuraxial`, `upper-limb` (empty). Each `sources.json` is an array, one
-entry per image file in the same folder:
+Folders: `truncal`, `head-neck`, `lower-limb`, `neuraxial`, `upper-limb` (9 images; multi-panel figures cropped). Each
+`sources.json` is an array, one entry per image file in the same folder. The `neuraxial` entries are matched by
+`blockId` alone (`pso`, `sacrum`, `transverse`, `articular`, `lamina`, `caudal`) with no `view` field, because spinal
+calls `loadRealScans(blockId, { realRegion: 'neuraxial' })` with no scene; they are grouped in `REAL_GROUPS` in
+`spinal/js/sections/ultrasound.js`.
 
 ```json
 {
@@ -194,7 +219,7 @@ entry per image file in the same folder:
 | `burnedInLabels` / `authorLabels` | the image already carries the authors' labels, so only the tapped structure gets a pill. `authorLabels: false` overrides (e.g. the authors used only numbers) |
 | `needle` | the needle path the authors show (fractions, tip last) |
 | `la` | polygon of where the local anaesthetic goes (≥ 3 points) |
-| `labels[]` | `x, y` the point on the structure; `tx, ty` where the pill sits (a leader joins them); `shape` polygon fill or `line` open line; `kind` sets the clinical colour (`nerve`, `artery`, `vein`, `muscle`, `fascia`, `bone`, `pleura`, `tendon`, `ligament`, `cartilage`, `fat`, `fluid`, `shadow`, `la`, `needle`, `point` = target, `other`); `block: true` puts it in "Block view"; `desc` one line when tapped; `ids` / `elementId` for "See in 3D" (an `elementId` without a colon means `brachial:`) |
+| `labels[]` | `x, y` the point on the structure; `tx, ty` where the pill sits (a leader joins them); `shape` polygon fill or `line` open line; `kind` sets the clinical colour (`nerve`, `artery`, `vein`, `muscle`, `fascia`, `bone`, `pleura`, `tendon`, `ligament`, `cartilage`, `fat`, `fluid`, `shadow`, `la`, `needle`, `point` = target, `other`); `block: true` puts it in "Block view" (the colour key's "On" and Block view fill only `block: true` labels plus nerves, arteries, needle and local anaesthetic, so a vein needs `block: true` to fill); `desc` one line when tapped; `ids` / `elementId` for "See in 3D" (an `elementId` without a colon means `brachial:`) |
 
 All coordinates are fractions (0–1) of the image width and height. Labels with the same `text` are one structure.
 The colour code (`COLOURS` in `realscan.js`) is clinical: never recolour it to the brand.
@@ -215,11 +240,12 @@ data's own `anatomy3d` / `watch` win over the registry. Details: [`DATA.md` §9]
 
 ### 3.6 Operations (`ops/`)
 
-Each of `ops-truncal.js`, `ops-headneck.js`, `ops-lowerlimb.js` exports `REGION`, `OPS`, `BLOCK_LINKS`, `BLOCK_NAMES`,
-`PAGE_NAMES`, `blockHref(key, base)` and a coverage-figure function (`truncalCoverageMap`, `headNeckCoverageMap`,
-`lowerLimbCoverageMap`); head-neck and lower-limb also export `LINKS` (key → `[href, link text, page]`). The schema
-is in the comment at the top of each file; the three differ slightly (truncal draws dermatome ranges, the others
-zones). A lower-limb operation:
+Each of `ops-truncal.js`, `ops-headneck.js`, `ops-lowerlimb.js`, `ops-upperlimb.js` exports `REGION`, `OPS`,
+`BLOCK_LINKS`, `BLOCK_NAMES`, `PAGE_NAMES`, `blockHref(key, base)` and a coverage-figure function (`truncalCoverageMap`,
+`headNeckCoverageMap`, `lowerLimbCoverageMap`, `upperLimbCoverageMap`); head-neck, lower-limb and upper-limb also export
+`LINKS` (key → `[href, link text, page]`). The schema is in the comment at the top of each file; they differ slightly
+(truncal draws dermatome ranges, the others zones; upper limb uses the lower-limb schema). Upper-limb links can reach
+other regions (`scp` → head-neck, `clavipectoral` → truncal). A lower-limb operation:
 
 ```js
 { id: 'hipfx', region: 'hip', name: 'Hip fracture: emergency department and positioning for spinal',
@@ -256,6 +282,27 @@ export default {
 Element and block ids are what `#plexus=…&el=…&block=…` links, scene `ids` and registry `anatomy3d` refer to.
 `target` and `covers` must not overlap; every root must be in `levels` (`data.mjs` checks).
 
+### 3.8 "If it goes wrong" guides (`data/decisions.js`)
+
+Step-by-step decision guides (LAST, high block, pneumothorax, phrenic palsy, pain on injection, vascular puncture,
+block not working, nerve injury), rendered by `decide.js` one step at a time. All tier 1. The schema is in the comment at
+the top of the file:
+
+```js
+{ id: 'last', title: '…', short: '…', tier: 1, when: 'html', start: 'q1',
+  steps: { q1: { ask: 'Question?', help: 'html', yes: 'a1', no: 'q2' },          // yes / no
+           q2: { ask: '…', choices: [{ label: '…', to: 'a2' }] },                  // other answers
+           a1: { do: 'Action', html: '…', tone: 'danger', next: 'q2' } } }         // tone danger | warn | ok; no next = end
+```
+
+- Every block gets `CORE_GUIDES`; `EXTRA_GUIDES` lists which block ids get each extra guide, and the neuraxial region
+  always gets `high` (`guidesFor`). Block data can add
+  more with `wrong: [ids]` or hide the section with `wrong: false`.
+- The section sits after Complications at `#<block>-wrong`, each guide at `#<block>-wrong-<guide>`; on `/blocks/` they
+  are at `#wrong` and `#wrong-<guide>` (which opens it).
+- To add a guide: add it to `GUIDES` and `GUIDE_ORDER`, map it in `EXTRA_GUIDES` (or `CORE_GUIDES`), and run `data.mjs`
+  (`validateGuide`: every step reachable, every target exists, no loops, an end).
+
 ---
 
 ## 4. Levels
@@ -269,8 +316,12 @@ Element and block ids are what `#plexus=…&el=…&block=…` links, scene `ids`
 - **Tagging.** Any element can carry `data-tier="1|2|3"`; untagged content always shows. `renderBlock` tags block
   sections by default (`DEFAULT_TIERS`); data overrides with `tiers: {key: n}`, `{tier, html}` items, `tier` on
   extra sections and chapters, and `safety: true`. Table of defaults: [`DATA.md` §2b](DATA.md#2b-levels-mo--resident--consultant).
-- **Safety rule.** Doses, the LAST line and complications are always tier 1 (`SAFETY_KEYS`, enforced in `block.js`
-  and checked by `levels.mjs` and `data.mjs`). You may move safety content down a tier, never up.
+- **Safety rule.** Doses, the LAST line, complications and the "If it goes wrong" guides are always tier 1
+  (`SAFETY_KEYS = ['dose', 'complications', 'wrong']`, enforced in `block.js` and checked by `levels.mjs` and
+  `data.mjs`). You may move safety content down a tier, never up. Extra sections that carry a dose an MO may give or
+  look after on the ward (catheter regimens, a separate injection offered in an MO-visible scan viewer, drug choice when
+  the dose box gives volume only) are made MO level (`safety: true` or `tier: 1`), as `#sap-ribs`, `#peri-drugs` and
+  `#sciatic-pfcn` are.
 - **Persistence.** `localStorage['ra-level']`, shared by every regional page; spinal's old keys
   (`spinal-level`, `spinal-tier`) migrate once. Never put the level in a URL.
 - **Relaxing.** A deep link or search result to hidden content raises the level for that view only (`relaxFor`,
@@ -389,8 +440,17 @@ The brachial plexus app has its own renderer (`brachial-plexus/js/ultrasound.js`
    block's sonoanatomy uses. Add `needle` and `la` when the authors show them, `block: true` on the target structures.
 5. Open the block, choose "Real", check every pill and fill at 390 px and 1440 px, and run the tests.
 
-Upper-limb images currently live in `brachial-plexus/us/` and are shown by that app's own viewer;
-`shared/us/upper-limb/` is empty until the brachial scenes move to the engine.
+Upper-limb engine pages read `shared/us/upper-limb/`; the brachial plexus app still shows its own copies from
+`brachial-plexus/us/`.
+
+### Stamp the offline worker
+
+After changing anything in the regional folders, or the shared `assets/`, `fonts/` or logo files they load, run
+`node shared/regional/tools/stamp.mjs`. It rewrites the file lists and two hashes in `/regional-sw.js`: `VERSION`
+(date + hash, shown at the foot of `/blocks/`) and `MEDIA` (pictures, models, three.js; a new `MEDIA` makes phones
+download those again). `--check` only checks; `test/regional/version.test.mjs` fails when it is out of date. The worker
+answers only the regional paths and the shared site files they load; everything else (home, `mo/`, `qbank/`,
+`babymo/`, `exams/`) passes straight through. `regional.html` doesn't register it but is served offline once saved.
 
 ### Add a plexus dataset
 
@@ -413,17 +473,20 @@ Upper-limb images currently live in `brachial-plexus/us/` and are shown by that 
 ## 7. Tests
 
 Serve the repo on port 8765, then `node test/regional/run-all.mjs` (all suites plus the `mo/` and `babymo/` suites).
-`--gate=main` runs static, smoke and deep links; `--only=<ids>` and `--pages=…` narrow a run. Run it after any change
+`--gate=main` runs static, version, smoke and deep links; `--only=<ids>` and `--pages=…` narrow a run. Run it after any change
 to a regional page or the engine. Details: [`test/regional/README.md`](../../test/regional/README.md).
 
 | Suite | Checks |
 |---|---|
-| `static.mjs` | no imports through shims, old vendor path gone, every relative import exists, `noindex`, no "FRCA", no service worker, no personal contacts, `?v=` once on entry points, allow-lists valid |
-| `data.mjs` | registry and ops links resolve, aliases unique, tiers 1–3, dose and complications never above tier 1, plexus data sound, scene `ids` exist, dose consistency between pages, ops, planners and animations, no `cite(` |
-| `smoke.mjs` | every page at 390 and 1440 px: no console or page errors or failed requests, no horizontal overflow, every scan through 4 steps × each view, credit line, lazy three.js and animation iframes, one instance per stateful module; polish targets with `--strict` |
+| `la.test.mjs` | dose maths in `la.js` (no browser): maxima, mg ↔ ml, lean and ideal weight, combined fraction, dose-box parsing |
+| `static.mjs` | no imports through shims, old vendor path gone, every relative import exists, `noindex`, no "FRCA", no service worker except `/regional-sw.js` registered through `offline.js` (the worker is loaded in a sandbox: it must answer the regional paths and leave the others alone), no personal contacts, `?v=` once on entry points (digits only in `page.js?v=`), allow-lists valid |
+| `version.test.mjs` | `regional-sw.js` file lists, `VERSION` and `MEDIA` match the files (`stamp.mjs` fixes it) |
+| `data.mjs` | registry and ops links resolve, aliases unique, tiers 1–3, dose and complications never above tier 1, plexus data sound, scene `ids` exist, dose consistency between pages, ops, planners and animations, no `cite(`; every guide sound and tier 1, every block gets the core guides and its required extras, the LAST guide carries the lipid and adrenaline doses |
+| `smoke.mjs` | every page in `PAGES` (24, including `blocks/calculator/`) at 390 and 1440 px: no console or page errors or failed requests, no horizontal overflow, every scan through 4 steps × each view, credit line, no service worker other than `/regional-sw.js`, lazy three.js and animation iframes, one instance per stateful module; polish targets with `--strict` |
 | `deeplinks.mjs` | every `#ch-*`, `#<block>-step-*`, `#<block>-inj-*`, `#op-*`, app state hashes, redirects, shims, `edit.html?page=` |
-| `levels.mjs` | one level control per page, correct hiding per level, hints, MO always shows dose, LAST, complications and scan, persistence never in the URL, spinal migration, relaxing |
-| `parity.mjs` | at Consultant, every line of the baseline text is still on its page, and doses are identical |
+| `levels.mjs` | one level control per page, correct hiding per level, hints, MO always shows dose, LAST, complications, the "If it goes wrong" section (core guides, nothing above tier 1, the LAST guide steps forward) and scan, persistence never in the URL, spinal migration, relaxing |
+| `parity.mjs` | at Consultant, every line of the baseline text is still on its page, and doses are identical (guide text isn't captured; `data.mjs` covers it) |
+| `offline.e2e.mjs` | its own server: `/blocks/` installs the worker and shows the version; with no signal block pages, `spinal/` and `lower-limb/` render; home and `mo/` are not answered; "Get the latest version" removes only the regional caches |
 
 **Baseline rules.** `test/regional/baseline/` is the content captured before the harmonisation.
 `smoke.mjs --baseline` rewrites it: only ever **before** a change, **never to make a failing test pass**. Reviewed
@@ -451,19 +514,30 @@ The usual site rules apply: branch and pull request, browser check, tests green,
 
 ## 9. Known limits and backlog
 
-In rough priority order:
+In rough priority order. Done since 15 Oct 2026: upper-limb blocks on the engine with their chooser and real scans,
+offline use (`/regional-sw.js`), the dose calculator and structured maxima (`la.js`), the "If it goes wrong" guides,
+spinal topic navigation and real scans, and the scalp, glossopharyngeal and V2/V3 diagram and ultrasound scenes
+(`hn-sc-temple`, `hn-aw-gpn`, `hn-fa-deep`, `hn-sc-atn`, `hn-aw-gpus`, `hn-fa-ppf`).
 
-1. **Brachial scenes not on the engine.** `brachial-plexus/js/ultrasound.js` keeps its own 7 `SCENES_MM` and renderer;
-   port them to the scene schema, then move its real scans into `shared/us/upper-limb/` (empty today).
-2. **No single-page app and no offline use.** Pages are separate; a `#/block/<id>` app with redirect stubs and a
-   service worker (on the `mo/guide/` pattern) is not built. Regional pages must not register a service worker until then.
-3. **No structured dose data.** Dose text is repeated in the block, glance, ops, planners and animation headers and
-   kept in step by `data.mjs`; no shared local anaesthetic calculator yet.
-4. **No decision trees** per block (failed block, LAST, vascular puncture): new clinical prose needing owner review.
-5. **No upper-limb operations in the chooser** (needs new clinical content); the very long spinal chapters are not
-   split into per-topic screens.
-6. **Real scans are thin.** Upper limb has none in `shared/us/`; the `neuraxial/` images are not shown yet because
-   `spinal/` has no engine scan viewer; several blocks have one image or none.
-7. **New scenes and animations.** Diagram scenes for the scalp, glossopharyngeal and deep V2/V3 blocks; animations
-   for iPACK, genicular, obturator, saphenous and sciatic blocks (Dr Chew Shi Hao's call).
-8. Problems inside `lower-limb/anim/`, `popliteal-animation/` and `exams/` are reported to Dr Chew Shi Hao, not fixed.
+1. **Brachial plexus app still has its own scan teacher.** `brachial-plexus/js/ultrasound.js` keeps its own 7
+   `SCENES_MM`, renderer and `brachial-plexus/us/` scans; the same blocks are now on the upper-limb engine pages. The
+   app has no link to them yet, and the cervical plexus chooser's "brachial plexus" link still goes to the app.
+2. **No single-page app.** Pages are separate; a `#/block/<id>` app with redirect stubs is not built (offline use is).
+3. **Block dose text is free text.** The calculator has structured maxima, but dose text is still repeated in the
+   block, glance, ops, planners and animation headers and kept in step by `data.mjs`. Next step: structured
+   `{agent, pct, ml}` dose fields.
+4. **Guides not yet in `brachial-plexus/` and `spinal/`.** Those apps don't use the block template; their blocks are
+   already in the guide mapping and `decide.js` has no imports, so they can mount it.
+5. **Long spinal chapters are not split** into per-topic screens; they have in-chapter topic navigation
+   (`spinal/js/topics.js`).
+6. **Real scans are thin.** None yet for the costoclavicular, suprascapular and forearm blocks, or for the new head and
+   neck scenes (auriculotemporal, peristyloid glossopharyngeal, pterygopalatine fossa); several blocks have one image or
+   none.
+7. **Animations** for iPACK, genicular, obturator, saphenous and sciatic blocks (Dr Chew Shi Hao's call).
+8. **Owner to confirm:** the absolute mg ceilings in `la.js` `AGENTS`, and the lipid bolus "1.5 ml/kg over 2–3 minutes"
+   in the LAST guide (matched to `/spinal/#cx-last`; the older guideline says over 1 minute).
+9. **Firefox ESR 115** (end of life) lacks `:has()`, so `--ra-bar` isn't set there: deep links land under the bar.
+   Fix with a `var(--ra-bar, 56px)` fallback in `shared/regional/css/regional.css` and
+   `brachial-plexus/css/shell.css` (needs a `regional.css?v=` bump on every page). `plexus/` and `brachial-plexus/`
+   passed a static ESR check on 16 Oct 2026 with this as the only gap.
+10. Problems inside `lower-limb/anim/`, `popliteal-animation/` and `exams/` are reported to Dr Chew Shi Hao, not fixed.
