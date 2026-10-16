@@ -4,7 +4,7 @@
 // "Pearls only" digest at Consultant level. The specifier below must stay identical in every spinal module that imports
 // levels.js (search.js), so they share one module instance.
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
-import { initAppFeel, mountRail, settingsItem } from '../../shared/regional/js/appnav.js?v=20261017'; // desktop rail, Settings, bar auto-hide, keys, prefetch
+import { initAppFeel, mountRail, settingsItem } from '../../shared/regional/js/appnav.js?v=20261018'; // desktop rail, Settings, bar auto-hide, keys, prefetch
 import { $, $$, el, announce } from './ui.js?v=1';
 import { registerRefs, finalise } from './refs.js?v=1';
 import { attachSearch, buildIndex } from './search.js?v=5';

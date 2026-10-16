@@ -10,9 +10,13 @@
 //                               then this region's pages, the other regions and the tools. Wraps <main> in .ra-frame.
 //   settingsItem(cls)           <li><a> "Settings" for an app bar menu; settingsButton(cls) the same as a bar button
 //   getAutoHide/setAutoHide, getSlash/setSlash, SETTINGS_URL, REGION_NAV, TOOL_NAV, regionOf(path)
+//   (app look) initAppFeel also draws the bottom tab bar (a left rail from 1024 px) while html[data-skin="app"]: Blocks,
+//   Search, Guides, Calculator, Settings; see js/skin.js and css/skin-app.css (ENGINE.md §2 "Skins").
 //
-// No imports and no state outside this module: import it as appnav.js?v=20261017 everywhere (one instance per page).
+// Its only import is skin.js, under one URL everywhere: import this module as appnav.js?v=20261018 (one instance per page).
 // Cross-document view transitions are pure CSS (@view-transition in css/appnav.css).
+
+import { getSkin, onSkin } from './skin.js?v=20261018';
 
 const ROOT = new URL('../../../', import.meta.url);
 const R = (p) => new URL(p, ROOT).href;
@@ -91,7 +95,7 @@ function ensureCss() {
   if (getComputedStyle(document.documentElement).getPropertyValue('--ra-frame-w').trim()) return;
   const l = document.createElement('link');
   l.rel = 'stylesheet';
-  l.href = new URL('../css/appnav.css?v=20261017', import.meta.url).href;
+  l.href = new URL('../css/appnav.css?v=20261018', import.meta.url).href;
   l.dataset.raCss = 'appnav';
   document.head.append(l);
 }
@@ -182,6 +186,61 @@ export function mountRail({ main = document.getElementById('main'), label = 'On 
     sync();
   }
   return { setCurrent, rail };
+}
+
+// ------------------------------------------------------------------ app look: the bottom tab bar (left rail from 1024 px)
+// Rendered only while html[data-skin="app"] (so the website look has no extra element) and removed again when the reader
+// switches back in Settings. Five tabs, every one reachable from every regional page. The Search tab opens the page's own
+// search (the app bar's search, "/" and Ctrl+K) and, on a page with none, goes to the search box on /blocks/.
+const TAB_SVG = {
+  blocks: '<rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/>',
+  search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+  guides: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/><path d="m6 6 3.5 3.5M14.5 14.5 18 18M18 6l-3.5 3.5M9.5 14.5 6 18"/>',
+  calculator: '<rect x="5" y="3" width="14" height="18" rx="2.6"/><path d="M8.5 7.5h7M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16h.01M12 16h.01M15.5 16h.01"/>',
+  settings: '<path d="M4 7h9M19 7h1M4 17h3M13 17h7"/><circle cx="16" cy="7" r="2.5"/><circle cx="10" cy="17" r="2.5"/>',
+};
+/** id, label, path from the site root (null: a button, not a link). */
+export const TABS = Object.freeze([
+  ['blocks', 'Blocks', 'blocks/'],
+  ['search', 'Search', null],
+  ['guides', 'Guides', 'blocks/#wrong'],
+  ['calculator', 'Calculator', 'blocks/calculator/'],
+  ['settings', 'Settings', 'blocks/settings/'],
+]);
+/** Which tab the current page belongs to: the calculator and Settings have their own; "If it goes wrong" is /blocks/#wrong;
+ *  everything else is a block page, so Blocks. Exactly one. */
+export function currentTab(path = here(), hash = location.hash) {
+  if (path === 'blocks/calculator/') return 'calculator';
+  if (path === 'blocks/settings/') return 'settings';
+  if (path === 'blocks/' && /^#wrong(-|$)/.test(hash)) return 'guides';
+  return 'blocks';
+}
+let TAB_BAR = null;
+function mountTabBar(search) {
+  if (TAB_BAR || typeof document === 'undefined' || !document.body) return;
+  // An iframe (the explorer inside a block page) and the embedded explorer are not the app's screen: no tab bar there.
+  try { if (window.top !== window.self) return; } catch { return; }
+  if (document.body.classList.contains('px-embed')) return;
+  const nav = make('nav', { class: 'ra-tabbar', 'aria-label': 'Regional anaesthesia app' });
+  const inner = make('div', { class: 'ra-tabbar-in' });
+  for (const [id, label, href] of TABS) {
+    const t = href ? make('a', { class: 'ra-tab', href: R(href), 'data-tab': id }) : make('button', { class: 'ra-tab', type: 'button', 'data-tab': id });
+    t.innerHTML = `<span class="ra-tab-icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">${TAB_SVG[id]}</svg></span><span class="ra-tab-label">${label}</span>`;
+    if (id === 'search') t.addEventListener('click', () => { if (typeof search === 'function') search(); else location.href = `${R('blocks/')}#search`; });
+    inner.append(t);
+  }
+  nav.append(inner);
+  document.body.append(nav);
+  const paint = () => { const cur = currentTab(); for (const t of inner.children) { if (t.dataset.tab === cur) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); } };
+  paint();
+  addEventListener('hashchange', paint);
+  TAB_BAR = { nav, off: () => removeEventListener('hashchange', paint) };
+}
+function unmountTabBar() {
+  if (!TAB_BAR) return;
+  TAB_BAR.off();
+  TAB_BAR.nav.remove();
+  TAB_BAR = null;
 }
 
 // ------------------------------------------------------------------ auto-hide
@@ -296,6 +355,10 @@ export function initAppFeel({ bar = null, search = null } = {}) {
   try { initSpeculation(); } catch { /* never block the page */ }
   initKeys(search);
   if (bar) { bar.classList.add('ra-appbar'); initAutoHide(bar); } else syncAutoHide();
+  // The app look's tab bar: drawn while html[data-skin="app"] on every regional page, and live when Settings switches the look.
+  const sync = (skin) => { try { if (skin === 'app') mountTabBar(search); else unmountTabBar(); } catch (err) { console.error('[appnav] tab bar', err); } };
+  sync(getSkin());
+  onSkin(sync);
   // A page prerendered before the reader changed a setting: read the settings again when it is shown.
   document.addEventListener('prerenderingchange', () => { delete memory[KEY_AUTOHIDE]; delete memory[KEY_SLASH]; syncAutoHide(); }, { once: true });
 }

@@ -6,6 +6,16 @@
 .st-section{padding:26px 0 8px;border-top:1px solid var(--tb-line);margin-top:20px;max-width:760px}
 .st-app main .st-h{font:400 clamp(24px,2.6vw,28px)/1.2 var(--tb-serif);letter-spacing:-.015em;margin:0 0 10px;max-width:none}
 .st-app main .st-intro{font-size:16px;line-height:1.6;color:var(--tb-ink-soft);margin:0 0 14px;max-width:68ch}
+/* the Look control: three options, one chosen (radios, so the arrow keys move between them); square, wine when chosen */
+.st-skin-seg{display:flex;width:100%;max-width:520px;margin:0 0 14px;padding:0;border:0;min-width:0}
+.st-skin-opt{position:relative;display:flex;flex:1 1 auto}
+.st-skin-opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.st-skin-opt span{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--tb-line-strong);background:var(--tb-paper);color:var(--tb-ink);font:500 15px/1.2 var(--tb-sans);text-align:center;white-space:nowrap}
+.st-skin-opt+.st-skin-opt span{margin-left:-1px}
+.st-skin-opt input:hover+span{border-color:var(--tb-wine);background:var(--tb-hover)}
+.st-skin-opt input:checked+span{position:relative;z-index:1;background:var(--tb-wine);border-color:var(--tb-wine);color:var(--tb-ivory)}
+.st-skin-opt input:focus-visible+span{outline:2px solid var(--tb-wine);outline-offset:2px;position:relative;z-index:2}
+.st-app main .st-skin-now{margin:8px 0 0;font-size:14px;line-height:1.6;color:var(--tb-muted)}
 .st-level{margin:0 0 14px}
 .st-app main .st-levels{margin:0;max-width:68ch}
 .st-levels>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:4px 14px;padding:10px 12px;border-top:1px solid var(--tb-line)}

@@ -5,7 +5,7 @@
 import { applyLevel, mountLevelControl } from '../../shared/regional/js/levels.js?v=20261015';
 import { mountLaCalc } from '../../shared/regional/js/lacalc.js';
 import { parseQuery } from '../../shared/regional/js/la.js';
-import { initAppFeel, mountRail, settingsButton } from '../../shared/regional/js/appnav.js?v=20261017';
+import { initAppFeel, mountRail, settingsButton } from '../../shared/regional/js/appnav.js?v=20261018';
 
 const BACK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5.5M11 5.5 4.5 12l6.5 6.5"/></svg>';
 

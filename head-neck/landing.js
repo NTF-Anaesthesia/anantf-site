@@ -3,7 +3,7 @@
    No sources or references are shown (as on the truncal pages). */
 import { registerOffline } from '../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { OPS, LINKS, headNeckCoverageMap } from '../shared/regional/js/ops/ops-headneck.js?v=20261015';
-import { initAppFeel } from '../shared/regional/js/appnav.js?v=20261017'; // app bar auto-hide (Settings), keys, prefetch
+import { initAppFeel } from '../shared/regional/js/appnav.js?v=20261018'; // app bar auto-hide (Settings), keys, prefetch
 
 /* ------------------------------------------------------------------ helpers */
 const $ = (s, r = document) => r.querySelector(s);
