@@ -1,4 +1,52 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(git push -u origin claude/*)",
+      "Bash(git push --force-with-lease origin claude/*)",
+      "Bash(git push origin --delete claude/*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "Bash(git fetch*)",
+      "Bash(git branch*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git checkout*)",
+      "Bash(git switch*)",
+      "Bash(git merge origin/main*)",
+      "Bash(git pull origin*)",
+      "Bash(git stash*)",
+      "Bash(node tools/*)",
+      "Bash(node test/*)",
+      "Bash(node */test/*)",
+      "Bash(node */tools/*)",
+      "Bash(bash */test/*.sh*)",
+      "Bash(tools/test-*.sh*)",
+      "Bash(bash tools/test-*.sh*)",
+      "mcp__github__create_pull_request",
+      "mcp__github__update_pull_request",
+      "mcp__github__pull_request_read",
+      "mcp__github__merge_pull_request",
+      "mcp__github__get_file_contents",
+      "mcp__github__list_pull_requests",
+      "mcp__github__get_job_logs",
+      "mcp__github__get_check_run",
+      "mcp__github__actions_get",
+      "mcp__github__actions_list",
+      "mcp__github__add_issue_comment",
+      "mcp__github__update_pull_request_branch",
+      "mcp__github__issue_read",
+      "mcp__github__list_issues",
+      "mcp__claude-code-remote__subscribe_pr_activity",
+      "mcp__claude-code-remote__unsubscribe_pr_activity",
+      "mcp__claude-code-remote__send_later",
+      "Skill(quick-save)"
+    ],
+    "deny": [
+      "Read(**/vendor/**)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -9,11 +57,6 @@
           }
         ]
       }
-    ]
-  },
-  "permissions": {
-    "deny": [
-      "Read(**/vendor/**)"
     ]
   }
 }
