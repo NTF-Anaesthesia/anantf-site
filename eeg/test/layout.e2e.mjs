@@ -11,7 +11,7 @@ try{
    await page.selectOption('#monitorChoice',skin);await page.waitForTimeout(300);
    for(const full of [false,true]){
     if(full)await page.click('#fullScreen');await page.waitForTimeout(200);
-    const dim=await page.evaluate(id=>{const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};return {m:rect(document.getElementById('mobileScreen')?.getClientRects().length?document.getElementById('mobileScreen'):document.getElementById(id)),s:rect(document.querySelector('#monitor .screens')),dock:rect(document.querySelector('#monitor .panel')),overflow:document.documentElement.scrollWidth>innerWidth+1}},ids[skin]);
+    const dim=await page.evaluate(id=>{const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};return {m:rect(document.getElementById(id)),s:rect(document.querySelector('#monitor .screens')),dock:rect(document.querySelector('#monitor .panel')),overflow:document.documentElement.scrollWidth>innerWidth+1}},ids[skin]);
     const {m,s,dock}=dim,label=`${width}×${height} ${skin} ${full?'fullscreen':'page'}`;
     assert.ok(m.w>120&&m.h>100,`${label}: monitor cannot collapse (${m.w}×${m.h})`);
     assert.ok(Math.max(m.w/s.w,m.h/s.h)>.72,`${label}: screen should use the available stage`);
@@ -23,7 +23,29 @@ try{
    }
    if(skin==='advance'){
     assert.ok(await page.evaluate(()=>{advData();return ADV.d.dsa.L.nData>200;}),'Advance immediately displays the existing DSA history');
-    for(const ch of ['2','4']){await page.click(`#channelChoice [data-ch="${ch}"]`);await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>ADV.ch),+ch);}
+    // Fullscreen must scale the same LCD, retaining its screen regions and sensor layout.
+    for(const ch of ['2','4']){
+     await page.click(`#channelChoice [data-ch="${ch}"]`);await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>ADV.ch),+ch);
+     const geometry=()=>page.evaluate(()=>{
+      const screen=document.getElementById('advS'),r=screen.getBoundingClientRect();
+      const regions=['advCv','advTop','advLeft','advMbar','aBisL',...(ADV.ch===4?['aBisR']:[])];
+      return {width:r.width,ratio:r.width/r.height,regions:regions.map(id=>{
+       const el=document.getElementById(id),b=el.getBoundingClientRect();
+       return [(b.x+b.width/2-r.x)/r.width,(b.y+b.height/2-r.y)/r.height];
+      })};
+     });
+     const before=await geometry();
+     await page.click('#fullScreen');await page.waitForTimeout(250);
+     assert.ok(await page.locator('#advS').isVisible(),'fullscreen retains the original Advance LCD');
+     const after=await geometry();
+     assert.ok(Math.abs(after.ratio-1.6)<.005,'Advance LCD keeps its 16:10 aspect ratio');
+     for(let i=0;i<before.regions.length;i++)for(let k=0;k<2;k++)assert.ok(Math.abs(before.regions[i][k]-after.regions[i][k])<.005,`${width} channel ${ch}: LCD region ${i} retains its relative position`);
+     if(width>1100){
+      assert.ok(after.width>800,'desktop fullscreen keeps the monitor large');
+      assert.ok(after.width>=before.width,'fullscreen never shrinks the desktop monitor');
+     }
+     await page.click('#fullScreen');
+    }
    }
   }
   console.log(`PASS layout ${width}×${height}: five monitors in page and fullscreen`);

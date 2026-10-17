@@ -717,3 +717,9 @@ On phones, fullscreen becomes a focused presentation with safe-area padding, war
 BIS Advance in portrait uses an adapted layout: large index values, DSA and raw EEG fill the stage instead of shrinking the equipment bezel. `mobile.js` uses the existing Advance DSA cache, histories and raw samples; it has no separate signal or index model. Bilateral mode shows both hemispheres. Landscape retains the equipment view with a side dock. This is an in-page/fullscreen presentation, not an installed PWA; browsers without the Fullscreen API retain their own browser chrome.
 
 Validation: engine spectral regression, full existing browser suites, dedicated 320×640 and 390×844 presentation checks, and manual Chrome visual review of desktop, portrait/bilateral, learning/settings sheets and landscape. Browser tests cover modal focus, Escape, Run with overlays, restored notes, canvas allocation and controls remaining on screen.
+
+## 17 October 2026 — preserve the original monitor in fullscreen
+
+The user rejected the adapted portrait BIS Advance display above. Removed that alternate renderer and its CSS/script entirely. Fullscreen now uses the same original 16:10 LCD, monitor controls, numerical panels, DSA/ASYM and raw-EEG regions as the page, in unilateral and bilateral modes. Only the surrounding application controls respond to viewport size. The stage fitter subtracts its padding before sizing the device.
+
+Desktop fullscreen is the priority: a large monitor on the left, observations on the right and essential controls below. Layout regression checks compare the positions of the original LCD regions before and after fullscreen, both sensor modes, at desktop and phone sizes. Existing control, teaching and medical-model checks remain in place. No further mobile display redesign is introduced.
