@@ -43,14 +43,16 @@ try{
   if(await page.locator('#fullScreen').getAttribute('aria-pressed')==='true')await page.click('#fullScreen');
   console.log(`PASS controls ${width}×${height}: icon targets, settings, channels, focus, Escape, speed, timeline and mix`);
  }
- // Portrait uses readable plots, not a scaled-down equipment bezel. All existing learning controls share one sheet.
+ // Narrow presentation keeps the original monitor; learning controls share one sheet.
  for(const [width,height] of [[320,640],[390,844]]){
   await page.setViewportSize({width,height});await page.goto(`http://localhost:${process.env.PORT||8080}/eeg/`);await page.waitForFunction(()=>TL.t0!==null);
   await page.click('#fullScreen');await page.waitForTimeout(250);
-  assert.ok(await page.locator('#mobileScreen').isVisible());assert.ok(await page.locator('#advWrap').isHidden());
-  const stage=await page.locator('.screens').boundingBox(),screen=await page.locator('#mobileScreen').boundingBox();assert.ok(screen.height>stage.height*.9,'portrait monitor fills its stage');
-  for(const id of ['mobileDsa','mobileEeg'])assert.ok(await page.locator('#'+id).evaluate(el=>el.width>100&&el.height>40),'responsive canvas allocated');
-  await page.click('#channelChoice [data-ch="4"]');await page.waitForTimeout(150);assert.equal(await page.locator('.mobile-channel').count(),2);
+  assert.ok(await page.locator('#advWrap').isVisible());
+  assert.equal(await page.locator('#mobileScreen').count(),0,'no alternate clinical display');
+  const stage=await page.locator('.screens').boundingBox(),screen=await page.locator('#advS').boundingBox();
+  assert.ok(screen.width>stage.width*.85,'original monitor uses the available width');
+  assert.ok(Math.abs(screen.width/screen.height-1.6)<.005,'original LCD proportions preserved');
+  await page.click('#channelChoice [data-ch="4"]');await page.waitForTimeout(150);assert.ok(await page.locator('#aBisR').isVisible());
   await page.click('#learningButton');assert.ok(await page.locator('#learningSheet').isVisible());
   const sheet=await page.locator('#learningSheet').boundingBox();assert.ok(sheet.width>=width-1&&sheet.y>=0&&sheet.y+sheet.height<=height+1,'sheet fits the phone');
   for(let n=0;n<16;n++){await page.keyboard.press('Tab');assert.ok(await page.evaluate(()=>document.getElementById('learningSheet').contains(document.activeElement)));}
@@ -58,7 +60,7 @@ try{
   await page.click('#learningButton');await page.click('#examplePicker summary');await page.check('[name=eegPattern][value="delta"]');await page.check('#mEmg');await page.click('#examplePlay');
   assert.ok(await page.locator('#learningSheet').isHidden(),'running a pattern returns to the live display');assert.equal(await page.evaluate(()=>story.lesson),'delta');assert.equal(await page.evaluate(()=>mods.emg),true);
   await page.click('#fullScreen');assert.ok(await page.locator('#observationNotes').isVisible(),'notes return below the monitor on the website');
-  console.log(`PASS app presentation ${width}×${height}: readable bilateral plots, sheet, focus, Escape and Run`);
+  console.log(`PASS app presentation ${width}×${height}: original bilateral monitor, sheet, focus, Escape and Run`);
  }
  assert.deepEqual(errors,[]);
 }finally{await browser.close();}

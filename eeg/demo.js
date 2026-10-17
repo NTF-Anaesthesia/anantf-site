@@ -92,7 +92,9 @@ let lastFittedSkin='',fitPending=false;
 function scheduleFit(){if(fitPending)return;fitPending=true;requestAnimationFrame(()=>{fitPending=false;fitMonitor();});}
 function fitMonitor(){
  const id={vista:'vistaWrap',advance:'advWrap',sedline:'sedWrap',philips:'pvWrap',classic:'classicWrap'}[mon.skin];
- const wrap=$(id),w=stage.clientWidth,h=stage.clientHeight;if(!wrap||!w||!h)return;
+ // Fit the original device to the content box; presentation padding is outside it.
+ const css=getComputedStyle(stage),pad=k=>parseFloat(css[k])||0;
+ const wrap=$(id),w=stage.clientWidth-pad('paddingLeft')-pad('paddingRight'),h=stage.clientHeight-pad('paddingTop')-pad('paddingBottom');if(!wrap||w<=0||h<=0)return;
  if(mon.skin==='classic'){wrap.style.width=w+'px';wrap.style.height=h+'px';}
  else{wrap.style.height='auto';wrap.style.width=w+'px';for(let i=0;i<3;i++){const r=wrap.getBoundingClientRect();if(r.height<=h+1)break;wrap.style.width=Math.max(1,r.width*h/r.height)+'px';}}
  dirty=true;if(mon.skin==='advance')advInval();if(mon.skin==='sedline'){SED.full=true;SED.d=null;}if(mon.skin==='philips')PV.dirty=true;
