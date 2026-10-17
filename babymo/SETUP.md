@@ -7,7 +7,7 @@ Do them once, signed in to Google as the account that should own the project.
 ## A. Create the project
 
 1. Go to https://console.firebase.google.com and click **Create a project**.
-2. Name it `ntf-mo-portal` (if Firebase says the id is taken, accept the id it suggests and tell Claude). Click Continue.
+2. Name it for the app (the id used by the live app is in `babymo/js/firebase-config.js`; if Firebase says an id is taken, accept the one it suggests and tell Claude). Click Continue.
 3. Turn **Google Analytics off**. Click **Create project**, then Continue.
 
 ## B. Turn on the two sign-in methods

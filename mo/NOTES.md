@@ -2,7 +2,7 @@
 
 Lasting decisions for `mo/` (anantf.com/mo/guide/). How the content is written: `CONTENT.md`.
 
-## Purpose (owner, 15 Oct 2026)
+## Purpose
 
 A practical learning web app for new anaesthesia medical officers ("baby MOs") at NTFGH. It covers the department's MO
 handbook (4th edition, 2026) and goes beyond it: short topics in the order an MO meets them, drug doses worked out for the
@@ -23,7 +23,7 @@ progress kept on the phone. It sits beside the Baby MO test (`../babymo/`), whic
 
 ## Design rules
 
-- **The phone-app kit** (owner, 15 Oct 2026): the guide follows `../DESIGN-APP.md` and uses `../assets/app/app.css`
+- **The phone-app kit:** the guide follows `../DESIGN-APP.md` and uses `../assets/app/app.css`
   (every component is in `../assets/app/specimen.html`): large titles that collapse into the top bar, a bottom tab bar
   (Learn, Drugs, Tools, Crisis, Practice), grouped lists, cards, buttons, answer choices, segmented controls, sheets,
   toasts, soft corners on things you press. `style.css` holds only what is specific to the content (callouts, steps, drug

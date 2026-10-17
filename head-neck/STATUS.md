@@ -12,5 +12,4 @@ Last updated 17 Oct 2026. Live; no open PR; nothing half-done.
 
 - Check the three new scenes the regional session added (`hn-sc-atn`, `hn-aw-gpus`, `hn-fa-ppf`) when next on those
   pages: the regional session asked for a sanity check; not yet done.
-- Open question for the owner: should Dr Chew Shi Hao stay in the credit line (it follows the regional pages' line).
 - Pull `main` before editing; then stamp and run the regional tests (see `NOTES.md`).

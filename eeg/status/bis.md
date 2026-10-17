@@ -1,2 +1,2 @@
-- bis-dsa (14 Oct 2026): first version added from the artifact; waiting on the owner's domain click.
-- bis-dsa (14 Oct 2026, advance skin session): BIS Advance screen rebuilt as a 16:10 near-clone (see NOTES.md, "Medtronic BIS Advance"); local commits, not pushed.
+Session note for the BIS to DSA simulator (14 Oct 2026): first version added and the BIS Advance screen rebuilt; both are
+merged and recorded in `../STATUS.md` and `../NOTES.md`. Nothing in flight. Details in the owner's private notes.
