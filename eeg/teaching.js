@@ -30,33 +30,51 @@ const EEG_LESSONS={
  diathermy:{label:'Diathermy artefact',source:'26275092',note:'Electrical interference can create misleading broadband DSA power. Check signal quality and the raw tracing before interpreting an index.',steps:[{at:0,d:.57,mods:{},cap:'Clean baseline.'},{at:20,mods:{diathermy:true},cap:'Diathermy interference.'},{at:80,mods:{},cap:'Interference clears.'},{at:130,end:true,cap:'Compare artefact with physiological EEG changes.'}]}
 };
 function learningSource(id){return `<a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank" rel="noopener">Clinical evidence →</a>`;}
+let learningFocus=null;
+function learningObservation(text){
+ const key=story?.lesson||learningFocus;
+ return key&&EEG_LESSONS[key]?text+'\n\n'+EEG_LESSONS[key].label+': '+EEG_LESSONS[key].note:text;
+}
 function syncLearning(){
  const box=$('mixComparison');if(!box)return;
- const c=MIX_LESSONS[selectedMix];$('mixTeaching').hidden=mode!=='mix';
+ const c=MIX_LESSONS[selectedMix];$('mixTeaching').hidden=mode!=='mix';$('mixObservation').hidden=mode!=='mix';
  if(box.dataset.family!==selectedMix){box.innerHTML=c.variants.map((v,i)=>`<option value="${i}">${v[0]}</option>`).join('');box.dataset.family=selectedMix;$('mixTeachingText').textContent=c.note;$('mixSource').innerHTML=learningSource(c.source);}
  box.value=selectedMixVariant;$('mixDose').textContent=c.variants[selectedMixVariant][2];const active=[mods.elderly&&'Older patient',mods.emg&&'EMG',mods.diathermy&&'Diathermy',mods.asym&&(mods.asym==='L'?'Left slowing':'Right slowing'),eng.stT>0&&'Stimulus'].filter(Boolean);
- $('liveAdjustmentState').textContent=active.length?active.join(' · '):'';
+ $('liveAdjustmentState').textContent=active.join(' · ');
+ const key=story?.lesson||learningFocus;
+ const source=$('exampleSource');source.hidden=!key;
+ if(key&&source.dataset.key!==key){source.dataset.key=key;source.innerHTML=learningSource(EEG_LESSONS[key].source);}
+ describe();
  $('stimBtn').disabled=TL.busy;
  $('examplePlay').disabled=TL.busy;
 }
 function startLearningExample(key){
- if(TL.busy)return;stopStory();nmReset();setNmb('off');setAsym('');mods.elderly=!!EEG_LESSONS[key].elderly;$('mElder').checked=mods.elderly;
- for(const [k,id] of SMODS){mods[k]=false;$(id).checked=false;}mods.blink=mods.warmer=false;eng.stT=R.eng.stT=0;
+ if(TL.busy)return;stopStory();learningFocus=key;
+ const overlays={emg:mods.emg,diathermy:mods.diathermy};
+ nmReset();setNmb('off');mods.blink=mods.warmer=false;eng.stT=R.eng.stT=0;
  $('depth').value=EEG_LESSONS[key].steps[0].d*100;setDrug('propofol');snapAll();
  step(300*FS);stepR(300*FS);simT+=300;ADV.pre=null;ADV.cut=null;ADV.review=null;ADV.win=5;ADV.t0=simT-300;ADV.hc=null;
- TL.snaps=[];TL.events=[];TL.key='';TL.t0=simT;TL.max=simT;story={t0:simT,i:-1,lesson:key};runStory();tlSnap();tlAfter();setSpeed(5);if(paused)$('pause').click();syncDemoControls();
+ TL.snaps=[];TL.events=[];TL.key='';TL.t0=simT;TL.max=simT;story={t0:simT,i:-1,lesson:key,overlays};runStory();tlSnap();tlAfter();setSpeed(5);if(paused)$('pause').click();syncDemoControls();
  stage.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
 function initLearning(){
- const examples=document.createElement('section');examples.id='eegExamples';examples.className='learning-section';examples.innerHTML='<label for="exampleChoice">EEG examples</label><div class="example-picker"><select id="exampleChoice">'+[['Patterns',['alpha','delta','beta','suppression']],['Patient',['older']],['Artefacts',['emg','diathermy']]].map(([label,keys])=>`<optgroup label="${label}">${keys.map(k=>`<option value="${k}">${EEG_LESSONS[k].label}</option>`).join('')}</optgroup>`).join('')+'</select></div><details><summary>Teaching point</summary><p id="exampleNote"></p><p id="exampleSource"></p></details>';
- $('observeTitle').after(examples);const play=iconButton('examplePlay','Start a fresh EEG example','play');examples.querySelector('.example-picker').append(play);
- const note=()=>{const c=EEG_LESSONS[$('exampleChoice').value];$('exampleNote').textContent=c.note;$('exampleSource').innerHTML=learningSource(c.source);};note();$('exampleChoice').onchange=note;play.innerHTML=icon('play')+'<span>Run</span>';play.title='Run example from a fresh baseline';play.setAttribute('aria-label','Run selected EEG example from a fresh baseline');
- play.onclick=()=>startLearningExample($('exampleChoice').value);
- const adjustments=$('teachingOptions');adjustments.querySelector('summary').innerHTML='<span>Adjust current EEG</span><span id="liveAdjustmentState"></span>';examples.append(adjustments);
- // Reuse the existing controls and handlers. Manual changes end the scripted continuation.
- adjustments.addEventListener('change',()=>{stopStory();$('storyCap').textContent='';},true);
- adjustments.addEventListener('click',e=>{if(e.target.closest('button')){stopStory();$('storyCap').textContent='';}},true);
+ const examples=document.createElement('section');examples.id='eegExamples';examples.className='learning-section';
+ examples.innerHTML='<details id="examplePicker"><summary aria-label="Choose EEG pattern and patient or artefact overlays"><span id="exampleLabel">Alpha dropout</span><span class="picker-chevron" aria-hidden="true">⌄</span><span id="liveAdjustmentState"></span></summary><div id="exampleOptions"><input type="hidden" id="exampleChoice" value="alpha"><div class="pattern-choices" role="radiogroup" aria-label="EEG pattern">'+['alpha','delta','beta','suppression'].map(k=>`<label class="chk"><input type="radio" name="eegPattern" value="${k}" ${k==='alpha'?'checked':''}>${EEG_LESSONS[k].label}</label>`).join('')+'</div></div></details>';
+ $('observeTitle').after(examples);
+ const play=iconButton('examplePlay','Run selected pattern with current overlays','play');play.innerHTML=icon('play')+'<span>Run</span>';play.title='Run from a fresh baseline, keeping checked overlays';examples.append(play);
+ const options=$('exampleOptions'),old=$('teachingOptions');
+ for(const el of [...old.children])if(el.tagName!=='SUMMARY')options.append(el);old.remove();
+ options.querySelectorAll('[name=eegPattern]').forEach(input=>input.onchange=()=>{stopStory();learningFocus=input.value;$('exampleChoice').value=input.value;$('exampleLabel').textContent=EEG_LESSONS[input.value].label;describe();});
+ play.onclick=()=>{$('examplePicker').open=false;startLearningExample($('exampleChoice').value);};
+ const stopManual=()=>{stopStory();learningFocus=null;$('storyCap').textContent='';};
+ options.addEventListener('change',e=>{if(e.target.name!=='eegPattern')stopManual();},true);
+ options.addEventListener('click',e=>{if(e.target.closest('button'))stopManual();},true);
  $('stimBtn').addEventListener('click',()=>{if(paused)$('pause').click();});
- const teaching=document.createElement('section');teaching.id='mixTeaching';teaching.className='learning-section';teaching.hidden=true;teaching.innerHTML='<label for="mixComparison">Compare drug effects</label><select id="mixComparison" aria-describedby="mixDose"></select><p id="mixDose" class="dose-caption"></p><p id="mixTeachingText"></p><p id="mixSource"></p><p class="model-note">Illustrative effects; targets are not patient-specific dosing predictions. Allow time for the effect to settle.</p>';examples.after(teaching);
+ document.addEventListener('pointerdown',e=>{if(!examples.contains(e.target))$('examplePicker').open=false;});
+ $('examplePicker').addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();$('examplePicker').open=false;$('examplePicker').querySelector('summary').focus();}});
+ for(const [id,event] of [['agentChoice','change'],['depth','input'],['induceBtn','click'],['wakeBtn','click'],['storyBtn','click']])$(id).addEventListener(event,()=>{learningFocus=null;describe();});
+ const source=document.createElement('p');source.id='exampleSource';source.hidden=true;$('rText').after(source);
+ const teaching=document.createElement('section');teaching.id='mixTeaching';teaching.className='learning-section';teaching.hidden=true;teaching.innerHTML='<label for="mixComparison">Compare drug effects</label><select id="mixComparison" aria-describedby="mixDose"></select><p id="mixDose" class="dose-caption"></p>';examples.after(teaching);
+ const mixNote=document.createElement('div');mixNote.id='mixObservation';mixNote.innerHTML='<p id="mixTeachingText"></p><p id="mixSource"></p><p class="model-note">Illustrative effects; targets are not patient-specific dosing predictions. Allow time for the effect to settle.</p>';source.after(mixNote);
  $('mixComparison').onchange=e=>{selectMix(selectedMix,+e.target.value);if(paused)$('pause').click();};syncLearning();
 }

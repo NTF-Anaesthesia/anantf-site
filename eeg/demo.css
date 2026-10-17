@@ -237,16 +237,23 @@ body.presenting{overflow:hidden}
 .learning-section summary:before{content:'+';margin-right:8px;color:#633d3c}.learning-section details[open]>summary:before{content:'−'}
 .learning-section .dose-caption{font-weight:500}.learning-section .model-note{font-size:14px;color:#55534d}
 .learning-section a{display:inline-flex;align-items:center;min-height:44px;color:#633d3c;text-underline-offset:3px}
-#eegExamples #teachingOptions{max-height:none;overflow:visible;border-top:1px solid #d7d2c8;padding:0;margin-top:4px}
-#eegExamples #teachingOptions[open]{display:block;padding-bottom:4px}
-#eegExamples #teachingOptions>summary{display:grid;grid-template-columns:12px 1fr;gap:0 4px;padding:8px 0;box-sizing:border-box;font-size:15px}
-#liveAdjustmentState{grid-column:2;font-size:13px;line-height:1.5;color:#633d3c}
+#monitor #eegExamples{display:flex;align-items:start;gap:6px}
+#examplePicker{flex:1;min-width:0;margin:0;padding:0}
+#examplePicker>summary{display:grid;grid-template-columns:1fr auto;gap:0 8px;border:1px solid #827b6d;padding:8px 10px;box-sizing:border-box;color:#272722;font-size:15px}
+#examplePicker>summary:before{content:none}
+#liveAdjustmentState{grid-column:1/-1;font-size:13px;line-height:1.5;color:#633d3c}
 #liveAdjustmentState:empty{display:none}
-#eegExamples #teachingOptions .chk{font-size:15px;gap:10px}
-#eegExamples #teachingOptions .chk input{accent-color:#633d3c}
-#eegExamples #teachingOptions .nmbrow{display:block;margin:10px 0;font-size:15px}
-#eegExamples #asymSeg{display:flex;margin-top:8px}
-#eegExamples #asymSeg button{flex:1}
-#eegExamples #stimBtn{width:100%;margin-top:8px;border:1px solid #827b6d;border-radius:0;color:#633d3c;background:transparent;font-size:15px}
-#eegExamples #stimBtn[aria-pressed=true]{background:#eee9df}
+#exampleOptions{padding:10px 0 0}
+#exampleOptions .chk{display:flex;align-items:center;min-height:44px;gap:8px;font-size:15px;margin:0}
+#exampleOptions .chk input{width:16px;height:16px;flex:none;margin:0;accent-color:#633d3c}
+#exampleOptions .nmbrow{display:block;margin:10px 0;font-size:15px}
+#exampleOptions #asymSeg{display:flex;margin-top:8px}
+#exampleOptions #asymSeg button{flex:1;min-height:44px;padding:8px;font-size:14px}
+#exampleOptions #stimBtn{min-height:44px;width:100%;margin-top:8px;border:1px solid #827b6d;border-radius:0;color:#633d3c;background:transparent;font-size:15px}
+#exampleOptions #stimBtn[aria-pressed=true]{background:#eee9df}
+#rText{white-space:pre-line}
+#exampleSource a,#mixSource a{display:inline-flex;align-items:center;min-height:44px;color:#633d3c;text-underline-offset:3px;font-size:14px}
+#mixObservation .model-note{font-size:14px;color:#55534d}
 .live-workspace{grid-template-rows:minmax(0,1fr) auto}
+
+.pattern-choices{border-bottom:1px solid #d7d2c8;padding-bottom:8px;margin-bottom:8px}

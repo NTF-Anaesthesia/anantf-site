@@ -4,8 +4,9 @@ const browser=await chromium.launch();const page=await browser.newPage({viewport
 try{
  await page.goto(`http://localhost:${process.env.PORT||8080}/eeg/`);await page.waitForFunction(()=>TL.t0!==null);
  assert.equal(await page.locator('#compareStimulus').count(),0,'one shared stimulus control');
- assert.equal(await page.locator('#exampleChoice optgroup').count(),3,'grouped patterns, patient and artefacts');
- assert.equal(await page.locator('#eegExamples #teachingOptions').count(),1);
+ assert.equal(await page.locator('[name=eegPattern]').count(),4,'patterns stay distinct from stackable overlays');
+ assert.equal(await page.locator('#teachingOptions,#exampleNote').count(),0,'duplicate adjustment and teaching sections removed');
+ assert.equal(await page.locator('#exampleOptions input[type=checkbox]').count(),3,'patient and artefacts are stackable');
  await page.click('#examplePlay');await page.evaluate(()=>{paused=true;});
  const base=await page.evaluate(()=>({alpha:eng.p.alpha,d:depth,t:TL.t0}));
  await page.evaluate(()=>tlRun(65));
@@ -14,14 +15,17 @@ try{
  assert.equal(await page.evaluate(()=>eng.stK),'alpha');
  await page.evaluate(()=>tlRun(110));assert.ok(await page.evaluate(()=>eng.p.alpha)>base.alpha*.85,'alpha recovers');
  await page.evaluate(t=>tlJump(t+50),base.t);await page.waitForFunction(()=>!TL.busy);assert.equal(await page.evaluate(()=>story.lesson),'alpha','rewind preserves lesson');
- for(const kind of ['delta','beta','suppression','older','emg','diathermy']){
-  await page.selectOption('#exampleChoice',kind);await page.click('#examplePlay');await page.evaluate(()=>{paused=true;tlRun(50);});
+ for(const kind of ['delta','beta','suppression']){
+  await page.click('#examplePicker summary');await page.check(`[name=eegPattern][value="${kind}"]`);await page.click('#examplePlay');await page.evaluate(()=>{paused=true;tlRun(50);});
   assert.equal(await page.evaluate(()=>story.lesson),kind);if(['delta','beta'].includes(kind))assert.equal(await page.evaluate(()=>eng.stK),kind);
  }
- await page.click('#teachingOptions summary');await page.check('#mEmg');
+ await page.click('#examplePicker summary');await page.check('#mEmg');
  assert.equal(await page.evaluate(()=>story),null,'manual adjustments stop scripted overrides');
  await page.click('#asymSeg [data-asym="L"]');assert.equal(await page.evaluate(()=>mods.asym),'L');
- await page.click('#teachingOptions summary');await page.waitForFunction(()=>$('liveAdjustmentState').textContent.includes('Left slowing'));
+ await page.check('#mDia');await page.check('#mElder');await page.click('#examplePlay');await page.evaluate(()=>{paused=true;tlRun(50);});
+ assert.ok(await page.evaluate(()=>mods.emg&&mods.diathermy&&mods.elderly&&mods.asym==='L'),'Run preserves stacked overlays');
+ assert.ok(await page.locator('#rText').textContent().then(t=>t.includes('Burst suppression:')),'teaching point integrated into main observation');
+ await page.waitForFunction(()=>$('liveAdjustmentState').textContent.includes('Left slowing'));
  await page.selectOption('#agentChoice','mix');
  for(const key of ['tiva','propket','propdex','sevon2o']){
   await page.click(`[data-preset="${key}"]`);const count=await page.locator('#mixComparison option').count();assert.ok(count>=3);

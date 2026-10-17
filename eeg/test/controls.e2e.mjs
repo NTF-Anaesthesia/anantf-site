@@ -13,11 +13,11 @@ try{
   assert.equal(await page.evaluate(()=>ADV.ch),2,'unilateral by default');
   await page.click('#channelChoice [data-ch="4"]');assert.equal(await page.evaluate(()=>ADV.ch),4);
   await page.click('#channelChoice [data-ch="2"]');assert.equal(await page.evaluate(()=>ADV.ch),2);
-  const positions=await page.evaluate(()=>{const r=id=>{const b=document.querySelector(id).getBoundingClientRect();return {x:b.x,y:b.y,right:b.right,bottom:b.bottom}};return {notes:r('#observationNotes'),stage:r('.screens'),dock:r('.panel'),patient:r('#teachingOptions')}});
+  const positions=await page.evaluate(()=>{const r=id=>{const b=document.querySelector(id).getBoundingClientRect();return {x:b.x,y:b.y,right:b.right,bottom:b.bottom}};return {notes:r('#observationNotes'),stage:r('.screens'),dock:r('.panel'),patient:r('#examplePicker')}});
   if(width>1100)assert.ok(positions.notes.x>=positions.stage.right,'desktop observations on the right');
   else assert.ok(positions.notes.y>=positions.dock.bottom,'mobile observations below controls');
-  assert.ok(await page.locator('#teachingOptions').evaluate(el=>!el.open&&!!el.closest('#eegExamples')),'live adjustments folded within EEG examples');
-  await page.click('#teachingOptions summary');await page.check('#mElder');assert.equal(await page.evaluate(()=>mods.elderly),true);await page.click('#teachingOptions summary');
+  assert.ok(await page.locator('#examplePicker').evaluate(el=>!el.open&&!!el.closest('#eegExamples')),'live adjustments folded within EEG examples');
+  await page.click('#examplePicker summary');await page.check('#mElder');assert.equal(await page.evaluate(()=>mods.elderly),true);await page.click('#examplePicker summary');
   assert.equal(await page.locator('#muscleBlock,#mBlink').count(),0,'redundant controls removed');
   await page.click('#settingsButton');assert.ok(await page.locator('#simSettings').isVisible());
   // Native dialog confines focus and returns it to the gear on dismissal.
