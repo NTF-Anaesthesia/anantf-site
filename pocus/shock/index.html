@@ -1,28 +1,18 @@
 <!doctype html>
 <html lang="en-GB" data-theme="light">
 <head>
+<script>window.POCUS_INITIAL_HASH=location.hash;</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RUSH: ultrasound approach to shock — NTF Anaesthesia</title>
-<meta name="description" content="Masterclass: a structured bedside ultrasound approach to undifferentiated shock based on RUSH (Perera 2010). HI-MAP sequence (Heart, IVC, Morison's/eFAST, Aorta, Pneumothorax/lung), findings for each shock type, an aortic aneurysm screen, an interactive shock classifier, ultrasound in cardiac arrest (SESAME, a 10-second pulse-check simulator, ERC/AHA/ILCOR guidance) and four resuscitation cases. All images are schematic simulations, not real scans.">
+<meta name="color-scheme" content="light">
+<title>Shock and clinical integration — NTF Anaesthesia</title>
+<meta name="description" content="Masterclass: a structured bedside ultrasound approach to undifferentiated shock based on RUSH (Perera 2010). HI-MAP sequence (Heart, IVC, Morison's/eFAST, Aorta, Pneumothorax/lung), findings for each shock type, an aortic aneurysm screen, an interactive shock classifier, ultrasound in cardiac arrest (SESAME, a 10-second pulse-check simulator, ERC/AHA/ILCOR guidance) four resuscitation cases, eight SCCM decision cases and focused reporting. All images are schematic simulations, not real scans.">
 <style>
 :root{
   --bg:#F7F2EA; --panel:#FDFAF3; --line:#E0D6C2; --line2:#CFC2A8; --ink:#2A241D; --ink2:#5A4F42; --mute:#8A7E6D; --faint:#B3A795;
   --accent:#A8541F; --accent-soft:rgba(168,84,31,.10); --red:#B85042; --blue:#2A5B8C; --green:#4C7A45; --amber:#B9852A;
   --serif:Georgia,'Iowan Old Style','Times New Roman',serif; --mono:ui-monospace,Menlo,'SF Mono',Consolas,monospace;
   --shadow:0 1px 0 rgba(42,36,29,.04),0 8px 24px -12px rgba(42,36,29,.18);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
-    --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
-    --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
-  --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
-  --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased}
@@ -296,14 +286,14 @@ canvas.draw{touch-action:none;cursor:crosshair}
 #pcAns{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 @media (max-width:560px){ #sesList{grid-template-columns:repeat(3,minmax(0,1fr))!important} .pcbar{grid-template-columns:minmax(0,1fr)} .pcclock{font-size:22px;padding:6px} }
 </style>
-<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"></head>
-<body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a><a href="../../bis/">pEEG</a><a href="../../exams/">Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
-<nav class="course-toolbar" aria-label="Tutorial navigation"><div class="course-toolbar-inner"><div class="course-breadcrumb"><a href="../../draft.html">Drafts</a><span aria-hidden="true">/</span><span>RUSH: shock · draft</span></div><label class="course-section-picker"><span class="course-sr-only">Tutorial section</span><select id="course-section" aria-label="Tutorial section"></select></label></div></nav><main class="deck" id="deck" tabindex="-1">
+<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../shared/series.css?v=20261017"><link rel="stylesheet" href="case-lab.css?v=20261017"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><script defer src="../shared/series.js?v=20261017"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"></head>
+<body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a><a href="../../eeg/">EEG</a><a href="../../exams/">Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<nav class="course-toolbar" aria-label="Tutorial navigation"><div class="course-toolbar-inner"><div class="course-breadcrumb"><a href="../">POCUS</a><span aria-hidden="true">/</span><span>Shock and clinical integration</span></div><label class="course-section-picker"><span class="course-sr-only">Tutorial section</span><select id="course-section" aria-label="Tutorial section"></select></label></div></nav><main class="deck" id="deck" tabindex="-1">
 
 
 <!-- ============ 1 TITLE ============ -->
 <section class="slide course-intro" data-min="2" data-title="Start here" data-prompt="Ask: think of the last hypotensive patient you were called to. How long was it before you knew which of the four shock types it was? What changed your mind?">
-  <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner ntf-illustrated-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS masterclass · Shock</p><h1>RUSH: ultrasound approach to shock.</h1><p class="course-hero-lead">Pump, tank, pipes. Five windows, one question: why is this patient hypotensive?</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
+  <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner ntf-illustrated-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS masterclass · Shock</p><h1>Shock and clinical integration.</h1><p class="course-hero-lead">Pump, tank, pipes. Five windows, one question: why is this patient hypotensive?</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
     <div>
       <p style="margin:0 0 10px;color:var(--ink2)"><b class="ink">Rapid Ultrasound in SHock (RUSH)</b> is a structured bedside scan for the hypotensive patient whose cause is not yet clear. It joins the focused cardiac, IVC, eFAST, aortic and lung scans into one sequence, so you can answer three physiological questions in a few minutes:</p>
       <ul class="lst">
@@ -318,10 +308,10 @@ canvas.draw{touch-action:none;cursor:crosshair}
         <li><span>Part II · Interpretation · classifier</span><span>18 min</span></li>
         <li><span>Part III · Arrest and peri-arrest · SESAME, pulse check</span><span>20 min</span></li>
         <li><span>Part IV · Four patients in shock</span><span>20 min</span></li>
-        <li><span>Quick check · Close</span><span>12.5 min</span></li>
+        <li><span>SCCM decision cases · reporting</span><span>20 min</span></li><li><span>Quick check · Close</span><span>12.5 min</span></li>
       </ul>
       <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
-      <div class="links"><a href="../cardiac/">Focused cardiac ultrasound</a><a href="../lung/">Lung ultrasound</a><a href="../efast/">eFAST</a><a href="../dvt/">DVT and vessels</a></div>
+      <div class="links"><a href="../cardiac/">Review cardiac ultrasound →</a><a href="../lung/">Review lung ultrasound →</a><a href="../haemodynamics/">Review flow and fluids →</a></div>
     </div>
     <div>
       <div class="grid2"><div><div class="pov">Schematic · subxiphoid 4-chamber</div><div class="scanner"><canvas id="heroH" class="us"></canvas></div></div><div><div class="pov">Schematic · IVC long axis</div><div class="scanner"><canvas id="heroI" class="us"></canvas></div></div></div>
@@ -427,7 +417,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
           <li>Pitfall: an epicardial fat pad (seen at the front only, speckled, moves with the heart) is not an effusion.</li>
         </ul></div>
       <div class="card"><div class="cap">2 · How is the LV squeezing?</div>
-        <p>A visual estimate is enough: <b class="ink">hyperdynamic</b> (walls nearly meet at end-systole) / <b class="ink">normal</b> / <b class="ink">reduced</b> / <b class="ink">severely reduced</b>. Trained emergency and critical care clinicians agree well with formal echo on this. Hyperdynamic with a small cavity fits hypovolaemia, early distributive shock, or an under-filled LV behind an RV obstruction.</p></div>
+        <p>Start with a multi-view visual assessment: <b class="ink">hyperdynamic</b> (walls nearly meet at end-systole) / <b class="ink">normal</b> / <b class="ink">reduced</b> / <b class="ink">severely reduced</b>. Trained emergency and critical care clinicians agree well with formal echo on this. Hyperdynamic with a small cavity fits hypovolaemia, early distributive shock, or an under-filled LV behind an RV obstruction.</p></div>
     </div>
     <div>
       <div class="panel">
@@ -438,11 +428,11 @@ canvas.draw{touch-action:none;cursor:crosshair}
       </div>
       <div class="card" style="margin-top:12px"><div class="cap">3 · Is the RV dilated?</div>
         <ul>
-          <li>Bedside heuristic: in A4C the RV is normally about two-thirds of LV size, and <b class="ink">RV ≥ LV</b> means it is significantly dilated. Formal ASE cut-offs (Lang 2015; ASE right heart guideline 2025): RV basal diameter &gt; 41 mm; TAPSE &lt; 17 mm suggests RV systolic dysfunction. Avoid a foreshortened or off-axis A4C, which falsely enlarges the RV. In PSAX, a <b class="ink">D-shaped LV</b> shows septal flattening from RV pressure or volume overload.</li>
-          <li>In shock, acute RV dilatation with a small LV points to <b class="ink">high-risk PE</b> until proven otherwise. A thin RV wall suggests an acute cause; a thick RV free wall (&gt; 5 mm) suggests a chronic cause such as pulmonary hypertension.</li>
+          <li>Bedside heuristic: in A4C the RV is normally about two-thirds of LV size, and <b class="ink">RV ≥ LV</b> means it is significantly dilated. Formal ASE cut-offs (Lang 2015; ASE right heart guideline 2025): RV basal diameter ≥ 41 mm is above the 2025 normal range; TAPSE ≤ 17 mm is outside its normal range. Neither measurement alone defines RV failure. Avoid a foreshortened or off-axis A4C, which falsely enlarges the RV. In PSAX, a <b class="ink">D-shaped LV</b> shows septal flattening from RV pressure or volume overload.</li>
+          <li>In shock, RV dilatation with a small LV requires urgent assessment for <b class="ink">RV pressure loading or failure</b>. Causes include PE, acute cor pulmonale, ventilatory effects and RV infarction. Compare prior imaging and the clinical context. A thick RV wall supports chronic loading; a thin wall does not establish an acute cause or diagnose PE.</li>
           <li>McConnell's sign (RV free wall moving poorly while the apex still contracts) suggests acute PE but is not sensitive, and is also seen in RV infarction. Use it as supportive, not diagnostic.</li>
         </ul></div>
-      <p class="mini" style="margin-top:10px"><b>Also look for:</b> a dilated aortic root (&gt; 4 cm in PLAX) or an intimal flap (dissection), and gross valve failure (flail leaflet, torrential regurgitation). Both need formal echo. A small, hyperdynamic LV on inotropes can cause <b>dynamic LV outflow tract obstruction</b> (systolic anterior motion of the mitral valve): here more inotrope worsens shock; give fluid, stop the inotrope, use a pure vasoconstrictor and get formal echo.</p>
+      <p class="mini" style="margin-top:10px"><b>Also look for:</b> a dilated aortic root (&gt; 4 cm in PLAX) or an intimal flap (dissection), and gross valve failure (flail leaflet, torrential regurgitation). Both need formal echo. A small, hyperdynamic LV on inotropes can cause <b>dynamic LV outflow tract obstruction</b> (systolic anterior motion of the mitral valve): confirm the mechanism with expert echo and Doppler. Additional inotropy can worsen obstruction. Adjust inotropes, vascular tone and preload to the confirmed physiology; fluid requires a perfusion indication and assessment of congestion.</p>
     </div>
   </div>
 </section>
@@ -462,12 +452,12 @@ canvas.draw{touch-action:none;cursor:crosshair}
       </tbody></table></div>
       <div class="card" style="margin-top:12px"><div class="cap">How to read it</div>
         <ul>
-          <li>A <b class="ink">small, collapsing IVC</b> in a shocked patient suggests low RAP. This fits hypovolaemic or distributive shock, and fluid is unlikely to do harm.</li>
-          <li>A <b class="ink">plethoric, fixed IVC</b> suggests high RAP: tamponade, PE, tension pneumothorax, RV failure, or fluid overload. Further fluid is unlikely to help.</li>
+          <li>A <b class="ink">small, collapsing IVC</b> in a shocked patient suggests low RAP. This can fit hypovolaemic or distributive physiology, but does not establish a fluid indication, responsiveness or tolerance.</li>
+          <li>A <b class="ink">plethoric, fixed IVC</b> suggests high RAP: tamponade, PE, tension pneumothorax, RV failure, or fluid overload. It does not by itself establish whether stroke volume will increase with fluid. Consider congestion, the cause of raised RAP and a valid dynamic flow test.</li>
           <li><b class="ink">Not a reliable predictor of fluid responsiveness in the spontaneously breathing patient.</b> The middle range tells you little.</li>
           <li><b class="ink">On positive-pressure ventilation</b> the pattern reverses: the IVC distends on inspiration. A distensibility index &gt; 18% predicted fluid responsiveness in Barbier 2004 (sedated, passively ventilated septic patients, tidal volume about 8.5 mL/kg). Performance is poor at lung-protective tidal volumes (6 mL/kg), with spontaneous breathing effort, or with raised intra-abdominal pressure. A dilated IVC on the ventilator is common and less meaningful; a small IVC is still informative.</li>
         </ul></div>
-      <p class="mini" style="margin-top:10px"><b>Pitfalls:</b> the cylinder effect (scanning off-centre underestimates the diameter); the aorta mistaken for the IVC; raised intra-abdominal pressure; severe TR; athletes with large IVCs; a forceful sniff exaggerating collapse. If the subxiphoid window is poor, the internal jugular vein (Perera's original RUSH 'Tank') is an alternative gauge of venous pressure. More on the <a href="../cardiac/">Cardiac page</a>.</p>
+      <p class="mini" style="margin-top:10px"><b>Pitfalls:</b> the cylinder effect (scanning off-centre underestimates the diameter); the aorta mistaken for the IVC; raised intra-abdominal pressure; severe TR; athletes with large IVCs; a forceful sniff exaggerating collapse. If the subxiphoid window is poor, the internal jugular vein (Perera's original RUSH 'Tank') is an alternative gauge of venous pressure. Explore <a href="../haemodynamics/">flow and fluid assessment →</a>.</p>
     </div>
     <div class="demo">
       <div class="panel">
@@ -501,9 +491,9 @@ canvas.draw{touch-action:none;cursor:crosshair}
       <div class="card"><div class="cap">Pleural spaces</div><p>At the bases, look for the <b class="ink">spine sign</b> (vertebral bodies seen above the diaphragm through fluid) and an anechoic collection above the diaphragm: haemothorax, heart failure, empyema.</p></div>
       <div class="card"><div class="cap">Overloaded tank: B-lines (Volpicelli 2012)</div>
         <ul>
-          <li>≥ 3 B-lines in an intercostal space = a positive region. <b class="ink">Bilateral, diffuse</b> positive regions = interstitial syndrome. In shock with a poor LV and a plethoric IVC, this means <b class="ink">cardiogenic pulmonary oedema</b>.</li>
+          <li>≥ 3 B-lines in an intercostal space = a positive region. <b class="ink">Bilateral, diffuse</b> positive regions = interstitial syndrome. With poor LV contraction and raised right-sided pressure, this can support a <b class="ink">cardiogenic congestion component</b>, but does not exclude mixed or non-cardiogenic disease.</li>
           <li>B-lines are <b class="ink">not specific</b>: ARDS, pneumonia and fibrosis also cause them. Patchy distribution, pleural-line irregularity and spared areas point to non-cardiogenic causes. Detail on the <a href="../lung/">Lung page</a>.</li>
-          <li>New B-lines appearing during fluid resuscitation are a useful <b class="ink">stop signal</b> (the FALLS-protocol idea, Lichtenstein).</li>
+          <li>New B-lines appearing during fluid resuscitation are a reason to <b class="ink">pause and reassess tolerance</b> (the FALLS-protocol idea, Lichtenstein).</li>
         </ul></div>
     </div>
     <div>
@@ -513,12 +503,13 @@ canvas.draw{touch-action:none;cursor:crosshair}
         <div class="capx" id="t2Cap"></div>
         <div class="mini">Schematic teaching simulation, not a real scan.</div>
       </div>
+      <figure class="shock-real-clip"><h3>A real scan: free fluid</h3><video controls playsinline preload="none" poster="../media/fast-free-fluid.jpg" aria-label="Published ultrasound clip showing free fluid beside the liver and kidney"><source src="../media/fast-free-fluid.mp4" type="video/mp4">Your browser does not support embedded video. <a href="../media/fast-free-fluid.mp4">Open the clip →</a></video><figcaption>Free fluid beside the liver and kidney in a published trauma example. Ultrasound identifies fluid, not its composition. A negative FAST does not exclude bleeding or retroperitoneal injury.<p class="clip-credit">Gillman et al., 2009, supplementary clip 1 · <a href="https://doi.org/10.1186/1757-7241-17-34">Source</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. Transcoded and display proportions normalised; audio removed. <a href="../media/">Browse the real-scan library →</a></p></figcaption></figure>
       <div class="card" style="margin-top:12px"><div class="cap">Pneumothorax (the P in HI-MAP): least dependent anterior chest</div>
         <ul>
           <li><b class="ink">Lung sliding, B-lines or a lung pulse at the probe = no pneumothorax at that point</b> (high negative predictive value).</li>
           <li><b class="ink">No sliding</b> is not specific: mainstem intubation, apnoea, pleurodesis, adhesions, bullae, ARDS.</li>
-          <li><b class="ink">Lung point</b> (where sliding lung meets non-sliding pleura) <b class="ink">confirms</b> pneumothorax (specificity close to 100%).</li>
-          <li>Tension pneumothorax is a <b class="ink">clinical diagnosis</b>. In the peri-arrest patient, absent sliding plus a plethoric IVC <b class="ink">with clinical signs</b> (unilateral absent breath sounds, rising airway pressures, hypoxia, haemodynamic collapse) is enough to decompress. Do not hunt for a lung point first. If time allows, check the tube position and look for a lung pulse.</li>
+          <li>A true <b class="ink">lung point</b> supports pneumothorax. Bullae and other interfaces can mimic it; recognise the transition, check adjacent areas and interpret the clinical context.</li>
+          <li>Tension pneumothorax is a <b class="ink">clinical diagnosis</b>. When clinical tension is strongly suspected (haemodynamic collapse with unilateral chest findings, hypoxia or rising airway pressures), decompress immediately; an IVC or lung sign is not a prerequisite. Do not hunt for a lung point first. If time allows, check the tube position and look for a lung pulse.</li>
         </ul></div>
     </div>
   </div>
@@ -542,7 +533,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
         <ul>
           <li>ED bedside ultrasound is highly accurate at <b class="ink">finding an AAA</b> (Rubano 2013).</li>
           <li>It <b class="ink">cannot reliably show rupture</b>. Most ruptures bleed into the retroperitoneum, so there is often <b class="ink">no intraperitoneal free fluid</b>.</li>
-          <li><b class="ink">Hypotension + known or newly found AAA = ruptured AAA until proven otherwise.</b> Call the vascular team. Do not wait for CT if the patient is unstable.</li>
+          <li><b class="ink">Hypotension + known or newly found AAA = ruptured AAA until proven otherwise.</b> Activate the vascular team immediately. Prompt CTA is usually needed for repair planning when feasible; profound instability may require direct operative management.</li>
         </ul></div>
       <div class="card"><div class="cap">Other pipes</div>
         <ul>
@@ -612,22 +603,22 @@ canvas.draw{touch-action:none;cursor:crosshair}
 </section>
 
 <!-- ============ 12 CLASSIFIER ============ -->
-<section class="slide" id="clfSlide" data-min="7" data-title="Shock classifier" data-prompt="Start with only Hyperdynamic LV + small IVC and ask: hypovolaemic or distributive? Then add Free fluid with Trauma on. Then reset, set RV dilated + plethoric IVC and ask what one more view you want (the legs). Finally build a mixed picture: severely reduced LV + small IVC + fever. What now?">
+<section class="slide" id="clfSlide" data-min="7" data-title="Compare shock patterns" data-prompt="Start with only Hyperdynamic LV + small IVC and ask: hypovolaemic or distributive? Then add Free fluid with Trauma on. Then reset, set RV dilated + plethoric IVC and ask what one more view you want (the legs). Finally build a mixed picture: severely reduced LV + small IVC + fever. What now?">
   <div class="inner">
-    <div class="kicker">09 · Shock classifier</div>
+    <div class="kicker">09 · Compare shock patterns</div>
     <h2>Toggle the findings. Watch the pattern change.</h2>
-    <p class="lede" style="font-size:16px;margin-bottom:12px">A teaching model, not a diagnostic algorithm. Named patterns (tamponade, tension pneumothorax, high-risk PE, ruptured AAA) override the scores, and a caveat appears for each finding. When two patterns score close together, the tool says so.</p>
+    <p class="lede" style="font-size:16px;margin-bottom:12px">Select only findings you have assessed. Compare mechanisms, the observations supporting each and what remains uncertain. More than one mechanism can coexist; these patterns do not provide a diagnosis or probability.</p>
     <div class="clf">
       <div class="panel" id="clfForm"></div>
       <div class="panel" aria-live="polite">
         <div class="cap">Pattern supported</div>
         <div id="clfNamed"></div>
-        <div class="bars" id="clfBars"></div>
+        <div class="pattern-evidence" id="clfBars"></div>
         <div id="clfBan"></div>
         <div class="cap" style="margin-top:14px">Caveats</div>
         <ul class="cav" id="clfCav"></ul>
         <div class="ctrls"><button class="btn ghost" id="clfReset">Reset</button><button class="btn ghost" data-case="0">Load case 1</button><button class="btn ghost" data-case="1">Load case 2</button><button class="btn ghost" data-case="2">Load case 3</button><button class="btn ghost" data-case="3">Load case 4</button></div>
-        <p class="mini">Teaching model only. Weights are illustrative, not validated.</p>
+        <p class="mini">No score or validated diagnostic rule. Unassessed findings stay unknown.</p>
       </div>
     </div>
   </div>
@@ -641,20 +632,20 @@ canvas.draw{touch-action:none;cursor:crosshair}
       <h2>The scan is a snapshot. Shock is a film.</h2>
       <div class="card"><div class="cap">Integrate with the clinical picture</div><ul>
         <li>Start from the history, examination, ECG, lactate and blood gas. Ultrasound <b class="ink">adjusts</b> your probabilities. It does not replace them.</li>
-        <li><b class="ink">Rule in rather than rule out.</b> A clear positive finding (tamponade, AAA, lung point, B-lines with a poor LV) is persuasive. A normal-looking scan does not exclude PE, dissection, a contained bleed or sepsis.</li>
+        <li><b class="ink">Rule in rather than rule out.</b> Specific findings can narrow the differential, but an effusion is not automatically tamponade, an AAA is not proof of rupture, and B-lines do not establish cardiogenic oedema. A normal-looking scan does not exclude PE, dissection, a contained bleed or sepsis.</li>
         <li>Name a <b class="ink">leading diagnosis and an action</b> after every scan: fluid, vasopressor, inotrope, drain, decompress, thrombolyse, call the surgeon.</li></ul></div>
       <div class="card"><div class="cap">Serial scanning</div><ul>
         <li>Rescan after each intervention: after a 250 to 500 mL fluid bolus, after starting a vasopressor, and after any deterioration.</li>
-        <li>Look for: LV filling, change in IVC size, <b class="ink">new B-lines</b> (stop fluid), an enlarging effusion, new free fluid, and septic cardiomyopathy unmasked once vasopressors raise afterload.</li>
+        <li>Look for: LV filling, change in IVC size, <b class="ink">new B-lines</b> (pause and reassess fluid tolerance), an enlarging effusion, new free fluid, and septic cardiomyopathy unmasked once vasopressors raise afterload.</li>
         <li>Record each scan: views obtained, findings, image quality, time. An inadequate view is <b class="ink">not</b> a normal view.</li></ul></div>
     </div>
     <div>
       <div class="card"><div class="cap">Limitations</div><ul>
         <li>Depends on the operator and on body habitus. Ventilated, obese, post-operative and surgical-emphysema patients give poor windows.</li>
-        <li>Static measures (IVC) predict <b class="ink">fluid responsiveness</b> poorly. Use dynamic tests (passive leg raise with LVOT VTI or cardiac output) when the question matters. See <a href="../cardiac/">Cardiac</a>.</li>
-        <li>No outcome benefit has been shown in an RCT (SHoC-ED). The benefit comes from acting quickly on a correct finding.</li>
+        <li>Static measures (IVC) predict <b class="ink">fluid responsiveness</b> poorly. Use dynamic tests (passive leg raise with LVOT VTI or cardiac output) when the question matters. See <a href="../haemodynamics/">Haemodynamics</a>.</li>
+        <li>No outcome benefit has been shown in an RCT (SHoC-ED). A faster diagnosis matters only when it leads to an appropriate change in management.</li>
         <li>Ultrasound <b class="ink">cannot exclude</b>: aortic dissection, retroperitoneal bleeding, early or small free fluid, or PE without RV strain.</li>
-        <li>Do not let scanning delay life-saving treatment (CPR, needle decompression, blood, a call to the surgeon).</li></ul></div>
+        <li>Do not let scanning delay life-saving treatment (CPR, indicated defibrillation, decompression for clinical tension pneumothorax, blood or surgical escalation).</li></ul></div>
       <div class="callout">After every scan, say out loud: leading diagnosis, action, and when you will scan again.</div>
     </div>
   </div>
@@ -695,8 +686,8 @@ canvas.draw{touch-action:none;cursor:crosshair}
       <h2>SESAME: lung first, heart last.</h2>
       <p class="lede" style="font-size:16.5px">Lichtenstein's <b class="ink">S</b>equential <b class="ink">E</b>chographic <b class="ink">S</b>canning <b class="ink">A</b>ssessing <b class="ink">M</b>echanism <b class="ink">O</b>r Origin of <b class="ink">S</b>evere Shock of <b class="ink">I</b>ndistinct Cause is a whole-body scan for cardiac arrest and severe shock. He does it with one microconvex probe, so no time is lost changing probes.</p>
       <div class="tw"><table class="t sm"><thead><tr><th>Step</th><th>Looks for</th><th>If positive</th></tr></thead><tbody>
-        <tr><td><b class="ink">1 · Lung</b></td><td>Pneumothorax first (no sliding, then a lung point). The lung profile also feeds the BLUE and FALLS logic.</td><td>Decompress</td></tr>
-        <tr><td><b class="ink">2 · Veins</b></td><td>Lower-limb DVT, the clue to PE</td><td>With an A-profile: think PE, consider thrombolysis</td></tr>
+        <tr><td><b class="ink">1 · Lung</b></td><td>Pneumothorax: assess sliding, B-lines and lung pulse. A lung point can support the diagnosis.</td><td>Decompress clinical tension immediately; do not wait for a lung point</td></tr>
+        <tr><td><b class="ink">2 · Veins</b></td><td>Lower-limb DVT, the clue to PE</td><td>Supports PE in context; urgent senior-led reperfusion assessment, not automatic thrombolysis</td></tr>
         <tr><td><b class="ink">3 · Abdomen</b></td><td>Massive haemorrhage. <b class="ink">In trauma, do this before the veins.</b></td><td>Blood, surgeon</td></tr>
         <tr><td><b class="ink">4 · Pericardium</b></td><td>Effusion and tamponade</td><td>Drain</td></tr>
         <tr><td><b class="ink">5 · Heart</b></td><td>Other cardiac causes, and whether there is any activity</td><td>Depends on the finding</td></tr>
@@ -790,7 +781,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
         <li>POCUS may help identify treatable causes such as cardiac tamponade and tension pneumothorax.</li>
         <li>Right ventricular dilation on its own during arrest should not be used to diagnose pulmonary embolism.</li>
         <li>Do not use the apparent contractility of the myocardium on POCUS as the only reason to stop CPR.</li></ul></div>
-      <div class="card"><div class="cap">AHA 2025 · Part 9, Adult ALS</div><p>AHA 2025 says POCUS by experienced professionals during cardiac arrest <b class="ink">may be considered</b> to look for reversible causes, provided it does not interrupt CPR. "May be considered" is AHA wording for a weak (class 2b) recommendation; check the exact class and level of evidence in the Part 9 recommendation table.</p></div>
+      <div class="card"><div class="cap">AHA 2025 · Part 9, Adult ALS</div><p>The AHA 2025 summary permits experienced operators to consider POCUS for reversible causes without interrupting CPR. Its formal table rates diagnostic use and prognostication as <b class="ink">not well established (Class 2b, C-LD)</b>. This is an adjunct, not a reason to extend a pause or stop resuscitation.</p></div>
       <div class="card"><div class="cap">ILCOR CoSTR</div><p>2020: ILCOR <b class="ink">suggests against</b> using point-of-care echocardiography for <b class="ink">prognostication</b> during CPR (weak recommendation, very low-certainty evidence). This does not rule out using it to look for reversible causes. ILCOR has also run a scoping review of TOE during CPR; scoping reviews summarise the evidence but do not produce treatment recommendations.</p></div>
       <div class="card"><div class="cap">What they agree on</div><ul>
         <li>Skilled operators only.</li><li>Use it to find a cause you can treat.</li><li>It must not lengthen or add pauses.</li><li>Do not use it alone to decide to stop CPR.</li></ul><p class="mini" style="margin-top:8px">Follow your local resuscitation protocol.</p></div>
@@ -817,6 +808,17 @@ canvas.draw{touch-action:none;cursor:crosshair}
 <section class="slide case" data-case="3" data-min="5" data-title="Case 4 · PEA after PCI" data-prompt="Assign roles before revealing anything: team leader, compressor, scanner, someone to count the pause out loud. Reveal the lung, veins and abdomen steps 'during compressions'. Before the pericardium step, ask: what will you do if the first pulse-check clip shows an effusion? (Drain now, while CPR continues; do not wait for a second pulse check.) Ask: what could the abdominal scan not exclude after femoral access? (A retroperitoneal bleed.)"></section>
 
 <!-- ============ QUIZ ============ -->
+<!-- SCCM constructed cases: copied with attribution from the owner-provided companion. -->
+<section class="slide" id="sccm-cases" data-min="16" data-title="SCCM decision cases" data-prompt="Choose a case. Ask for a finding, an inference, a competing explanation and an action before opening the discussion. Change the schematic to test the first interpretation.">
+<div class="inner"><div class="kicker">Clinical integration</div><h2>Eight decisions beyond the first image.</h2><p class="lede">Constructed cases based on the SCCM Day 1 teaching themes. Describe the observation, test the inference and choose the next step.</p>
+<label class="decision-picker" for="decisionCase">Case <select id="decisionCase"><option value="0">Case 1 · The vanishing IVC</option><option value="1">Case 2 · Sepsis, oliguria and more fluid?</option><option value="2">Case 3 · A hyperdynamic LV, a small stroke volume</option><option value="3">Case 4 · Failure during withdrawal of respiratory support</option><option value="4">Case 5 · Deterioration after cardiac surgery</option><option value="5">Case 6 · Absent sliding after intubation</option><option value="6">Case 7 · A dilated RV and a small LV</option><option value="7">Case 8 · The PLR number</option></select></label>
+<div class="two even decision-layout"><div id="decisionText"><article class="decision-case" data-decision="0"><h3>Case 1 · The vanishing IVC</h3><p class="prompt">A patient’s IVC seems to collapse completely with each inspiration. During scanning, the vessel also moves sideways out of the imaging plane. A junior recommends a fluid bolus.</p><p>Is the observation reliable? What does a respiratory IVC change actually establish?</p><details class="decision-answer"><summary>Compare your reasoning</summary><div class="answer"><p>First correct the acquisition. Track the vessel through respiration and confirm its connection to the right atrium. Out-of-plane motion can mimic collapse. Even a technically valid change is affected by respiratory effort, ventilation and right-heart physiology. Establish the perfusion problem, then select a valid dynamic test and assess congestion.</p><p class="takeaway">Verify acquisition before interpreting physiology.</p></div></details><p><a href="../haemodynamics/">Review the underlying physiology →</a></p></article><article class="decision-case" data-decision="1" hidden><h3>Case 2 · Sepsis, oliguria and more fluid?</h3><p class="prompt">A patient with sepsis remains oliguric after several fluid boluses. CVP has risen. Echo now shows reduced LV contraction and the lung survey shows widespread B-lines.</p><p>Does oliguria alone establish a need for more fluid? What would you reassess?</p><details class="decision-answer"><summary>Compare your reasoning</summary><div class="answer"><p>No. Reassess systemic perfusion, forward flow, ventricular function, congestion and alternative causes of oliguria. The scan raises concern about limited fluid tolerance, but does not establish a single cause. A valid responsiveness test can inform the preload question; it cannot erase the need to consider congestion and other haemodynamic support.</p><p class="takeaway">Reassess the mechanism before repeating treatment.</p></div></details><p><a href="../haemodynamics/">Review the underlying physiology →</a></p></article><article class="decision-case" data-decision="2" hidden><h3>Case 3 · A hyperdynamic LV, a small stroke volume</h3><p class="prompt">The LV appears hyperdynamic. LVOT diameter is 2.0 cm, VTI is 10 cm and heart rate is 110 beats/min.</p><p>What are the calculated stroke volume and output? What remains unknown?</p><details class="decision-answer"><summary>Compare your reasoning</summary><div class="answer"><p>Area is approximately 3.14 cm²; stroke volume is 31.4 mL; cardiac output is 3.46 L/min. These values do not determine adequacy without body size, perfusion and clinical context. Confirm measurement quality and seek the mechanism of low stroke volume. A vigorous EF does not establish sufficient flow.</p><p class="takeaway">Separate contraction, stroke volume, cardiac output and perfusion.</p></div></details><p><a href="../haemodynamics/">Review the underlying physiology →</a></p></article><article class="decision-case" data-decision="3" hidden><h3>Case 4 · Failure during withdrawal of respiratory support</h3><p class="prompt">During reduction of positive-pressure support, a patient becomes breathless and hypertensive. B-lines increase and the cardiac study suggests impaired LV function.</p><p>How can changing respiratory support expose a cardiovascular problem? What comparison would help?</p><details class="decision-answer"><summary>Compare your reasoning</summary><div class="answer"><p>Changes in intrathoracic pressure alter cardiac loading and the work of breathing. Consider a cardiovascular contribution while also checking pulmonary and respiratory causes. Compare cardiac function, flow and lung findings before and during deterioration, and integrate expert assessment where required. B-lines alone cannot prove the mechanism.</p><p class="takeaway">A failed respiratory transition can be a cardiopulmonary interaction problem.</p></div></details><p><a href="../lung/">Review the underlying physiology →</a></p></article><article class="decision-case" data-decision="4" hidden><h3>Case 5 · Deterioration after cardiac surgery</h3><p class="prompt">Following removal of epicardial pacing wires, a patient becomes hypotensive. A limited transthoracic scan does not show a large circumferential effusion.</p><p>Does this exclude tamponade? What should happen next?</p><details class="decision-answer"><summary>Compare your reasoning</summary><div class="answer"><p>No. A localised collection or clot may be difficult to see and can compress a chamber without a large circumferential effusion. Resuscitation, urgent surgical communication and expert imaging should proceed according to the clinical situation. TOE may be needed if TTE is inadequate. Do not wait for a textbook image before escalating.</p><p class="takeaway">A limited negative scan cannot exclude unseen pathology.</p></div></details><p><a href="../cardiac/">Review the underlying physiology →</a></p></article><article class="decision-case" data-decision="5" hidden><h3>Case 6 · Absent sliding after intubation</h3><p class="prompt">The right anterior lung slides; the left does not. The patient has just been intubated. A lung pulse is visible on the left.</p><p>Which diagnoses should remain in the differential? What does lung pulse add?</p><details class="decision-answer"><summary>Compare your reasoning</summary><div class="answer"><p>Lung pulse supports pleural apposition at the sampled site. Consider reduced ventilation of that lung, including mainstem intubation, while verifying the findings and checking other causes. Review tube position and the clinical state promptly. Absent sliding by itself is insufficient to diagnose pneumothorax.</p><p class="takeaway">Use a second sign to test the first interpretation.</p></div></details><p><a href="../lung/">Review the underlying physiology →</a></p></article><article class="decision-case" data-decision="6" hidden><h3>Case 7 · A dilated RV and a small LV</h3><p class="prompt">In a hypoxaemic patient, the RV is enlarged, the septum is flattened in systole and the LV cavity is small.</p><p>Does the small LV justify fluid? Does the RV appearance diagnose pulmonary embolism?</p><details class="decision-answer"><summary>Compare your reasoning</summary><div class="answer"><p>Neither conclusion follows automatically. The pattern supports RV pressure loading with ventricular interaction, but causes include pulmonary vascular and ventilatory problems as well as embolism. Assess chronicity, perfusion and congestion, and select further investigation according to urgency and pre-test probability. Extra fluid may worsen RV distension.</p><p class="takeaway">Explain both ventricles with one coherent physiology before treating a single image.</p></div></details><p><a href="../cardiac/">Review the underlying physiology →</a></p></article><article class="decision-case" data-decision="7" hidden><h3>Case 8 · The PLR number</h3><p class="prompt">VTI rises from 16 to 18 cm during passive leg raising. Heart rate is unchanged. The patient has no signs of hypoperfusion.</p><p>What is the percentage change? Should fluid automatically follow?</p><details class="decision-answer"><summary>Compare your reasoning</summary><div class="answer"><p>The increase is 12.5% using the baseline denominator. First establish that acquisition and the manoeuvre were valid and the change exceeds measurement variability. Even if the response is meaningful, responsiveness alone is not an indication for fluid in a patient without a perfusion problem.</p><p class="takeaway">A positive physiological test does not itself create a treatment indication.</p></div></details><p><a href="../haemodynamics/">Review the underlying physiology →</a></p></article></div><div class="demo"><div class="panel"><div class="cap" id="decisionMode">Schematic comparison</div><div class="scanner pp"><canvas id="decisionCanvas" class="us" role="img" aria-label="Interactive schematic for the selected case"></canvas><button class="ppb" type="button">❚❚ Pause</button></div><div class="ctrls"><button type="button" class="btn ghost" id="decisionCompare" aria-pressed="false">Compare</button></div><p class="status" id="decisionCaption" aria-live="polite"></p><p class="mini">Illustrative anatomy and numbers. These are constructed teaching diagrams, not patient scans or a diagnostic model.</p></div></div></div></div></section>
+<section class="slide" id="documentation" data-min="4" data-title="Teaching and documentation" data-prompt="Have the learner report a non-diagnostic scan. What was not seen, what is not excluded, and what will they do next?">
+<div class="inner"><div class="kicker">Supervised practice</div><h2>Make the reasoning reviewable.</h2><div class="two even"><div>
+<h3>A focused report</h3><dl class="report-checklist"><dt>Question</dt><dd>Indication, relevant background and what the scan could change.</dd><dt>Conditions</dt><dd>Position, rhythm and heart rate, BP, ventilation/PEEP and cardiovascular support.</dd><dt>Quality and scope</dt><dd>Views obtained; adequate, limited or non-diagnostic for this question.</dd><dt>Findings</dt><dd>LV, RV, pericardium, relevant flow measurements, lungs and pleura. Include method and units.</dd><dt>Interpretation</dt><dd>What the observations support in this clinical context; alternative explanations.</dd><dt>Limits</dt><dd>Structures not seen, unreliable measurements and diagnoses not excluded.</dd><dt>Action</dt><dd>Treatment, escalation, formal imaging and reassessment plan.</dd><dt>Record</dt><dd>Operator, date/time, supervisor or reviewer and saved image location.</dd></dl></div><div>
+<h3>A 30-minute teaching session</h3><ol class="teaching-sequence"><li><b>0–3 min:</b> agree one clinical question.</li><li><b>3–15 min:</b> acquire purposeful views; correct one technical problem.</li><li><b>15–22 min:</b> describe findings and repeat a measurement when appropriate.</li><li><b>22–27 min:</b> test an alternative explanation.</li><li><b>27–30 min:</b> save clips, report the limits and agree one practice goal.</li></ol>
+<h3>Feedback that changes the next scan</h3><p>Assess preparation, acquisition, interpretation, integration and documentation through supervised image review. Scan count alone does not establish competence.</p><p>Use specific feedback: “The apex is rounded; move laterally and maximise LV length before tracing.” Ask for one technical and one physiological alternative to the interpretation.</p><p>Store patient data in approved systems. Teaching images must be authorised and de-identified.</p><div class="callout">“Limited study” is a finding about image quality. It must not become “normal study” in the handover.</div></div></div></div></section>
+
 <section class="slide" data-min="10" data-title="Quick check" data-prompt="Have learners answer on their phones or by show of hands. For any question with < 70% correct, return to the relevant slide.">
   <div class="inner">
     <div class="kicker">Quick check</div>
@@ -827,14 +829,14 @@ canvas.draw{touch-action:none;cursor:crosshair}
 </section>
 
 <!-- ============ THANKS ============ -->
-<section class="slide divider" data-min="2" data-title="Thank you" data-prompt="Ask each learner to name one shocked patient they will scan this week with the full HI-MAP sequence, and to log it with a supervisor review.">
+<section class="slide divider" data-min="2" data-title="Take-home points" data-prompt="Ask each learner to name one shocked patient they will scan this week with the full HI-MAP sequence, and to log it with a supervisor review.">
   <div class="inner two" style="align-items:center;flex:1">
     <div>
       <div class="kicker">Scan, act, rescan</div>
-      <h1>Thank you.</h1>
+      <h1>Scan, act, reassess.</h1>
       <div class="card" style="margin-top:20px"><div class="cap">Four things to take away</div><ol>
-        <li>Pump, tank, pipes, in the HI-MAP order. Finish the exam even after the first abnormal finding.</li>
-        <li>Patterns rule in. A normal-looking scan does not rule out.</li>
+        <li>Use pump, tank and pipes to organise the scan. Treat immediately reversible threats first; complete the relevant survey when resuscitation permits.</li>
+        <li>A coherent pattern narrows the differential. A normal-looking or incomplete scan does not exclude all important disease.</li>
         <li>Rescan after every intervention.</li>
         <li>In arrest: scan during compressions, record within a 10-second pause, and never stop CPR on one ultrasound finding.</li></ol></div>
       <div class="cap" style="margin-top:16px">Go deeper</div>
@@ -854,6 +856,9 @@ canvas.draw{touch-action:none;cursor:crosshair}
     <h2>Where the numbers come from.</h2>
     <details class="src" open><summary>Key references (tap to collapse)</summary>
       <ol class="refs">
+<li>Monnet X, Messina A, Greco M, et al. ESICM guidelines on circulatory shock and haemodynamic monitoring 2025. <i>Intensive Care Med</i>. <a href="https://doi.org/10.1007/s00134-025-08137-z">Read the guideline →</a></li>
+<li>Monnet X, Teboul JL. Passive leg raising: five rules, not a drop of fluid! <i>Crit Care</i>. 2015;19:18. <a href="https://doi.org/10.1186/s13054-014-0708-5">Read PLR methodology →</a></li>
+<li>Demi L, Wolfram F, Klersy C, et al. New international guidelines and consensus on the use of lung ultrasound. <i>J Ultrasound Med</i>. 2023;42:309–344. <a href="https://doi.org/10.1002/jum.16088">Read the lung consensus →</a></li>
         <li>Perera P, Mailhot T, Riley D, Mandavia D. The RUSH exam: Rapid Ultrasound in SHock in the evaluation of the critically ill. <i>Emerg Med Clin North Am</i>. 2010;28(1):29–56. <a href="https://doi.org/10.1016/j.emc.2009.09.010" target="_blank" rel="noopener">doi:10.1016/j.emc.2009.09.010</a></li>
         <li>Weingart SD, Duque D, Nelson B. Rapid Ultrasound for Shock and Hypotension (RUSH-HIMAPP). <i>EMCrit [online]</i>. 2009. <a href="https://emcrit.org/rush-exam/" target="_blank" rel="noopener">Source</a></li>
         <li>Jones AE, Tayal VS, Sullivan DM, Kline JA. Randomized, controlled trial of immediate versus delayed goal-directed ultrasound to identify the cause of nontraumatic hypotension in emergency department patients. <i>Crit Care Med</i>. 2004;32(8):1703–8. <a href="https://pubmed.ncbi.nlm.nih.gov/?term=Randomized+controlled+trial+of+immediate+versus+delayed+goal-directed+ultrasound+to+identify+the+cause+of+2004%5Bdp%5D" target="_blank" rel="noopener">PubMed</a></li>
@@ -894,7 +899,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
         <li>Drennan IR, Berg KM, Böttiger BW, et al. Advanced life support: 2025 International Liaison Committee on Resuscitation Consensus on Science With Treatment Recommendations. <i>Circulation</i>. 2025;152(16 Suppl 1):S72–115. <a href="https://doi.org/10.1161/CIR.0000000000001360" target="_blank" rel="noopener">doi:10.1161/CIR.0000000000001360</a></li>
         <li>Scquizzato T, Zelop C, Berg KM, Drennan IR; ILCOR Advanced Life Support Task Force. Transesophageal echocardiography during cardiopulmonary resuscitation for cardiac arrest (ALS 3609): task force scoping review. <i>ILCOR CoSTR [online]</i>. <a href="https://costr.ilcor.org/document/als-3609-transesophageal-echocardiography-during-cardiopulmonary-resuscitation-for-cardiac-arrest-tf-scr" target="_blank" rel="noopener">Source</a></li>
       </ol>
-      <p class="mini">Simulations are purpose-built schematic teaching models, not diagnostic images. Anatomy, echogenicity, timing and thresholds are simplified. Check thresholds against current guidelines and local protocols.</p>
+      <p class="mini">SCCM decision cases and reporting content adapted from Dr. Chew Shi Hao’s 2026 SCCM POCUS companion. These eight cases are constructed teaching scenarios, not transcriptions of patient cases. Original decks and patient images are not republished.</p><p class="mini">Simulations are purpose-built schematic teaching models, not diagnostic images. Anatomy, echogenicity, timing and thresholds are simplified. Check thresholds against current guidelines and local protocols.</p>
     </details>
   </div>
 </section>
@@ -912,7 +917,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 0:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
   <button id="ntB" aria-label="Presenter prompts" title="Presenter prompts (N)">✎</button>
   <button id="ovB" aria-label="Tutorial contents" title="Tutorial contents">Contents →</button>
-  <button id="thB" aria-label="Toggle tutorial theme" title="Theme (T)">◐</button>
+
   <button id="fsB" aria-label="Fullscreen tutorial" title="Fullscreen (F)">⛶</button>
 </div></nav>
 <script>
@@ -1301,12 +1306,12 @@ function vZ(S, st, t) {
 const VIEW = { H: vH, I: vI, M: vM, A: vA, P: vP, L: vL, Z: vZ };
 const vAny = (S, st, t) => VIEW[st.v](S, st, t);
 const CAPS = {
-  'H.normal': 'Subxiphoid 4-chamber: liver in front, RV nearest the probe, LV deeper. The ventricles squeeze about 30% in systole; the RV is smaller than the LV.',
+  'H.normal': 'Subxiphoid 4-chamber: liver in front, RV nearest the probe, LV deeper. The ventricles contract in systole; the RV is smaller than the LV.',
   'H.eff': 'Effusion + RV diastolic collapse = tamponade physiology (tamponade itself is a clinical diagnosis). Watch the RA fold in systole and the RV free wall bow in early diastole.',
-  'H.rv': 'Dilated RV (RV ≥ LV) with the septum flattened towards a small, hyperdynamic LV. In shock: high-risk PE until proven otherwise.',
+  'H.rv': 'Dilated RV with an underfilled LV: assess RV pressure loading and failure. PE is one possible cause; RV size alone does not diagnose it.',
   'H.hyper': 'Hyperdynamic LV: small cavity, walls nearly meet at end-systole. Hypovolaemia, early distributive shock, or an underfilled LV.',
-  'H.reduced': 'Dilated, poorly contracting LV. With a plethoric IVC and B-lines, this is cardiogenic shock.',
-  'I.normal': 'Small IVC collapsing with each breath (about 1.8 → 0.7 cm): low RAP. Fluid is unlikely to harm.',
+  'H.reduced': 'Dilated, poorly contracting LV. B-lines and raised right-sided pressure may support a congested pump-failure component; mixed shock remains possible.',
+  'I.normal': 'Small IVC with marked respiratory variation. Low RAP is possible, but this is not a fluid-safety or responsiveness test; verify acquisition and breathing conditions.',
   'I.flat': 'Flat IVC, about 1.0 cm, collapsing almost completely with each breath: very low RAP. Fits haemorrhage or severe hypovolaemia.',
   'I.pleth': 'Plethoric IVC, 2.5 cm, varying less than 10%: high RAP. Think tamponade, PE, tension pneumothorax, RV failure or overload.',
   'M.normal': "Morison's pouch: bright interface between liver and kidney, no black stripe.",
@@ -1314,7 +1319,7 @@ const CAPS = {
   'A.normal': "Transverse aorta at the infrarenal level: round, under 3 cm, just left of the vertebral body. IVC on the patient's right.",
   'A.aaa': 'Infrarenal AAA, 5.8 cm outer wall to outer wall, with mural thrombus; the flowing lumen is only about 2.6 cm. Work through it on the Pipes slide.',
   'P.slide': 'Lung sliding: shimmering pleural line, A-lines below. M-mode: seashore sign (lines above the pleura, granular "sand" below).',
-  'P.noslide': 'No sliding: static pleural line. M-mode: barcode (stratosphere) sign. Fits pneumothorax but is not specific; a lung point confirms.',
+  'P.noslide': 'Absent sliding with a barcode M-mode pattern is not specific to pneumothorax. Look for lung pulse, B-lines and a true lung point; clinical tension needs immediate treatment.',
   'P.bl': 'B-lines: vertical, laser-like lines from the pleura to the bottom of the screen that move with sliding and erase the A-lines. They rule out pneumothorax at that point.',
   'L.normal': 'Right groin, transverse: artery lateral, vein medial. Common femoral vein (oval) beside the artery (round, pulsatile). With pressure the vein closes completely: no DVT here.',
   'L.dvt': 'The vein stays round, with grey echoes inside, under pressure: non-compressible = DVT. In shock with a dilated RV, strongly supports PE.',
@@ -1407,6 +1412,7 @@ const REG = [];
 let CUR_SLIDE = null, _last = performance.now();
 function scene(cv, w, h, st, draw, frame) { if (!cv) return null; const o = { slide: cv.closest('.slide'), cv, S: new Sono(cv, w, h), st, draw, frame, lastDraw: 0 }; REG.push(o); return o; }
 function tick(now) {
+  if (document.hidden || document.getElementById('overview')?.classList.contains('show')) { _last = now; requestAnimationFrame(tick); return; }
   const dt = clamp((now - _last) / 1000, 0, .1); _last = now; if (PLAY) simT += dt;
   for (const s of REG) {
     if (s.slide !== CUR_SLIDE || !s.cv.getClientRects().length) continue;
@@ -1425,7 +1431,7 @@ document.addEventListener('click', e => { if (e.target.closest('.ppb')) setPlay(
 const dirty = sc => { if (sc) sc.dirty = true; };
 
 /* =====================================================================
-   DECK: navigation, timer, overview, theme
+   DECK: navigation, timer, overview
    ===================================================================== */
 const slides = $$('.slide');
 let cur = 0, running = false, elapsed = 0, slideStart = 0, lastNow = performance.now();
@@ -1465,11 +1471,6 @@ $('#prevB').onclick = () => go(cur - 1); $('#nextB').onclick = () => go(cur + 1)
 $('#tmB').onclick = () => { running = !running; updTimer(); };
 $('#tmR').onclick = () => { elapsed = 0; slideStart = 0; running = false; updTimer(); };
 $('#fsB').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
-function toggleTheme() {
-  const r = document.documentElement, dark = getComputedStyle(r).getPropertyValue('--bg').trim().toLowerCase() === '#1b1814';
-  r.dataset.theme = dark ? 'light' : 'dark';
-}
-$('#thB').onclick = toggleTheme;
 $('#ntB').onclick = () => $('#notes').hidden = !$('#notes').hidden;
 const ov = $('#overview');
 $('#ovGrid').innerHTML = slides.map((s, i) => `<button data-i="${i}"><span class="on">${String(i + 1).padStart(2, '0')}</span><span class="ot">${s.dataset.title}</span><span class="om">${plan[i]} min</span></button>`).join('');
@@ -1485,7 +1486,6 @@ document.addEventListener('keydown', e => {
   else if (typing) return;
   else if (e.key === 'o' || e.key === 'O') ov.classList.toggle('show');
   else if (e.key === 'f' || e.key === 'F') $('#fsB').click();
-  else if (e.key === 't' || e.key === 'T') toggleTheme();
   else if (e.key === 'p' || e.key === 'P') $('#tmB').click();
   else if (e.key === 'n' || e.key === 'N') $('#notes').hidden = !$('#notes').hidden;
   else if (e.key === 'c' || e.key === 'C') jumpToCases();
@@ -1636,63 +1636,62 @@ aoStat();
 
 /* ---------- Shock classifier ---------- */
 const CF = [
-  ['eff', 'Pericardial effusion', ['None', 'Small, no chamber collapse', 'Large with RA/RV collapse']],
-  ['lv', 'LV function', ['Hyperdynamic', 'Normal', 'Reduced', 'Severely reduced']],
-  ['rv', 'RV size', ['Normal', 'Dilated (RV ≥ LV, D-shaped septum)']],
-  ['ivc', 'IVC', ['Small, > 50% collapse', 'Intermediate', 'Plethoric, < 50% collapse']],
-  ['ff', 'Free fluid (eFAST)', ['No', 'Yes']],
-  ['bl', 'Bilateral diffuse B-lines', ['No', 'Yes']],
-  ['sl', 'Lung sliding', ['Present both sides', 'Absent one side']],
-  ['ao', 'Aorta', ['Normal', 'AAA ≥ 3 cm']],
-  ['dvt', 'DVT (2-point)', ['Not scanned / negative', 'Non-compressible vein']],
-  ['tr', 'Context: trauma', ['Off', 'On']],
-  ['mv', 'Context: mechanically ventilated', ['Off', 'On']]
+  ['eff', 'Pericardium', ['No effusion seen', 'Effusion, no collapse seen', 'Effusion with chamber compression']],
+  ['lv', 'LV contraction', ['Hyperdynamic', 'Preserved', 'Reduced', 'Severely reduced']],
+  ['rv', 'RV', ['Not enlarged', 'Enlarged / septal flattening']],
+  ['ivc', 'IVC', ['Small, marked variation', 'Intermediate', 'Dilated, little variation']],
+  ['ff', 'Intraperitoneal free fluid', ['Not seen', 'Present']],
+  ['bl', 'Bilateral diffuse B-lines', ['Not seen', 'Present']],
+  ['sl', 'Lung sliding', ['Present at assessed sites', 'Absent at an assessed site']],
+  ['ao', 'Abdominal aorta', ['No AAA on complete survey', 'AAA ≥ 3 cm']],
+  ['dvt', 'Proximal leg compression scan', ['No DVT at sampled sites', 'Non-compressible vein']],
+  ['tr', 'Trauma / bleeding context', ['Not suspected', 'Suspected']],
+  ['mv', 'Positive-pressure ventilation', ['No', 'Yes']]
 ];
-const F0 = () => Object.fromEntries(CF.map(([k]) => [k, 0]));
+const F0 = () => Object.fromEntries(CF.map(([k]) => [k, -1]));
 let F = F0();
 const CF_PRESET = [
-  { rv: 1, ivc: 2, dvt: 1 },
-  {},
-  { ao: 1 },
-  { eff: 2 }
+  { eff: 0, lv: 0, rv: 1, ivc: 2, ff: 0, bl: 0, sl: 0, ao: 0, dvt: 1, tr: 0, mv: 0 },
+  { eff: 0, lv: 0, rv: 0, ivc: 0, ff: 0, bl: 0, sl: 0, ao: 0, tr: 0, mv: 0 },
+  { eff: 0, lv: 0, rv: 0, ivc: 0, ff: 0, bl: 0, sl: 0, ao: 1, tr: 1, mv: 0 },
+  { eff: 2, ff: 0, sl: 0, dvt: 0, mv: 1 }
 ];
-$('#clfForm').innerHTML = CF.map(([k, l, o]) => `<div class="row"><div class="cap" id="cf-${k}">${l}</div><div class="seg" role="group" aria-labelledby="cf-${k}" data-k="${k}">${o.map((x, j) => `<button data-v="${j}" aria-pressed="${j === 0}">${x}</button>`).join('')}</div></div>`).join('');
-$('#clfForm').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; const sg = b.closest('.seg'); F[sg.dataset.k] = +b.dataset.v; clfSync(); });
+$('#clfForm').innerHTML = CF.map(([k, l, o]) => `<div class="row"><div class="cap" id="cf-${k}">${l}</div><div class="seg" role="group" aria-labelledby="cf-${k}" data-k="${k}"><button data-v="-1" aria-pressed="true">Not assessed</button>${o.map((x, j) => `<button data-v="${j}" aria-pressed="false">${x}</button>`).join('')}</div></div>`).join('');
+$('#clfForm').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; F[b.closest('.seg').dataset.k] = +b.dataset.v; clfSync(); });
 function clfSync() {
   $$('#clfForm .seg').forEach(sg => $$('button', sg).forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === F[sg.dataset.k]))));
-  const s = { H: 0, C: 0, O: 0, D: 0 };
-  if (F.eff === 2) s.O += 4;
-  if (F.lv === 0) { s.H += 2; s.D += 2; s.O += 1; } else if (F.lv === 1) s.D += 1; else if (F.lv === 2) s.C += 2; else s.C += 3;
-  if (F.rv) s.O += 3;
-  if (F.ivc === 0) { s.H += 2; s.D += 2; } else if (F.ivc === 2) { s.C += 2; s.O += 2; }
-  if (F.ff) { s.H += 2 + (F.tr ? 1 : 0); s.D += 1; }
-  if (F.bl) { s.C += 2; s.D += 1; }
-  if (F.sl) s.O += 3;
-  if (F.ao) s.H += 3;
-  if (F.dvt) s.O += 2 + (F.rv ? 1 : 0);
+  const E = { H: [], C: [], O: [], D: [] };
+  if (F.lv === 0) { E.H.push('Hyperdynamic LV can accompany low preload'); E.D.push('Hyperdynamic LV can accompany vasoplegia'); }
+  if (F.ivc === 0) { E.H.push('Small variable IVC can accompany low RAP'); E.D.push('Low RAP can coexist with distributive shock'); }
+  if (F.ff === 1 && F.tr === 1) E.H.push('Free fluid in a bleeding context supports haemorrhage');
+  if (F.ao === 1) E.H.push('AAA with shock requires urgent assessment for rupture');
+  if (F.lv >= 2) { E.C.push('Reduced LV contraction may contribute to low output'); E.D.push('Sepsis and myocardial dysfunction can coexist'); }
+  if (F.bl === 1) { E.C.push('B-lines may represent pulmonary congestion'); E.D.push('B-lines can also accompany inflammatory lung disease'); }
+  if (F.rv === 1) { E.O.push('RV pressure loading / enlargement: investigate the cause'); E.C.push('RV dysfunction can itself contribute to pump failure'); }
+  if (F.eff === 2) E.O.push('Effusion with chamber compression: assess urgently for tamponade');
+  if (F.sl === 1) E.O.push('Absent sliding: pneumothorax is one of several explanations');
+  if (F.dvt === 1) E.O.push('Proximal DVT increases concern for PE in the right clinical context');
   const N = [['H', 'Hypovolaemic'], ['C', 'Cardiogenic'], ['O', 'Obstructive'], ['D', 'Distributive']];
-  const mx = Math.max(...Object.values(s)), sorted = Object.values(s).sort((a, b) => b - a);
-  $('#clfBars').innerHTML = N.map(([k, n]) => `<div class="b${mx > 0 && s[k] === mx ? ' lead' : ''}"><span>${n}</span><span class="tr"><i style="width:${mx ? s[k] / mx * 100 : 0}%"></i></span><span>${s[k]}</span></div>`).join('');
-  $('#clfBan').innerHTML = mx === 0 ? '<div class="banner">No pattern — rescan, consider mixed or early shock.</div>' : sorted[0] - sorted[1] <= 1 ? '<div class="banner">Mixed or indeterminate pattern — integrate with clinical picture.</div>' : '';
+  $('#clfBars').innerHTML = N.map(([k, n]) => `<section><h3>${n}</h3>${E[k].length ? `<ul>${E[k].map(x => `<li>${x}</li>`).join('')}</ul>` : '<p>No supporting feature selected. This does not exclude the mechanism.</p>'}</section>`).join('');
+  const assessed = CF.filter(([k]) => F[k] >= 0).length;
+  $('#clfBan').innerHTML = `<div class="banner">${assessed} of ${CF.length} domains assessed. ${assessed ? 'Use history, perfusion and serial response to decide which mechanism matters. Mixed shock remains possible.' : 'Start with the observations you have actually obtained; no default diagnosis is assumed.'}</div>`;
   const nm = [];
-  if (F.eff === 2) nm.push('<b>Tamponade physiology:</b> plan pericardiocentesis or surgical drainage; fluids as a bridge; avoid excessive PEEP.');
-  if (F.sl && (F.ivc === 2 || F.lv === 0)) nm.push('<b>Suspect tension pneumothorax:</b> a clinical diagnosis. Decompress if peri-arrest. A lung point confirms pneumothorax, but do not delay.');
-  if (F.rv && F.lv <= 1 && F.ivc === 2) nm.push('<b>Pattern of high-risk PE</b>' + (F.dvt ? ' — strongly supported by the DVT.' : '. Scan the legs.'));
-  if (F.ao) nm.push('<b>Ruptured AAA until proven otherwise:</b> vascular surgery, permissive hypotension, blood.');
-  if (F.lv >= 2 && F.ivc === 2 && F.bl) nm.push('<b>Cardiogenic pattern.</b>');
-  if (F.ff && F.tr && F.ivc === 0) nm.push('<b>Haemorrhagic shock:</b> activate massive transfusion, source control.');
+  if (F.eff === 2) nm.push('<b>Possible tamponade:</b> integrate haemodynamics, chamber compression and clinical context; arrange urgent expert drainage when indicated. A limited scan may miss loculated clot.');
+  if (F.sl === 1) nm.push('<b>Absent sliding:</b> check lung pulse, B-lines, ventilation and the rest of the chest. Clinical tension pneumothorax needs immediate decompression without waiting for ultrasound confirmation.');
+  if (F.rv === 1 && F.dvt === 1) nm.push('<b>PE concern:</b> this combination increases suspicion. Escalate for urgent definitive assessment and treatment appropriate to stability; neither feature supplies a treatment algorithm.');
+  if (F.ao === 1) nm.push('<b>AAA with shock:</b> urgently activate the vascular pathway. Ultrasound identifies the aneurysm, not whether it has ruptured.');
+  if (F.ff === 1 && F.tr === 1) nm.push('<b>Possible haemorrhage:</b> resuscitation and source control proceed alongside the scan.');
   $('#clfNamed').innerHTML = nm.length ? `<div class="named">${nm.map(x => `<p>${x}</p>`).join('')}</div>` : '';
-  const cv = [];
-  if (F.eff === 1) cv.push('Small effusion: may be incidental; tamponade is clinical + echo.');
-  if (F.mv) cv.push('Ventilated: positive pressure dilates the IVC; a plethoric IVC is less informative; the ASE RAP table is not validated.');
-  if (F.ivc === 1) cv.push('Intermediate IVC: indeterminate — use other findings.');
-  if (F.bl) cv.push('B-lines: also ARDS, pneumonia, fibrosis.');
-  if (F.sl && F.mv) cv.push('Absent sliding on the ventilator: exclude mainstem intubation (look for a lung pulse).');
-  if (F.lv === 0 && F.ivc === 0) cv.push('Hyperdynamic LV + small IVC: hypovolaemic and early distributive shock look identical — check peripheries, temperature, source.');
-  if (F.lv === 3 && F.rv) cv.push('Severely reduced LV + dilated RV: biventricular failure or chronic RV disease vs PE — check RV wall thickness, history.');
-  if (F.ff && !F.tr) cv.push('Free fluid without trauma: consider ascites, ectopic pregnancy, peritonitis.');
-  if (F.ao) cv.push('AAA: ultrasound cannot exclude rupture; absence of free fluid is typical.');
-  $('#clfCav').innerHTML = cv.length ? cv.map(x => `<li>${x}</li>`).join('') : '<li>No caveats for these settings.</li>';
+  const cv = ['IVC calibre or variation alone establishes neither fluid responsiveness nor fluid tolerance.', 'A missing or limited view is non-diagnostic, not normal.'];
+  if (F.eff === 1) cv.push('An effusion without visible collapse may still be important after cardiac procedures or with elevated right-sided pressures.');
+  if (F.mv === 1) cv.push('Positive pressure and respiratory effort change IVC behaviour; do not apply the spontaneous-breathing RAP table.');
+  if (F.bl === 1) cv.push('B-lines are not specific to cardiogenic oedema: review distribution, pleura, heart and clinical course.');
+  if (F.rv === 1) cv.push('RV enlargement does not diagnose PE; consider ventilatory loading, chronic pulmonary hypertension and RV infarction.');
+  if (F.lv === 0) cv.push('Vigorous contraction does not establish adequate stroke volume or cardiac output.');
+  if (F.ff === 1 && F.tr !== 1) cv.push('Free fluid may be ascites or another non-haemorrhagic fluid; assess the cause.');
+  if (F.ao === 1) cv.push('A negative FAST does not exclude retroperitoneal haemorrhage.');
+  if (F.dvt === 0) cv.push('A negative limited leg scan does not exclude PE or all DVT.');
+  $('#clfCav').innerHTML = cv.map(x => `<li>${x}</li>`).join('');
 }
 function clfLoad(n) { F = Object.assign(F0(), CF_PRESET[n]); clfSync(); }
 $('#clfReset').onclick = () => { F = F0(); clfSync(); };
@@ -1702,7 +1701,7 @@ clfSync();
 /* =====================================================================
    CASES
    ===================================================================== */
-const STEPN = { H: ['H', 'Heart', 'Effusion? LV squeeze? RV size?'], I: ['I', 'IVC', 'Size and respiratory variation?'], M: ['M', "Morison's / eFAST", 'Free fluid? Pleural fluid?'], A: ['A', 'Aorta', 'Coeliac to bifurcation: calibre?'], P: ['P', 'Pneumothorax / lung', 'Sliding? A-lines or B-lines?'], L: ['L', 'Legs', '2-point compression?'], X: ['?', 'Interpretation', 'Which shock type?'], Y: ['→', 'Action', 'What will you do now?'], R: ['↻', 'Rescan', 'After a further 1.5 L and noradrenaline 0.2 mcg/kg/min'],
+const STEPN = { H: ['H', 'Heart', 'Effusion? LV squeeze? RV size?'], I: ['I', 'IVC', 'Size and respiratory variation?'], M: ['M', "Morison's / eFAST", 'Free fluid? Pleural fluid?'], A: ['A', 'Aorta', 'Coeliac to bifurcation: calibre?'], P: ['P', 'Pneumothorax / lung', 'Sliding? A-lines or B-lines?'], L: ['L', 'Legs', '2-point compression?'], X: ['?', 'Interpretation', 'Which shock type?'], Y: ['→', 'Action', 'What will you do now?'], R: ['↻', 'Rescan', 'After resuscitation and initiation of noradrenaline'],
   S1: ['1', 'Lung · during compressions', 'Sliding on both sides?'], S2: ['2', 'Veins · during compressions', 'Do the femoral veins compress?'], S3: ['3', 'Abdomen · during compressions', 'Free fluid?'], S4: ['4', 'Pericardium · pulse check 1', 'Effusion? (recorded clip)'], S5: ['5', 'Heart · pulse check 2', 'While the drain is set up: activity?'], Z2: ['↻', 'After drainage', 'Next pulse check']
 };
 const CASES = [
@@ -1710,15 +1709,15 @@ const CASES = [
     vignette: 'A 68-year-old man, day 5 after a right total hip arthroplasty, is suddenly breathless on the ward. HR 124 (sinus tachycardia), BP 82/50, RR 30, SpO<sub>2</sub> 88% on 15 L via a non-rebreather. Cool peripheries. Chest clear on auscultation. ECG: sinus tachycardia, new right bundle branch block.',
     facts: [['Patient', '68 M · 80 kg'], ['Surgery', 'Right THA, day 5'], ['Thromboprophylaxis', 'Missed doses on day 3'], ['Lactate', '4.1 mmol/L']],
     steps: [
-      ['H', 'Subxiphoid and A4C show a <b>dilated RV, larger than the LV</b>, with septal flattening (a D-shaped LV in PSAX). The LV is small and hyperdynamic. No pericardial effusion. Thin RV free wall, suggesting an acute cause.', { v: 'H', m: 'rv' }],
+      ['H', 'Subxiphoid and A4C show a <b>dilated RV, larger than the LV</b>, with septal flattening (a D-shaped LV in PSAX). The LV is small and hyperdynamic. No pericardial effusion. A thin RV free wall fits the acute history but does not establish chronicity or exclude pre-existing disease.', { v: 'H', m: 'rv' }],
       ['I', '<b>Plethoric, 2.5 cm, &lt; 10% respiratory variation.</b> High right-sided pressure.', { v: 'I', m: 'pleth' }],
       ['M', 'No free fluid. No pleural effusion.', { v: 'M', m: 'normal' }],
       ['A', 'Normal calibre (1.9 cm) from coeliac to bifurcation.', { v: 'A', lv: 3, aaa: false }],
       ['P', '<b>Sliding present on both sides, A-lines throughout</b> (A-profile). Pneumothorax and pulmonary oedema are unlikely.', { v: 'P', m: 'slide' }],
       ['L', '<b>Non-compressible right common femoral vein</b> with grey echogenic material inside.', { v: 'L', m: 'dvt', auto: true }],
       ['X', 'Obstructive shock. The pattern fits <b>high-risk (massive) PE</b>: dilated RV, underfilled hyperdynamic LV, plethoric IVC, A-profile lungs and a proximal DVT.'],
-      ['Y', 'Start anticoagulation (unfractionated heparin) unless contraindicated. Call the senior and ICU. In high-risk PE, ESC 2019 (the current ESC PE guideline) accepts bedside echo evidence of RV dysfunction as enough to treat when CTPA is not immediately possible or the patient is too unstable. <b>Reperfusion is indicated.</b> Major surgery in the previous 3 weeks is an <b>absolute</b> contraindication to systemic thrombolysis in ESC 2019, although ESC notes that absolute contraindications may become relative in immediately life-threatening high-risk PE (for example peri-arrest). When thrombolysis is contraindicated or has failed, ESC 2019 recommends surgical embolectomy, and says catheter-directed treatment should be considered. The 2026 AHA/ACC multisociety PE guideline replaces "massive/submassive" with clinical categories A to E; for category E (cardiopulmonary failure) it treats systemic thrombolysis, catheter-based therapy and surgical embolectomy as reasonable options for selected patients, and it recommends PE response teams. Escalate early to the senior, ICU, cardiology or interventional radiology and cardiothoracics, following the local PE response pathway. If the patient arrests, thrombolysis may still be considered despite the surgery. Cautious small fluid boluses only (the RV is already overloaded). Noradrenaline for blood pressure. Avoid intubation if possible: induction and positive pressure can cause cardiovascular collapse.']
-    ], pearl: 'Shock + dilated RV + plethoric IVC + A-lines + DVT = PE until proven otherwise. The legs are part of the RUSH exam when the RV is large.' },
+      ['Y', 'Activate the senior, ICU and local PE response pathway. Begin therapeutic anticoagulation when appropriate; choose the agent with the treating team, considering bleeding and planned procedures. With high clinical probability, unequivocal RV pressure overload and no alternative explanation, bedside echo may support emergency reperfusion when CT is not feasible. <b>RV dilatation alone is insufficient.</b> Major surgery in the previous 3 weeks is an <b>absolute</b> contraindication to systemic thrombolysis in ESC 2019, although ESC notes that absolute contraindications may become relative in immediately life-threatening high-risk PE (for example peri-arrest). When thrombolysis is contraindicated or has failed, ESC 2019 recommends surgical embolectomy, and says catheter-directed treatment should be considered. The 2026 AHA/ACC multisociety PE guideline replaces "massive/submassive" with clinical categories A to E; for category E1 it treats systemic thrombolysis, catheter-based therapies and surgical embolectomy as reasonable options for selected patients, and it recommends PE response teams. Escalate early to the senior, ICU, cardiology or interventional radiology and cardiothoracics, following the local PE response pathway. If the patient arrests, thrombolysis may still be considered despite the surgery. Avoid routine fluid; consider only a cautious small challenge if low filling and likely benefit are identified, with immediate reassessment. Noradrenaline for blood pressure. Induction and positive pressure can precipitate collapse; if intubation is necessary, plan cardiovascular support with an experienced team.']
+    ], pearl: 'The history, RV pressure-loading pattern and proximal DVT strongly support PE in this case. RV dilatation alone would not establish it. The legs are part of the RUSH exam when the RV is large.' },
   { neutral: 'Fever and confusion', type: 'Distributive', short: 'Fever',
     vignette: 'A 74-year-old woman from a nursing home with 2 days of dysuria, now febrile (38.9 °C) and confused. BP 78/40 after 1 L of balanced crystalloid in ED, HR 118, RR 24, SpO<sub>2</sub> 95% on room air. <b class="ink">Warm peripheries</b>, capillary refill 2 s.',
     facts: [['Patient', '74 F · 55 kg'], ['Background', 'Hypertension, type 2 diabetes'], ['Urine', 'Nitrites +, leucocytes +++'], ['Lactate', '3.8 mmol/L']],
@@ -1728,9 +1727,9 @@ const CASES = [
       ['M', 'No free fluid. Optional: the right kidney shows mild hydronephrosis, so think about obstructed infected urine (a source-control emergency).', { v: 'M', m: 'normal' }],
       ['A', 'Normal (2.1 cm), scanned to the bifurcation.', { v: 'A', lv: 3, aaa: false }],
       ['P', 'Sliding present, A-lines at both anterior and lateral zones. No B-lines.', { v: 'P', m: 'slide' }],
-      ['X', 'Hyperdynamic heart + small IVC fits <b>hypovolaemic or distributive</b> shock. Ultrasound cannot separate them. Warm peripheries, fever and a urinary source make <b>septic (distributive) shock</b> the leading diagnosis. The heart is not the problem and the lungs can tolerate fluid.'],
-      ['Y', 'Blood cultures, antibiotics within the hour, further fluid boluses (for example 250 to 500 mL), and <b>start noradrenaline early</b> (peripheral administration is acceptable short-term) for MAP ≥ 65 mmHg. Urology for an obstructed infected kidney.'],
-      ['R', 'The IVC is now 2.0 cm with little variation, and <b>new bilateral basal B-lines</b> appear. The LV now looks <b>mildly reduced</b> (septic cardiomyopathy unmasked by the higher afterload). Stop fluid. Continue the vasopressor. Consider adding an inotrope if perfusion stays poor, guided by formal echo or cardiac output monitoring.', { v: 'P', m: 'slide', bl: true }]
+      ['X', 'Hyperdynamic heart + small IVC fits <b>hypovolaemic or distributive</b> shock. Ultrasound cannot separate them. Warm peripheries, fever and a urinary source make <b>septic (distributive) shock</b> the leading diagnosis. A hyperdynamic EF does not establish adequate flow. Absence of B-lines does not guarantee fluid tolerance; mixed vasoplegia, low preload and cardiac dysfunction can coexist.'],
+      ['Y', 'Obtain cultures without materially delaying antibiotics, give antimicrobials promptly and address the infected obstruction. Start noradrenaline for persistent hypotension, with an initial MAP target around 65 mmHg and local monitoring protocols. After initial resuscitation, further fluid requires ongoing hypoperfusion, likely benefit and acceptable tolerance; use a reversible dynamic flow assessment where feasible.'],
+      ['R', 'The IVC is now 2.0 cm with little variation, and <b>new bilateral basal B-lines</b> appear. The LV now looks <b>mildly reduced</b>; loading changes and sepsis-related myocardial dysfunction are possibilities. Pause additional fluid and reassess perfusion, flow and congestion. Consider other support only after clarifying the mechanism with expert echo or haemodynamic monitoring.', { v: 'P', m: 'slide', bl: true }]
     ], pearl: 'Hypovolaemic and early distributive shock look the same on screen. The clinical picture decides. Serial scans tell you when to stop fluid, and can show a heart that becomes involved later.' },
   { neutral: 'Back pain, collapse', type: 'Hypovolaemic', short: 'Back pain',
     vignette: "A 71-year-old man, a smoker with hypertension, collapsed at home after an hour of severe left flank and back pain. Triage labelled it 'renal colic'. Now BP 84/56, HR 104 (on bisoprolol), pale and sweaty. Abdomen soft, vaguely tender; obese habitus.",
@@ -1742,7 +1741,7 @@ const CASES = [
       ['A', 'Normal at the coeliac and SMA levels. Bowel gas hides the infrarenal aorta, but steady graded compression and a left-flank coronal window show an <b>infrarenal aorta measuring 5.8 cm outer wall to outer wall</b>, with mural thrombus. The flowing lumen measures only about 2.6 cm.', { v: 'A', lv: 3, aaa: true, cap: 'Schematic infrarenal AAA with mural thrombus. Measure outer wall to outer wall, not the flowing lumen.' }],
       ['P', 'Sliding present on both sides, A-lines.', { v: 'P', m: 'slide' }],
       ['X', 'Hypovolaemic (haemorrhagic) shock. <b>Hypotension + AAA = ruptured AAA until proven otherwise.</b> No free fluid is expected, because rupture is usually retroperitoneal. Ultrasound has found the aneurysm, not the rupture. The beta-blocker explains the modest heart rate.'],
-      ['Y', 'Call the vascular surgeon and theatre at once. Activate the massive transfusion protocol. Use <b>permissive hypotension</b> (avoid aggressive crystalloid; the primary target is a conscious patient; confirm any numeric blood pressure target with the local vascular team; ESVS 2024). Two large-bore cannulae, crossmatch. CT angiography only if the patient is stable enough and it will not delay repair (EVAR planning). Do not send an unstable patient to CT.']
+      ['Y', 'Call the vascular surgeon and theatre at once. Activate the massive transfusion protocol. Use <b>permissive hypotension</b> (avoid aggressive crystalloid; the primary target is a conscious patient; confirm any numeric blood pressure target with the local vascular team; ESVS 2024). Two large-bore cannulae, crossmatch. Arrange prompt CT angiography with the vascular team for diagnosis and repair planning where feasible; many patients with circulatory instability can still undergo rapid CTA. A patient too unstable for imaging needs immediate operative management. Do not delay vascular activation while arranging imaging (ESVS 2024).']
     ], pearl: "Elderly 'renal colic' with hypotension: scan the aorta all the way to the bifurcation. A negative FAST does not exclude a ruptured AAA. Measure outer to outer, not the lumen." },
   { neutral: 'PEA after PCI', type: 'Obstructive (tamponade)', short: 'PEA after PCI',
     vignette: 'You are the ICU registrar on the medical emergency team. A 64-year-old man in the coronary care unit, 6 hours after a difficult PCI to the LAD via the right femoral artery, became pale and hypotensive, then unresponsive. CPR is in progress. The monitor shows a narrow-complex rhythm at 120/min with no palpable pulse: <b class="ink">PEA</b>. A colleague is managing the airway; you are the second operator with the ultrasound machine, not the team leader.',
@@ -1753,10 +1752,10 @@ const CASES = [
       ['S3', "Morison's and splenorenal views during compressions: <b>no free fluid</b>. Ultrasound cannot exclude a retroperitoneal bleed from the femoral puncture, so keep it on the list (look at the groin, check the Hb).", { v: 'M', m: 'normal' }],
       ['S4', 'Probe on the subxiphoid window <b>before</b> the pause. A nurse counts out loud; a 5-second clip is recorded and compressions restart at 7 s. Reviewed during CPR: <b>a moderate circumferential effusion, with the RA and RV compressed</b>. In PEA after PCI this is tamponade until proven otherwise.', { v: 'Z', m: 'tamp', cap: 'Recorded pulse-check clip: pericardial effusion with the right heart compressed. Reviewed while compressions continue.' }],
       ['X', 'Obstructive arrest: <b>tamponade, most likely from a coronary perforation</b> during PCI, with antiplatelet drugs and heparin on board. A finding that can be treated in minutes.'],
-      ['Y', '<b>Act on the first clip; do not wait for another pulse check.</b> Tell the team leader in one sentence. Immediate <b>ultrasound-guided pericardiocentesis</b> (subxiphoid) by the most experienced operator present, while CPR continues. Call interventional cardiology and cardiothoracic surgery at once: if the bleeding continues the patient needs surgery. Discuss reversing heparin with cardiology. Fluid and blood as a bridge. Continue ALS. Look at the right groin.'],
+      ['Y', '<b>Act on the first clip; do not wait for another pulse check.</b> Tell the team leader in one sentence. Immediate <b>expert pericardial drainage</b> while ALS continues: choose the safest image-guided route, not a fixed subxiphoid approach. Surgical drainage may be needed for clot or ongoing bleeding. Call interventional cardiology and cardiothoracic surgery at once: if the bleeding continues the patient needs surgery. Discuss reversing heparin with cardiology. Fluid and blood as a bridge. Continue ALS. Look at the right groin.'],
       ['S5', 'While the kit is opened and CPR continues, the next pulse check shows small, fast but <b>organised contractions</b> inside the effusion: pseudo-PEA from tamponade, not standstill. <b>It does not change the plan</b>: do not wait for this clip before draining.', { v: 'Z', m: 'tamp', cap: CAPS['Z.tamp'] }],
       ['Z2', 'After 150 mL of blood is aspirated, the next pulse check shows vigorous contractions and a palpable carotid pulse: <b>ROSC</b>. Leave a pericardial drain in, and rescan every few minutes because the effusion can come back.', { v: 'H', m: 'hyper', cap: 'After drainage: small, hyperdynamic heart with no effusion. Keep rescanning: blood can reaccumulate.' }]
-    ], pearl: 'In arrest, scan the lungs, legs and abdomen during compressions, and give the heart a counted, recorded pause. PEA with organised motion and an effusion means drain now.' }
+    ], pearl: 'In arrest, scan the lungs, legs and abdomen during compressions, and give the heart a counted, recorded pause. PEA after PCI with an effusion and chamber compression requires urgent expert assessment and treatment of tamponade; effusion alone does not establish the cause.' }
 ];
 const CASE_ST = [];
 function caseLabel(i) { const C = CASES[i]; return CASE_ST[i] && CASE_ST[i].done ? `${C.neutral} · ${C.type}` : C.neutral; }
@@ -1772,7 +1771,7 @@ $$('.slide.case').forEach(sec => {
     <ol class="steps">${C.steps.map((s, i) => { const N = STEPN[s[0]]; return `<li data-i="${i}"><div class="sh"><span class="sl">${N[0]}</span><span class="sq"><small>${N[1]}</small>${N[2]}</span><button class="sb" type="button">Reveal</button></div><div class="sa">${s[1]}</div></li>`; }).join('')}</ol>
     <div class="pearl">${C.pearl}</div>
   </div><div class="demo"><div class="panel"><div class="pov cpov">Schematic · vignette</div><div class="scanner pp"><canvas class="us"></canvas><button class="ppb" type="button">❚❚ Pause</button></div><div class="capx ccap">Commit to a shock type and a first action, then reveal the first HI-MAP step (press R or Reveal).</div>
-    <div class="ctrls"><button class="btn ghost cld" type="button">Load into classifier →</button></div><div class="mini">Teaching vignette. All images are schematic simulations, not real scans.</div></div></div></div>`;
+    <div class="ctrls"><button class="btn ghost cld" type="button">Compare these findings →</button></div><div class="mini">Teaching vignette. All images are schematic simulations, not real scans.</div></div></div></div>`;
   const st = { v: 'H', m: 'normal', labels: true };
   const sc = scene($('canvas', sec), 480, 360, st, vAny, ease);
   const show = (vw, i) => { for (const k of ['m', 'bl', 'auto', 'lv', 'aaa', 'cap']) delete st[k]; Object.assign(st, vw); $('.ccap', sec).textContent = vw.cap || CAPS[capKey(st)] || ''; $('.cpov', sec).textContent = 'Schematic · ' + STEPN[C.steps[i][0]][1]; dirty(sc); };
@@ -1794,10 +1793,10 @@ $('#jumpCases').onclick = jumpToCases;
 const QZ = [
   ['Which echocardiographic sign of tamponade is the most specific?', ['Plethoric IVC with < 50% collapse', 'Right atrial collapse in systole', 'Right ventricular free-wall collapse in early diastole', 'Any pericardial effusion > 1 cm'], 2, 'RV early diastolic collapse is more specific. RA systolic collapse appears earlier and is more sensitive. A plethoric IVC is sensitive but not specific. Effusion size alone does not define tamponade: a small, fast-collecting effusion can tamponade and a large chronic one may not.'],
   ["A hypotensive patient's abdominal aorta measures 2.6 cm across the flowing lumen and 5.4 cm outer wall to outer wall. What is the correct interpretation?", ['Normal aorta: the lumen is < 3 cm', 'Aneurysm: measure outer wall to outer wall; ≥ 3.0 cm is aneurysmal', 'Indeterminate: repeat with colour Doppler', 'Dissection: the two measurements differ'], 1, 'Mural thrombus narrows the flowing lumen. AAA is defined as a diameter ≥ 3.0 cm, measured outer wall to outer wall at right angles to the long axis. Measuring only the lumen underestimates the size and misses the aneurysm.'],
-  ['A 72-year-old with hypotension has a 6 cm AAA and no free fluid on eFAST. Which statement is correct?', ['Rupture is excluded because there is no free fluid', 'Ultrasound reliably shows retroperitoneal haematoma', 'Treat as ruptured AAA until proven otherwise: rupture is usually retroperitoneal and poorly seen', 'Get CT before calling the vascular team'], 2, 'Ultrasound is very sensitive for finding an aneurysm but cannot reliably show rupture. Most ruptures bleed into the retroperitoneum, so intraperitoneal free fluid is often absent. An unstable patient needs the vascular surgeon, not CT first.'],
+  ['A 72-year-old with hypotension has a 6 cm AAA and no free fluid on eFAST. Which statement is correct?', ['Rupture is excluded because there is no free fluid', 'Ultrasound reliably shows retroperitoneal haematoma', 'Treat as ruptured AAA until proven otherwise: rupture is usually retroperitoneal and poorly seen', 'Get CT before calling the vascular team'], 2, 'Ultrasound is very sensitive for finding an aneurysm but cannot reliably show rupture. Most ruptures bleed into the retroperitoneum, so intraperitoneal free fluid is often absent. Activate the vascular team immediately. Prompt CTA is usually needed for repair planning when feasible; profound instability may require direct operative management.'],
   ['A febrile patient with warm peripheries has a hyperdynamic LV and a small, collapsing IVC. What can ultrasound alone conclude?', ['Septic shock', 'Hypovolaemic shock', 'It cannot separate hypovolaemic from early distributive shock; use the clinical picture', 'Cardiogenic shock is likely'], 2, 'Both hypovolaemic and early distributive shock give a hyperdynamic LV and a small IVC. History, temperature, peripheral perfusion and the likely source decide which, and the two often occur together.'],
-  ['A patient on positive-pressure ventilation has an IVC of 2.3 cm with little respiratory variation. Which statement is best?', ['RAP is 15 mmHg by the ASE table, so give diuretics', 'Positive pressure raises intrathoracic pressure and commonly dilates the IVC; this finding alone is of limited value', 'The patient is certainly fluid responsive', 'The IVC should collapse > 50% on inspiration in ventilated patients'], 1, 'The ASE RAP table applies to spontaneously breathing patients. On the ventilator the IVC distends on inspiration, and a dilated IVC is common and nonspecific. A small IVC on the ventilator is more informative. The distensibility index applies only to passive, fully ventilated patients in sinus rhythm.'],
-  ['A ventilated patient becomes hypotensive. Lung sliding is absent on the right. What confirms pneumothorax at the bedside?', ['Barcode sign on M-mode', 'Absence of B-lines', 'A lung point', 'A-lines'], 2, 'Absent sliding and the barcode sign are also seen with left mainstem intubation (the right lung is not ventilated), apnoea, pleurodesis and bullae. A lung point (where sliding lung meets non-sliding pleura) is close to 100% specific. Tension pneumothorax remains a clinical diagnosis: do not delay decompression in a peri-arrest patient to search for a lung point.'],
+  ['A patient on positive-pressure ventilation has an IVC of 2.3 cm with little respiratory variation. Which statement is best?', ['RAP is 15 mmHg by the ASE table, so give diuretics', 'Positive pressure raises intrathoracic pressure and commonly dilates the IVC; this finding alone is of limited value', 'The patient is certainly fluid responsive', 'The IVC should collapse > 50% on inspiration in ventilated patients'], 1, 'The ASE RAP table applies to spontaneously breathing patients. On the ventilator the IVC distends on inspiration, and a dilated IVC is common and nonspecific. A small IVC on the ventilator is more informative. Interpret respiratory IVC indices only within the population and ventilatory conditions in which the chosen threshold was validated; do not treat them as a universal fluid test.'],
+  ['A ventilated patient becomes hypotensive. Lung sliding is absent on the right. Which additional sign most strongly supports pneumothorax?', ['Barcode sign on M-mode', 'Absence of B-lines', 'A lung point', 'A-lines'], 2, 'Absent sliding and the barcode sign are also seen with left mainstem intubation (the right lung is not ventilated), apnoea, pleurodesis and bullae. A true lung point supports pneumothorax, but bullae, adhesions and other interfaces can mimic it; interpret the anatomy and clinical context. Tension pneumothorax remains a clinical diagnosis: do not delay decompression in a peri-arrest patient to search for a lung point.'],
   ['Shock with a dilated RV (RV ≥ LV), a small hyperdynamic LV, a plethoric IVC, A-lines in both lungs and a non-compressible common femoral vein. What is the most likely diagnosis?', ['Cardiogenic shock from LV failure', 'High-risk pulmonary embolism', 'Septic shock', 'Hypovolaemia'], 1, 'This is the obstructive pattern of PE. The RV is overloaded and the LV underfilled, giving high venous pressure. A-lines make pulmonary oedema unlikely, and a proximal DVT strongly supports PE (BLUE-protocol logic).'],
   ['Which statement about the evidence for POCUS in undifferentiated shock is correct?', ['The SHoC-ED RCT showed a mortality benefit', 'Pooled data show high specificity: positive findings are good at ruling causes in', 'A normal RUSH exam excludes obstructive shock', 'RUSH replaces CT for suspected aortic dissection'], 1, 'Meta-analyses (Stickles 2019; Yoshida 2023) show moderate-to-high sensitivity and high specificity. SHoC-ED (Atkinson 2018) found no survival benefit and no harm. TTE cannot exclude dissection.'],
   ['You are scanning during a cardiac arrest. Which approach fits current guidance?', ['The team leader scans and interprets live, holding the pause until the view is clear', 'Probe on the subxiphoid window during compressions, someone counts aloud, a clip is recorded in a pause of no more than 10 s, and it is reviewed after compressions restart', 'Stop compressions for about 30 s to get all five SESAME views', 'Scan only after ROSC, because ultrasound has no role during CPR'], 1, 'ERC 2025 (paraphrased): skilled operators only, and POCUS must not add or lengthen pauses in compressions. AHA 2025: it may be considered if it can be done without interrupting CPR. Pauses were longer when POCUS was used (Huis in \'t Veld 2017; Clattenburg 2018), and a structured approach (CASA) shortened them. The scanner should not be the team leader.'],
@@ -1824,13 +1823,13 @@ qzRender();
 /* ---------- SESAME walk-through ---------- */
 const SES = [
   { n: 'Lung', pov: '1 · Lung · anterior chest', v: 'P', modes: [['slide', 'Sliding'], ['noslide', 'No sliding']], link: ['../lung/', 'Detail: Lung ultrasound →'],
-    cap: { slide: 'Sliding with A-lines: no pneumothorax under the probe. An A-profile also makes pulmonary oedema unlikely, which keeps PE on the list (BLUE logic).', noslide: 'No sliding, barcode on M-mode. A lung point confirms pneumothorax. In a peri-arrest patient with clinical tension, decompress without waiting for a lung point.' } },
+    cap: { slide: 'Sliding with A-lines: no pneumothorax under the probe. An A-profile also makes pulmonary oedema unlikely, which keeps PE on the list (BLUE logic).', noslide: 'No sliding, barcode on M-mode. A true lung point supports pneumothorax; absent sliding alone does not. In a peri-arrest patient with clinical tension, decompress without waiting for a lung point.' } },
   { n: 'Veins', pov: '2 · Veins · common femoral, transverse', v: 'L', modes: [['normal', 'Compresses'], ['dvt', 'DVT']], link: ['../dvt/', 'Detail: DVT and vessels →'],
     cap: { normal: 'The vein closes completely under pressure: no DVT at this site. A negative leg scan does not exclude PE.', dvt: 'Non-compressible vein with echoes inside: DVT. With an A-profile in severe shock or arrest, think PE.' } },
   { n: 'Abdomen', pov: "3 · Abdomen · Morison's pouch", v: 'M', modes: [['normal', 'Dry'], ['ff', 'Free fluid']], link: ['../efast/', 'Detail: eFAST →'],
     cap: { normal: "No free fluid in Morison's pouch. A retroperitoneal bleed can still hide.", ff: 'Free fluid: in trauma or after surgery, massive haemorrhage until proven otherwise. In trauma, look for haemorrhage early (many teams scan the abdomen straight after the lung).' } },
   { n: 'Pericard.', pov: '4 · Pericardium · subxiphoid', v: 'H', modes: [['normal', 'No effusion'], ['eff', 'Effusion']], link: ['../cardiac/', 'Detail: Focused cardiac ultrasound →'],
-    cap: { normal: 'No pericardial effusion.', eff: 'Effusion with the RV collapsing in early diastole: tamponade physiology. In severe shock or arrest, drain.' } },
+    cap: { normal: 'No pericardial effusion.', eff: 'Effusion with RV early diastolic collapse supports tamponade physiology. In compatible severe shock or arrest, arrange urgent expert drainage while resuscitation continues.' } },
   { n: 'Heart', pov: '5 · Heart · subxiphoid, pulse-check clip', v: 'Z', modes: [['org', 'Organised'], ['still', 'Standstill'], ['rv', 'Dilated RV']], link: ['../cardiac/', 'Detail: Focused cardiac ultrasound →'], cap: {} }
 ];
 const sesSt = { v: 'P', m: 'slide' };
@@ -1886,7 +1885,7 @@ function pcFrame(st) {
     PC.el = n - PC.pauseAt;
     if (PC.recAt !== null && st.search < .5) PC.usable += dt;
     st.rec = PC.recAt !== null ? PC.recLen + (n - PC.recAt) : 0;
-    if (PC.el > 20) pcAct('go', true);
+    if (PC.el >= 10) pcAct('go', true);
   }
   pcClock();
 }
@@ -1907,13 +1906,13 @@ function pcAct(a, forced) {
   }
   if (a === 'go' && PC.ph === 'pause') {
     if (PC.recAt !== null) { PC.recLen += n - PC.recAt; PC.recAt = null; }
-    const el = n - PC.pauseAt; PC.ph = 'cpr'; PC.done = true;
+    const el = forced ? 10 : n - PC.pauseAt; PC.ph = 'cpr'; PC.done = true;
     Object.assign(pcSt, { cpr: true, rec: 0 });
     const ok = el <= 10, b = [
       `<span class="${ok ? 'g' : 'r'}">Pause ${el.toFixed(1)} s</span>`,
       `<span class="${PC.late ? 'r' : 'g'}">${PC.late ? 'Probe placed after the pause began' : 'Probe ready before the pause'}</span>`,
       `<span class="${PC.usable >= 1.5 ? 'g' : 'r'}">Usable clip ${PC.usable.toFixed(1)} s</span>`];
-    setStat($('#pcStat'), (forced ? '<b class="bad">The team leader called "resume compressions" at 20 s.</b> ' : '') + (ok ? 'Compressions restarted within 10 s. ' : '<b class="bad">The pause went over 10 s.</b> ') + (PC.usable >= 1.5 ? 'Now <b>review the clip</b> while CPR continues.' : 'No usable clip: try again at the next pulse check (Reset).') + `<div class="badges">${b.join('')}</div>`);
+    setStat($('#pcStat'), (forced ? '<b class="bad">The team leader restarted compressions at the 10-second limit.</b> ' : '') + (ok ? 'Compressions restarted within 10 s. ' : '<b class="bad">The pause went over 10 s.</b> ') + (PC.usable >= 1.5 ? 'Now <b>review the clip</b> while CPR continues.' : 'No usable clip: try again at the next pulse check (Reset).') + `<div class="badges">${b.join('')}</div>`);
   }
   if (a === 'review' && PC.ph === 'cpr' && PC.done) {
     PC.ph = 'review'; Object.assign(pcSt, { cpr: false, replay: true, search: 0 }); PC.probeAt = n - 10;
@@ -1953,5 +1952,6 @@ setPlay(PLAY);
 go(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1));
 requestAnimationFrame(tick);
 </script>
-<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer></body>
+<script src="case-lab.js?v=20261017"></script>
+<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><p>Adapted and developed by <a href="https://chewshihao.com/">Dr. Chew Shi Hao</a> · NTF Anaesthesia.</p><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer></body>
 </html>

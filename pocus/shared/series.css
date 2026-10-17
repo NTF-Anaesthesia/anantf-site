@@ -1,0 +1,52 @@
+/* POCUS lecture series. Keep the established masterclass engine and clinical colours. */
+@font-face{font-family:'NTF Sans';src:url('../../fonts/inter.woff2') format('woff2');font-display:swap;font-weight:100 900}
+@font-face{font-family:'NTF Serif';src:url('../../fonts/fraunces-roman.woff2') format('woff2');font-display:swap;font-weight:100 900}
+@font-face{font-family:'NTF Mono';src:url('../../fonts/jetbrains-mono.woff2') format('woff2');font-display:swap;font-weight:100 900}
+html[data-theme=light]{color-scheme:light;--bg:#f7f5ef;--panel:#fffdf8;--ink:#272722;--ink2:#55534d;--mute:#55534d;--accent:#633d3c;--line:#d7d2c8;--line2:#a59d91}
+body.pocus-course{font:17px/1.65 'NTF Sans',Arial,sans-serif}
+body.pocus-course :is(h1,h2,h3,.course-hero h1){font-family:'NTF Serif',Georgia,serif;font-weight:400}
+body.pocus-course h1,body.pocus-course .course-hero h1{font-size:clamp(42px,4.5vw,64px);line-height:1.1}
+body.pocus-course h2{font-size:clamp(30px,3vw,38px);line-height:1.2}
+body.pocus-course h3{font-size:26px;line-height:1.3}
+body.pocus-course :is(.lede,.course-hero-lead){font-size:18px;line-height:1.65;max-width:65ch}
+body.pocus-course .slide :is(p,li){line-height:1.7}
+body.pocus-course :is(.card p,.callout,.mini,.card p.mini,.course-intro .mini,.refline,.course-credit,.facts,.plist,.agenda,.status){font-size:15px;line-height:1.65}
+body.pocus-course :is(.course-intro .agenda li,.agenda li,.course-author){font-size:15px}
+body.pocus-course :is(.kicker,.cap,.course-eyebrow,.course-breadcrumb,.scene-label,.scanner-label){font-size:12px}
+body.pocus-course :is(.btn,.chip,.seg button,.tabs button,.ctrls,.course-section-picker select,.bar button){font:15px/1.4 'NTF Sans',Arial,sans-serif}
+body.pocus-course :is(.btn,.chip,.seg button,.tabs button,.course-section-picker select,.bar button,summary){min-height:44px}
+body.pocus-course :is(.seg button,.tabs button){padding:9px 12px}
+body.pocus-course :is(input[type=number],select){font-size:16px}
+body.pocus-course input[type=range]{min-height:44px;accent-color:var(--accent)}
+body.pocus-course .slide :is(td,th){font-size:15px;line-height:1.6}
+body.pocus-course .inner :is(.two,.grid2,.grid-us)>*{min-width:0}
+body.pocus-course :is(.seg,.tabs,.ctrls){flex-wrap:wrap}
+body.pocus-course .course-bar-inner{gap:18px}
+body.pocus-course .bar #cnt{font:12px 'NTF Mono',monospace}
+body.pocus-course .bar #ovB{min-width:100px}
+body.pocus-course .bar .series-top{min-width:44px;font-size:20px;margin-left:0}
+body.pocus-course .series-top[hidden]{display:none!important}
+body.pocus-course #overview{overscroll-behavior:contain}
+body.pocus-course #overview .series-search{display:block;max-width:1128px;margin:0 auto 28px}
+body.pocus-course #overview .series-search label{display:block;font-size:15px;margin:0 0 8px}
+body.pocus-course #overview .series-search input{width:100%;min-height:48px;padding:10px 14px;background:var(--panel);color:var(--ink);border:1px solid var(--line2);font:17px 'NTF Sans',sans-serif;border-radius:0}
+body.pocus-course #overview .series-results{max-width:1128px;margin:0 auto}
+body.pocus-course #overview .series-result{display:block;width:100%;min-height:80px;text-align:left;font:17px/1.5 'NTF Sans',sans-serif}
+body.pocus-course #overview .series-result span{display:block;color:var(--ink2);font-size:15px;margin-top:6px}
+body.pocus-course #overview .series-result strong{font-weight:550}
+body.pocus-course .series-result-count{font-size:14px;min-height:23px;margin:8px 0 0;color:var(--ink2)}
+body.pocus-course #overview .series-links{max-width:1128px;margin:32px auto 0;border-top:1px solid var(--line);padding-top:20px}
+body.pocus-course #overview .series-links h2{font-size:25px;margin:0 0 12px}
+body.pocus-course .series-links ul{display:flex;flex-wrap:wrap;gap:8px 26px;list-style:none;padding:0;margin:0}
+body.pocus-course .series-links a{display:inline-flex;align-items:center;min-height:44px;font-size:15px;color:var(--accent);text-underline-offset:4px}
+body.pocus-course .series-links a[aria-current=page]{color:var(--ink);font-weight:600;text-decoration:none}
+body.pocus-course .series-hit{outline:2px solid var(--accent);outline-offset:6px;scroll-margin-top:20px}
+body.pocus-course .scan-study{margin:28px 0;border-block:1px solid var(--line);padding:22px 0}
+body.pocus-course .scan-study :is(video,img){display:block;width:100%;max-height:440px;object-fit:contain;background:#090d11}
+body.pocus-course .scan-study figcaption{font-size:15px;line-height:1.6;margin-top:14px}
+body.pocus-course .scan-study .media-credit{font-size:12px;margin-top:10px;color:var(--ink2)}
+@media(max-width:900px){body.pocus-course .demo{position:static}body.pocus-course .two{grid-template-columns:minmax(0,1fr)}body.pocus-course .course-toolbar-inner{gap:14px}}
+@media(max-width:650px){body.pocus-course .inner{padding:24px 22px 36px}body.pocus-course .course-toolbar-inner,body.pocus-course .course-bar-inner{padding-inline:18px;gap:10px}body.pocus-course .course-breadcrumb{font-size:12px}body.pocus-course .course-section-picker select{font-size:16px}body.pocus-course .course-section-picker{max-width:none}body.pocus-course h1,body.pocus-course .course-hero h1{font-size:40px}body.pocus-course .course-hero-lead{font-size:17px}body.pocus-course .course-hero figure{height:150px}body.pocus-course .bar button{font-size:13px}body.pocus-course .bar #ovB{min-width:82px}body.pocus-course .bar #cnt{min-width:36px;font-size:11px}body.pocus-course .bar .series-top{min-width:30px}body.pocus-course #overview .og{grid-template-columns:1fr}body.pocus-course #overview{padding:20px 22px}body.pocus-course .ctrls label{max-width:100%}body.pocus-course .ntf-copyright{font-size:10px}}
+@media(prefers-reduced-motion:reduce){body.pocus-course *,body.pocus-course *:before,body.pocus-course *:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+body.pocus-course [hidden]{display:none!important}
