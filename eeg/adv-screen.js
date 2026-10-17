@@ -3,7 +3,7 @@
 // (adv-draw.js). Loaded before app.js; reads its globals (mon, HIST, R, COLS, simT, tim ...) only when called, never at load.
 const aq=id=>document.getElementById(id);
 const ADV={
- built:false,ch:4,hemi:'L',view:'graphs',                    // channels 2 (unilateral sensor) or 4 (bilateral); selected side; graphs or chart
+ built:false,ch:2,hemi:'L',view:'graphs',                    // channels 2 (unilateral sensor) or 4 (bilateral); selected side; graphs or chart
  layout:{2:'dsa,eeg',4:'dsa,asym,eeg'},sec:'emg',win:60,chartInt:1,
  uvmm:{2:2,4:10},sweep:25,nch:{2:1,4:2},filters:true,imp:true,showVals:false,
  alarm:{bis:{on:false,lo:40,hi:60},sr:{on:false,hi:50},sef:{on:false,lo:12,hi:18}},vol:4,audioRem:false,

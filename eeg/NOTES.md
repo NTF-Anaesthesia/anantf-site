@@ -669,3 +669,17 @@ The owner's follow-up screenshots showed that the large monitor was working, but
 - Removed both requested timeline instructions and the three inline settings columns. A rewind note is available on the time readout's tooltip. Drug combinations keep the anaesthetic picker available so the user can leave combination mode.
 
 `test/controls.e2e.mjs` checks icons and target sizes, settings interactions, both Advance channel modes, keyboard focus, Escape, reachable/unobscured speed sliders, timeline keyboard control and leaving combination mode at desktop, portrait-phone and landscape-phone sizes. The existing layout and induction/emergence suites remain CI gates.
+
+## 17 October 2026 — teaching layout and combination choices
+
+Each page load now opens BIS Advance with the unilateral sensor, regardless of a legacy saved monitor choice. A visible Unilateral / Bilateral segmented control sits beside the monitor selector (under it on phones). The monitor choices are Advance, SedLine, IntelliVue, Vista and Teaching.
+
+The desktop monitor is left-aligned, with live “What to observe” notes on its right. At tablet/phone widths the notes follow the monitor and controls. Fullscreen retains this layout; on phones the notes remain reachable by scrolling below the live workspace. Short landscape screens keep controls and the patient fold in the side dock so the monitor can use the full height.
+
+“Patient & artefacts” is collapsed below the main controls. It retains older age, facial EMG, diathermy, one-sided slowing and surgical stimulus. The blink and separate muscle-suppression checkboxes are removed. Display adjustments remain in the gear sheet.
+
+Combination mode now offers four examples: propofol/remifentanil, propofol/ketamine, sevoflurane/N₂O and propofol/dexmedetomidine. Six dose sliders and the duplicate Clear action are removed. Selecting an example applies its existing targets and resumes the simulation; the EEG/DSA evolves through the same effect-site model. Emerge clears the targets and Induce recalls the chosen example. Timeline snapshots retain that choice, including while emerging.
+
+Visual review exposed a display issue in Advance: its fixed frequency-dependent colour boost produced strong slow/alpha bands even at the awake baseline. Advance now maps the simulated spectral power through the selected dB range, retaining its device palette, averaging and suppression rendering. The physiology and BIS equations are unchanged. The interaction test checks that the awake display lacks fixed warm bands and that induction develops them.
+
+Validation: engine tuning, desktop/phone induction-emergence suites, keyboard/control checks and all five monitor layouts in page/fullscreen at six viewport sizes. The layout tests now cover the default unilateral landing state, direct channel buttons and reachable preset choices. Control checks cover desktop/right versus mobile/below observations and the bottom patient fold.
