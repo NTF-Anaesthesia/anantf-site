@@ -3,7 +3,7 @@
 Short and current. Lasting rules go in `NOTES.md`. Update with `/save-state`.
 
 Last updated: 2026-10-17 by Claude Code (build session `status/build.md`: M2.7–M3.3 built; owner paused new scenarios;
-usability pass next).
+usability pass done; nothing in flight).
 
 ## Now
 
