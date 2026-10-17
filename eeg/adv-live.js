@@ -126,7 +126,7 @@ function advClick(e){const el=e.target.closest('[data-a]'),a=el&&el.dataset.a,v=
   case 'next':ADV.msgI++;ADV.msgT=Date.now();return;
   case 'check':{const n=ADV.msgs.length;if(n){const m=ADV.msgs[ADV.msgI%n];ADV.msgs=ADV.msgs.filter(x=>x!==m);ADV.msgT=Date.now();}return;}
   case 'secpop':advPopup(el,[['emg','EMG'],['sr','SR'],['sqi','SQI'],['none','NONE']].concat(ADV.ch===4?[['burst','BURST'],['bisO','BIS '+(ADV.hemi==='L'?'R':'L')]]:[]),ADV.sec,k=>{ADV.sec=k;advHeaders();advInval();});return;
-  case 'winpop':advPopup(el,[[60,'1 h'],[360,'6 h'],[720,'12 h'],[1440,'24 h']],ADV.win,k=>{ADV.win=k;advHeaders();advInval();});return;
+  case 'winpop':advPopup(el,[[5,'5 min'],[15,'15 min'],[60,'1 h'],[360,'6 h'],[720,'12 h'],[1440,'24 h']],ADV.win,k=>{ADV.win=k;advHeaders();advInval();});return;
   case 'uvpop':advPopup(el,[[2,'2 µV/mm'],[5,'5 µV/mm'],[10,'10 µV/mm']],ADV.uvmm[ADV.ch],k=>{ADV.uvmm[ADV.ch]=k;advHeaders();advEegChannels();advInval();});return;
   case 'swpop':advPopup(el,[[6.25,'6.25 mm/sec'],[12.5,'12.5 mm/sec'],[25,'25 mm/sec'],[50,'50 mm/sec']],ADV.sweep,k=>{ADV.sweep=k;advHeaders();advInval();});return;
   case 'pick':{const p=ADV.pop;if(p){const it=p.items[+v];advCloseTransient();p.fn(it[0]);}return;}}
@@ -170,4 +170,4 @@ function advTick(dirty){if(!ADV.built)advBuild();const now=Date.now();advBootTic
  if(ADV.review&&ADV.d){const k=ADV.review.t+'|'+ADV.d.tL+'|'+ADV.view;if(ADV.tipKey!==k){ADV.tipKey=k;advReviewTip();}}
  advSound(now);advUI(now);advSensorTick&&advSensorTick(now);advDrawAll(false);}
 // applying the skin
-function advApply(){advBuild();ADV.lay=null;ADV.d=null;ADV.full=true;advHeaders();advChrome();if(!ADV.booted){ADV.booted=true;advBootBegin();advBootEnd();}} // straight to the main screen; "Start-up sequence" under the screen replays the boot messages and sensor check
+function advApply(){advBuild();ADV.lay=null;ADV.d=null;ADV.full=true;advHeaders();advChrome();if(!ADV.booted){ADV.booted=true;ADV.t0=HIST.length?HIST[0].n:simT;ADV.win=5;}} // straight to the main screen; "Start-up sequence" under the screen replays the boot messages and sensor check

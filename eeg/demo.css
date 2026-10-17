@@ -1,0 +1,176 @@
+/* Quiet controls around a measured monitor stage. Keep LCD sizing explicit. */
+.wrap{width:100%;max-width:none;box-sizing:border-box;padding:14px 24px 56px}
+.wrap> :not(#monitor){width:100%;max-width:1180px;margin-inline:auto}
+#monitor{width:100%;max-width:1920px;min-width:0;margin-inline:auto;gap:12px}
+#monitor [hidden]{display:none!important}
+#monitor .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+#monitor .monhead{display:flex;align-items:center;justify-content:space-between;gap:16px;min-width:0}
+#monitor .apptitle{font-size:clamp(22px,2vw,28px);line-height:1.2;margin:0}
+.demo-toolbar{display:flex;align-items:center;gap:6px;flex-shrink:0}
+#monitor select{font:500 14px/1.3 var(--f-body);min-height:44px;padding:8px 30px 8px 10px;border:1px solid transparent;border-radius:0;background-color:transparent;color:#272722;max-width:100%;cursor:pointer}
+#monitor select:hover{background-color:#e9e5dc}
+#monitorChoice{width:220px}
+#monitor .icon-button{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;min-height:44px;padding:10px;border:0;border-radius:0;background:transparent;color:#504e47;cursor:pointer}
+#monitor .icon-button:hover,#monitor .icon-button[aria-expanded=true]{background:#e9e5dc;color:#633d3c}
+#monitor .icon-button svg,#storyBtn svg{width:22px;height:22px;flex:none}
+#settingsButton{margin-left:6px}
+#monitor :is(select,input,summary,button):focus-visible{outline:2px solid #633d3c;outline-offset:3px}
+#monitor .sim{width:100%;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:10px;min-width:0}
+#monitor .screens{width:100%;height:clamp(360px,calc(100svh - 290px),1100px);min-width:0;display:flex;align-items:center;justify-content:center;gap:0;overflow:hidden;background:#eae6de}
+#monitor .screens> :is(.vwrap,.advwrap,.sedwrap,.pvwrap,.mon){flex:none;width:100%;max-width:none;min-width:0;margin:0;box-sizing:border-box}
+#monitor .sedcase{width:100%;max-width:none}
+#monitor .sedctl,#monitor .advsim,#monitor .teachstrip{display:none!important}
+
+/* One dock, with visual weight reserved for playback. */
+#monitor .panel{width:100%;box-sizing:border-box;padding:8px 0 0;border:0;border-top:1px solid #d7d2c8;border-radius:0;background:transparent;display:grid;grid-template-columns:minmax(260px,.9fr) minmax(260px,1fr) auto;gap:10px 24px;align-items:center}
+#monitor .panel .ctl,#monitor .panel .story,#monitor .panel .tline{margin:0;padding:0;border:0;min-width:0;display:block}
+.depth-control{min-width:0}
+.depth-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px}
+#monitor #agentChoice{max-width:190px;margin-left:-10px}
+#monitor #tgtBis{margin:0;font-size:12px;line-height:1.3;white-space:nowrap}
+#monitor #tgtBis b{font-weight:500}
+#monitor #tgtSub,#monitor #zoneNote{display:none}
+#monitor[data-mode=mix] #tgtBis{display:none}
+#monitor .track{height:32px}
+#monitor input[type=range]{width:100%;height:32px;min-height:32px;margin:0;accent-color:#633d3c;cursor:ew-resize}
+#monitor .track input{height:32px}
+#monitor .effmark{bottom:0}
+#monitor .ticks{font-size:12px;line-height:16px;gap:8px;color:#55534d}
+.transport{display:flex;align-items:center;gap:10px;min-width:0}
+#monitor #pause{background:#633d3c;color:#fffaf0;border-radius:50%;width:44px;height:44px}
+#monitor #pause:hover{background:#4b2e2d}
+#monitor .panel #tLine{flex:1;display:grid;grid-template-columns:50px minmax(0,1fr);align-items:center;gap:10px}
+#tCv{display:none}
+#monitor .tbar{display:grid;min-width:0}
+#tNow,#timePreview{grid-area:1/1;font:500 12px/1.3 var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+#tLine:has(#timePreview:not(:empty)) #tNow{visibility:hidden}
+#speedControl{position:relative;flex:none}
+#speedControl>summary{display:flex;align-items:center;justify-content:center;width:44px;min-height:44px;list-style:none;font:500 14px/1 var(--f-body);cursor:pointer;color:#55534d}
+#speedControl>summary::-webkit-details-marker{display:none}
+#speedControl[open]>summary,#speedControl>summary:hover{background:#e9e5dc;color:#633d3c}
+.speed-popover{position:absolute;bottom:calc(100% + 12px);right:0;z-index:10;width:220px;box-sizing:border-box;padding:16px;background:#f7f5ef;border:1px solid #d7d2c8;box-shadow:0 8px 32px #27272226}
+.speed-popover label{display:flex;justify-content:space-between;font-size:14px;line-height:1.4;margin-bottom:8px}
+#monitor .story .row{display:flex;flex-wrap:nowrap;gap:2px;padding-left:16px;border-left:1px solid #d7d2c8}
+#monitor .story button{min-height:44px;padding:8px 12px;border:0;background:transparent;color:#504e47;font:500 14px/1.2 var(--f-body)}
+#monitor .story button:hover{background:#e9e5dc;color:#633d3c}
+#monitor #storyBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#eee9df;color:#633d3c;margin-left:6px}
+#monitor #storyBtn[aria-pressed=true]{background:#633d3c;color:#fffaf0}
+#monitor #storyBtn svg{width:18px;height:18px}
+#monitor .panel #combinations{grid-column:1/-1;max-height:28vh;overflow:auto;border-top:1px solid #d7d2c8}
+#combinations>summary{min-height:44px;align-content:center;cursor:pointer;font-size:14px}
+#monitor .panel #combinations .mixrows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 18px}
+#monitor #combinations .tgt{font-size:14px}
+
+/* Native dialog provides focus containment, Escape and a fullscreen top layer. */
+#simSettings{position:fixed;inset:12px 12px 12px auto;margin:0;width:min(420px,calc(100vw - 24px));max-width:none;height:calc(100dvh - 24px);max-height:none;box-sizing:border-box;padding:0;border:1px solid #d7d2c8;background:#f7f5ef;color:#272722;box-shadow:0 16px 60px #27272230}
+#simSettings[open]{display:grid;grid-template-rows:auto minmax(0,1fr)}
+#simSettings::backdrop{background:rgba(30,29,25,.22)}
+.settings-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #d7d2c8}
+#settingsTitle{font:500 20px/1.3 var(--f-body);margin:0}
+.settings-body{overflow:auto;overscroll-behavior:contain;padding:0 20px 20px}
+#advanceChannels{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:72px;font-size:14px;border-bottom:1px solid #d7d2c8}
+#simSettings details{display:block;margin:0;padding:0;border-bottom:1px solid #d7d2c8}
+#simSettings summary{font:500 15px/1.4 var(--f-body);min-height:56px;align-content:center;cursor:pointer}
+#simSettings details[open]{padding-bottom:16px}
+#simSettings .chk{align-items:center;min-height:44px;line-height:1.4;font-size:14px}
+#simSettings .chk input{margin:0;width:16px;height:16px;flex:none}
+#simSettings .caption,#simSettings .tgtnote{font-size:14px;line-height:1.5;min-height:0;margin:10px 0}
+#simSettings .rngbox{margin:12px 0}
+#simSettings .rngt,#simSettings .rng,#simSettings .nmbrow{font-size:14px;line-height:1.5}
+#simSettings .reading{padding:12px;margin:0}
+#simSettings .reading b{font-size:20px}
+#simSettings .reading p{font-size:15px}
+#simSettings .seg button,#simSettings .btn{font-size:14px}
+#simSettings #keySeg{display:grid;grid-template-columns:1fr 1fr;margin-top:16px;gap:6px}
+
+/* Preserve the large monitor and allocate real canvas heights. */
+#monitor .advcase{padding:8px;border-radius:12px}
+#monitor .advband{padding:8px 8px 0;border-radius:6px}
+#monitor .advbrand{height:28px;padding-bottom:0}
+#monitor .advbrand b{font-size:18px}
+#monitor .pvcase{padding:22px 10px 26px;border-radius:12px}
+#monitor #classicWrap{height:100%;padding:8px}
+#monitor #classicWrap .glass{height:100%;box-sizing:border-box;padding:8px;gap:5px;grid-template-areas:'status' 'nums' 'trend' 'dsa' 'eeg' 'keys';grid-template-rows:auto auto auto minmax(0,1fr) minmax(0,.55fr) auto}
+#monitor #classicWrap .statusbar{grid-area:status}
+#monitor #classicWrap .readouts{grid-area:nums;grid-template-columns:1.2fr 1fr 1fr;gap:10px;align-items:stretch}
+#monitor #classicWrap #wTrend{grid-area:trend}
+#monitor #classicWrap #wDsa{grid-area:dsa}
+#monitor #classicWrap #wEeg{grid-area:eeg}
+#monitor #classicWrap #viewSeg{grid-area:keys}
+#monitor #classicWrap .bisbox{display:flex;align-items:center;justify-content:flex-start;gap:12px}
+#monitor #classicWrap .bisbox .v{font-size:clamp(36px,4vw,64px);line-height:1}
+#monitor #classicWrap .bars{display:flex;gap:6px}
+#monitor #classicWrap .bar{flex:1;padding:4px 6px}
+#monitor #classicWrap .params{display:grid;grid-template-columns:1fr 1fr;grid-column:auto;gap:4px}
+#monitor #classicWrap .timers,#monitor #classicWrap .bar .u{display:none}
+#monitor #classicWrap .lane{grid-template-rows:auto minmax(0,1fr);min-height:0;overflow:hidden}
+#monitor #classicWrap canvas{max-height:none}
+#monitor #classicWrap .softkeys{min-height:32px}
+#monitor[data-view=dsa] #classicWrap .glass{grid-template-rows:auto auto auto minmax(0,1fr) 0 auto}
+#monitor[data-view=eeg] #classicWrap .glass{grid-template-rows:auto auto auto 0 minmax(0,1fr) auto}
+body.presenting{overflow:hidden}
+#monitor.presenting{position:fixed;inset:0;z-index:10000;max-width:none;margin:0;padding:10px 16px;width:100%;height:100dvh;box-sizing:border-box;display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;overflow:hidden;background:#f7f5ef}
+#monitor.presenting .apptitle{font-size:20px}
+#monitor.presenting .sim{min-height:0;grid-template-rows:minmax(0,1fr) auto}
+#monitor.presenting .screens{height:100%;min-height:0}
+
+@media(max-width:1100px){
+ #monitor .panel{grid-template-columns:minmax(250px,1fr) minmax(230px,1fr);gap:8px 24px}
+ #monitor .depth-control{grid-column:1;grid-row:1/3}
+ #monitor .transport{grid-column:2;grid-row:1}
+ #monitor .panel .story{grid-column:2;grid-row:2}
+ #monitor .story .row{padding:0;border:0;justify-content:flex-end}
+ #monitor .screens{height:clamp(340px,calc(100svh - 290px),1000px)}
+}
+@media(max-width:650px){
+ .wrap{padding-inline:10px}
+ #monitor .monhead{flex-wrap:wrap;gap:6px}
+ #monitor .apptitle{font-size:23px}
+ .demo-toolbar{width:100%;gap:4px}
+ #monitorChoice{flex:1;min-width:0;width:auto;margin-left:-10px}
+ #settingsButton{margin-left:auto}
+ #monitor .screens{height:clamp(280px,50svh,500px)}
+ #monitor .panel{grid-template-columns:minmax(0,1fr);gap:8px;padding-top:4px}
+ #monitor .depth-control,#monitor .transport,#monitor .panel .story{grid-column:1;grid-row:auto}
+ #monitor .depth-head{min-height:40px}
+ #monitor #agentChoice{min-height:40px}
+ #monitor .ticks span:not(:first-child):not(:last-child){display:none}
+ #monitor .story .row{justify-content:center}
+ #monitor .story button{flex:1}
+ #monitor .transport{gap:8px}
+ #monitor .panel #combinations .mixrows{grid-template-columns:1fr 1fr}
+ #monitor.presenting{padding:8px;gap:6px}
+ #monitor.presenting .apptitle{display:none}
+ #monitor .advcase{padding:4px}
+ #monitor .advband{padding:4px 4px 0}
+ #monitor .advbrand{height:20px}
+ #monitor .advbrand b{font-size:13px}
+ #monitor #classicWrap .statusbar,#monitor #classicWrap .bars,#monitor #classicWrap #wTrend,#monitor #classicWrap .params{display:none}
+ #monitor #classicWrap .readouts{display:block}
+ #monitor #classicWrap .bisbox{padding:3px 6px}
+ #monitor #classicWrap .zone{font-size:12px}
+ #monitor #classicWrap .softkeys button{font-size:11px}
+ #simSettings{inset:auto 0 0;width:100%;height:auto;max-height:85dvh;border-bottom:0}
+}
+@media(max-width:650px),(max-height:550px){
+ #monitor #classicWrap .statusbar,#monitor #classicWrap #wTrend{display:none}
+ #monitor #classicWrap .glass{padding:2px;grid-template-areas:'nums' 'dsa' 'eeg' 'keys';grid-template-rows:auto minmax(0,1fr) minmax(0,.65fr) auto}
+ #monitor #classicWrap .bisbox .v{font-size:32px}
+ #monitor[data-view=dsa] #classicWrap .glass{grid-template-rows:auto minmax(0,1fr) 0 auto}
+ #monitor[data-view=eeg] #classicWrap .glass{grid-template-rows:auto 0 minmax(0,1fr) auto}
+}
+@media(max-height:550px) and (min-width:651px){
+ #monitor.presenting .apptitle{display:none}
+ #monitor.presenting .monhead{justify-content:flex-end}
+ #monitor.presenting .sim{grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:minmax(0,1fr)}
+ #monitor.presenting .panel{height:100%;min-height:0;overflow:auto;display:flex;flex-direction:column;align-items:stretch;justify-content:center;border-top:0;border-left:1px solid #d7d2c8;padding:0 0 0 12px;gap:16px}
+ #monitor.presenting .story .row{flex-wrap:wrap}
+ #monitor.presenting .story button{flex:1}
+ #monitor.presenting #storyBtn{margin:0}
+ #monitor.presenting .transport{flex-wrap:nowrap;gap:8px}
+ #monitor.presenting .panel #tLine{min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:0}
+ #monitor.presenting #speedControl{margin-left:0}
+ #monitor.presenting .depth-head{flex-wrap:wrap;gap:0}
+ #monitor.presenting #agentChoice{max-width:none;width:100%}
+ #monitor.presenting #tgtBis{margin:0 0 4px}
+}

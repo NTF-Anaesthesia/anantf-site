@@ -1,11 +1,11 @@
 // Browser test of the BIS to DSA page at phone and desktop size, with an axe accessibility check.
-// Run from the repo root with a static server on port 8080 (python3 -m http.server 8080): node bis/test/e2e.mjs
+// Run from the repo root with a static server on port 8080 (python3 -m http.server 8080): node eeg/test/e2e.mjs
 const { chromium } = await import(process.env.PLAYWRIGHT_PATH || '/opt/node22/lib/node_modules/playwright/index.mjs');
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 const AXE = new URL('../../tools/vendor/axe.min.js', import.meta.url).pathname;
-const BASE = `http://localhost:${process.env.PORT || 8080}/bis/`;
+const BASE = `http://localhost:${process.env.PORT || 8080}/eeg/`;
 const b = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH, args: ['--no-sandbox'] } : {});
 const errors = [];
 const bis = p => p.$eval('#vBis', e => +e.textContent);
@@ -215,7 +215,7 @@ try {
     await page.click('#viewSeg [data-view="both"]');
     await page.waitForFunction(([d, e]) => document.querySelector('#cEeg').clientHeight === e && document.querySelector('#cDsa').clientHeight === d, [dsa0, eeg0]);
     // monitor first: on a phone the monitor and the drug and depth controls are near the top
-    if (viewport.width === 390) assert.ok(await page.$eval('#classicWrap', e => e.getBoundingClientRect().top + scrollY) < 180, 'monitor near the top (under the monitor switch)');
+    if (viewport.width === 390) assert.ok(await page.$eval('#classicWrap', e => e.getBoundingClientRect().top + scrollY) < 230, 'monitor near the top (under the site header and the monitor switch)');
     // facial EMG raises the EMG reading (no relaxant on board)
     await page.click('#nmbSeg [data-nmb="off"]');
     const emg0 = await page.$eval('#vEmg', e => +e.textContent);

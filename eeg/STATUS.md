@@ -42,7 +42,7 @@ Each session keeps its own line in `status/<session>.md`. Read them before start
 
 - Effect-site lag fast up (12 s) and slow down (120 s) so emergence unzips slowly and induction is quick, plus an Emergence key; depth slider shows the target BIS (forecast), effect-site marker and a green 40-60 band; relaxant default "At induction" (Off / On now keys); suppression and BIS<40 time box.
 
-- Moved to `anantf.com/bis/` (16 Oct 2026, owner); the old addresses forward here.
+- Moved to `anantf.com/eeg/` (16 Oct 2026, owner); the old addresses forward here.
 
 - Phase 2 (14 Oct 2026, branch ccr-0e0d2acf-njkx9t): relaxant two-stage fall, remifentanil and Bruhn rules, drug
   spectra refit, `test/engine.check.mjs`; SQI/EMG/messages like the monitor; trend, DSA MF, EEG scale, smoothing;

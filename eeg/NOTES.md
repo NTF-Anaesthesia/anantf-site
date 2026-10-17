@@ -1,13 +1,13 @@
 # BIS to DSA notes
 
-Lasting decisions for `bis/`. Status and next steps: `STATUS.md`.
+Lasting decisions for `eeg/`. Status and next steps: `STATUS.md`.
 
 ## Purpose and audience
 
 - Anaesthesia residents learning processed EEG: how the frontal EEG becomes the BIS number and the density spectral
   array (DSA), and how to read the DSA for propofol, sevoflurane, ketamine and dexmedetomidine (owner, 14 Oct 2026).
 - One static page, no data, no sign-in, no storage. Synthetic EEG only.
-- Always dark, like an anaesthetic monitor (owner, 14 Oct 2026); BIS big on the left, SR/SEF95/EMG stacked on the right.
+- **Look (owner, 16 Oct 2026, replacing "always dark"):** the page follows anantf.com's `DESIGN.md` (warm paper, ink, one wine accent, square edges, hairlines, Fraunces / Inter / JetBrains Mono from `../fonts/`, the real site header with pEEG current). Only the monitor screens stay dark, because they copy real equipment; everything outside them (switches, panels, strips, the controls under each screen in `adv.css` and `sed.css`) uses the light tokens in `:root`. Do not load `assets/navigation.css` here: it pulls in `couture.css`, whose `body .wrap .row button{min-height:44px}` and `.card`, `.bar` rules stretch the monitors' hit areas; `site-shell.css` and `header-nav.css` are enough for the header. BIS big on the left, SR/SEF95/EMG stacked on the right.
 - Screen order like a BIS monitor (owner, 14 Oct 2026): BIS and EMG trends, then DSA above, raw EEG below; a view
   toggle (DSA + EEG, DSA + BIS, EEG) shows one large.
 - Monitor look (owner, 14 Oct 2026; made closer to a BIS Complete/VISTA, Oct 2026): bezel, status line ("BIS · Case
@@ -60,7 +60,7 @@ Lasting decisions for `bis/`. Status and next steps: `STATUS.md`.
 
 ## Address
 
-- `anantf.com/bis/` (this repo's folder `bis/`, GitHub Pages), unlisted and `noindex`. Moved here from an earlier
+- `anantf.com/eeg/` (this repo's folder `eeg/`, GitHub Pages), unlisted and `noindex`. Moved here from an earlier
   address on 16 Oct 2026 (owner); the old addresses forward here.
 - Relative paths only, so the folder works wherever it is served.
 - This folder is the copy to edit.
@@ -87,7 +87,7 @@ Lasting decisions for `bis/`. Status and next steps: `STATUS.md`.
   the EMG readout is a parametric muscle term, not the monitor's measured 70–110 Hz band (the 30–47 Hz muscle power in
   the EEG is what moves BIS; the intro and explainer step 1 say so); blink rejection as a fixed 85% subtraction; the
   warmer as a fixed noise term. SQI blanking at 15 is a convention, not in the Covidien manual.
-- Check the tuning with `node bis/test/engine.check.mjs` (runs the engine in Node, no browser, about a minute; also in
+- Check the tuning with `node eeg/test/engine.check.mjs` (runs the engine in Node, no browser, about a minute; also in
   the Checks workflow). It prints the table below, plus SQI, messages, MF and smoothing rows.
 - The footer says it is a teaching approximation; keep that.
 
@@ -575,7 +575,7 @@ checked against a photo of a Root. Look chosen: the 2017/2018 builds (ADULT pill
 
 ## Tests (final integration, 14 Oct 2026)
 
-- `node bis/test/e2e.mjs` runs the teaching-layout and Medtronic checks, then `adv.e2e.mjs` and `sed.e2e.mjs`; the whole run takes over 10 minutes, so give a shell command a background run.
+- `node eeg/test/e2e.mjs` runs the teaching-layout and Medtronic checks, then `adv.e2e.mjs` and `sed.e2e.mjs`; the whole run takes over 10 minutes, so give a shell command a background run.
 - An earlier note said `adv.e2e.mjs` was flaky. The cause was the battery-low check: it read `#aBatT` straight after switching the Simulate button off, before the next frame had redrawn it
   (`'10%' !== '100%'`, about one run in two). The test now waits for the text; the assertion is unchanged. Six runs in a row passed after the fix.
 
@@ -636,3 +636,36 @@ a tap on the bar jumps there. It works the same on every monitor.
 - What came after is dropped (shown hatched on the bar, "… ahead was rewound"); marks made in it (Medtronic gaps, BIS Advance
   snapshots and events, SedLine gaps) go with it. The start of the case (the page's first live second) is the earliest point.
 - Drug-control changes show as yellow ticks on the bar. Medtronic keeps DSA + AMPL under the DSA (owner, 15 Oct 2026).
+
+## 16 October 2026 — focused Processed EEG simulator
+
+The owner requested `/eeg/`, title “Processed EEG simulator”, fewer controls and a full-screen teaching workspace. `/bis/` redirects, including query and hash. Older links in separate apps intentionally remain valid through that redirect.
+
+The primary controls are monitor choice, anaesthetic, depth, playback speed, pause, induction, emergence and one native time slider. Patient/artefact and display options are collapsed. Detailed rocuronium/sugammadex dosing, case length, duplicate monitor selectors, step-time buttons and equipment fault toggles are removed from the interface. The muscle suppression toggle retains the EMG-confounding lesson without dosing. The engine retains its internal block/washout models with fixed defaults; this is not a dosing simulator.
+
+BIS Vista is labelled correctly. BIS Advance has a direct unilateral (2-channel sensor) / bilateral (4-channel sensor) selector; selecting a monitor no longer resets the patient. The guided demonstration focuses on induction, maintenance and emergence. Timeline rewind rebuilds the recent DSA from retained history. Forward motion after rewind remains a new simulation, not exact replay.
+
+`demo.js` owns the compact control layout and browser full-screen/CSS fallback. The same controls remain mounted in presentation mode. On narrow screens the monitor scrolls above a compact control area. Existing clinical teaching text and synthetic-engine limitations remain.
+
+Validation: `node eeg/test/engine.check.mjs`; `node eeg/test/demo.e2e.mjs` with `BIS_VIEW=phone` and `desktop`. The new UI suite replaces the old button-driven browser gates, which refer to deliberately retired controls. Legacy monitor test sources remain as reference for future migration. The new suite covers induction/emergence, rewind, keyboard seeking, all five monitors, both Advance channel configurations, drug combinations, fullscreen and the old-address redirect.
+
+## 16 October 2026 — monitor size correction after live review
+
+The simplified layout shipped with an intrinsic-size regression: auto margins on the monitor grid, combined with inline-size-contained device LCDs, left no useful intrinsic width. At a 1440 × 900 viewport the actual LCD widths were 32 px (Vista), 209 px (Advance), 49 px (SedLine) and 14 px (IntelliVue); fullscreen could collapse to zero. The earlier browser suite checked visibility, which did not detect this. A design-critique review also found that the sidebar, wide bezels and optional settings competed with the signal display.
+
+The workspace now has an explicit full width and a measured stage. `fitMonitor()` fits each complete device to that stage while preserving its proportions; Teaching allocates actual canvas heights to the available space. Essential controls form one dock below the monitor, moving to the side on short landscape screens. The stage grows in fullscreen, with controls still reachable. Optional explanations/settings sit below the workspace; drug-combination sliders move into the fullscreen dock when selected. Slimmer Advance/IntelliVue bezels and a smaller Advance asymmetry panel give the EEG/DSA more space.
+
+Advance starts with the existing five-minute EEG history and labels the short trend window in minutes. Both unilateral and bilateral configurations remain available. Saved BIS Vista selection now restores correctly. No engine, dosing or physiology equations changed.
+
+`test/layout.e2e.mjs` checks all five monitors in page and fullscreen at 1440 × 900, 1366 × 768, 1920 × 1080, 1024 × 768, 390 × 844 and 844 × 390. It measures usable LCD area, viewport clipping and dock overlap, plus saved selections, initial Advance DSA history, alternate Teaching views and reachable fullscreen combination sliders. It is a CI gate alongside the induction/emergence interaction suites.
+
+## 16 October 2026 — control and navigation refinement
+
+The owner's follow-up screenshots showed that the large monitor was working, but the surrounding interface still read as a dense form. The design-critique review identified three competing settings columns, repeated instructional copy, strongly outlined selectors, and inconsistent button emphasis. The refinement applies the requested calmer, Apple-inspired hierarchy while retaining the site's warm paper, wine accent and square surfaces.
+
+- The toolbar contains monitor choice, a labelled settings icon and an enter/exit-fullscreen icon. SVG icons share stroke weight and 44 px targets, with tooltips and keyboard focus states.
+- Anaesthetic and depth form one group in the dock. A single transport group contains play/pause, elapsed time, timeline and a speed popover. Induce, Emerge and a compact Demo action remain available for teaching.
+- The settings sheet contains Advance channel selection, patient/artefact options, display adjustments and observation notes. It is a native modal dialog inside the fullscreen workspace, with keyboard focus containment, Escape/outside-click dismissal and focus return. On phones it becomes a bottom sheet.
+- Removed both requested timeline instructions and the three inline settings columns. A rewind note is available on the time readout's tooltip. Drug combinations keep the anaesthetic picker available so the user can leave combination mode.
+
+`test/controls.e2e.mjs` checks icons and target sizes, settings interactions, both Advance channel modes, keyboard focus, Escape, reachable/unobscured speed sliders, timeline keyboard control and leaving combination mode at desktop, portrait-phone and landscape-phone sizes. The existing layout and induction/emergence suites remain CI gates.
