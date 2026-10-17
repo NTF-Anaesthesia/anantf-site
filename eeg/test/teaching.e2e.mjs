@@ -20,7 +20,7 @@ try{
   await page.click(`[data-preset="${key}"]`);const count=await page.locator('#mixComparison option').count();assert.ok(count>=3);
   for(let i=0;i<count;i++){await page.selectOption('#mixComparison',String(i));assert.equal(await page.evaluate(()=>selectedMix),key);assert.equal(await page.evaluate(()=>selectedMixVariant),i);assert.ok(await page.locator('#mixDose').textContent());}
  }
- await page.click('[data-preset="propdex"]');await page.selectOption('#mixComparison','0');await page.click('#emergeBtn');await page.click('#induceBtn');assert.equal(await page.evaluate(()=>mix.propofol),3.5);assert.equal(await page.evaluate(()=>mix.dex),0,'induction preserves chosen comparison');
+ await page.click('[data-preset="propdex"]');await page.selectOption('#mixComparison','0');await page.click('#wakeBtn');await page.click('#induceBtn');assert.equal(await page.evaluate(()=>mix.propofol),3.5);assert.equal(await page.evaluate(()=>mix.dex),0,'induction preserves chosen comparison');
  await page.screenshot({path:'/tmp/eeg-learning-desktop.png',fullPage:false});
  await page.setViewportSize({width:390,height:844});await page.locator('#mixComparison').scrollIntoViewIfNeeded();assert.ok(await page.locator('#mixComparison').isVisible());assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:'/tmp/eeg-learning-phone.png'});
  assert.deepEqual(errors,[]);console.log('EEG lessons and drug comparisons: ok');
