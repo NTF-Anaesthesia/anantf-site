@@ -182,7 +182,7 @@ const skinNow = (page) => page.evaluate(() => document.documentElement.dataset.s
 }
 
 // ------------------------------------------------------------------ 3. the app look on each page
-const APP_PAGES = (only || ['blocks/', 'truncal/back/', 'blocks/settings/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'truncal/', 'lower-limb/hip/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
+const APP_PAGES = (only || ['blocks/', 'truncal/back/', 'blocks/settings/', 'spinal/', 'brachial-plexus/', 'plexus/', 'truncal/', 'lower-limb/hip/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
 const WANT_CURRENT = { 'blocks/settings/': 'Settings', 'plexus/': '3D anatomy', 'blocks/ultrasound/': 'Ultrasound', 'blocks/indication/': 'Indication' };
 const TAB_WORDS = ['Blocks', '3D anatomy', 'Ultrasound', 'Indication', 'Settings'];
 for (const vp of VPS) {
@@ -244,7 +244,7 @@ for (const vp of VPS) {
 
 // 3b. Polish in the app look (the review of 16 Oct 2026): no text under 12px, no tap target under 44px (inline links in a sentence
 // excepted), and every link and button readable (4.5:1 against what is behind it: a link inside the wine dose card was wine on wine).
-const POLISH_PAGES = (only || ['truncal/back/#ch-esp', 'lower-limb/thigh/#ch-sciatic', 'blocks/', 'spinal/#ch-technique', 'plexus/', 'brachial-plexus/', 'blocks/calculator/', 'blocks/settings/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
+const POLISH_PAGES = (only || ['truncal/back/#ch-esp', 'lower-limb/thigh/#ch-sciatic', 'blocks/', 'spinal/#ch-technique', 'plexus/', 'brachial-plexus/', 'blocks/settings/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
 for (const vp of VPS) {
   for (const p of POLISH_PAGES) {
     const { ctx, page } = await open(p, { vp, storage: { 'ra-skin': 'app' } });
@@ -299,7 +299,7 @@ for (const vp of VPS) {
 }
 {
   // Every regional page: the bar has a search button and the Safety button in the app look, and neither in the website look.
-  const BAR_PAGES = only || ['blocks/', 'truncal/', 'truncal/back/', 'lower-limb/hip/', 'upper-limb/', 'head-neck/', 'lower-limb/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'blocks/settings/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/'];
+  const BAR_PAGES = only || ['blocks/', 'truncal/', 'truncal/back/', 'lower-limb/hip/', 'upper-limb/', 'head-neck/', 'lower-limb/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/settings/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/'];
   for (const vp of ['320', '360', '390', '1440']) {
     for (const p of BAR_PAGES) {
       const { ctx, page, log } = await open(p, { vp: vp === '1440' ? '1440' : '390', storage: { 'ra-skin': 'app' } });
@@ -379,7 +379,7 @@ for (const vp of VPS) {
     R.check(`${p}: the bar's search button opens this page's own search`, want(f), JSON.stringify(f));
     await ctx.close();
   }
-  for (const p of ['truncal/', 'blocks/calculator/', 'brachial-plexus/', 'blocks/settings/']) {
+  for (const p of ['truncal/', 'brachial-plexus/', 'blocks/settings/']) {
     const { ctx, page } = await open(p, { vp: '390', storage: { 'ra-skin': 'app' } });
     await waitReady(page, { idle: false });
     await page.locator('.ra-appbar .ra-bsearch').click();
@@ -414,7 +414,7 @@ for (const vp of VPS) {
 
 // ------------------------------------------------------------------ 4. the same content in both looks
 {
-  const PAGES_SAME = (only || ['blocks/', 'truncal/back/', 'blocks/settings/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/calculator/', 'truncal/', 'lower-limb/hip/', 'upper-limb/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
+  const PAGES_SAME = (only || ['blocks/', 'truncal/back/', 'blocks/settings/', 'spinal/', 'brachial-plexus/', 'plexus/', 'truncal/', 'lower-limb/hip/', 'upper-limb/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']);
   const grab = async (p, vp, skin) => {
     const { ctx, page } = await open(p, { vp, storage: { 'ra-skin': skin } });
     await waitReady(page, { idle: true });

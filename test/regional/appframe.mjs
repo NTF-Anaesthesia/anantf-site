@@ -85,7 +85,7 @@ async function scrollSteps(page, dy, n = 6) {
 }
 
 // ------------------------------------------------------------------ 2. Settings from every app bar
-const KINDS = ['truncal/back/', 'lower-limb/hip/', 'truncal/', 'upper-limb/', 'blocks/', 'blocks/calculator/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/'];
+const KINDS = ['truncal/back/', 'lower-limb/hip/', 'truncal/', 'upper-limb/', 'blocks/', 'spinal/', 'brachial-plexus/', 'plexus/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/'];
 for (const vp of [390, 1440]) {
   for (const p of KINDS) {
     const { ctx, page } = await open(p, { vp });
@@ -168,9 +168,9 @@ for (const p of ['truncal/back/#ch-esp', 'truncal/', 'spinal/#ch-technique', 'br
 }
 
 // ------------------------------------------------------------------ 4. rail, overflow, the site column, scan in the flow
-const RAIL = new Set(['truncal/back/#ch-esp', 'lower-limb/hip/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/calculator/', 'blocks/safety/']);
+const RAIL = new Set(['truncal/back/#ch-esp', 'lower-limb/hip/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/safety/']);
 for (const vp of [390, 1024, 1180, 1440]) {
-  for (const p of ['truncal/back/#ch-esp', 'lower-limb/hip/', 'head-neck/', 'upper-limb/', 'blocks/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/calculator/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']) {
+  for (const p of ['truncal/back/#ch-esp', 'lower-limb/hip/', 'head-neck/', 'upper-limb/', 'blocks/', 'spinal/#ch-technique', 'blocks/settings/', 'blocks/safety/', 'blocks/indication/', 'blocks/ultrasound/']) {
     const { ctx, page, log } = await open(p, { vp });
     const r = await page.evaluate(() => {
       const rail = document.querySelector('.ra-rail');

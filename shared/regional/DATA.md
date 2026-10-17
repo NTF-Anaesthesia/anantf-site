@@ -28,7 +28,7 @@ shared/regional/
   js/registry.js      block id → {title, region, url, aliases, anatomy3d?, watch?} across all regions
   js/realscan.js      the "Real" scan view (open-licence images with label pills)
   js/figures/         head.js (head and neck figures), leg.js (lower-limb figures), arm.js (upper-limb figures)
-  js/la.js, lacalc.js local anaesthetic dose maths (no DOM) and the dose calculator form (/blocks/calculator/)
+  js/la.js, lacalc.js local anaesthetic dose maths (no DOM) and the dose calculator form (the Dose calculator half of /blocks/safety/)
   js/decide.js        the "If it goes wrong" decision guides; their data is js/data/decisions.js
   js/offline.js       registers the offline worker /regional-sw.js; app version lines on /blocks/
   (blocks/)           chooser.js (operation data + the chooser component, shared by /blocks/ search and /blocks/indication/),
@@ -494,7 +494,7 @@ All optional; existing scenes work unchanged.
 operations, block names and links come from `js/ops/` and `js/registry.js`, and its page list (`PAGES` in `blocks.js`)
 points at existing chapters. It holds the level picker, the "I need to…" tiles, the merged chooser, search across
 regions (registry + operations + pages + the region pages' synonyms; its guide and planner results open `/blocks/safety/#wrong-<guide>` and `#doses`), Part I "Tools" (four rows), the region Parts and, at the foot, the app version lines (`mountAppVersion` from `offline.js`). The
-dose calculator is `/blocks/calculator/` (`calculator.js` mounting `lacalc.js`). Settings is `/blocks/settings/`
+dose calculator is the Dose calculator half of `/blocks/safety/` (`safety.js` mounting `lacalc.js`; the old `/blocks/calculator/` page only redirects there with its query). Settings is `/blocks/settings/`
 (`settings.js`): the level control, "Hide the bar while scrolling down" (`ra-autohide`, off by default), "Press / to
 search" (`ra-slash`, on by default) and the same app version lines.
 - Deep links: `#op-<region>-<id>` (e.g. `#op-lower-limb-hipfx`); a bare `#op-<id>` works when the id is unique.

@@ -57,7 +57,7 @@ const PAGES = [
   { t: 'Emergency guides and dose calculator', d: 'Local anaesthetic toxicity first, then every “If it goes wrong” guide, and the dose calculator', href: 'safety/', k: 'Safety' },
   { t: 'Ultrasound anatomy', d: 'Every ultrasound-guided block by region, with a real scan where one is shown', href: 'ultrasound/', k: 'Ultrasound' },
   { t: 'Which block for which operation', d: 'Choose an operation to see the block options, doses and what they miss', href: 'indication/', k: 'Indication' },
-  { t: 'Local anaesthetic dose calculator', d: 'Safe dose for this patient: weight, lean body weight, every agent and injection added up', href: 'calculator/', k: 'Doses' },
+  { t: 'Local anaesthetic dose calculator', d: 'Safe dose for this patient: weight, lean body weight, every agent and injection added up', href: 'safety/#calculator', k: 'Doses' },
 ];
 const rel = (url) => (url.startsWith('/') ? `..${url}` : url);
 

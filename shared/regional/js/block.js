@@ -122,11 +122,11 @@ export function doseBox(b) {
   return box;
 }
 
-/** URL of the dose calculator, prefilled with what the block's dose box says where that reads unambiguously. */
+/** URL of the dose calculator (the Safety page's Dose calculator half), prefilled with what the block's dose box says where that reads unambiguously. */
 export function doseCheckHref(b) {
   let q = '';
   try { q = doseQuery(b?.dose); } catch { q = ''; }
-  return `${ROOT}blocks/calculator/${q ? `?${q}` : ''}`;
+  return `${ROOT}blocks/safety/${q ? `?${q}` : ''}#calculator`;
 }
 
 /** "Check the dose for this patient →" under the dose box (tier 1 with it). `dose.calc: false` leaves it out. */

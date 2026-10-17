@@ -194,6 +194,11 @@ async function main() {
     R.check('blocks/safety/#calculator shows the dose calculator', o.r.calc && !o.r.guides && o.r.pressed[0] === 'Dose calculator' && o.r.inputs.length > 0 && !o.errs.length, JSON.stringify(o));
     o = await probe('blocks/safety/?agent=ropivacaine&pct=0.375&ml=20&kg=70');
     R.check('blocks/safety/?agent=… (the dose box link) opens the calculator, prefilled', o.r.calc && o.r.inputs.some((x) => /0\.375|20|70/.test(x)) && !o.errs.length, JSON.stringify(o));
+    // The old stand-alone calculator (merged into this page on 17 Oct 2026) redirects here with its query kept.
+    o = await probe('blocks/calculator/?agent=ropivacaine&pct=0.375&ml=20&kg=70');
+    R.check('blocks/calculator/?agent=… (old link) redirects to the Safety calculator, prefilled', o.r.calc && !o.r.guides && o.r.inputs.some((x) => /0\.375|20|70/.test(x)) && !o.errs.length, JSON.stringify(o));
+    o = await probe('blocks/calculator/');
+    R.check('blocks/calculator/ (old link) redirects to the Safety calculator', o.r.calc && !o.r.guides && o.r.pressed[0] === 'Dose calculator' && !o.errs.length, JSON.stringify(o));
   }
 
   // 3d. "If it goes wrong" and the dose planners left /blocks/ for /blocks/safety/ (owner, 17 Oct 2026: too many repeats):

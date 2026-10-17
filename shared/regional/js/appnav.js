@@ -52,7 +52,7 @@ export const REGION_NAV = Object.freeze([
   { id: 'neuraxial', title: 'Neuraxial', label: 'Neuraxial', href: 'spinal/', pages: [] },
 ]);
 // The same four tools as Part I of /blocks/ (each once, same names), then Settings.
-export const TOOL_NAV = Object.freeze([['All regional blocks', 'blocks/'], ['Emergency guides and dose calculator', 'blocks/safety/', 'blocks/calculator/'], ['Which block for which operation', 'blocks/indication/'], ['Ultrasound anatomy', 'blocks/ultrasound/'], ['Anatomy in 3D', 'plexus/'], ['Settings', 'blocks/settings/']]);
+export const TOOL_NAV = Object.freeze([['All regional blocks', 'blocks/'], ['Emergency guides and dose calculator', 'blocks/safety/'], ['Which block for which operation', 'blocks/indication/'], ['Ultrasound anatomy', 'blocks/ultrasound/'], ['Anatomy in 3D', 'plexus/'], ['Settings', 'blocks/settings/']]);
 
 /** This page's path from the site root, e.g. 'truncal/back/'. */
 const here = () => {
