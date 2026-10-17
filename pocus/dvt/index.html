@@ -349,11 +349,11 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
       </ul>
       <p style="color:var(--ink2);font-size:15.5px;margin:10px 0 0">Why it matters to us: postoperative and ICU patients are at high VTE risk. In the hypotensive or hypoxic patient, a non-compressible proximal vein plus a dilated RV changes the working diagnosis in minutes, at the bedside.</p>
       <p class="course-eyebrow" style="margin-top:16px">In this tutorial</p><ul class="agenda" style="max-width:460px">
-        <li><span>01–02 · Framework · set-up</span><span>2.5 min</span></li>
-        <li><span>Part I · Vein vs artery · landmarks · protocols</span><span>12.5 min</span></li>
-        <li><span>Part II · Evidence · pitfalls · ICU and PE</span><span>9.5 min</span></li>
-        <li><span>Part III · Three patients</span><span>12.5 min</span></li>
-        <li><span>Quiz · references · close</span><span>5.5 min</span></li>
+        <li><span>01–02 · Framework · set-up</span></li>
+        <li><span>Part I · Vein vs artery · landmarks · protocols</span></li>
+        <li><span>Part II · Evidence · pitfalls · ICU and PE</span></li>
+        <li><span>Part III · Three patients</span></li>
+        <li><span>Quiz · references · close</span></li>
       </ul>
       <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
       <p class="mini" style="margin-top:10px"><b>All images on this page are schematics and simulations, not real scans.</b></p>
@@ -369,17 +369,17 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 </section>
 
 <!-- ============ 2 I-AIM ============ -->
-<section class="slide" data-min="1" data-title="I-AIM framework" data-prompt="Ask: what is the difference between 'no DVT' and 'proximal veins compressible at the CFV and popliteal'? Make the room phrase a result properly.">
+<section class="slide" data-min="1" data-title="DVT examination and reporting" data-prompt="Ask: what is the difference between 'no DVT' and 'proximal veins compressible at the CFV and popliteal'? Make the room phrase a result properly.">
   <div class="inner two">
     <div>
       <div class="kicker">01 · Framework</div>
-      <h2>Four questions, always in this order.</h2>
-      <p class="lede">Use the same I-AIM framework as the other stations.</p>
+      <h2>Choose the examination and report its coverage.</h2>
+      <p class="lede">Start with pre-test probability. Choose a defined compression examination and plan the next step if it is limited or negative.</p>
       <ul class="plist">
-        <li><span class="num big">I</span><div><b>Indication</b><span>What is the clinical question? Swollen leg? Unexplained hypoxia or shock with RV dilatation? A local protocol for high-risk delayed hip-fracture surgery? (Routine screening of asymptomatic patients is not recommended by CHEST, and sensitivity is lower without symptoms.) Would the answer change management? If not, do not scan.</span></div></li>
-        <li><span class="num big">A</span><div><b>Acquisition</b><span>Linear probe, correct position, transverse views, compress at every landmark (and every 1–2 cm between landmarks if doing a continuous scan).</span></div></li>
-        <li><span class="num big">I</span><div><b>Interpretation</b><span>Compressible, non-compressible or inconclusive at each segment. Report the segment, not just "DVT yes/no".</span></div></li>
-        <li><span class="num big">M</span><div><b>Medical decision-making</b><span>Combine with pre-test probability (Wells), D-dimer and the rest of the POCUS picture (RV, lungs). Treat, rescan in about 1 week, or refer for formal whole-leg duplex. Wells is validated in outpatients only: in inpatients and post-op/ICU patients use clinical gestalt, and a negative limited scan with ongoing suspicion needs an extended or whole-leg scan, or a repeat.</span></div></li>
+        <li><span class="num big">1</span><div><b>Indication</b><span>What is the clinical question? Swollen leg? Unexplained hypoxia or shock with RV dilatation? A local protocol for high-risk delayed hip-fracture surgery? (Routine screening of asymptomatic patients is not recommended by CHEST, and sensitivity is lower without symptoms.) Would the answer change management? If not, do not scan.</span></div></li>
+        <li><span class="num big">2</span><div><b>Acquisition</b><span>Linear probe, correct position, transverse views, compress at every landmark (and every 1–2 cm between landmarks if doing a continuous scan).</span></div></li>
+        <li><span class="num big">3</span><div><b>Interpretation</b><span>Compressible, non-compressible or inconclusive at each segment. Report the segment, not just "DVT yes/no".</span></div></li>
+        <li><span class="num big">4</span><div><b>Medical decision-making</b><span>Combine with pre-test probability (Wells), D-dimer and the rest of the POCUS picture (RV, lungs). Treat, rescan in about 1 week, or refer for formal whole-leg duplex. Wells is validated in outpatients only: in inpatients and post-op/ICU patients use clinical gestalt, and a negative limited scan with ongoing suspicion needs an extended or whole-leg scan, or a repeat.</span></div></li>
       </ul>
     </div>
     <div class="demo">
@@ -751,7 +751,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">Part III · Cases</div>
       <h1>Three patients.</h1>
-      <p class="big-quote" style="font-style:normal">Read the vignette, then reveal one I-AIM step at a time. Commit to an answer before each reveal.</p>
+      <p class="big-quote" style="font-style:normal">Read the vignette, then reveal the assessment, scan findings and management discussion in stages. Commit to an answer before each reveal.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Indication · Acquisition · Interpretation · Medical decision</p>
       <p class="mini" style="max-width:56ch">Teaching vignettes. All images are schematic simulations, not real scans.</p>
     </div>
@@ -1485,7 +1485,7 @@ const CASES = [
 ];
 const CASE_ST = [];
 $$('.slide.case').forEach(sec => {
-  const n = +sec.dataset.case, C = CASES[n], L = ['I', 'A', 'I', 'M'], N = ['Indication', 'Acquisition', 'Interpretation', 'Medical decision'];
+  const n = +sec.dataset.case, C = CASES[n], L = ['1', '2', '3', '4'], N = ['Indication', 'Acquisition', 'Interpretation', 'Medical decision'];
   sec.innerHTML = `<div class="inner two"><div>
     <div class="kicker">Case ${n + 1} · ${C.tag}</div><h2>${C.title}</h2>
     <p class="lede" style="margin-bottom:6px">${C.vignette}</p>
