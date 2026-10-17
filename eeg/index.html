@@ -411,7 +411,7 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
     <div class="panel">
       <div class="ctl"><label for="agentChoice" class="t">Anaesthetic</label><select id="agentChoice"><option value="propofol">Propofol</option><option value="sevo">Sevoflurane</option><option value="ketamine">Ketamine</option><option value="dex">Dexmedetomidine</option><option value="mix">Drug combination</option></select></div>
       <div class="ctl" id="mixCtl" hidden>
-        <p class="tgt" id="tgtMix"><b>Target BIS --</b> <span id="tgtMixSub"></span></p>
+        <p class="tgt" id="tgtMix"><b>Model BIS --</b> <span id="tgtMixSub"></span></p>
         <div class="seg" id="presetSeg" role="group" aria-label="Combinations">
           <button data-preset="tiva" aria-pressed="false">Propofol + remifentanil</button><button data-preset="propket" aria-pressed="false">Propofol + ketamine</button><button data-preset="sevon2o" aria-pressed="false">Sevoflurane + N₂O</button><button data-preset="propdex" aria-pressed="false">Propofol + dexmedetomidine</button>
         </div>
@@ -419,7 +419,7 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
       <div class="ctl" id="depthCtl"><label class="t" for="depth">Depth target</label>
         <div class="track"><i class="zoneband" id="zoneBand" hidden></i><input type="range" id="depth" min="0" max="100" value="0" aria-describedby="tgtBis"><i class="effmark" id="effMark" aria-hidden="true"></i><output class="pop" id="tgtPop" aria-hidden="true" hidden></output></div>
         <div class="ticks" id="ticks"><span>Awake</span><span>Sedated</span><span>GA</span><span>Deep</span><span>Flat</span></div>
-        <p class="tgt" id="tgtBis"><b>Target BIS --</b> <span id="tgtSub"></span></p>
+        <p class="tgt" id="tgtBis"><b>Model BIS --</b> <span id="tgtSub"></span></p>
         <p class="tgtnote" id="zoneNote" hidden><i class="swatch"></i> <span id="zoneText"></span></p></div>
 
       <details class="ctl" id="teachingOptions"><summary>Adjust current EEG</summary>
@@ -454,13 +454,13 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
 <header class="intro">
   <div class="eyebrow">Anaesthesia teaching · processed EEG</div>
   <h2>From the BIS sensor to the DSA</h2>
-  <p class="lede">The BIS number is one summary of a frontal EEG. The density spectral array (DSA) shows the whole spectrum over time, so you can see <em>why</em> the number is what it is. Move the drug and depth controls and watch the raw EEG, the number and the DSA change together.</p>
-  <p>The screen is laid out like a BIS monitor: the number with its SQI (signal quality) and EMG bars, then the BIS and EMG trends, the DSA, and the raw EEG. The keys at the bottom show the DSA or the EEG large. On the DSA, time runs left to right, frequency goes up (0–30 Hz) and colour shows power; the white line is SEF95, the frequency below which 95% of the power sits, and the purple line is the median frequency (MF, 50%). Messages from the monitor (artefact, isoelectric EEG, out of target range) appear in the status line. The real monitor measures EMG at 70–110 Hz; this simulator stands in a muscle term, because it samples at only 128 per second.</p>
+  <p class="lede">The BIS number is one summary of a frontal EEG. The density spectral array (DSA) shows power at each displayed frequency over time. Read the pattern alongside the index and raw EEG; the DSA alone does not encode the full proprietary index algorithm. Move the drug and depth controls and watch the raw EEG, the number and the DSA change together.</p>
+  <p>Choose a monitor to compare display layouts. On BIS Advance, time runs left to right, frequency increases upwards (0–30 Hz) and colour shows power. SEF95 is the frequency below which 95% of measured spectral power lies; MF divides it in half. Check each screen’s legend because orientation, colours and labels vary. SQI indicates signal quality and EMG indicates muscle contamination. The waveforms and indices here are synthetic teaching examples, including the PSi display; they are not validated device outputs.</p>
 </header>
 
 <section id="how" aria-labelledby="h-how">
   <div class="sec-head"><h2 id="h-how">How one DSA column is made</h2>
-  <p>Every second the monitor takes the newest 2 seconds of EEG and turns it into one thin coloured column. This animation uses the live EEG from the monitor above, so change the drug and the next column changes too.</p></div>
+  <p>In this simulator, each new second contributes a column calculated from the latest 2 seconds of EEG. This animation uses the live EEG from the monitor above, so change the drug and the next column changes too.</p></div>
   <div class="screen">
     <canvas id="cEx" aria-label="Animation: an EEG epoch is split into waves, measured with a Fourier transform, turned into a colour column and added to the DSA"></canvas>
   </div>
@@ -471,7 +471,7 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
 
 <section id="patterns" aria-labelledby="h-pat">
   <div class="sec-head"><h2 id="h-pat">Pattern library</h2>
-  <p>Each strip is 2½ minutes of simulated DSA at a steady state. Learn the shapes; the number follows from them.</p></div>
+  <p>Each strip is 2½ minutes of simulated DSA at a steady state. Compare the shapes with the raw EEG. The displayed BIS ranges are model examples, not diagnostic thresholds.</p></div>
   <div class="lib" id="lib"></div>
 </section>
 
@@ -493,14 +493,14 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
 <section id="pitfalls" aria-labelledby="h-pit">
   <div class="sec-head"><h2 id="h-pit">When the number misleads</h2></div>
   <ul class="pit">
-    <li><b>Ketamine and nitrous oxide</b>Ketamine adds fast (gamma) power, so BIS often reads 60–80 in an unconscious patient. Nitrous oxide barely moves BIS. Look at the DSA and the clinical picture.<small>Source: <a href="https://doi.org/10.1097/aln.0000000000000841">Purdon 2015, Anesthesiology</a>; <a href="https://doi.org/10.1016/j.clinph.2016.03.005">Akeju 2016</a>.</small></li>
-    <li><b>Muscle (EMG) and paralysis</b>Frontalis activity sits in the high frequencies and pushes BIS up. Check the EMG bar. If the alpha band is unchanged, treat the cause: analgesia first, relaxant only if surgery needs it (paralysis hides movement, which may be the only sign of lightening). Under relaxant, BIS fell to 44–47 in awake volunteers (Schuller 2015). The flip side: paralysis can lower BIS in a patient who is awake, so a low number under relaxant doesn’t rule out awareness.<small>Source: <a href="https://pubmed.ncbi.nlm.nih.gov/26174308/">Schuller 2015, BJA</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/12873942/">Messner 2003</a>.</small></li>
-    <li><b>Older brains</b>Alpha power is about 9 dB lower at 70–90 than at 18–38, and slower (Purdon 2015). Indices may read higher at a dose that already causes unconsciousness. Older patients need less drug; watch SR and the raw EEG before deepening.<small>Source: <a href="https://pubmed.ncbi.nlm.nih.gov/26174300/">Purdon 2015, BJA</a>.</small></li>
-    <li><b>Read SR, not just BIS</b>Suppression often appears with BIS 35–45, especially in older patients; SR above 0 means suppression whatever the number (Bruhn 2000).<small>Source: <a href="https://doi.org/10.1023/a:1012216600170">Bruhn 2000, J Clin Monit Comput</a>.</small></li>
+    <li><b>Ketamine and nitrous oxide</b>Ketamine can increase fast power and BIS without emergence. Nitrous oxide’s anaesthetic contribution may not be fully reflected in BIS. Effects depend on dose, co-administered drugs and the transition being observed.<small>Source: <a href="https://doi.org/10.1097/aln.0000000000000841">Purdon 2015, Anesthesiology</a>; <a href="https://doi.org/10.1016/j.clinph.2016.03.005">Akeju 2016</a>.</small></li>
+    <li><b>Muscle (EMG) and paralysis</b>Frontalis activity can contaminate high frequencies and increase BIS. Review the raw EEG, EMG, signal quality, stimulus and hypnotic delivery together. Neuromuscular blockade can lower BIS even in awake volunteers and removes movement as a warning sign. Paralysis provides neither hypnosis nor analgesia; a low index does not exclude awareness.<small>Source: <a href="https://pubmed.ncbi.nlm.nih.gov/26174308/">Schuller 2015, BJA</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/12873942/">Messner 2003</a>.</small></li>
+    <li><b>Older brains</b>Ageing is associated with lower EEG power, weaker and slower alpha, and greater susceptibility to suppression. These are group trends, not a fixed correction for every patient. Weak alpha alone does not establish light anaesthesia; inspect the raw EEG and SR.<small>Source: <a href="https://pubmed.ncbi.nlm.nih.gov/26174300/">Purdon 2015, BJA</a>.</small></li>
+    <li><b>Read SR, not just BIS</b>Suppression can occur while BIS remains in the 30s–40s. Inspect the raw tracing and signal quality when SR rises: a single average index can hide alternating bursts and suppressed intervals.<small>Source: <a href="https://doi.org/10.1023/a:1012216600170">Bruhn 2000, J Clin Monit Comput</a>.</small></li>
     <li><b>Lag</b>BIS is smoothed (10, 15 or 30 s), and the whole delay before it settles at a new level ranged from about 15 s to over 2 minutes in testing (Pilge 2006). The DSA and raw EEG change first.<small>Source: <a href="https://doi.org/10.1097/00000542-200603000-00016">Pilge 2006, Anesthesiology</a>.</small></li>
-    <li><b>Low BIS that isn't drug</b>Hypothermia, hypoglycaemia, hypotension with poor cerebral perfusion and cerebral ischaemia all slow or flatten the EEG. So can paralysis in an awake patient, pulse artefact from a sensor over the temporal artery, blinks or head movement that look like slow waves, paradoxical delta during arousal, and pre-existing brain disease or a low-voltage EEG. A sudden fall with no dose change: check glucose, blood pressure and perfusion before lightening.<small>Source: <a href="https://pubmed.ncbi.nlm.nih.gov/11435056/">Mathew 2001</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/26174308/">Schuller 2015</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/33461725/">García 2021</a>.</small></li>
+    <li><b>An unexplained low index</b>Hypothermia, severe metabolic disturbance or impaired cerebral perfusion can slow or suppress the EEG. Artefact, reduced EMG after paralysis and delta arousal can also lower the index through different mechanisms. An abrupt unexplained change warrants prompt assessment of the patient, circulation, oxygenation, drug delivery and signal quality, with temperature and glucose as indicated.<small>Source: <a href="https://pubmed.ncbi.nlm.nih.gov/11435056/">Mathew 2001</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/26174308/">Schuller 2015</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/33461725/">García 2021</a>.</small></li>
     <li><b>Interference</b>Oscillating ventilators and pacing or ECG spikes add high-frequency noise that can push BIS up; diathermy swamps the signal. Check the raw EEG, EMG bar and SQI.<small>Source: <a href="https://pubmed.ncbi.nlm.nih.gov/12145044/">Hemmerling &amp; Fortier 2002</a>; BIS Complete operator’s manual.</small></li>
-    <li><b>Validated in adults</b>BIS ranges come from adults. In infants under about 4 months there is no frontal alpha under sevoflurane, and BIS is unreliable; interpret cautiously in neurological disease and with psychoactive drugs.<small>Source: <a href="https://doi.org/10.7554/elife.06513">Cornelissen 2015, eLife</a>.</small></li>
+    <li><b>Age and neurological context</b>These examples represent adult EEG patterns. Infants, especially under about 4 months, may lack the frontal alpha pattern seen in older children under sevoflurane. Adult pattern-to-index assumptions should not be extrapolated to them; neurological disease and psychoactive drugs also alter interpretation.<small>Source: <a href="https://doi.org/10.7554/elife.06513">Cornelissen 2015, eLife</a>.</small></li>
   </ul>
 </section>
 
@@ -512,11 +512,11 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
     <tbody>
       <tr><td><a href="https://doi.org/10.1016/S0140-6736(04)16300-9">B-Aware 2004</a></td><td>In high-risk patients, BIS-guided anaesthesia cut awareness (2 vs 11 cases) compared with routine care.</td></tr>
       <tr><td><a href="https://doi.org/10.1056/NEJMoa0707361">B-Unaware 2008</a> / <a href="https://doi.org/10.1056/NEJMoa1100403">BAG-RECALL 2011</a></td><td>BIS was not better than an end-tidal anaesthetic gas alarm protocol at preventing awareness.</td></tr>
-      <tr><td><a href="https://doi.org/10.1093/bja/aeu313">NAP5 2014</a></td><td>Accidental awareness about 1:19,600 overall, about 1:8,200 with a muscle relaxant; most at induction or emergence.</td></tr>
+      <tr><td><a href="https://doi.org/10.1093/bja/aeu313">NAP5 2014</a></td><td>Spontaneously reported accidental awareness was about 1:19,600 overall and 1:8,200 with neuromuscular blockade; most reports concerned induction or emergence. This reporting method differs from structured postoperative interviews.</td></tr>
       <tr><td><a href="https://doi.org/10.1001/jama.2018.22005">ENGAGES 2019</a></td><td>EEG-guided anaesthesia in older patients did not reduce postoperative delirium.</td></tr>
-      <tr><td><a href="https://doi.org/10.1016/j.bja.2021.07.021">Balanced 2021</a> (delirium sub-study)</td><td>Targeting BIS 50 rather than 35 gave delirium 19% vs 28%. A secondary outcome: 1-year mortality, the primary outcome, was no different (<a href="https://doi.org/10.1016/S0140-6736(19)32315-3">Short 2019</a>, Lancet).</td></tr>
+      <tr><td><a href="https://doi.org/10.1016/j.bja.2021.07.021">BALANCED 2021</a> (delirium sub-study)</td><td>Delirium, the primary outcome of this sub-study, occurred in 19% with a BIS target of 50 versus 28% with a target of 35. The larger parent trial found no significant difference in its primary outcome, 1-year mortality (<a href="https://doi.org/10.1016/S0140-6736(19)32315-3">Short 2019</a>, Lancet).</td></tr>
       <tr><td><a href="https://doi.org/10.1111/anae.14428">AAGBI/SIVA TIVA guideline 2018</a></td><td>Use processed EEG when TIVA is given with a muscle relaxant.</td></tr>
-      <tr><td><a href="https://www.nice.org.uk/guidance/dg6">NICE DG6</a></td><td>Depth-of-anaesthesia monitors are an option in patients at higher risk of awareness or excessively deep anaesthesia, and in all patients having TIVA.</td></tr>
+      <tr><td><a href="https://www.nice.org.uk/guidance/htg292">NICE HTG292 (formerly DG6)</a></td><td>Depth-of-anaesthesia monitors are an option in patients at higher risk of awareness or excessively deep anaesthesia, and in all patients having TIVA.</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -537,5 +537,6 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
 <script src="teaching.js"></script>
 <script src="timeline.js"></script>
 <script src="demo.js"></script>
+<script src="mobile.js"></script>
 </body>
 </html>
