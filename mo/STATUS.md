@@ -1,7 +1,15 @@
 # MO guide status
 
-Last updated 15 Oct 2026 (the MO guide session). Live and unlisted at anantf.com/mo/guide/. No open PR, nothing half-done:
-pick up from "Not done yet" below.
+Last updated 17 Oct 2026 (the MO guide session). Live and unlisted at anantf.com/mo/guide/ and mo.anantf.com/guide/. No open PR.
+Half-done: one check by the owner (below). Otherwise pick up from "Not done yet".
+
+## Waiting on the owner
+
+- **Real sign-in test at `mo.anantf.com/test/`** (Baby MO test on the new address): passphrase sign-in and faculty Google sign-in
+  have not been tried on a real phone. Only the demo (`?demo`) was tested here. If either fails, look at the authorised domains for
+  the test's Firebase project first (`babymo/SETUP.md`).
+- Phones that installed the guide or the Baby MO test at the old addresses keep the old copy until they add it again from
+  `mo.anantf.com`; the old addresses are not redirected.
 
 ## Recently done
 
@@ -20,6 +28,10 @@ pick up from "Not done yet" below.
   answer choices, confirm sheet. Learn is the home screen. Content and behaviour unchanged.
 
 ## Decisions log
+
+- 16 Oct: a `mo.anantf.com` address (Worker in `MO.md`) for the landing page, the guide and the Baby MO test, rather than moving
+  the guide to another site. The question bank app stays on anantf.com (department-wide). Baby MO files are unchanged and are
+  served at `/test/`.
 
 - 15 Oct: admin parts of the handbook (rosters, leave, MC, who to email), names and phone numbers stay out (intranet).
 - 15 Oct: the guide teaches rocuronium for RSI as 1-1.2 mg/kg on ideal weight, quoting the handbook's lean-weight wording,

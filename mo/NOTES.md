@@ -76,3 +76,15 @@ and `mo-` caches (never progress) after checking for a signal.
 - 2026-10-15: first version. 14 learn modules, about 60 drugs, 20 crisis cards, 14 scenarios, 8 flashcard decks,
   14 calculators. Content written and checked by AI (each module by an author, a clinical checker and a teaching checker)
   against the handbook; **it needs a read-through by the department's faculty before it is shared widely.**
+
+## Addresses and moving things (16 Oct 2026)
+
+- The guide is in `mo/guide/` and answers at both `anantf.com/mo/guide/` and `mo.anantf.com/guide/` (`MO.md`). Its links to the kit,
+  fonts and other pages are written `../../…` so they resolve on both; keep it that way, and check a new link against
+  `worker/routes.js` (anything the Worker doesn't serve forwards to anantf.com).
+- `mo/index.html` is the landing page for new MOs, and `mo/sw.js` is a retired worker that moves phones off the old install at
+  `/mo/`: leave it, and never stamp it. Only `mo/guide/sw.js` is stamped (`node mo/guide/tools/stamp.mjs`).
+- Don't commit local tool state (`.wrangler/` is ignored now; it was committed by mistake once and removed).
+- When a session installs a service worker under a new address, test the move from the old version (old install, then the new
+  files) and not only a fresh install: the old caches and worker must go and saved progress must stay.
+
