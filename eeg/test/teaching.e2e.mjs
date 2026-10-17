@@ -15,6 +15,10 @@ try{
  assert.equal(await page.evaluate(()=>eng.stK),'alpha');
  await page.evaluate(()=>tlRun(110));assert.ok(await page.evaluate(()=>eng.p.alpha)>base.alpha*.85,'alpha recovers');
  await page.evaluate(t=>tlJump(t+50),base.t);await page.waitForFunction(()=>!TL.busy);assert.equal(await page.evaluate(()=>story.lesson),'alpha','rewind preserves lesson');
+ // Selecting a different pattern without running must not corrupt restored teaching context.
+ await page.click('#examplePicker summary');await page.check('[name=eegPattern][value=beta]');await page.click('#examplePicker summary');
+ await page.evaluate(t=>tlJump(t+30),base.t);await page.waitForFunction(()=>!TL.busy);
+ assert.equal(await page.locator('#exampleChoice').inputValue(),'alpha');assert.equal(await page.locator('#exampleLabel').textContent(),'Alpha dropout');
  for(const kind of ['delta','beta','suppression']){
   await page.click('#examplePicker summary');await page.check(`[name=eegPattern][value="${kind}"]`);await page.click('#examplePlay');await page.evaluate(()=>{paused=true;tlRun(50);});
   assert.equal(await page.evaluate(()=>story.lesson),kind);if(['delta','beta'].includes(kind))assert.equal(await page.evaluate(()=>eng.stK),kind);

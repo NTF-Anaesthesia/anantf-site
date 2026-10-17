@@ -98,6 +98,11 @@ chk('Mix propket preset', 'BIS', pk.bis, 58, 70);
 const x4 = run('dex', 0.4, {}, 120, null, 4);
 chk('Dex 0.4', 'BIS', x4.bis, 55, 72); chk('Dex 0.4', '0.5-1 Hz dB vs propofol 0.57', x4.band(0.5, 1) - p57.band(0.5, 1), -99, -10);
 const x1 = run('dex', 1); chk('Dex 1.0', 'BIS', x1.bis, 40, 58);
+// Propofol plus dex: verify the generated spectrum, not only the parameter mapping.
+const pd0=run('mix',{propofol:3.5},{},120,null,4),pd1=run('mix',{propofol:3.5,dex:.5},{},120,null,4);
+chk('Propofol + dex vs propofol', 'alpha peak shifts lower', pd1.peak(7,14)-pd0.peak(7,14), -3, -.1);
+chk('Propofol + dex vs propofol', 'alpha band power decreases', pd1.band(8,12)-pd0.band(8,12), -8, -.1);
+chk('Propofol + dex vs propofol', 'slow power increases', pd1.band(.5,1)-pd0.band(.5,1), .1, 10);
 const e57 = run('propofol', 0.57, { elderly: true }, 120, null, 4);
 chk('Elderly propofol 0.57', 'BIS minus young', e57.bis - p57.bis, 6, 12);
 chk('Elderly propofol 0.57', '8-12 Hz dB vs young', e57.band(8, 12) - p57.band(8, 12), -10, -8);

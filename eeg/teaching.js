@@ -9,7 +9,7 @@ const MIX_LESSONS={
  ['Propofol alone',{propofol:3.5},'Propofol 3.5 μg/mL; no ketamine.'],
  ['Add lower ketamine',{propofol:3.5,ketamine:.1},'Propofol 3.5 μg/mL + lower relative ketamine effect.'],
  ['Add higher ketamine',PRESETS.propket,'Propofol 3.5 μg/mL + higher relative ketamine effect.']]},
- propdex:{initial:2,source:'34879867',note:'Compare adding dexmedetomidine at unchanged propofol, then reducing propofol. Observe slow activity and spindle structure. Clinical co-administration can also reduce alpha power and frequency; this simplified model does not reproduce all those changes or establish equivalent hypnotic doses.',variants:[
+ propdex:{initial:2,source:'34879867',note:'Compare adding dexmedetomidine at unchanged propofol, then reducing propofol. Observe stronger slow activity and a weaker, slower alpha band when the adjunct is added. These qualitative changes reflect a small clinical study; the relative levels and subsequent propofol reduction do not establish equivalent hypnotic doses.',variants:[
  ['Propofol alone',{propofol:3.5},'Propofol 3.5 μg/mL; no dexmedetomidine.'],
  ['Add dexmedetomidine',{propofol:3.5,dex:.5},'Propofol 3.5 μg/mL + moderate relative dexmedetomidine effect.'],
  ['Reduce propofol',PRESETS.propdex,'Propofol 2.5 μg/mL + the same dexmedetomidine effect.']]},
@@ -65,7 +65,7 @@ function initLearning(){
  const options=$('exampleOptions'),old=$('teachingOptions');
  for(const el of [...old.children])if(el.tagName!=='SUMMARY')options.append(el);old.remove();
  options.querySelectorAll('[name=eegPattern]').forEach(input=>input.onchange=()=>{stopStory();learningFocus=input.value;$('exampleChoice').value=input.value;$('exampleLabel').textContent=EEG_LESSONS[input.value].label;describe();});
- play.onclick=()=>{$('examplePicker').open=false;startLearningExample($('exampleChoice').value);};
+ play.onclick=()=>{$('examplePicker').open=false;startLearningExample($('exampleChoice').value);if($('learningSheet')?.open)$('learningSheet').close();};
  const stopManual=()=>{stopStory();learningFocus=null;$('storyCap').textContent='';};
  options.addEventListener('change',e=>{if(e.target.name!=='eegPattern')stopManual();},true);
  options.addEventListener('click',e=>{if(e.target.closest('button'))stopManual();},true);

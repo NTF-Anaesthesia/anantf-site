@@ -11,7 +11,7 @@ try{
    await page.selectOption('#monitorChoice',skin);await page.waitForTimeout(300);
    for(const full of [false,true]){
     if(full)await page.click('#fullScreen');await page.waitForTimeout(200);
-    const dim=await page.evaluate(id=>{const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};return {m:rect(document.getElementById(id)),s:rect(document.querySelector('#monitor .screens')),dock:rect(document.querySelector('#monitor .panel')),overflow:document.documentElement.scrollWidth>innerWidth+1}},ids[skin]);
+    const dim=await page.evaluate(id=>{const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};return {m:rect(document.getElementById('mobileScreen')?.getClientRects().length?document.getElementById('mobileScreen'):document.getElementById(id)),s:rect(document.querySelector('#monitor .screens')),dock:rect(document.querySelector('#monitor .panel')),overflow:document.documentElement.scrollWidth>innerWidth+1}},ids[skin]);
     const {m,s,dock}=dim,label=`${width}×${height} ${skin} ${full?'fullscreen':'page'}`;
     assert.ok(m.w>120&&m.h>100,`${label}: monitor cannot collapse (${m.w}×${m.h})`);
     assert.ok(Math.max(m.w/s.w,m.h/s.h)>.72,`${label}: screen should use the available stage`);

@@ -15,9 +15,10 @@ try{
   await page.click('#channelChoice [data-ch="2"]');assert.equal(await page.evaluate(()=>ADV.ch),2);
   const positions=await page.evaluate(()=>{const r=id=>{const b=document.querySelector(id).getBoundingClientRect();return {x:b.x,y:b.y,right:b.right,bottom:b.bottom}};return {notes:r('#observationNotes'),stage:r('.screens'),dock:r('.panel'),patient:r('#examplePicker')}});
   if(width>1100)assert.ok(positions.notes.x>=positions.stage.right,'desktop observations on the right');
-  else assert.ok(positions.notes.y>=positions.dock.bottom,'mobile observations below controls');
+  else {assert.ok(await page.locator('#learningButton').isVisible(),'mobile teaching entry is in the dock');assert.ok(await page.locator('#learningSheet').isHidden());await page.click('#learningButton');assert.ok(await page.locator('#learningSheet').isVisible());}
   assert.ok(await page.locator('#examplePicker').evaluate(el=>!el.open&&!!el.closest('#eegExamples')),'live adjustments folded within EEG examples');
   await page.click('#examplePicker summary');await page.check('#mElder');assert.equal(await page.evaluate(()=>mods.elderly),true);await page.click('#examplePicker summary');
+  if(width<=1100){await page.click('#closeLearning');assert.equal(await page.locator('#learningButton').evaluate(e=>e===document.activeElement),true);}
   assert.equal(await page.locator('#muscleBlock,#mBlink').count(),0,'redundant controls removed');
   await page.click('#settingsButton');assert.ok(await page.locator('#simSettings').isVisible());
   // Native dialog confines focus and returns it to the gear on dismissal.
@@ -41,6 +42,23 @@ try{
   if(process.env.EEG_SCREENSHOTS)await page.screenshot({path:`/tmp/eeg-refined-${width}.png`});
   if(await page.locator('#fullScreen').getAttribute('aria-pressed')==='true')await page.click('#fullScreen');
   console.log(`PASS controls ${width}×${height}: icon targets, settings, channels, focus, Escape, speed, timeline and mix`);
+ }
+ // Portrait uses readable plots, not a scaled-down equipment bezel. All existing learning controls share one sheet.
+ for(const [width,height] of [[320,640],[390,844]]){
+  await page.setViewportSize({width,height});await page.goto(`http://localhost:${process.env.PORT||8080}/eeg/`);await page.waitForFunction(()=>TL.t0!==null);
+  await page.click('#fullScreen');await page.waitForTimeout(250);
+  assert.ok(await page.locator('#mobileScreen').isVisible());assert.ok(await page.locator('#advWrap').isHidden());
+  const stage=await page.locator('.screens').boundingBox(),screen=await page.locator('#mobileScreen').boundingBox();assert.ok(screen.height>stage.height*.9,'portrait monitor fills its stage');
+  for(const id of ['mobileDsa','mobileEeg'])assert.ok(await page.locator('#'+id).evaluate(el=>el.width>100&&el.height>40),'responsive canvas allocated');
+  await page.click('#channelChoice [data-ch="4"]');await page.waitForTimeout(150);assert.equal(await page.locator('.mobile-channel').count(),2);
+  await page.click('#learningButton');assert.ok(await page.locator('#learningSheet').isVisible());
+  const sheet=await page.locator('#learningSheet').boundingBox();assert.ok(sheet.width>=width-1&&sheet.y>=0&&sheet.y+sheet.height<=height+1,'sheet fits the phone');
+  for(let n=0;n<16;n++){await page.keyboard.press('Tab');assert.ok(await page.evaluate(()=>document.getElementById('learningSheet').contains(document.activeElement)));}
+  await page.keyboard.press('Escape');assert.ok(await page.locator('#learningSheet').isHidden());assert.equal(await page.locator('#fullScreen').getAttribute('aria-pressed'),'true','dismissing notes keeps app presentation');
+  await page.click('#learningButton');await page.click('#examplePicker summary');await page.check('[name=eegPattern][value="delta"]');await page.check('#mEmg');await page.click('#examplePlay');
+  assert.ok(await page.locator('#learningSheet').isHidden(),'running a pattern returns to the live display');assert.equal(await page.evaluate(()=>story.lesson),'delta');assert.equal(await page.evaluate(()=>mods.emg),true);
+  await page.click('#fullScreen');assert.ok(await page.locator('#observationNotes').isVisible(),'notes return below the monitor on the website');
+  console.log(`PASS app presentation ${width}×${height}: readable bilateral plots, sheet, focus, Escape and Run`);
  }
  assert.deepEqual(errors,[]);
 }finally{await browser.close();}

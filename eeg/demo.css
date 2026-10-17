@@ -257,3 +257,81 @@ body.presenting{overflow:hidden}
 .live-workspace{grid-template-rows:minmax(0,1fr) auto}
 
 .pattern-choices{border-bottom:1px solid #d7d2c8;padding-bottom:8px;margin-bottom:8px}
+
+/* Mobile presentation follows DESIGN-APP.md: warm surfaces, touch controls and safe areas. */
+#learningButton{display:none!important}
+#monitor .apptitle{font-weight:400}
+#learningSheet{max-width:none;max-height:none;padding:0;border:0;color:#272722;background:#fbfaf6;box-sizing:border-box;box-shadow:0 16px 60px #27272230}
+#learningSheet::backdrop{background:#27272266}
+#learningSheet[open]{display:grid;grid-template-rows:auto minmax(0,1fr)}
+#learningSheet .learning-body{overflow:auto;overscroll-behavior:contain;padding:16px 20px max(24px,env(safe-area-inset-bottom))}
+#learningSheet #observeTitle{font:600 17px/1.4 var(--f-body);letter-spacing:0;text-transform:none;color:#272722;margin:0}
+#learningSheet #observationNotes{padding:0;margin:0;border:0;height:auto;max-height:none;overflow:visible}
+#learningSheet .learning-section{margin-bottom:20px}
+#monitor.mobile-app{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);gap:0;background:#f1ede4}
+#monitor.mobile-app .monhead{padding:4px 12px 8px;background:#fbfaf6;border-bottom:1px solid #d7d2c8;gap:0}
+#monitor.mobile-app .apptitle{display:none}
+#monitor.mobile-app .demo-toolbar{width:100%;gap:4px;margin:0;flex-wrap:wrap}
+#monitor.mobile-app #monitorChoice{flex:1;min-width:0;width:auto;margin:0;font-size:16px;padding-left:0}
+#monitor.mobile-app #advanceChannels{order:2;width:100%;justify-content:space-between;border:0;padding:0;margin:0}
+#monitor.mobile-app #channelChoice{flex:1;max-width:280px;border-radius:12px;padding:3px;background:#e6e1d6}
+#monitor.mobile-app #channelChoice button{flex:1;border-radius:9px;font-size:14px;min-height:44px}
+#monitor.mobile-app #channelChoice button[aria-pressed=true]{background:#fbfaf6}
+#monitor.mobile-app .icon-button{border-radius:12px}
+#monitor.mobile-app .sim{height:100%;min-height:0;display:block;overflow:hidden}
+#monitor.mobile-app .live-workspace{height:100%;min-height:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:0}
+#monitor.mobile-app .screens{height:100%;min-height:0;box-sizing:border-box;padding:8px;justify-content:center;align-items:center;background:#f1ede4}
+#monitor.mobile-app .panel{grid-template-columns:minmax(0,1fr);gap:8px;padding:8px 12px 12px;background:#fbfaf6;border-top:1px solid #d7d2c8;align-self:end}
+#monitor.mobile-app .depth-control,#monitor.mobile-app .transport,#monitor.mobile-app .panel .story{grid-column:1;grid-row:auto}
+#monitor.mobile-app .depth-head{min-height:44px}
+#monitor.mobile-app #agentChoice{min-height:44px;font-size:16px}
+#monitor.mobile-app .story .row{gap:4px;justify-content:space-between}
+#monitor.mobile-app .story button{flex:1;min-width:0;padding:8px 6px;font-size:14px;border-radius:12px}
+#monitor.mobile-app #storyBtn{margin-left:0}
+#monitor.mobile-app #learningButton{display:inline-flex!important;width:auto;gap:5px;background:#e8ded7;color:#633d3c}
+#monitor.mobile-app #learningButton svg{width:19px;height:19px}
+#monitor.mobile-app #presetSeg button{font-size:13px;border-radius:10px}
+#monitor.mobile-app #examplePicker>summary,#monitor.mobile-app #examplePlay,#monitor.mobile-app #exampleOptions button,#monitor.mobile-app #mixComparison{border-radius:12px}
+#monitor.mobile-app select{font-size:16px}
+#monitor.mobile-app #learningSheet,#monitor.mobile-app #simSettings{inset:auto 0 0;margin:0;width:100%;height:auto;max-height:min(90dvh,calc(100dvh - env(safe-area-inset-top) - 12px));border:0;border-radius:22px 22px 0 0;background:#fbfaf6}
+#monitor.mobile-app .settings-head{padding:12px 16px}
+#monitor.mobile-app #simSettings .settings-body{padding-bottom:max(24px,env(safe-area-inset-bottom))}
+#monitor.mobile-app :is(button,summary):active{background-color:#e3ded3}
+#monitor.mobile-app #pause:active{background-color:#4b2e2d}
+@media(max-height:550px) and (min-width:551px){
+ #monitor.mobile-app .monhead{padding:4px 12px}
+ #monitor.mobile-app .demo-toolbar{flex-wrap:nowrap}
+ #monitor.mobile-app #advanceChannels{order:0;width:auto;flex:none;gap:6px}
+ #monitor.mobile-app #channelChoice{max-width:none;flex:none}
+ #monitor.mobile-app #channelChoice button{min-height:44px;padding:6px 8px}
+ #monitor.mobile-app #sensorLabel{display:none}
+ #monitor.mobile-app .live-workspace{grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:minmax(0,1fr)}
+ #monitor.mobile-app .screens{grid-row:1;grid-column:1;padding:6px}
+ #monitor.mobile-app .panel{grid-column:2;grid-row:1;height:100%;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:8px 12px;border-top:0;border-left:1px solid #d7d2c8;overflow:auto}
+ #monitor.mobile-app .depth-head{min-height:44px;display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+ #monitor.mobile-app #agentChoice{width:100%;max-width:none;font-size:16px}
+ #monitor.mobile-app #tgtBis{font-size:12px;margin:0}
+ #monitor.mobile-app .story .row{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+ #monitor.mobile-app .story button{width:100%;font-size:13px;min-height:44px}
+ #monitor.mobile-app .panel #tLine{display:grid;grid-template-columns:1fr;gap:0}
+ #monitor.mobile-app #learningSheet,#monitor.mobile-app #simSettings{inset:0 0 0 auto;width:min(420px,85vw);height:100%;max-height:100%;border-radius:22px 0 0 22px}
+}
+
+#mobileScreen{display:none}
+@media(max-width:650px) and (min-height:551px){
+ #monitor.mobile-app[data-skin=advance] #advWrap{display:none!important}
+ #monitor.mobile-app[data-skin=advance] #mobileScreen{display:grid;width:100%;height:100%;min-height:0;grid-template-rows:auto minmax(0,1.6fr) minmax(0,1fr);gap:12px;padding:12px;box-sizing:border-box;border-radius:14px;background:#000;color:#e8f0fb}
+ #mobileScreen .mobile-values{display:flex;gap:16px;border-bottom:1px solid #343638;padding-bottom:8px}
+ #mobileScreen .mobile-channel{flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+ #mobileScreen .mobile-bis{display:flex;flex-direction:column;font-size:12px;line-height:1.2}
+ #mobileScreen .mobile-bis strong{font:500 52px/1.1 var(--f-body);font-variant-numeric:tabular-nums}
+ #mobileScreen .mobile-metrics{display:grid;gap:5px;font-size:12px;line-height:1.4;color:#b3b8bb}
+ #mobileScreen .mobile-metrics b{font-weight:500;color:#e8f0fb}
+ #mobileScreen .mobile-plot{display:flex;flex-direction:column;gap:4px;min-height:0}
+ #mobileScreen .mobile-legend{display:flex;justify-content:space-between;gap:4px;font-size:12px;line-height:18px;color:#b3b8bb}
+ #mobileScreen .mobile-legend i{display:inline-block;width:10px;height:2px;margin:0 2px 3px;background:white}
+ #mobileScreen .mobile-legend .mf-key{background:#8a3f9f;margin-left:8px}
+ #mobileScreen canvas{display:block;flex:1;min-height:0;width:100%;height:0}
+ #mobileScreen .mobile-colour{display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:12px;color:#b3b8bb}
+ #mobileScreen .mobile-colour i{display:block;width:60px;height:6px;background:linear-gradient(to right,#1c3f9c,#2a8fd8,#55c4a8,#a7d44f,#f6d51a,#f58a1f,#d9141c)}
+}

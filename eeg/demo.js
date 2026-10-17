@@ -8,7 +8,8 @@ const ICON={
  close:'<path d="m6 6 12 12M6 18 18 6"/>',
  play:'<path d="m9 5 11 7-11 7Z" fill="currentColor" stroke="none"/>',
  pause:'<path d="M9 5v14M16 5v14" stroke-width="3"/>',
- stop:'<rect x="6" y="6" width="12" height="12" fill="currentColor" stroke="none"/>'
+ stop:'<rect x="6" y="6" width="12" height="12" fill="currentColor" stroke="none"/>',
+ learn:'<path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15"/>'
 };
 const icon=name=>`<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${ICON[name]}</svg>`;
 function iconButton(id,label,name){const b=document.createElement('button');b.type='button';b.id=id;b.className='icon-button';b.innerHTML=icon(name);b.setAttribute('aria-label',label);b.title=label;return b;}
@@ -78,12 +79,13 @@ function syncDemoControls(){
 setInterval(syncDemoControls,250);
 function presentationUI(on){
  workspace.classList.toggle('presenting',on);document.body.classList.toggle('presenting',on);
+ mobileLayout();
  const b=$('fullScreen'),label=on?'Exit full screen':'Enter full screen';b.innerHTML=icon(on?'collapse':'expand');b.title=label;b.setAttribute('aria-label',label);b.setAttribute('aria-pressed',String(on));
  syncDemoControls();dirty=true;window.dispatchEvent(new Event('resize'));scheduleFit();
 }
 $('fullScreen').addEventListener('click',async()=>{speedControl.open=false;if(workspace.classList.contains('presenting')){if(document.fullscreenElement)await document.exitFullscreen();presentationUI(false);}else{presentationUI(true);try{if(workspace.requestFullscreen)await workspace.requestFullscreen();}catch{}}});
 document.addEventListener('fullscreenchange',()=>presentationUI(document.fullscreenElement===workspace));
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.fullscreenElement&&!settings.open&&!e.defaultPrevented)presentationUI(false);});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.fullscreenElement&&!settings.open&&!learningSheet.open&&!e.defaultPrevented)presentationUI(false);});
 
 // Explicit stage dimensions prevent inline-size-contained LCDs collapsing.
 let lastFittedSkin='',fitPending=false;
@@ -96,6 +98,37 @@ function fitMonitor(){
  dirty=true;if(mon.skin==='advance')advInval();if(mon.skin==='sedline'){SED.full=true;SED.d=null;}if(mon.skin==='philips')PV.dirty=true;
 }
 new ResizeObserver(scheduleFit).observe(stage);new ResizeObserver(scheduleFit).observe(workspace.querySelector('.monhead'));
-window.addEventListener('resize',scheduleFit);presentationUI(false);
+window.addEventListener('resize',scheduleFit);
 
 initLearning();
+
+// A focused mobile presentation: the monitor and dock stay in view, teaching opens in a sheet.
+// Move the existing controls and notes; do not create a second, diverging set of state.
+const mobilePresentation=matchMedia('(max-width:650px), (max-width:1100px) and (max-height:550px)');
+const learningButton=iconButton('learningButton','What to observe and teaching controls','learn');
+learningButton.innerHTML=icon('learn')+'<span>Learn</span>';learningButton.setAttribute('aria-haspopup','dialog');
+learningButton.setAttribute('aria-controls','learningSheet');learningButton.setAttribute('aria-expanded','false');actions.querySelector('.row').append(learningButton);
+const learningSheet=document.createElement('dialog');learningSheet.id='learningSheet';learningSheet.setAttribute('aria-labelledby','observeTitle');
+learningSheet.innerHTML='<div class="settings-head"></div><div class="learning-body"></div>';
+const closeLearning=iconButton('closeLearning','Close teaching notes','close');learningSheet.firstElementChild.append(closeLearning);workspace.append(learningSheet);
+learningButton.addEventListener('click',()=>{speedControl.open=false;learningSheet.showModal();learningButton.setAttribute('aria-expanded','true');});
+closeLearning.addEventListener('click',()=>learningSheet.close());
+learningSheet.addEventListener('close',()=>{learningButton.setAttribute('aria-expanded','false');if(workspace.classList.contains('mobile-app'))learningButton.focus({preventScroll:true});});
+learningSheet.addEventListener('click',e=>{if(e.target===learningSheet){const r=learningSheet.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)learningSheet.close();}});
+// Prevent a modal Escape from also leaving the fullscreen fallback on iOS.
+learningSheet.addEventListener('keydown',e=>{
+ if(e.key==='Escape')e.stopPropagation();
+ if(e.key!=='Tab')return;
+ const items=[...learningSheet.querySelectorAll('button,summary,input,select,a[href]')].filter(el=>el.getClientRects().length&&!el.disabled),first=items[0],last=items.at(-1);
+ if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+ else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+});
+function mobileLayout(){
+ const on=workspace.classList.contains('presenting')&&mobilePresentation.matches;
+ workspace.classList.toggle('mobile-app',on);
+ if(on){learningSheet.firstElementChild.prepend($('observeTitle'));learningSheet.querySelector('.learning-body').append(explain);}
+ else{if(learningSheet.open)learningSheet.close();explain.prepend($('observeTitle'));workspace.querySelector('.sim').append(explain);}
+ scheduleFit();
+}
+mobilePresentation.addEventListener('change',mobileLayout);
+presentationUI(false);
