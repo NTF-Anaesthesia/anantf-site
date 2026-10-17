@@ -207,3 +207,4 @@ and GitHub PRs to exchange pushed code and task context.
   where a general rule allows immediate merging.
 - New cloud sessions get the skill through the repository clone. Do not modify an
   active Claude branch just to install these instructions.
+- Token savers: `.claude/settings.json` denies reading `vendor/` folders. Ask the owner if one is really needed.
