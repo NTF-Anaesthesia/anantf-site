@@ -29,12 +29,14 @@ const EEG_LESSONS={
  emg:{label:'EMG artefact',source:'26275092',note:'Broadband fast contamination can increase the processed index without a change in hypnotic effect. Check the raw EEG and EMG indicator.',steps:[{at:0,d:.57,mods:{},cap:'Clean baseline.'},{at:20,mods:{emg:true},cap:'EMG contaminates the signal at unchanged hypnotic target.'},{at:90,mods:{},cap:'EMG clears.'},{at:140,end:true,cap:'Compare the signal before and after contamination.'}]},
  diathermy:{label:'Diathermy artefact',source:'26275092',note:'Electrical interference can create misleading broadband DSA power. Check signal quality and the raw tracing before interpreting an index.',steps:[{at:0,d:.57,mods:{},cap:'Clean baseline.'},{at:20,mods:{diathermy:true},cap:'Diathermy interference.'},{at:80,mods:{},cap:'Interference clears.'},{at:130,end:true,cap:'Compare artefact with physiological EEG changes.'}]}
 };
-function learningSource(id){return `<a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank" rel="noopener">Clinical evidence ↗</a>`;}
+function learningSource(id){return `<a href="https://pubmed.ncbi.nlm.nih.gov/${id}/" target="_blank" rel="noopener">Clinical evidence →</a>`;}
 function syncLearning(){
  const box=$('mixComparison');if(!box)return;
  const c=MIX_LESSONS[selectedMix];$('mixTeaching').hidden=mode!=='mix';
  if(box.dataset.family!==selectedMix){box.innerHTML=c.variants.map((v,i)=>`<option value="${i}">${v[0]}</option>`).join('');box.dataset.family=selectedMix;$('mixTeachingText').textContent=c.note;$('mixSource').innerHTML=learningSource(c.source);}
- box.value=selectedMixVariant;$('mixDose').textContent=c.variants[selectedMixVariant][2];$('compareStimulus').hidden=selectedMix!=='tiva';
+ box.value=selectedMixVariant;$('mixDose').textContent=c.variants[selectedMixVariant][2];const active=[mods.elderly&&'Older patient',mods.emg&&'EMG',mods.diathermy&&'Diathermy',mods.asym&&(mods.asym==='L'?'Left slowing':'Right slowing'),eng.stT>0&&'Stimulus'].filter(Boolean);
+ $('liveAdjustmentState').textContent=active.length?active.join(' · '):'';
+ $('stimBtn').disabled=TL.busy;
  $('examplePlay').disabled=TL.busy;
 }
 function startLearningExample(key){
@@ -43,12 +45,18 @@ function startLearningExample(key){
  $('depth').value=EEG_LESSONS[key].steps[0].d*100;setDrug('propofol');snapAll();
  step(300*FS);stepR(300*FS);simT+=300;ADV.pre=null;ADV.cut=null;ADV.review=null;ADV.win=5;ADV.t0=simT-300;ADV.hc=null;
  TL.snaps=[];TL.events=[];TL.key='';TL.t0=simT;TL.max=simT;story={t0:simT,i:-1,lesson:key};runStory();tlSnap();tlAfter();setSpeed(5);if(paused)$('pause').click();syncDemoControls();
- stage.scrollIntoView({block:'start',behavior:'smooth'});
+ stage.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
 }
 function initLearning(){
- const examples=document.createElement('section');examples.className='learning-section';examples.innerHTML='<label for="exampleChoice">EEG examples</label><div class="example-picker"><select id="exampleChoice">'+Object.entries(EEG_LESSONS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('')+'</select></div><details><summary>Teaching point</summary><p id="exampleNote"></p><p id="exampleSource"></p></details>';
+ const examples=document.createElement('section');examples.id='eegExamples';examples.className='learning-section';examples.innerHTML='<label for="exampleChoice">EEG examples</label><div class="example-picker"><select id="exampleChoice">'+[['Patterns',['alpha','delta','beta','suppression']],['Patient',['older']],['Artefacts',['emg','diathermy']]].map(([label,keys])=>`<optgroup label="${label}">${keys.map(k=>`<option value="${k}">${EEG_LESSONS[k].label}</option>`).join('')}</optgroup>`).join('')+'</select></div><details><summary>Teaching point</summary><p id="exampleNote"></p><p id="exampleSource"></p></details>';
  $('observeTitle').after(examples);const play=iconButton('examplePlay','Start a fresh EEG example','play');examples.querySelector('.example-picker').append(play);
- const note=()=>{const c=EEG_LESSONS[$('exampleChoice').value];$('exampleNote').textContent=c.note;$('exampleSource').innerHTML=learningSource(c.source);};note();$('exampleChoice').onchange=note;play.onclick=()=>startLearningExample($('exampleChoice').value);
- const teaching=document.createElement('section');teaching.id='mixTeaching';teaching.className='learning-section';teaching.hidden=true;teaching.innerHTML='<label for="mixComparison">Compare drug effects</label><select id="mixComparison" aria-describedby="mixDose"></select><p id="mixDose" class="dose-caption"></p><button id="compareStimulus" type="button">Apply stimulus</button><p id="mixTeachingText"></p><p id="mixSource"></p><p class="model-note">Illustrative effects; targets are not patient-specific dosing predictions. Allow time for the effect to settle.</p>';examples.after(teaching);
- $('mixComparison').onchange=e=>{selectMix(selectedMix,+e.target.value);if(paused)$('pause').click();};$('compareStimulus').onclick=()=>{stimAll('beta');if(paused)$('pause').click();};syncLearning();
+ const note=()=>{const c=EEG_LESSONS[$('exampleChoice').value];$('exampleNote').textContent=c.note;$('exampleSource').innerHTML=learningSource(c.source);};note();$('exampleChoice').onchange=note;play.innerHTML=icon('play')+'<span>Run</span>';play.title='Run example from a fresh baseline';play.setAttribute('aria-label','Run selected EEG example from a fresh baseline');
+ play.onclick=()=>startLearningExample($('exampleChoice').value);
+ const adjustments=$('teachingOptions');adjustments.querySelector('summary').innerHTML='<span>Adjust current EEG</span><span id="liveAdjustmentState"></span>';examples.append(adjustments);
+ // Reuse the existing controls and handlers. Manual changes end the scripted continuation.
+ adjustments.addEventListener('change',()=>{stopStory();$('storyCap').textContent='';},true);
+ adjustments.addEventListener('click',e=>{if(e.target.closest('button')){stopStory();$('storyCap').textContent='';}},true);
+ $('stimBtn').addEventListener('click',()=>{if(paused)$('pause').click();});
+ const teaching=document.createElement('section');teaching.id='mixTeaching';teaching.className='learning-section';teaching.hidden=true;teaching.innerHTML='<label for="mixComparison">Compare drug effects</label><select id="mixComparison" aria-describedby="mixDose"></select><p id="mixDose" class="dose-caption"></p><p id="mixTeachingText"></p><p id="mixSource"></p><p class="model-note">Illustrative effects; targets are not patient-specific dosing predictions. Allow time for the effect to settle.</p>';examples.after(teaching);
+ $('mixComparison').onchange=e=>{selectMix(selectedMix,+e.target.value);if(paused)$('pause').click();};syncLearning();
 }

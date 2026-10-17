@@ -29,7 +29,7 @@ const explain=document.createElement('aside');explain.id='observationNotes';expl
 explain.append(panel.querySelector('.reading'),$('storyCap'));$('displayOptions').append($('keySeg'));
 $('displayOptions').open=true;settingsBody.append($('displayOptions'));workspace.append(settings);
 const live=document.createElement('div');live.className='live-workspace';
-workspace.querySelector('.sim').append(live,explain);live.append(stage,panel,$('teachingOptions'));
+workspace.querySelector('.sim').append(live,explain);live.append(stage,panel);
 settingsButton.addEventListener('click',()=>{speedControl.open=false;settings.showModal();settingsButton.setAttribute('aria-expanded','true');});
 closeSettings.addEventListener('click',()=>settings.close());
 settings.addEventListener('close',()=>{settingsButton.setAttribute('aria-expanded','false');settingsButton.focus({preventScroll:true});});

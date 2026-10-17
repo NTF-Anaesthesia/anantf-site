@@ -224,12 +224,29 @@ body.presenting{overflow:hidden}
  #monitor.presenting #tgtBis{margin:0 0 4px}
 }
 
-/* Teaching is beside the monitor on desktop and below its controls on mobile. */
-.learning-section{border-bottom:1px solid #dce3e9;padding:0 0 16px;margin:0 0 18px;min-width:0}
-.learning-section>label{display:block;font-size:12px;font-weight:650;letter-spacing:.02em;margin:0 0 8px;color:#435366}
-.learning-section select{width:100%;min-width:0;min-height:44px;border:1px solid #cbd5df;border-radius:10px;background:#fff;color:#182838;padding:8px;font:inherit;font-size:13px}
-.example-picker{display:flex;gap:6px;align-items:center}.example-picker select{flex:1}.example-picker button{flex:none}
-.learning-section p{font-size:13px;line-height:1.55;margin:10px 0}.learning-section summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:13px;color:#48617a}
-.learning-section summary:before{content:'＋';margin-right:7px}.learning-section details[open] summary:before{content:'−'}
-.learning-section .dose-caption{font-weight:600}.learning-section .model-note{font-size:12px;color:#627184}
-.learning-section a{color:#2767a2;text-underline-offset:3px}.learning-section button:not(.icon-button){min-height:44px;border:1px solid #cbd5df;border-radius:10px;background:#f5f8fb;padding:8px 12px;color:#23435f;cursor:pointer}
+/* One learning area: examples and live adjustments share the observation rail. */
+.learning-section{display:block;gap:0;border-bottom:1px solid #d7d2c8;padding:0 0 16px;margin:0 0 18px;min-width:0}
+.learning-section>label{display:block;font-size:12px;font-weight:500;letter-spacing:.04em;margin:0 0 8px;color:#55534d}
+#monitor .learning-section select{width:100%;min-width:0;min-height:44px;border:1px solid #827b6d;border-radius:0;background:#f7f5ef;color:#272722;font-size:15px}
+.example-picker{display:flex;gap:6px;align-items:center}.example-picker select{flex:1}
+#monitor #examplePlay{width:auto;gap:4px;padding:8px;background:#eee9df;color:#633d3c;font:500 14px var(--f-body)}
+#monitor #examplePlay svg{width:18px;height:18px}
+.learning-section p{font-size:15px;line-height:1.6;margin:10px 0}
+.learning-section summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:15px;color:#504e47;list-style:none}
+.learning-section summary::-webkit-details-marker{display:none}
+.learning-section summary:before{content:'+';margin-right:8px;color:#633d3c}.learning-section details[open]>summary:before{content:'−'}
+.learning-section .dose-caption{font-weight:500}.learning-section .model-note{font-size:14px;color:#55534d}
+.learning-section a{display:inline-flex;align-items:center;min-height:44px;color:#633d3c;text-underline-offset:3px}
+#eegExamples #teachingOptions{max-height:none;overflow:visible;border-top:1px solid #d7d2c8;padding:0;margin-top:4px}
+#eegExamples #teachingOptions[open]{display:block;padding-bottom:4px}
+#eegExamples #teachingOptions>summary{display:grid;grid-template-columns:12px 1fr;gap:0 4px;padding:8px 0;box-sizing:border-box;font-size:15px}
+#liveAdjustmentState{grid-column:2;font-size:13px;line-height:1.5;color:#633d3c}
+#liveAdjustmentState:empty{display:none}
+#eegExamples #teachingOptions .chk{font-size:15px;gap:10px}
+#eegExamples #teachingOptions .chk input{accent-color:#633d3c}
+#eegExamples #teachingOptions .nmbrow{display:block;margin:10px 0;font-size:15px}
+#eegExamples #asymSeg{display:flex;margin-top:8px}
+#eegExamples #asymSeg button{flex:1}
+#eegExamples #stimBtn{width:100%;margin-top:8px;border:1px solid #827b6d;border-radius:0;color:#633d3c;background:transparent;font-size:15px}
+#eegExamples #stimBtn[aria-pressed=true]{background:#eee9df}
+.live-workspace{grid-template-rows:minmax(0,1fr) auto}

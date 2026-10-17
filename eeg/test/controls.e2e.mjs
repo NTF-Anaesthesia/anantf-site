@@ -16,7 +16,7 @@ try{
   const positions=await page.evaluate(()=>{const r=id=>{const b=document.querySelector(id).getBoundingClientRect();return {x:b.x,y:b.y,right:b.right,bottom:b.bottom}};return {notes:r('#observationNotes'),stage:r('.screens'),dock:r('.panel'),patient:r('#teachingOptions')}});
   if(width>1100)assert.ok(positions.notes.x>=positions.stage.right,'desktop observations on the right');
   else assert.ok(positions.notes.y>=positions.dock.bottom,'mobile observations below controls');
-  assert.ok(await page.locator('#teachingOptions').evaluate(el=>!el.open&&!el.closest('dialog')),'patient options collapsed below main controls');
+  assert.ok(await page.locator('#teachingOptions').evaluate(el=>!el.open&&!!el.closest('#eegExamples')),'live adjustments folded within EEG examples');
   await page.click('#teachingOptions summary');await page.check('#mElder');assert.equal(await page.evaluate(()=>mods.elderly),true);await page.click('#teachingOptions summary');
   assert.equal(await page.locator('#muscleBlock,#mBlink').count(),0,'redundant controls removed');
   await page.click('#settingsButton');assert.ok(await page.locator('#simSettings').isVisible());
