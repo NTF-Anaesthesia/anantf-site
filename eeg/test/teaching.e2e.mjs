@@ -3,6 +3,9 @@ const {chromium}=await import(process.env.PLAYWRIGHT_PATH||'/opt/node22/lib/node
 const browser=await chromium.launch();const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
 try{
  await page.goto(`http://localhost:${process.env.PORT||8080}/eeg/`);await page.waitForFunction(()=>TL.t0!==null);
+ assert.equal(await page.locator('#compareStimulus').count(),0,'one shared stimulus control');
+ assert.equal(await page.locator('#exampleChoice optgroup').count(),3,'grouped patterns, patient and artefacts');
+ assert.equal(await page.locator('#eegExamples #teachingOptions').count(),1);
  await page.click('#examplePlay');await page.evaluate(()=>{paused=true;});
  const base=await page.evaluate(()=>({alpha:eng.p.alpha,d:depth,t:TL.t0}));
  await page.evaluate(()=>tlRun(65));
@@ -15,6 +18,10 @@ try{
   await page.selectOption('#exampleChoice',kind);await page.click('#examplePlay');await page.evaluate(()=>{paused=true;tlRun(50);});
   assert.equal(await page.evaluate(()=>story.lesson),kind);if(['delta','beta'].includes(kind))assert.equal(await page.evaluate(()=>eng.stK),kind);
  }
+ await page.click('#teachingOptions summary');await page.check('#mEmg');
+ assert.equal(await page.evaluate(()=>story),null,'manual adjustments stop scripted overrides');
+ await page.click('#asymSeg [data-asym="L"]');assert.equal(await page.evaluate(()=>mods.asym),'L');
+ await page.click('#teachingOptions summary');await page.waitForFunction(()=>$('liveAdjustmentState').textContent.includes('Left slowing'));
  await page.selectOption('#agentChoice','mix');
  for(const key of ['tiva','propket','propdex','sevon2o']){
   await page.click(`[data-preset="${key}"]`);const count=await page.locator('#mixComparison option').count();assert.ok(count>=3);
