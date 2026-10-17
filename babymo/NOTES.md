@@ -142,9 +142,9 @@ Built around what went wrong in the owner's other apps:
 - Faculty Google sign-in uses a popup, which can fail in an app installed on an iPhone: faculty should use the browser.
 - Icons are the NTF monogram (`icons/`), made from `ana-ntf-monogram.svg`.
 
-## Status (15 Oct 2026, evening)
+## Status (17 Oct 2026)
 
-- Live at anantf.com/babymo/ with the Firebase project `ntf-mo-portal`. Revamped phone app (#117) on the shared kit.
+- Live at anantf.com/babymo/ and mo.anantf.com/test/ (same files, #132; see `MO.md`) with the Firebase project `ntf-mo-portal`. Revamped phone app (#117) on the shared kit.
 - The paper has 30 ready questions, each with an explanation (#120, #121), so a sitting is the full 20.
 - Firestore rules: the old `questions`, `questions/*/history` and `config/topics` paths are closed (#123). The owner
   pasted the rules and deleted the leftover question documents (15 Oct 2026).
