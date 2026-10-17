@@ -116,7 +116,13 @@ closeLearning.addEventListener('click',()=>learningSheet.close());
 learningSheet.addEventListener('close',()=>{learningButton.setAttribute('aria-expanded','false');if(workspace.classList.contains('mobile-app'))learningButton.focus({preventScroll:true});});
 learningSheet.addEventListener('click',e=>{if(e.target===learningSheet){const r=learningSheet.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)learningSheet.close();}});
 // Prevent a modal Escape from also leaving the fullscreen fallback on iOS.
-learningSheet.addEventListener('keydown',e=>{if(e.key==='Escape')e.stopPropagation();});
+learningSheet.addEventListener('keydown',e=>{
+ if(e.key==='Escape')e.stopPropagation();
+ if(e.key!=='Tab')return;
+ const items=[...learningSheet.querySelectorAll('button,summary,input,select,a[href]')].filter(el=>el.getClientRects().length&&!el.disabled),first=items[0],last=items.at(-1);
+ if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+ else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+});
 function mobileLayout(){
  const on=workspace.classList.contains('presenting')&&mobilePresentation.matches;
  workspace.classList.toggle('mobile-app',on);
