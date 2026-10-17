@@ -1,6 +1,6 @@
 # POCUS tutorials
 
-The POCUS hub groups the teaching by theme. The critical care series expands the owner-provided SCCM study guide; it is not an official SCCM course or certification.
+The POCUS hub lists all nine lectures, with topic filters modelled on chewshihao.com/writing. The default All filter shows every lecture. The critical care series expands the owner-provided SCCM study guide; it is not an official SCCM course or certification.
 
 | Theme | Route | Content |
 | --- | --- | --- |
@@ -9,13 +9,17 @@ The POCUS hub groups the teaching by theme. The critical care series expands the
 | Heart | `haemodynamics/` | 18 sections; EF/forward flow, LVOT, error, PLR, IVC, fluid tolerance and cases |
 | Lung | `lung/` | 30 sections; pleural signs, aeration, effusions, diaphragm, cases and real cines |
 | Shock | `shock/` | 27 sections; RUSH, serial reassessment, arrest, four staged cases and eight decision cases |
-| Perioperative | `gastric/` | Original gastric ultrasound masterclass |
-| Perioperative | `vascular-access/` | Original IA/IV cannulation masterclass |
+| Shock & trauma | `efast/` | eFAST lecture with acquisition simulations and cases |
+| Vascular | `dvt/` | DVT compression ultrasound lecture |
+| Gastric | `gastric/` | Original gastric ultrasound masterclass |
+| Vascular | `vascular-access/` | Original IA/IV cannulation masterclass |
 | Media | `media/` | Eleven licensed clinical cines, posters, source review and per-asset attribution |
 
-`efast/` and `dvt/` remain unreviewed drafts listed only on `/draft.html`. Keep the tutorial noindex tags. Retain the NTF site identity and credit Dr. Chew Shi Hao with a link to https://chewshihao.com.
+The former eFAST and DVT drafts are now listed on the POCUS hub; their teaching content is unchanged. Keep the tutorial noindex tags. Retain the NTF site identity and credit Dr. Chew Shi Hao with a link to https://chewshihao.com.
 
 ## Structure and navigation
+
+`hub.js` filters the flat lecture list using accessible pressed buttons. Without JavaScript, all lecture links remain visible. The filter bar wraps into two columns on small screens.
 
 The original gastric and vascular-access masterclasses preserve the owner-provided text, media and simulations. Their assets are unchanged by the critical care series.
 

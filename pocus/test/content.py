@@ -6,7 +6,7 @@ from collections import Counter
 import hashlib, json, subprocess, tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-PAGES = [ROOT/'pocus/index.html', ROOT/'pocus/media/index.html'] + [ROOT/f'pocus/{slug}/index.html' for slug in ['basics','cardiac','lung','haemodynamics','shock']]
+PAGES = [ROOT/'pocus/index.html', ROOT/'pocus/media/index.html'] + [ROOT/f'pocus/{slug}/index.html' for slug in ['basics','cardiac','lung','haemodynamics','shock','efast','dvt']]
 
 class Page(HTMLParser):
     def __init__(self):
