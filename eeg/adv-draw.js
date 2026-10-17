@@ -61,15 +61,12 @@ function advData(){
  const k=Math.max(1,Math.round(30/step)),A=D.asym.map(x=>x[1]);D.asym=D.asym.map((p,i)=>{let s=0,c=0;for(let j=Math.max(0,i-k);j<=Math.min(A.length-1,i+k);j++)if(A[j]!=null){s+=A[j];c++;}return [p[0],p[1]==null||!c?null:s/c];});
  D.dsa={L:advDsa(hs.L,tL,win,'L'),R:advDsa(hs.R,tL,win,'R')};
  ADV.d=D;ADV.full=true;}
-// the real field is weak (dark blue) above 20 Hz and strongest at the slow waves and the alpha band: lift 0-4 Hz and 8-13 Hz a little, pull 18-30 Hz down
-const advDsaShape=f=>f<4?.07:f<8?.02:f<13?.05:f>18?-(f-18)*.03:0;
 const advMovAvg=(a,k)=>a.map((v,i)=>{if(v==null)return null;let s=0,c=0;for(let j=Math.max(0,i-k);j<=Math.min(a.length-1,i+k);j++)if(a[j]!=null){s+=a[j];c++;}return s/c;});
 const ADV_CELL=3; // DSA cell width in virtual pixels
 function advDsa(h,tL,win,side){const cols=Math.floor(ADV_PX/ADV_CELL),spc=win/cols;let o=ADV.dsaCv[side];if(!o||o.cv.width!==cols){const cv=document.createElement('canvas');cv.width=cols;cv.height=NB;o=ADV.dsaCv[side]={cv,img:cv.getContext('2d').createImageData(cols,NB)};}
- // the same display shaping as the Medtronic BIS screen (calibrated on the owner's photos): a tilt that flattens the 1/f slope, at least 10 s of
- // epochs averaged in every column, 2.5 Hz of vertical smoothing, suppressed seconds left out (an almost all-suppressed column is black)
- const sh=0,sc=1,LO=MT_LO+sh,SPAN=MT_SPAN*sc;
- const tilt=Array.from({length:NB},(_,j)=>mtTilt((j+.5)*.5));
+ // Use the simulated spectral power and the selected dB range directly. A fixed
+ // low-frequency boost made an awake baseline resemble the anaesthetised pattern.
+ // Average at least 10 s per column and 2.5 Hz vertically; suppressed columns are black.
  const pc=new Float32Array(NB),pc2=new Float32Array(NB);let pcOk=false;const d=o.img.data,nData=Math.max(0,Math.min(cols,Math.ceil((advNow()-tL)/spc))),sef=[],mf=[],v=new Float32Array(NB),w=new Float32Array(NB);
  for(let c=0;c<cols;c++){const te=tL+(c+1)*spc,tb=tL+c*spc;
   if(c>=nData){for(let y=0;y<NB;y++){const p=(y*cols+c)*4;d[p]=d[p+1]=d[p+2]=0;d[p+3]=255;}sef.push(null);mf.push(null);continue;}
@@ -80,7 +77,7 @@ function advDsa(h,tL,win,side){const cols=Math.floor(ADV_PX/ADV_CELL),spc=win/co
   const sf=own?sup/own:0;sef.push(scn?ss/scn:null);mf.push(mc?ms/mc:null);
   if(!k||sf>=.5){for(let y=0;y<NB;y++){const p=(y*cols+c)*4;d[p]=d[p+1]=d[p+2]=0;d[p+3]=255;}pcOk=false;continue;}
   for(let j=0;j<NB;j++)w[j]=(v[Math.max(0,j-2)]+2*v[Math.max(0,j-1)]+3*v[j]+2*v[Math.min(NB-1,j+1)]+v[Math.min(NB-1,j+2)])/(9*k);
-  for(let y=0;y<NB;y++){const j=NB-1-y;let L=(w[j]+tilt[j]-LO)/SPAN+advDsaShape((j+.5)*.5);if(sf>0)L=L*(1-1.5*sf)-.1*sf;L=Math.max(0,Math.min(1,L));
+  for(let y=0;y<NB;y++){const j=NB-1-y;let L=dbToX(w[j]);if(sf>0)L=L*(1-1.5*sf)-.1*sf;L=Math.max(0,Math.min(1,L));
    // light smoothing in time: each column keeps 25 percent of the one before it (the real field has a fine minute-to-minute grain)
    if(pc&&pcOk){L=.75*L+.25*pc[j];}pc2[j]=L;
    const col=ADV_LUT[(L*255)|0],p=(y*cols+c)*4;d[p]=col[0];d[p+1]=col[1];d[p+2]=col[2];d[p+3]=255;}

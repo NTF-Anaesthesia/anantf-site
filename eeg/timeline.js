@@ -15,10 +15,10 @@ function tlSetChan(s,m){eng=tlEng(s.eng,m);SIG=[];EYE=[];sup=s.sup.slice();bisS=
  artH=s.artH.slice();bcH=s.bcH.slice();rawH=s.rawH.slice();sefH=s.sefH.slice();mfH=s.mfH.slice();prevSup=s.prevSup;isoN=s.isoN;outN=s.outN;outV=s.outV;sefAge=s.sefAge;
  while(HIST.length&&HIST[HIST.length-1].n>s.lastN)HIST.pop();COLS=HIST.slice(-COLMAX);}
 // the drug controls as they were
-function tlUi(){return {mode,drug,lastSingle,dv:$('depth').value,mix:Object.assign({},mix),mods:{elderly:mods.elderly,emg:mods.emg,diathermy:mods.diathermy,blink:mods.blink,warmer:mods.warmer,nmbMode:mods.nmbMode,caseLen:mods.caseLen,asym:mods.asym}};}
+function tlUi(){return {mode,drug,lastSingle,selectedMix,dv:$('depth').value,mix:Object.assign({},mix),mods:{elderly:mods.elderly,emg:mods.emg,diathermy:mods.diathermy,blink:mods.blink,warmer:mods.warmer,nmbMode:mods.nmbMode,caseLen:mods.caseLen,asym:mods.asym}};}
 function tlSetUi(u){const m=u.mods;mods.elderly=!!m.elderly;$('mElder').checked=mods.elderly;for(const [k,id] of SMODS){mods[k]=!!m[k];$(id).checked=mods[k];}mods.warmer=!!m.warmer;
  if(m.caseLen)setCase(m.caseLen);if(m.asym!=null&&typeof setAsym==='function')setAsym(m.asym);setNmb(m.nmbMode||'auto');
- Object.assign(mix,u.mix);$('depth').value=u.dv;lastSingle=u.lastSingle;
+ selectedMix=u.selectedMix||'tiva';Object.assign(mix,u.mix);$('depth').value=u.dv;lastSingle=u.lastSingle;
  if(u.mode==='mix'){showMode('mix');drug='mix';depth=mix;syncMix();applyTarget();}else setDrug(u.drug);}
 function tlSnap(){const L=tlChan();swapCh();let Rr;try{Rr=tlChan();}finally{swapCh();}
  TL.snaps.push({t:simT,L,R:Rr,nm:Object.assign({},nm),story:story?Object.assign({},story):null,ui:tlUi()});

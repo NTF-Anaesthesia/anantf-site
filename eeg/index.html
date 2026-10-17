@@ -147,11 +147,6 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .reading b{font-family:var(--f-display);font-weight:400;font-size:20px;letter-spacing:-.01em}
 .reading p{font-size:15px}
 .story{display:grid;gap:8px}
-.mixrows{display:grid;gap:6px}
-.mixrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;align-items:baseline}
-.mixrow label{font-size:15px}
-.mixrow output{font:600 14px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--accent)}
-.mixrow input{grid-column:1/-1}
 .lane{display:grid;gap:6px;min-width:0}.lane[hidden]{display:none}
 .key{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-left:4px;border-radius:2px}
 .key.bis{background:#fff}.key.emg{background:#5fd08f;height:1px}
@@ -345,7 +340,7 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
 <div class="wrap">
 <section id="monitor" aria-labelledby="h-mon">
   <div class="monhead"><h1 class="apptitle" id="h-mon">Processed EEG simulator</h1>
-  <div class="demo-toolbar"><label for="monitorChoice">Monitor</label><select id="monitorChoice"><option value="classic">Teaching · EEG + DSA</option><option value="vista">BIS Vista</option><option value="advance">BIS Advance</option><option value="sedline">SedLine</option><option value="philips">IntelliVue</option></select><button type="button" id="fullScreen" aria-pressed="false">Full screen</button></div></div>
+  <div class="demo-toolbar"><label for="monitorChoice">Monitor</label><select id="monitorChoice"><option value="advance">BIS Advance</option><option value="sedline">SedLine</option><option value="philips">IntelliVue</option><option value="vista">BIS Vista</option><option value="classic">Teaching · EEG + DSA</option></select><button type="button" id="fullScreen" aria-pressed="false">Full screen</button></div></div>
   <div class="sim">
     <div class="screens">
     <div class="screen vwrap" id="vistaWrap"><div class="vista" id="vista" role="group" aria-label="Monitor screen in the style of the owner's Medtronic BIS monitor">
@@ -415,12 +410,12 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
     </div>
     <div class="panel">
       <div class="ctl"><label for="agentChoice" class="t">Anaesthetic</label><select id="agentChoice"><option value="propofol">Propofol</option><option value="sevo">Sevoflurane</option><option value="ketamine">Ketamine</option><option value="dex">Dexmedetomidine</option><option value="mix">Drug combination</option></select></div>
-      <div class="ctl" id="mixCtl" hidden><span class="t">Combinations</span>
+      <div class="ctl" id="mixCtl" hidden>
         <p class="tgt" id="tgtMix"><b>Target BIS --</b> <span id="tgtMixSub"></span></p>
         <div class="seg" id="presetSeg" role="group" aria-label="Combinations">
-          <button data-preset="tiva">Propofol + remifentanil</button><button data-preset="propket">Propofol + ketamine</button><button data-preset="sevon2o">Sevo + N₂O</button><button data-preset="propdex">Propofol + dex</button><button data-preset="clear">Clear</button>
+          <button data-preset="tiva" aria-pressed="false">Propofol + remifentanil</button><button data-preset="propket" aria-pressed="false">Propofol + ketamine</button><button data-preset="sevon2o" aria-pressed="false">Sevoflurane + N₂O</button><button data-preset="propdex" aria-pressed="false">Propofol + dexmedetomidine</button>
         </div>
-        <div class="mixrows" id="mixRows"></div></div>
+      </div>
       <div class="ctl" id="depthCtl"><label class="t" for="depth">Depth target</label>
         <div class="track"><i class="zoneband" id="zoneBand" hidden></i><input type="range" id="depth" min="0" max="100" value="0" aria-describedby="tgtBis"><i class="effmark" id="effMark" aria-hidden="true"></i><output class="pop" id="tgtPop" aria-hidden="true" hidden></output></div>
         <div class="ticks" id="ticks"><span>Awake</span><span>Sedated</span><span>GA</span><span>Deep</span><span>Flat</span></div>
@@ -429,11 +424,10 @@ footer{font-size:14px;line-height:1.7;color:var(--muted);max-width:80ch;border-t
 
       <details class="ctl" id="teachingOptions"><summary>Patient &amp; artefacts</summary>
         <label class="chk"><input type="checkbox" id="mElder"> Older patient (over 70)</label>
-        <label class="chk"><input type="checkbox" id="mEmg"> Facial muscle activity (no relaxant)</label>
-        <label class="chk"><input type="checkbox" id="muscleBlock"> Suppress muscle activity</label><p class="caption">Compare EMG contamination with and without muscle activity suppression.</p><div class="nmbrow"><span id="asymLbl">One-sided EEG slowing (shows on two-sided screens)</span>
+        <label class="chk"><input type="checkbox" id="mEmg"> Facial muscle activity (EMG)</label>
+        <div class="nmbrow"><span id="asymLbl">One-sided EEG slowing</span>
           <div class="seg" id="asymSeg" role="group" aria-labelledby="asymLbl"><button data-asym="" aria-pressed="true">None</button><button data-asym="L" aria-pressed="false">Left</button><button data-asym="R" aria-pressed="false">Right</button></div></div>
         <label class="chk"><input type="checkbox" id="mDia"> Diathermy (electrical interference)</label>
-        <label class="chk"><input type="checkbox" id="mBlink"> Blinks and eye movement</label>
         <div class="row"><button class="btn" id="stimBtn" aria-pressed="false">Surgical stimulus</button></div></details>
       <details class="ctl" id="displayOptions"><summary>Display options</summary>
 

@@ -9,22 +9,25 @@
 .demo-toolbar{display:flex;align-items:center;gap:6px;flex-shrink:0}
 #monitor select{font:500 14px/1.3 var(--f-body);min-height:44px;padding:8px 30px 8px 10px;border:1px solid transparent;border-radius:0;background-color:transparent;color:#272722;max-width:100%;cursor:pointer}
 #monitor select:hover{background-color:#e9e5dc}
-#monitorChoice{width:220px}
+#monitorChoice{width:168px}
 #monitor .icon-button{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;min-height:44px;padding:10px;border:0;border-radius:0;background:transparent;color:#504e47;cursor:pointer}
 #monitor .icon-button:hover,#monitor .icon-button[aria-expanded=true]{background:#e9e5dc;color:#633d3c}
 #monitor .icon-button svg,#storyBtn svg{width:22px;height:22px;flex:none}
 #settingsButton{margin-left:6px}
 #monitor :is(select,input,summary,button):focus-visible{outline:2px solid #633d3c;outline-offset:3px}
-#monitor .sim{width:100%;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:10px;min-width:0}
-#monitor .screens{width:100%;height:clamp(360px,calc(100svh - 290px),1100px);min-width:0;display:flex;align-items:center;justify-content:center;gap:0;overflow:hidden;background:#eae6de}
+#monitor .sim{width:100%;display:grid;grid-template-columns:minmax(0,1fr) 280px;align-items:start;gap:24px;min-width:0}
+.live-workspace{min-width:0;display:grid;gap:10px;grid-template-rows:minmax(0,1fr) auto auto}
+#monitor .screens{width:100%;height:clamp(360px,calc(100svh - 290px),1100px);min-width:0;display:flex;align-items:center;justify-content:flex-start;gap:0;overflow:hidden;background:transparent}
 #monitor .screens> :is(.vwrap,.advwrap,.sedwrap,.pvwrap,.mon){flex:none;width:100%;max-width:none;min-width:0;margin:0;box-sizing:border-box}
 #monitor .sedcase{width:100%;max-width:none}
 #monitor .sedctl,#monitor .advsim,#monitor .teachstrip{display:none!important}
 
 /* One dock, with visual weight reserved for playback. */
-#monitor .panel{width:100%;box-sizing:border-box;padding:8px 0 0;border:0;border-top:1px solid #d7d2c8;border-radius:0;background:transparent;display:grid;grid-template-columns:minmax(260px,.9fr) minmax(260px,1fr) auto;gap:10px 24px;align-items:center}
+#monitor .panel{width:100%;box-sizing:border-box;padding:8px 0 0;border:0;border-top:1px solid #d7d2c8;border-radius:0;background:transparent;display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,1fr);gap:8px 24px;align-items:center}
 #monitor .panel .ctl,#monitor .panel .story,#monitor .panel .tline{margin:0;padding:0;border:0;min-width:0;display:block}
-.depth-control{min-width:0}
+.depth-control{min-width:0;grid-column:1;grid-row:1/3}
+.transport{grid-column:2;grid-row:1}
+#monitor .panel .story{grid-column:2;grid-row:2}
 .depth-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px}
 #monitor #agentChoice{max-width:190px;margin-left:-10px}
 #monitor #tgtBis{margin:0;font-size:12px;line-height:1.3;white-space:nowrap}
@@ -50,16 +53,42 @@
 #speedControl[open]>summary,#speedControl>summary:hover{background:#e9e5dc;color:#633d3c}
 .speed-popover{position:absolute;bottom:calc(100% + 12px);right:0;z-index:10;width:220px;box-sizing:border-box;padding:16px;background:#f7f5ef;border:1px solid #d7d2c8;box-shadow:0 8px 32px #27272226}
 .speed-popover label{display:flex;justify-content:space-between;font-size:14px;line-height:1.4;margin-bottom:8px}
-#monitor .story .row{display:flex;flex-wrap:nowrap;gap:2px;padding-left:16px;border-left:1px solid #d7d2c8}
+#monitor .story .row{display:flex;flex-wrap:nowrap;gap:2px;justify-content:flex-end}
 #monitor .story button{min-height:44px;padding:8px 12px;border:0;background:transparent;color:#504e47;font:500 14px/1.2 var(--f-body)}
 #monitor .story button:hover{background:#e9e5dc;color:#633d3c}
 #monitor #storyBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:#eee9df;color:#633d3c;margin-left:6px}
 #monitor #storyBtn[aria-pressed=true]{background:#633d3c;color:#fffaf0}
 #monitor #storyBtn svg{width:18px;height:18px}
-#monitor .panel #combinations{grid-column:1/-1;max-height:28vh;overflow:auto;border-top:1px solid #d7d2c8}
-#combinations>summary{min-height:44px;align-content:center;cursor:pointer;font-size:14px}
-#monitor .panel #combinations .mixrows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px 18px}
-#monitor #combinations .tgt{font-size:14px}
+/* Direct choices replace the six individual drug sliders. */
+#monitor #mixCtl{margin:0}
+#monitor #tgtMix{display:none}
+#monitor #presetSeg{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:0}
+#monitor #presetSeg button{min-height:44px;padding:7px 9px;background:transparent;border:1px solid #d7d2c8;color:#504e47;font:500 12px/1.35 var(--f-body);text-align:left}
+#monitor #presetSeg button:hover{background:#eee9df}
+#monitor #presetSeg button[aria-pressed=true]{border-color:#633d3c;color:#633d3c;background:#eee6df;box-shadow:inset 3px 0 #633d3c}
+
+/* Observations stay beside the monitor; occasional teaching controls sit below. */
+#observationNotes{align-self:stretch;min-width:0;overflow:auto;max-height:calc(100svh - 200px);padding:20px 0 20px 22px;border-left:1px solid #d7d2c8}
+#observeTitle{font:500 12px/1.4 var(--f-body);letter-spacing:.07em;text-transform:uppercase;color:#6c675e;margin:0 0 24px}
+#monitor #observationNotes .reading{border:0;border-radius:0;background:none;margin:0;padding:0}
+#observationNotes .reading b{display:block;font:400 25px/1.2 var(--f-display);letter-spacing:-.02em;margin-bottom:16px;text-wrap:balance}
+#observationNotes .reading p{font:400 15px/1.7 var(--f-body);color:#504e47}
+#observationNotes #storyCap{font:400 14px/1.6 var(--f-body);color:#633d3c;margin:20px 0 0;padding-top:16px;border-top:1px solid #d7d2c8}
+#observationNotes #storyCap:empty{display:none}
+#teachingOptions{border:0;border-top:1px solid #d7d2c8;margin:0;padding:0;min-width:0;max-height:240px;overflow:auto}
+#teachingOptions>summary{min-height:44px;align-content:center;cursor:pointer;font:500 14px/1.4 var(--f-body);color:#55534d}
+#teachingOptions[open]{display:grid;grid-template-columns:1fr 1fr;gap:0 24px;padding-bottom:12px}
+#teachingOptions>summary{grid-column:1/-1}
+#teachingOptions .chk{min-height:44px;margin:0;font-size:14px;line-height:1.4;align-items:center}
+#teachingOptions .chk input{width:16px;height:16px;margin:0;flex:none}
+#teachingOptions .nmbrow{grid-column:1/-1;grid-row:4;display:flex;align-items:center;gap:16px;font-size:14px;margin:4px 0 0}
+#teachingOptions .seg button,#teachingOptions .btn{min-height:44px;font-size:14px;padding:8px 12px}
+#teachingOptions .row{margin:0;align-items:center}
+#advanceChannels{display:flex;align-items:center;gap:10px;padding-inline:6px 12px;border-right:1px solid #d7d2c8}
+#sensorLabel{font-size:12px;color:#6c675e}
+#channelChoice{display:flex;background:#eae6de;padding:3px;gap:2px}
+#channelChoice button{min-height:44px;padding:8px 10px;border:0;border-radius:0;background:transparent;color:#646057;font:500 13px/1.2 var(--f-body)}
+#channelChoice button[aria-pressed=true]{background:#fdfbf6;color:#633d3c;box-shadow:0 1px 3px #27272218}
 
 /* Native dialog provides focus containment, Escape and a fullscreen top layer. */
 #simSettings{position:fixed;inset:12px 12px 12px auto;margin:0;width:min(420px,calc(100vw - 24px));max-width:none;height:calc(100dvh - 24px);max-height:none;box-sizing:border-box;padding:0;border:1px solid #d7d2c8;background:#f7f5ef;color:#272722;box-shadow:0 16px 60px #27272230}
@@ -68,7 +97,6 @@
 .settings-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #d7d2c8}
 #settingsTitle{font:500 20px/1.3 var(--f-body);margin:0}
 .settings-body{overflow:auto;overscroll-behavior:contain;padding:0 20px 20px}
-#advanceChannels{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:72px;font-size:14px;border-bottom:1px solid #d7d2c8}
 #simSettings details{display:block;margin:0;padding:0;border-bottom:1px solid #d7d2c8}
 #simSettings summary{font:500 15px/1.4 var(--f-body);min-height:56px;align-content:center;cursor:pointer}
 #simSettings details[open]{padding-bottom:16px}
@@ -111,11 +139,21 @@
 body.presenting{overflow:hidden}
 #monitor.presenting{position:fixed;inset:0;z-index:10000;max-width:none;margin:0;padding:10px 16px;width:100%;height:100dvh;box-sizing:border-box;display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;overflow:hidden;background:#f7f5ef}
 #monitor.presenting .apptitle{font-size:20px}
-#monitor.presenting .sim{min-height:0;grid-template-rows:minmax(0,1fr) auto}
+#monitor.presenting .sim{min-height:0;height:100%}
+#monitor.presenting .live-workspace{height:100%;min-height:0}
+#monitor.presenting #observationNotes{max-height:100%;height:100%}
 #monitor.presenting .screens{height:100%;min-height:0}
 
 @media(max-width:1100px){
+ #monitor .sim{grid-template-columns:minmax(0,1fr);gap:20px}
+ #observationNotes{max-height:none;border-left:0;border-top:1px solid #d7d2c8;padding:24px 0}
+ #observeTitle{margin-bottom:16px}
+ #observationNotes .reading{max-width:70ch}
+ #monitor.presenting .sim{display:block;overflow:auto;overscroll-behavior:contain}
+ #monitor.presenting #observationNotes{height:auto;max-height:none;margin-top:20px}
  #monitor .panel{grid-template-columns:minmax(250px,1fr) minmax(230px,1fr);gap:8px 24px}
+ #monitor .monhead{flex-wrap:wrap;gap:6px}
+ .demo-toolbar{margin-left:auto}
  #monitor .depth-control{grid-column:1;grid-row:1/3}
  #monitor .transport{grid-column:2;grid-row:1}
  #monitor .panel .story{grid-column:2;grid-row:2}
@@ -126,10 +164,14 @@ body.presenting{overflow:hidden}
  .wrap{padding-inline:10px}
  #monitor .monhead{flex-wrap:wrap;gap:6px}
  #monitor .apptitle{font-size:23px}
- .demo-toolbar{width:100%;gap:4px}
+ .demo-toolbar{width:100%;gap:4px;flex-wrap:wrap}
+ #advanceChannels{order:2;width:100%;padding:0;border:0;justify-content:space-between}
+ #channelChoice{flex:1;max-width:280px}
+ #channelChoice button{flex:1;min-height:44px}
+ #monitor .monhead{gap:10px}
  #monitorChoice{flex:1;min-width:0;width:auto;margin-left:-10px}
  #settingsButton{margin-left:auto}
- #monitor .screens{height:clamp(280px,50svh,500px)}
+ #monitor .screens{height:clamp(240px,70vw,400px)}
  #monitor .panel{grid-template-columns:minmax(0,1fr);gap:8px;padding-top:4px}
  #monitor .depth-control,#monitor .transport,#monitor .panel .story{grid-column:1;grid-row:auto}
  #monitor .depth-head{min-height:40px}
@@ -138,9 +180,12 @@ body.presenting{overflow:hidden}
  #monitor .story .row{justify-content:center}
  #monitor .story button{flex:1}
  #monitor .transport{gap:8px}
- #monitor .panel #combinations .mixrows{grid-template-columns:1fr 1fr}
+ #teachingOptions[open]{grid-template-columns:1fr;max-height:280px}
+ #teachingOptions .nmbrow{grid-row:auto;flex-wrap:wrap;gap:6px;justify-content:space-between}
  #monitor.presenting{padding:8px;gap:6px}
  #monitor.presenting .apptitle{display:none}
+ #monitor.presenting .live-workspace{height:auto;grid-template-rows:auto auto auto}
+ #monitor.presenting .screens{height:clamp(240px,70vw,400px)}
  #monitor .advcase{padding:4px}
  #monitor .advband{padding:4px 4px 0}
  #monitor .advbrand{height:20px}
@@ -162,10 +207,14 @@ body.presenting{overflow:hidden}
 @media(max-height:550px) and (min-width:651px){
  #monitor.presenting .apptitle{display:none}
  #monitor.presenting .monhead{justify-content:flex-end}
- #monitor.presenting .sim{grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:minmax(0,1fr)}
- #monitor.presenting .panel{height:100%;min-height:0;overflow:auto;display:flex;flex-direction:column;align-items:stretch;justify-content:center;border-top:0;border-left:1px solid #d7d2c8;padding:0 0 0 12px;gap:16px}
- #monitor.presenting .story .row{flex-wrap:wrap}
- #monitor.presenting .story button{flex:1}
+ #monitor.presenting .live-workspace{grid-template-columns:minmax(0,1fr) 250px;grid-template-rows:minmax(0,1fr) auto}
+ #monitor.presenting .screens{grid-row:1/3}
+ #monitor.presenting #teachingOptions{grid-column:2;grid-row:2;max-height:150px}
+ #monitor.presenting #teachingOptions[open]{grid-template-columns:1fr}
+ #monitor.presenting #teachingOptions .nmbrow{grid-row:auto;flex-wrap:wrap;gap:4px}
+ #monitor.presenting .panel{height:100%;min-height:0;overflow:auto;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;border-top:0;border-left:1px solid #d7d2c8;padding:0 0 0 12px;gap:6px}
+ #monitor.presenting .story .row{flex-wrap:nowrap}
+ #monitor.presenting .story button{flex:1;padding:8px 6px}
  #monitor.presenting #storyBtn{margin:0}
  #monitor.presenting .transport{flex-wrap:nowrap;gap:8px}
  #monitor.presenting .panel #tLine{min-width:0;display:flex;flex-direction:column;align-items:stretch;gap:0}

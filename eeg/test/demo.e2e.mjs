@@ -12,9 +12,11 @@ try{
  assert.equal(await page.title(),'Processed EEG simulator');
  assert.equal(await page.locator('#tBtns,#caseSeg,#nmBolus,[data-sim="disc"],[data-sim="batt"]').count(),0);
  assert.equal(await page.locator('#monitorChoice option[value="vista"]').textContent(),'BIS Vista');
+ assert.ok(await page.evaluate(()=>{advData();const d=ADV.dsaCv.L.img.data;let warm=0;for(let i=0;i<d.length;i+=4)if(d[i]>190&&d[i+1]>100&&d[i+2]<90)warm++;return warm/(d.length/4)<.05;}),'awake DSA does not have fixed warm anaesthetic bands');
  await page.locator('#induceBtn').click();await page.locator('#pause').click();await seek(240);
  assert.ok(await page.evaluate(()=>HIST.at(-1).bis<65),'induction lowers processed index');
  const anaesthetised=await page.evaluate(()=>HIST.at(-1).bis);
+ assert.ok(await page.evaluate(()=>{advData();const d=ADV.dsaCv.L.img.data;let warm=0;for(let i=0;i<d.length;i+=4)if(d[i]>190&&d[i+1]>100&&d[i+2]<90)warm++;return warm/(d.length/4)>.05;}),'induction develops visible warm DSA bands');
  await page.locator('#wakeBtn').click();await page.locator('#pause').click();await seek(600);
  assert.ok(await page.evaluate(()=>HIST.at(-1).bis)>anaesthetised+15,'emergence raises index');
  await seek(180);assert.equal(await page.locator('#depth').inputValue(),'57','rewind restores depth');
@@ -24,12 +26,10 @@ try{
   await page.selectOption('#monitorChoice',skin);await page.waitForTimeout(250);
   assert.equal(await page.evaluate(()=>mon.skin),skin);
   if(skin==='advance'){
-   await page.click('#settingsButton');
-   for(const ch of ['2','4']){await page.selectOption('#channelChoice',ch);await page.waitForTimeout(200);assert.equal(await page.evaluate(()=>ADV.ch),+ch);assert.ok(await page.locator('#advCv').isVisible());}
-   await page.click('#closeSettings');
+   for(const ch of ['2','4']){await page.click(`#channelChoice [data-ch="${ch}"]`);await page.waitForTimeout(200);assert.equal(await page.evaluate(()=>ADV.ch),+ch);assert.ok(await page.locator('#advCv').isVisible());}
   }
  }
- await page.selectOption('#agentChoice','mix');assert.ok(await page.locator('#mixRows').isVisible());
+ await page.selectOption('#agentChoice','mix');assert.ok(await page.locator('#presetSeg').isVisible());
  await page.selectOption('#agentChoice','sevo');assert.ok(await page.locator('#depth').isVisible());
  await page.locator('#fullScreen').click();assert.equal(await page.locator('#fullScreen').getAttribute('aria-pressed'),'true');
  assert.ok(await page.locator('#depth').isVisible());assert.ok(await page.locator('#timeScrub').isVisible());

@@ -472,20 +472,17 @@ function describeMix(m,tg){tg=tg||m;const hyp=0.155*m.propofol+sevoDepth(m.sevo)
  if(tg.ketamine)parts.push('Ketamine adds gamma (about 27–40 Hz), weakens the alpha band and thins the slow band, so BIS reads higher even though the patient is deeper (0.5 mg/kg on propofol raised BIS from about 40 to 63). Don\u2019t chase the number with more propofol.');
  if(tg.dex)parts.push('Dexmedetomidine adds spindles and slow waves and lowers the hypnotic dose needed.');
  if(tg.n2o)parts.push('N₂O adds anaesthesia (60% is about 0.6 MAC) but barely moves BIS, so the number underestimates the depth.');
- if(!on.length)parts.push('Pick a combination or move the sliders.');
+ if(!on.length)parts.push('Select a combination to explore its EEG and DSA pattern.');
  return [n,parts.join(' ')];}
 
 // ===== controls =====
 const DEPTH_TICKS={propofol:['Awake','Sedated','GA','Deep','Flat'],sevo:['Awake','Sedated','~0.7 MAC','1.5 MAC','over 2 MAC'],ketamine:['Awake','Analgesic','','GA','High dose'],dex:['Awake','','Sedated','','Deep sedation']};
 let mode='single';const mix=Object.assign({},MIX0);
-const MIXROWS=[['propofol','Propofol','µg/ml (effect site)',8,0.1,v=>v.toFixed(1)],['sevo','Sevoflurane','MAC',2,0.05,v=>v.toFixed(2)],
- ['remi','Remifentanil','ng/ml',8,0.5,v=>v.toFixed(1)],['ketamine','Ketamine','% of anaesthetic dose',1,0.05,v=>Math.round(v*100)],
- ['dex','Dexmedetomidine','% of a deep sedation dose',1,0.05,v=>Math.round(v*100)],['n2o','Nitrous oxide','%',0.7,0.05,v=>Math.round(v*100)]];
-const PRESETS={tiva:{propofol:3,remi:4},propket:{propofol:3.5,ketamine:0.4},sevon2o:{sevo:0.8,n2o:0.6},propdex:{propofol:2.5,dex:0.5},clear:{}};
-$('mixRows').innerHTML=MIXROWS.map(([k,l,u,max,st])=>`<div class="mixrow"><label for="mx-${k}">${l} <small>${u}</small></label><output id="o-${k}" for="mx-${k}">0</output><input type="range" id="mx-${k}" min="0" max="${max}" step="${st}" value="0"></div>`).join('');
-function syncMix(){MIXROWS.forEach(([k,,,,,f])=>{$('mx-'+k).value=mix[k];$('o-'+k).textContent=f(mix[k]);});}
-MIXROWS.forEach(([k,,,,,f])=>$('mx-'+k).oninput=e=>{stopStory();mix[k]=+e.target.value;$('o-'+k).textContent=f(mix[k]);applyTarget();});
-document.querySelectorAll('#presetSeg button').forEach(b=>b.onclick=()=>{stopStory();Object.assign(mix,MIX0,PRESETS[b.dataset.preset]);syncMix();applyTarget();});
+const PRESETS={tiva:{propofol:3,remi:4},propket:{propofol:3.5,ketamine:0.4},sevon2o:{sevo:0.8,n2o:0.6},propdex:{propofol:2.5,dex:0.5}};
+let selectedMix='tiva';
+function syncMix(){document.querySelectorAll('#presetSeg button').forEach(b=>{const p=PRESETS[b.dataset.preset],on=Object.keys(MIX0).every(k=>mix[k]===(p[k]||0));b.setAttribute('aria-pressed',String(on));if(on)selectedMix=b.dataset.preset;});}
+function selectMix(key){stopStory();selectedMix=key;Object.assign(mix,MIX0,PRESETS[key]);depth=mix;syncMix();applyTarget();}
+document.querySelectorAll('#presetSeg button').forEach(b=>b.onclick=()=>{selectMix(b.dataset.preset);if(paused)$('pause').click();});
 function showMode(m){mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
  $('mixCtl').hidden=m!=='mix';$('depthCtl').hidden=m==='mix';}
 let lastSingle='propofol';
@@ -534,7 +531,6 @@ $('wakeBtn').onclick=()=>{stopStory();nmSug(2);
  applyTarget();if(paused)$('pause').click();$('storyCap').textContent='Emergence: drug targets are zero. Watch the evolving EEG and DSA as the modelled effect wears off; the processed index responds with a delay.';};
 $('tReset').onclick=()=>{tim.sup=tim.low=R.tim.sup=R.tim.low=0;dirty=true;};
 $('mDia').onchange=e=>{mods.diathermy=e.target.checked;applyTarget();};
-$('mBlink').onchange=e=>{mods.blink=e.target.checked;applyTarget();};
 // ===== target BIS: what the monitor will settle on for the dose set =====
 // A throwaway engine is started at the target and run 36 sim-s; BIS comes from the same features and formula as the
 // live monitor. Computed 180 ms after the last change (cheap: ~15 ms) so dragging stays smooth.
@@ -603,7 +599,7 @@ function applySkin(s,reset,init){mon.skin=s;if($('monitorChoice'))$('monitorChoi
  document.querySelectorAll('#skinSeg button,#monSwitch button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.skin===s));
  $('keySeg').hidden=s!=='classic';if(s==='classic')closeMenu(true);
  if(reset){mon.scale=s==='classic'?100:50;mon.sweep=s==='classic'?'auto':8;}
- scaleUI();dispUI(false);trendUI();if(!init){dirty=true;try{localStorage.setItem('bisdsa.skin',s);}catch(e){}if(reset)saveDisp();}}
+ scaleUI();dispUI(false);trendUI();if(!init){dirty=true;if(reset)saveDisp();}}
 document.querySelectorAll('#skinSeg button,#monSwitch button').forEach(b=>b.onclick=()=>applySkin(b.dataset.skin,true));
 // the Menu: tap an item to step through its values; settings are the same ones the soft keys and Display panel change
 const RANGES=[[-3,31],[0,25],[5,20],[-9,40]],SKINS=[['vista','BIS Vista'],['advance','BIS Advance'],['sedline','SedLine'],['philips','IntelliVue']];
@@ -636,8 +632,8 @@ $('tReset2').onclick=()=>{tim.sup=tim.low=R.tim.sup=R.tim.low=0;dirty=true;};
 function setTeach(on){mon.teach=on;$('mTeach').checked=on;$('vZone').hidden=!on;$('tgtCap').hidden=!on;dirty=true;try{localStorage.setItem('bisdsa.teach',on?'1':'0');}catch(e){}}
 $('mTeach').onchange=e=>setTeach(e.target.checked);
 try{if(localStorage.getItem('bisdsa.teach')==='0')setTeach(false);}catch(e){}
-let skin0='classic';try{{const q=localStorage.getItem('bisdsa.skin');if(['vista','classic','advance','sedline','philips'].includes(q))skin0=q;}}catch(e){}
-applySkin(skin0,true,true);
+// Each teaching session opens on BIS Advance with a unilateral sensor.
+applySkin('advance',true,true);advBootEnd();ADV.win=5;advRelayout();
 try{const d=JSON.parse(localStorage.getItem('bisdsa.disp')||'null');if(d&&['auto',4,8,16].includes(d.sweep)){mon.sweep=d.sweep;dispUI(false);}}catch(e){}
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',paused);$('pause').textContent=paused?'Resume':'Pause';};
 
@@ -649,7 +645,7 @@ const STORY=[
  {at:230,d:0.57,cap:'Maintenance. Compare the sustained alpha and slow-delta bands with the raw EEG.'},
  {at:320,d:0,mods:{},cap:'Emergence: the drug target is zero. Watch the bands change as the modelled effect wears off.'},
  {at:650,end:true,cap:'Demonstration complete. Drag the timeline back to compare induction and emergence, or adjust depth to explore further.'}];
-let story=null;const SMODS=[['emg','mEmg'],['diathermy','mDia'],['blink','mBlink']];
+let story=null;const SMODS=[['emg','mEmg'],['diathermy','mDia']];
 function storyButtonUI(label){if(typeof syncPlayback==='function')syncPlayback();else $('storyBtn').textContent=label;}
 function stopStory(){if(!story)return;story=null;storyButtonUI('Play induction → emergence');}
 $('storyBtn').onclick=()=>{if(story){stopStory();$('storyCap').textContent='';return;}

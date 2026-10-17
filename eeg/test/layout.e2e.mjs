@@ -23,22 +23,18 @@ try{
    }
    if(skin==='advance'){
     assert.ok(await page.evaluate(()=>{advData();return ADV.d.dsa.L.nData>200;}),'Advance immediately displays the existing DSA history');
-    await page.click('#settingsButton');
-    for(const ch of ['2','4']){await page.selectOption('#channelChoice',ch);await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>ADV.ch),+ch);}
-    await page.click('#closeSettings');
+    for(const ch of ['2','4']){await page.click(`#channelChoice [data-ch="${ch}"]`);await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>ADV.ch),+ch);}
    }
   }
   console.log(`PASS layout ${width}×${height}: five monitors in page and fullscreen`);
  }
- // Persisted monitor selection must also have an explicit, usable width on initial load.
+ // Landing always starts with the unilateral BIS Advance, even with a legacy saved choice.
  await page.setViewportSize({width:1440,height:900});
- for(const skin of ['vista','advance','sedline','philips']){
-  await page.evaluate(s=>localStorage.setItem('bisdsa.skin',s),skin);await page.reload();await page.waitForTimeout(400);
-  assert.equal(await page.locator('#monitorChoice').inputValue(),skin,`${skin}: saved selection restored`);
-  assert.ok(await page.locator('#'+ids[skin]).evaluate(el=>el.clientWidth>300),`${skin}: saved selection loads at usable size`);
- }
- // Alternate teaching views use the freed height; combined-drug sliders stay
- // reachable in fullscreen, including after rotating the viewport.
+ await page.evaluate(()=>localStorage.setItem('bisdsa.skin','vista'));await page.reload();await page.waitForFunction(()=>TL.t0!==null);
+ assert.equal(await page.locator('#monitorChoice').inputValue(),'advance');
+ assert.equal(await page.evaluate(()=>ADV.ch),2);
+ assert.ok(await page.locator('#advS').evaluate(el=>el.clientWidth>700),'default monitor stays large');
+ // Alternate teaching views and preset choices remain reachable in fullscreen.
  for(const [width,height] of [[1440,900],[390,844],[844,390]]){
   await page.setViewportSize({width,height});await page.selectOption('#monitorChoice','classic');
   await page.click('#fullScreen');
@@ -49,11 +45,12 @@ try{
    if(view==='eeg')assert.ok(sizes.eeg>sizes.stage*.3,`${width} ${view}: EEG uses available height`);
   }
   await page.selectOption('#agentChoice','mix');await page.waitForTimeout(400);
-  assert.equal(await page.locator('#combinations').evaluate(el=>el.parentElement.className),'panel');
-  const ranges=page.locator('#mixRows input[type=range]');
-  for(let n=0;n<await ranges.count();n++){
-   const slider=ranges.nth(n);await slider.focus();await page.keyboard.press('ArrowRight');
-   const r=await slider.boundingBox();assert.ok(r&&r.y>=0&&r.y+r.height<=height,`${width}: every combination slider is reachable`);
+  assert.equal(await page.locator('#mixCtl input[type=range]').count(),0,'combinations have no dose sliders');
+  const presets=page.locator('#presetSeg button');
+  for(let n=0;n<await presets.count();n++){
+   const choice=presets.nth(n);await choice.focus();await page.keyboard.press('Enter');
+   const r=await choice.boundingBox();assert.ok(r&&r.y>=0&&r.y+r.height<=height,`${width}: every combination is reachable`);
+   assert.equal(await choice.getAttribute('aria-pressed'),'true');
   }
   await page.selectOption('#agentChoice','propofol');await page.click('#fullScreen');
  }

@@ -10,10 +10,16 @@ try{
    const el=page.locator('#'+id),r=await el.boundingBox();assert.ok(r.width>=44&&r.height>=44,`${id} touch target`);assert.ok(await el.getAttribute('aria-label'));assert.equal(await el.locator('svg').count(),1);
   }
   await page.selectOption('#monitorChoice','advance');await page.click('#fullScreen');await page.waitForTimeout(250);
+  assert.equal(await page.evaluate(()=>ADV.ch),2,'unilateral by default');
+  await page.click('#channelChoice [data-ch="4"]');assert.equal(await page.evaluate(()=>ADV.ch),4);
+  await page.click('#channelChoice [data-ch="2"]');assert.equal(await page.evaluate(()=>ADV.ch),2);
+  const positions=await page.evaluate(()=>{const r=id=>{const b=document.querySelector(id).getBoundingClientRect();return {x:b.x,y:b.y,right:b.right,bottom:b.bottom}};return {notes:r('#observationNotes'),stage:r('.screens'),dock:r('.panel'),patient:r('#teachingOptions')}});
+  if(width>1100)assert.ok(positions.notes.x>=positions.stage.right,'desktop observations on the right');
+  else assert.ok(positions.notes.y>=positions.dock.bottom,'mobile observations below controls');
+  assert.ok(await page.locator('#teachingOptions').evaluate(el=>!el.open&&!el.closest('dialog')),'patient options collapsed below main controls');
+  await page.click('#teachingOptions summary');await page.check('#mElder');assert.equal(await page.evaluate(()=>mods.elderly),true);await page.click('#teachingOptions summary');
+  assert.equal(await page.locator('#muscleBlock,#mBlink').count(),0,'redundant controls removed');
   await page.click('#settingsButton');assert.ok(await page.locator('#simSettings').isVisible());
-  await page.selectOption('#channelChoice','2');assert.equal(await page.evaluate(()=>ADV.ch),2);
-  await page.selectOption('#channelChoice','4');assert.equal(await page.evaluate(()=>ADV.ch),4);
-  await page.click('#teachingOptions summary');await page.check('#mElder');assert.equal(await page.evaluate(()=>mods.elderly),true);
   // Native dialog confines focus and returns it to the gear on dismissal.
   for(let n=0;n<20;n++){await page.keyboard.press('Tab');assert.ok(await page.evaluate(()=>document.getElementById('simSettings').contains(document.activeElement)));}
   await page.keyboard.press('Escape');assert.ok(await page.locator('#simSettings').isHidden());assert.equal(await page.locator('#settingsButton').evaluate(e=>e===document.activeElement),true);
@@ -25,7 +31,12 @@ try{
   await page.keyboard.press('Escape');assert.equal(await page.locator('#speedControl').getAttribute('open'),null);
   await page.click('#pause');assert.equal(await page.locator('#pause').getAttribute('aria-label'),'Resume simulation');await page.click('#pause');
   const before=await page.locator('#timeScrub').inputValue();await page.locator('#timeScrub').focus();await page.keyboard.press('ArrowRight');await page.waitForFunction(()=>!TL.busy);assert.ok(+await page.locator('#timeScrub').inputValue()>=+before);
-  await page.selectOption('#agentChoice','mix');assert.ok(await page.locator('#agentChoice').isVisible(),'agent picker stays available in mix mode');await page.selectOption('#agentChoice','propofol');
+  await page.selectOption('#agentChoice','mix');assert.ok(await page.locator('#agentChoice').isVisible(),'agent picker stays available in mix mode');
+  for(const id of ['induceBtn','wakeBtn','storyBtn'])assert.ok(await page.locator('#'+id).evaluate(el=>{const r=el.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return r.bottom<=innerHeight&&r.y>=0&&el.contains(hit);}),`${id} remains visible in combination mode`);
+  await page.click('[data-preset="propket"]');assert.equal(await page.evaluate(()=>mix.ketamine),.4);
+  await page.click('#wakeBtn');assert.equal(await page.evaluate(()=>mix.ketamine),0);
+  await page.click('#induceBtn');assert.equal(await page.evaluate(()=>mix.ketamine),.4,'induce recalls the chosen combination');
+  await page.selectOption('#agentChoice','propofol');
   assert.ok(await page.locator('#err').isHidden());
   if(process.env.EEG_SCREENSHOTS)await page.screenshot({path:`/tmp/eeg-refined-${width}.png`});
   if(await page.locator('#fullScreen').getAttribute('aria-pressed')==='true')await page.click('#fullScreen');

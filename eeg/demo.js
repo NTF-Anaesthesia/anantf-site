@@ -22,15 +22,18 @@ const settings=document.createElement('dialog');settings.id='simSettings';settin
 settings.innerHTML='<div class="settings-head"><h2 id="settingsTitle">Settings</h2></div><div class="settings-body"></div>';
 const closeSettings=iconButton('closeSettings','Close settings','close');settings.firstElementChild.append(closeSettings);
 const settingsBody=settings.querySelector('.settings-body');
-const channels=document.createElement('label');channels.id='advanceChannels';channels.hidden=true;
-channels.innerHTML='<span>BIS Advance channels</span><select id="channelChoice" aria-label="BIS Advance channels"><option value="2">Unilateral</option><option value="4" selected>Bilateral</option></select>';
-const explain=document.createElement('details');explain.id='observationNotes';explain.innerHTML='<summary>What to observe</summary>';
+const channels=document.createElement('div');channels.id='advanceChannels';channels.hidden=true;
+channels.innerHTML='<span id="sensorLabel">Sensor</span><div id="channelChoice" role="group" aria-labelledby="sensorLabel"><button type="button" data-ch="2" aria-pressed="true">Unilateral</button><button type="button" data-ch="4" aria-pressed="false">Bilateral</button></div>';
+$('monitorChoice').after(channels);
+const explain=document.createElement('aside');explain.id='observationNotes';explain.setAttribute('aria-labelledby','observeTitle');explain.innerHTML='<h2 id="observeTitle">What to observe</h2>';
 explain.append(panel.querySelector('.reading'),$('storyCap'));$('displayOptions').append($('keySeg'));
-settingsBody.append(channels,$('teachingOptions'),$('displayOptions'),explain);workspace.append(settings);
+$('displayOptions').open=true;settingsBody.append($('displayOptions'));workspace.append(settings);
+const live=document.createElement('div');live.className='live-workspace';
+workspace.querySelector('.sim').append(live,explain);live.append(stage,panel,$('teachingOptions'));
 settingsButton.addEventListener('click',()=>{speedControl.open=false;settings.showModal();settingsButton.setAttribute('aria-expanded','true');});
 closeSettings.addEventListener('click',()=>settings.close());
 settings.addEventListener('close',()=>{settingsButton.setAttribute('aria-expanded','false');settingsButton.focus({preventScroll:true});});
-settings.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const last=explain.querySelector('summary');if(e.shiftKey&&document.activeElement===closeSettings){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();closeSettings.focus();}});
+settings.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const focusable=[...settings.querySelectorAll('button,summary,input,select')].filter(el=>el.getClientRects().length&&!el.disabled),last=focusable.at(-1);if(e.shiftKey&&document.activeElement===closeSettings){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();closeSettings.focus();}});
 settings.addEventListener('click',e=>{if(e.target===settings){const r=settings.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)settings.close();}});
 
 // Anaesthetic and depth belong together; screen choice stays in the toolbar.
@@ -46,15 +49,13 @@ const speedControl=document.createElement('details');speedControl.id='speedContr
 speedControl.innerHTML='<summary aria-label="Playback speed" title="Playback speed"><span id="speedLabel">1×</span></summary><div class="speed-popover"><label for="playSpeed">Playback speed <output id="speedValue">1×</output></label></div>';
 const oldPlayback=panel.querySelector('.playback');speedControl.querySelector('.speed-popover').append($('playSpeed'));oldPlayback.remove();transport.append(speedControl);
 const actions=panel.querySelector('.story');actions.setAttribute('role','group');actions.setAttribute('aria-label','Transitions');
-const combinations=document.createElement('details');combinations.id='combinations';combinations.open=true;combinations.innerHTML='<summary>Drug combination</summary>';combinations.append($('mixCtl'));
-panel.prepend(depthGroup,transport,actions);panel.append(combinations);
+depthGroup.append($('mixCtl'));panel.prepend(depthGroup,transport,actions);
 
 $('monitorChoice').addEventListener('change',e=>{applySkin(e.target.value,true);if(e.target.value==='advance'){advBootEnd();ADV.win=5;advRelayout();}syncDemoControls();});
-agent.addEventListener('change',e=>{stopStory();if(e.target.value==='mix'){showMode('mix');drug='mix';depth=mix;syncMix();applyTarget();}else setDrug(e.target.value);syncDemoControls();});
+agent.addEventListener('change',e=>{stopStory();if(e.target.value==='mix'){showMode('mix');drug='mix';depth=mix;selectMix(selectedMix);if(paused)pause.click();}else setDrug(e.target.value);syncDemoControls();});
 $('playSpeed').addEventListener('input',e=>{setSpeed(+e.target.value);syncPlayback();});
-$('muscleBlock').addEventListener('change',e=>{stopStory();nmReset();setNmb(e.target.checked?'on':'off');});
-$('induceBtn').addEventListener('click',()=>{stopStory();if(mode==='mix'){Object.assign(mix,MIX0,PRESETS.tiva);syncMix();depth=mix;}else{depth=.57;$('depth').value=57;}applyTarget();if(paused)pause.click();$('storyCap').textContent='Induction: watch the raw EEG and DSA evolve towards the selected target.';syncPlayback();});
-$('channelChoice').addEventListener('change',e=>{ADV.ch=+e.target.value;ADV.hemi='L';ADV.review=null;ADV.sensor=null;ADV.dlg=null;ADV.menu=false;ADV.pop=null;ADV.hc=null;ADV.chartKey=null;advRelayout();advOv();dirty=true;});
+$('induceBtn').addEventListener('click',()=>{stopStory();if(mode==='mix'){selectMix(selectedMix);}else{depth=.57;$('depth').value=57;}applyTarget();if(paused)pause.click();$('storyCap').textContent='Induction: watch the raw EEG and DSA evolve towards the selected target.';syncPlayback();});
+channels.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{ADV.ch=+b.dataset.ch;ADV.hemi='L';ADV.review=null;ADV.sensor=null;ADV.dlg=null;ADV.menu=false;ADV.pop=null;ADV.hc=null;ADV.chartKey=null;advRelayout();advOv();dirty=true;syncDemoControls();}));
 
 function syncPlayback(){
  const state=paused?'play':'pause',label=paused?'Resume simulation':'Pause simulation';
@@ -69,10 +70,10 @@ pause.addEventListener('click',syncPlayback);$('storyBtn').addEventListener('cli
 document.addEventListener('pointerdown',e=>{if(!speedControl.contains(e.target))speedControl.open=false;});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&speedControl.open){speedControl.open=false;speedControl.querySelector('summary').focus();e.preventDefault();e.stopImmediatePropagation();}},true);
 function syncDemoControls(){
- channels.hidden=mon.skin!=='advance';combinations.hidden=mode!=='mix';workspace.dataset.mode=mode;workspace.dataset.skin=mon.skin;
+ channels.hidden=mon.skin!=='advance';workspace.dataset.mode=mode;workspace.dataset.skin=mon.skin;
  if(workspace.dataset.view!==view){workspace.dataset.view=view;dirty=true;}
  if(lastFittedSkin!==mon.skin){lastFittedSkin=mon.skin;scheduleFit();}
- $('channelChoice').value=ADV.ch;agent.value=mode==='mix'?'mix':drug;$('muscleBlock').checked=mods.nmbMode==='on';syncPlayback();
+ channels.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.ch===ADV.ch)));agent.value=mode==='mix'?'mix':drug;syncPlayback();
 }
 setInterval(syncDemoControls,250);
 function presentationUI(on){
