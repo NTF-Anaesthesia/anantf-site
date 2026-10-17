@@ -1,0 +1,1328 @@
+/* Regional anaesthesia app: the app look (ENGINE.md §2 "Skins"; DESIGN-APP.md).
+   The same pages and the same content as the website look, in a second skin: soft corners on controls, grouped lists on a
+   warm ground, a translucent bar, a bottom tab bar that becomes a left rail from 1024 px, a large title that collapses into
+   the bar, and every content component (chapter hub, dose box, callouts, tables, the scan teacher, the guides, the
+   contents page, the calculator and the three apps outside the engine) restyled to match the MO guide and Baby MO.
+
+   EVERY rule here is under html[data-skin="app"], so with data-skin="web" (or none) this file changes nothing: the website
+   look (DESIGN.md) stays exactly as it was. js/skin.js sets data-skin (an inline script in each page's <head> before first
+   paint); the app look is the default only when the block app is opened (home screen, or /blocks/?app), see skin.js.
+
+   Sections: 1 tokens and frame · 2 ground and bars · 3 large title and type · 4 controls · 5 tab bar · 6 settings ·
+   7 chapter hub and lists · 8 block chapter · 9 callouts, tables, folds · 10 scan teacher and real scans · 11 guides ·
+   12 search sheet · 13 /blocks/ and the landings · 14 calculator · 15 spinal · 16 brachial plexus · 17 plexus · 18 foot.
+   Tokens are copied from assets/app/app.css (not linked: that kit is stamped into other apps). Light only. Clinical colours
+   (nerves, arteries, veins, danger, warning, the status colours, the coverage fills) are never touched here. */
+
+/* ------------------------------------------------------------------ 1. tokens and frame
+   (--app-bad is the website look's danger red, #a12a1c, not the kit's #a3262a: the clinical colours are not recoloured.) */
+html[data-skin="app"]{
+  color-scheme:light;
+  --app-ground:#f1ede4;--app-surface:#fbfaf6;--app-paper:#f7f5ef;--app-inset:#eee9df;--app-fill:#e6e1d6;
+  --app-pressed:#e9e5dc;--app-pressed-ground:#e3ded3;--app-blush:#e8ded7;--app-bar:rgb(251 250 246 / 1);--app-backdrop:rgb(39 39 34 / .38);
+  --app-ink:#272722;--app-ink-soft:#504e47;--app-muted:#55534d;--app-wine:#633d3c;--app-wine-press:#4b2e2d;--app-ivory:#fffaf0;
+  --app-line:#d7d2c8;--app-line-strong:#8f8574;--app-control:#827b6d;
+  --app-ok:#1f6b3a;--app-ok-bg:#e3efe4;--app-bad:#a12a1c;--app-bad-bg:#f6e1df;--app-warn:#7a4f00;--app-warn-bg:#f5ead2;
+  --app-serif:'NTF Serif',Fraunces,Georgia,'Times New Roman',serif;
+  --app-sans:'NTF Sans',Inter,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --app-mono:'NTF Mono','JetBrains Mono',ui-monospace,Menlo,monospace;
+  --app-s1:4px;--app-s2:8px;--app-s3:12px;--app-s4:16px;--app-s5:20px;--app-s6:24px;--app-s8:32px;
+  --app-r-xs:6px;--app-r-sm:8px;--app-r-md:12px;--app-r-lg:14px;--app-r-xl:22px;--app-r-full:999px;
+  --app-tab-h:52px;--app-rail:96px;
+  --app-safe-b:env(safe-area-inset-bottom,0px);--app-safe-l:env(safe-area-inset-left,0px);--app-safe-r:env(safe-area-inset-right,0px);
+  --app-shadow-thumb:0 1px 2px rgb(39 39 34 / .14),0 2px 6px rgb(39 39 34 / .08);
+  --app-shadow-float:0 8px 28px rgb(39 39 34 / .18),0 2px 6px rgb(39 39 34 / .08);
+  --app-ease:cubic-bezier(.2,0,0,1);--app-d-press:90ms;--app-d-fast:150ms;
+  /* The page column: 16px gutters (24px from 768px) round a 720px reading column; the pages that need more room
+     (the contents page, the landings, the two 3D apps) say so below. */
+  --site-gutter:16px;--site-width:752px;
+}
+@media (min-width:768px){html[data-skin="app"]{--site-gutter:24px;--site-width:768px}}
+@media (prefers-reduced-motion:reduce){html[data-skin="app"]{--app-d-press:0ms;--app-d-fast:1ms}}
+html[data-skin="app"] body:is(.bd-app,.plexus-app,.px){--site-width:1048px}
+html[data-skin="app"] body.tb-app:has(>.ra-sbar){--site-width:1048px}
+@media (max-width:767px){
+  html[data-skin="app"] body:is(.bd-app,.plexus-app,.px),html[data-skin="app"] body.tb-app:has(>.ra-sbar){--site-width:752px}
+}
+
+/* ------------------------------------------------------------------ 2. ground and bars
+   Two layers: the warm ground, and raised surfaces on it. The engine's own "paper" token becomes the surface, so every
+   control, tile and panel that was paper is a raised surface on the ground. */
+html[data-skin="app"]:root{background:var(--app-ground)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app,.plexus-app,.ra-app){background:var(--app-ground);-webkit-tap-highlight-color:transparent}
+html[data-skin="app"] body.tb-app{--tb-paper:#fbfaf6;--tb-hover:#e9e5dc;--tb-panel:#eeece5}
+html[data-skin="app"] body.spinal-app{--sp-bg:#f1ede4;--sp-surface:#fbfaf6;--sp-surface-2:#eee9df}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) ::selection{background:var(--app-blush)}
+/* pages with their own title block above the bar and a paper foot: both sit on the ground / surface */
+html[data-skin="app"] body.plexus-app>header.top{background:transparent}
+html[data-skin="app"] body.plexus-app>section.foot{background:transparent}
+
+/* The app is the whole screen: the NTF Anaesthesia site header and the breadcrumbs into the rest of the site are not shown
+   (a reader who wants the site goes through the browser). The website look keeps them. */
+html[data-skin="app"] :is(.ntf-header,.ntf-crumbs){display:none!important}
+
+/* The bar: transparent on the ground while the large title is showing, then (once the title has scrolled under it) a
+   blurred surface with a hairline, as on iOS (fully opaque: owner, 17 Oct 2026, text scrolling under it showed through and
+   distracted, and at 98% a faint ghost of the text was still visible; the tab bar uses the same token). The surface is a pseudo-element, not the bar itself, so a
+   backdrop-filter on the bar never becomes the containing block of the search sheet (position: fixed) inside it.
+   js/appnav.js sets html[data-ra-collapsed] from an IntersectionObserver on the page's first heading. */
+html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar){background:transparent;border-bottom:0;isolation:isolate}
+html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar)::before{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:var(--app-bar);box-shadow:0 .5px 0 var(--app-line);
+  -webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);
+  opacity:0;transition:opacity var(--app-d-fast) var(--app-ease);
+}
+html[data-skin="app"][data-ra-collapsed] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar)::before,
+html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar):has([aria-expanded="true"],.tb-sheet:not([hidden]))::before{opacity:1}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar)::before{background:var(--app-surface)}
+}
+/* controls in the bar: plain wine icon buttons (no boxes), a fill pill for the chapter menu, a press state */
+html[data-skin="app"] :is(.tb-bar-home,.tb-tool,.ra-sbar-back,.ra-sbar-btn,.sp-bar-home,.sp-tool,.bp-home,.bp-tool){
+  border:0;border-radius:var(--app-r-md);background:transparent;color:var(--app-wine);
+}
+html[data-skin="app"] :is(.tb-bar-home,.tb-tool,.ra-sbar-back,.ra-sbar-btn,.sp-bar-home,.sp-tool,.bp-home,.bp-tool):hover{background:var(--app-pressed-ground);color:var(--app-wine)}
+html[data-skin="app"] :is(.tb-bar-home,.tb-tool,.ra-sbar-back,.ra-sbar-btn,.sp-bar-home,.sp-tool,.bp-home,.bp-tool):active{background:var(--app-pressed-ground);opacity:.55;transition-duration:0ms}
+html[data-skin="app"] :is(.tb-chmenu-btn,.sp-chmenu-btn,.bp-blockmenu-btn){
+  border:0;border-radius:var(--app-r-md);background:var(--app-fill);color:var(--app-ink);font-weight:500;
+}
+html[data-skin="app"] :is(.tb-chmenu-btn,.sp-chmenu-btn,.bp-blockmenu-btn):hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] :is(.tb-chmenu-btn,.sp-chmenu-btn,.bp-blockmenu-btn):active{background:var(--app-pressed-ground);transition-duration:0ms}
+html[data-skin="app"] :is(.tb-chmenu-caret,.bp-caret){color:var(--app-wine)}
+/* the bar is icon-only at every width (the words stay for screen readers); the chapter menu takes the room */
+html[data-skin="app"] body.tb-app :is(.tb-bar-btn,.tb-bar-home){width:44px;min-width:44px;padding:0;justify-content:center}
+html[data-skin="app"] body.tb-app :is(.tb-bar-btn,.tb-bar-home) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+@media (min-width:768px){html[data-skin="app"] body.tb-app .tb-chmenu{min-width:180px}}
+html[data-skin="app"] body.tb-app .tb-bar:not(.tb-bar--menu) .tb-chlist{display:none}
+html[data-skin="app"] body.tb-app .tb-bar:not(.tb-bar--menu) .tb-chmenu{display:block}
+html[data-skin="app"] body.spinal-app :is(.sp-tool,.sp-bar-home){width:44px;min-width:44px;padding:0;justify-content:center}
+html[data-skin="app"] body.spinal-app :is(.sp-tool,.sp-bar-home) span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+html[data-skin="app"] body.spinal-app .sp-bar:not(.sp-bar--menu) .sp-chlist{display:none}
+html[data-skin="app"] body.spinal-app .sp-bar:not(.sp-bar--menu) .sp-chmenu{display:block}
+html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar) :is(a,button,summary,select,input,[tabindex]):focus-visible{outline:2px solid var(--app-wine);outline-offset:2px;border-radius:var(--app-r-md)}
+/* The top bar's own buttons (js/appnav.js adds them while the app look is on): a search button where the page's bar has none,
+   and the red Safety button (emergency guides and the dose calculator). Both are at least 44px; Safety is a danger-pair pill
+   with the word, so it reads as a button and not as a link, and not by colour alone. Settings is a tab, so the bar's
+   Settings button goes. */
+html[data-skin="app"] .ra-bact{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;flex:none;box-sizing:border-box;min-width:44px;min-height:44px;margin:0;padding:0;
+  border:0;border-radius:var(--app-r-md);background:transparent;color:var(--app-wine);cursor:pointer;
+  font:600 14px/1 var(--app-sans);letter-spacing:0;text-decoration:none!important;-webkit-appearance:none;appearance:none;
+}
+html[data-skin="app"] .ra-bact svg{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+html[data-skin="app"] .ra-bsearch:hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] .ra-bsearch:active{background:var(--app-pressed-ground);opacity:.55;transition-duration:0ms}
+html[data-skin="app"] .ra-safety{padding:0 11px 0 8px;background:var(--app-bad-bg);color:var(--app-bad)}
+html[data-skin="app"] .ra-safety svg{width:20px;height:20px;stroke-width:1.9}
+html[data-skin="app"] .ra-safety:hover{background:#efd2cf;color:var(--app-bad)}
+html[data-skin="app"] .ra-safety:active{background:#e9c4c0;transition-duration:0ms}
+html[data-skin="app"] .ra-safety[aria-current="page"]{box-shadow:inset 0 0 0 2px var(--app-bad)}
+html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar) .ra-bact:focus-visible{outline:2px solid var(--app-wine);outline-offset:2px}
+html[data-skin="app"] :is(.tb-bar,.ra-sbar,.sp-bar,.bp-bar) .ra-settings-btn{display:none!important}
+/* the bar's search button shows at every width (the menu that gave it a place on very narrow phones is the row under the bar) */
+html[data-skin="app"] body.tb-app #tb-search-open{display:inline-flex}
+html[data-skin="app"] body.tb-app .tb-chmenu-search-li{display:none}
+html[data-skin="app"] body :is(.tb-bar,.sp-bar) :is(.tb-tool,.sp-tool) svg{width:22px;height:22px;stroke-width:1.7}
+/* Phones: the bar holds back, search, Safety and the level control (about 330px) at 360px wide, so the bar's side padding
+   is 8px and the gaps 2px; below 480px the chapter menu is the row under the bar (.ra-titlerow). */
+@media (max-width:479.98px){
+  html[data-skin="app"] :is(.tb-bar-inner,.ra-sbar-inner,.sp-bar-inner,.bp-bar-inner){gap:2px;padding-inline:8px}
+}
+/* Where the bar also holds the level control there is no room left for the page's name at phone widths (a "S…" or "Calc…"
+   is worse than none): the name is hidden, and the bottom tab, the large title and the Safety button say where you are. */
+@media (max-width:479.98px){
+  html[data-skin="app"] .lc-bar:has(.tb-bar-level) :is(.lc-bar-title,.bd-pbar-title){visibility:hidden}
+}
+/* 320px phones: 12px short, so the bar's side padding goes and the Safety button is a little tighter (all four buttons stay 44px) */
+@media (max-width:339.98px){
+  html[data-skin="app"] :is(.tb-bar-inner,.ra-sbar-inner,.sp-bar-inner,.bp-bar-inner){padding-inline:3px;gap:1px}
+  html[data-skin="app"] .ra-safety{padding:0 7px 0 5px;gap:3px}
+}
+html[data-skin="app"] .ra-titlerow{box-sizing:border-box;width:100%;max-width:var(--site-width,752px);margin:0 auto;padding:2px var(--site-gutter,16px) 6px}
+html[data-skin="app"] .ra-titlerow :is(.tb-chmenu,.sp-chmenu,.bp-blockmenu){position:static;width:100%;min-width:0;flex:none}
+html[data-skin="app"] .ra-titlerow :is(.tb-chmenu-btn,.sp-chmenu-btn,.bp-blockmenu-btn){width:100%}
+html[data-skin="app"] .bp-bar .chip{border-radius:var(--app-r-full)}
+html[data-skin="app"] .ra-sbar-title{font:600 17px/1.25 var(--app-sans);color:var(--app-ink)}
+/* the level control becomes a segmented control: a fill track and a raised thumb */
+html[data-skin="app"] .ra-level-seg{border:0;border-radius:var(--app-r-md);background:var(--app-fill);box-shadow:none;overflow:hidden;padding:2px;gap:2px;box-sizing:border-box}
+html[data-skin="app"] .ra-level-btn{border:0;border-radius:10px;background:transparent;min-height:44px;color:var(--app-ink-soft)}
+html[data-skin="app"] .ra-level-btn:hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] .ra-level-btn[aria-pressed="true"]{background:var(--app-surface);color:var(--app-wine);font-weight:600;box-shadow:var(--app-shadow-thumb)}
+html[data-skin="app"] .ra-level-btn:focus-visible,html[data-skin="app"] .ra-level-back:focus-visible{outline-offset:0}
+html[data-skin="app"] .ra-level-k{font:600 12px/1 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] .ra-level-back{border:0;border-radius:var(--app-r-md);background:var(--app-surface);box-shadow:var(--app-shadow-thumb)}
+/* menus that open from the bar: floating rounded lists */
+html[data-skin="app"] :is(.tb-chmenu-panel,.sp-chmenu-panel,.bp-blockmenu-panel){border:0;border-radius:var(--app-r-lg);background:var(--app-surface);box-shadow:var(--app-shadow-float);overflow:hidden auto}
+html[data-skin="app"] :is(.tb-chmenu-list a,.tb-chmenu-act,.sp-chmenu-list a,.sp-chmenu-act,.bp-blockmenu-item,.bp-blockmenu-act){min-height:50px;font-size:17px;padding-inline:var(--app-s4)}
+html[data-skin="app"] :is(.tb-chmenu-list a,.tb-chmenu-act,.sp-chmenu-list a,.sp-chmenu-act,.bp-blockmenu-item,.bp-blockmenu-act):active{background:var(--app-pressed)}
+html[data-skin="app"] :is(.tb-chmenu-list a,.sp-chmenu-list a)+*{border-top:0}
+html[data-skin="app"] :is(.tb-chmenu-list a[aria-current=page],.sp-chmenu-list a[aria-current=page],.bp-blockmenu-item[aria-pressed="true"]){box-shadow:none;background:var(--app-blush);color:var(--app-wine);font-weight:600}
+html[data-skin="app"] :is(.tb-chmenu-extra,.sp-chmenu-extra,.bp-blockmenu-extra){border-top:1px solid var(--app-line)}
+html[data-skin="app"] :is(.bp-blockmenu-group){font:600 12px/1.4 var(--app-sans);letter-spacing:.07em;border-top-color:var(--app-line)}
+
+/* ------------------------------------------------------------------ 3. large title and type (DESIGN-APP.md: 34px Fraunces)
+   The first heading of a screen is the large title; chapters and sections keep their own sizes. Kickers are 12px capitals
+   in the body font, not mono. */
+html[data-skin="app"] body main :is(.bd-hero h1,.st-hero h1,.tb-hub h1,.lc-hero h1,h1.tb-ch-title,.tb-hero h1),
+html[data-skin="app"] body :is(.sp-hero h1,.top h1){
+  font:400 34px/1.2 var(--app-serif);letter-spacing:-.02em;max-width:none;margin:0 0 var(--app-s2);text-wrap:balance;color:var(--app-ink);
+}
+html[data-skin="app"] body main :is(.bd-hero,.st-hero,.tb-hub,.lc-hero,.tb-hero){padding-top:var(--app-s2);padding-bottom:var(--app-s2);border-bottom:0}
+html[data-skin="app"] body :is(.tb-eyebrow,.tb-ch-kicker,.tb-kicker,.sp-eyebrow,.sp-kicker,.bd-part-k,.bd-res-k,.tb-brief,.tb-card-k){
+  font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;text-transform:uppercase;color:var(--app-muted);margin:0 0 6px;
+}
+html[data-skin="app"] body .tb-ch-kicker{color:var(--app-wine);margin:var(--app-s4) 0 var(--app-s1)}
+html[data-skin="app"] body :is(.tb-lead,.sp-lead,.tb-hero .tb-lead){font:400 17px/1.5 var(--app-sans);color:var(--app-ink-soft);max-width:none;margin:0 0 var(--app-s4)}
+html[data-skin="app"] body.tb-app main .tb-hub-disclaimer{border-left:0;border-radius:var(--app-r-md);background:var(--app-inset);padding:var(--app-s3) var(--app-s4)}
+/* in-content headings: title2 22px Fraunces; subheads are headline-weight Inter, not capitals */
+html[data-skin="app"] body.tb-app main :is(.tb-hv3,h3){font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:0 0 var(--app-s2);max-width:none}
+html[data-skin="app"] body.tb-app main :is(h4,.tb-hv4){font:600 17px/1.35 var(--app-sans);text-transform:none;letter-spacing:0;margin:var(--app-s5) 0 6px;color:var(--app-ink)}
+html[data-skin="app"] body.tb-app main h2:not(.tb-hv3,.tb-hub-h,.tb-ch-title){font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;max-width:none;margin:0 0 var(--app-s2)}
+html[data-skin="app"] body.tb-app main a{text-underline-offset:3px}
+html[data-skin="app"] body.tb-app main :is(p,li,dd){max-width:none}
+html[data-skin="app"] body.tb-app main :is(.tb-prose,.tb-bsec>p,.tb-bsec>ul){max-width:68ch}
+html[data-skin="app"] body.tb-app main code,html[data-skin="app"] body.tb-app main .tb-mono{font-family:var(--app-mono)}
+/* tier badges ("Resident", "Consultant") are small badges, not boxes */
+html[data-skin="app"] body :is(.ra-tier-badge){border:0;border-radius:var(--app-r-xs);background:var(--app-inset);color:var(--app-muted);padding:2px 8px;font:600 12px/1.6 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body .ra-tier-badge[data-badge="2"]{background:#e6e8ec;color:#3f4a5a}
+html[data-skin="app"] body .ra-tier-badge[data-badge="3"]{background:var(--app-blush);color:var(--app-wine)}
+html[data-skin="app"] body .ra-hidden-hint{border-left:0;border-radius:var(--app-r-md);background:var(--app-inset);padding:var(--app-s2) var(--app-s4);font:400 15px/1.45 var(--app-sans)}
+html[data-skin="app"] body .ra-hidden-hint.is-relaxed{background:var(--app-blush)}
+html[data-skin="app"] body .ra-hidden-hint button{color:var(--app-wine);font-weight:600;text-decoration:none}
+
+/* ------------------------------------------------------------------ 4. controls: kit buttons, soft corners, press states */
+html[data-skin="app"] body :is(.tb-btn,.sp-btn){
+  min-height:48px;padding:var(--app-s2) var(--app-s5);border:0;border-radius:var(--app-r-md);background:var(--app-surface);color:var(--app-ink);
+  box-shadow:inset 0 0 0 1px var(--app-control);font:600 16px/1.2 var(--app-sans);text-decoration:none;
+  transition:transform var(--app-d-fast) var(--app-ease),background-color var(--app-d-fast) linear;
+}
+html[data-skin="app"] body :is(.tb-btn,.sp-btn):hover{background:var(--app-pressed);box-shadow:inset 0 0 0 1px var(--app-control)}
+html[data-skin="app"] body :is(.tb-btn,.sp-btn):active{background:var(--app-pressed-ground);transform:scale(.97);transition-duration:var(--app-d-press)}
+html[data-skin="app"] body :is(.tb-btn--primary,.sp-btn--primary){background:var(--app-wine);color:var(--app-ivory);box-shadow:none}
+html[data-skin="app"] body :is(.tb-btn--primary,.sp-btn--primary):hover{background:var(--app-wine-press);color:var(--app-ivory);box-shadow:none;text-decoration:none}
+html[data-skin="app"] body :is(.tb-btn--primary,.sp-btn--primary):active{background:var(--app-wine-press)}
+html[data-skin="app"] body :is(.tb-btn,.sp-btn):disabled{opacity:.4;cursor:default;transform:none}
+html[data-skin="app"] body.tb-app main a.tb-btn{color:var(--app-ink);text-decoration:none}
+html[data-skin="app"] body.tb-app main a.tb-btn--primary{color:var(--app-ivory)}
+html[data-skin="app"] body :is(a,button,summary,select,input,textarea,[tabindex]):focus-visible{outline:2px solid var(--app-wine);outline-offset:2px;border-radius:var(--app-r-sm)}
+/* segmented controls (Ultrasound / Diagram / Real, view toggles): a fill track and a raised thumb */
+html[data-skin="app"] body :is(.tb-seg,.sp-seg){display:flex;flex-wrap:nowrap;gap:0;margin:0;padding:2px;background:var(--app-fill);border-radius:10px;min-width:0}
+html[data-skin="app"] body :is(.tb-seg .tb-seg-btn,.sp-seg .sp-seg-btn){
+  flex:1 1 auto;min-width:0;min-height:44px;margin:0;padding:0 var(--app-s3);border:0;border-radius:8px;background:transparent;box-shadow:none;
+  color:var(--app-ink-soft);font:500 15px/1.25 var(--app-sans);text-align:center;white-space:nowrap;
+}
+html[data-skin="app"] body :is(.tb-seg .tb-seg-btn,.sp-seg .sp-seg-btn):hover{background:var(--app-pressed-ground);color:var(--app-ink-soft)}
+html[data-skin="app"] body :is(.tb-seg .tb-seg-btn,.sp-seg .sp-seg-btn):active{background:var(--app-pressed-ground);transform:none}
+html[data-skin="app"] body :is(.tb-seg .tb-seg-btn,.sp-seg .sp-seg-btn)[aria-pressed=true]{background:var(--app-surface);color:var(--app-wine);font-weight:600;box-shadow:var(--app-shadow-thumb);border:0}
+html[data-skin="app"] body :is(.tb-seg .tb-seg-btn,.sp-seg .sp-seg-btn):focus-visible{outline-offset:0}
+/* tiles and result rows: raised cards on the ground */
+html[data-skin="app"] body.tb-app :is(.tb-btn,.tb-seg-btn,.tb-tool):active{transition-duration:0ms}
+html[data-skin="app"] body.tb-app .tb-seg{gap:0}
+
+/* ------------------------------------------------------------------ 5. tab bar (js/appnav.js draws it while the app look is on)
+   Below 1024 px: a bar along the bottom, 52px plus the home-indicator inset. From 1024 px: a 96px rail down the left. */
+html[data-skin="app"] .ra-tabbar{
+  position:fixed;z-index:45;left:0;right:0;bottom:0;display:flex;justify-content:center;box-sizing:border-box;
+  padding:0 var(--app-safe-r) var(--app-safe-b) var(--app-safe-l);
+  background:var(--app-bar);box-shadow:0 -1px 0 var(--app-line);
+  -webkit-backdrop-filter:saturate(1.6) blur(18px);backdrop-filter:saturate(1.6) blur(18px);
+  font-family:'NTF Sans',Inter,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){html[data-skin="app"] .ra-tabbar{background:var(--app-surface)}}
+html[data-skin="app"] .ra-tabbar-in{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;width:100%;max-width:560px;margin:0}
+html[data-skin="app"] .ra-tab{
+  position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-sizing:border-box;
+  min-height:var(--app-tab-h);min-width:0;margin:0;padding:4px 0 3px;border:0;border-radius:0;background:none;cursor:pointer;
+  color:var(--app-muted);font:500 12px/1.2 'NTF Sans',Inter,system-ui,sans-serif;letter-spacing:.005em;text-decoration:none!important;
+  -webkit-appearance:none;appearance:none;
+}
+html[data-skin="app"] .ra-tab-icon{position:relative;display:grid;place-items:center;width:56px;height:28px;border-radius:var(--app-r-full);transition:background-color var(--app-d-fast) var(--app-ease)}
+html[data-skin="app"] .ra-tab-icon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+html[data-skin="app"] .ra-tab-label{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* the current tab: a blush pill behind the icon, a wine label in semibold (shape and weight, not colour alone) */
+html[data-skin="app"] .ra-tab[aria-current="page"]{color:var(--app-wine);font-weight:600}
+/* five labels share the width, so the longest ("3D anatomy", semibold when current) must fit at 360px and at 320px: no ellipsis */
+@media (max-width:339.98px){html[data-skin="app"] .ra-tab[aria-current="page"]{font-weight:500}html[data-skin="app"] .ra-tab-label{letter-spacing:-.045em}}
+html[data-skin="app"] .ra-tab[aria-current="page"] .ra-tab-icon{background:var(--app-blush)}
+html[data-skin="app"] .ra-tab:active .ra-tab-icon{background:var(--app-pressed-ground)}
+html[data-skin="app"] .ra-tab:focus-visible{outline:2px solid var(--app-wine);outline-offset:-4px;border-radius:var(--app-r-md)}
+@media (hover:hover){
+  html[data-skin="app"] .ra-tab:hover .ra-tab-icon{background:var(--app-pressed-ground)}
+  html[data-skin="app"] .ra-tab[aria-current="page"]:hover .ra-tab-icon{background:var(--app-blush)}
+}
+/* the page clears the tab bar (reserved before the script draws it, so nothing jumps); not in the embedded explorer */
+html[data-skin="app"] body:not(.px-embed){padding-bottom:calc(var(--app-tab-h) + var(--app-safe-b) + 16px)}
+html[data-skin="app"] body.spinal-app .sp-topics{bottom:calc(var(--app-tab-h) + var(--app-safe-b) + 16px)}
+
+@media (min-width:1024px){
+  html[data-skin="app"] body:not(.px-embed){padding-bottom:0;padding-left:var(--app-rail)}
+  html[data-skin="app"] .ra-tabbar{top:0;right:auto;bottom:0;width:var(--app-rail);justify-content:flex-start;align-items:flex-start;
+    padding:var(--app-s6) 0 var(--app-safe-b) var(--app-safe-l);box-shadow:1px 0 0 var(--app-line)}
+  html[data-skin="app"] .ra-tabbar-in{grid-auto-flow:row;grid-auto-rows:auto;gap:var(--app-s3);max-width:none}
+  html[data-skin="app"] .ra-tab{min-height:64px}
+  html[data-skin="app"] body.spinal-app .sp-topics{bottom:max(16px,env(safe-area-inset-bottom))}
+
+  /* The tab rail replaces the desktop navigation rail: the page keeps the website's column (the chapter menu in the app bar
+     lists the chapters), shifted right of the 96px rail. */
+  html[data-skin="app"] .ra-rail{display:none}
+  html[data-skin="app"] .ra-frame{display:block}
+  html[data-skin="app"] body .ra-frame>main#main.site-container{grid-column:auto}
+  html[data-skin="app"] body:is(.tb-app,.spinal-app):not(.plexus-app,.bd-app)>main#main.site-container{padding-left:var(--ra-frame-g)}
+}
+
+/* ------------------------------------------------------------------ grouped sections (Settings and lists)
+   DESIGN-APP.md: a section is a small capitals header, then a raised list on the ground; rows are at least 50px. */
+html[data-skin="app"] .st-app .st-section{border-top:0;margin-top:var(--app-s4);padding-top:var(--app-s2);max-width:none}
+html[data-skin="app"] body.st-app main h2.st-h{font:600 12px/1.5 'NTF Sans',Inter,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--app-muted);margin:0 0 6px;padding-inline:var(--app-s4)}
+html[data-skin="app"] .st-app main .st-intro{font-size:14px;line-height:1.45;color:var(--app-muted);padding-inline:var(--app-s4);margin:0 0 var(--app-s3);max-width:none}
+html[data-skin="app"] .st-app main .st-rows{background:var(--app-surface);border-radius:var(--app-r-lg);overflow:clip}
+html[data-skin="app"] .st-app main .st-row{grid-template-columns:minmax(0,1fr) 51px;gap:2px var(--app-s3);align-items:center;padding:var(--app-s2) var(--app-s4);border-top:1px solid var(--app-line);min-height:50px}
+html[data-skin="app"] .st-app main .st-row:first-child{border-top:0}
+html[data-skin="app"] .st-app main .st-row>.st-row-t{grid-column:1;grid-row:1}
+html[data-skin="app"] .st-app main .st-row>.st-check{grid-column:2;grid-row:1;justify-self:end}
+html[data-skin="app"] .st-app main .st-row-d{font-size:15px;line-height:1.4;color:var(--app-muted)}
+/* the switch (DESIGN-APP.md): 51 x 31, wine when on; the word on/off is read out by role=switch */
+html[data-skin="app"] .st-app .st-check{width:51px;height:31px;border-radius:var(--app-r-full);background:var(--app-fill);box-shadow:inset 0 0 0 1px var(--app-line);transition:background-color var(--app-d-fast) var(--app-ease)}
+html[data-skin="app"] .st-app .st-check::before{left:2px;top:2px;width:27px;height:27px;border:0;border-radius:50%;background:#fff;box-shadow:var(--app-shadow-thumb);transition:transform 250ms cubic-bezier(.32,.72,0,1)}
+html[data-skin="app"] .st-app .st-check:checked{background:var(--app-wine);box-shadow:none}
+html[data-skin="app"] .st-app .st-check:checked::before{background:#fff;border:0;transform:translateX(20px)}
+html[data-skin="app"] .st-app .st-check:checked::after{content:none}
+html[data-skin="app"] .st-app .st-check:hover::before{border-color:transparent}
+html[data-skin="app"] .st-app .st-check:focus-visible{outline:2px solid var(--app-wine);outline-offset:2px}
+html[data-skin="app"] .st-app .st-row-t label{min-height:30px;font:400 17px/1.35 'NTF Sans',Inter,sans-serif}
+html[data-skin="app"] .st-app main .st-levels{background:var(--app-surface);border-radius:var(--app-r-lg);overflow:hidden}
+html[data-skin="app"] .st-app .st-levels>div:first-child{border-top:0}
+html[data-skin="app"] .st-app .st-levels>div:last-child{border-bottom:0}
+html[data-skin="app"] .st-app .st-levels>div.is-on{background:var(--app-blush);box-shadow:none}
+html[data-skin="app"] .st-app main .st-keys{background:var(--app-surface);border-radius:var(--app-r-lg);padding:0 var(--app-s4);overflow:hidden}
+html[data-skin="app"] .st-app .st-keys>div:first-child{border-top:0}
+html[data-skin="app"] .st-app main .st-skin-now{padding-inline:var(--app-s4);font-size:13px}
+/* the Look control (three segments: Automatic, App look, Website look): a fill track and a raised thumb */
+html[data-skin="app"] .st-skin-seg{display:flex;max-width:none;margin:var(--app-s3) 0;padding:2px;background:var(--app-fill);border:0;border-radius:10px;min-width:0}
+html[data-skin="app"] .st-skin-opt{position:relative;flex:1 1 0;min-width:0;display:flex;cursor:pointer}
+html[data-skin="app"] .st-skin-opt span,html[data-skin="app"] .st-skin-opt+.st-skin-opt span{position:relative;display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;margin:0;padding:0 var(--app-s2);
+  border:0;border-radius:8px;background:transparent;color:var(--app-ink-soft);font:500 15px/1.2 'NTF Sans',Inter,sans-serif;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html[data-skin="app"] .st-skin-opt input:hover+span{background:transparent}
+html[data-skin="app"] .st-skin-opt input:checked+span{background:var(--app-surface);color:var(--app-wine);font-weight:600;box-shadow:var(--app-shadow-thumb)}
+html[data-skin="app"] .st-skin-opt input:active+span{background:var(--app-pressed-ground)}
+html[data-skin="app"] .st-skin-opt input:checked:active+span{background:var(--app-surface);transform:scale(.97)}
+html[data-skin="app"] .st-skin-opt input:focus-visible+span{outline:2px solid var(--app-wine);outline-offset:0}
+html[data-skin="app"] .st-appver-btn{border-radius:var(--app-r-sm);color:var(--app-wine);font-weight:600;text-decoration:none}
+html[data-skin="app"] .st-app .st-level .ra-level{display:block}
+html[data-skin="app"] .st-app .st-level .ra-level-seg{display:flex;width:100%}
+html[data-skin="app"] .st-app .st-level .ra-level-btn{flex:1 1 0}
+html[data-skin="app"] .st-app main .st-levels{max-width:none}
+html[data-skin="app"] .st-app main .st-keys{max-width:none}
+html[data-skin="app"] .st-app main .st-hero{padding-top:var(--app-s2)}
+html[data-skin="app"] .st-app kbd{border:0;border-radius:var(--app-r-xs);background:var(--app-inset);padding:1px 7px}
+html[data-skin="app"] .st-app .st-bar-title{font:600 17px/1.25 var(--app-sans);opacity:0;transition:opacity var(--app-d-fast) var(--app-ease)}
+html[data-skin="app"][data-ra-collapsed] .st-app .st-bar-title{opacity:1}
+
+
+/* ------------------------------------------------------------------ 7. chapter hub and lists (engine block pages and the landings)
+   The "I need to…" tiles and the chapter list are grouped lists: one raised card of rows with a chevron on each. */
+html[data-skin="app"] body.tb-app main .tb-hub{padding:var(--app-s2) 0 var(--app-s4)}
+html[data-skin="app"] body.tb-app main .tb-hub-h{
+  font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;text-transform:uppercase;color:var(--app-muted);margin:var(--app-s8) 0 var(--app-s2);padding-inline:var(--app-s4);max-width:none;
+}
+html[data-skin="app"] body.tb-app main .tb-hub-search{max-width:none}
+html[data-skin="app"] body.tb-app :is(.tb-search-input,.sp-search-input,.bd-search input){
+  min-height:50px;border:0;border-radius:var(--app-r-md);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-line);padding:0 var(--app-s4);
+  font:400 17px/1.3 var(--app-sans);color:var(--app-ink);
+}
+html[data-skin="app"] body.tb-app :is(.tb-search-input,.sp-search-input,.bd-search input):focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--app-wine)}
+html[data-skin="app"] body.tb-app :is(.tb-search-input,.sp-search-input)::placeholder{color:#6a675f;opacity:1}
+html[data-skin="app"] body.tb-app main ul.tb-tiles,html[data-skin="app"] body.spinal-app main ul.sp-tiles{
+  display:block;margin:0;padding:0;list-style:none;background:var(--app-surface);border-radius:var(--app-r-lg);overflow:hidden;
+}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-tiles,.sp-tiles)>li{margin:0}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main a:is(.tb-tile,.sp-tile){
+  display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--app-s3);align-items:center;height:auto;min-height:56px;padding:var(--app-s3) var(--app-s4);
+  border:0;border-radius:0;background:var(--app-surface);color:var(--app-ink);text-decoration:none;
+}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-tiles,.sp-tiles)>li+li>a:is(.tb-tile,.sp-tile){
+  background-image:linear-gradient(var(--app-line),var(--app-line));background-size:calc(100% - var(--app-s4)) 1px;background-position:right top;background-repeat:no-repeat;
+}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main a:is(.tb-tile,.sp-tile)::after{
+  content:'';grid-column:2;grid-row:1 / span 2;width:8px;height:8px;border-right:2px solid var(--app-muted);border-top:2px solid var(--app-muted);transform:rotate(45deg);margin-right:3px;
+}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main a:is(.tb-tile,.sp-tile)>*{grid-column:1}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main a:is(.tb-tile,.sp-tile):is(:hover,:focus-visible){background-color:var(--app-surface)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main a:is(.tb-tile,.sp-tile):active{background-color:var(--app-pressed)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main a:is(.tb-tile,.sp-tile):focus-visible{outline-offset:-3px}
+html[data-skin="app"] body :is(.tb-tile-t,.sp-tile-t){font:400 17px/1.35 var(--app-sans)}
+html[data-skin="app"] body :is(.tb-tile-d,.sp-tile-d,.tb-hubch-d,.sp-hubch-d){font:400 15px/1.4 var(--app-sans);color:var(--app-muted)}
+html[data-skin="app"] body :is(.tb-hubch-t,.sp-hubch-t){font:400 17px/1.35 var(--app-sans)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch){max-width:none;background:var(--app-surface);border-radius:var(--app-r-lg);overflow:hidden}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) li:last-child{border-bottom:0}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) li{border-top:0}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) li+li a{
+  background-image:linear-gradient(var(--app-line),var(--app-line));background-size:calc(100% - var(--app-s4)) 1px;background-position:right top;background-repeat:no-repeat;
+}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) a{grid-template-columns:30px minmax(0,1fr) auto;min-height:56px;padding:var(--app-s3) var(--app-s4);column-gap:var(--app-s3);align-items:center}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) a::before{font:500 14px/1.4 var(--app-mono);color:var(--app-muted);align-self:center}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) a::after{
+  content:'';grid-column:3;grid-row:1 / span 2;width:8px;height:8px;border-right:2px solid var(--app-muted);border-top:2px solid var(--app-muted);transform:rotate(45deg);margin-right:3px;
+}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) a:is(:hover,:focus-visible){background-color:var(--app-surface)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) a:active{background-color:var(--app-pressed)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) main :is(.tb-hubch,.sp-hubch) a:focus-visible{outline-offset:-3px}
+html[data-skin="app"] body.tb-app main .tb-hub-back{margin:var(--app-s6) 0 0;font-size:15px}
+html[data-skin="app"] body.tb-app main .tb-hub-back a{padding-block:12px;font-weight:600;text-decoration:none}
+
+/* chapter pager: Previous and Next as a button row, the hub link below */
+html[data-skin="app"] body.tb-app .tb-pager{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--app-s2);margin:var(--app-s8) 0 var(--app-s2);padding-top:0;border-top:0}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) .tb-pager .tb-pager-prev{grid-column:1;grid-row:1}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) .tb-pager .tb-pager-next{grid-column:2;grid-row:1}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) .tb-pager .tb-pager-hub{grid-column:1 / -1;grid-row:2}
+html[data-skin="app"] body.tb-app main a.tb-pager-a{
+  min-height:64px;padding:var(--app-s3) var(--app-s4);border:0;border-radius:var(--app-r-lg);background:var(--app-surface);color:var(--app-ink);text-decoration:none;
+}
+html[data-skin="app"] body.tb-app main a.tb-pager-a:hover{background:var(--app-surface);border:0}
+html[data-skin="app"] body.tb-app main a.tb-pager-a:active{background:var(--app-pressed)}
+html[data-skin="app"] body.tb-app .tb-pager-a small{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted)}
+html[data-skin="app"] body.tb-app .tb-pager-a span{font:600 16px/1.3 var(--app-sans);color:var(--app-ink)}
+html[data-skin="app"] body.tb-app main a.tb-pager-hub{min-height:50px;background:transparent}
+html[data-skin="app"] body.tb-app main a.tb-pager-hub{align-items:center;text-align:center}
+html[data-skin="app"] body.tb-app .tb-pager-hub span{color:var(--app-wine)}
+
+/* the first-visit level picker and the "Anatomy in 3D" card */
+html[data-skin="app"] body .ra-level-picker{max-width:none;margin:var(--app-s4) 0;padding:var(--app-s4);border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body .ra-level-picker #ra-level-picker-h{font:400 22px/1.25 var(--app-serif)}
+html[data-skin="app"] body .ra-level-picker li button{min-height:56px;border:0;border-radius:var(--app-r-md);background:var(--app-inset);box-shadow:none;font-size:16px;padding:var(--app-s3) var(--app-s4)}
+html[data-skin="app"] body .ra-level-picker li button:hover,html[data-skin="app"] body .ra-level-picker li button:active{background:var(--app-blush)}
+html[data-skin="app"] body .ra-level-picker-skip{color:var(--app-wine);font-weight:600;text-decoration:none}
+html[data-skin="app"] body.tb-app .ra-a3d{padding:var(--app-s4);border-left:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.tb-app .ra-a3d-host{border:0;border-radius:var(--app-r-md);overflow:hidden;background:var(--app-inset)}
+html[data-skin="app"] body.tb-app .ra-watch-frame{border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.tb-app .ra-watch-cap{color:var(--app-muted)}
+
+/* ------------------------------------------------------------------ 8. block chapter */
+html[data-skin="app"] body.tb-app main{padding-bottom:var(--app-s8)}
+html[data-skin="app"] body.tb-app .tb-bhead{padding:0 0 var(--app-s2)}
+html[data-skin="app"] body.tb-app .tb-ind{display:block;margin:0 0 var(--app-s4)}
+html[data-skin="app"] body.tb-app .tb-ind-k{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted);margin:0 0 6px}
+html[data-skin="app"] body.tb-app main .tb-ind-list{gap:6px}
+html[data-skin="app"] body.tb-app main .tb-ind-list li{padding:6px 12px;border:0;border-radius:var(--app-r-full);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-line);font:400 15px/1.35 var(--app-sans)}
+/* at a glance: one grouped card, label and value on each row */
+html[data-skin="app"] body.tb-app .tb-glance{display:block;margin:0 0 var(--app-s4);padding:0;border:0;border-radius:var(--app-r-lg);background:var(--app-surface);overflow:hidden}
+html[data-skin="app"] body.tb-app .tb-glance>div{margin:0;padding:var(--app-s3) var(--app-s4);border:0;border-top:1px solid var(--app-line)}
+html[data-skin="app"] body.tb-app .tb-glance>div:first-child{border-top:0}
+html[data-skin="app"] body.tb-app .tb-glance dt{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted)}
+html[data-skin="app"] body.tb-app .tb-glance dd{font:400 17px/1.45 var(--app-sans);margin:2px 0 0}
+/* sections: reading text on the ground, a title2 heading, room between them */
+html[data-skin="app"] body.tb-app .tb-bsec{padding:0;border-top:0;margin:var(--app-s8) 0 0}
+html[data-skin="app"] body.tb-app .tb-bsec>:is(h2,h3,.tb-hv3){font-size:22px;margin:0 0 var(--app-s2)}
+html[data-skin="app"] body.tb-app .tb-bgrid{display:block}
+html[data-skin="app"] body.tb-app .tb-bgrid>.tb-bsec{margin-top:var(--app-s8)}
+html[data-skin="app"] body.tb-app .tb-bsec--examcorner{border-top:0}
+html[data-skin="app"] body.tb-app main .tb-bsec>.ra-tier-badge{margin:0 0 var(--app-s2)}
+html[data-skin="app"] body.tb-app main .tb-chapter>.tb-hv3{margin-top:var(--app-s8)}
+html[data-skin="app"] body.tb-app main :is(ul,ol):not([class]){padding-left:1.25em}
+html[data-skin="app"] body.tb-app main :is(.tb-list ul,ul.tb-pearls){padding-left:1.25em}
+html[data-skin="app"] body.tb-app main .tb-layers-k{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted);margin:0 0 6px;padding-inline:var(--app-s4)}
+html[data-skin="app"] body.tb-app main .tb-layers{max-width:none;background:var(--app-surface);border-radius:var(--app-r-lg);padding:0 var(--app-s4);overflow:hidden}
+html[data-skin="app"] body.tb-app main .tb-layers li{padding:var(--app-s3) 0;border-top:1px solid var(--app-line);font:400 17px/1.4 var(--app-sans)}
+html[data-skin="app"] body.tb-app main .tb-layers li:first-child{border-top:0}
+html[data-skin="app"] body.tb-app main .tb-layers li:last-child{border-bottom:0}
+html[data-skin="app"] body.tb-app main .tb-layers li::before{font:500 14px/1.6 var(--app-mono)}
+/* the dose box: the one accent card on the page; values in mono */
+html[data-skin="app"] body.tb-app .tb-dose{max-width:none;padding:var(--app-s4) var(--app-s5);border-left:0;border-radius:var(--app-r-lg);background:var(--app-wine);color:var(--app-ivory)}
+html[data-skin="app"] body.tb-app .tb-dose-k{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:#eadbd6}
+html[data-skin="app"] body.tb-app main .tb-dose-line{font:500 20px/1.45 var(--app-sans);color:var(--app-ivory)}
+html[data-skin="app"] body.tb-app .tb-dose-v{font:500 20px/1.45 var(--app-mono);color:var(--app-ivory)}
+html[data-skin="app"] body.tb-app .tb-dose-note{color:#eadbd6}
+/* links inside the wine dose card are ivory (wine on wine was invisible) */
+html[data-skin="app"] body.tb-app .tb-dose a:not(.tb-btn){color:var(--app-ivory);text-decoration:underline;text-underline-offset:3px}
+html[data-skin="app"] body.tb-app .tb-dose a:not(.tb-btn):hover{color:#fff}
+html[data-skin="app"] body.tb-app main .tb-dose-last{margin:var(--app-s3) 0 0;padding:var(--app-s3);border:0;border-left:4px solid var(--app-warn);border-radius:10px;background:var(--app-warn-bg);color:var(--app-ink);font-size:15px;line-height:1.55}
+html[data-skin="app"] body.tb-app main .tb-dose-last strong{color:var(--app-warn)}
+html[data-skin="app"] body.tb-app .tb-dose-check{margin:var(--app-s3) 0 0}
+html[data-skin="app"] body.tb-app main .tb-dose-check a.tb-btn{display:flex;width:100%;justify-content:center}
+@media (min-width:600px){html[data-skin="app"] body.tb-app main .tb-dose-check a.tb-btn{display:inline-flex;width:auto}}
+/* coverage */
+html[data-skin="app"] body.tb-app .tb-cov-grid{display:block}
+html[data-skin="app"] body.tb-app .tb-cov{max-width:none;margin:0 0 var(--app-s4)}
+html[data-skin="app"] body.tb-app .tb-cov-stage{border:0;border-radius:var(--app-r-lg);background:var(--app-surface);padding:var(--app-s3)}
+html[data-skin="app"] body.tb-app main .tb-cov-legend{margin:var(--app-s3) 0 0}
+html[data-skin="app"] body.tb-app .tb-cov-sw{border-radius:4px}
+@media (min-width:700px){
+  html[data-skin="app"] body.tb-app .tb-cov-grid:not(.tb-cov-grid--text){display:grid;grid-template-columns:minmax(260px,360px) minmax(0,1fr);gap:var(--app-s5) var(--app-s6);align-items:start}
+  html[data-skin="app"] body.tb-app .tb-cov{margin:0}
+}
+html[data-skin="app"] body.tb-app .tb-cov-sum{font-size:17px}
+/* complications: a warning panel (the section is the callout) */
+html[data-skin="app"] body.tb-app .tb-bsec--complications{padding:var(--app-s4) var(--app-s4) var(--app-s2);border-left:4px solid var(--app-warn);border-radius:var(--app-r-lg);background:var(--app-warn-bg)}
+html[data-skin="app"] body.tb-app .tb-bsec--complications>:is(h2,h3,.tb-hv3){color:var(--app-ink)}
+html[data-skin="app"] body.tb-app .tb-bsec--complications .tb-list ul{padding-left:1.25em}
+html[data-skin="app"] body.tb-app .tb-bsec--complications li::marker{color:var(--app-warn)}
+/* practical pearls */
+html[data-skin="app"] body.tb-app main ul.tb-pearls{margin:0;padding:var(--app-s4) var(--app-s4) var(--app-s4) calc(var(--app-s4) + 1.25em);background:var(--app-blush);border-radius:var(--app-r-lg)}
+html[data-skin="app"] body.tb-app main ul.tb-pearls li::marker{color:var(--app-wine)}
+/* exam corner */
+html[data-skin="app"] body.tb-app .tb-exam{max-width:none}
+html[data-skin="app"] body.tb-app .tb-exam-q{padding:var(--app-s4);border-left:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.tb-app main .tb-exam-src{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-wine)}
+html[data-skin="app"] body.tb-app .tb-exam .tb-details{background:var(--app-inset);box-shadow:none}
+html[data-skin="app"] body.tb-app .tb-exam .tb-details>summary{min-height:48px}
+
+/* ------------------------------------------------------------------ 9. callouts, key points, steps, tables, folds */
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-callout,.sp-callout){
+  --c:var(--app-wine);--cb:var(--app-inset);max-width:none;margin:var(--app-s4) 0;padding:var(--app-s3) var(--app-s4);border:0;border-left:4px solid var(--c);border-radius:var(--app-r-md);background:var(--cb);color:var(--app-ink);
+}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-callout--warn,.sp-callout--warn){--c:var(--app-bad);--cb:var(--app-bad-bg)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-callout--pearl,.sp-callout--pearl){--c:var(--app-wine);--cb:var(--app-blush)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-callout--note,.sp-callout--policy){--c:var(--app-muted);--cb:var(--app-inset);border-style:solid;border-width:0 0 0 4px}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-callout-label,.sp-callout-label){font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--c)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-callout-title,.sp-callout-title){font:600 17px/1.4 var(--app-sans)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-callout-body,.sp-callout-body){font-size:16px;line-height:1.6}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-keypoints,.sp-keypoints){max-width:none;margin:0 0 var(--app-s6);padding:var(--app-s4);border:0;border-left:0;border-radius:var(--app-r-lg);background:var(--app-inset)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-keypoints-title,.sp-keypoints-title){font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted);margin:0 0 var(--app-s2)}
+html[data-skin="app"] body.tb-app main .tb-keypoints li::before{border-radius:50%;width:6px;height:6px}
+html[data-skin="app"] body.tb-app main .tb-keypoints ul{padding-left:0}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-steps,.sp-steps){max-width:none}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-step,.sp-step){border:0;padding:var(--app-s3) 0}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-step:last-child,.sp-step:last-child){border-bottom:0}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-step-n,.sp-step-n){border-radius:50%;font-family:var(--app-mono)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-step-title,.sp-step-title){font:600 17px/1.4 var(--app-sans)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-step-body,.sp-step-body){font-size:16px;color:var(--app-ink-soft)}
+/* tables: rounded and grouped; they scroll sideways inside themselves when they are wider than the screen */
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table-wrap,.sp-table-wrap){margin:var(--app-s4) 0;border-radius:var(--app-r-lg);background:var(--app-surface);overflow-x:auto;-webkit-overflow-scrolling:touch}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table,.sp-table) caption{font:400 19px/1.35 var(--app-serif);padding:var(--app-s3) var(--app-s4) var(--app-s2)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table,.sp-table) thead th{background:var(--app-inset);color:var(--app-muted);font:600 12px/1.4 var(--app-sans);letter-spacing:.07em;border-bottom:0;padding:var(--app-s3) var(--app-s4)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table,.sp-table) :is(td,tbody th){padding:var(--app-s3) var(--app-s4);border-bottom:1px solid var(--app-line)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table,.sp-table) tbody tr:last-child :is(td,th){border-bottom:0}
+@media (min-width:641px){html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table,.sp-table) tbody tr:nth-child(even){background:transparent}}
+@media (max-width:640px){
+  html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table-wrap,.sp-table-wrap):has(:is(.tb-table--stack,.sp-table--stack)){background:transparent;overflow:visible}
+  html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table--stack,.sp-table--stack) tr{border:0;border-radius:var(--app-r-lg);background:var(--app-surface);padding:var(--app-s3) var(--app-s4);margin:0 0 var(--app-s2)}
+  html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table--stack,.sp-table--stack) :is(td,tbody th){padding:3px 0;border:0}
+  html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table--stack,.sp-table--stack) caption{padding-inline:0}
+  html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-table--stack,.sp-table--stack) :is(td,tbody th)[data-label]::before{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted)}
+}
+/* folds (details): a grouped row with a chevron */
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details,.sp-details){max-width:none;margin:var(--app-s2) 0;border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details,.sp-details):last-of-type{border-bottom:0}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details,.sp-details)>summary{min-height:52px;padding:var(--app-s3) var(--app-s4);border-radius:var(--app-r-lg);font:500 17px/1.4 var(--app-sans);color:var(--app-ink)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details,.sp-details)>summary:hover{color:var(--app-ink)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details,.sp-details)>summary:active{background:var(--app-pressed)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details,.sp-details)>summary:focus-visible{outline-offset:-3px}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details,.sp-details)>summary::after{
+  content:'';width:9px;height:9px;margin-right:4px;margin-bottom:3px;border-right:2px solid var(--app-muted);border-bottom:2px solid var(--app-muted);transform:rotate(45deg);font:0;transition:transform var(--app-d-fast) var(--app-ease);
+}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details,.sp-details)[open]>summary::after{content:'';transform:translateY(4px) rotate(-135deg)}
+html[data-skin="app"] body:is(.tb-app,.spinal-app) :is(.tb-details-body,.sp-details-body){padding:0 var(--app-s4) var(--app-s4);font-size:16px;line-height:1.6}
+html[data-skin="app"] body.tb-app .ra-more{margin-top:var(--app-s2)}
+html[data-skin="app"] body.tb-app .ra-more>summary{font-size:16px;color:var(--app-wine);font-weight:600}
+
+/* ------------------------------------------------------------------ 10. scan teacher and real scans (scan.js, realscan.js)
+   One card: title and views, the image, the four steps as a button row, the step text, Back / Play / Next, the structures as
+   pills, "Test me", coverage. The image keeps its content and clinical colours; only the frame is soft. On phones the image
+   and steps stay stuck under the bar while the text scrolls (scan.css); the card never uses overflow: hidden, which would
+   stop that. */
+html[data-skin="app"] body.tb-app .tb-scan-wrap{margin:var(--app-s4) 0 var(--app-s6)}
+html[data-skin="app"] body.tb-app .tb-scan{padding:var(--app-s3) var(--app-s3) var(--app-s4);border-top:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.tb-app .tb-scan-head{gap:var(--app-s2) var(--app-s3);margin:0 0 var(--app-s3);padding-inline:var(--app-s1)}
+html[data-skin="app"] body.tb-app main .tb-scan-title{font:400 19px/1.3 var(--app-serif);flex:1 1 100%;color:var(--app-ink)}
+html[data-skin="app"] body.tb-app .tb-scan-ctrls{flex:1 1 100%;gap:var(--app-s2);flex-wrap:wrap;align-items:center}
+html[data-skin="app"] body.tb-app .tb-scan-ctrls .tb-scan-views{flex:1 1 230px}
+html[data-skin="app"] body.tb-app .tb-scan-labbtn{flex:none;min-height:44px;padding:0 var(--app-s4);border:0;border-radius:var(--app-r-full);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);color:var(--app-ink);font:500 15px/1.2 var(--app-sans)}
+html[data-skin="app"] body.tb-app .tb-scan-labbtn::before{display:none}
+html[data-skin="app"] body.tb-app .tb-scan-labbtn[aria-pressed=true]{background:var(--app-blush);box-shadow:inset 0 0 0 1.5px var(--app-wine);color:var(--app-wine);font-weight:600}
+html[data-skin="app"] body.tb-app .tb-scan-labbtn[aria-pressed=true]::before{
+  display:block;content:'';width:10px;height:5px;margin:-3px 2px 0 0;border:solid currentColor;border-width:0 0 2px 2px;border-radius:0;background:none;box-shadow:none;transform:rotate(-45deg);
+}
+html[data-skin="app"] body.tb-app .tb-scan-labbtn:hover{background:var(--app-pressed)}
+html[data-skin="app"] body.tb-app .tb-scan-labbtn[aria-pressed=true]:hover{background:var(--app-blush)}
+html[data-skin="app"] body.tb-app .tb-scan-stage{border-radius:var(--app-r-md)}
+html[data-skin="app"] body.tb-app .tb-scan-box canvas{border-radius:var(--app-r-md)}
+html[data-skin="app"] body.tb-app .tb-scan-stage.is-real{border-radius:var(--app-r-md)}
+html[data-skin="app"] body.tb-app .tb-scan-busy{border-radius:var(--app-r-md)}
+html[data-skin="app"] body.tb-app .tb-scan.is-phone .ra-scan-col{background:var(--app-surface);box-shadow:0 6px 10px -8px rgb(39 39 34 / .35);border-radius:0 0 var(--app-r-md) var(--app-r-md);padding-bottom:var(--app-s2)}
+/* the four steps: a track with the current step as a wine thumb */
+html[data-skin="app"] body.tb-app main .tb-scan-steps{margin-top:var(--app-s2);gap:2px;padding:2px;border:0;border-radius:var(--app-r-md);background:var(--app-fill)}
+html[data-skin="app"] body.tb-app .tb-scan-step{min-height:56px;border:0;border-radius:10px;background:transparent;color:var(--app-ink-soft);font:500 14px/1.2 var(--app-sans)}
+html[data-skin="app"] body.tb-app .tb-scan-step:hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] body.tb-app .tb-scan-step.is-done .tb-scan-step-n{background:var(--app-ink);border-color:var(--app-ink);color:var(--app-surface)}
+html[data-skin="app"] body.tb-app .tb-scan-step[aria-current=step]{background:var(--app-wine);color:var(--app-ivory);font-weight:600;box-shadow:var(--app-shadow-thumb)}
+html[data-skin="app"] body.tb-app .tb-scan-step:focus-visible{outline-offset:-2px;border-radius:10px}
+html[data-skin="app"] body.tb-app .tb-scan.is-phone .tb-scan-step{min-height:50px}
+html[data-skin="app"] body.tb-app .tb-scan.is-phone.is-real-view .tb-scan-steps{border-top:0}
+html[data-skin="app"] body.tb-app .tb-scan-text{min-height:0;padding:var(--app-s3) var(--app-s4);border-left:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.tb-app main .tb-scan-text-k{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-wine)}
+html[data-skin="app"] body.tb-app .tb-scan-text-b{font-size:16px;line-height:1.6}
+html[data-skin="app"] body.tb-app .tb-scan-nav{gap:var(--app-s2)}
+html[data-skin="app"] body.tb-app main .tb-scan-injlab,html[data-skin="app"] body.tb-app main .ra-scan-legend-k,html[data-skin="app"] body.tb-app main .ra-rs-keyk{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted)}
+html[data-skin="app"] body.tb-app .tb-scan-inj{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+html[data-skin="app"] body.tb-app .tb-scan-inj .tb-seg-btn{min-height:48px;padding:var(--app-s2);font-size:14px;white-space:normal}
+html[data-skin="app"] body.tb-app .tb-scan-probe{padding:var(--app-s3);border:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.tb-app .tb-scan-probe-k{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.tb-app .tb-scan-cap{padding-inline:var(--app-s1)}
+/* structures in this view: pills, 44px tall like the website look (so the tap target is the drawn pill) */
+html[data-skin="app"] body.tb-app .ra-scan-chip{position:relative;min-height:44px;padding:0 var(--app-s3);border:0;border-radius:var(--app-r-full);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);color:var(--app-ink);font:500 14px/1.25 var(--app-sans)}
+html[data-skin="app"] body.tb-app .ra-scan-chip:hover{background:var(--app-pressed);border:0}
+html[data-skin="app"] body.tb-app .ra-scan-chip[aria-pressed=true]{background:var(--app-blush);box-shadow:inset 0 0 0 1.5px var(--app-wine);color:var(--app-wine);font-weight:600}
+html[data-skin="app"] body.tb-app .ra-scan-chip[aria-pressed=true] .ra-scan-chip-sw{box-shadow:0 0 0 1px var(--app-blush)}
+html[data-skin="app"] body.tb-app .ra-scan-testbtn{min-height:44px;padding:0 var(--app-s4);font-size:14px}
+html[data-skin="app"] body.tb-app .ra-scan-info{padding:var(--app-s3) var(--app-s4);border-left:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.tb-app .ra-scan-info-x{min-height:44px}
+html[data-skin="app"] body.tb-app .ra-scan-test{padding:var(--app-s3) var(--app-s4);border:0;border-radius:var(--app-r-lg);background:var(--app-surface);box-shadow:inset 0 0 0 2px var(--app-wine)}
+html[data-skin="app"] body.tb-app .ra-scan-test-n{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.tb-app .ra-cov-chips{padding:var(--app-s3) var(--app-s4);border:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.tb-app .ra-cov-chips-k{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.tb-app .ra-st-chip{border-radius:var(--app-r-full);background:var(--app-surface)}
+html[data-skin="app"] body.tb-app .ra-real-box{border-radius:var(--app-r-md);overflow:hidden}
+/* the Real view (realscan.js): picker thumbnails, image, label pills, and the colour key as a grouped list with switches */
+html[data-skin="app"] .ra-rs-thumb{border:0;border-radius:var(--app-r-sm);box-shadow:inset 0 0 0 1px var(--app-line-strong)}
+html[data-skin="app"] .ra-rs-thumb[aria-pressed=true]{outline:3px solid var(--app-wine);outline-offset:1px}
+html[data-skin="app"] .ra-rs-thumb-n{border-radius:0 var(--app-r-xs) 0 0}
+html[data-skin="app"] .ra-rs-box{border-radius:var(--app-r-md)}
+html[data-skin="app"] .ra-rs-pill{border-radius:var(--app-r-sm)}
+html[data-skin="app"] .ra-rs-name{border-left:0;border-radius:var(--app-r-md);background:var(--app-inset);padding:2px var(--app-s4) 6px}
+html[data-skin="app"] .ra-rs-name-x,html[data-skin="app"] .ra-rs-name-3d{text-decoration:none;font-weight:600}
+html[data-skin="app"] body.tb-app main .ra-rs-hint,html[data-skin="app"] .ra-rs-hint{font-size:15px}
+html[data-skin="app"] .ra-rs-keyhead{min-height:44px}
+html[data-skin="app"] .ra-rs-switch{gap:var(--app-s3);padding:0 0 0 var(--app-s2);font:500 15px/1 var(--app-sans);color:var(--app-ink)}
+html[data-skin="app"] .ra-rs-switch-track{width:51px;height:31px;border:0;border-radius:var(--app-r-full);background:var(--app-fill);box-shadow:inset 0 0 0 1px var(--app-line);transition:background-color var(--app-d-fast) var(--app-ease)}
+html[data-skin="app"] .ra-rs-switch-track::after{top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:var(--app-shadow-thumb);transition:transform 250ms cubic-bezier(.32,.72,0,1)}
+html[data-skin="app"] .ra-rs-switch[aria-pressed=true] .ra-rs-switch-track{background:var(--app-wine);box-shadow:none}
+html[data-skin="app"] .ra-rs-switch[aria-pressed=true] .ra-rs-switch-track::after{background:#fff;transform:translateX(20px)}
+/* the colour key: on a phone a row of pills that scrolls sideways, as in the website look (a list of switches was 330px tall there and pushed
+   the step buttons so far below the image that it left the screen on Next); from 700px a grouped list of switches beside the image */
+html[data-skin="app"] .ra-rs-key li:last-child{padding-right:24px}
+html[data-skin="app"] .ra-rs-chip{
+  min-height:44px;padding:0 var(--app-s3);border:0;border-radius:var(--app-r-full);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);
+  color:var(--app-ink);font:500 14px/1.25 var(--app-sans);
+}
+html[data-skin="app"] .ra-rs-chip:hover{background:var(--app-pressed);border:0}
+html[data-skin="app"] .ra-rs-chip:active{background:var(--app-pressed-ground)}
+html[data-skin="app"] .ra-rs-chip[aria-pressed=true]{background:var(--app-blush);box-shadow:inset 0 0 0 1.5px var(--app-wine);color:var(--app-wine);font-weight:600}
+html[data-skin="app"] .ra-rs-chip--cmd{color:var(--app-wine);font-weight:600}
+html[data-skin="app"] .ra-rs-chip.is-sel:not([aria-pressed=true]){box-shadow:inset 0 0 0 2px var(--app-wine);background:var(--app-surface)}
+html[data-skin="app"] .ra-rs-chip:focus-visible{outline-offset:0}
+@media (min-width:700px){
+  html[data-skin="app"] body.tb-app main ul.ra-rs-key,html[data-skin="app"] ul.ra-rs-key{
+    display:block;flex-wrap:wrap;overflow:hidden;padding:0;margin:0;border-radius:var(--app-r-lg);background:var(--app-inset);-webkit-mask-image:none;mask-image:none;
+  }
+  html[data-skin="app"] .ra-rs-key li:last-child{padding-right:0}
+  html[data-skin="app"] .ra-rs-chip{
+    position:relative;display:flex;width:100%;min-height:50px;padding:0 calc(51px + var(--app-s4) + var(--app-s3)) 0 var(--app-s4);border:0;border-radius:0;background:transparent;box-shadow:none;
+    color:var(--app-ink);font:400 16px/1.3 var(--app-sans);white-space:normal;
+  }
+  html[data-skin="app"] .ra-rs-key>li+li>.ra-rs-chip{background-image:linear-gradient(var(--app-line),var(--app-line));background-size:calc(100% - var(--app-s4)) 1px;background-position:right top;background-repeat:no-repeat}
+  html[data-skin="app"] .ra-rs-chip:hover{background-color:var(--app-pressed);border:0}
+  html[data-skin="app"] .ra-rs-chip:active{background-color:var(--app-pressed-ground)}
+  html[data-skin="app"] .ra-rs-chip[aria-pressed=true]{background-color:transparent;color:var(--app-ink);font-weight:500}
+  html[data-skin="app"] .ra-rs-chip:focus-visible{outline-offset:-3px}
+  html[data-skin="app"] .ra-rs-chip:not(.ra-rs-chip--cmd)::before{
+    content:'';position:absolute;right:var(--app-s4);top:50%;width:51px;height:31px;margin-top:-15.5px;border-radius:var(--app-r-full);background:var(--app-fill);box-shadow:inset 0 0 0 1px var(--app-line);transition:background-color var(--app-d-fast) var(--app-ease);
+  }
+  html[data-skin="app"] .ra-rs-chip:not(.ra-rs-chip--cmd)::after{
+    content:'';position:absolute;right:calc(var(--app-s4) + 22px);top:50%;width:27px;height:27px;margin-top:-13.5px;border-radius:50%;background:#fff;box-shadow:var(--app-shadow-thumb);transition:right 250ms cubic-bezier(.32,.72,0,1);
+  }
+  html[data-skin="app"] .ra-rs-chip[aria-pressed=true]:not(.ra-rs-chip--cmd)::before{background:var(--app-wine);box-shadow:none}
+  html[data-skin="app"] .ra-rs-chip[aria-pressed=true]:not(.ra-rs-chip--cmd)::after{right:calc(var(--app-s4) + 2px)}
+  html[data-skin="app"] .ra-rs-chip--cmd{color:var(--app-wine);font-weight:600;padding-right:var(--app-s4)}
+  html[data-skin="app"] .ra-rs-chip.is-sel:not([aria-pressed=true]){box-shadow:none;background-color:var(--app-blush)}
+}
+html[data-skin="app"] .ra-rs-sw{border-radius:3px}
+html[data-skin="app"] .ra-rs-your{border-top:0;padding-top:var(--app-s2)}
+html[data-skin="app"] .ra-rs-links a{font-weight:600;text-decoration:none}
+html[data-skin="app"] .ra-rs-cap{padding-inline:var(--app-s1)}
+@media (min-width:1024px){
+  html[data-skin="app"] body.tb-app .tb-scan-wrap,html[data-skin="app"] body.tb-app:not(.bd-app) main>.tb-chapter>.tb-table-wrap{margin-inline:-80px}
+}
+
+/* ------------------------------------------------------------------ 11. "If it goes wrong" guides (decide.js)
+   Each guide is a fold in a grouped list; inside, the question is a card and the answers are choice buttons (.app-choice). */
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-list{max-width:none;margin:var(--app-s2) 0 0}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-list>.ra-dg-item:last-of-type{border-bottom:0}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-item{margin:var(--app-s2) 0;border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-item>summary{min-height:56px;padding:var(--app-s3) var(--app-s4);border-radius:var(--app-r-lg);font:500 17px/1.4 var(--app-sans);color:var(--app-ink)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-item--danger>summary{color:var(--app-bad)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-item--danger>summary::before{flex:0 0 4px;border-radius:2px;margin:-2px 0;background:var(--app-bad)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-item>summary:active{background:var(--app-pressed)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-item>summary::after{margin-left:auto}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .tb-details-body{padding:0 var(--app-s4) var(--app-s4)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg{max-width:none}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-step{padding:var(--app-s4);border-left:4px solid var(--c);border-radius:var(--app-r-lg);background:var(--cb)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-step{--c:var(--app-wine);--cb:var(--app-inset)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-step--danger{--c:var(--app-bad);--cb:var(--app-bad-bg)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-step--warn{--c:var(--app-warn);--cb:var(--app-warn-bg)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-step--ask{--c:var(--app-ink);--cb:var(--app-surface);border:0;border-left:4px solid var(--app-ink);box-shadow:inset 0 0 0 1px var(--app-line)}
+html[data-skin="app"] :is(.tb-app main,.ra-dg-host) .ra-dg-k{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] :is(.tb-app main,.ra-dg-host) .ra-dg .ra-dg-title{font:600 19px/1.35 var(--app-sans)}
+html[data-skin="app"] :is(.tb-app main,.ra-dg-host) .ra-dg-trail{border-left:2px solid var(--app-line)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-acts{display:grid;grid-template-columns:1fr;gap:var(--app-s2)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-acts .ra-dg-choice{min-width:0;justify-content:flex-start;min-height:56px;padding:var(--app-s3) var(--app-s4);border-radius:var(--app-r-lg);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-line);font:500 17px/1.35 var(--app-sans);text-align:left}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-acts .ra-dg-choice:hover{background:var(--app-pressed)}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-acts .ra-dg-choice.tb-btn--primary{background:var(--app-wine);color:var(--app-ivory);box-shadow:none}
+@media (min-width:600px){html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-acts{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}}
+html[data-skin="app"] :is(.tb-app,.ra-dg-host) .ra-dg-nav .tb-btn{min-height:44px;font-size:15px}
+html[data-skin="app"] :is(.tb-app main,.ra-dg-host) .ra-dg-more a{font-weight:600;text-decoration:none}
+
+/* ------------------------------------------------------------------ 12. search: a bottom sheet on phones, a centred dialog from 768px
+   The search sheet is the bar's own panel (tb-sheet / sp-sheet), re-laid as a sheet; a wide shadow dims the page behind it.
+   (max-height is !important because the pages' scripts fit these panels to the viewport with an inline max-height.) */
+html[data-skin="app"] body :is(.tb-sheet,.sp-sheet):not([hidden]){
+  position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 56px);bottom:0;z-index:70;max-height:none!important;border:0;border-radius:var(--app-r-xl) var(--app-r-xl) 0 0;
+  background:var(--app-surface);box-shadow:0 0 0 100vmax var(--app-backdrop),var(--app-shadow-float);overflow-y:auto;overscroll-behavior:contain;
+}
+html[data-skin="app"] body :is(.tb-sheet,.sp-sheet):not([hidden])::before{content:'';display:block;width:36px;height:5px;margin:6px auto 0;border-radius:var(--app-r-full);background:#c4bcae}
+html[data-skin="app"] body :is(.tb-sheet-inner,.sp-sheet-inner){padding-block:var(--app-s2) calc(var(--app-s4) + var(--app-safe-b));max-width:640px}
+html[data-skin="app"] body .tb-search-row{gap:var(--app-s2)}
+html[data-skin="app"] body :is(.tb-sresults,.sp-sresults){margin:var(--app-s3) 0 0;max-width:none;background:var(--app-surface);border-radius:var(--app-r-lg);overflow:hidden}
+html[data-skin="app"] body :is(.tb-sresults,.sp-sresults) li:first-child .tb-sres{border-top:0}
+html[data-skin="app"] body :is(.tb-sres,.sp-sres){border:0;border-top:1px solid var(--app-line);border-radius:0;background:var(--app-surface);padding:var(--app-s3) var(--app-s4);min-height:56px}
+html[data-skin="app"] body :is(.tb-sres,.sp-sres):is(:hover,:focus-visible){background:var(--app-pressed)}
+html[data-skin="app"] body :is(.tb-sres,.sp-sres):active{background:var(--app-pressed-ground)}
+html[data-skin="app"] body :is(.tb-sres-t,.sp-sres-t){font:400 17px/1.35 var(--app-sans)}
+html[data-skin="app"] body :is(.tb-sres-c,.sp-sres-c){font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-wine)}
+html[data-skin="app"] body :is(.tb-sres-s,.sp-sres-s){font-size:15px}
+html[data-skin="app"] body :is(.tb-sres-none,.sp-sres-none){border:0;background:var(--app-surface);border-radius:var(--app-r-lg)}
+@media (min-width:768px){
+  html[data-skin="app"] body :is(.tb-sheet,.sp-sheet):not([hidden]){left:50%;right:auto;top:12vh;bottom:auto;width:min(640px,calc(100vw - 48px));max-height:76vh!important;transform:translateX(-50%);border-radius:var(--app-r-xl)}
+  html[data-skin="app"] body :is(.tb-sheet,.sp-sheet):not([hidden])::before{display:none}
+  html[data-skin="app"] body :is(.tb-sheet-inner,.sp-sheet-inner){padding-top:var(--app-s4)}
+}
+/* the chapter / block menu: a bottom sheet on phones (a rounded list under the bar from 768px) */
+@media (max-width:767px){
+  html[data-skin="app"] body :is(.tb-chmenu-panel,.sp-chmenu-panel,.bp-blockmenu-panel):not([hidden]){
+    position:fixed;left:0;right:0;top:auto;bottom:0;z-index:70;width:auto;max-width:none;max-height:78dvh!important;border-radius:var(--app-r-xl) var(--app-r-xl) 0 0;
+    padding-bottom:var(--app-safe-b);box-shadow:0 0 0 100vmax var(--app-backdrop),var(--app-shadow-float);
+  }
+  html[data-skin="app"] body :is(.tb-chmenu-panel,.sp-chmenu-panel,.bp-blockmenu-panel):not([hidden])::before{content:'';display:block;width:36px;height:5px;margin:6px auto 2px;border-radius:var(--app-r-full);background:#c4bcae}
+}
+
+/* ------------------------------------------------------------------ 13. /blocks/ (contents, index, chooser) and the region landings
+   The contents page is a textbook's contents as grouped lists: each Part a title2 heading over a raised card of chapter rows
+   with chevrons; folds are rows; the index and the A-Z are folds. The landings use the same pieces. */
+html[data-skin="app"] .ra-sbar-title,html[data-skin="app"] .lc-bar-title,html[data-skin="app"] .bd-pbar-title{opacity:0;transition:opacity var(--app-d-fast) var(--app-ease)}
+html[data-skin="app"][data-ra-collapsed] :is(.ra-sbar-title,.lc-bar-title,.bd-pbar-title){opacity:1}
+html[data-skin="app"] body.bd-app main{padding-bottom:var(--app-s6)}
+html[data-skin="app"] body.bd-app .bd-hero{padding:var(--app-s2) 0 0;border-bottom:0}
+html[data-skin="app"] body.bd-app .bd-search{max-width:none;margin-top:var(--app-s4)}
+html[data-skin="app"] body.bd-app .bd-search-k{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;text-transform:uppercase;color:var(--app-muted);margin:0 0 6px;padding-inline:var(--app-s4)}
+html[data-skin="app"] body.bd-app main .bd-h2{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:0 0 var(--app-s3);max-width:none}
+html[data-skin="app"] body.bd-app .bd-contents{padding:var(--app-s6) 0 0;border-bottom:0}
+html[data-skin="app"] body.bd-app .bd-index{padding:var(--app-s2) 0 var(--app-s6)}
+html[data-skin="app"] body.bd-app .bd-toc{display:block}
+html[data-skin="app"] body.bd-app .bd-toc-col{display:contents}
+@media (min-width:1024px){
+  html[data-skin="app"] body.bd-app .bd-toc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 var(--app-s8);align-items:start}
+  html[data-skin="app"] body.bd-app .bd-toc-col{display:block;min-width:0}
+}
+html[data-skin="app"] body.bd-app main .bd-part{margin:0 0 var(--app-s6);padding-top:0;border-top:0}
+html[data-skin="app"] body.bd-app main .bd-part-t{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:0 0 4px}
+html[data-skin="app"] body.bd-app main .bd-part-t a{text-decoration:none;min-height:44px}
+html[data-skin="app"] body.bd-app main .bd-part-t a:hover{color:var(--app-wine)}
+html[data-skin="app"] body.bd-app main .bd-part-l{max-width:none;font:400 15px/1.45 var(--app-sans);color:var(--app-muted);margin:0 0 var(--app-s3)}
+html[data-skin="app"] body.bd-app main .bd-toc-list{margin:0 0 var(--app-s2);background:var(--app-surface);border-radius:var(--app-r-lg);overflow:hidden;border-top:0}
+html[data-skin="app"] body.bd-app main .bd-ch{border-bottom:0}
+html[data-skin="app"] body.bd-app main .bd-toc-list>li+li::before{content:'';display:block;height:1px;margin-left:var(--app-s4);background:var(--app-line)}
+html[data-skin="app"] body.bd-app main a.bd-ch-link{min-height:56px;padding:var(--app-s2) var(--app-s4);gap:var(--app-s3);text-decoration:none}
+html[data-skin="app"] body.bd-app main a.bd-ch-link::after{
+  content:'';margin-left:auto;flex:none;width:8px;height:8px;border-right:2px solid var(--app-muted);border-top:2px solid var(--app-muted);transform:rotate(45deg);margin-right:3px;
+}
+html[data-skin="app"] body.bd-app main a.bd-ch-link:is(:hover,:focus-visible){background:var(--app-surface)}
+html[data-skin="app"] body.bd-app main a.bd-ch-link:active{background:var(--app-pressed)}
+html[data-skin="app"] body.bd-app main a.bd-ch-link:focus-visible{outline-offset:-3px}
+html[data-skin="app"] body.bd-app .bd-n{font:500 14px/1.4 var(--app-mono);color:var(--app-muted)}
+html[data-skin="app"] body.bd-app main .bd-ch--safety{padding-bottom:var(--app-s3)}
+html[data-skin="app"] body.bd-app main .bd-ch--safety>.bd-alert{margin-inline:var(--app-s3)}
+html[data-skin="app"] body.bd-app main a.bd-alert{min-height:56px;margin:var(--app-s2) var(--app-s3);padding:var(--app-s2) var(--app-s4);border-left:4px solid var(--app-bad);border-radius:var(--app-r-md);background:var(--app-bad-bg);color:var(--app-bad);font:600 16px/1.4 var(--app-sans);text-decoration:none}
+html[data-skin="app"] body.bd-app main a.bd-alert:hover{text-decoration:none;background:var(--app-bad-bg)}
+html[data-skin="app"] body.bd-app main a.bd-alert:active{background:#efd0cc}
+html[data-skin="app"] body.bd-app main .bd-inline{padding-left:calc(var(--app-s4) + 2.2em + 12px);margin-bottom:var(--app-s2)}
+html[data-skin="app"] body.bd-app main .bd-inline a{font-weight:600;text-decoration:none}
+/* folds: dose planners, a Part's blocks, the index's chooser and A-Z */
+html[data-skin="app"] body.bd-app main :is(.bd-secs,.bd-idx)>summary{min-height:56px;padding:var(--app-s2) var(--app-s4);gap:var(--app-s3);font:400 17px/1.35 var(--app-sans)}
+html[data-skin="app"] body.bd-app main :is(.bd-secs,.bd-idx)>summary::after{
+  content:'';width:9px;height:9px;margin-right:4px;margin-bottom:3px;border-right:2px solid var(--app-muted);border-bottom:2px solid var(--app-muted);transform:rotate(45deg);font:0;transition:transform var(--app-d-fast) var(--app-ease);
+}
+html[data-skin="app"] body.bd-app main :is(.bd-secs,.bd-idx)[open]>summary::after{content:'';transform:translateY(4px) rotate(-135deg)}
+html[data-skin="app"] body.bd-app main :is(.bd-secs,.bd-idx)>summary:hover{background:transparent}
+html[data-skin="app"] body.bd-app main :is(.bd-secs,.bd-idx)>summary:active{background:var(--app-pressed)}
+html[data-skin="app"] body.bd-app main .bd-secs--part{margin:0;border-bottom:0}
+html[data-skin="app"] body.bd-app main .bd-secs--part>summary .bd-ch-t{font:600 15px/1.35 var(--app-sans);color:var(--app-wine)}
+html[data-skin="app"] body.bd-app main .bd-secs-body{padding:0 0 var(--app-s2)}
+html[data-skin="app"] body.bd-app main .bd-secs-gt{margin:var(--app-s3) var(--app-s4) 2px;font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.bd-app main .bd-secs-list li{border-top:0}
+html[data-skin="app"] body.bd-app main .bd-secs-list li+li::before{content:'';display:block;height:1px;margin-left:var(--app-s4);background:var(--app-line)}
+html[data-skin="app"] body.bd-app main .bd-secs-list a{padding:var(--app-s2) var(--app-s4);min-height:48px;font-size:16px;text-decoration:none;align-items:center}
+html[data-skin="app"] body.bd-app main .bd-secs-list a:is(:hover,:focus-visible){background:transparent}
+html[data-skin="app"] body.bd-app main .bd-secs-list a:active{background:var(--app-pressed)}
+html[data-skin="app"] body.bd-app main .bd-idx{margin:0 0 var(--app-s2);border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.bd-app main .bd-idx+.bd-idx,html[data-skin="app"] body.bd-app main .bd-idx:last-child{border:0}
+html[data-skin="app"] body.bd-app main .bd-idx>summary{border-radius:var(--app-r-lg);min-height:56px;font:500 17px/1.35 var(--app-sans);letter-spacing:0}
+html[data-skin="app"] body.bd-app .bd-idx-body{padding:0 var(--app-s4) var(--app-s4)}
+/* A to Z */
+html[data-skin="app"] body.bd-app main .bd-az-jump a{min-width:44px;border:0;border-radius:var(--app-r-md);background:var(--app-inset);color:var(--app-wine);font-weight:600;text-decoration:none}
+html[data-skin="app"] body.bd-app main .bd-az-jump a:is(:hover,:focus-visible){background:var(--app-blush);border:0}
+html[data-skin="app"] body.bd-app main .bd-az-l{font:400 22px/1.25 var(--app-serif);color:var(--app-wine);margin:var(--app-s5) 0 var(--app-s2);padding-bottom:0;border-bottom:0}
+html[data-skin="app"] body.bd-app main .bd-az-list{columns:1;background:var(--app-inset);border-radius:var(--app-r-md);overflow:hidden}
+html[data-skin="app"] body.bd-app main .bd-az-list li{border-bottom:0}
+html[data-skin="app"] body.bd-app main .bd-az-list li+li::before{content:'';display:block;height:1px;margin-left:var(--app-s4);background:var(--app-line)}
+html[data-skin="app"] body.bd-app main .bd-az-list a{padding:var(--app-s3) var(--app-s4);font-size:16px;text-decoration:none;display:block}
+html[data-skin="app"] body.bd-app main .bd-az-list a:is(:hover,:focus-visible){background:transparent}
+html[data-skin="app"] body.bd-app main .bd-az-list a:active{background:var(--app-pressed-ground)}
+/* the chooser: a filter of chips, a list of operations (rows), the result beside or under it */
+html[data-skin="app"] body.bd-app .bd-chip{position:relative;min-height:44px;padding:0 var(--app-s4);border:0;border-radius:var(--app-r-full);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);color:var(--app-ink);font:500 15px/1 var(--app-sans)}
+html[data-skin="app"] body.bd-app .bd-chip:hover{background:var(--app-pressed);border:0}
+html[data-skin="app"] body.bd-app .bd-chip[aria-pressed=true]{background:var(--app-blush);box-shadow:inset 0 0 0 1.5px var(--app-wine);color:var(--app-wine);font-weight:600}
+html[data-skin="app"] body.bd-app .bd-chip[aria-pressed=true]::before{content:'';width:10px;height:5px;margin:-3px 0 0;border:solid currentColor;border-width:0 0 2px 2px;transform:rotate(-45deg)}
+html[data-skin="app"] body.bd-app .bd-chips{gap:var(--app-s2)}
+html[data-skin="app"] body.bd-app main .bd-ops-h{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-wine);margin:0 0 6px;padding:0 var(--app-s4) 0;border-bottom:0}
+html[data-skin="app"] body.bd-app main .bd-ops-g{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted);margin:var(--app-s3) var(--app-s4) 4px}
+html[data-skin="app"] body.bd-app main .bd-ops-list{background:var(--app-surface);border-radius:var(--app-r-lg);overflow:hidden}
+html[data-skin="app"] body.bd-app main .bd-ops-list>li{border-bottom:0}
+html[data-skin="app"] body.bd-app main .bd-ops-list>li+li::before{content:'';display:block;height:1px;margin-left:var(--app-s4);background:var(--app-line)}
+html[data-skin="app"] body.bd-app .bd-op{min-height:56px;padding:var(--app-s2) var(--app-s3) var(--app-s2) var(--app-s4);font:400 17px/1.35 var(--app-sans)}
+html[data-skin="app"] body.bd-app .bd-op:hover{background:var(--app-surface)}
+html[data-skin="app"] body.bd-app .bd-op:active{background:var(--app-pressed)}
+html[data-skin="app"] body.bd-app .bd-op:focus-visible{outline-offset:-3px}
+html[data-skin="app"] body.bd-app .bd-op-c{border-right-width:2px;border-bottom-width:2px;border-color:var(--app-muted)}
+html[data-skin="app"] body.bd-app .bd-op[aria-expanded=true]{background:var(--app-blush);box-shadow:none;color:var(--app-wine);font-weight:600}
+html[data-skin="app"] body.bd-app .bd-op[aria-expanded=true] .bd-op-c{border-color:var(--app-wine)}
+html[data-skin="app"] body.bd-app main .bd-ops-none{border:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.bd-app .bd-ops-list>li>.bd-result{padding:var(--app-s4);border-top:0;background:var(--app-surface)}
+@media (min-width:1000px){html[data-skin="app"] body.bd-app .bd-result{border-top:0;padding-top:0}}
+html[data-skin="app"] body.bd-app main .bd-res-title{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em}
+html[data-skin="app"] body.bd-app .bd-brief{border:0;border-radius:var(--app-r-xs);background:var(--app-inset);font:600 12px/1.6 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.bd-app main .bd-line{max-width:none;padding:var(--app-s3) var(--app-s4);border-left:4px solid var(--app-wine);border-radius:var(--app-r-md);background:var(--app-inset);font:500 17px/1.5 var(--app-sans)}
+html[data-skin="app"] body.bd-app main .bd-facts{border-top:0;border-radius:var(--app-r-lg);background:var(--app-inset);overflow:hidden}
+html[data-skin="app"] body.bd-app main .bd-facts>div{padding:var(--app-s3) var(--app-s4);border-bottom:0;border-top:1px solid var(--app-line)}
+html[data-skin="app"] body.bd-app main .bd-facts>div:first-child{border-top:0}
+html[data-skin="app"] body.bd-app main .bd-facts dt{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.bd-app main .bd-sub{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted);margin:var(--app-s6) 0 var(--app-s2)}
+html[data-skin="app"] body.bd-app main .bd-opt-h{font:400 19px/1.3 var(--app-serif)}
+html[data-skin="app"] body.bd-app main .bd-opts{border-top:0;border-radius:var(--app-r-lg);background:var(--app-inset);overflow:hidden}
+html[data-skin="app"] body.bd-app main .bd-opts>li{padding:var(--app-s3) var(--app-s4);border-bottom:0;border-top:1px solid var(--app-line)}
+html[data-skin="app"] body.bd-app main .bd-opts>li:first-child{border-top:0}
+html[data-skin="app"] body.bd-app main .bd-opts--no>li{border-left:4px solid var(--app-bad);padding-left:var(--app-s3)}
+html[data-skin="app"] body.bd-app main .bd-opt-dose{font:500 14px/1.5 var(--app-mono)}
+html[data-skin="app"] body.bd-app main a.bd-opt-link,html[data-skin="app"] body.bd-app main .bd-landing a{font-weight:600;text-decoration:none}
+html[data-skin="app"] body.bd-app main .bd-more{border-top:0}
+html[data-skin="app"] body.bd-app .bd-fig--torso .tb-fig-svg{border:0;border-radius:var(--app-r-md)}
+html[data-skin="app"] body.bd-app .bd-note,html[data-skin="app"] body.bd-app main .bd-note{max-width:none}
+html[data-skin="app"] body.bd-app .tb-foot .bd-appver{border-top:1px solid var(--app-line)}
+html[data-skin="app"] body.bd-app .tb-foot .bd-appver-btn{color:var(--app-wine);font-weight:600;text-decoration:none}
+
+/* the landings (truncal/, head-neck/, lower-limb/, upper-limb/): hero, page cards, the operation chooser */
+html[data-skin="app"] body.tb-app:has(>.ra-sbar) main{padding-bottom:var(--app-s6)}
+html[data-skin="app"] body.tb-app .tb-hero{padding:var(--app-s2) 0 var(--app-s2);border-bottom:0}
+html[data-skin="app"] body.tb-app .tb-hero h1{margin:0 0 var(--app-s2)!important}
+html[data-skin="app"] body.tb-app .tb-lead{margin:0 0 var(--app-s3)!important}
+html[data-skin="app"] body.tb-app .tb-credit{font-size:14px}
+html[data-skin="app"] body.tb-app .tb-disclaimer{max-width:none;border-left:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.tb-app .tb-section{padding:var(--app-s6) 0 0;border-bottom:0}
+html[data-skin="app"] body.tb-app .tb-section h2{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;text-transform:none;color:var(--app-ink);margin:0 0 var(--app-s2)!important;padding:0}
+html[data-skin="app"] body.tb-app .tb-intro{max-width:none;margin-bottom:var(--app-s4)!important}
+html[data-skin="app"] body.tb-app .tb-note{max-width:none}
+html[data-skin="app"] body.tb-app .tb-h3{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:var(--app-s6) 0 var(--app-s2)!important}
+html[data-skin="app"] body.tb-app .tb-cards{grid-template-columns:1fr;gap:var(--app-s3)}
+@media (min-width:1024px){html[data-skin="app"] body.tb-app .tb-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+html[data-skin="app"] body.tb-app .tb-card{padding:var(--app-s4);border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.tb-app .tb-card h3{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:4px 0 var(--app-s3)!important}
+html[data-skin="app"] body.tb-app .tb-card-list{margin:0 0 var(--app-s3)!important;font-size:16px}
+html[data-skin="app"] body.tb-app .tb-card-list li{padding:var(--app-s2) 0}
+html[data-skin="app"] body.tb-app main .tb-card-link{align-self:stretch;min-height:48px;padding:0 var(--app-s4);border:0;border-radius:var(--app-r-md);background:var(--app-blush);color:var(--app-wine);font:600 16px/1.2 var(--app-sans)}
+html[data-skin="app"] body.tb-app main .tb-card-link:hover{background:#ddd0c8;border:0}
+html[data-skin="app"] body.tb-app main .tb-card-link:active{background:#ddd0c8;transform:scale(.98)}
+html[data-skin="app"] body.tb-app .tb-ops-legend{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted);padding-inline:var(--app-s4)}
+html[data-skin="app"] body.tb-app .tb-ops-list{border-top:0;gap:var(--app-s2)}
+html[data-skin="app"] body.tb-app .tb-op{min-height:56px;padding:var(--app-s2) var(--app-s4);border:0;border-radius:var(--app-r-md);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-line);color:var(--app-ink);font:400 16px/1.35 var(--app-sans)}
+html[data-skin="app"] body.tb-app .tb-op:hover{background:var(--app-pressed)}
+html[data-skin="app"] body.tb-app .tb-op{min-width:0;padding-inline:var(--app-s3)}
+@media (max-width:339px){html[data-skin="app"] body.tb-app .tb-ops-list{grid-template-columns:1fr}}
+html[data-skin="app"] body.tb-app .tb-op:has(input:checked){background:var(--app-blush);box-shadow:inset 0 0 0 2px var(--app-wine);color:var(--app-wine);font-weight:600}
+html[data-skin="app"] body.tb-app .tb-op:has(input:focus-visible){outline:2px solid var(--app-wine);outline-offset:2px}
+@media (min-width:1101px){html[data-skin="app"] body.tb-app .tb-ops-list{border-top:0}html[data-skin="app"] body.tb-app .tb-op{border:0}}
+html[data-skin="app"] body.tb-app .tb-res-title{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:0 0 var(--app-s3)!important;padding-top:0;border-top:0}
+html[data-skin="app"] body.tb-app .tb-brief{border:0;border-radius:var(--app-r-xs);background:var(--app-inset);padding:2px 8px}
+html[data-skin="app"] body.tb-app .tb-fig-svg{border:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.tb-app .tb-fig figcaption{font-size:15px}
+html[data-skin="app"] body.tb-app .tb-facts{border-top:0;border-radius:var(--app-r-lg);background:var(--app-surface);overflow:hidden;margin-bottom:var(--app-s3)!important}
+html[data-skin="app"] body.tb-app .tb-facts>div{padding:var(--app-s3) var(--app-s4);border-bottom:0;border-top:1px solid var(--app-line);gap:var(--app-s4)}
+html[data-skin="app"] body.tb-app .tb-facts>div:first-child{border-top:0}
+html[data-skin="app"] body.tb-app .tb-facts dt{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.tb-app .tb-sub{font:400 19px/1.3 var(--app-serif);margin:var(--app-s6) 0 var(--app-s1)!important}
+html[data-skin="app"] body.tb-app .tb-opt-h{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;margin:var(--app-s4) 0 6px!important;padding-inline:var(--app-s4)}
+html[data-skin="app"] body.tb-app .tb-opts{border-top:0;border-radius:var(--app-r-lg);background:var(--app-surface);overflow:hidden}
+html[data-skin="app"] body.tb-app .tb-opt{padding:var(--app-s3) var(--app-s4);border-bottom:0;border-top:1px solid var(--app-line)}
+html[data-skin="app"] body.tb-app .tb-opts>.tb-opt:first-child{border-top:0}
+html[data-skin="app"] body.tb-app .tb-notes li{max-width:none}
+html[data-skin="app"] body.tb-app .tb-last{max-width:none;border-left:4px solid var(--app-bad);border-radius:var(--app-r-md);background:var(--app-bad-bg)}
+html[data-skin="app"] body.tb-app .tb-table-scroll{border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.tb-app .tb-section .tb-table thead th{padding:var(--app-s3) var(--app-s4);background:var(--app-inset);border-bottom:0;font:600 12px/1.4 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.tb-app .tb-section .tb-table :is(td,tbody th){padding:var(--app-s3) var(--app-s4)}
+html[data-skin="app"] body.tb-app .tb-epi .tb-table{max-width:none}
+@media (max-width:760px){
+  html[data-skin="app"] body.tb-app .tb-section .tb-table tr{padding:var(--app-s3) var(--app-s4);border-bottom:0;border-top:1px solid var(--app-line)}
+  html[data-skin="app"] body.tb-app .tb-section .tb-table tr:first-child{border-top:0}
+  html[data-skin="app"] body.tb-app .tb-section .tb-table :is(td,tbody th){padding:2px 0}
+}
+
+/* ------------------------------------------------------------------ 18. the foot: the credit line and the copyright sit on the ground, small and muted */
+html[data-skin="app"] body :is(.tb-foot,.sp-foot,.foot){background:transparent;border-top:0;padding:var(--app-s6) 0 var(--app-s4);color:var(--app-muted);font-size:14px;line-height:1.6}
+html[data-skin="app"] body :is(.tb-foot,.sp-foot) p{max-width:none}
+html[data-skin="app"] body :is(.tb-foot,.sp-foot,.foot) a{color:var(--app-wine)}
+html[data-skin="app"] body .ntf-footer{background:transparent;border-top:1px solid var(--app-line);color:var(--app-muted)}
+html[data-skin="app"] body .ntf-footer :is(a,span){color:var(--app-muted)}
+
+/* ------------------------------------------------------------------ 14. the dose calculator (lacalc.js) and the settings page
+   Inputs are filled fields on raised cards; the agent rows are a grouped list; the result is a card that turns amber
+   or red, with words and an icon, never colour alone. */
+html[data-skin="app"] body.lc-app main{padding-bottom:var(--app-s6)}
+html[data-skin="app"] body.lc-app .lc-hero{padding:var(--app-s2) 0 0}
+html[data-skin="app"] body.lc-app .lc{max-width:none;margin:var(--app-s2) 0 0}
+html[data-skin="app"] body.lc-app main .lc-h{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:0 0 var(--app-s3);color:var(--app-ink)}
+html[data-skin="app"] body.lc-app .lc-box{margin:0 0 var(--app-s4);padding:var(--app-s4);border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.lc-app .lc-box>legend{padding:0 0 var(--app-s3)}
+html[data-skin="app"] body.lc-app main .lc-box>legend.lc-h{margin:0}
+html[data-skin="app"] body.lc-app main .lc-intro{max-width:none;margin:0 0 var(--app-s3)}
+html[data-skin="app"] body.lc-app .lc-label{font:500 15px/1.4 var(--app-sans);color:var(--app-ink-soft);margin:0 0 6px;padding-inline:var(--app-s1)}
+html[data-skin="app"] body.lc-app .lc-hint{color:var(--app-muted)}
+html[data-skin="app"] body.lc-app .lc-input-row{border-radius:var(--app-r-md);overflow:hidden;background:var(--app-inset)}
+html[data-skin="app"] body.lc-app :is(.lc-input,.lc-select){min-height:50px;border:0;border-radius:var(--app-r-md);background-color:var(--app-inset);color:var(--app-ink);font-size:18px}
+html[data-skin="app"] body.lc-app .lc-select{font:400 17px/1.2 var(--app-sans);background-position:right 14px center}
+html[data-skin="app"] body.lc-app .lc-input-row .lc-input{border-radius:0}
+html[data-skin="app"] body.lc-app .lc-input::placeholder{color:#6a675f;opacity:1;font-size:16px}
+html[data-skin="app"] body.lc-app :is(.lc-input,.lc-select):hover{border:0}
+html[data-skin="app"] body.lc-app :is(.lc-input,.lc-select):focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--app-wine)}
+html[data-skin="app"] body.lc-app .lc-input[aria-invalid=true]{box-shadow:inset 0 0 0 2px var(--app-bad)}
+html[data-skin="app"] body.lc-app .lc-unit{min-width:48px;border:0;background:var(--app-fill);color:var(--app-ink-soft);font:500 15px/1 var(--app-mono)}
+html[data-skin="app"] body.lc-app main .lc-msg--bad{color:var(--app-bad)}
+html[data-skin="app"] body.lc-app .lc-seg-row{display:flex;flex-wrap:nowrap;padding:2px;border-radius:10px;background:var(--app-fill)}
+html[data-skin="app"] body.lc-app .lc-seg-opt{flex:1 1 0;min-width:0}
+html[data-skin="app"] body.lc-app .lc-seg-opt span{width:100%;min-height:44px;margin:0;padding:0 var(--app-s3);border:0;border-radius:8px;background:transparent;color:var(--app-ink-soft);font:500 15px/1.2 var(--app-sans)}
+html[data-skin="app"] body.lc-app .lc-seg-opt span:hover{background:var(--app-pressed-ground);border:0}
+html[data-skin="app"] body.lc-app .lc-seg-opt input:checked+span{background:var(--app-surface);color:var(--app-wine);font-weight:600;box-shadow:var(--app-shadow-thumb);border:0}
+html[data-skin="app"] body.lc-app .lc-seg-opt input:focus-visible+span{outline:2px solid var(--app-wine);outline-offset:0}
+/* adrenaline: a row with a switch */
+html[data-skin="app"] body.lc-app .lc-check{min-height:50px;padding:0 var(--app-s4);border:0;border-radius:var(--app-r-md);background:var(--app-inset);font:400 16px/1.3 var(--app-sans);justify-content:space-between;flex-direction:row-reverse}
+html[data-skin="app"] body.lc-app .lc-check:hover{background:var(--app-pressed-ground);border:0}
+html[data-skin="app"] body.lc-app .lc-check:has(input:checked){background:var(--app-inset);border:0}
+html[data-skin="app"] body.lc-app .lc-check input{-webkit-appearance:none;appearance:none;position:relative;flex:none;width:51px;height:31px;margin:0;border-radius:var(--app-r-full);background:var(--app-fill);box-shadow:inset 0 0 0 1px var(--app-line);cursor:pointer;transition:background-color var(--app-d-fast) var(--app-ease)}
+html[data-skin="app"] body.lc-app .lc-check input::before{content:'';position:absolute;left:2px;top:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:var(--app-shadow-thumb);transition:transform 250ms cubic-bezier(.32,.72,0,1)}
+html[data-skin="app"] body.lc-app .lc-check input:checked{background:var(--app-wine);box-shadow:none}
+html[data-skin="app"] body.lc-app .lc-check input:checked::before{transform:translateX(20px)}
+html[data-skin="app"] body.lc-app .lc-check input:focus-visible{outline:2px solid var(--app-wine);outline-offset:2px}
+html[data-skin="app"] body.lc-app .lc-weight{margin:var(--app-s4) 0 0;border-left:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.lc-app main .lc-weight .lc-weight-warn{color:var(--app-warn)}
+html[data-skin="app"] body.lc-app main .lc-rows{margin:0 0 var(--app-s3)}
+html[data-skin="app"] body.lc-app main .lc-rows>li.lc-row{padding:var(--app-s4);margin:0 0 var(--app-s3);border:0;border-radius:var(--app-r-md);background:var(--app-inset)}
+html[data-skin="app"] body.lc-app main .lc-rows>li.lc-row:last-child{border:0;margin-bottom:var(--app-s3)}
+html[data-skin="app"] body.lc-app main .lc-row-h{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.lc-app .lc-remove{min-height:44px;font-size:14px;color:var(--app-bad)}
+html[data-skin="app"] body.lc-app .lc-row .lc-input,html[data-skin="app"] body.lc-app .lc-row .lc-select{background-color:var(--app-surface)}
+html[data-skin="app"] body.lc-app .lc-row .lc-input-row{background:var(--app-surface)}
+html[data-skin="app"] body.lc-app .lc-row .lc-unit{background:var(--app-fill)}
+html[data-skin="app"] body.lc-app .lc-row .lc-check{background:var(--app-surface)}
+html[data-skin="app"] body.lc-app .lc-row .lc-check:hover{background:var(--app-pressed)}
+html[data-skin="app"] body.lc-app main .lc-row-out{margin-top:var(--app-s3)}
+html[data-skin="app"] body.lc-app main .lc-row-over{border-left:4px solid var(--app-bad);border-radius:var(--app-r-xs);background:var(--app-bad-bg);color:var(--app-bad);font-weight:600}
+html[data-skin="app"] body.lc-app .lc-row--over .lc-row-line strong{color:var(--app-bad)}
+html[data-skin="app"] body.lc-app .lc-add{width:100%;justify-content:center;background:var(--app-blush);color:var(--app-wine);box-shadow:none}
+html[data-skin="app"] body.lc-app .lc-add:hover{background:#ddd0c8}
+@media (min-width:600px){html[data-skin="app"] body.lc-app .lc-add{width:auto}}
+/* the result card */
+html[data-skin="app"] body.lc-app .lc-total{margin:0 0 var(--app-s4);padding:var(--app-s4);border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.lc-app main .lc-total-h{font:400 22px/1.25 var(--app-serif);margin:0 0 var(--app-s2)}
+html[data-skin="app"] body.lc-app main .lc-total-v{font:400 30px/1.1 var(--app-serif)}
+html[data-skin="app"] body.lc-app main .lc-total-v .lc-mono{font:500 32px/1.1 var(--app-mono)}
+html[data-skin="app"] body.lc-app .lc-meter{height:12px;border:0;border-radius:var(--app-r-full);background:var(--app-fill);overflow:visible}
+html[data-skin="app"] body.lc-app .lc-meter-fill{border-radius:var(--app-r-full)}
+html[data-skin="app"] body.lc-app .lc-meter-max{border-radius:2px;background:var(--app-ink)}
+html[data-skin="app"] body.lc-app .lc-meter-scale{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.lc-app .lc-total[data-status=near]{background:var(--app-warn-bg);box-shadow:inset 4px 0 0 var(--app-warn)}
+html[data-skin="app"] body.lc-app .lc-total[data-status=over]{background:var(--app-bad-bg);box-shadow:inset 4px 0 0 var(--app-bad)}
+html[data-skin="app"] body.lc-app .lc-total[data-status=over] .lc-total-v{color:var(--app-bad)}
+html[data-skin="app"] body.lc-app .lc-verdict{font:600 17px/1.45 var(--app-sans)}
+html[data-skin="app"] body.lc-app .lc-verdict-icon{font-family:var(--app-sans)}
+html[data-skin="app"] body.lc-app .lc-verdict--near{color:var(--app-warn)}
+html[data-skin="app"] body.lc-app .lc-verdict--over{color:var(--app-bad)}
+html[data-skin="app"] body.lc-app .lc-notes{margin:var(--app-s6) 0 0;padding:0;border-top:0}
+html[data-skin="app"] body.lc-app main .lc-notes-list{max-width:none;padding:var(--app-s4) var(--app-s4) var(--app-s4) calc(var(--app-s4) + 1.25em);margin:0 0 var(--app-s3);border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.lc-app main .lc-topical{max-width:none}
+html[data-skin="app"] body.lc-app .lc-how{max-width:none;margin:var(--app-s3) 0 0}
+html[data-skin="app"] body.lc-app .lc-table-wrap{border-radius:var(--app-r-md);background:var(--app-inset);padding:0 var(--app-s3)}
+html[data-skin="app"] body.lc-app .lc-table{font-size:15px}
+html[data-skin="app"] body.lc-app .lc-table thead th{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;border-bottom:1px solid var(--app-line)}
+html[data-skin="app"] body.lc-app .lc-more{margin:var(--app-s6) 0 0;padding:0;border-top:0}
+html[data-skin="app"] body.lc-app main .lc-links{max-width:none;background:var(--app-surface);border-radius:var(--app-r-lg);overflow:hidden}
+html[data-skin="app"] body.lc-app main .lc-links li{border-bottom:0}
+html[data-skin="app"] body.lc-app main .lc-links li+li::before{content:'';display:block;height:1px;margin-left:var(--app-s4);background:var(--app-line)}
+html[data-skin="app"] body.lc-app main .lc-links a{min-height:60px;padding:var(--app-s3) var(--app-s4);text-decoration:none}
+html[data-skin="app"] body.lc-app main .lc-links a::after{
+  content:'';width:8px;height:8px;border-right:2px solid var(--app-muted);border-top:2px solid var(--app-muted);transform:rotate(45deg);margin-right:3px;justify-self:end;
+}
+html[data-skin="app"] body.lc-app main .lc-links a:is(:hover,:focus-visible){background:var(--app-surface)}
+html[data-skin="app"] body.lc-app main .lc-links a:active{background:var(--app-pressed)}
+html[data-skin="app"] body.lc-app main .lc-links a:focus-visible{outline-offset:-3px}
+html[data-skin="app"] body.lc-app .lc-link-t{font:400 17px/1.35 var(--app-sans)}
+
+/* ------------------------------------------------------------------ 15. spinal/ (neuraxial)
+   The same components as the engine pages (sp- twins of tb-: callouts, steps, tables, folds, buttons, tiles; sections 7 to 12
+   above), plus its own chapter navigation, jump lists, Topics sheet, decision trees, ward card and ultrasound figures.
+   Clinical colours (the anatomy plate, the ultrasound, the status and danger colours) are not touched. */
+html[data-skin="app"] body.spinal-app{--sp-accent-soft:#e8ded7}
+html[data-skin="app"] body.spinal-app .sp-hero{padding:var(--app-s2) 0 var(--app-s2);background:none}
+html[data-skin="app"] body.spinal-app .sp-hero-top{margin-bottom:var(--app-s2)}
+html[data-skin="app"] body.spinal-app .sp-hero .sp-lead{font-size:17px;margin:0 0 var(--app-s4)}
+html[data-skin="app"] body.spinal-app .sp-hero h1 em{color:var(--app-wine)}
+html[data-skin="app"] body.spinal-app .sp-credit{font-size:14px}
+html[data-skin="app"] body.spinal-app .sp-section{padding-block:var(--app-s2) 0;border-top:0}
+html[data-skin="app"] body.spinal-app .sp-section>.sp-kicker{color:var(--app-wine)}
+html[data-skin="app"] body.spinal-app main :is(h2,h3):not([class]){font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:var(--app-s8) 0 var(--app-s2);max-width:none}
+html[data-skin="app"] body.spinal-app main .sp-section>h2:first-of-type{font:400 34px/1.2 var(--app-serif);letter-spacing:-.02em;margin:0 0 var(--app-s3);max-width:none;text-wrap:balance}
+html[data-skin="app"] body.spinal-app main h3::before{display:none}
+html[data-skin="app"] body.spinal-app main h4{font:600 17px/1.35 var(--app-sans);text-transform:none;letter-spacing:0;margin:var(--app-s5) 0 6px}
+html[data-skin="app"] body.spinal-app main :is(p,li,dd){max-width:none}
+html[data-skin="app"] body.spinal-app main :is(.sp-prose,.sp-section>p,.sp-section>ul){max-width:68ch}
+html[data-skin="app"] body.spinal-app :is(.sp-kicker,.sp-eyebrow,.sp-ch-kicker,.sp-topics-k,.sp-topics-top-k,.ts-tree-kicker){font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;text-transform:uppercase;color:var(--app-muted)}
+html[data-skin="app"] body.spinal-app .sp-ch-kicker{color:var(--app-wine)}
+html[data-skin="app"] body.spinal-app main a{text-underline-offset:3px}
+html[data-skin="app"] body.spinal-app .sp-hub{padding-top:var(--app-s2)}
+html[data-skin="app"] body.spinal-app .sp-hub-h{font:600 12px/1.5 var(--app-sans)!important;letter-spacing:.07em;text-transform:uppercase;color:var(--app-muted);margin:var(--app-s8) 0 var(--app-s2)!important;padding-inline:var(--app-s4)}
+html[data-skin="app"] body.spinal-app :is(.sp-tool,.sp-pearls-btn){min-height:44px}
+html[data-skin="app"] body.spinal-app .sp-pearls-btn{border:0;border-radius:var(--app-r-full);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);color:var(--app-ink);padding:0 var(--app-s4);font:500 15px/1.2 var(--app-sans)}
+html[data-skin="app"] body.spinal-app .sp-pearls-btn:hover{background:var(--app-pressed);border:0}
+html[data-skin="app"] body.spinal-app .sp-pearls-btn[aria-pressed=true]{background:var(--app-blush);box-shadow:inset 0 0 0 1.5px var(--app-wine);color:var(--app-wine);font-weight:600}
+/* the stop box, key points and the boxed cards of every chapter: soft corners, no top rules */
+html[data-skin="app"] body.spinal-app :is(.sp-stop,.an-bar-out,.cd-note,.sx-pm-status,.tq-acd,.tq-rule,.us-calnote,.cx-check-out,.ts-outcome,.tq-bc-out,.an-derm-note,.sp-mount-error){
+  max-width:none;border-radius:var(--app-r-md);border-top:0;border-right:0;border-bottom:0;border-left-width:4px;
+}
+html[data-skin="app"] body.spinal-app .sp-stop{padding:var(--app-s3) var(--app-s4);border-left-color:var(--app-bad);background:var(--app-bad-bg)}
+html[data-skin="app"] body.spinal-app :is(.an-bar-out,.us-calnote,.tq-rule){border-left-color:var(--app-wine);background:var(--app-inset)}
+html[data-skin="app"] body.spinal-app :is(.tq-acd){background:var(--app-surface);margin-bottom:var(--app-s2)}
+html[data-skin="app"] body.spinal-app .sx-pm-status{background:var(--app-inset)}
+html[data-skin="app"] body.spinal-app :is(.cd-block,.cx-check,.cx-con-panel,.sx-panel,.tq-card,.tq-ac,.tq-ac-col,.tq-check,.tq-mode,.tq-bc,.tq-answer,.ts-tree,.ts-checklist,.ts-mini,.sp-box,.an-stepper){
+  border:0;border-radius:var(--app-r-lg);background:var(--app-surface);box-shadow:none;max-width:none;
+}
+html[data-skin="app"] body.spinal-app .ts-first{border:0;border-left:4px solid var(--app-bad);border-radius:var(--app-r-md);background:var(--app-bad-bg)}
+html[data-skin="app"] body.spinal-app :is(.tq-search,.sp-search-input){border:0;border-radius:var(--app-r-md);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-line);min-height:50px;padding-inline:var(--app-s4);font-size:17px}
+html[data-skin="app"] body.spinal-app :is(.tq-search,.sp-search-input):focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--app-wine)}
+html[data-skin="app"] body.spinal-app .ts-feedback{border-radius:var(--app-r-md);border-style:solid;border-color:var(--app-line);background:var(--app-inset)}
+/* jump lists and the chips at the top of a chapter: a grouped list of rows */
+html[data-skin="app"] body.spinal-app .sp-jump{display:block;margin:0 0 var(--app-s5);background:var(--app-surface);border-radius:var(--app-r-lg);overflow:hidden;font:400 17px/1.35 var(--app-sans)}
+html[data-skin="app"] body.spinal-app main .sp-jump li+li::before{content:'';display:block;height:1px;margin-left:var(--app-s4);background:var(--app-line)}
+html[data-skin="app"] body.spinal-app main .sp-jump a{height:auto;min-height:50px;padding:var(--app-s2) var(--app-s4);border:0;border-radius:0;background:transparent;color:var(--app-ink);text-decoration:none;font-size:16px}
+html[data-skin="app"] body.spinal-app main .sp-jump a::after{content:'';margin-left:auto;flex:none;width:8px;height:8px;border-right:2px solid var(--app-muted);border-top:2px solid var(--app-muted);transform:rotate(45deg);margin-right:3px}
+html[data-skin="app"] body.spinal-app main .sp-jump a:is(:hover,:focus-visible){border:0;background:var(--app-surface)}
+html[data-skin="app"] body.spinal-app main .sp-jump a:active{background:var(--app-pressed)}
+html[data-skin="app"] body.spinal-app main .sp-jump a:focus-visible{outline-offset:-3px}
+/* tabs: a segmented control */
+html[data-skin="app"] body.spinal-app .sp-tabs{display:grid;gap:2px;padding:2px;margin:var(--app-s4) 0 0;border:0;border-radius:12px;background:var(--app-fill)}
+html[data-skin="app"] body.spinal-app .sp-tab{min-height:52px;border:0;border-radius:10px;background:transparent;color:var(--app-ink-soft);font:500 15px/1.25 var(--app-sans)}
+html[data-skin="app"] body.spinal-app .sp-tab:hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] body.spinal-app .sp-tab[aria-selected=true]{background:var(--app-surface);color:var(--app-wine);font-weight:600;box-shadow:var(--app-shadow-thumb)}
+html[data-skin="app"] body.spinal-app .sp-tab[aria-selected=true] .sp-tab-sub{color:var(--app-muted)}
+html[data-skin="app"] body.spinal-app .sp-tab:focus-visible{outline-offset:-2px}
+/* chips and badges */
+html[data-skin="app"] body.spinal-app .sp-chip{border:0;border-radius:var(--app-r-xs);background:var(--app-inset);color:var(--app-muted);padding:1px 7px;font:500 12px/1.5 var(--app-sans);letter-spacing:.02em}
+/* decision trees: the choices are answer buttons */
+html[data-skin="app"] body.spinal-app .ts-choices{gap:var(--app-s2)}
+html[data-skin="app"] body.spinal-app .ts-choice{min-height:56px;padding:var(--app-s3) var(--app-s4);border:0;border-radius:var(--app-r-lg);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-line);color:var(--app-ink);font:500 17px/1.35 var(--app-sans)}
+html[data-skin="app"] body.spinal-app .ts-tree .ts-choice{background:var(--app-inset);box-shadow:none}
+html[data-skin="app"] body.spinal-app .ts-choice:is(:hover,:focus-visible){border:0;background:var(--app-blush)}
+html[data-skin="app"] body.spinal-app .ts-choice:active{background:var(--app-pressed-ground);transform:scale(.985)}
+html[data-skin="app"] body.spinal-app .ts-choice-arrow{color:var(--app-wine)}
+/* figures and ultrasound stages keep their plates; the frames are soft */
+html[data-skin="app"] body.spinal-app .sp-fig-stage{border:0;border-radius:var(--app-r-md)}
+html[data-skin="app"] body.spinal-app .sp-fig-title{font:400 19px/1.3 var(--app-serif)}
+html[data-skin="app"] body.spinal-app .sp-fig figcaption{color:var(--app-muted)}
+html[data-skin="app"] body.spinal-app :is(.us-item,.an-stepbtn){border-radius:var(--app-r-sm)}
+html[data-skin="app"] body.spinal-app .us-item[aria-pressed=true]{background:var(--app-blush);border-color:var(--app-wine);color:var(--app-wine)}
+/* the Topics button and its list: a floating pill and a bottom sheet (a centred dialog from 768px) */
+html[data-skin="app"] body.spinal-app .sp-topics{font-family:var(--app-sans)}
+html[data-skin="app"] body.spinal-app .sp-topics-btn{min-height:48px;padding:0 var(--app-s4);border:0;border-radius:var(--app-r-full);background:var(--app-surface);color:var(--app-wine);box-shadow:var(--app-shadow-float);font:600 15px/1.2 var(--app-sans)}
+html[data-skin="app"] body.spinal-app .sp-topics-btn:hover{background:var(--app-pressed);border:0}
+html[data-skin="app"] body.spinal-app .sp-topics.is-open .sp-topics-btn{background:var(--app-wine);color:var(--app-ivory)}
+html[data-skin="app"] body.spinal-app .sp-topics-panel{border:0;border-radius:var(--app-r-xl);background:var(--app-surface);box-shadow:var(--app-shadow-float);padding:var(--app-s2) 0 var(--app-s3);max-height:70vh}
+html[data-skin="app"] body.spinal-app .sp-topics-head{border-bottom:1px solid var(--app-line);padding:0 var(--app-s2) 0 var(--app-s4)}
+html[data-skin="app"] body.spinal-app .sp-topics-x{color:var(--app-wine);font-weight:600;text-decoration:none}
+html[data-skin="app"] body.spinal-app .sp-topics-list a,html[data-skin="app"] body.spinal-app .sp-topics-top-link{min-height:50px;padding:var(--app-s3) var(--app-s4);font-size:16px}
+html[data-skin="app"] body.spinal-app .sp-topics-list a[aria-current]{background:var(--app-blush);box-shadow:none;color:var(--app-wine);font-weight:600}
+html[data-skin="app"] body.spinal-app .sp-topics-list a:active{background:var(--app-pressed)}
+html[data-skin="app"] body.spinal-app .sp-topics-top-link{text-decoration:none;font-weight:600}
+@media (max-width:767px){
+  html[data-skin="app"] body.spinal-app .sp-topics:not([hidden]).is-open{left:0;right:0;bottom:0;max-width:none;align-items:stretch;padding:0;z-index:70}
+  html[data-skin="app"] body.spinal-app .sp-topics.is-open .sp-topics-panel{width:auto;max-height:78vh;border-radius:var(--app-r-xl) var(--app-r-xl) 0 0;padding-bottom:calc(var(--app-s3) + var(--app-tab-h) + var(--app-safe-b));box-shadow:0 0 0 100vmax var(--app-backdrop),var(--app-shadow-float)}
+  html[data-skin="app"] body.spinal-app .sp-topics.is-open .sp-topics-btn{display:none}
+}
+/* the small controls of the chapters: soft corners (their own pressed and chosen colours stay), wine tick boxes */
+html[data-skin="app"] body.spinal-app :is(.tq-spread-btn,.sx-btn,.us-tog,.us-item,.ts-act,.tq-select,.an-stepbtn,.us-slide,.an-ov-btn,.an-replay,.us-levelsbtn){border-radius:var(--app-r-md)}
+html[data-skin="app"] body.spinal-app .an-level{border-radius:var(--app-r-sm)}
+html[data-skin="app"] body.spinal-app :is(input[type=checkbox],input[type=radio],input[type=range]){accent-color:var(--app-wine)}
+html[data-skin="app"] body.spinal-app :is(.tq-select,.tq-search){background-color:var(--app-surface)}
+/* the troubleshooting index: rounded choice tiles (the current one blush) */
+html[data-skin="app"] body.spinal-app .ts-index{border-top:0;padding-top:0}
+html[data-skin="app"] body.spinal-app .ts-index-h{font:600 12px/1.5 var(--app-sans);letter-spacing:.07em}
+html[data-skin="app"] body.spinal-app .ts-index-list li{border:0;border-radius:var(--app-r-md);overflow:hidden;background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-line)}
+html[data-skin="app"] body.spinal-app main .ts-index-link{min-height:50px;border-left:0;border-radius:var(--app-r-md);font-size:15px}
+html[data-skin="app"] body.spinal-app main .ts-index-link:hover{background:var(--app-pressed);border-left:0}
+html[data-skin="app"] body.spinal-app main .ts-index-link[aria-current=true]{background:var(--app-blush);color:var(--app-wine);font-weight:600;border-left:0}
+html[data-skin="app"] body.spinal-app main .ts-index-list li:has(>[aria-current=true]){box-shadow:inset 0 0 0 1.5px var(--app-wine)}
+
+/* ------------------------------------------------------------------ 16. brachial-plexus/ (its own app: 3D model, diagram, scan teacher, coverage)
+   The chrome and the controls take the app look; the canvases, the 3D model and the figures keep their content and their
+   clinical colours (nerves yellow, arteries red, veins blue, status colours, ultrasound greys). */
+html[data-skin="app"] body.plexus-app:not(.px){--surface:#fbfaf6;--bg:#f1ede4;--border:#d7d2c8;--radius:14px;--shadow:none}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.bp-bar-inner,main,.foot-inner){max-width:var(--site-width);margin-inline:auto;padding-inline:var(--site-gutter)}
+@media (min-width:768px){html[data-skin="app"] body.plexus-app:not(.px){--site-width:1344px}}
+@media (min-width:1100px){html[data-skin="app"] body.plexus-app:not(.px) .stage{grid-template-columns:minmax(0,1fr) minmax(0,1.8fr)}}
+html[data-skin="app"] body.plexus-app:not(.px) .panel-body{padding:10px}
+html[data-skin="app"] body.plexus-app:not(.px) .top{background:transparent;border-bottom:0}
+html[data-skin="app"] body.plexus-app:not(.px) .top-inner{padding-top:var(--app-s2);padding-bottom:var(--app-s2)}
+html[data-skin="app"] body.plexus-app:not(.px) .org{font:600 12px/1.5 var(--app-sans)!important;letter-spacing:.07em;text-transform:uppercase;color:var(--app-muted);margin:0 0 6px}
+html[data-skin="app"] body.plexus-app:not(.px) .top h1{margin:0}
+html[data-skin="app"] body.plexus-app:not(.px) main .intro{font:400 17px/1.5 var(--app-sans);color:var(--app-ink-soft);max-width:none;margin:var(--app-s2) 0 var(--app-s4)}
+html[data-skin="app"] body.plexus-app:not(.px) .stage{gap:var(--app-s3);margin-bottom:var(--app-s3)}
+html[data-skin="app"] body.plexus-app:not(.px) .panel{border:0;border-radius:var(--app-r-lg);background:var(--app-surface);box-shadow:none}
+html[data-skin="app"] body.plexus-app:not(.px) .panel-head{padding:var(--app-s1) var(--app-s2) var(--app-s1) var(--app-s4);border-bottom:1px solid var(--app-line)}
+html[data-skin="app"] body.plexus-app:not(.px) .panel.is-collapsed .panel-head{border-bottom:0}
+html[data-skin="app"] body.plexus-app:not(.px) .panel-head{flex-wrap:nowrap}
+html[data-skin="app"] body.plexus-app:not(.px) .panel-head h2{font:400 20px/1.25 var(--app-serif);letter-spacing:-.01em;white-space:nowrap}
+html[data-skin="app"] body.plexus-app:not(.px) .panel-out{margin-left:0;flex:1 1 auto;justify-content:flex-end;font-size:14px;white-space:normal;text-align:right;line-height:1.25;min-width:0}
+html[data-skin="app"] body.plexus-app:not(.px) .panel-out{color:var(--app-wine);font-weight:600;text-decoration:none}
+html[data-skin="app"] body.plexus-app:not(.px) .collapse-btn{border:0;border-radius:var(--app-r-md);background:transparent;color:var(--app-wine)}
+html[data-skin="app"] body.plexus-app:not(.px) .collapse-btn:hover{background:var(--app-pressed-ground)}
+/* tabs: a segmented control */
+html[data-skin="app"] body.plexus-app:not(.px) .tabbar{padding:var(--app-s3) var(--app-s3) 0;border-bottom:0}
+html[data-skin="app"] body.plexus-app:not(.px) .tabs{gap:2px;padding:2px;border-radius:12px;background:var(--app-fill);overflow-x:auto}
+html[data-skin="app"] body.plexus-app:not(.px) .tabs [role="tab"]{flex:1 1 auto;min-height:44px;padding:0 var(--app-s4);border:0;border-radius:10px;color:var(--app-ink-soft);font:500 15px/1.2 var(--app-sans);white-space:nowrap}
+html[data-skin="app"] body.plexus-app:not(.px) .tabs [role="tab"]:hover{background:var(--app-pressed-ground);color:var(--app-ink-soft)}
+html[data-skin="app"] body.plexus-app:not(.px) .tabs [role="tab"][aria-selected="true"]{background:var(--app-surface);color:var(--app-wine);font-weight:600;box-shadow:var(--app-shadow-thumb)}
+html[data-skin="app"] body.plexus-app:not(.px) .tabpanel{padding:var(--app-s4) var(--app-s3)}
+/* block chips (wide screens, in the bar) and every pill */
+html[data-skin="app"] body.plexus-app:not(.px) :is(.chip,.bpus-chip,.bpus-pill,.cv-chip,.cv-pill){border:0;border-radius:var(--app-r-full);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);color:var(--app-ink)}
+html[data-skin="app"] body.plexus-app:not(.px) .chip{padding:3px var(--app-s4)}
+html[data-skin="app"] body.plexus-app:not(.px) .chip:hover{background:var(--app-pressed);border:0}
+html[data-skin="app"] body.plexus-app:not(.px) .chip[aria-pressed="true"]{background:var(--app-blush);box-shadow:inset 0 0 0 1.5px var(--app-wine);color:var(--app-wine)}
+html[data-skin="app"] body.plexus-app:not(.px) .chip[aria-pressed="true"] .chip-sub{color:var(--app-muted);opacity:1}
+html[data-skin="app"] body.plexus-app:not(.px) .chip--advanced{box-shadow:inset 0 0 0 1px var(--app-control)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.bpus-chip,.cv-chip)[aria-pressed="true"]{background:var(--app-blush);box-shadow:inset 0 0 0 1.5px var(--app-wine);color:var(--app-wine);font-weight:600}
+/* buttons */
+html[data-skin="app"] body.plexus-app:not(.px) :is(.btn-ghost,.bpus-btn,.bpd-btn,.v3d-btn,.cv-linkbtn,.bpus-switch){border:0;border-radius:var(--app-r-md);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);color:var(--app-ink)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.btn-ghost,.bpus-btn,.bpd-btn,.v3d-btn):hover{background:var(--app-pressed)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.btn-ghost,.bpus-btn,.bpd-btn,.v3d-btn):active{background:var(--app-pressed-ground);transition-duration:0ms}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.v3d-btn.is-playing,.bpus-btn[aria-pressed="true"],.bpd-btn[aria-pressed="true"],.v3d-btn[aria-pressed="true"]){background:var(--app-blush);box-shadow:inset 0 0 0 1.5px var(--app-wine);color:var(--app-wine)}
+/* sheets and cards inside the panels */
+html[data-skin="app"] body.plexus-app:not(.px) :is(.bpus-card,.bpd-card,.cv-card,.bpus-panel,.cv-panel,.v3d-panel,.bpd-tip,.v3d-tooltip,.cv-tip){border:0;border-radius:var(--app-r-lg);background:var(--app-surface)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.tabpanel .bpus-card,.tabpanel .cv-card){background:var(--app-inset)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.bpus-card,.cv-card).is-active{box-shadow:inset 0 0 0 2px var(--app-wine);background:var(--app-blush)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.bpus-thumb,.bpus-stage,.bpus-real-stage,.v3d-stage,.bpd-stage,.cv-stage,.bpus-canvas,.bpus-photo-wrap){border-radius:var(--app-r-md)}
+html[data-skin="app"] body.plexus-app:not(.px) .bpus-views.is-seg{padding:2px;border:0;border-radius:10px;background:var(--app-fill)}
+html[data-skin="app"] body.plexus-app:not(.px) .bpus-views.is-seg .bpus-view{border:0;border-radius:8px;background:transparent;color:var(--app-ink-soft)}
+html[data-skin="app"] body.plexus-app:not(.px) .bpus-views.is-seg .bpus-view[aria-pressed="true"]{background:var(--app-surface);color:var(--app-wine);font-weight:600;box-shadow:var(--app-shadow-thumb)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.bpus-step){border-radius:var(--app-r-md)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.bpus-info,.bpus-injnote,.bpus-pearls,.cv-note,.cv-compare-note,.cv-info,.cv-current,.bpus-current){border-left:0;border-radius:var(--app-r-md)}
+html[data-skin="app"] body.plexus-app:not(.px) :is(.table-wrap){border:0;border-radius:var(--app-r-md);background:var(--app-surface)}
+html[data-skin="app"] body.plexus-app:not(.px) .ra-hidden-hint{margin-top:0}
+html[data-skin="app"] body.plexus-app:not(.px) section.foot{background:transparent;border-top:0}
+html[data-skin="app"] body.plexus-app:not(.px) .foot p{color:var(--app-muted);font-size:14px}
+html[data-skin="app"] body.plexus-app:not(.px) .foot a{color:var(--app-wine)}
+
+/* ------------------------------------------------------------------ 17. plexus/ (Anatomy in 3D)
+   Already on the app kit's pieces; here the page takes the column, the large title, the bar and the sheets of the other pages. */
+html[data-skin="app"] body.px .px-head,html[data-skin="app"] body.px .px-explorer{max-width:none}
+/* the page is as wide as the website look's (1240px), centred like its bar, so the title, the two panes and the bar line up */
+@media (min-width:768px){html[data-skin="app"] body.px{--site-width:1240px}}
+html[data-skin="app"] body.px main{max-width:var(--site-width)}
+html[data-skin="app"] body.px .px-head{padding-top:var(--app-s2)}
+html[data-skin="app"] body.px .px-head h1{margin:0 0 var(--app-s2)}
+html[data-skin="app"] body.px .px-lead{font-size:17px;max-width:none}
+html[data-skin="app"] body.px .px-credit{color:var(--app-muted)}
+
+/* ------------------------------------------------------------------ 19. page-local widgets and small fixes (phase 2 review)
+   The planners, choosers, figure frames and kickers that single pages define in their own CSS (hip, knee, foot and ankle,
+   thigh, back, spinal), which still had the website look's square boxes, outline buttons and mono capitals. Same markup. */
+html[data-skin="app"] body :is(.tb-seg,.sp-seg){flex-wrap:wrap}
+html[data-skin="app"] body :is(.sp-seg .sp-seg-btn,.tb-seg .tb-seg-btn){min-width:44px}
+/* keyboard focus and "scroll into view" stop above the bottom tab bar, not under it (the rail from 1024px takes no height) */
+html[data-skin="app"]{scroll-padding-bottom:calc(var(--app-tab-h) + var(--app-safe-b) + 12px)}
+@media (min-width:1024px){html[data-skin="app"]{scroll-padding-bottom:0}}
+/* the site footer's copyright line is never under 12px */
+html[data-skin="app"] body .ntf-footer .ntf-copyright{font-size:12px}
+/* placeholder text is at least 4.5:1 on every surface, including the filled fields and the spinal search boxes */
+html[data-skin="app"] body :is(input,textarea)::placeholder{color:#6a675f;opacity:1}
+html[data-skin="app"] body.spinal-app .ra-rs-orient-sep{color:var(--app-muted)}
+/* "Chapter" / "Go to" in front of the menu button: the caption style, not mono capitals */
+html[data-skin="app"] :is(.tb-chmenu-k,.sp-chmenu-k,.bp-blockmenu-k){font:600 12px/1 var(--app-sans);letter-spacing:.07em;color:var(--app-muted)}
+/* the chapter menu button in the bar: a word never breaks in the middle ("Amputatio-n"); two short lines are fine */
+html[data-skin="app"] .tb-chmenu-cur{overflow-wrap:break-word;-webkit-hyphens:manual;hyphens:manual;font-size:13px}
+html[data-skin="app"] :is(.tb-chmenu-btn,.sp-chmenu-btn){padding-inline:var(--app-s2)}
+/* choice buttons that are not a segmented control (hip fracture chooser, knee plan): outline buttons, chosen = blush with a wine ring */
+html[data-skin="app"] body.tb-app :is(.hp-fx-seg,.kn-plan-presets,.kn-plan-blocks) .tb-seg-btn{
+  min-height:48px;margin:0;padding:var(--app-s2) var(--app-s3);border:0;border-radius:var(--app-r-md);background:var(--app-surface);
+  box-shadow:inset 0 0 0 1px var(--app-control);color:var(--app-ink);font:500 15px/1.25 var(--app-sans);
+}
+html[data-skin="app"] body.tb-app :is(.hp-fx-seg,.kn-plan-presets,.kn-plan-blocks) .tb-seg-btn:hover{background:var(--app-pressed);border:0}
+html[data-skin="app"] body.tb-app :is(.hp-fx-seg,.kn-plan-presets,.kn-plan-blocks) .tb-seg-btn:active{background:var(--app-pressed-ground);transform:scale(.97)}
+html[data-skin="app"] body.tb-app :is(.hp-fx-seg,.kn-plan-presets,.kn-plan-blocks,.kn-plan) .tb-seg-btn[aria-pressed=true]{
+  background:var(--app-blush);border:0;box-shadow:inset 0 0 0 2px var(--app-wine);color:var(--app-wine);font-weight:600;
+}
+html[data-skin="app"] body.tb-app :is(.hp-fx-seg,.kn-plan-presets,.kn-plan-blocks) .tb-seg-btn:focus-visible{outline-offset:2px}
+/* labels that were mono capitals: the caption style (12px capitals in the body font) */
+html[data-skin="app"] body :is(.fa-xs-k,.kn-plan-k,.th-lv-k,.th-plan-k,.th-plan-wlab,.hp-fx-dl dt,.fa-xs-dl dt,.th-dl dt,.tq-ac-dl dt,.an-stepkicker,.an-land-label,.cx-check-kicker,.ts-panel-kicker,.ts-step,.ra-rs-keyk,.tq-spread-who,.sp-pager-a small){
+  font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;text-transform:uppercase;color:var(--app-muted);
+}
+/* frames and planners: soft cards on the ground instead of ruled boxes (the drawings inside keep their own plates) */
+html[data-skin="app"] body.tb-app :is(.hp-fig-stage,.bk-fig-stage,.cw-fig-stage,.aw-fig-stage,.fa-fig-stage,.kn-fig-stage,.ll-fig-stage,.hn-fig-stage,.kn-plan-fig,.fa-xs,.fa-tq,.fa-op,.th-lv,.th-plan){
+  border:0;border-radius:var(--app-r-lg);background:var(--app-surface);
+}
+html[data-skin="app"] body.tb-app :is(.th-pb,.th-dose,.th-rapid){border-radius:var(--app-r-md)}
+html[data-skin="app"] body.tb-app .th-rapid{background:var(--app-inset)}
+html[data-skin="app"] body.tb-app .th-dose-bar{border-radius:var(--app-r-full)}
+html[data-skin="app"] body.tb-app :is(.kn-lv,.th-yn,.th-st-tag){border-radius:var(--app-r-xs)}
+html[data-skin="app"] body.tb-app :is(.kn-sw){border-radius:3px}
+/* fields inside those planners */
+html[data-skin="app"] body.tb-app :is(.bk-quiz-sel,.th-pb-sel,.th-plan-wt){
+  min-height:44px;border:0;border-radius:var(--app-r-md);background-color:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);
+  color:var(--app-ink);font-size:16px;
+}
+html[data-skin="app"] body.tb-app :is(.bk-quiz-sel,.th-pb-sel,.th-plan-wt):focus-visible{outline:none;box-shadow:inset 0 0 0 2px var(--app-wine)}
+html[data-skin="app"] body.tb-app .th-pb-sel{padding-inline:var(--app-s2)}
+html[data-skin="app"] body.tb-app .th-pb{background:var(--app-inset)}
+html[data-skin="app"] body.tb-app .th-pb.is-on{background:var(--app-blush)}
+html[data-skin="app"] body.tb-app :is(.th-pb input[type=checkbox],.th-plan input[type=checkbox]){accent-color:var(--app-wine)}
+/* brachial plexus: the "Colours" button of the 3D viewer has the soft corners of the other viewer buttons */
+html[data-skin="app"] body.plexus-app:not(.px) .v3d-legend-toggle{border-radius:var(--app-r-md)}
+/* the thigh planner's block rows and the exam corner stay inside a 320px screen */
+@media (max-width:359px){
+  html[data-skin="app"] body.tb-app .th-pb{gap:6px;padding:6px}
+  html[data-skin="app"] body.tb-app .th-pb-mg{min-width:0}
+}
+html[data-skin="app"] body.tb-app :is(.tb-exam-q,.tb-exam-pts){min-width:0;overflow-wrap:anywhere}
+/* spinal: chapter pager (Previous, Back to hub, Next) as the button row of the other pages */
+html[data-skin="app"] body.spinal-app .sp-pager{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--app-s2);margin:var(--app-s8) 0 var(--app-s2);padding-top:0;border-top:0}
+html[data-skin="app"] body.spinal-app .sp-pager .sp-pager-prev{grid-column:1;grid-row:1}
+html[data-skin="app"] body.spinal-app .sp-pager .sp-pager-next{grid-column:2;grid-row:1}
+html[data-skin="app"] body.spinal-app .sp-pager .sp-pager-hub{grid-column:1 / -1;grid-row:2}
+html[data-skin="app"] body.spinal-app main a.sp-pager-a{min-height:64px;padding:var(--app-s3) var(--app-s4);border:0;border-radius:var(--app-r-lg);background:var(--app-surface);color:var(--app-ink);text-decoration:none}
+html[data-skin="app"] body.spinal-app main a.sp-pager-a:is(:hover,:focus-visible){background:var(--app-surface);border:0}
+html[data-skin="app"] body.spinal-app main a.sp-pager-a:active{background:var(--app-pressed)}
+html[data-skin="app"] body.spinal-app .sp-pager-a span{font:600 16px/1.3 var(--app-sans);color:var(--app-ink)}
+html[data-skin="app"] body.spinal-app main a.sp-pager-hub{min-height:50px;background:transparent}
+html[data-skin="app"] body.spinal-app .sp-pager-hub span{color:var(--app-wine)}
+/* spinal: the real-scan picker has five long labels, so it is a list, not a one-row segmented control */
+html[data-skin="app"] body.spinal-app .us-real-pick .sp-seg{display:grid;grid-template-columns:minmax(0,1fr)}
+html[data-skin="app"] body.spinal-app .us-real-pick .sp-seg-btn{white-space:normal;text-align:left;justify-content:flex-start;min-height:48px;padding:var(--app-s2) var(--app-s3)}
+/* spinal: "Compare your own scan" (a file label dressed as a button), tier badges, the neuro check */
+html[data-skin="app"] body.spinal-app label.ra-rs-your-pick{border:0;border-radius:var(--app-r-md);background:var(--app-surface);box-shadow:inset 0 0 0 1px var(--app-control);color:var(--app-ink);font:600 16px/1.2 var(--app-sans)}
+html[data-skin="app"] body.spinal-app main :is([data-tier="2"],[data-tier="3"])::after{
+  top:-26px;padding:2px 8px;border-radius:var(--app-r-xs);background:var(--app-inset);color:var(--app-muted);font:600 12px/1.6 var(--app-sans);letter-spacing:.07em;
+}
+html[data-skin="app"] body.spinal-app main [data-tier="2"]::after{background:#e6e8ec;color:#3f4a5a}
+html[data-skin="app"] body.spinal-app main [data-tier="3"]::after{background:var(--app-blush);color:var(--app-wine)}
+html[data-skin="app"] body.spinal-app .cx-check-n{border-radius:50%;font-family:var(--app-sans);font-weight:600}
+html[data-skin="app"] body.spinal-app .cx-check-opts{gap:2px;padding:2px;border-radius:10px;background:var(--app-fill)}
+html[data-skin="app"] body.spinal-app .cx-check-opt{border:0;border-radius:8px;margin-left:0;background:transparent;color:var(--app-ink-soft);font:500 15px/1 var(--app-sans)}
+html[data-skin="app"] body.spinal-app .cx-check-opt+.cx-check-opt{margin-left:0}
+html[data-skin="app"] body.spinal-app .cx-check-opt:hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] body.spinal-app .cx-check-opt:has(.cx-check-radio:checked){background:var(--app-surface);box-shadow:var(--app-shadow-thumb);color:var(--app-wine);font-weight:600}
+html[data-skin="app"] body.spinal-app .cx-check-opt:has(.cx-check-radio:checked)::before{display:none}
+html[data-skin="app"] body.spinal-app :is(.an-derm-grid,.an-land-grid,.an-sag-grid,.cx-con){border-radius:var(--app-r-lg)}
+html[data-skin="app"] body.spinal-app .us-cvwrap{border-radius:var(--app-r-md);overflow:hidden}
+html[data-skin="app"] body.spinal-app :is(.an-stepnum,.us-item-code){border-radius:var(--app-r-xs)}
+
+/* brachial plexus: the bar is above the title like every other page (its markup puts the title first, so the page is a column
+   and the bar takes the first place; it still sticks to the top of the screen) */
+html[data-skin="app"] body.plexus-app:not(.px){display:flex;flex-direction:column;align-items:stretch}
+html[data-skin="app"] body.plexus-app:not(.px)>:not(.ra-tabbar){width:100%;box-sizing:border-box}
+html[data-skin="app"] body.plexus-app:not(.px)>.bp-bar{order:-1}
+html[data-skin="app"] body.plexus-app:not(.px)>.skip{width:auto}
+html[data-skin="app"] body.plexus-app:not(.px) .panel-out{font-size:14px;line-height:1.3}
+@media (min-width:400px){html[data-skin="app"] body.plexus-app:not(.px) .panel-out{white-space:nowrap}}
+@media (max-width:399px){html[data-skin="app"] body.plexus-app:not(.px) .panel-out{min-width:0;flex:1 1 0;text-align:right;font-size:13px}}
+
+/* ------------------------------------------------------------------ 20. phase-2 review, second pass */
+/* /blocks/: the "If it goes wrong" head lines up with the rows above it; the Anatomy in 3D links sit on one baseline
+   (the engine's `li:not([class])+li` 6px margin pushed all but the first down) */
+html[data-skin="app"] body.bd-app main .bd-inline li{margin:0}
+/* plexus: kickers in the caption style, not mono capitals */
+html[data-skin="app"] body.px :is(.px-kicker,.blockbar-label){font:600 12px/1.5 var(--app-sans);letter-spacing:.07em;color:var(--app-muted)}
+/* spinal: the level key's names are labels, not mono values; the checklist's box sits on the text's line */
+html[data-skin="app"] body.spinal-app .sp-levels-key dt{font:600 15px/1.4 var(--app-sans);color:var(--app-wine)}
+html[data-skin="app"] body.spinal-app .tq-check-item{align-items:center}
+html[data-skin="app"] body.spinal-app .tq-check-input{margin-block:0}
+/* brachial: "Open in Anatomy in 3D" wraps as one phrase (two lines, arrow last), not as separate flex items */
+@media (max-width:399px){html[data-skin="app"] body.plexus-app:not(.px) .panel-out{display:block;max-width:9.5em;min-height:44px;padding-block:calc((44px - 2.5em) / 2);flex:0 1 auto;line-height:1.25}}
+/* settings: the whole row is the switch's label, so the target is the row (50px or more) */
+html[data-skin="app"] .st-app main .st-row{position:relative}
+html[data-skin="app"] .st-app main .st-row>.st-row-t label::after{content:'';position:absolute;inset:0}
+
+/* plexus: the plexus switcher and the block chips are two rows from 760px too (side by side the chips were squeezed into 320px), and the
+   level buttons use the same type as every other bar */
+html[data-skin="app"] body.px .px-ex-bar .px-blockrow{flex-basis:100%}
+html[data-skin="app"] body.px .ra-level-btn{font:500 14px/1 var(--app-sans)}
+/* brachial: the bar is 56px like the others (its own padding made it 58) */
+html[data-skin="app"] body.plexus-app:not(.px) .bp-bar-inner{min-height:56px;padding-block:0;box-sizing:border-box}
+
+/* a planner's choice of operation (4 to 6 long labels) is a two-column grid of buttons on a phone, not a ragged wrapped row */
+@media (max-width:640px){
+  html[data-skin="app"] body.tb-app .tb-seg:is(.fa-op-seg,.th-plan-ops){display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  html[data-skin="app"] body.tb-app .tb-seg:is(.fa-op-seg,.th-plan-ops) .tb-seg-btn{white-space:normal;padding:var(--app-s2);line-height:1.25}
+}
+
+/* the clear button of a search box: a light muted cross in a 44px target (the website look's is a heavy wine cross) */
+html[data-skin="app"] body :is(.tb-search-input,.sp-search-input,.bd-search input)::-webkit-search-cancel-button{
+  -webkit-appearance:none;appearance:none;box-sizing:border-box;width:44px;height:44px;margin:0 -10px 0 0;padding:15px;cursor:pointer;
+  background-origin:content-box;background-clip:content-box;background-repeat:no-repeat;
+  background-image:linear-gradient(45deg,transparent 44%,var(--app-muted) 44% 56%,transparent 56%),linear-gradient(-45deg,transparent 44%,var(--app-muted) 44% 56%,transparent 56%);
+}
+
+/* calculator: from 760px the agent, strength and volume share a row and "With adrenaline" has its own (four across left the fields too narrow for their placeholders) */
+@media (min-width:760px){
+  html[data-skin="app"] body.lc-app .lc-rgrid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr)}
+  html[data-skin="app"] body.lc-app .lc-field--adr{grid-column:1 / -1;padding-top:0}
+}
+
+/* reduced motion: every transition and animation in the app look is cut to nothing */
+@media (prefers-reduced-motion:reduce){html[data-skin="app"] *,html[data-skin="app"] *::before,html[data-skin="app"] *::after{transition-duration:1ms!important;animation-duration:1ms!important;scroll-behavior:auto!important}}
+
+@media print{html[data-skin="app"] .ra-tabbar{display:none!important}html[data-skin="app"] body{padding:0!important}}
+
+/* ------------------------------------------------------------------ 21. phase 3: the new screens under /blocks/ (Safety, Indication, Ultrasound anatomy)
+   Safety is a 720px reading column (body.lc-app) with a segmented control; Indication reuses the /blocks/ chooser rules above
+   (body.bd-app); Ultrasound anatomy is a grouped list per region with a thumbnail on each row. */
+html[data-skin="app"] body.sf-app .sf-seg{max-width:none;margin:var(--app-s2) 0 var(--app-s5)}
+html[data-skin="app"] body.sf-app .sf-seg .tb-seg-btn{min-height:44px}
+html[data-skin="app"] body.sf-app .ra-dg-item--danger{background:var(--app-bad-bg)}
+html[data-skin="app"] body.sf-app .ra-dg-item--danger>summary .ra-dg-sum{color:var(--app-bad);font-weight:600}
+html[data-skin="app"] body.sf-app .sf-note{font:400 15px/1.45 var(--app-sans);color:var(--app-muted);margin:0 0 var(--app-s3)}
+/* The result of an operation is one column in the app look at every width: with the tab rail the page column is 1048px at most,
+   so the chooser's result column is about 620px, too narrow for the figure and the facts side by side (the website look's
+   two columns start at 1300px of window, where its page column is wider). */
+html[data-skin="app"] body.bd-app .bd-res-grid:not(.bd-res-grid--text){grid-template-columns:minmax(0,1fr);gap:var(--app-s4)}
+html[data-skin="app"] body.bd-app .bd-fig .tb-cov{max-width:440px}
+html[data-skin="app"] body.bd-app .bd-index--page{padding:var(--app-s2) 0 var(--app-s6)}
+html[data-skin="app"] body.bd-app .bd-index--page .bd-idx-body{padding:var(--app-s2) 0 0}
+html[data-skin="app"] body.bd-app .us-jump{margin:var(--app-s3) 0 0;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(var(--site-gutter) * -1);padding-inline:var(--site-gutter)}
+html[data-skin="app"] body.bd-app .us-jump::-webkit-scrollbar{display:none}
+html[data-skin="app"] body.bd-app .us-jump-a{flex:none;min-height:44px;padding:0 var(--app-s4);border:0;border-radius:var(--app-r-full);background:var(--app-surface);color:var(--app-wine);font:600 15px/1 var(--app-sans)}
+html[data-skin="app"] body.bd-app .us-jump-a:hover{background:var(--app-pressed-ground)}
+html[data-skin="app"] body.bd-app .us-jump-a:focus-visible{outline:2px solid var(--app-wine);outline-offset:2px}
+html[data-skin="app"] body.bd-app .us-region{padding:var(--app-s5) 0 0}
+html[data-skin="app"] body.bd-app .us-h{font:400 22px/1.25 var(--app-serif);letter-spacing:-.01em;margin:0 0 var(--app-s2) var(--app-s1)}
+html[data-skin="app"] body.bd-app .us-n{font:600 12px/1 var(--app-sans);letter-spacing:.07em;color:var(--app-muted)}
+html[data-skin="app"] body.bd-app .us-list{border:0;border-radius:var(--app-r-lg);background:var(--app-surface);overflow:hidden;column-gap:0}
+html[data-skin="app"] body.bd-app .us-list>li{border:0}
+html[data-skin="app"] body.bd-app .us-list>li+li .us-row::before{content:'';position:absolute;left:calc(96px + var(--app-s4) + var(--app-s3));right:0;top:0;height:.5px;background:var(--app-line)}
+@media (min-width:900px){html[data-skin="app"] body.bd-app .us-list>li:nth-child(2) .us-row::before{display:none}}
+html[data-skin="app"] body.bd-app .us-row{color:var(--app-ink);position:relative;gap:var(--app-s3);min-height:92px;padding:var(--app-s3) var(--app-s4)}
+html[data-skin="app"] body.bd-app .us-row:hover{background:transparent}
+html[data-skin="app"] body.bd-app .us-row:active{background:var(--app-pressed)}
+html[data-skin="app"] body.bd-app .us-row:focus-visible{outline:2px solid var(--app-wine);outline-offset:-3px;border-radius:var(--app-r-lg)}
+html[data-skin="app"] body.bd-app .us-thumb{border-radius:var(--app-r-sm)}
+html[data-skin="app"] body.bd-app .us-thumb--none{background:var(--app-inset);border:0}
+html[data-skin="app"] body.bd-app .us-t{font:500 17px/1.3 var(--app-sans)}
+html[data-skin="app"] body.bd-app .us-l{font:400 15px/1.4 var(--app-sans);color:var(--app-muted)}
+html[data-skin="app"] body.bd-app .us-go{color:var(--app-wine);font-family:var(--app-sans)}
+html[data-skin="app"] body.bd-app .us-foot{font:400 13px/1.45 var(--app-sans);color:var(--app-muted);margin:var(--app-s4) var(--app-s1) 0}
+@media (max-width:420px){html[data-skin="app"] body.bd-app .us-list>li+li .us-row::before{left:calc(80px + var(--app-s4) + var(--app-s3))}}
+/* 320px: the plexus and brachial bars (declared later in section 14) lose their side padding too */
+@media (max-width:339.98px){html[data-skin="app"] body.plexus-app:not(.px) .bp-bar-inner{padding-inline:3px}}

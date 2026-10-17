@@ -158,6 +158,8 @@ function resolveRef(f, spec) {
     const wrong = mustNot.filter((p) => sw.claims(p));
     R.check(`regional-sw.js answers the regional paths (${mustClaim.length} checked)`, !missed.length, `not claimed: ${missed.join(', ')}`);
     R.check(`regional-sw.js leaves every other path alone (${mustNot.length} checked: home, mo/, qbank/, babymo/, exams/, …)`, !wrong.length, `claimed: ${wrong.join(', ')}`);
+    const need = ['blocks/safety/', 'blocks/safety/safety.js', 'blocks/indication/', 'blocks/indication/indication.js', 'blocks/ultrasound/', 'blocks/ultrasound/ultrasound.js', 'blocks/chooser.js', 'blocks/pagebar.js', 'blocks/pages.css'];
+    R.check('the three screens added 16 Oct 2026 (Safety, Indication, Ultrasound anatomy) and their shared files are in the offline precache list', need.every((f) => sw.SHELL.includes(f)), need.filter((f) => !sw.SHELL.includes(f)).join(', '));
     const swDel = src.split('\n').filter((l) => /caches\.delete\(/.test(l));
     R.check('regional-sw.js caches are named regional-… and it deletes only those', /^regional-/.test(sw.VERSION) && /^regional-media-/.test(sw.MEDIA) && swDel.length > 0 && swDel.every((l) => /startsWith\('regional-'\)/.test(l)), swDel.join('\n'));
     const guard = /addEventListener\('fetch'[\s\S]*?if \(req\.method !== 'GET'\) return;[\s\S]*?if \(url\.origin !== self\.location\.origin \|\| !claims\(url\.pathname\)\) return;/.test(src);

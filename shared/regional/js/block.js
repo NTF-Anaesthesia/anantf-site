@@ -122,11 +122,11 @@ export function doseBox(b) {
   return box;
 }
 
-/** URL of the dose calculator, prefilled with what the block's dose box says where that reads unambiguously. */
+/** URL of the dose calculator (the Safety page's Dose calculator half), prefilled with what the block's dose box says where that reads unambiguously. */
 export function doseCheckHref(b) {
   let q = '';
   try { q = doseQuery(b?.dose); } catch { q = ''; }
-  return `${ROOT}blocks/calculator/${q ? `?${q}` : ''}`;
+  return `${ROOT}blocks/safety/${q ? `?${q}` : ''}#calculator`;
 }
 
 /** "Check the dose for this patient →" under the dose box (tier 1 with it). `dose.calc: false` leaves it out. */
@@ -374,7 +374,7 @@ export function renderBlock(b, host) {
     host.append(section(b, 'wrong', 'If it goes wrong', 1,
       el('p', { class: 'ra-dg-lead', text: 'Step-by-step guides for the problems this block can cause. Open one and answer each question: it shows the next thing to do.' }),
       guideList(wrong, { idPrefix: `${b.id}-wrong`, headingLevel: 4 }),
-      el('p', { class: 'ra-dg-more' }, el('a', { href: `${ROOT}blocks/#wrong` }, 'Every guide on one page ', el('span', { 'aria-hidden': 'true', text: '→' })))));
+      el('p', { class: 'ra-dg-more' }, el('a', { href: `${ROOT}blocks/safety/` }, 'Every guide on one page ', el('span', { 'aria-hidden': 'true', text: '→' })))));
   }
   if (b.pearls?.length) {
     // First MO_PEARLS plain pearls are MO; the rest Resident. A pearl's own {tier} or {safety:true} wins.

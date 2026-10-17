@@ -1,5 +1,5 @@
 // Regional anaesthesia app: the local anaesthetic safe-dose calculator (UI). Maths and data are in la.js; styles in
-// css/lacalc.css (prefix lc-). Used by /blocks/calculator/. Always MO level (tier 1): doses are safety content.
+// css/lacalc.css (prefix lc-). Used by the Dose calculator half of /blocks/safety/. Always MO level (tier 1): doses are safety content.
 //
 //   mountLaCalc(host, {agent, pct, ml, adr, kg}) → {update()}
 //

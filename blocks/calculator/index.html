@@ -1,53 +1,16 @@
 <!doctype html>
-<html lang="en-GB" data-theme="light">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<meta name="color-scheme" content="light">
-<title>Local anaesthetic dose calculator — NTF Anaesthesia</title>
-<meta name="description" content="Work out the maximum safe dose of local anaesthetic for a patient: weight, lean body weight in obesity, and every agent and injection added together.">
-<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../../assets/navigation.css?v=20261008">
-<link rel="stylesheet" href="../../assets/site-shell.css?v=20261008">
-<link rel="stylesheet" href="../../assets/header-nav.css?v=20261008">
-<script defer src="../../assets/navigation.js?v=20261008"></script>
-<link rel="stylesheet" href="../../shared/regional/css/regional.css?v=20261017">
-<link rel="stylesheet" href="../../shared/regional/css/lacalc.css?v=20261017">
-<script type="module" src="calculator.js?v=20261017"></script>
-<link rel="manifest" href="../../blocks/manifest.webmanifest">
-<link rel="apple-touch-icon" href="../../blocks/icons/apple-touch-icon.png">
-<meta name="theme-color" content="#f7f5ef">
+<title>Dose calculator — NTF Anaesthesia</title>
+<!-- The stand-alone calculator was merged into the Dose calculator half of /blocks/safety/ (17 Oct 2026). Old links and the
+     "Check the dose" links that still carry ?agent=…&pct=…&ml=… land there with the query kept. -->
+<script>location.replace('../safety/' + location.search + '#calculator');</script>
+<noscript><meta http-equiv="refresh" content="0; url=../safety/#calculator"></noscript>
 </head>
-<body class="tb-app ra-app lc-app">
-<a class="tb-skip" href="#main">Skip to content</a>
-<header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../../airway.html">Airway</a><a href="../../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../../pocus/">POCUS</a><a href="../../bis/">pEEG</a><a href="../../exams/">Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
-<nav class="ntf-crumbs" aria-label="Breadcrumb"><a href="../../resources.html">Resources</a><span aria-hidden="true">/</span><a href="../../regional.html">Regional anaesthesia</a><span aria-hidden="true">/</span><a href="../">Blocks</a><span aria-hidden="true">/</span><span aria-current="page">Dose calculator</span></nav>
-
-<div id="tb-bar" class="tb-bar"></div>
-<main id="main" class="site-container">
-  <section class="lc-hero" aria-labelledby="lc-title">
-    <p class="tb-eyebrow">Regional anaesthesia</p>
-    <h1 id="lc-title">Local anaesthetic dose calculator</h1>
-    <p class="tb-lead">Check that what you plan to inject stays within the maximum for this patient. Add every injection and agent: they share one maximum.</p>
-    <p class="tb-hub-disclaimer">The calculator is a check, not a prescription.</p>
-  </section>
-  <div id="lc-calc" class="lc-host">
-    <noscript><p class="tb-noscript">The calculator needs JavaScript. Work it out by hand: mg = ml × % × 10, and keep within the maximum for the patient’s weight.</p></noscript>
-  </div>
-  <section class="lc-more" aria-labelledby="lc-more-h">
-    <h2 class="lc-h" id="lc-more-h">If toxicity happens</h2>
-    <ul class="lc-links">
-      <li><a href="../../spinal/#cx-last"><span class="lc-link-t">Treat local anaesthetic toxicity (LAST)</span><span class="lc-link-d">Emergency steps and lipid doses</span></a></li>
-      <li><a href="../#doses"><span class="lc-link-t">Dose planners for combined blocks</span><span class="lc-link-d">Block combinations, amputation planner and topical lidocaine</span></a></li>
-    </ul>
-  </section>
-</main>
-
-<section class="tb-foot" aria-label="Credits"><div class="site-container">
-  <p>Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia.</p>
-  <p><a href="../">Regional blocks</a> · <a href="../../regional.html">Regional anaesthesia</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
-</div></section>
-<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer>
+<body>
+<p><a href="../safety/#calculator">The dose calculator is now on the Safety page →</a></p>
 </body>
 </html>

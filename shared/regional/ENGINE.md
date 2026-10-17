@@ -17,9 +17,12 @@ Every page is unlisted and `noindex`; the owner shares the links personally (don
 
 | Page | URL | Built with |
 |---|---|---|
-| Front door | `/blocks/` | its own script, reading `registry.js`, `ops/` and `data/decisions.js` (no clinical text of its own); app version lines at the foot |
-| Dose calculator | `/blocks/calculator/` | its own `calculator.js`, mounting `lacalc.js` |
-| Settings | `/blocks/settings/` | its own `settings.js`: level, "Hide the bar while scrolling down", "Press / to search", app version lines (§2 "App frame") |
+| Front door | `/blocks/` | its own script, reading `registry.js`, `ops/` (through `chooser.js`) and `data/decisions.js` (no clinical text of its own); app version lines at the foot. Part I "Tools" has four rows, each once (owner, 17 Oct 2026: "too many repeats"): Emergency guides and dose calculator (to `/blocks/safety/`, with the red LAST emergency steps as a sub-line link to `safety/#wrong-last`), Which block for which operation, Ultrasound anatomy, Anatomy in 3D (`#anatomy3d`, the four plexus links inline); no Settings row (the bar and the Settings tab have it), no guide rows, no dose fold. The Index is the A to Z only. Old hashes redirect (inline script in the head, plus `hashchange`, hash kept): `#chooser` and `#op-…` to `indication/`; `#wrong`, `#wrong-<guide>` and `#doses` to `safety/` |
+| Dose calculator (old address) | `/blocks/calculator/` | a stub that redirects to `/blocks/safety/#calculator` with its query kept (merged into Safety on 17 Oct 2026); not in the test page lists |
+| Safety | `/blocks/safety/` | its own `safety.js`: a segmented control "Emergency guides \| Dose calculator". The guides are `guideList(GUIDE_ORDER)` from `decide.js` (every guide, LAST first and red; the only list of them, `/blocks/` no longer draws them), the calculator is `mountLaCalc` (the one calculator, prefilled by the query; the old `/blocks/calculator/` redirects here). `#last`, `#wrong`, `#wrong-<guide>` open the guides half; `#calculator` and `#doses` the calculator half. Under the calculator, "Planners and total-dose limits" (`#doses`; the old "Maximum dose and planners" fold of `/blocks/`: block combinations, amputation planner, topical lidocaine, LAST). The two segment names are not repeated as headings (the panels' `h2` are screen-reader only). `/blocks/#wrong`, `#wrong-<guide>` and `#doses` redirect here; `/blocks/calculator/` and the "Check the dose" links are unchanged. The "Every guide on one page" links on block pages, `spinal/` and `brachial-plexus/` go to `/blocks/safety/` |
+| Indication | `/blocks/indication/` | "Which block for which operation": the chooser moved out of the Index of `/blocks/`. `blocks/chooser.js` (data from `ops/`, `mountChooser`) is shared with `/blocks/`'s search; `#chooser` and `#op-<region>-<id>`; `/blocks/#chooser` and `/blocks/#op-…` redirect here (inline script in the head of `/blocks/`, plus `hashchange`), hash kept. `open(key,{scroll})` scrolls the page itself (`window.scrollTo` to the row's `scroll-margin-top`), not `scrollIntoView`: the operation lists are `overflow:hidden`, which makes them scroll containers, and the first operation ended up under the bar. In the app look the result is one column at every width (the page column is 1048px at most beside the rail) |
+| Ultrasound anatomy | `/blocks/ultrasound/` | its own `ultrasound.js`: every ultrasound-guided block by region (registry titles, the first sentence of the scene's own `view` text, a thumbnail from `shared/us/<region>/sources.json` via `loadRealScans`), linking to `#<block>-scan`; Neuraxial lists `spinal/`'s real scans by view. No clinical text of its own |
+| Settings | `/blocks/settings/` | its own `settings.js`: the look (Automatic · App look · Website look, §2 "Skins"), level, "Hide the bar while scrolling down", "Press / to search", app version lines (§2 "App frame") |
 | Truncal landing + 3 pages | `/truncal/`, `back/`, `chest-wall/`, `abdominal-wall/` | landing chooser + engine (`bootPage`) |
 | Head and neck landing + 5 pages | `/head-neck/`, `cervical/`, `scalp/`, `face/`, `airway/`, `eye/` | landing chooser + engine |
 | Lower-limb landing + 4 pages | `/lower-limb/`, `hip/`, `knee/`, `foot-ankle/`, `thigh/` | landing chooser + engine; Dr Chew Shi Hao's animations from `lower-limb/anim/` |
@@ -57,7 +60,8 @@ Shi Hao linked to https://chewshihao.com/) and one **MO · Res · Con** level co
 | `lacalc.js` | `mountLaCalc(host, prefill)`: the dose calculator form; styles in `css/lacalc.css` (prefix `lc-`) |
 | `decide.js` | the "If it goes wrong" guides: `mountGuide(host, guide, {idPrefix, headingLevel})`, `guideList(ids, {idPrefix, headingLevel, lazy})`, `openGuideFromHash()`, `ensureDecideCss()` (links `css/decide.css`, prefix `ra-dg-`). No imports |
 | `data/decisions.js` | the guide data (§3.8): `GUIDES`, `GUIDE_ORDER`, `CORE_GUIDES`, `EXTRA_GUIDES`, `guidesFor(id, region, extra)`, `validateGuide` |
-| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`. No imports. Always imported as `appnav.js?v=20261017` |
+| `appnav.js` | the app frame (§2 "App frame"): `initAppFeel({bar, search})` (bar auto-hide, "/" and Ctrl+K, speculation rules), `mountRail({main, label, items, spy})` (desktop rail), `headingItems()`, `settingsItem(cls)` / `settingsButton(cls)`, `REGION_NAV` / `TOOL_NAV` (the rail's site map), `getAutoHide` / `setAutoHide`, `getSlash` / `setSlash`, `SETTINGS_URL`; while the app look is on it also draws the bottom tab bar (`TABS`, `currentTab`), adds the top bar's search and Safety buttons and moves the chapter menu under the bar below 480 px (`mountBarActions`, `SAFETY_URL`), and runs the large-title observer (`mountLargeTitle`: html `data-ra-collapsed`). Its only import is `skin.js`. Always imported as `appnav.js?v=20261026` |
+| `skin.js` | the two looks (§2 "Skins"): `getSkinPref` / `setSkinPref` (`localStorage` `ra-skin`: `auto` · `app` · `web`), `resolveSkin`, `getSkin`, `applySkin`, `onSkin(fn)`, `openedAsApp`. No imports, no DOM beyond `<html data-skin>`. Always imported as `skin.js?v=20261018` |
 | `offline.js` | `registerOffline()` registers `/regional-sw.js` once the page has loaded and gone quiet; `mountAppVersion(host)` draws the version lines at the foot of `/blocks/`. Always imported as `offline.js?v=20261016` |
 | `search.js` | page search index and synonyms |
 | `ui.js` | DOM helpers (`el`, `sv`, `fill`, `callout`, `table`, `details`, `stepper`, …) |
@@ -67,7 +71,7 @@ CSS in `shared/regional/css/`: `regional.css` (all shared `tb-` styles; imports 
 `appnav.css` (desktop frame and rail, bar auto-hide, the plain bar `.ra-sbar` of the region landings, cross-document view
 transitions; also imported by `truncal/landing.css` and linked by `spinal/` and `brachial-plexus/`), `scan.css` and
 `realscan.css` (linked by the scan modules themselves), `status.css`, `levels.css`, `lacalc.css`, `decide.css` (linked by
-`decide.js`).
+`decide.js`), and `skin-app.css` (the app look, linked by every regional page; §2 "Skins").
 
 `shared/regional/tools/stamp.mjs` stamps the offline worker `/regional-sw.js` (§6).
 
@@ -125,7 +129,7 @@ before, apart from the Settings entry and the plain app bar on the region landin
   (their operation chooser needs the full column).
 - **Rail (≥ 1024 px).** `mountRail` wraps `<main>` in `.ra-frame` (a two-column grid inside the 1240 px column) with
   `nav.ra-rail` on the left: this page's chapters or sections ("On this page"), then this region's landing and pages,
-  the other regions, and the tools (all blocks, dose calculator, Anatomy in 3D, Settings), from `REGION_NAV` /
+  the other regions, and the tools (all blocks, then the same four tools as Part I of `/blocks/`: Emergency guides and dose calculator, Which block for which operation, Ultrasound anatomy, Anatomy in 3D; then Settings), from `REGION_NAV` /
   `TOOL_NAV`. The current page is `aria-current="page"`, the current chapter or section `aria-current="location"`
   (blush with a wine edge, as in the chapter menu). Engine pages and `spinal/` follow `body[data-chapter]`; Settings
   follows the section in view (`spy: true`). The rail is sticky under the bar, scrolls itself when taller than the
@@ -165,7 +169,107 @@ before, apart from the Settings entry and the plain app bar on the region landin
   the page's search (engine pages, `/blocks/`, `spinal/`, `plexus/`); pages without search ignore them. On a scan
   teacher, the left and right arrow keys change step on the image and on the step buttons (focus follows; Home / End).
 
-Added to the home screen (`display-mode: standalone`), `appnav.css` hides the NTF Anaesthesia site header and the breadcrumbs, so only the app bar shows (owner, 16 Oct 2026). The app is installable: `blocks/manifest.webmanifest` (id and start `/blocks/`, scope `/`, standalone, paper colours; icons in `blocks/icons/`, an "RA" mark in the MO guide's style) is linked from every regional page, which also gives each page a theme colour and an Apple touch icon. `/blocks/settings/` explains how to add it and shows an Install button where the browser offers one. `static.mjs` checks the manifest and the links.
+Added to the home screen (`display-mode: standalone`), the app look is on (§2 "Skins"), which hides the NTF Anaesthesia site header and the breadcrumbs, so only the app bar and the tab bar show (owner, 16 Oct 2026; `appnav.css` keeps hiding them in home-screen mode only for a page that has no skin yet). The app is installable: `blocks/manifest.webmanifest` (id and start `/blocks/`, scope `/`, standalone, paper colours; icons in `blocks/icons/`, an "RA" mark in the MO guide's style) is linked from every regional page, which also gives each page a theme colour and an Apple touch icon. `/blocks/settings/` explains how to add it and shows an Install button where the browser offers one. `static.mjs` checks the manifest and the links.
+
+### Skins (website look and app look)
+
+The same pages, content, levels, doses, anchors and hashes in two looks (owner, 16 Oct 2026): the **website look**
+(`DESIGN.md`, as the pages always were) and the **app look** (`DESIGN-APP.md`, like the MO guide and Baby MO: soft corners,
+grouped lists on a warm ground, a blurred bar that is 98% opaque (`--app-bar`; text scrolling under it must not show through, owner 17 Oct 2026), a bottom tab bar that becomes a 96 px left rail from 1024 px). Only the
+skin differs; nothing in the data or the engine's DOM depends on it.
+
+- **Which look.** `html[data-skin]` is `app` or `web`, set before first paint by one inline `<script>` in the `<head>` of every
+  regional page (the same text on all of them: copy it from `truncal/abdominal-wall/index.html`; `skin.mjs` checks it) and
+  again by `js/skin.js`. The reader's choice is `localStorage` `ra-skin`: **`auto`** (default), `app` or `web`, set in
+  Settings ▸ Look and applied at once, no reload. With `auto` the app look is used only when the block app is *opened*:
+  from the home screen (`display-mode: standalone`, or `navigator.standalone` on older iPhones), or through the block-app
+  link `/blocks/?app`, which sets `sessionStorage` `ra-in-app` for that tab (so the rest of that visit is the app look;
+  a new tab, a shared deep link or a plain visit is the website look). An explicit choice always wins. Every storage
+  read and write is in try/catch (blocked storage: website look). `?app` does nothing on any other page.
+- **The skin sheet.** `css/skin-app.css` is linked from every regional page and **every rule in it is under
+  `html[data-skin="app"]`**, so the website look is byte-for-byte what it was (`skin.mjs` fails on a loose rule, and
+  on any `@container`, `@font-face` or other at-rule that is not `@media`, `@supports` or `@layer`; the before and after
+  screenshots of the pages are identical). It holds the `--app-*` tokens (copied from `assets/app/app.css`, which is
+  stamped into other apps and is not linked here), the ground (`#f1ede4`) and surface (`#fbfaf6`: the engine's
+  `--tb-paper` becomes the surface), and, in this order, the sections listed in the "Components" table below. Add
+  app-look rules there, never to the shared CSS; never recolour clinical colours; keep every rule in `html[data-skin="app"]`
+  (write `html[data-skin="app"] body.tb-app …` for the engine pages, `body:is(.tb-app,.spinal-app)` where the `sp-` twin
+  has the same component, `body.bd-app`, `body.lc-app`, `body.st-app`, `body.spinal-app`, `body.plexus-app:not(.px)`
+  (brachial) and `body.px` (plexus) for the pages with their own CSS). Don't select by `#id` inside a `:is()` (it raises the
+  whole selector to ID weight: use `.sp-bar` and `.bp-bar`, not `#sp-bar`).
+- **The frame.** In the app look `--site-gutter` is 16 px (24 px from 768 px) and `--site-width` is 752 / 768 px, so the
+  engine pages, spinal, the calculator and Settings are a centred 720 px reading column (`.site-container` and the bar use
+  the same variables, so they line up); `/blocks/` and the landings use 1048 px, plexus 1240 px (the website look's width, so its two panes and the bar line up), brachial 1344 px (its diagram
+  must stay at least 760 px wide beside the 3D model, or `bpd` switches to its narrow layout and the text differs).
+  From 1024 px the scan teacher and the wide tables of an engine page break out of the column to 880 px (`margin-inline:
+  -80px`); the 96 px tab rail is `body` padding. **Large title:** the page's first visible `h1` is 34 px Fraunces; the bar
+  is transparent on the ground while it shows, then (html `data-ra-collapsed`, set by `mountLargeTitle` in `appnav.js`
+  from one `IntersectionObserver` on that `h1`, re-aimed when the chapter changes) a blurred surface with a hairline,
+  drawn by `::before` on the bar (not the bar itself: a `backdrop-filter` on the bar would trap the `position: fixed` search
+  sheet inside it), and the bar title of the landings, calculator and Settings fades in. The bar is icon-only at every
+  width; the chapter menu is the title.
+- **Components.** All in `skin-app.css`; every one is the website look's markup with new CSS, no new elements:
+
+  | Part of the file | Components (selectors it restyles) |
+  |---|---|
+  | 1 tokens and frame | `--app-*`, `--site-gutter`, `--site-width` per page |
+  | 2 ground and bars | the bar surface, icon buttons, chapter / block menu button and panel, the level control (`.ra-level-seg`), sheets that open from the bar |
+  | 3 large title and type | `h1` title, kickers (`.tb-eyebrow`, `.tb-ch-kicker`, `.sp-eyebrow`…), `.tb-lead`, `h3` / `.tb-hv3` (title2), `h4` (headline), tier badges, hidden-level hint |
+  | 4 controls | `.tb-btn` / `.sp-btn` (outline, `--primary` wine), `.tb-seg` + `.tb-seg-btn` and `.sp-seg` (segmented control with a raised thumb), focus rings |
+  | 5 tab bar, 6 settings | `.ra-tabbar`, `.ra-tab`, the 96 px rail; `.st-*` grouped lists, the three-way Look control, switches |
+  | 7 chapter hub and lists | `.tb-hub*`, `.tb-tiles` / `.sp-tiles` and `.tb-hubch` / `.sp-hubch` (grouped lists with chevrons), `.tb-pager` (Previous / Next button row), the level picker, `.ra-a3d`, `.ra-watch` |
+  | 8 block chapter | `.tb-ind-list` (pills), `.tb-glance` (grouped rows), `.tb-bsec`, `.tb-layers`, `.tb-dose` (the one accent card, mono values; `.tb-dose-last` a warning panel), `.tb-cov*`, `.tb-bsec--complications` (warning panel), `.tb-pearls`, `.tb-exam*` |
+  | 9 callouts, tables, folds | `.tb-callout` / `.sp-callout` (`--warn` bad, `--pearl`, `--note`), `.tb-keypoints`, `.tb-steps`, `.tb-table-wrap` and `.sp-table-wrap` (rounded, scroll inside), `.tb-details` / `.sp-details` and `.ra-more` (rows with a chevron) |
+  | 10 scan teacher and real scans | `.tb-scan` card, `.tb-scan-views`, `.tb-scan-labbtn` (chip), `.tb-scan-steps` (button row), `.tb-scan-text`, `.tb-scan-nav`, `.ra-scan-chip` (pills), `.ra-scan-test`, `.ra-cov-chips`, `.ra-rs-*` (the Real view: picker, key as a grouped list with switches, `.ra-rs-switch`) |
+  | 11 guides | `.ra-dg-item` (folds), `.ra-dg-step*` (panels in the clinical colours), `.ra-dg-choice` (answer buttons) |
+  | 12 search and menus | `.tb-sheet` / `.sp-sheet` (bottom sheet on phones, centred dialog from 768 px; a wide `box-shadow` dims the page), `.tb-sresults`, the chapter menu panel as a bottom sheet below 768 px |
+  | 13 `/blocks/` and the landings | `.bd-*` (contents rows, folds, A to Z, chooser chips and rows, result lists), `.tb-hero`, `.tb-section`, `.tb-cards`, `.tb-op` (choice buttons), `.tb-facts`, `.tb-opts` |
+  | 14 calculator | `.lc-*`: box cards, filled inputs, segmented sex control, the adrenaline switch, agent rows, the result card (`data-status` near / over: amber and red with words and an icon), links list |
+  | 15 spinal | `.sp-*` chrome, `.sp-jump` (grouped list), `.sp-tabs`, `.ts-choice`, the boxed cards (`.tq-*`, `.cx-*`, `.sx-*`, `.cd-*`, `.ts-*`), the Topics button and sheet |
+  | 16 brachial plexus | `.top`, `.panel*`, `.tabs`, `.chip`, `.bpus-*`, `.bpd-*`, `.v3d-*`, `.cv-*` (frames and controls; canvases and clinical colours untouched) |
+  | 17 plexus | `body.px` column and title (the page already uses the app kit's pieces) |
+  | 18 foot | `.tb-foot`, `.sp-foot`, `.foot`, `.ntf-footer` |
+  | 19 page-local widgets | the choosers, planners and figure frames defined in single pages' own CSS (hip fracture chooser, knee plan, thigh planner, foot and ankle panels, back quiz, `*-fig-stage` frames, the spinal pager, real-scan picker, neuro check, tier badges), mono-capital labels as captions, fields, the brachial bar order, scroll padding above the tab bar, `max-height` of sheets (`!important`: the page scripts set it inline) |
+  | 20 review fixes | small corrections found by looking at every page type at 390, 768 and 1440 px: links inside the wine dose card are ivory, hub chapters are a grouped list like the lists above them, planner choices are a two-column grid on a phone, plexus kickers and level buttons in the shared type, the brachial bar is 56px, the page clears the tab bar by 16px more than its height |
+  | 21 phase 3 | the bar's `.ra-bact` buttons (search, Safety) and `.ra-titlerow`; the three new screens: Safety (`body.sf-app`: segmented control, panels), Indication (the `/blocks/` chooser rules), Ultrasound anatomy (`.us-*`: region chips, grouped lists with thumbnails) |
+
+- **Tab bar.** `initAppFeel` (appnav.js) draws `nav.ra-tabbar` while the app look is on and removes it when it is off, so the
+  website look has no extra element. Five topic tabs (16 Oct 2026, decided with the owner): **Blocks** (`/blocks/`), **3D anatomy**
+  (`/plexus/`), **Ultrasound** (`/blocks/ultrasound/`), **Indication** (`/blocks/indication/`) and **Settings**. The current tab
+  (`currentTab(path)`) is the page's area: Settings, Anatomy in 3D, and the Ultrasound and Indication screens have their own;
+  every other page (the front door, the landings, every engine page, `spinal/`, `brachial-plexus/`, the calculator, Safety) is
+  Blocks, so a block page reached from Ultrasound or Indication is Blocks again. Exactly one has `aria-current="page"`, a blush
+  pill behind the icon and a semibold wine label. Line icons, 12px labels, 52 px plus the home-indicator inset; the page's
+  bottom padding clears it (reserved in CSS, so nothing jumps). From 1024 px it is a 96 px rail, `body` gets 96 px of left padding, and the desktop
+  navigation rail (`mountRail`, still built) is hidden: a page's chapters are in the app bar's chapter menu, as they
+  already are wherever the rail was. No tab bar in an iframe or `body.px-embed` (the embedded explorer). Reading order follows
+  the picture: the bottom bar is the last element of `body`; from 1024 px (a rail down the left) `mountTabBar` moves it to just
+  after the skip link, and back when the window narrows. The five labels share the width, so at 360 px "3D anatomy" (semibold when
+  current) must fit without an ellipsis (no side padding on a tab; at 320 px the current tab is not semibold and the letters are a
+  little tighter): `audit` any new label at 320 and 360.
+- **The top bar (app look).** On every regional page the bar holds: back (or home) as before, the chapter / block / plexus menu
+  (as the title), a **search** button (44 px; the page's own search button where it has one, otherwise `.ra-bsearch`, which goes to
+  `/blocks/#search`), the red **Safety** button (`a.ra-safety`: the word and a warning-triangle icon, danger colour pair, 44 px, to
+  `/blocks/safety/`) and the level control where the page has one. `mountBarActions` in `appnav.js` adds the two buttons by script
+  while the app look is on and removes them when it is off, so the website look's bar is exactly what it was (no Safety button
+  there). Below 480 px the menu does not fit beside four 44 px targets at 360 px, so the same `.tb-chmenu` / `.sp-chmenu` /
+  `.bp-blockmenu` element moves into `div.ra-titlerow` under the bar (not sticky; the bar then gets its surface once that row has
+  scrolled under it) and moves back when the window is wider or the look is switched. Page code must not look the menu up inside
+  the bar (`bar.querySelector('.tb-chmenu…')`): use `document`. The bar's Settings button is hidden in the app look (Settings is a tab).
+  Where the bar also holds the level control (`.lc-bar`: Safety, Indication, Ultrasound, the calculator) the page name in the bar
+  is hidden below 480 px (it would be "S…"); the tab, the large title and the Safety button say where you are, so keep the bar
+  titles short ("Indication", "Ultrasound") for the wider windows. At 320 px the bar's side padding is 3px and the Safety button
+  tighter (everything stays 44 px).
+- **The bar and the header.** In the app look the NTF site header and the breadcrumbs are hidden on every regional page
+  (the app is the whole screen); the website look keeps them, in a browser tab and (if chosen in Settings) on the home
+  screen too. `appnav.css` still hides them in home-screen mode for a page that has no skin yet (script blocked). Still one
+  sticky bar at the top (≤ 56 px at 390 px); the tab bar is a bottom bar and does not count. Anything that sticks under the
+  bar still uses `top: var(--ra-bar-now, var(--ra-bar, 56px))`.
+- **Adding a regional page.** Put the skin script and the `skin-app.css` link in its `<head>` (§DATA.md 1), call
+  `initAppFeel` as before; a new component class needs a rule in `skin-app.css` (in the right section) so it has an app look.
+- **Checks.** `test/regional/skin.mjs` (resolution, tab bar, frame, same text in both looks) and the website-look screenshots
+  of ten pages at 390 and 1440 px (`ra-skin=web`, before and after: they must be pixel-identical). Light only, nothing under
+  12 px, targets at least 44 px, focus rings visible, reduced motion respected, no emoji.
 
 ### Shims at old paths
 
@@ -176,11 +280,11 @@ them**, and don't delete them (`static.mjs` and `deeplinks.mjs` check both).
 ### Cache-busting (`?v=`)
 
 - Entry points carry `?v=YYYYMMDD`: `js/page.js?v=…` and `regional.css?v=…` in each page, and `landing.js?v=…` on
-  landings. Bump them when you change what they load. `static.mjs` allows digits only in `js/page.js?v=`, so for a
+  landings. Bump them when you change what they load. Under `blocks/`, `pagebar.js?v=` and `chooser.js?v=` (shared by `/blocks/`, Safety, Indication and Ultrasound) follow the same date. `static.mjs` allows digits only in `js/page.js?v=`, so for a
   second bump on the same day use the next date, not a letter suffix.
 - **Stateful modules must load under one URL per page**, or they run twice and split their state. `levels.js` and
-  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016` and `appnav.js` as
-  `…?v=20261017`, from every module and every app. If you bump one, change
+  `figures/head.js` are always imported as `…?v=20261015`, `offline.js` as `…?v=20261016`, `appnav.js` as `…?v=20261026` and `skin.js` as
+  `…?v=20261018`, from every module and every app. `skin-app.css` is one URL on every page (`?v=20261026`); bump it on every page that links it. If you bump one, change
   every import of it in the same commit (grep for the file name). Other engine modules import each other without a
   query. `smoke.mjs` fails on a stateful module loaded under two URLs.
 - Never write `?v=…?v=…` (`static.mjs` checks).
@@ -209,7 +313,7 @@ Full schema: [`DATA.md` §3](DATA.md#3-block-schema-renderblock). Text fields ar
   exam: [{ source: 'Practice question', q: '…', points: ['…'] }] }
 ```
 
-Each dose box ends with "Check the dose for this patient", a link to `/blocks/calculator/?agent=&pct=&ml=&adr=`. It is
+Each dose box ends with "Check the dose for this patient", a link to `/blocks/safety/?agent=&pct=&ml=&adr=#calculator`. It is
 prefilled only when the dose names exactly one agent and gives one strength and one volume (no ranges, no ml/kg);
 `dose.calc: false` hides it. Block dose text is still free text (§9).
 
@@ -361,7 +465,7 @@ the top of the file:
   always gets `high` (`guidesFor`). Block data can add
   more with `wrong: [ids]` or hide the section with `wrong: false`.
 - The section sits after Complications at `#<block>-wrong`, each guide at `#<block>-wrong-<guide>`; on `/blocks/` they
-  are at `#wrong` and `#wrong-<guide>` (which opens it).
+  are at `blocks/safety/#wrong` and `#wrong-<guide>` (which opens it; `/blocks/#wrong…` redirects there).
 - **brachial-plexus/** shows `guidesFor(<block>, 'upper-limb')` in the Block guide tab, after Complications (MO level),
   ids `<block>-wrong-<guide>`; the app's own `#block=…&tab=…` hash is unchanged (guides have no deep link there).
 - **spinal/** shows the neuraxial set without "pain on injection" (its paraesthesia tree covers that) at the end of
@@ -558,10 +662,11 @@ to a regional page or the engine. Details: [`test/regional/README.md`](../../tes
 | `static.mjs` | no imports through shims, old vendor path gone, every relative import exists, `noindex`, no "FRCA", no service worker except `/regional-sw.js` registered through `offline.js` (the worker is loaded in a sandbox: it must answer the regional paths and leave the others alone), no personal contacts, `?v=` once on entry points (digits only in `page.js?v=`), allow-lists valid |
 | `version.test.mjs` | `regional-sw.js` file lists, `VERSION` and `MEDIA` match the files (`stamp.mjs` fixes it) |
 | `data.mjs` | registry and ops links resolve, aliases unique, tiers 1–3, dose and complications never above tier 1, plexus data sound, scene `ids` exist, dose consistency between pages, ops, planners and animations, no `cite(`; every guide sound and tier 1, every block gets the core guides and its required extras, the LAST guide carries the lipid and adrenaline doses |
-| `smoke.mjs` | every page in `PAGES` (25, including `blocks/calculator/` and `blocks/settings/`) at 390 and 1440 px: no console or page errors or failed requests, no horizontal overflow, every scan through 4 steps × each view, credit line, no service worker other than `/regional-sw.js`, lazy three.js and animation iframes, one instance per stateful module; polish targets with `--strict` |
-| `deeplinks.mjs` | every `#ch-*`, `#<block>-step-*`, `#<block>-inj-*`, `#op-*`, app state hashes, redirects, shims, `edit.html?page=` |
+| `smoke.mjs` | every page in `PAGES` (27, including `blocks/settings/`, `blocks/safety/`, `blocks/indication/` and `blocks/ultrasound/`) at 390 and 1440 px: no console or page errors or failed requests, no horizontal overflow, every scan through 4 steps × each view, credit line, no service worker other than `/regional-sw.js`, lazy three.js and animation iframes, one instance per stateful module; polish targets with `--strict` |
+| `deeplinks.mjs` | every `#ch-*`, `/blocks/indication/#op-<every operation>` and `#chooser`, the `/blocks/#chooser` and `/blocks/#op-…` redirects, the `/blocks/#wrong`, `#wrong-<guide>` and `#doses` redirects (target on screen, guide open), `/blocks/safety/` (`#last`, `#wrong-<guide>`, `#doses`, `#calculator`, a prefilled query), `#<block>-step-*`, `#<block>-inj-*`, `#op-*`, app state hashes, redirects, shims, `edit.html?page=` |
 | `levels.mjs` | one level control per page, correct hiding per level, hints, MO always shows dose, LAST, complications, the "If it goes wrong" section (core guides, nothing above tier 1, the LAST guide steps forward) and scan, persistence never in the URL, spinal migration, relaxing |
-| `appframe.mjs` | the app frame: Settings page (defaults, saving, level control, version lines), Settings reachable from every kind of app bar at 390 and 1440, bar ≤ 56 px, auto-hide off by default and working when on (scroll down / up, top, open menu, phone scan column follows), a page's own scrolling never hides it, rail at 1024 / 1180 / 1440 on the pages that have one and none at 390 or on the landings and `/blocks/`, the bar lined up with the site header, no overflow, the document scrolls, the scan teacher in the page flow, "/" and Ctrl+K, arrow keys on the step buttons, speculation rules (prefetch only), view-transition names (none with reduced motion) |
+| `appframe.mjs` | the app frame: Settings page (defaults, saving, level control, version lines), Settings reachable from every kind of app bar at 390 and 1440, bar ≤ 56 px, auto-hide off by default and working when on (scroll down / up, top, open menu, phone scan column follows), a page's own scrolling never hides it, rail at 1024 / 1180 / 1440 on the pages that have one and none at 390 or on the landings and `/blocks/`, the bar lined up with the site header, no overflow, the document scrolls, the scan teacher in the page flow, "/" and Ctrl+K, arrow keys on the step buttons, speculation rules (prefetch only), view-transition names (none with reduced motion), the Look control in Settings (Automatic by default, App look and Website look switch at once and are saved, the rail lists Look first) |
+| `skin.mjs` | the two looks: every page has the one inline skin script and links `skin-app.css`, every `skin-app.css` rule is under `html[data-skin="app"]`; skin resolution (a plain visit is the website look; home screen (stubbed `display-mode: standalone`), `/blocks/?app` for that tab only, an explicit choice beating both, blocked storage); in the app look on twelve pages at 390 and 1440: no console errors, no overflow, the five topic tabs with the right one current, 12px labels, a bottom bar (52px) or 96px rail, site header, breadcrumbs and desktop rail hidden, bar ≤ 56px; the top bar on fifteen pages at 360, 390 and 1440 (Safety button with the word, danger colours, 44px, to `/blocks/safety/`; a 44px search button that opens the page's own search or `/blocks/#search`; nothing outside the window; the website look has neither, the look switches live) and the Safety button opening `/blocks/safety/` on the guides; polish in the app look on eight pages (no text under 12px, no button or block link under 44px, every link and button 4.5:1 against what is behind it); the text of `<main>` identical in both looks (scan and 3D labels that follow the width excepted); the website look unchanged (no tab bar, square controls, paper ground). `RA_SKIN=app node test/regional/<suite>.mjs` runs `smoke`, `deeplinks`, `levels`, `appframe` and the others in the app look |
 | `parity.mjs` | at Consultant, every line of the baseline text is still on its page, and doses are identical (guide text isn't captured; `data.mjs` covers it) |
 | `offline.e2e.mjs` | its own server: `/blocks/` installs the worker and shows the version; with no signal block pages, `spinal/` and `lower-limb/` render; home and `mo/` are not answered; "Get the latest version" removes only the regional caches |
 

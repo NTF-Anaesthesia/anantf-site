@@ -10,6 +10,11 @@
 //      #<block>-inj-<id>: the chapter is shown, the target (or its data-scroll-to element) is visible, on screen and
 //      not under the sticky bar; step buttons become the current step, injection buttons become pressed;
 //   2. #op-<id> on the three landings selects that operation and brings the result into view;
+//   2b. /blocks/indication/#op-<region>-<id> (every operation) opens that operation with its result on screen; #chooser
+//       lands on the chooser; /blocks/#chooser and /blocks/#op-… redirect there with the hash kept;
+//   2c. /blocks/safety/: #last opens the LAST guide, #calculator the calculator (a ?agent=… query too), the default is the
+//       emergency guides; #wrong-<guide> opens that guide; #doses the planners under the calculator;
+//   2d. /blocks/#wrong, #wrong-<guide> and #doses redirect to /blocks/safety/ with the hash kept and the target on screen;
 //   3. every same-site link with a hash on any regional page points at an id that exists on its target page;
 //   4. brachial #block=…&el=…&tab=…, plexus #plexus=…&block=…&el=…;
 //   5. the spinal anchors used by mo/ (and any other spinal/#… link in the repo);
@@ -82,7 +87,8 @@ async function harvest(browser, p) {
       const links = [...document.querySelectorAll('a[href*="#"]')].map((a) => a.href).filter((h) => h.startsWith(location.origin));
       const ops = [...document.querySelectorAll('input[type=radio][value], [data-op]')].map((i) => i.value || i.dataset.op).filter(Boolean);
       const scans = [...document.querySelectorAll('.tb-scan[id]')].map((e) => e.id);
-      return { ids, links: [...new Set(links)], ops: [...new Set(ops)], scans };
+      const keys = [...document.querySelectorAll('.bd-op[data-key]')].map((b) => b.dataset.key);
+      return { ids, links: [...new Set(links)], ops: [...new Set(ops)], scans, keys };
     });
   } finally { await ctx.close(); }
 }
@@ -135,6 +141,86 @@ async function main() {
     R.check(`${p}: chooser lists operations`, ops.length > 0, 'no operation radios found');
     const res = await pool(ops, Number(args.workers || 6), (op) => opLanding(browser, p, op, VPS[0]), (op) => `${p}#op-${op}`);
     ops.forEach((op, i) => R.check(`operation ${p}#op-${op}`, res[i]?.ok, res[i]?.why || res[i]?.error));
+  }
+
+  // 3b. The chooser has its own screen: /blocks/indication/#op-… for every operation; the old /blocks/ links redirect.
+  if (want('blocks/indication/')) {
+    const keys = H['blocks/indication/']?.keys || [];
+    R.check('blocks/indication/: the chooser lists operations', keys.length > 20, `${keys.length} operations`);
+    const res = await pool(keys, Number(args.workers || 6), (k) => chooserLanding(browser, `blocks/indication/#op-${k}`, k, VPS[0]), (k) => `blocks/indication/#op-${k}`);
+    keys.forEach((k, i) => R.check(`operation blocks/indication/#op-${k}`, res[i]?.ok, res[i]?.why || res[i]?.error));
+    for (const [from, key] of [['blocks/#chooser', null], [`blocks/#op-${keys[0]}`, keys[0]], [`blocks/#op-${keys[Math.floor(keys.length / 2)]}`, keys[Math.floor(keys.length / 2)]], [`blocks/#op-${keys[keys.length - 1]}`, keys[keys.length - 1]]]) {
+      const { ctx, page, log } = await openContext(browser, { vp: VPS[0] });
+      try {
+        await page.goto(BASE + from, { waitUntil: 'load', timeout: 30000 });
+        await page.waitForURL(/blocks\/indication\/#/, { timeout: 8000 }).catch(() => {});
+        await waitReady(page, { idle: false });
+        const url = page.url().replace(BASE, '/');
+        const want = `/blocks/indication/#${from.split('#')[1]}`;
+        const l = key ? await chooserLanding(browser, from, key, VPS[0]) : { ok: true };
+        R.check(`redirect /${from} → ${want}`, url === want && !log.pageErrors.length && l.ok, `ended at ${url}; ${log.pageErrors.join(', ')} ${l.why || ''}`);
+      } finally { await ctx.close(); }
+    }
+    const c = await landing(browser, 'blocks/indication/#chooser', 'chooser', VPS[0]);
+    R.check('blocks/indication/#chooser lands on the chooser', c.ok, c.why);
+  }
+  // 3c. Safety: guides by default, #last, #wrong-<guide>, #calculator, a prefilled query.
+  if (want('blocks/safety/')) {
+    const probe = async (url) => {
+      const { ctx, page, log } = await openContext(browser, { vp: VPS[0] });
+      try {
+        await page.goto(BASE + url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForFunction(() => document.body.dataset.sfReady === 'true', null, { timeout: 20000 });
+        await page.waitForTimeout(600);
+        const r = await page.evaluate(() => {
+          const vis = (n) => !!n && n.getClientRects().length > 0 && !n.closest('[hidden]');
+          const open = [...document.querySelectorAll('details.ra-dg-item')].filter((d) => d.open).map((d) => d.dataset.guide);
+          const last = document.getElementById('wrong-last');
+          const lr = last?.getBoundingClientRect();
+          const pressed = [...document.querySelectorAll('#sf-seg [aria-pressed="true"]')].map((b) => b.textContent.trim());
+          const inputs = [...document.querySelectorAll('#calculator input, #calculator select')].filter(vis).map((i) => `${i.name || i.id}=${i.value}`);
+          return { guides: vis(document.getElementById("guides")), calc: vis(document.getElementById('calculator')), open, pressed, firstGuide: document.querySelector('details.ra-dg-item')?.dataset.guide, lastTop: lr ? Math.round(lr.top) : null, nGuides: document.querySelectorAll('details.ra-dg-item').length, inputs, lastRed: last?.classList.contains('ra-dg-item--danger') };
+        });
+        return { r, errs: [...log.pageErrors, ...log.console, ...log.bad] };
+      } finally { await ctx.close(); }
+    };
+    let o = await probe('blocks/safety/');
+    R.check('blocks/safety/: opens on Emergency guides, LAST first and red, every guide listed', o.r.guides && !o.r.calc && o.r.pressed[0] === 'Emergency guides' && o.r.firstGuide === 'last' && o.r.lastRed && o.r.nGuides === 8 && !o.errs.length, JSON.stringify(o));
+    o = await probe('blocks/safety/#last');
+    R.check('blocks/safety/#last opens the LAST guide on screen', o.r.guides && o.r.open.includes('last') && o.r.lastTop != null && o.r.lastTop >= 0 && o.r.lastTop < 400 && !o.errs.length, JSON.stringify(o));
+    o = await probe('blocks/safety/#wrong-pneumo');
+    R.check('blocks/safety/#wrong-pneumo opens that guide', o.r.open.includes('pneumo') && !o.errs.length, JSON.stringify(o));
+    o = await probe('blocks/safety/#calculator');
+    R.check('blocks/safety/#calculator shows the dose calculator', o.r.calc && !o.r.guides && o.r.pressed[0] === 'Dose calculator' && o.r.inputs.length > 0 && !o.errs.length, JSON.stringify(o));
+    o = await probe('blocks/safety/?agent=ropivacaine&pct=0.375&ml=20&kg=70');
+    R.check('blocks/safety/?agent=… (the dose box link) opens the calculator, prefilled', o.r.calc && o.r.inputs.some((x) => /0\.375|20|70/.test(x)) && !o.errs.length, JSON.stringify(o));
+    // The old stand-alone calculator (merged into this page on 17 Oct 2026) redirects here with its query kept.
+    o = await probe('blocks/calculator/?agent=ropivacaine&pct=0.375&ml=20&kg=70');
+    R.check('blocks/calculator/?agent=… (old link) redirects to the Safety calculator, prefilled', o.r.calc && !o.r.guides && o.r.inputs.some((x) => /0\.375|20|70/.test(x)) && !o.errs.length, JSON.stringify(o));
+    o = await probe('blocks/calculator/');
+    R.check('blocks/calculator/ (old link) redirects to the Safety calculator', o.r.calc && !o.r.guides && o.r.pressed[0] === 'Dose calculator' && !o.errs.length, JSON.stringify(o));
+  }
+
+  // 3d. "If it goes wrong" and the dose planners left /blocks/ for /blocks/safety/ (owner, 17 Oct 2026: too many repeats):
+  // the old /blocks/#wrong, #wrong-<guide> and #doses redirect there with the hash kept, and the target is on screen.
+  // The Safety page's own #wrong and #doses work too (#doses opens the calculator half and scrolls to the planners).
+  if (want('blocks/safety/')) {
+    const GUIDES_ = ['last', 'high', 'pneumo', 'phrenic', 'pain', 'vessel', 'failed', 'nerve'];
+    const jobs = [['blocks/#wrong', 'wrong', 'guides'], ...GUIDES_.map((g) => [`blocks/#wrong-${g}`, `wrong-${g}`, `wrong-${g}`]), ['blocks/#doses', 'doses', 'doses'], ['blocks/safety/#wrong', 'wrong', 'guides'], ['blocks/safety/#doses', 'doses', 'doses']];
+    for (const [from, hash, target] of jobs) {
+      const { ctx, page, log } = await openContext(browser, { vp: VPS[0] });
+      try {
+        await page.goto(BASE + from, { waitUntil: 'load', timeout: 30000 });
+        await page.waitForURL(/blocks\/safety\/#/, { timeout: 8000 }).catch(() => {});
+        await page.waitForFunction(() => document.body.dataset.sfReady === 'true', null, { timeout: 20000 }).catch(() => {});
+        await page.waitForTimeout(900);
+        const url = page.url().replace(BASE, '/');
+        const res = await page.evaluate(landedFn, target);
+        const open = /^wrong-/.test(hash) ? await page.evaluate((id) => document.getElementById(id)?.open === true, target) : true;
+        const calc = hash === 'doses' ? await page.evaluate(() => !document.getElementById('calculator').hidden) : true;
+        R.check(`${from} lands on /blocks/safety/#${hash}, ${target} on screen${/^wrong-/.test(hash) ? ' and open' : ''}`, url === `/blocks/safety/#${hash}` && res.ok && open && calc && !log.pageErrors.length, `ended at ${url}; ${res.why || ''}; open ${open}; calc ${calc}; ${log.pageErrors.join(', ')}`);
+      } finally { await ctx.close(); }
+    }
   }
 
   // 4. Every same-site link with a hash on a regional page resolves to an id on its target page.
@@ -305,6 +391,35 @@ async function opLanding(browser, p, op, vp) {
       if (label && !norm(title).includes(norm(label).slice(0, 20)) && !norm(label).includes(norm(title).slice(0, 20))) return { ok: false, why: `result "${title}" does not match "${label}"` };
       return { ok: true };
     }, op);
+    if (log.pageErrors.length || log.console.length) return { ok: false, why: `${r.why || ''} errors: ${[...log.pageErrors, ...log.console].slice(0, 2).join(' | ')}` };
+    return r;
+  } finally { await ctx.close(); }
+}
+
+async function chooserLanding(browser, url, key, vp) {
+  const { ctx, page, log } = await openContext(browser, { vp });
+  try {
+    await page.goto(BASE + url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    await page.waitForFunction(() => document.body.dataset.bdReady === 'true', null, { timeout: 20000 }).catch(() => {});
+    await waitReady(page, { idle: false });
+    await page.waitForTimeout(500);
+    const r = await page.evaluate((key) => {
+      const li = document.querySelector(`li[data-key="${CSS.escape(key)}"]`);
+      const row = li?.querySelector('.bd-op');
+      if (!row) return { ok: false, why: 'no row for this operation' };
+      if (row.getAttribute('aria-expanded') !== 'true') return { ok: false, why: 'operation not open' };
+      const t = document.getElementById('bd-res-title');
+      if (!t || !t.getClientRects().length) return { ok: false, why: 'no visible result title' };
+      // On a phone the row goes to the top of the page under the bar, never behind it (scrollIntoView lost the margin once).
+      const barB = document.querySelector('.ra-appbar, #tb-bar')?.getBoundingClientRect().bottom || 0;
+      const lr = li.getBoundingClientRect();
+      if (innerWidth < 900 && scrollY > 0 && lr.top < barB - 1) return { ok: false, why: `the operation row is under the bar (top ${Math.round(lr.top)}, bar bottom ${Math.round(barB)})` };
+      const rr = t.getBoundingClientRect();
+      if (rr.bottom < 0 || rr.top > innerHeight - 20) return { ok: false, why: `result title off screen (top ${Math.round(rr.top)})` };
+      const want = row.textContent.trim().replace(/\s+/g, ' ').toLowerCase().slice(0, 18);
+      if (!t.textContent.toLowerCase().replace(/\s+/g, ' ').includes(want)) return { ok: false, why: `result "${t.textContent.trim()}" is not "${want}"` };
+      return { ok: true };
+    }, key);
     if (log.pageErrors.length || log.console.length) return { ok: false, why: `${r.why || ''} errors: ${[...log.pageErrors, ...log.console].slice(0, 2).join(' | ')}` };
     return r;
   } finally { await ctx.close(); }

@@ -1,5 +1,5 @@
 // Regional anaesthesia app: "If it goes wrong" decision guides (ENGINE.md §3.8).
-// Rendered by ../decide.js: on every engine block (block.js, section "If it goes wrong") and all together on /blocks/#wrong.
+// Rendered by ../decide.js: on every engine block (block.js, section "If it goes wrong") and all together on /blocks/safety/ (/blocks/#wrong redirects there).
 // Clinical content approved by the owner (Dr Koh Wenjun, Oct 2026). UK practice; the LAST guide follows the Association
 // of Anaesthetists LAST guidance and quick reference handbook, worded as on /spinal/#cx-last. No citations on the page.
 //

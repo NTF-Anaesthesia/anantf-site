@@ -1,0 +1,36 @@
+/* The three small screens under /blocks/: Safety (sf-), Indication (reuses blocks.css) and Ultrasound anatomy (us-), and
+   their bar title (bd-pbar-title). The website look (DESIGN.md: hairlines, square edges); the app look is in
+   shared/regional/css/skin-app.css (section 21). Tokens come from regional.css. */
+.tb-app .bd-pbar-title{flex:1;min-width:0;margin:0;font:500 16px/1.2 var(--tb-sans);color:var(--tb-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Safety */
+.sf-app main{padding-bottom:32px}
+.sf-seg{display:flex;width:100%;max-width:520px;margin:4px 0 24px}
+.sf-seg .tb-seg-btn{flex:1 1 0;min-width:0;white-space:normal;text-align:center}
+.sf-panel[hidden]{display:none}
+.sf-note{margin:0 0 16px;color:var(--tb-muted);font-size:15px;line-height:1.5}
+
+/* Ultrasound anatomy */
+.us-jump{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}
+.tb-app main :is(.us-row,.us-jump-a){text-decoration:none}
+.us-jump-a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--tb-line-strong);color:var(--tb-ink);font:500 15px/1 var(--tb-sans);text-decoration:none;background:var(--tb-paper)}
+.us-jump-a:hover{border-color:var(--tb-wine);background:var(--tb-hover)}
+.us-region{padding:28px 0 4px;scroll-margin-top:calc(var(--ra-bar,56px) + 8px)}
+.us-h{display:flex;align-items:baseline;gap:10px;margin:0 0 6px;font:400 clamp(26px,3vw,34px)/1.2 var(--tb-serif);letter-spacing:-.01em}
+.us-n{font:400 14px/1 var(--tb-mono);color:var(--tb-muted)}
+.us-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--tb-ink)}
+.us-list>li{margin:0;max-width:none;border-bottom:1px solid var(--tb-line)}
+.us-row{display:flex;align-items:center;gap:14px;min-height:88px;padding:12px 4px;color:var(--tb-ink);text-decoration:none}
+.us-row:hover{background:var(--tb-hover)}
+.us-row:focus-visible{outline-offset:-3px}
+.us-thumb{flex:none;width:96px;height:72px;object-fit:cover;background:#1c1c1a;border:0}
+.us-thumb--none{display:block;background:transparent;border:1px solid var(--tb-line)}
+.us-body{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.us-t{font:500 17px/1.3 var(--tb-sans)}
+.us-l{font:15px/1.45 var(--tb-sans);color:var(--tb-muted);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.us-go{flex:none;color:var(--tb-wine);font-family:var(--tb-mono)}
+.us-foot{margin:28px 0 0;font-size:15px;line-height:1.5;color:var(--tb-muted)}
+@media (min-width:900px){
+  .us-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:40px}
+}
+@media (max-width:420px){.us-thumb{width:80px;height:60px}}

@@ -147,14 +147,15 @@ async function plexusCanvas(page) {
 // ------------------------------------------------------------------ one page at one viewport
 async function runPage(browser, p, vp) {
   const ctx = await browser.newContext({ ...VIEWPORTS[vp], reducedMotion: 'reduce' });
-  await ctx.addInitScript(() => {
+  await ctx.addInitScript((skin) => {
     // Picker dismissed (levels.mjs tests it), no level saved: the default Consultant view, comparable with the baseline.
-    try { if (!sessionStorage.getItem('__ra_seeded')) { localStorage.setItem('ra-level-picker', 'dismissed'); sessionStorage.setItem('__ra_seeded', '1'); } } catch { /* blocked */ }
+    // RA_SKIN=app (or web) runs the whole suite in that look (the default is the website look, as a visitor gets it).
+    try { if (!sessionStorage.getItem('__ra_seeded')) { localStorage.setItem('ra-level-picker', 'dismissed'); if (skin) localStorage.setItem('ra-skin', skin); sessionStorage.setItem('__ra_seeded', '1'); } } catch { /* blocked */ }
     const mark = () => { if (!window.__raReadyAt) window.__raReadyAt = performance.now(); };
     document.addEventListener('tb-ready', mark); window.addEventListener('tb-ready', mark);
     new MutationObserver((_, o) => { if (document.body?.dataset.tbReady === 'true') { mark(); o.disconnect(); } }).observe(document, { subtree: true, attributes: true, attributeFilter: ['data-tb-ready'] });
     window.addEventListener('load', () => { if (!document.body?.classList.contains('tb-app') || !document.querySelector('.tb-chapter, #tb-bar')) setTimeout(mark, 0); });
-  });
+  }, process.env.RA_SKIN || '');
   const page = await ctx.newPage();
   const log = attachLog(page);
   const res = { page: p, vp: +vp };
@@ -266,7 +267,7 @@ async function main() {
     const byPath = {};
     for (const u of r.log.requests || []) { const m2 = u.match(/^\/?(shared\/regional\/js\/[\w/.-]+\.js)(\?.*)?$/); if (m2) (byPath[m2[1]] ||= new Set()).add(m2[2] || ''); }
     const dups = Object.entries(byPath).filter(([, q]) => q.size > 1).map(([f, q]) => `${f} as ${[...q].map((x) => x || '(no query)').join(' and ')}`);
-    const stateDups = dups.filter((d) => /\/(levels|ui|search|registry|status|shell|scan|head|leg)\.js /.test(d)); // figures/head.js and leg.js keep pattern counters
+    const stateDups = dups.filter((d) => /\/(levels|ui|search|registry|status|shell|scan|head|leg|skin|appnav)\.js /.test(d)); // figures/head.js and leg.js keep pattern counters
     if (stateDups.length) problems.push(`stateful engine module loaded twice (two instances): ${stateDups.join('; ')}`);
     if (dups.length > stateDups.length) notes.push(`modules loaded under two URLs: ${dups.filter((d) => !stateDups.includes(d)).join('; ')}`);
     const otherSw = (m.serviceWorkers || []).filter((u) => u !== new URL('regional-sw.js', BASE).href);

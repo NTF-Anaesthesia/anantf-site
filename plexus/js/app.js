@@ -8,7 +8,7 @@
 import { registerOffline } from '../../shared/regional/js/offline.js?v=20261016'; // the regional offline worker (regional-sw.js)
 import { mountExplorer, PLEXUSES, DEFAULT_PLEXUS, validPlexusId } from './explorer.js?v=20261015d';
 import { applyLevel, mountLevelControl, mountLevelPicker } from '../../shared/regional/js/levels.js?v=20261015';
-import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261017'; // Settings, bar auto-hide, keys, prefetch
+import { initAppFeel, settingsItem, settingsButton } from '../../shared/regional/js/appnav.js?v=20261026'; // Settings, bar auto-hide, keys, prefetch
 
 const V = '20261015c';
 const $ = (id) => document.getElementById(id);
@@ -100,7 +100,7 @@ function paintBar(s) {
   const p = PLEXUSES.find((x) => x.id === s.plexus);
   ui.pickCur.innerHTML = `${esc(s.plexusTab || p?.tab || '')}${s.blockShort ? `<span class="px-cur-block"> · ${esc(s.blockShort)}</span>` : ''}`;
   ui.pick.setAttribute('aria-label', `${s.plexusName || 'Plexus'}${s.blockName ? `, ${s.blockName}` : ''}. Choose a plexus`);
-  for (const a of ui.bar.querySelectorAll('a[data-ch]')) {
+  for (const a of document.querySelectorAll('.tb-chnav a[data-ch], #px-chmenu a[data-ch]')) { // (the menu may sit in the row under the bar on phones in the app look)
     if (a.dataset.ch === s.plexus) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   }
 }
