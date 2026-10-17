@@ -69,8 +69,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 | `popliteal-animation/` | Archived copy of Dr Chew Shi Hao's original popliteal block page (frozen; do not edit) | No (unlisted) |
 | `ra.html`, `draft-ra.html` | Redirects to the lower-limb pages (old links) | No |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
-| `pocus/{basics,cardiac,lung,haemodynamics,shock}/` | Themed critical care POCUS lectures with simulations, cases and licensed media; start with `pocus/README.md` | On the POCUS hub (noindex kept) |
-| `pocus/{efast,dvt}/` | Unreviewed POCUS drafts, reached only from `draft.html` | No (draft) |
+| `pocus/{basics,cardiac,lung,haemodynamics,shock,efast,dvt}/` | Themed critical care POCUS lectures with simulations, cases and licensed media; start with `pocus/README.md` | On the POCUS hub (noindex kept) |
 | `pocus/media/` | Clinical media catalogue and per-asset licence/attribution manifest | Linked from POCUS and the lectures |
 | `eeg/` | Processed EEG teaching simulator: processed EEG on Medtronic BIS, BIS Advance, Masimo SedLine and Philips IntelliVue screens, with a timeline (one static page, synthetic EEG, no data). Moved from an earlier address on 16 Oct 2026. Start with `eeg/NOTES.md`; tests in `.github/workflows/checks.yml` | In main navigation as "EEG" (noindex kept) |
 | `ot/` | Operating-theatre simulator for teaching: a general anaesthetic, the vitals monitor and crisis scenarios (one static site, synthetic physiology, no data). Moved from an earlier address on 16 Oct 2026. Start with `ot/NOTES.md`, then `ot/PLAN.md`; run `tools/test-ot.sh` | No (unlisted, noindex) |
