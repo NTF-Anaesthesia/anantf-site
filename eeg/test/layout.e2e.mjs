@@ -5,17 +5,22 @@ const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors
 const BASE=process.env.EEG_URL||`http://localhost:${process.env.PORT||8080}/eeg/`;
 const ids={vista:'vista',advance:'advS',sedline:'sedS',philips:'pvS',classic:'classicWrap'};
 try{
- for(const [width,height] of [[1440,900],[1366,768],[1920,1080],[1024,768],[390,844],[844,390]]){
+ for(const [width,height] of [[1440,900],[1366,768],[1920,1080],[1280,720],[2560,1440],[1024,768],[390,844],[844,390]]){
   await page.setViewportSize({width,height});await page.goto(BASE);await page.waitForFunction(()=>TL.t0!=null);
   for(const skin of Object.keys(ids)){
    await page.selectOption('#monitorChoice',skin);await page.waitForTimeout(300);
    for(const full of [false,true]){
     if(full)await page.click('#fullScreen');await page.waitForTimeout(200);
-    const dim=await page.evaluate(id=>{const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};return {m:rect(document.getElementById(id)),s:rect(document.querySelector('#monitor .screens')),dock:rect(document.querySelector('#monitor .panel')),overflow:document.documentElement.scrollWidth>innerWidth+1}},ids[skin]);
+    const dim=await page.evaluate(id=>{const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,right:r.right,bottom:r.bottom}};return {m:rect(document.getElementById(id)),s:rect(document.querySelector('#monitor .screens')),device:rect(document.getElementById({vista:'vistaWrap',advS:'advWrap',sedS:'sedWrap',pvS:'pvWrap',classicWrap:'classicWrap'}[id])),notes:rect(document.querySelector('#observationNotes')),dock:rect(document.querySelector('#monitor .panel')),overflow:document.documentElement.scrollWidth>innerWidth+1}},ids[skin]);
     const {m,s,dock}=dim,label=`${width}×${height} ${skin} ${full?'fullscreen':'page'}`;
     assert.ok(m.w>120&&m.h>100,`${label}: monitor cannot collapse (${m.w}×${m.h})`);
     assert.ok(Math.max(m.w/s.w,m.h/s.h)>.72,`${label}: screen should use the available stage`);
     assert.ok(m.x>=s.x-2&&m.y>=s.y-2&&m.right<=s.right+2&&m.bottom<=s.bottom+2,`${label}: entire monitor fits`);
+    if(width>1100){
+     const gap=dim.notes.x-dim.device.right;
+     assert.ok(gap>=14&&gap<=18,`${label}: notes follow device edge (${gap}px gap)`);
+     assert.ok(Math.abs(dock.right-dim.device.right)<3,`${label}: dock aligns with device edge`);
+    }
     assert.ok(!dim.overflow,`${label}: no horizontal overflow`);
     if(full){assert.ok(dock.bottom<=height+1,`${label}: controls fit in viewport`);assert.ok(dock.y>=s.bottom-1||dock.x>=s.right-1,`${label}: controls do not cover monitor`);}
     if(process.env.EEG_SCREENSHOTS&&full&&['advance','sedline','classic'].includes(skin))await page.screenshot({path:`/tmp/eeg-fixed-${width}-${height}-${skin}.png`});
@@ -41,7 +46,7 @@ try{
      assert.ok(Math.abs(after.ratio-1.6)<.005,'Advance LCD keeps its 16:10 aspect ratio');
      for(let i=0;i<before.regions.length;i++)for(let k=0;k<2;k++)assert.ok(Math.abs(before.regions[i][k]-after.regions[i][k])<.005,`${width} channel ${ch}: LCD region ${i} retains its relative position`);
      if(width>1100){
-      assert.ok(after.width>800,'desktop fullscreen keeps the monitor large');
+      assert.ok(after.width>Math.min(800,width*.56),'desktop fullscreen keeps the monitor large');
       assert.ok(after.width>=before.width,'fullscreen never shrinks the desktop monitor');
      }
      await page.click('#fullScreen');

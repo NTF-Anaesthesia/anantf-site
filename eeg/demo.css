@@ -15,7 +15,7 @@
 #monitor .icon-button svg,#storyBtn svg{width:22px;height:22px;flex:none}
 #settingsButton{margin-left:6px}
 #monitor :is(select,input,summary,button):focus-visible{outline:2px solid #633d3c;outline-offset:3px}
-#monitor .sim{width:100%;display:grid;grid-template-columns:minmax(0,1fr) 280px;align-items:start;gap:24px;min-width:0}
+#monitor .sim{width:100%;display:grid;grid-template-columns:minmax(0,var(--monitor-width,1fr)) minmax(280px,1fr);align-items:start;gap:16px;min-width:0}
 .live-workspace{min-width:0;display:grid;gap:10px;grid-template-rows:minmax(0,1fr) auto auto}
 #monitor .screens{width:100%;height:clamp(360px,calc(100svh - 290px),1100px);min-width:0;display:flex;align-items:center;justify-content:flex-start;gap:0;overflow:hidden;background:transparent}
 #monitor .screens> :is(.vwrap,.advwrap,.sedwrap,.pvwrap,.mon){flex:none;width:100%;max-width:none;min-width:0;margin:0;box-sizing:border-box}
@@ -68,7 +68,7 @@
 #monitor #presetSeg button[aria-pressed=true]{border-color:#633d3c;color:#633d3c;background:#eee6df;box-shadow:inset 3px 0 #633d3c}
 
 /* Observations stay beside the monitor; occasional teaching controls sit below. */
-#observationNotes{align-self:stretch;min-width:0;overflow:auto;max-height:calc(100svh - 200px);padding:20px 0 20px 22px;border-left:1px solid #d7d2c8}
+#observationNotes{align-self:stretch;min-width:0;overflow:auto;max-height:calc(100svh - 200px);padding:20px 0 20px 16px;border-left:1px solid #d7d2c8}
 #observeTitle{font:500 12px/1.4 var(--f-body);letter-spacing:.07em;text-transform:uppercase;color:#6c675e;margin:0 0 24px}
 #monitor #observationNotes .reading{border:0;border-radius:0;background:none;margin:0;padding:0}
 #observationNotes .reading b{display:block;font:400 25px/1.2 var(--f-display);letter-spacing:-.02em;margin-bottom:16px;text-wrap:balance}
