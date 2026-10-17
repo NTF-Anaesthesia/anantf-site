@@ -26,5 +26,7 @@ screenshots, no re-reading large files.
 6. **Merge** it (squash) once the repo's required checks pass and the PR is clean. If AGENTS.md names a docs check, run
    it first (anawj-site: `node tools/check.mjs`). If checks are red or the PR is not clean, leave it open and say why. Never
    merge a PR that changes more than the docs above.
-7. **Tell the owner in at most three lines:** the PR link, merged or not, anything half-done, and that it is safe to
+7. **Unsubscribe from your PR** (`unsubscribe_pr_activity`) once it is merged or left open, so the session stops waking
+   on PR events.
+8. **Tell the owner in at most three lines:** the PR link, merged or not, anything half-done, and that it is safe to
    archive this session. After archiving, a new session reads the app's STATUS.md and NOTES.md first.
