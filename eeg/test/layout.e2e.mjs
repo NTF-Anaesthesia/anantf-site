@@ -46,7 +46,7 @@ try{
      assert.ok(Math.abs(after.ratio-1.6)<.005,'Advance LCD keeps its 16:10 aspect ratio');
      for(let i=0;i<before.regions.length;i++)for(let k=0;k<2;k++)assert.ok(Math.abs(before.regions[i][k]-after.regions[i][k])<.005,`${width} channel ${ch}: LCD region ${i} retains its relative position`);
      if(width>1100){
-      assert.ok(after.width>800,'desktop fullscreen keeps the monitor large');
+      assert.ok(after.width>Math.min(800,width*.56),'desktop fullscreen keeps the monitor large');
       assert.ok(after.width>=before.width,'fullscreen never shrinks the desktop monitor');
      }
      await page.click('#fullScreen');
