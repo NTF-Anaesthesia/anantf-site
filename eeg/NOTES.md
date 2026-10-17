@@ -683,3 +683,13 @@ Combination mode now offers four examples: propofol/remifentanil, propofol/ketam
 Visual review exposed a display issue in Advance: its fixed frequency-dependent colour boost produced strong slow/alpha bands even at the awake baseline. Advance now maps the simulated spectral power through the selected dB range, retaining its device palette, averaging and suppression rendering. The physiology and BIS equations are unchanged. The interaction test checks that the awake display lacks fixed warm bands and that induction develops them.
 
 Validation: engine tuning, desktop/phone induction-emergence suites, keyboard/control checks and all five monitor layouts in page/fullscreen at six viewport sizes. The layout tests now cover the default unilateral landing state, direct channel buttons and reachable preset choices. Control checks cover desktop/right versus mobile/below observations and the bottom patient fold.
+
+## Selectable learning examples (17 October 2026)
+
+`teaching.js` supplies seven fresh-timeline EEG examples, with alpha dropout first, and four drug families with selectable comparisons. Examples prefill five minutes of stable EEG so a transient can be compared against a baseline. Explicit alpha/delta/beta stimuli remove the random response selection for teaching; the manual stimulus remains available. The timeline restores lesson state and the selected drug comparison. Induce restores the selected comparison after emergence.
+
+Sources: Hight 2019 (PMID 30915994, alpha dropout); García 2021 (33461725, arousal patterns); Purdon 2015 (26275092, EEG signatures; 26174300, ageing); Guignard 2000 (10624998, remifentanil and stimulation); Sengupta 2011 (22428494, dose-dependent ketamine BIS effects); Zhang 2021 (34879867, dexmedetomidine adjunct); Pavone 2015 (26118489, nitrous oxide transition).
+
+The mixture model is illustrative, not validated pharmacokinetic/pharmacodynamic dose prediction. Ketamine and dexmedetomidine selections use relative effect levels, not bolus or infusion prescriptions. Dex adjunct alpha-power/frequency changes are not fully represented. Nitrous oxide steady mixtures do not simulate the transient slow-delta signature of switching from sevoflurane to high-concentration nitrous oxide. A higher or lower processed index cannot establish awareness, nociception or equivalent hypnotic depth. The UI states these limitations alongside each comparison rather than relying on a generic disclaimer.
+
+Validation: `node eeg/test/engine.check.mjs`; browser suites `controls.e2e.mjs`, `demo.e2e.mjs`, `layout.e2e.mjs`, and `teaching.e2e.mjs`. Teaching tests verify alpha dropout/recovery at unchanged target, timeline restoration, all example entry points, all mixture selections, re-induction and phone access.

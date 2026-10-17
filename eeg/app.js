@@ -136,7 +136,7 @@ class Engine{
   // surgical stimulus (García 2021, Hight 2019), blunted by remifentanil b = remi/4 (mix only): light (dH < 0.5) beta at
   // 18 Hz and facial EMG; deeper the alpha band dips 3.5 dB, or 1 in 10 a paradoxical delta arousal (BIS falls)
   if(this.stT>0){this.stT-=dt;const u=1-(this.drug==='mix'?cl((this.de.remi||0)/4):0),dh=tg.dH??this.de;
-   if(dh<0.5){tg.ar+=8*u;if(!m.nmb)tg.emg=Math.max(tg.emg,6*u);}else if(this.stK==='delta'){tg.delta*=1+u;tg.beta*=1-0.5*u;}else tg.alpha*=10**(-0.35*u);}
+   if(this.stK==='beta'||this.stK!=='alpha'&&this.stK!=='delta'&&dh<0.5){tg.ar+=8*u;if(!m.nmb)tg.emg=Math.max(tg.emg,6*u);}else if(this.stK==='delta'){tg.delta*=1+u;tg.beta*=1-0.5*u;}else tg.alpha*=10**(-0.35*u);}
   for(const key of KEYS)this.p[key]+=(tg[key]-this.p[key])*k;
   // relaxant stage 2: starts 60 s after the relaxant, only while the hypnotic is light; τ 120 s on, 30 s off
   if(m.nmb){this.nmbT+=dt;if(this.nmbT>60&&(tg.dH??this.de)<0.3)this.nmbS+=(1-this.nmbS)*dt/120;}else{this.nmbT=0;this.nmbS-=this.nmbS*dt/30;}
@@ -459,7 +459,7 @@ function describe(){const d=typeof eng.de==='number'?eng.de:0;let n,t;
  else if(mods.emg)t+=' Muscle activity: broad high-frequency power raises the EMG bar and pushes BIS up. It is artefact, not lighter anaesthesia.';
  if(mods.blink)t+=' Blinks and eye movement: slow one-sided swings on the raw EEG and brighter power at 0.5–2 Hz along the bottom of the DSA. The monitor rejects most of it, but BIS can read a few points low; the biggest blinks are flagged as artefact.';
  if(eng.stT>0){const dh=drug==='mix'?mixTarget(Object.assign({},MIX0,eng.de)).dH:eng.de,bl=drug==='mix'&&eng.de.remi>=4;
-  t+=' Surgical stimulus: '+(bl?'remifentanil blunts the response, so the EEG barely changes.':dh<0.5?'in a light patient, beta (around 18 Hz) and facial EMG rise and BIS jumps 10–20 points. An opioid blunts this.':eng.stK==='delta'?'a paradoxical delta arousal: slow power rises and BIS falls, but this is arousal, not deeper anaesthesia. Treat the stimulus with analgesia rather than more hypnotic.':'the alpha band dips by about 3 dB for a minute or two (an alpha dropout), a sign of nociceptive arousal. Give analgesia first; if the alpha band and slow waves keep fading, the hypnotic may also be light (Hight 2019).');}
+  t+=' Surgical stimulus: '+(bl?'remifentanil blunts the response, so the EEG barely changes.':(eng.stK==='beta'||eng.stK!=='alpha'&&eng.stK!=='delta'&&dh<0.5)?'in a light patient, beta (around 18 Hz) and facial EMG rise and BIS jumps 10–20 points. An opioid blunts this.':eng.stK==='delta'?'a paradoxical delta arousal: slow power rises and BIS falls, but this is arousal, not deeper anaesthesia. Interpret with the stimulus, drug delivery and haemodynamics.':'the alpha band dips by about 3 dB for a minute or two (an alpha dropout), which can accompany noxious stimulation. It does not by itself establish pain or awareness. Check timing, drug delivery, signal quality and haemodynamics (Hight 2019).');}
  if($('rName').textContent!==n)$('rName').textContent=n;if($('rText').textContent!==t)$('rText').textContent=t;}
 
 function describeMix(m,tg){tg=tg||m;const hyp=0.155*m.propofol+sevoDepth(m.sevo),parts=[];let n;
@@ -468,10 +468,10 @@ function describeMix(m,tg){tg=tg||m;const hyp=0.155*m.propofol+sevoDepth(m.sevo)
  if(on.length)n+=' · '+on.join(' + ');
  if(tg.propofol&&tg.sevo)parts.push('Propofol and sevoflurane add together into one hypnotic depth.');
  if(hyp>=0.44&&hyp<0.68&&!m.ketamine)parts.push('The hypnotic gives the usual alpha (8–12 Hz) and slow bands.');
- if(tg.remi)parts.push('Remifentanil barely changes BIS in a quiet patient (Guignard 2000), but it blunts the BIS and EMG rise from surgery or intubation: tick facial muscle activity or press Surgical stimulus to see it.');
- if(tg.ketamine)parts.push('Ketamine adds gamma (about 27–40 Hz), weakens the alpha band and thins the slow band, so BIS reads higher even though the patient is deeper (0.5 mg/kg on propofol raised BIS from about 40 to 63). Don\u2019t chase the number with more propofol.');
+ if(tg.remi)parts.push('Remifentanil barely changes BIS in a quiet patient (Guignard 2000), but it blunts the BIS and EMG rise from surgery or intubation: apply a surgical stimulus to compare the response.');
+ if(tg.ketamine)parts.push('Ketamine adds faster activity and can weaken the alpha band. Its effect on BIS is dose-dependent: a higher index need not mean emergence. Compare the lower and higher adjunct examples.');
  if(tg.dex)parts.push('Dexmedetomidine adds spindles and slow waves and lowers the hypnotic dose needed.');
- if(tg.n2o)parts.push('N₂O adds anaesthesia (60% is about 0.6 MAC) but barely moves BIS, so the number underestimates the depth.');
+ if(tg.n2o)parts.push('Nitrous oxide adds anaesthetic effect that may not be fully reflected in BIS. Compare the volatile contribution and the raw EEG.');
  if(!on.length)parts.push('Select a combination to explore its EEG and DSA pattern.');
  return [n,parts.join(' ')];}
 
@@ -480,8 +480,8 @@ const DEPTH_TICKS={propofol:['Awake','Sedated','GA','Deep','Flat'],sevo:['Awake'
 let mode='single';const mix=Object.assign({},MIX0);
 const PRESETS={tiva:{propofol:3,remi:4},propket:{propofol:3.5,ketamine:0.4},sevon2o:{sevo:0.8,n2o:0.6},propdex:{propofol:2.5,dex:0.5}};
 let selectedMix='tiva';
-function syncMix(){document.querySelectorAll('#presetSeg button').forEach(b=>{const p=PRESETS[b.dataset.preset],on=Object.keys(MIX0).every(k=>mix[k]===(p[k]||0));b.setAttribute('aria-pressed',String(on));if(on)selectedMix=b.dataset.preset;});}
-function selectMix(key){stopStory();selectedMix=key;Object.assign(mix,MIX0,PRESETS[key]);depth=mix;syncMix();applyTarget();}
+function syncMix(){document.querySelectorAll('#presetSeg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.preset===selectedMix)));if(typeof syncLearning==='function')syncLearning();}
+function selectMix(key,variant){stopStory();selectedMix=key;selectedMixVariant=variant??MIX_LESSONS[key].initial;Object.assign(mix,MIX0,MIX_LESSONS[key].variants[selectedMixVariant][1]);depth=mix;syncMix();applyTarget();}
 document.querySelectorAll('#presetSeg button').forEach(b=>b.onclick=()=>{selectMix(b.dataset.preset);if(paused)$('pause').click();});
 function showMode(m){mode=m;document.querySelectorAll('#modeSeg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===m));
  $('mixCtl').hidden=m!=='mix';$('depthCtl').hidden=m==='mix';}
@@ -651,12 +651,12 @@ function stopStory(){if(!story)return;story=null;storyButtonUI('Play induction �
 $('storyBtn').onclick=()=>{if(story){stopStory();$('storyCap').textContent='';return;}
  nmReset();story={t0:simT,i:-1};mods.elderly=false;$('mElder').checked=false;for(const [k,id] of SMODS){mods[k]=false;$(id).checked=false;}setNmb('off');eng.stT=R.eng.stT=0;tim.sup=tim.low=R.tim.sup=R.tim.low=0;setSpeed(10);
  if(paused)$('pause').click();storyButtonUI('Stop demonstration');};
-function runStory(){if(!story)return;const t=simT-story.t0;
- while(story.i+1<STORY.length&&t>=STORY[story.i+1].at){story.i++;const s=STORY[story.i];
+function runStory(){if(!story)return;const t=simT-story.t0,steps=story.lesson?EEG_LESSONS[story.lesson].steps:STORY;
+ while(story.i+1<steps.length&&t>=steps[story.i+1].at){story.i++;const s=steps[story.i];
   if(s.drug)setDrug(s.drug);if(s.d!=null){depth=s.d;$('depth').value=Math.round(s.d*100);}
   if(s.mods){for(const [k,id] of SMODS){mods[k]=!!s.mods[k];$(id).checked=mods[k];}setNmb(s.mods.nmb===false?'off':s.mods.nmb===true?'on':'off');}
   if(s.stim)stimAll(s.stim);else if(s.mods)eng.stT=R.eng.stT=0;
-  applyTarget();if(s.snap)snapAll();$('storyCap').textContent=`${story.i+1}/${STORY.length} · ${s.cap}`;
+  applyTarget();if(s.snap)snapAll();$('storyCap').textContent=`${story.i+1}/${steps.length} · ${s.cap}`;
   if(s.end){story=null;storyButtonUI('Replay demonstration');setSpeed(1);return;}}}
 
 // ===== explainer animation =====
