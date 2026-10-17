@@ -223,3 +223,13 @@ body.presenting{overflow:hidden}
  #monitor.presenting #agentChoice{max-width:none;width:100%}
  #monitor.presenting #tgtBis{margin:0 0 4px}
 }
+
+/* Teaching is beside the monitor on desktop and below its controls on mobile. */
+.learning-section{border-bottom:1px solid #dce3e9;padding:0 0 16px;margin:0 0 18px;min-width:0}
+.learning-section>label{display:block;font-size:12px;font-weight:650;letter-spacing:.02em;margin:0 0 8px;color:#435366}
+.learning-section select{width:100%;min-width:0;min-height:44px;border:1px solid #cbd5df;border-radius:10px;background:#fff;color:#182838;padding:8px;font:inherit;font-size:13px}
+.example-picker{display:flex;gap:6px;align-items:center}.example-picker select{flex:1}.example-picker button{flex:none}
+.learning-section p{font-size:13px;line-height:1.55;margin:10px 0}.learning-section summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-size:13px;color:#48617a}
+.learning-section summary:before{content:'＋';margin-right:7px}.learning-section details[open] summary:before{content:'−'}
+.learning-section .dose-caption{font-weight:600}.learning-section .model-note{font-size:12px;color:#627184}
+.learning-section a{color:#2767a2;text-underline-offset:3px}.learning-section button:not(.icon-button){min-height:44px;border:1px solid #cbd5df;border-radius:10px;background:#f5f8fb;padding:8px 12px;color:#23435f;cursor:pointer}

@@ -37,6 +37,7 @@ jobs:
           - { name: Processed EEG (phone), cmd: "BIS_VIEW=phone node eeg/test/demo.e2e.mjs" }
           - { name: Processed EEG (desktop), cmd: "BIS_VIEW=desktop node eeg/test/demo.e2e.mjs" }
           - { name: EEG monitor sizing, cmd: "node eeg/test/layout.e2e.mjs" }
+          - { name: EEG teaching, cmd: "node eeg/test/teaching.e2e.mjs" }
           - { name: EEG controls, cmd: "node eeg/test/controls.e2e.mjs" }
           - { name: OT simulator, cmd: "node ot/test/e2e.mjs" }
     name: browser (${{ matrix.name }})
