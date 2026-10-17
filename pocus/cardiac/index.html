@@ -1,28 +1,18 @@
 <!doctype html>
 <html lang="en-GB" data-theme="light">
 <head>
+<script>window.POCUS_INITIAL_HASH=location.hash;</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <title>Focused cardiac ultrasound — NTF Anaesthesia</title>
-<meta name="description" content="Masterclass: focused cardiac ultrasound for critical care — probe handling, the five basic views and how to fix them, LV and RV function, effusion and tamponade, the IVC and fluid responsiveness, venous congestion (VExUS), and five shocked patients. All images are schematic simulations, not real scans.">
+<meta name="description" content="Masterclass: focused cardiac ultrasound for critical care — probe handling, the five basic views and how to fix them, LV and RV function, effusion and tamponade, the IVC and fluid responsiveness, venous congestion (VExUS), and five shocked patients. Interactive schematics and clearly labelled real ultrasound cine loops.">
 <style>
 :root{
   --bg:#F7F2EA; --panel:#FDFAF3; --line:#E0D6C2; --line2:#CFC2A8; --ink:#2A241D; --ink2:#5A4F42; --mute:#8A7E6D; --faint:#B3A795;
   --accent:#A8541F; --accent-soft:rgba(168,84,31,.10); --red:#B85042; --blue:#2A5B8C; --green:#4C7A45; --amber:#B9852A;
   --serif:Georgia,'Iowan Old Style','Times New Roman',serif; --mono:ui-monospace,Menlo,'SF Mono',Consolas,monospace;
   --shadow:0 1px 0 rgba(42,36,29,.04),0 8px 24px -12px rgba(42,36,29,.18);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
-    --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
-    --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#1B1814; --panel:#242019; --line:#3A3329; --line2:#4A4135; --ink:#F1E9DB; --ink2:#CDBFAA; --mute:#9D907C; --faint:#6E6354;
-  --accent:#D98A50; --accent-soft:rgba(217,138,80,.13); --red:#DC7B67; --blue:#7FA8DA; --green:#86B07C; --amber:#D9AE5B;
-  --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 30px -14px rgba(0,0,0,.6);
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:var(--serif);-webkit-font-smoothing:antialiased}
@@ -350,14 +340,14 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
 #s9IVC,#s9HV,#s9PV,#s9RV{margin-top:2px}
 .tw table#vxG td:first-child{white-space:nowrap}
 </style>
-<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"></head>
-<body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a><a href="../../bis/">pEEG</a><a href="../../exams/">Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
-<nav class="course-toolbar" aria-label="Tutorial navigation"><div class="course-toolbar-inner"><div class="course-breadcrumb"><a href="../../draft.html">Drafts</a><span aria-hidden="true">/</span><span>Focused cardiac ultrasound · draft</span></div><label class="course-section-picker"><span class="course-sr-only">Tutorial section</span><select id="course-section" aria-label="Tutorial section"></select></label></div></nav><main class="deck" id="deck" tabindex="-1">
+<link rel="icon" href="../../ana-ntf-monogram.svg" type="image/svg+xml"><meta name="robots" content="noindex,nofollow"><link rel="stylesheet" href="../../assets/navigation.css?v=20261008"><link rel="stylesheet" href="../../assets/site-shell.css?v=20261008"><link rel="stylesheet" href="../../assets/pocus-course.css?v=20261008-mobile"><link rel="stylesheet" href="../../assets/header-nav.css?v=20261008"><script defer src="../../assets/navigation.js?v=20261008"></script><script defer src="../../assets/pocus-course.js?v=20261008-editorial"></script><link rel="stylesheet" href="../../assets/panoramic-banners.css?v=20261008-wide"><link rel="stylesheet" href="../../assets/banner-framing.css?v=20261008"><link rel="stylesheet" href="../shared/series.css?v=20261017"><link rel="stylesheet" href="./cardiac.css?v=20261017"><script defer src="../shared/series.js?v=20261017"></script><script defer src="./cardiac.js?v=20261017"></script></head>
+<body class="pocus-course"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../../index.html" aria-label="NTF Anaesthesia home"><img src="../../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../../airway.html">Airway</a><a href="../../regional.html">Regional Anaesthesia</a><a href="../../pocus/" aria-current="page">POCUS</a><a href="../../eeg/">EEG</a><a href="../../exams/">Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
+<nav class="course-toolbar" aria-label="Tutorial navigation"><div class="course-toolbar-inner"><div class="course-breadcrumb"><a href="../">POCUS</a><span aria-hidden="true">/</span><span>Focused cardiac ultrasound</span></div><label class="course-section-picker"><span class="course-sr-only">Tutorial section</span><select id="course-section" aria-label="Tutorial section"></select></label></div></nav><main class="deck" id="deck" tabindex="-1">
 
 
 <!-- ============ 1 TITLE ============ -->
 <section class="slide course-intro" data-min="1.5" data-title="Start here" data-prompt="Ask: who has scanned a heart in the last month? Who has given a fluid bolus to a shocked patient and wondered afterwards whether it helped or harmed? Today is about answering that question before the bolus.">
-  <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner ntf-illustrated-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">Critical care POCUS · Station 1 &amp; 5</p><h1>Focused cardiac ultrasound.</h1><p class="course-hero-lead">Five views, five questions. Get the picture, then judge the pump.</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
+  <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner ntf-illustrated-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS · Heart</p><h1>Focused cardiac ultrasound.</h1><p class="course-hero-lead">Five views, five questions. Get the picture, then judge the pump.</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
     <div>
       <p class="lede" style="margin-bottom:10px"><b class="ink">Five views. Five questions. One bedside decision.</b></p>
       <p style="margin:0 0 10px;color:var(--ink2)">Focused cardiac ultrasound (FoCUS) is a goal-directed, qualitative scan. The clinician at the bedside does it to answer a small number of time-critical, mostly yes/no questions in a shocked or breathless patient. It is <b class="ink">not</b> a comprehensive echocardiogram, and a normal FoCUS does not rule out structural heart disease.</p>
@@ -365,27 +355,27 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <ul class="lst tight">
         <li>Hold a phased-array probe in the cardiac convention and get PLAX, PSAX, A4C, subcostal 4-chamber and IVC views.</li>
         <li>Recognise the most common faults in each view and correct them.</li>
-        <li>Grade LV systolic function by eye, backed up by EPSS, fractional shortening and wall thickening.</li>
-        <li>Call a dilated, failing RV and tell acute from chronic.</li>
+        <li>Grade LV systolic function in multiple views; distinguish EF, stroke volume and forward flow.</li>
+        <li>Recognise RV dilatation and dysfunction; assess clues to chronic disease.</li>
         <li>Tell pericardial from pleural effusion and epicardial fat, and recognise tamponade physiology.</li>
         <li>Use the IVC, LVOT VTI and passive leg raise sensibly, and know their limits.</li>
-        <li>Grade venous congestion with VExUS and use it to decide when to stop fluid.</li>
+        <li>Grade venous congestion with VExUS and integrate it with perfusion and the cause of shock.</li>
         <li>Know when to stop and ask for a formal echo.</li>
       </ul>
       <ul class="agenda" style="max-width:480px">
         <li><span>01 · The FoCUS questions</span><span>2.5 min</span></li>
         <li><span>Part I · Acquisition · five views</span><span>21 min</span></li>
-        <li><span>Part II · LV and RV function</span><span>12.5 min</span></li>
+        <li><span>Part II · LV, forward flow and RV function</span><span>16.5 min</span></li>
         <li><span>Part III · Effusion, IVC, VTI, VExUS, red flags</span><span>26.5 min</span></li>
         <li><span>Part IV · Five shocked patients</span><span>20.5 min</span></li>
         <li><span>Quick check · Close</span><span>7.5 min</span></li>
       </ul>
       <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
-      <div class="links"><a href="../lung/">Lung</a><a href="../shock/">Shock / RUSH</a><a href="../dvt/">DVT</a><a href="../efast/">eFAST</a><a href="../gastric/">Gastric</a><a href="../vascular-access/">Vascular access</a></div>
+      <div class="links"><a href="../basics/">Basics →</a><a href="../haemodynamics/">Haemodynamics →</a><a href="../lung/">Lung</a><a href="../shock/">Shock / RUSH</a><a href="../dvt/">DVT</a><a href="../efast/">eFAST</a><a href="../gastric/">Gastric</a><a href="../vascular-access/">Vascular access</a></div>
     </div>
     <div>
       <div class="grid2"><div><div class="pov">Schematic · parasternal long axis</div><div class="scanner"><canvas id="heroP" class="us"></canvas></div></div><div><div class="pov">Schematic · apical four-chamber</div><div class="scanner"><canvas id="heroA" class="us"></canvas></div></div></div>
-      <div class="mini">All moving images on this page are schematic simulations drawn for teaching. They are not real scans.</div>
+      <div class="mini">Animated schematics show the concepts. Clearly labelled real cine loops accompany the PSAX, A4C and effusion sections.</div>
     </div>
   </div>
 </section>
@@ -418,7 +408,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div class="card" style="margin-top:12px"><div class="cap">Rules</div>
         <ul>
           <li>Answer each question from <b class="ink">at least two views</b> if you can. One view can mislead.</li>
-          <li><i>Can't tell</i> is an honest answer. A poor-quality scan is not a negative scan.</li>
+          <li><i>Can't tell</i> is an honest answer. A poor-quality scan is not a negative scan. Record an inadequate view explicitly; do not label an unassessed chamber normal.</li>
           <li>FoCUS is repeatable. Rescan after a fluid bolus, a vasopressor or intubation.</li>
           <li>SCCM 2024 focused update: ultrasound is suggested to guide management in septic shock, acute dyspnoea or respiratory failure and cardiogenic shock, and for targeted volume management (Díaz-Gómez 2025).</li>
           <li>Write down which views you got, how good they were, and your answers.</li>
@@ -567,7 +557,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <ul>
           <li><b class="ink">Global LV function</b>: concentric inward motion and thickening. The best single view for 'how is it squeezing'.</li>
           <li><b class="ink">Regional wall motion</b> at mid-papillary level: LAD anterior and anteroseptal; RCA inferior and inferoseptal; LCx inferolateral and anterolateral. Territories overlap; this is approximate.</li>
-          <li><b class="ink">The septum</b>: a round 'O' LV is normal. A <b class="ink">D-shaped</b> LV means RV overload: flattening in systole and diastole means pressure overload; in diastole only means volume overload.</li>
+          <li><b class="ink">The septum</b>: a round 'O' LV is normal. A <b class="ink">D-shaped</b> LV means RV overload: systolic flattening suggests pressure overload (it may persist into diastole); isolated diastolic flattening suggests volume overload.</li>
           <li><b class="ink">Hyperdynamic, empty LV</b>: papillary muscles touch at end-systole ('kissing papillary muscles').</li>
         </ul></div>
       <div class="tw" style="margin-top:12px"><table class="t sm"><thead><tr><th>Error</th><th>Fix</th></tr></thead><tbody>
@@ -580,6 +570,16 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div class="tabs vtabs" id="vPSAXt"><button aria-selected="true" data-k="0">Mid-papillary</button><button aria-selected="false" data-k="1">Oval (off-axis)</button><button aria-selected="false" data-k="2">Mitral level</button><button aria-selected="false" data-k="3">D-shape</button><button aria-selected="false" data-k="4">Territories</button></div>
       <div class="scanner"><canvas id="vPSAX" class="us"></canvas></div>
       <div class="mini" id="vPSAXc"></div>
+      <figure class="real-cine">
+        <div class="cap">Real scan · Papillary-level PSAX</div>
+        <video controls playsinline preload="none" poster="../media/psax-normal.jpg" aria-label="Real Papillary-level PSAX ultrasound cine">
+          <source src="../media/psax-normal.mp4" type="video/mp4">
+          <a href="../media/psax-normal.mp4">Open the ultrasound cine →</a>
+        </video>
+        <figcaption><p>Real papillary-level PSAX cine: follow circumferential wall thickening and inward motion. Interpret alongside other levels and views; this loop is not a quantitative EF measurement.</p>
+          <details><summary>Source and licence</summary><p>I.A.C. van der Bilt, MD, Department of Echocardiography AMC; CardioNetworks/ECHOpedia (Vdbilt). <a href="https://commons.wikimedia.org/wiki/File:SAXPAP_normal_(CardioNetworks_ECHOpedia).webm" target="_blank" rel="noopener">Original clip →</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>. Adaptation: examination-date header masked, H.264 transcode and poster extracted. Original creator credit retained.</p></details>
+        </figcaption>
+      </figure>
     </div></div>
   </div>
 </section>
@@ -600,12 +600,22 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <tr><td>Septum tilted</td><td>Chambers lean</td><td>Slide the probe until the apex is centred, then rotate slightly</td></tr>
         <tr><td>RV wall cut off</td><td>RV looks small</td><td>Move slightly medially or rotate; a cut-off RV makes RV:LV comparison invalid</td></tr>
       </tbody></table></div>
-      <div class="callout"><b class="ink">Pitfall</b>: a foreshortened A4C <b class="ink">overestimates</b> LV function (you miss apical akinesis) and makes the RV:LV ratio unreliable.</div>
+      <div class="callout"><b class="ink">Pitfall</b>: a foreshortened A4C underestimates LV volumes, can overestimate EF or miss apical pathology, and makes the RV:LV ratio unreliable.</div>
     </div>
     <div class="demo"><div class="panel">
       <div class="tabs vtabs" id="vA4Ct"><button aria-selected="true" data-k="0">True apex</button><button aria-selected="false" data-k="1">Foreshortened</button><button aria-selected="false" data-k="2">5-chamber</button><button aria-selected="false" data-k="3">Septum tilted</button><button aria-selected="false" data-k="4">RV cut off</button></div>
       <div class="scanner"><canvas id="vA4C" class="us"></canvas></div>
       <div class="mini" id="vA4Cc"></div>
+      <figure class="real-cine">
+        <div class="cap">Real scan · Apical four-chamber</div>
+        <video controls playsinline preload="none" poster="../media/a4c-normal.jpg" aria-label="Real Apical four-chamber ultrasound cine">
+          <source src="../media/a4c-normal.mp4" type="video/mp4">
+          <a href="../media/a4c-normal.mp4">Open the ultrasound cine →</a>
+        </video>
+        <figcaption><p>Real A4C cine: identify all four chambers, the septum and AV valves across the cycle. A single normal example does not exclude cardiac disease or establish an EF.</p>
+          <details><summary>Source and licence</summary><p>I.A.C. van der Bilt, MD, Department of Echocardiography AMC; CardioNetworks/ECHOpedia (Vdbilt). <a href="https://commons.wikimedia.org/wiki/File:A4C_normal_(CardioNetworks_ECHOpedia).webm" target="_blank" rel="noopener">Original clip →</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>. Adaptation: examination-date header masked, H.264 transcode and poster extracted. Original creator credit retained.</p></details>
+        </figcaption>
+      </figure>
     </div></div>
   </div>
 </section>
@@ -692,13 +702,13 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <tr><td>Hyperdynamic</td><td>Small cavity, near-obliterated at end-systole, kissing papillary muscles</td></tr>
         <tr><td>Normal</td><td>Brisk symmetric inward motion and thickening; anterior mitral leaflet nearly touches the septum</td></tr>
         <tr><td>Reduced</td><td>Visibly less inward motion; mitral leaflet stays well away from the septum</td></tr>
-        <tr><td>Severely reduced</td><td>Dilated, barely moving LV; mitral leaflet opens weakly; smoke may appear</td></tr>
+        <tr><td>Severely reduced</td><td>Very little thickening and cavity reduction; the LV may be dilated, but dilatation is not required</td></tr>
       </tbody></table></div>
-      <p style="font-size:15px;color:var(--ink2)">Normal LVEF is about 52–72% in men and 54–74% in women (ASE/EACVI 2015). An experienced eye grades well, but agreement with formal measurement is only moderate for learners. Back up your eyeball with:</p>
+      <p style="font-size:15px;color:var(--ink2)">Normal <b class="ink">2D biplane LVEF is 52–72% in men and 54–74% in women</b> (ASE/EACVI 2015). These are method-specific reference ranges, not eyeball precision. An experienced eye grades well, but agreement with formal measurement is only moderate for learners. Back up your eyeball with:</p>
       <div class="card"><div class="cap">E-point septal separation (EPSS) · PLAX M-mode through the anterior leaflet tip</div>
         <ul><li>The shortest distance between the leaflet's early-diastolic E-point and the septum. Normal is under about 7 mm.</li>
-        <li><b class="ink">EPSS &gt;7 mm</b> had 100% sensitivity but only about 52% specificity for LVEF ≤30% in ED patients (McKaigney 2014). A small EPSS is reassuring.</li>
-        <li>Falsely large in mitral stenosis, aortic regurgitation (the jet pushes the leaflet back) and asymmetric septal hypertrophy. Unreliable with an off-axis cut or a regional abnormality that spares the base.</li></ul></div>
+        <li><b class="ink">EPSS &gt;7 mm</b> was sensitive but poorly specific for LVEF ≤30% in a small ED study (McKaigney 2014: 100% sensitivity, 95% CI 63–100%; 52% specificity). It is a screening clue, not an EF measurement or a rule-out test.</li>
+        <li>Valve disease, septal hypertrophy and an off-axis cut make EPSS unreliable. A regional abnormality that spares the base may be missed. Check wall thickening and the apex in other views.</li></ul></div>
       <div class="card"><div class="cap">Fractional shortening (FS) · PLAX M-mode just beyond the leaflet tips</div>
         <div class="formula">FS = (LVIDd − LVIDs) / LVIDd × 100</div>
         <ul><li>Normal is roughly 25–45%. FS is one dimension: it ignores the apex and misleads with a regional wall motion abnormality.</li>
@@ -706,7 +716,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div class="card"><div class="cap">Wall thickening</div>
         <ul><li>Judge thickening, not just inward motion. A scarred, akinetic segment can be pulled inwards by its neighbours (tethering), but it won't thicken.</li>
         <li>Regional thinning (&lt;6 mm) with akinesis suggests old infarction.</li>
-        <li>A new regional abnormality in a shocked patient means ACS until proven otherwise. Get a formal echo and call cardiology.</li></ul></div>
+        <li>A new regional abnormality with shock raises concern for ischaemia or a mechanical complication. Obtain ECG, clinical context and urgent expert echo; stress cardiomyopathy, myocarditis and conduction changes are alternatives.</li></ul></div>
       <div class="callout"><b class="ink">Remember</b>: a vasodilated, septic LV can look hyperdynamic despite intrinsic dysfunction. Re-look once vasopressors restore afterload.</div>
     </div>
     <div class="demo"><div class="panel">
@@ -734,31 +744,72 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
   </div>
 </section>
 
+<!-- ============ LV EJECTION FRACTION AND FORWARD FLOW ============ -->
+<section class="slide" id="ef-forward-flow" data-min="4" data-title="EF is not cardiac output" data-prompt="Compare the small hyperdynamic LV with the dilated LV. Which ejects more blood per beat? Then add isolated MR: where does the ejected blood go? Hold EF constant and change EDV.">
+  <div class="inner two">
+    <div>
+      <div class="kicker">LV · Fraction, volume and flow</div>
+      <h2>A vigorous squeeze can still deliver little blood.</h2>
+      <p class="lede">Separate the fraction emptied, the volume ejected, and the flow reaching the circulation.</p>
+      <div class="card"><h3>EF depends on the starting volume.</h3>
+        <div class="formula">EF = (EDV − ESV) / EDV × 100<br>Total LV stroke volume = EDV − ESV</div>
+        <p>A 40 mL ventricle with EF 70% ejects 28 mL. A 200 mL ventricle with EF 30% ejects 60 mL. The lower EF does not necessarily mean the lower stroke volume. These are constructed examples, not normal reference volumes.</p>
+      </div>
+      <div class="card"><h3>Ejected volume may not all travel forward.</h3>
+        <p>With isolated mitral regurgitation (MR), total LV stroke volume includes blood returning to the LA. Forward stroke volume is the remainder. This model assumes no aortic regurgitation or shunt; it does not grade MR severity.</p>
+        <div class="formula">Forward SV = total SV − mitral regurgitant volume<br>Forward cardiac output = forward SV × HR / 1000</div>
+      </div>
+      <div class="card"><h3>At the bedside</h3>
+        <ul><li>Use good, non-foreshortened views. Formal EF usually uses biplane Simpson volumes or an appropriate 3D method.</li><li>Preload, afterload and valve disease affect EF. A hyperdynamic appearance does not establish adequate perfusion.</li><li>Measure forward flow when it changes the decision; interpret it with pressure, perfusion, valve findings and clinical context.</li></ul>
+      </div>
+      <details class="card"><summary>Check your interpretation</summary><p>At the same EF, halving EDV halves total stroke volume. With the same total stroke volume, adding MR lowers forward output. Heart rate changes output per minute without changing stroke volume per beat in this fixed-input model.</p></details>
+      <p><a href="../haemodynamics/">Continue to LVOT VTI and haemodynamic decisions →</a></p>
+    </div>
+    <div class="demo"><div class="panel">
+      <div class="cap">Explore · Ejection and forward flow</div>
+      <div class="seg" id="efFlowPresets" role="group" aria-label="Ventricular volume examples"><button data-v="0" aria-pressed="true">Normal example</button><button data-v="1" aria-pressed="false">Small, vigorous LV</button><button data-v="2" aria-pressed="false">Dilated, reduced EF</button><button data-v="3" aria-pressed="false">Isolated MR</button></div>
+      <canvas id="efFlowCanvas" width="500" height="330" role="img" aria-label="Animated schematic of a ventricular cavity emptying with forward and regurgitant ejection"></canvas>
+      <p class="mini">Conceptual chamber model, not an ultrasound image. Dashed outline: end-diastolic cavity. Arrow width represents the split of ejected volume; it is not a Doppler jet.</p>
+      <div class="ctrls ef-flow-controls">
+        <label for="efFlowEDV">End-diastolic volume <input id="efFlowEDV" type="range" min="30" max="240" step="5" value="120"><output id="efFlowEDVOut" for="efFlowEDV">120 mL</output></label>
+        <label for="efFlowEF">Ejection fraction <input id="efFlowEF" type="range" min="15" max="80" step="1" value="60"><output id="efFlowEFOut" for="efFlowEF">60%</output></label>
+        <label for="efFlowMR">Mitral regurgitant fraction <input id="efFlowMR" type="range" min="0" max="60" step="5" value="0"><output id="efFlowMROut" for="efFlowMR">0%</output></label>
+        <label for="efFlowHR">Heart rate <input id="efFlowHR" type="range" min="40" max="150" step="5" value="75"><output id="efFlowHROut" for="efFlowHR">75/min</output></label>
+        <button class="btn ghost mot" type="button">❚❚ Pause motion</button>
+      </div>
+      <div class="readout" id="efFlowRead"></div>
+      <p class="status" id="efFlowStatus" role="status" aria-live="polite"></p>
+    </div></div>
+  </div>
+</section>
+
 <!-- ============ 13 RV (SIM 5) ============ -->
-<section class="slide" data-min="5" data-title="RV size and function" data-prompt="Flip between Acute PE and Chronic PH and ask: what one measurement separates them? (Free-wall thickness; also TR velocity if you can measure it.) Then Volume overload: when does the septum flatten?">
+<section class="slide" data-min="5" data-title="RV size and function" data-prompt="Compare Acute PE and Chronic PH: which findings suggest chronic adaptation? Free-wall thickening and RA enlargement are clues, not proof; acute-on-chronic disease occurs. Then Volume overload: when does the septum flatten?">
   <div class="inner two">
     <div>
       <div class="kicker">10 · RV size and function</div>
       <h2>Is the RV big? Is the septum flat? Is it moving?</h2>
       <div class="card"><div class="cap">Size · A4C at end-diastole, basal diameter compared with the LV</div>
-        <ul><li>Normal RV is less than about two-thirds of the LV. <b class="ink">RV:LV ratio &lt;0.6</b> is normal; 0.6–1.0 is dilated; <b class="ink">≥1.0</b> is severely dilated.</li>
-        <li>ESC 2019 PE guideline: an RV/LV diameter ratio ≥1.0 is a marker of RV dysfunction. The 2026 AHA/ACC PE guideline also asks for RV size, RV/LV ratio, TAPSE and TR velocity, and, in patients without hypotension or shock, prefers echo to CT for short-term risk stratification. Echo signs of RV strain do not diagnose PE: confirm it with dedicated PE imaging.</li>
-        <li>RV basal diameter &gt;41 mm is dilated (ASE 2015).</li>
+        <ul><li>The RV normally appears smaller than the LV, roughly no more than two-thirds its size. A basal <b class="ink">RV:LV diameter ratio ≥1</b> is concerning in acute PE. Do not apply area-ratio cut-offs to diameter measurements.</li>
+        <li>ESC 2019 PE guideline: an RV/LV diameter ratio ≥1.0 is a marker of RV dysfunction. The 2026 AHA/ACC PE guideline includes RV size, RV/LV ratio, TAPSE and TR velocity. In confirmed acute PE with an elevated clinical severity score but no persistent hypotension or shock (categories C–D), it favours echo over CT for short-term risk stratification. This is not a preference for diagnosing PE. Echo signs of RV strain do not diagnose PE: confirm it with dedicated PE imaging.</li>
+        <li>Use an RV-focused A4C at end-diastole for size: the 2025 ASE normal basal diameter is <b class="ink">&lt;41 mm</b>. Include the whole free wall; foreshortening changes the measurement.</li>
         <li>Check the RV apex: a normal LV forms the cardiac apex. An RV that reaches the apex is dilated.</li></ul></div>
       <div class="card"><div class="cap">Shape · PSAX septal position</div>
-        <ul><li><b class="ink">D-sign</b> throughout the cycle → <b class="ink">pressure overload</b> (PE, pulmonary hypertension, ARDS/high PEEP).</li>
+        <ul><li><b class="ink">D-sign</b> in systole, often persisting into diastole → <b class="ink">pressure overload</b> (PE, pulmonary hypertension, ARDS/high PEEP).</li>
         <li>D-sign in diastole only → <b class="ink">volume overload</b> (e.g. ASD, severe TR).</li>
         <li>Paradoxical septal motion towards the LV.</li></ul></div>
       <div class="card"><div class="cap">Function</div>
-        <ul><li><b class="ink">TAPSE</b>: M-mode at the lateral tricuspid annulus in A4C; longitudinal excursion of the annulus. <b class="ink">&lt;17 mm is abnormal</b> (Lang 2015; ASE right heart guideline 2025). The older Rudski 2010 guideline and ESC 2019 PE use &lt;16 mm. Angle- and load-dependent. Normal is about 20–25 mm.</li>
-        <li><b class="ink">McConnell sign</b>: akinesis of the mid RV free wall with preserved apical motion. Original report in acute PE: sensitivity 77%, specificity 94% (McConnell 1996). Also seen in RV infarction, so it is not pathognomonic.</li></ul></div>
+        <ul><li><b class="ink">TAPSE</b>: M-mode at the lateral tricuspid annulus in A4C; longitudinal excursion of the annulus. <b class="ink">Normal &gt;17 mm</b> (ASE 2025). Borderline values need context. Angle- and load-dependent; measures basal longitudinal motion, not global RVEF.</li>
+        <li><b class="ink">S′ &gt;9.5 cm/s; FAC &gt;35%</b> are the 2025 ASE normal references. S′ samples lateral annular systolic velocity. FAC = (end-diastolic area − end-systolic area) / end-diastolic area × 100; it needs a complete RV contour and omits the RVOT.</li>
+        <li>Integrate size, free-wall thickening, septal shape and multiple function measures. Preserved TAPSE or S′ alone does not prove a normal RV.</li>
+        <li><b class="ink">McConnell sign</b>: akinesis of the mid RV free wall with preserved apical motion. Reported with acute PE, but also RV infarction and other RV disease. Neither this sign nor a normal FoCUS confirms or excludes PE.</li></ul></div>
       <div class="tw" style="margin-top:12px"><table class="t sm"><thead><tr><th>Feature</th><th>Acute (e.g. high-risk PE)</th><th>Chronic (pulmonary hypertension)</th></tr></thead><tbody>
         <tr><td>RV free wall</td><td>Thin (≤5 mm)</td><td>Hypertrophied (&gt;5 mm)</td></tr>
-        <tr><td>TR peak velocity</td><td>Usually modest (a thin RV can't generate high pressure; PASP rarely &gt;60 mmHg)</td><td>Often high</td></tr>
+        <tr><td>TR peak velocity</td><td>May be modest despite severe illness; no single pressure cut-off reliably dates the disease</td><td>Often high</td></tr>
         <tr><td>RA</td><td>Mildly dilated</td><td>Large</td></tr>
         <tr><td>Clinical</td><td>Sudden</td><td>Long history, often known</td></tr>
       </tbody></table></div>
-      <p class="mini" style="font-size:12px">A thin-walled RV can't generate a pulmonary artery systolic pressure much above 60 mmHg. A very high TR gradient therefore points to chronic disease, or acute-on-chronic disease. Estimate PASP ≈ 4 × (peak TR velocity)² + RAP (from the IVC), e.g. TR 3.0 m/s → 36 + 8 = 44 mmHg (ASE right heart guideline 2025).</p>
+      <p class="mini" style="font-size:12px">Thickening and marked pressure elevation support chronic adaptation; their absence does not prove an acute process. Acute-on-chronic disease is common. Measure wall thickness at end-diastole, excluding fat and trabeculations. Estimate PASP ≈ 4 × (peak TR velocity)² + RAP (from the IVC), e.g. TR 3.0 m/s → 36 + 8 = 44 mmHg (ASE right heart guideline 2025).</p>
     </div>
     <div class="demo"><div class="panel">
       <div class="cap">Sim 5 · RV lab</div>
@@ -803,7 +854,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <div class="status" id="patStat"></div>
       </div>
       <div class="card" style="margin-top:12px"><div class="cap">Two rules for this station</div>
-        <ul><li><b class="ink">A big RV in shock is a reason to stop pouring fluid in.</b> Over-distending the RV pushes the septum into the LV and lowers output.</li>
+        <ul><li><b class="ink">A big RV in shock is a reason to reassess further fluid.</b> Over-distending the RV pushes the septum into the LV and lowers output.</li>
         <li><b class="ink">A small, hyperdynamic LV does not prove hypovolaemia.</b> A vasodilated patient looks the same. Use the IVC, clinical context and the response to a passive leg raise.</li></ul></div>
     </div>
   </div>
@@ -830,18 +881,18 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div class="card"><div class="cap">Pericardial effusion · an anechoic space between epicardium and parietal pericardium</div>
         <ul><li>In PLAX, pericardial fluid lies <b class="ink">anterior to the descending aorta</b> and usually tapers at the posterior AV groove; it rarely tracks far behind the LA (oblique sinus).</li>
         <li><b class="ink">Pleural effusion</b> lies <b class="ink">posterior</b> to the descending aorta, extends beyond the heart, and may contain a 'jellyfish' of collapsed lung.</li>
-        <li><b class="ink">Epicardial fat</b>: usually anterior only, grainy or speckled (not purely black), moves with the heart, and does not appear posteriorly. An isolated anterior echo-free space is fat until proven otherwise.</li>
+        <li><b class="ink">Epicardial fat</b>: commonly anterior, grainy or speckled, and moves with the heart. Location alone cannot distinguish fat from fluid or clot; inspect texture and multiple views.</li>
         <li><b class="ink">Size</b> (end-diastole, ESC 2015): small &lt;10 mm, moderate 10–20 mm, large &gt;20 mm.</li>
         <li>Circumferential or loculated? Loculated effusions are common after cardiac surgery and can compress only one chamber.</li></ul></div>
       <div class="card"><div class="cap">Tamponade physiology · the low-pressure chambers collapse first</div>
         <ul><li><b class="ink">RA systolic collapse</b> (inversion at end-diastole to early systole): the earliest and most sensitive sign. Collapse lasting <b class="ink">more than one-third of the cardiac cycle</b> is more specific.</li>
         <li><b class="ink">RV diastolic collapse</b> (free wall pushed in during early diastole): less sensitive but <b class="ink">more specific</b>.</li>
-        <li><b class="ink">Plethoric IVC</b> (&gt;2.1 cm, &lt;50% respiratory change): very sensitive (present in &gt;90% of tamponade), poorly specific. A collapsing IVC makes tamponade very unlikely, except when hypovolaemic.</li>
+        <li><b class="ink">Plethoric IVC</b> (&gt;2.1 cm, &lt;50% respiratory change): very sensitive (present in &gt;90% of tamponade), poorly specific. A small or collapsing IVC does not exclude low-pressure or localised tamponade.</li>
         <li>Swinging heart (electrical alternans on ECG) with large effusions.</li>
         <li><i>Advanced</i>: exaggerated respiratory variation in mitral (&gt;25%) and tricuspid (&gt;40%) inflow on pulsed-wave Doppler.</li></ul></div>
       <div class="callout"><b class="ink">Tamponade is a clinical diagnosis</b> (hypotension, tachycardia, raised JVP, pulsus paradoxus) that ultrasound supports and speeds up. Small but rapid effusions (trauma, post-procedure) can tamponade. Large chronic ones may not.</div>
       <div class="card" style="margin-top:12px"><div class="cap">Pitfalls and management</div>
-        <ul><li>Pulmonary hypertension or RV hypertrophy: the RV may not collapse.</li><li>Hypovolaemia: 'low-pressure tamponade' with a non-plethoric IVC.</li><li>Positive-pressure ventilation alters respiratory variation.</li><li>Use the ECG or M-mode to time collapse to systole or diastole.</li>
+        <ul><li>Pulmonary hypertension or RV hypertrophy: the RV may not collapse.</li><li>Hypovolaemia: 'low-pressure tamponade' with a non-plethoric IVC.</li><li><b class="ink">After cardiac surgery</b>, localised fluid or clot may compress one chamber without a circumferential effusion or classic right-sided collapse. A reassuring limited TTE does not exclude tamponade: seek urgent expert assessment, often TOE when TTE is inadequate.</li><li>Positive-pressure ventilation alters respiratory variation.</li><li>Use the ECG or M-mode to time collapse to systole or diastole.</li>
         <li><b class="ink">If tamponade is likely</b>, prepare for drainage (echo-guided pericardiocentesis or surgery). Avoid induction and positive-pressure ventilation if at all possible. Give a modest fluid bolus as a bridge only.</li></ul></div>
     </div>
     <div class="demo"><div class="panel">
@@ -858,6 +909,16 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div class="opts3" id="s6QA" hidden></div>
       <div class="readout" id="s6Read"></div>
       <div class="status" id="s6Stat"></div>
+      <figure class="real-cine">
+        <div class="cap">Real scan · Pericardial effusion</div>
+        <video controls playsinline preload="none" poster="../media/pericardial-effusion.jpg" aria-label="Real Pericardial effusion ultrasound cine">
+          <source src="../media/pericardial-effusion.mp4" type="video/mp4">
+          <a href="../media/pericardial-effusion.mp4">Open the ultrasound cine →</a>
+        </video>
+        <figcaption><p>Real A4C cine from a published tamponade teaching case: recognise pericardial fluid and inspect right-sided chamber motion. Confirm collapse timing with ECG/M-mode and integrate haemodynamics; effusion alone does not diagnose tamponade.</p>
+          <details><summary>Source and licence</summary><p>Ben Smith, Ultrasound of the Week. <a href="https://commons.wikimedia.org/wiki/File:UOTW_78_-_Ultrasound_of_the_Week_2.webm" target="_blank" rel="noopener">Original clip →</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. Adaptation: H.264 transcode, metadata removed and poster extracted.</p></details>
+        </figcaption>
+      </figure>
     </div></div>
   </div>
 </section>
@@ -878,11 +939,11 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div class="formula">Collapsibility index = (Dmax − Dmin) / Dmax</div>
       <div class="card"><div class="cap">Fluid responsiveness: stroke volume rises by about 10–15% after a fluid challenge</div>
         <ul><li><b class="ink">Mechanically ventilated, fully passive</b>: the IVC <i>distends</i> with each positive-pressure breath. Distensibility index (Dmax − Dmin)/Dmin <b class="ink">&gt;18%</b> predicted response (Barbier 2004). ΔIVC (Dmax − Dmin)/mean <b class="ink">&gt;12%</b> predicted response (Feissel 2004). Overall accuracy of IVC variation is only moderate (meta-analysis in ventilated shocked patients: pooled sensitivity 69%, specificity 80%, AUROC 0.82; Huang 2018); use it as one input, not a test.</li>
-        <li>Valid only with no spontaneous breathing effort, tidal volume about ≥8 mL/kg and no raised intra-abdominal pressure; a regular rhythm helps.</li>
+        <li>Valid only with no spontaneous breathing effort, tidal volume about ≥8 mL/kg predicted body weight in the original studies and no raised intra-abdominal pressure; a regular rhythm helps. Do not increase tidal volume solely to make this test applicable.</li>
         <li><b class="ink">Spontaneously breathing</b>: much weaker. A large collapse (e.g. ≥40–50%) makes response likely, but a small collapse does not rule it out (high specificity, low sensitivity; Airapetian 2015). Breathing effort varies breath to breath.</li></ul></div>
       <div class="card"><div class="cap">The useful extremes</div>
-        <ul><li>A small (&lt;1 cm), nearly fully collapsing IVC: fluid is likely to be tolerated, and a response is more likely. Confirm with PLR/VTI where possible; forceful inspiration and off-centre cuts can fake collapse.</li>
-        <li>A plethoric (&gt;2.1–2.5 cm), fixed IVC: fluid is unlikely to help. Look for the reason (RV failure, tamponade, tension pneumothorax, severe TR, fluid overload).</li>
+        <ul><li>A small, collapsing IVC may support low right-sided filling pressure. It does not establish hypovolaemia, fluid responsiveness or fluid tolerance; assess the heart, lungs and response to a reversible preload test.</li>
+        <li>A plethoric, minimally varying IVC raises concern for elevated right-sided pressure. Seek the cause (RV failure, obstruction, TR, positive-pressure ventilation or congestion); it cannot by itself determine whether fluid will help.</li>
         <li>The middle ground is uninformative. Use a passive leg raise with VTI (next slide).</li></ul></div>
       <div class="card"><div class="cap">Caveats</div>
         <p>Raised intra-abdominal pressure compresses the IVC. RV failure, TR or tamponade distend it whatever the volume status. High PEEP dilates it. Forceful breathing exaggerates collapse. The cylinder effect and translational movement fake collapse. Athletes can have a large IVC. <b class="ink">Being fluid-responsive is not a reason to give fluid.</b> It must also be needed and safe.</p></div>
@@ -906,7 +967,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div id="s7Chk" class="ctrls" hidden>
         <span style="width:100%">Validity checklist (passive ventilation):</span>
         <label class="tgl"><input type="checkbox" checked data-c="0"> No spontaneous effort</label>
-        <label class="tgl"><input type="checkbox" checked data-c="1"> Vt ≥8 mL/kg</label>
+        <label class="tgl"><input type="checkbox" checked data-c="1"> Vt ≥8 mL/kg predicted body weight</label>
         <label class="tgl"><input type="checkbox" checked data-c="2"> No intra-abdominal hypertension</label>
         <label class="tgl"><input type="checkbox" checked data-c="3"> Regular rhythm</label>
       </div>
@@ -923,29 +984,29 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div class="kicker">14 · Brief advanced: LVOT VTI and PLR</div>
       <h2>Measure stroke volume, give a fluid challenge with no fluid, measure again.</h2>
       <div class="card"><div class="cap">LVOT VTI (velocity–time integral)</div>
-        <ul><li>Take an apical 5-chamber view (tilt anteriorly from A4C). Place the pulsed-wave Doppler gate in the LVOT about 0.5 cm below the aortic valve, aligned with flow. Trace the envelope.</li>
+        <ul><li>Take an apical 5-chamber view (tilt anteriorly from A4C). Place the pulsed-wave gate in laminar LVOT flow just proximal to the aortic valve, aligned with flow. Avoid the valve acceleration zone and trace the dense modal envelope, excluding faint spectral noise. Average representative beats.</li>
         <li>VTI is the 'stroke distance' (cm). Stroke volume = VTI × LVOT area (π × (LVOT diameter/2)²).</li>
-        <li>A typical normal value is about <b class="ink">18–22 cm</b>. Values well below about 10 cm signal a very low stroke volume.</li>
+        <li>VTI is a distance, not a volume. Interpret it with LVOT area and heart rate; a low VTI suggests low stroke volume only in the relevant geometry. Significant aortic regurgitation can make systolic LVOT flow exceed net systemic flow.</li>
         <li>Use trends in VTI. Keep the same gate position and angle for repeat measurements.</li></ul></div>
       <div class="card"><div class="cap">Passive leg raise (PLR)</div>
         <ul><li>Start semi-recumbent at 45°. Lower the trunk flat and raise the legs to 45° in one movement. This returns about 300 mL of venous blood, reversibly.</li>
-        <li>Measure VTI (or cardiac output) at baseline and at 30–90 s.</li>
+        <li>Capture the maximum flow change promptly, usually within about a minute; the response can fade. Return to the original position and confirm recovery towards baseline.</li>
         <li><b class="ink">A rise of ≥10%</b> predicts fluid responsiveness. Pooled sensitivity 85%, specificity 91%, AUROC 0.95 for cardiac output changes (Monnet 2016 meta-analysis). In spontaneously breathing patients, a PLR-induced rise in stroke volume (from LVOT VTI) ≥12.5% predicted response: sensitivity 77%, specificity 100% (Lamia 2007).</li>
         <li>Measure <b class="ink">flow</b>, not blood pressure: pulse pressure changes after PLR are much less sensitive.</li>
-        <li>Pitfalls: pain, coughing or waking increase sympathetic tone and give a false positive. Raised intra-abdominal pressure gives a false negative. Not suitable with raised ICP or with unstable spine or leg fractures. Start from semi-recumbent: starting supine recruits less volume.</li></ul></div>
-      <div class="callout">If the VTI rises with PLR, and fluid is needed and safe, give a bolus and remeasure.</div>
+        <li>Pitfalls: pain, coughing or waking increase sympathetic tone and give a false positive. Raised intra-abdominal pressure can give a false negative. Not suitable with raised ICP or with unstable spine or leg fractures. Start from semi-recumbent: starting supine recruits less volume.</li></ul></div>
+      <div class="callout">If flow rises reproducibly with PLR, fluid may help only when there is an indication and acceptable risk. <a href="../haemodynamics/">Practise acquisition, measurement error and fluid decisions →</a></div>
     </div>
     <div class="demo"><div class="panel">
       <div class="cap">Sim 8 · VTI and PLR</div>
       <div class="grid-us">
         <div><div class="pov">A5C · PW gate in the LVOT</div><div class="scanner"><canvas id="s8US" class="us"></canvas></div></div>
-        <div><div class="pov">Posture · <span id="s8Timer">0 s</span></div><div class="svgbox plrbox" id="s8Plr"></div><div class="ctrls" style="margin-top:6px"><button class="btn" id="s8Do">Do PLR</button><button class="btn ghost" id="s8Reset">Reset</button></div></div>
+        <div><div class="pov">Posture · <span id="s8Timer">0 s</span></div><div class="svgbox plrbox" id="s8Plr"></div><div class="ctrls" style="margin-top:6px"><button class="btn" id="s8Do">Do PLR</button><button class="btn ghost" id="s8Reset">Return to baseline</button></div></div>
       </div>
       <div class="pov">Pulsed-wave Doppler · LVOT</div>
       <canvas id="s8PW" class="mstrip"></canvas>
       <div class="seg" id="s8Sc" role="group" aria-label="Scenario" style="margin-top:10px"><button data-v="0" aria-pressed="true">Responder</button><button data-v="1" aria-pressed="false">Non-responder</button><button data-v="2" aria-pressed="false">Borderline</button><button data-v="3" aria-pressed="false">False positive: pain</button><button data-v="4" aria-pressed="false">Free entry</button></div>
       <div class="ctrls calc">
-        <label>LVOT diameter <input type="range" id="s8D" min="1.8" max="2.4" step="0.05" value="2.0" aria-label="LVOT diameter, cm"><output id="s8Do"></output></label>
+        <label>LVOT diameter <input type="range" id="s8D" min="1.8" max="2.4" step="0.05" value="2.0" aria-label="LVOT diameter, cm"><output id="s8DiameterOut"></output></label>
         <label>HR <input type="range" id="s8HR" min="50" max="130" step="1" value="90" aria-label="Heart rate"><output id="s8HRo"></output></label>
         <span id="s8Free" hidden><label>Baseline VTI <input type="number" id="s8B" min="3" max="40" step="0.5" value="15"> cm</label> <label>Post-PLR VTI <input type="number" id="s8P" min="3" max="40" step="0.5" value="17"> cm</label></span>
         <button class="btn ghost mot">❚❚ Pause motion</button>
@@ -976,7 +1037,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <div class="formula">Portal pulsatility fraction = (Vmax − Vmin) / Vmax × 100</div></div>
       <div class="card"><div class="cap">The grade</div>
         <div class="tw"><table class="t sm t2" id="vxG"><tbody>
-          <tr><td>Grade 0</td><td>IVC &lt;2 cm: no significant congestion (Doppler not needed for the grade)</td></tr>
+          <tr><td>Grade 0</td><td>IVC &lt;2 cm: no congestion by this grading scheme (Doppler not needed for the grade)</td></tr>
           <tr><td>Grade 1</td><td>IVC ≥2 cm with normal and/or mildly abnormal patterns only: mild</td></tr>
           <tr><td>Grade 2</td><td>IVC ≥2 cm with <b class="ink">one</b> severely abnormal pattern: moderate</td></tr>
           <tr><td>Grade 3</td><td>IVC ≥2 cm with <b class="ink">two or more</b> severely abnormal patterns: severe</td></tr>
@@ -1035,7 +1096,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
           <rect class="bx q" x="110" y="6" width="140" height="40" rx="8"/><text class="h" x="180" y="31" text-anchor="middle">IVC diameter</text>
           <path d="M150 46 L80 82" marker-end="url(#vxAh)"/><path d="M210 46 L262 82" marker-end="url(#vxAh)"/>
           <text class="s" x="92" y="64">&lt;2 cm</text><text class="s" x="244" y="64">≥2 cm</text>
-          <rect class="bx lo" x="6" y="84" width="140" height="50" rx="8"/><text x="76" y="105" text-anchor="middle">Grade 0</text><text class="s" x="76" y="123" text-anchor="middle">no congestion</text>
+          <rect class="bx lo" x="6" y="84" width="140" height="50" rx="8"/><text x="76" y="105" text-anchor="middle">Grade 0</text><text class="s" x="76" y="123" text-anchor="middle">IVC criterion absent</text>
           <rect class="bx q" x="176" y="84" width="178" height="68" rx="8"/><text x="265" y="103" text-anchor="middle">Doppler × 3</text><text class="s" x="265" y="120" text-anchor="middle">hepatic · portal · renal</text><text class="s" x="265" y="138" text-anchor="middle">count SEVERE patterns</text>
           <path d="M210 152 L66 196" marker-end="url(#vxAh)"/><path d="M265 152 L180 196" marker-end="url(#vxAh)"/><path d="M320 152 L298 196" marker-end="url(#vxAh)"/>
           <text class="s" x="104" y="172">none</text><text class="s" x="248" y="170">one</text><text class="s" x="316" y="182">≥2</text>
@@ -1053,7 +1114,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <li><b class="ink">Meta-analysis</b> (9 observational studies, 1036 patients): VExUS ≥2 associated with AKI, OR 2.63 (1.06–6.54) with high heterogeneity; strongest after cardiac surgery (OR 3.86). No association with mortality (Melo 2025).</li>
         <li><b class="ink">Physiology</b>: grade correlated with right atrial pressure at catheterisation, better than IVC size alone (pilot study; Longino 2023).</li>
         <li><b class="ink">Guiding treatment</b>: in cardiorenal syndrome type 1 (RCT, 140 patients), VExUS-guided diuresis achieved decongestion more often, but kidney function recovery and 90-day survival did not differ (Islas-Rodríguez 2024). No trial yet shows better hard outcomes.</li></ul></div>
-      <div class="callout"><b class="ink">Grade 2–3</b> (expert consensus, not trial evidence): stop routine fluid boluses and find the cause on the echo (RV failure, PE, tamponade, tension pneumothorax, severe TR, high PEEP, fluid overload). Treat obstruction directly: drain tamponade, decompress a pneumothorax, reperfuse PE. Consider decongestion (diuretic or ultrafiltration) only when the cause is volume overload or RV/cardiorenal congestion, with perfusion pressure supported, then rescan: the waveforms improve as RAP falls. <b class="ink">Grade 0</b> does not mean fluid will help: that is the PLR question.</div>
+      <div class="callout"><b class="ink">Grade 2–3</b>: reassess further fluid and identify the cause; the score alone is not a universal stop rule or an indication for diuresis. Integrate perfusion, lung findings and the echo (RV failure, PE, tamponade, tension pneumothorax, severe TR, high PEEP, fluid overload). Treat obstruction directly: drain tamponade, decompress a pneumothorax, reperfuse PE. Consider decongestion (diuretic or ultrafiltration) only when the cause is volume overload or RV/cardiorenal congestion, with perfusion pressure supported, then rescan: the waveforms improve as RAP falls. <b class="ink">Grade 0</b> does not mean fluid will help: that is the PLR question.</div>
     </div>
   </div>
 </section>
@@ -1100,7 +1161,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <h1>Five shocked patients.</h1>
       <p class="big-quote" style="font-style:normal">For each patient: read the story, then reveal the 4A steps one at a time. Commit to an answer before each reveal.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Ask · Acquire · Assess · Act</p>
-      <p class="mini" style="max-width:56ch">Workshop stations: Simulation (cardiac/lung pathology) and POCUS scenarios. Clinical details are teaching vignettes; all images are schematic simulations.</p>
+      <p class="mini" style="max-width:56ch">Workshop stations: Simulation (cardiac/lung pathology) and POCUS scenarios. Clinical details are teaching vignettes; the case images are schematic simulations.</p>
     </div>
     <div><div class="caseGrid" id="caseGrid"></div></div>
   </div>
@@ -1117,7 +1178,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
 <section class="slide" data-min="5" data-title="Quick check" data-prompt="Do these as a room. For any question below 70% correct, return to the related sim for one minute.">
   <div class="inner">
     <div class="kicker">Quick check</div>
-    <h2>Thirteen questions before we finish.</h2>
+    <h2>Check your understanding.</h2>
     <p class="lede">Tap an answer. The explanation appears straight away. <span id="qzScore" class="num"></span></p>
     <div class="qz two even" id="quiz"></div>
   </div>
@@ -1133,11 +1194,11 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <ol class="lst">
         <li>Ask a question you can answer. Get two views. Answer yes / no / can't tell.</li>
         <li>Start deep, use the cardiac preset, and keep the marker convention consistent.</li>
-        <li>Eyeball the LV in two views. Back it up with EPSS and fractional shortening, and judge thickening rather than motion.</li>
-        <li>A big, D-shaped RV in shock: think PE and stop the fluid.</li>
+        <li>Judge LV thickening in multiple views. EF is a fraction, not cardiac output; EPSS and fractional shortening have important limits.</li>
+        <li>A dilated RV with septal flattening has several causes. Consider PE, other pressure overload and volume overload; avoid reflex fluid boluses.</li>
         <li>The descending aorta separates pericardial from pleural fluid. RA collapse is sensitive and RV collapse is specific; tamponade is clinical.</li>
-        <li>The IVC is best at the extremes. Use PLR with VTI for the middle ground.</li>
-        <li>Responsive is not the same as tolerant. VExUS grade 2–3 means stop the fluid and look for the cause.</li>
+        <li>The IVC informs right-sided pressure. Use a valid flow-based dynamic test when fluid responsiveness matters.</li>
+        <li>Responsiveness does not establish fluid need or tolerance. VExUS adds congestion information; interpret it with perfusion and the cause.</li>
         <li>FoCUS recognises red flags; formal echo grades them.</li>
       </ol>
       <p style="color:var(--ink2);font-size:15.5px"><b class="ink">Next</b>: aim for a logged, supervised scan series. The WINFOCUS/ASE recommendations suggest a structured programme with logged scans and supervision before independent practice. Log your next five scans this week.</p>
@@ -1145,7 +1206,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
     </div>
     <div>
       <div class="grid2"><div><div class="pov">Schematic · subcostal 4C</div><div class="scanner"><canvas id="endA" class="us"></canvas></div></div><div><div class="pov">Schematic · PSAX</div><div class="scanner"><canvas id="endB" class="us"></canvas></div></div></div>
-      <p class="mini">All images on this page are schematic simulations, not real scans. Key references are on the next slide.</p>
+      <p class="mini">Schematic simulations and real cines are labelled separately. Real clips retain source and licence credits. Key references follow.</p>
     </div>
   </div>
 </section>
@@ -1187,6 +1248,10 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <li>Islas-Rodríguez JP, et al. Effect on kidney function recovery guiding decongestion with VExUS in patients with cardiorenal syndrome 1: a randomized control trial. <i>Cardiorenal Med</i>. 2024;14(1):1–11. <a href="https://doi.org/10.1159/000535641" target="_blank" rel="noopener">doi:10.1159/000535641</a></li>
         <li>Melo RH, Gioli-Pereira L, Melo E, Rola P. Venous excess ultrasound score association with acute kidney injury in critically ill patients: a systematic review and meta-analysis of observational studies. <i>Ultrasound J</i>. 2025;17:16. <a href="https://doi.org/10.1186/s13089-025-00413-9" target="_blank" rel="noopener">doi:10.1186/s13089-025-00413-9</a></li>
         <li>Song J, Chen G, Lai D, et al. Association between the Venous Excess Ultrasound (VExUS) score and acute kidney injury in critically ill patients with sepsis: a multicenter prospective observational study. <i>Ann Intensive Care</i>. 2025;15. <a href="https://doi.org/10.1186/s13613-025-01529-w" target="_blank" rel="noopener">doi:10.1186/s13613-025-01529-w</a></li>
+        <li>Zoghbi WA, Adams D, Bonow RO, et al. Recommendations for noninvasive evaluation of native valvular regurgitation. <i>J Am Soc Echocardiogr</i>. 2017;30:303–371. <a href="https://www.asecho.org/wp-content/uploads/2017/04/2017VavularRegurgitationGuideline.pdf" target="_blank" rel="noopener">Read the guideline →</a></li>
+        <li>Nicoara A, Skubas N, Ad N, et al. Guidelines for the use of transesophageal echocardiography to assist with surgical decision-making in the operating room: a surgery-based approach. <i>J Am Soc Echocardiogr</i>. 2020;33:692–734. <a href="https://www.asecho.org/wp-content/uploads/2020/06/TEE-Surgical-Decision-Making_June2020.pdf" target="_blank" rel="noopener">Read the guideline →</a></li>
+        <li>Mitchell C, Rahko PS, Blauwet LA, et al. Guidelines for performing a comprehensive transthoracic echocardiographic examination in adults. <i>J Am Soc Echocardiogr</i>. 2019;32:1–64. <a href="https://www.asecho.org/wp-content/uploads/2025/07/Guidelines-for-Performing-a-Comprehensive-Transthoracic-Echocardiographic-Examination-in-Adults.pdf" target="_blank" rel="noopener">Read the guideline →</a></li>
+        <li>Monnet X, Teboul JL. Passive leg raising: five rules, not a drop of fluid! <i>Crit Care</i>. 2015;19:18. <a href="https://doi.org/10.1186/s13054-014-0708-5" target="_blank" rel="noopener">Read the methodology →</a></li>
         <li>Perera P, Mailhot T, Riley D, Mandavia D. The RUSH exam: Rapid Ultrasound in SHock in the evaluation of the critically ill. <i>Emerg Med Clin North Am</i>. 2010;28(1):29–56. <a href="https://doi.org/10.1016/j.emc.2009.09.010" target="_blank" rel="noopener">doi:10.1016/j.emc.2009.09.010</a></li>
       </ol>
       <p class="mini">Simulations are purpose-built schematic teaching models, not diagnostic images. Anatomy, echogenicity, timing and thresholds are simplified. Check thresholds against current guidelines and local protocols.</p>
@@ -1201,7 +1266,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
 <nav class="bar" aria-label="Slide controls"><div class="course-bar-inner">
   <div class="prog" id="prog"></div><div class="pace" id="pace" title="Where you should be at this point"></div>
   <button id="prevB" aria-label="Previous section">← Previous</button>
-  <span id="cnt">1 / 30</span>
+  <span id="cnt">1 / 31</span>
   <button id="nextB" aria-label="Next section">Next →</button>
   <span class="q">Five views, five questions. Get the picture, then judge the pump.</span>
   <div class="timer"><span class="sl" id="slT" title="Time on this slide / suggested">0:00</span><span class="el" id="elT" title="Elapsed">0:00</span><span class="sl" id="totT">/ 0:00</span><button id="tmB" title="Pause / resume timer (P)">❚❚</button><button id="tmR" title="Reset timer">↺</button></div>
@@ -1680,6 +1745,7 @@ let CUR_SLIDE = null;
 function scene(el, def) { if (!el) return; REG.push({ slide: el.closest('.slide'), el, inited: false, ...def }); }
 let _last = performance.now();
 function tick(now) {
+  if (document.hidden || document.getElementById('overview')?.classList.contains('show')) { _last = now; requestAnimationFrame(tick); return; }
   const dt = clamp((now - _last) / 1000, 0, .1); _last = now;
   for (const s of REG) {
     if (s.slide !== CUR_SLIDE) continue;
@@ -1773,10 +1839,7 @@ $('#prevB').onclick = () => go(cur - 1); $('#nextB').onclick = () => go(cur + 1)
 $('#tmB').onclick = () => { running = !running; updTimer(); };
 $('#tmR').onclick = () => { elapsed = 0; slideStart = 0; running = false; updTimer(); };
 $('#fsB').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
-function toggleTheme() {
-  const r = document.documentElement, dark = getComputedStyle(r).getPropertyValue('--bg').trim().toLowerCase() === '#1b1814';
-  r.dataset.theme = dark ? 'light' : 'dark';
-}
+function toggleTheme() { document.documentElement.dataset.theme = 'light'; }
 $('#thB').onclick = toggleTheme;
 $('#ntB').onclick = () => $('#notes').hidden = !$('#notes').hidden;
 const ov = $('#overview');
@@ -2086,6 +2149,7 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
   $('#s4Num').onchange = e => { st.num = e.target.checked; apply(); };
   $('#s4MS').onchange = e => { st.ms = e.target.checked; apply(); };
   function newRound() {
+    st.lad = false; st.ms = false; $('#s4LAD').checked = false; $('#s4MS').checked = false;
     let k; do { k = Math.floor(Math.random() * 4); } while (k === st.last); st.last = k;
     st.chal = { k, done: false }; st.g = k; segSet('s4Grade', -1); apply();
     $('#s4Ans').hidden = false; $('#s4Ans').innerHTML = G.map((g, i) => `<button data-i="${i}">${g.n}</button>`).join('');
@@ -2127,7 +2191,7 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
     A4.S = HS(Object.assign({}, o, { depth: 17, labels: !hide, cal: !hide, calT: `RV:LV ${c.rvlv.toFixed(2)}`, title: 'A4C' }));
     PSx.S = HS(Object.assign({}, o, { depth: 14, labels: !hide, title: hide ? 'PSAX' : `PSAX · EI ${c.ei[0].toFixed(2)} (ED) / ${c.ei[1].toFixed(2)} (ES)` }));
     PSx.t = A4.t;
-    $('#s5Read').innerHTML = hide ? RO([['Numbers', 'hidden']]) : RO([['RV:LV', c.rvlv.toFixed(2), c.rvlv >= 1 ? 'bad' : c.rvlv >= .6 ? 'warn' : 'ok'], ['Eccentricity', `${c.ei[0].toFixed(2)} / ${c.ei[1].toFixed(2)}`], ['TAPSE', Math.round(c.tapse * 10) + ' mm', c.tapse < 1.7 ? 'bad' : 'ok'], ['RV wall', Math.round(c.rvwall * 10) + ' mm', c.rvwall > .5 ? 'warn' : '']]);
+    $('#s5Read').innerHTML = hide ? RO([['Numbers', 'hidden']]) : RO([['RV:LV', c.rvlv.toFixed(2), c.rvlv >= 1 ? 'warn' : ''], ['Eccentricity', `${c.ei[0].toFixed(2)} / ${c.ei[1].toFixed(2)}`], ['TAPSE', Math.round(c.tapse * 10) + ' mm', c.tapse <= 1.7 ? 'warn' : 'ok'], ['RV wall', Math.round(c.rvwall * 10) + ' mm', c.rvwall > .5 ? 'warn' : '']]);
     $('#s5Badges').innerHTML = hide ? '' : c.b.map(([t, k]) => `<span class="${k}">${t}</span>`).join('');
     if (!hide) setStat('s5Stat', `<b>${c.n}</b>: ${c.d}`);
   }
@@ -2199,7 +2263,7 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
   function apply() {
     const type = st.quiz ? st.quiz.type : st.type, size = st.quiz ? st.quiz.size : st.size, cm = size / 10;
     const peri = (type === 'peri' || type === 'both') ? cm : 0;
-    const canTamp = peri >= 1; $('#s6Tamp').disabled = !canTamp || !!st.quiz; if (!canTamp) $('#s6Tamp').checked = false;
+    const canTamp = peri > 0; $('#s6Tamp').disabled = !canTamp || !!st.quiz; if (!canTamp) $('#s6Tamp').checked = false;
     const tamp = canTamp && $('#s6Tamp').checked && !st.quiz;
     const S = { labels: !st.quiz, depth: st.tab === 'plax' ? 17 : 18, hr: tamp ? 110 : 80, title: st.tab === 'plax' ? 'PLAX' : 'Subcostal 4C',
       peri, pleu: (type === 'pleu' || type === 'both') ? Math.max(1.2, cm * 1.6) : 0, fat: type === 'fat' ? clamp(cm, .3, 1.2) : 0, tamp: tamp ? 1 : 0, swing: tamp && peri >= 2 ? 1 : 0 };
@@ -2213,10 +2277,10 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
     else if (type === 'peri') s = 'Pericardial: a black crescent wrapping the heart, <b>anterior to the descending aorta</b>, tapering at the AV groove.';
     else if (type === 'pleu') s = 'Left pleural: black fluid <b>posterior to the descending aorta</b>, extending beyond the heart, with a floating tongue of lung.';
     else if (type === 'both') s = 'Both: pericardial fluid in front of the descending aorta, pleural fluid behind it. The aorta sits between them.';
-    else s = 'Epicardial fat: a grey, speckled band <b>anterior only</b>, moving with the RV. Nothing posteriorly.';
+    else s = 'Epicardial fat: a grey, speckled band <b>anterior in this example</b>, moving with the RV. Assess texture and other views; location alone is insufficient.';
     if (st.tab === 'sc' && (type === 'pleu' || type === 'fat')) s += ' <span class="warn">The subcostal view does not show a left pleural effusion well: use PLAX.</span>';
-    if (tamp) s += '<br><span class="bad">Tamponade physiology</span>: the RA wall inverts from end-diastole into early systole for about 40% of the cycle (more than one-third: specific); the RV free wall buckles in early diastole; IVC plethoric.' + (S.swing ? ' The heart swings (electrical alternans).' : '');
-    else if (peri >= 1) s += ' Tick "Tamponade physiology" to see chamber collapse.';
+    if (tamp) s += '<br><span class="bad">Tamponade physiology</span>: the RA wall inverts from end-diastole into early systole for about 40% of the cycle (more than one-third: specific); the RV free wall buckles in early diastole; IVC plethoric.' + (S.swing ? ' The heart swings (electrical alternans).' : '') + (peri < 1 ? ' Even this small collection can cause tamponade when accumulation is rapid or localised.' : '');
+    else if (peri > 0) s += ' Tick "Tamponade physiology" to compare the same effusion with chamber collapse. Size alone does not predict pressure.';
     setStat('s6Stat', s);
   }
   function drawECG(R) {
@@ -2295,7 +2359,7 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
       $$('#rapT tbody tr')[row].classList.add('on');
       items.push(['Collapsibility', Math.round(ci * 100) + '%'], ['Est. RAP', RAP]);
       s = `Spontaneous breathing: the IVC <b>narrows</b> in inspiration. Collapsibility ${Math.round(ci * 100)}% → estimated RAP ${RAP}.` + (I.mode === 'quiet' ? ' (ASE uses the collapse with a sniff.)' : '') + ' <span class="warn">IVC variation predicts fluid responsiveness only weakly here.</span>';
-      if (mx < 1 && ci > .5) s += ' <span class="ok">Small and collapsing: fluid likely tolerated.</span>';
+      if (mx < 1 && ci > .5) s += ' <span class="warn">Small and collapsing: low right-sided pressure is possible; fluid tolerance is not established.</span>';
       if (mx > 2.1 && ci < .5) s += ' <span class="bad">Plethoric and fixed: look for the reason.</span>';
     } else {
       items.push(['Distensibility', Math.round(di * 100) + '%'], ['ΔIVC', Math.round(dl * 100) + '%']);
@@ -2321,10 +2385,10 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
    ===================================================================== */
 (function sim8() {
   const SC = [[14, 17], [19, 19.5], [15, 16.5], [15, 17]];
-  const st = { k: 0, d: 2.0, hr: 90, B: 14, P: 17, plr: null };
+  const st = { k: 0, d: 2.0, hr: 90, B: 14, P: 17, plr: null, valid: true };
   const R = scope($('#s8US'), { view: vA4C, S: { five: 1, fiveGate: 1, labels: true, depth: 17, title: 'A5C' }, post: draw });
   const cv = $('#s8PW'), dpr = Math.min(2, window.devicePixelRatio || 1), W = 560, H = 160; cv.width = W * dpr; cv.height = H * dpr; const g = cv.getContext('2d');
-  const simT = () => st.plr ? Math.min(90, (performance.now() - st.plr) / 1000 * 10) : 0;
+  const simT = () => st.plr !== null ? Math.min(90, (R.t - st.plr) * 10) : 0;
   const frac = () => smooth((simT() - 10) / 30);
   const vti = () => lerp(st.B, st.P, frac()), hrNow = () => st.hr + (st.k === 3 ? 15 * frac() : 0);
   function posture() {
@@ -2356,12 +2420,14 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
     if (st.plr) { posture(); out(); }
   }
   function out() {
+    $('#s8Do').disabled = !st.valid;
+    if (!st.valid) { $('#s8Read').innerHTML = ''; setStat('s8Stat', 'Enter both VTI values between 3 and 40 cm for this teaching model. No result is calculated from a blank or out-of-range entry.'); return; }
     const area = Math.PI * (st.d / 2) ** 2, svB = st.B * area, done = simT() >= 60, svP = st.P * area, ch = (st.P - st.B) / st.B * 100;
     const items = [['LVOT area', fixed(area, 2) + ' cm²'], ['Baseline VTI', fixed(st.B, 1) + ' cm'], ['SV baseline', Math.round(svB) + ' mL'], ['CO baseline', fixed(svB * st.hr / 1000, 1) + ' L/min']];
     if (done) items.push(['Post-PLR VTI', fixed(st.P, 1) + ' cm'], ['SV post', Math.round(svP) + ' mL'], ['Change', (ch >= 0 ? '+' : '') + Math.round(ch) + '%', ch >= 10 ? 'ok' : 'warn']);
     $('#s8Read').innerHTML = RO(items);
     let s;
-    if (!st.plr) s = 'Baseline recorded. Press <b>Do PLR</b>: trunk flat and legs up in one movement, then read the VTI at 30–90 s.';
+    if (!st.plr) s = 'Baseline recorded. Press <b>Do PLR</b>: trunk flat and legs up in one movement, capture the peak response within about a minute, then return to baseline.';
     else if (!done) s = `PLR in progress: ${Math.round(simT())} s. The effect peaks within about a minute.`;
     else {
       s = ch >= 10 ? `<b class="ok">≥10%: likely fluid-responsive</b> (${fixed(st.B, 1)} → ${fixed(st.P, 1)} cm, ${ch >= 0 ? '+' : ''}${Math.round(ch)}%). Give fluid only if it is needed and safe.` : `<b class="warn">&lt;10%: unlikely to be fluid-responsive</b> (${fixed(st.B, 1)} → ${fixed(st.P, 1)} cm, ${ch >= 0 ? '+' : ''}${Math.round(ch)}%).`;
@@ -2371,11 +2437,16 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
     setStat('s8Stat', s);
   }
   function reset() { st.plr = null; posture(); out(); }
-  seg('s8Sc', d => { st.k = +d.v; $('#s8Free').hidden = st.k !== 4; if (st.k < 4) { st.B = SC[st.k][0]; st.P = SC[st.k][1]; } else { st.B = +$('#s8B').value || 15; st.P = +$('#s8P').value || 15; } reset(); });
-  rng('s8D', 's8Do', v => fixed(v, 2) + ' cm', v => { st.d = v; out(); });
+  function readFree() {
+    const b = $('#s8B'), p = $('#s8P');
+    st.valid = b.value !== '' && p.value !== '' && b.validity.valid && p.validity.valid;
+    if (st.valid) { st.B = Number(b.value); st.P = Number(p.value); }
+  }
+  seg('s8Sc', d => { st.k = +d.v; $('#s8Free').hidden = st.k !== 4; st.valid = true; if (st.k < 4) { st.B = SC[st.k][0]; st.P = SC[st.k][1]; } else readFree(); reset(); });
+  rng('s8D', 's8DiameterOut', v => fixed(v, 2) + ' cm', v => { st.d = v; out(); });
   rng('s8HR', 's8HRo', v => v + ' bpm', v => { st.hr = v; out(); });
-  ['s8B', 's8P'].forEach(id => $('#' + id).addEventListener('input', () => { st.B = clamp(+$('#s8B').value || 15, 3, 40); st.P = clamp(+$('#s8P').value || 15, 3, 40); out(); }));
-  $('#s8Do').onclick = () => { st.plr = performance.now() - (RM ? 9000 : 0); };
+  ['s8B', 's8P'].forEach(id => $('#' + id).addEventListener('input', () => { readFree(); reset(); }));
+  $('#s8Do').onclick = () => { st.plr = R.t - (RM ? 6 : 0); posture(); out(); };
   $('#s8Reset').onclick = reset;
   reset();
 })();
@@ -2444,7 +2515,7 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
     const sev = [s.hv, s.pv, s.rv].filter(v => v === 2).length;
     return sev === 0 ? 1 : sev === 1 ? 2 : 3;
   }
-  const GN = ['Grade 0 · no significant congestion', 'Grade 1 · mild congestion', 'Grade 2 · moderate congestion', 'Grade 3 · severe congestion'];
+  const GN = ['Grade 0 · no congestion by this grading scheme', 'Grade 1 · mild congestion', 'Grade 2 · moderate congestion', 'Grade 3 · severe congestion'];
   function explain(s) {
     const g = grade(s), sev = ['hv', 'pv', 'rv'].filter(k => s[k] === 2), mild = ['hv', 'pv', 'rv'].filter(k => s[k] === 1);
     const VN = { hv: 'hepatic S reversal', pv: 'portal pulsatility ≥50%', rv: 'monophasic intrarenal flow' };
@@ -2458,7 +2529,7 @@ viewSlide('vRF', 'vRFt', 'vRFc', [
     } else {
       t = `Dilated IVC with ${sev.length === 1 ? 'one severe pattern' : sev.length + ' severe patterns'}: ${sev.map(k => VN[k]).join(', ')}.`;
       t += g === 3 ? ' This was the pattern most strongly linked to AKI after cardiac surgery (derivation cohort: cardiac surgery only; weaker or absent association in general ICU and sepsis cohorts).' : '';
-      t += ' Stop routine fluid and look for the cause on the echo. Treat obstruction directly (tamponade, pneumothorax, PE); if the cause is volume overload, consider decongestion. (Expert consensus, not trial evidence.)';
+      t += ' Reassess further fluid in context; the score alone does not mandate withholding all fluid or starting diuresis. Treat obstruction directly (tamponade, pneumothorax, PE); if the cause is volume overload, consider decongestion. (Expert consensus, not trial evidence.)';
     }
     return t;
   }
@@ -2516,9 +2587,9 @@ const CASES = [
     steps: [
       ['Is FoCUS indicated, and what is the question?', 'Yes. This is undifferentiated shock, and he may be too unstable for CT. In suspected high-risk PE, the absence of RV dysfunction makes PE unlikely as the cause of shock. If the RV is dilated and dysfunctional and CTPA is not immediately feasible, the ESC 2019 guideline accepts echocardiographic evidence to justify reperfusion therapy. In the 2026 AHA/ACC scheme, persistent hypotension makes this category E (cardiopulmonary failure), where advanced therapy (systemic thrombolysis, catheter-directed therapy or surgical embolectomy) is reasonable.'],
       ['Which views, in which order?', "He is too unstable to reposition, so start with subcostal 4C (no repositioning needed), then PSAX for the septum, A4C if possible, then the IVC. Then compression ultrasound of both legs (see <a href=\"../dvt/\">DVT</a>).", 0],
-      ['What do you see?', 'RV larger than LV (RV:LV about 1.2) with a thin free wall (4 mm), so this is acute. Septum flattened in systole and diastole (D-sign). Mid RV free wall akinetic with a moving apex (McConnell). TAPSE 11 mm. Small, underfilled, hyperdynamic LV. IVC 2.4 cm with minimal variation. No effusion. Left common femoral vein non-compressible.', 2],
+      ['What do you see?', 'RV larger than LV (RV:LV about 1.2) with a thin free wall (4 mm). This fits the acute presentation but wall thickness alone cannot date the process. Septum flattened in systole and diastole (D-sign). Mid RV free wall akinetic with a moving apex (McConnell). TAPSE 11 mm. Small, underfilled, hyperdynamic LV. IVC 2.4 cm with minimal variation. No effusion. Left common femoral vein non-compressible.', 2],
       ['What will you do?', 'High-risk PE. Give unfractionated heparin and noradrenaline to keep RV perfusion pressure. Avoid large fluid boluses: a dilated RV gets worse with volume. Major surgery in the previous 3 weeks is an <b>absolute</b> contraindication to systemic thrombolysis in ESC 2019, although ESC notes that absolute contraindications may become relative in immediately life-threatening high-risk PE. Call the PE response team / cardiothoracics early for catheter-directed therapy or surgical embolectomy. Consider systemic (possibly reduced-dose) thrombolysis as rescue only if he is peri-arrest and no alternative is available, after senior discussion and following the local protocol. If intubation becomes unavoidable, have the vasopressor running and use a minimal induction dose. Rescan after each intervention.', 1]
-    ], pearl: 'A big, D-shaped RV in a shocked patient means stop the fluid and think obstruction. A thin RV wall says this is acute.' },
+    ], pearl: 'A dilated RV with septal flattening in shock warrants urgent evaluation for obstruction and other causes. Avoid reflex boluses. Wall thickness is a clue to chronicity, not proof.' },
   { tag: 'Tamponade', kick: 'Breathless with cancer', short: 'Tamponade', title: 'Hypotensive, raised JVP, quiet heart sounds.',
     vignette: 'A 64-year-old woman with metastatic adenocarcinoma of the lung has had two weeks of worsening breathlessness.',
     facts: [['Patient', '64 F · metastatic adenocarcinoma of the lung'], ['Obs', 'BP 82/60 · HR 128 · raised JVP · quiet heart sounds · pulsus paradoxus 18 mmHg'], ['ECG', 'Low voltages with electrical alternans'], ['Chest X-ray', 'Large globular heart, small left pleural effusion']],
@@ -2578,7 +2649,7 @@ const CASES = [
       ['Is FoCUS indicated, and what is the question?', 'Why is she hypotensive, and is it something that changes your drugs? Severe aortic stenosis, dynamic LVOT obstruction, hypovolaemia or LV failure each need a different response.'],
       ['Which views, in which order?', 'With the patient supine and draped, get a subcostal 4C and IVC. Parasternal views if the anaesthetist can reach the chest. (Ideally this scan happens before induction.)', 0],
       ['What do you see?', 'A heavily calcified aortic valve that barely opens. Concentric LVH (septum about 15 mm) with a small, hyperdynamic cavity. No systolic anterior motion of the mitral valve. RV normal, no effusion. IVC 1.0 cm with marked variation on the ventilator.', 2],
-      ['What will you do?', 'Probable severe AS: a red flag, not a grade. Keep the SVR up with a phenylephrine or noradrenaline infusion. Avoid tachycardia and keep sinus rhythm. Give careful fluid to restore preload, as a hypertrophied LV needs filling. Warn the surgeon about cementing, as bone cement implantation syndrome is poorly tolerated with fixed outflow obstruction. If SAM were seen, stop any inotrope, give fluid and a vasoconstrictor, and slow the heart rate. Arrange a formal echo after surgery.', 3]
+      ['What will you do?', 'Probable severe AS: a red flag, not a grade. Keep the SVR up with a phenylephrine or noradrenaline infusion. Avoid tachycardia and keep sinus rhythm. Give careful fluid to restore preload, as a hypertrophied LV needs filling. Warn the surgeon about cementing, as bone cement implantation syndrome is poorly tolerated with fixed outflow obstruction. If SAM were seen, reduce inotropic drive, support afterload and obtain expert help. Give fluid only if underfilled and able to tolerate it; any rate control needs haemodynamic supervision. Arrange a formal echo after surgery.', 3]
     ], pearl: 'FoCUS sees a valve red flag; it does not grade the stenosis. Finding it changes your vasopressor, heart-rate and fluid plan.' }
 ];
 const CASE_ST = [];
@@ -2609,18 +2680,21 @@ $('#jumpCases').onclick = jumpToCases;
    QUIZ (options shuffled; the first listed option is the correct one)
    ===================================================================== */
 const QZ = [
+  ['A small LV has EDV 40 mL and EF 70%, with no regurgitation. What is the stroke volume?', ['28 mL; the high EF does not establish adequate output', '70 mL because EF is high', '40 mL because the ventricle empties completely', 'Cannot be low if the LV is hyperdynamic'], 'Total SV = EDV × EF = 40 × 0.70 = 28 mL. Cardiac output also depends on heart rate. Adequacy depends on the patient’s perfusion and demand.'],
+  ['A hypotensive patient after cardiac surgery has poor TTE windows and no large circumferential effusion. Best conclusion?', ['Localised tamponade remains possible; arrange urgent expert assessment, often TOE', 'Tamponade is excluded because there is no large effusion', 'A normal IVC would exclude tamponade', 'Wait for classic RA and RV collapse before escalating'], 'Postoperative fluid or clot may compress a single chamber. Limited TTE can miss it; absence of the classic signs is not an adequate exclusion. Escalation depends on clinical urgency, not collection size alone.'],
+
   ['Using the cardiac preset, where should the probe marker point for a parasternal long-axis view?', ["Patient's right shoulder (about 10 o'clock)", "Patient's left shoulder (about 2 o'clock)", "Patient's head (12 o'clock)", "Patient's left hip (about 4 o'clock)"], 'In the cardiac preset (screen marker on the right), PLAX is obtained with the marker towards the right shoulder. Rotating 90° clockwise to the left shoulder gives PSAX. With an abdominal preset you would need to rotate the probe 180°, which is why mixing presets causes mirrored images.'],
   ['In PLAX, an anechoic space lies posterior to the heart. Which finding indicates it is pericardial rather than pleural?', ['It is anterior to the descending thoracic aorta', 'It is posterior to the descending thoracic aorta', 'It contains a floating tongue of lung', "It extends well beyond the heart's posterior border"], "Pericardial fluid lies anterior to the descending aorta and usually tapers at the posterior AV groove; it rarely tracks far behind the LA (oblique sinus). Pleural fluid lies posterior to the aorta, extends beyond the heart and may contain collapsed lung."],
-  ['An E-point septal separation of 14 mm in a patient without valve disease most likely indicates:', ['Significantly reduced LV systolic function', 'Hyperdynamic LV', 'Normal LV function', 'Severe aortic stenosis'], 'EPSS >7 mm is abnormal. In McKaigney 2014 it was highly sensitive for LVEF ≤30%, though only about 52% specific. Mitral stenosis, aortic regurgitation and asymmetric septal hypertrophy give falsely large EPSS values.'],
+  ['An E-point septal separation of 14 mm in a patient without valve disease most likely indicates:', ['Significantly reduced LV systolic function', 'Hyperdynamic LV', 'Normal LV function', 'Severe aortic stenosis'], 'EPSS >7 mm is a screening clue, not an EF measurement. The small McKaigney study had wide confidence intervals and poor specificity. Valve disease, septal hypertrophy, off-axis imaging and regional dysfunction can invalidate interpretation.'],
   ['Which finding best suggests chronic rather than acute RV pressure overload?', ['RV free-wall thickness >5 mm', 'McConnell sign', 'RV:LV basal ratio of 1.1', 'Septal flattening in systole'], 'RV hypertrophy (free wall >5 mm) takes time to develop. An acutely overloaded RV is dilated but thin-walled. McConnell sign, RV dilatation and systolic septal flattening can occur in both acute and chronic overload.'],
-  ['On PSAX, the septum flattens only in diastole and is round in systole. This suggests:', ['RV volume overload', 'RV pressure overload', 'Cardiac tamponade', 'Normal finding'], 'Diastolic-only flattening is the volume-overload pattern (e.g. ASD, severe TR). Pressure overload (PE, pulmonary hypertension) flattens the septum in systole and diastole.'],
+  ['On PSAX, the septum flattens only in diastole and is round in systole. This suggests:', ['RV volume overload', 'RV pressure overload', 'Cardiac tamponade', 'Normal finding'], 'Diastolic-only flattening is the volume-overload pattern (e.g. ASD, severe TR). Pressure overload (PE, pulmonary hypertension) causes systolic flattening, which can persist into diastole. Confirm a true short-axis plane and consider mixed loading.'],
   ['Which echocardiographic sign of tamponade is the most specific?', ['RV diastolic collapse', 'Plethoric IVC with <50% variation', 'Any RA systolic inversion', 'Pericardial effusion >10 mm'], 'RV diastolic collapse is less sensitive but more specific. RA inversion is the earliest and most sensitive sign; it becomes more specific when it lasts more than one-third of the cycle. A plethoric IVC is very sensitive but poorly specific. Effusion size alone does not define tamponade.'],
   ['A 70 kg patient is fully passive on the ventilator with Vt 8 mL/kg and no intra-abdominal hypertension. The IVC measures 1.8 cm in expiration and 2.2 cm in inspiration. The distensibility index is:', ['22%, suggesting likely fluid responsiveness', '22%, suggesting fluid unresponsiveness', '18%, borderline', 'Cannot be calculated in a ventilated patient'], 'Distensibility = (Dmax − Dmin)/Dmin = (2.2 − 1.8)/1.8 = 22%. Barbier 2004 used >18% to predict a response, valid only in fully passive ventilation. Fluid responsiveness is not by itself a reason to give fluid.'],
   ['A spontaneously breathing patient has an IVC of 1.5 cm that collapses by more than 50% with a sniff. The estimated RA pressure is:', ['About 3 mmHg (0–5)', 'About 8 mmHg (5–10)', 'About 15 mmHg (10–20)', 'Cannot be estimated without Doppler'], 'ASE (2025 right heart guideline, unchanged from 2010): an IVC ≤2.1 cm that collapses >50% with a sniff gives RAP about 3 mmHg (range 0–5). An IVC >2.1 cm with <50% collapse gives about 15 mmHg. Other combinations are intermediate (about 8 mmHg).'],
   ['LVOT VTI is 15 cm at baseline and 17 cm 60 s after a correctly performed passive leg raise. The patient remained calm. Interpretation?', ['Likely fluid-responsive: about 13% rise', 'Not fluid-responsive: rise under 15%', 'Invalid: PLR must be read at 5 minutes', 'Invalid: VTI cannot be used for PLR'], '(17 − 15)/15 is about 13%. A PLR-induced rise in flow of 10% or more predicts fluid responsiveness (Monnet 2016: sensitivity 85%, specificity 91%). The effect peaks within about a minute. Pain or waking can cause false positives.'],
-  ['Your A4C shows a rounded, thick apex that appears to contract vigorously, and the LV looks short. The most likely problem and fix:', ['Foreshortening: slide laterally and/or down a rib space to the true apex', 'Over-gain: reduce gain', '5-chamber view: tilt posteriorly', 'Normal appearance: no change'], 'Foreshortening cuts through the LV above the true apex. It overestimates function, misses apical akinesis and distorts the RV:LV comparison. Move to the true apex until the LV is long and tapered.'],
-  ['A small, hyperdynamic, thick-walled LV with systolic anterior motion of the mitral valve is seen in a hypotensive patient on adrenaline. Best immediate response:', ['Stop the inotrope, give fluid and a pure vasoconstrictor, slow the heart rate', 'Increase adrenaline', 'Start dobutamine', 'Give a diuretic'], 'Dynamic LVOT obstruction with SAM gets worse with inotropes, tachycardia and underfilling. Treat with preload, afterload (e.g. phenylephrine) and rate control, and get a formal echo.'],
-  ['After cardiac surgery: IVC 2.4 cm, hepatic vein S wave reversed, portal pulsatility 35%, intrarenal venous flow discontinuous and biphasic. The VExUS grade is:', ['Grade 2 (one severe pattern)', 'Grade 1 (only one abnormal vein besides the IVC)', 'Grade 3 (three abnormal patterns)', 'Grade 0'], 'With an IVC ≥2 cm, only <i>severe</i> patterns raise the grade: none gives grade 1, one gives grade 2, two or more give grade 3 (Beaubien-Souligny 2020). Here only the hepatic S reversal is severe; portal 30–49% and biphasic intrarenal flow are mild. Grade 2: stop routine fluid and look for the cause.'],
+  ['Your A4C shows a rounded, thick apex that appears to contract vigorously, and the LV looks short. The most likely problem and fix:', ['Foreshortening: slide laterally and/or down a rib space to the true apex', 'Over-gain: reduce gain', '5-chamber view: tilt posteriorly', 'Normal appearance: no change'], 'Foreshortening cuts through the LV above the true apex. It underestimates LV volumes, can overestimate EF or miss apical akinesis, and distorts the RV:LV comparison. Move to the true apex until the LV is long and tapered.'],
+  ['A small, hyperdynamic, thick-walled LV with systolic anterior motion of the mitral valve is seen in a hypotensive patient on adrenaline. Best immediate response:', ['Reduce inotropic drive; support afterload and reassess preload with expert help', 'Increase adrenaline', 'Start dobutamine', 'Give a diuretic'], 'Dynamic LVOT obstruction with SAM gets worse with inotropes, tachycardia and underfilling. Reassess the inotrope, support afterload and seek expert echo. Give fluid only if underfilled and able to tolerate it; carefully selected rate control needs haemodynamic supervision.'],
+  ['After cardiac surgery: IVC 2.4 cm, hepatic vein S wave reversed, portal pulsatility 35%, intrarenal venous flow discontinuous and biphasic. The VExUS grade is:', ['Grade 2 (one severe pattern)', 'Grade 1 (only one abnormal vein besides the IVC)', 'Grade 3 (three abnormal patterns)', 'Grade 0'], 'With an IVC ≥2 cm, only <i>severe</i> patterns raise the grade: none gives grade 1, one gives grade 2, two or more give grade 3 (Beaubien-Souligny 2020). Here only the hepatic S reversal is severe; portal 30–49% and biphasic intrarenal flow are mild. Grade 2: reassess further fluid, perfusion and the cause. This score alone does not mandate diuresis.'],
   ['A fit, thin 22-year-old after a fall has an IVC of 1.2 cm that collapses with inspiration. Portal vein pulsatility is 55%. Best interpretation?', ['VExUS grade 0: portal pulsatility can be a normal variant in thin, healthy people', 'VExUS grade 2: stop fluids', 'VExUS grade 3: start a diuretic', 'Cannot be graded without intrarenal Doppler'], 'An IVC under 2 cm is grade 0 whatever the Doppler shows. Pulsatile portal flow without venous congestion is described in thin, healthy people. VExUS describes venous pressure, not whether fluid will help; that is the PLR question.']
 ];
 (function buildQuiz() {
