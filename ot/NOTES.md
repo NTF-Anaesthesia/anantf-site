@@ -5,12 +5,12 @@ Lasting decisions for `ot/`. Status and next steps: `STATUS.md`. The build brief
 ## Purpose and audience
 
 - A teaching simulator of an anaesthetic in the operating theatre: induce, maintain and wake a synthetic patient with a
-  general anaesthetic, watch a vitals monitor respond to what you do, and manage crisis scenarios (owner, 14 Oct 2026).
+  general anaesthetic, watch a vitals monitor respond to what you do, and manage crisis scenarios.
 - For anaesthesia residents and new MOs. It teaches recognition and first response; it is not a clinical tool and never
   gives advice for a real patient. Say so on the page.
 - One static site: no data, no sign-in, no storage beyond per-device settings. All patients are synthetic.
   Public repo: no real patient, case or hospital data, and no names.
-- Lives at `anantf.com/ot/` (this repo's folder `ot/`, GitHub Pages; moved from an earlier address on 16 Oct 2026, owner). Unlisted: `noindex`, never
+- Lives at `anantf.com/ot/` (this repo's folder `ot/`, GitHub Pages; moved from an earlier address on 16 Oct 2026). Unlisted: `noindex`, never
   linked from the homepage. Relative paths only.
 - Related: `bis/` (processed EEG; reuse its engine ideas, fonts and monitor look rather than redoing them).
 
@@ -30,7 +30,7 @@ Lasting decisions for `ot/`. Status and next steps: `STATUS.md`. The build brief
   source in code comments, with the spec and its sources in `MODEL.md` and `SCENARIOS.md` (published PK/PD models; the AAGBI/ANZCA/SAGES/Difficult Airway Society and
   resuscitation guideline pages; Miller; Morgan & Mikhail). Flag anything unsure for the owner's clinical read-through;
   the owner checks all clinical content before it is described as reviewed.
-- Singapore practice by default (owner is at NUH): units mmHg, kPa not used; temperatures °C; drugs by generic name;
+- Singapore practice by default (NUH-style): units mmHg, kPa not used; temperatures °C; drugs by generic name;
   Mallampati, ASA, Cormack-Lehane as taught here. Metric doses (mg, mcg).
 - Dark monitor, like the BIS page: near-black screens, standard colour coding (ECG green, SpO2 cyan, NIBP/ABP red/white,
   EtCO2 yellow/white, resp white, temperature). No standard sets monitor colours (APSF): agents follow the ISO 5360
@@ -104,7 +104,7 @@ CI and process:
 
 ## Decisions log
 
-- 15 Oct 2026 (owner): **pause new scenarios** (M4) for now; make what exists usable first. The resume queue is in
+- 15 Oct 2026: **pause new scenarios** (M4) for now; make what exists usable first. The resume queue is in
   `STATUS.md` "Next".
 - 15 Oct 2026 (M3.3, #628/#645/#650): alarms live in `monitor.js`, evaluated each step on the freshly computed
   displayed values: per-parameter limits (`ALARM_LIMITS`, defaults ours, tabled in `MODEL.md` §14), IEC 60601-1-8
@@ -265,7 +265,7 @@ CI and process:
   cycle timer. In browser tests, wipe and count a canvas inside one `page.evaluate`: Chrome can repaint a GPU canvas
   between evaluations.
 
-- 14 Oct 2026 (M0.1): the owner said go. Blood volume indexing starts above BMI 25 (not 22) so the default patient is
+- 14 Oct 2026 (M0.1): go-ahead given. Blood volume indexing starts above BMI 25 (not 22) so the default patient is
   4.9 L. `vitals.js` is a placeholder (steady values plus noise, beats and breaths) that later PRs replace system by
   system. `tools/test-ot.sh` runs every `test/*.test.mjs`, so new model tests need no wiring.
 

@@ -4,20 +4,20 @@ Lasting decisions for `babymo/` (anantf.com/babymo/, and mo.anantf.com/test/ sin
 
 ## Purpose
 
-**Audience (owner, 14 Oct 2026): the baby MOs of Ng Teng Fong General Hospital (NTFGH) anaesthesia.** Official
-department material, so it lives here and not with the owner's other apps (owner's decision, 14 Oct 2026). It has no
+**Audience: the baby MOs of Ng Teng Fong General Hospital (NTFGH) anaesthesia.** Official
+department material, so it lives here and not with other apps. It has no
 link to any rostering app.
 
 The department's MCQ test for new MOs (every few months a new group rotates in): the **Baby MO Test**, 20 questions
-(pass 80%, 20 minutes, one answer each, no negative marking) that used to be a Word paper. Later modules the owner has
-in mind (not built): CBD discussions, feedback. Keep the portal a set of small modules behind one sign-in.
+(pass 80%, 20 minutes, one answer each, no negative marking) that used to be a Word paper. Later modules
+(not built): CBD discussions, feedback. Keep the portal a set of small modules behind one sign-in.
 
-## Where the questions are (owner, 15 Oct 2026)
+## Where the questions are
 
 - The questions are **not in this app or in Firebase any more**. They live in the department's question bank,
   `qbank/bank/questions.json`, and the test is the paper `qbank/papers/babymo.json` (which questions, which are
   must-ask, count, pass mark, minutes, attempts, hard per sitting). Read `qbank/NOTES.md` for the format and how
-  questions change. Questions are public (owner's decision): don't put anything confidential in one.
+  questions change. Questions are public: don't put anything confidential in one.
 - **Nobody edits questions in this app.** Faculty open a question under **Paper** and tap **Suggest a change**, which
   opens the qbank app (`../qbank/#/q/<id>?suggest`); the owner approves every change. Don't add an editor back here.
 - This app only reads the two files (`js/app.js` `loadPaper()`, then `resolvePaper()` from `qbank/js/bank.js`, the
@@ -25,7 +25,7 @@ in mind (not built): CBD discussions, feedback. Keep the portal a set of small m
   Paper page as "Not given to MOs yet".
 - `qbank/` is owned by the question bank; don't edit it from Baby MO work.
 
-## Who uses it, and how they get in (owner, 14 Oct 2026)
+## Who uses it, and how they get in
 
 - **MOs**: name + one shared passphrase. No Google account. Behind the scenes Firebase *anonymous* sign-in plus a
   `sessions/{uid}` document that the rules only allow if the passphrase matches `config/access`. Changing the
@@ -107,10 +107,10 @@ The owner shares the link and the passphrase with each new group of MOs. Firebas
 `anantf.com` and `www.anantf.com` (`SETUP.md`). There is no deploy workflow: `firestore.rules` is pasted into the
 Firebase console by hand (`SETUP.md` step F), so tell the owner whenever that file changes.
 
-## Installable app (PWA) and updates (owner, 14 Oct 2026; safe updates 15 Oct 2026)
+## Installable app (PWA) and updates
 
 Installable from the browser menu (Android: "Install app"; iPhone: Share, Add to Home Screen) and opens with no signal.
-Built around what went wrong in the owner's other apps:
+Built around known problems with installed web apps:
 
 - **Safe updates.** A new version **waits** (no `skipWaiting` on install). The page tells it to take over only on a
   top-level screen (start page, or a faculty tab) with no test open, no sheet open, no field focused and nothing typed;
@@ -146,9 +146,9 @@ Built around what went wrong in the owner's other apps:
 
 - Live at anantf.com/babymo/ and mo.anantf.com/test/ (same files, #132; see `MO.md`) with the Firebase project `ntf-mo-portal`. Revamped phone app (#117) on the shared kit.
 - The paper has 30 ready questions, each with an explanation (#120, #121), so a sitting is the full 20.
-- Firestore rules: the old `questions`, `questions/*/history` and `config/topics` paths are closed (#123). The owner
-  pasted the rules and deleted the leftover question documents (15 Oct 2026).
-- Nothing waiting on the owner. Worth doing before the next intake: install on a real iPhone and Android phone and sit
+- Firestore rules: the old `questions`, `questions/*/history` and `config/topics` paths are closed (#123). The rules
+  were pasted and the leftover question documents deleted (15 Oct 2026).
+- Worth doing before the next intake: install on a real iPhone and Android phone and sit
   one test (only tested in phone-sized browsers so far).
 - Live Firebase/Cloudflare changes: ask the owner.
 - Ideas, not agreed: CBD discussions and feedback as further modules; per-MO history across cohorts.
@@ -157,17 +157,17 @@ Built around what went wrong in the owner's other apps:
 
 - 14 Oct 2026: first version, moved here from an earlier version (official department material). Questions were
   stored in Firestore and edited in the app by faculty (forms, paste from Word, spreadsheet round trip, backup,
-  history, conflict checks, topics, bulk changes, duplicate finder), because the owner wanted non-technical faculty to
+  history, conflict checks, topics, bulk changes, duplicate finder), so non-technical faculty could
   edit without AI.
 - 14 Oct 2026: two attempts per person per cohort, must-ask and hard questions, pass mark 80%; installable app with an
   outbox and the version line.
-- 15 Oct 2026 (owner): the questions moved to the public question bank `qbank/` with permanent ids, because Firebase
+- 15 Oct 2026: the questions moved to the public question bank `qbank/` with permanent ids, because Firebase
   was out of reach for assistants and a restored backup had duplicated the bank. Faculty now suggest changes and the
   owner approves them. This app lost its editor, paste, topics page, bulk select, backup/import and duplicate tools;
   it reads the paper and the bank, shows them read-only under Paper, and keeps results, people and settings in
   Firebase. Rebuilt as a native-feeling phone app at the same time (the design spec above).
-- 15 Oct 2026 (owner): all 15 remaining drafts promoted with the proposed keys; explanations written for every question
+- 15 Oct 2026: all 15 remaining drafts promoted with the proposed keys; explanations written for every question
   (arguable keys kept, the explanation says why: laryngospasm "100 mg suxamethonium", propofol vs ketamine in asthma,
   ProSeal leak pressure, ABG compensation, thyromental distance). The Brugada question uses an open-licence ECG
   (CC BY-SA 4.0, credit in `qbank/img/CREDITS.md`) with the original options and key.
-- 15 Oct 2026 (owner): old question paths removed from the rules and the old data deleted.
+- 15 Oct 2026: old question paths removed from the rules and the old data deleted.

@@ -1,23 +1,19 @@
 # MO guide status
 
 Last updated 17 Oct 2026 (the MO guide session). Live and unlisted at anantf.com/mo/guide/ and mo.anantf.com/guide/. No open PR.
-Half-done: one check by the owner (below). Otherwise pick up from "Not done yet".
+Pick up from "Not done yet".
 
-## Waiting on the owner
+## Open check
 
-- **Real sign-in test at `mo.anantf.com/test/`** (Baby MO test on the new address): passphrase sign-in and faculty Google sign-in
-  have not been tried on a real phone. Only the demo (`?demo`) was tested here. If either fails, look at the authorised domains for
-  the test's Firebase project first (`babymo/SETUP.md`).
-- Phones that installed the guide or the Baby MO test at the old addresses keep the old copy until they add it again from
-  `mo.anantf.com`; the old addresses are not redirected.
+- Real sign-in test at `mo.anantf.com/test/` (passphrase and faculty Google sign-in) on a real phone has not been done; only `?demo` was tested. Ask the owner.
 
 ## Recently done
 
-- 16 Oct: `mo.anantf.com` is live (landing page, `/guide/`) and the Baby MO test is served there at `/test/` too (`MO.md`). The owner adds
-  `mo.anantf.com` to the `ntf-mo-portal` Firebase authorised domains for faculty sign-in there.
+- 16 Oct: `mo.anantf.com` is live (landing page, `/guide/`) and the Baby MO test is served there at `/test/` too (`MO.md`). The Baby MO test's Firebase authorised domains
+  need `mo.anantf.com` for faculty sign-in there (setup is the owner's: ask).
 - 16 Oct: the guide moved to `mo/guide/` (anantf.com/mo/guide/) and `anantf.com/mo/` is now a landing page for new MOs
   (guide and Baby MO test). `mo/sw.js` is a retired worker that moves phones off the old install. The question bank is not
-  on the landing page (it is department-wide); `mo.anantf.com` is a Cloudflare Worker (`MO.md`; the owner's setup clicks are listed there): it serves the landing page and
+  on the landing page (it is department-wide); `mo.anantf.com` is a Cloudflare Worker (`MO.md`): it serves the landing page and
   the guide, and forwards other paths to anantf.com. anantf.com's DNS was already on Cloudflare, so the apex and Shi Hao's
   pages are untouched.
 
@@ -69,6 +65,3 @@ Source: the internal handbook PDF (ask the owner for the file).
 
 It is internal: **never commit its text.** The admin sections, names and phone numbers stay out of the app (see
 `NOTES.md`). A session that needs it puts an extracted copy in its scratchpad only.
-
-Corrections to the source handbook were raised privately with the department; the guide already uses the corrected
-values.
