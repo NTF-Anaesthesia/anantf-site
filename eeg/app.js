@@ -460,6 +460,7 @@ function describe(){const d=typeof eng.de==='number'?eng.de:0;let n,t;
  if(mods.blink)t+=' Blinks and eye movement: slow one-sided swings on the raw EEG and brighter power at 0.5–2 Hz along the bottom of the DSA. The monitor rejects most of it, but BIS can read a few points low; the biggest blinks are flagged as artefact.';
  if(eng.stT>0){const dh=drug==='mix'?mixTarget(Object.assign({},MIX0,eng.de)).dH:eng.de,bl=drug==='mix'&&eng.de.remi>=4;
   t+=' Surgical stimulus: '+(bl?'remifentanil blunts the response, so the EEG barely changes.':(eng.stK==='beta'||eng.stK!=='alpha'&&eng.stK!=='delta'&&dh<0.5)?'in a light patient, beta (around 18 Hz) and facial EMG rise and BIS jumps 10–20 points. An opioid blunts this.':eng.stK==='delta'?'a paradoxical delta arousal: slow power rises and BIS falls, but this is arousal, not deeper anaesthesia. Interpret with the stimulus, drug delivery and haemodynamics.':'the alpha band dips by about 3 dB for a minute or two (an alpha dropout), which can accompany noxious stimulation. It does not by itself establish pain or awareness. Check timing, drug delivery, signal quality and haemodynamics (Hight 2019).');}
+ if(typeof learningObservation==='function')t=learningObservation(t);
  if($('rName').textContent!==n)$('rName').textContent=n;if($('rText').textContent!==t)$('rText').textContent=t;}
 
 function describeMix(m,tg){tg=tg||m;const hyp=0.155*m.propofol+sevoDepth(m.sevo),parts=[];let n;
@@ -654,7 +655,7 @@ $('storyBtn').onclick=()=>{if(story){stopStory();$('storyCap').textContent='';re
 function runStory(){if(!story)return;const t=simT-story.t0,steps=story.lesson?EEG_LESSONS[story.lesson].steps:STORY;
  while(story.i+1<steps.length&&t>=steps[story.i+1].at){story.i++;const s=steps[story.i];
   if(s.drug)setDrug(s.drug);if(s.d!=null){depth=s.d;$('depth').value=Math.round(s.d*100);}
-  if(s.mods){for(const [k,id] of SMODS){mods[k]=!!s.mods[k];$(id).checked=mods[k];}setNmb(s.mods.nmb===false?'off':s.mods.nmb===true?'on':'off');}
+  if(s.mods){for(const [k,id] of SMODS){mods[k]=!!(s.mods[k]||story.overlays?.[k]);$(id).checked=mods[k];}setNmb(s.mods.nmb===false?'off':s.mods.nmb===true?'on':'off');}
   if(s.stim)stimAll(s.stim);else if(s.mods)eng.stT=R.eng.stT=0;
   applyTarget();if(s.snap)snapAll();$('storyCap').textContent=`${story.i+1}/${steps.length} · ${s.cap}`;
   if(s.end){story=null;storyButtonUI('Replay demonstration');setSpeed(1);return;}}}
