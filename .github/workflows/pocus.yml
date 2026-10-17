@@ -1,0 +1,36 @@
+name: POCUS lectures
+on:
+  pull_request:
+    paths: ['pocus/**', 'assets/pocus-course.*', '.github/workflows/pocus.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  content-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check content and numerical models
+        run: |
+          python3 pocus/test/content.py
+          node pocus/test/model.test.cjs
+      - name: Install browser
+        run: |
+          npm install -g playwright@1.56.1
+          playwright install --with-deps chromium
+      - name: Open and test lectures on desktop and mobile
+        run: |
+          export PLAYWRIGHT_PATH="$(npm root -g)/playwright/index.mjs"
+          python3 -m http.server 8080 >/dev/null 2>&1 &
+          node pocus/test/review.e2e.mjs
+      - name: Save rendered previews
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pocus-rendered-previews
+          path: pocus-test-artifacts/
+          if-no-files-found: ignore

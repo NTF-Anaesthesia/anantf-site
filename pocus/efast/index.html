@@ -362,11 +362,11 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
       </ul>
       <p class="mini" style="margin-top:10px">It does not grade organ injury, and it does not replace CT in the stable patient. Its power is in the <b>unstable</b> patient: it tells you which cavity is bleeding, so the team goes to the right place (theatre, angiography, chest drain, pericardiotomy) without leaving the resuscitation bay.</p>
       <ul class="agenda" style="max-width:480px">
-        <li><span>01–03 · Role · limits · I-AIM</span><span>7 min</span></li>
-        <li><span>Part I · Acquisition · five windows · pneumothorax</span><span>14.5 min</span></li>
-        <li><span>Part II · Mimics · decision · serial scans</span><span>10.5 min</span></li>
-        <li><span>Part III · Three trauma patients</span><span>12.5 min</span></li>
-        <li><span>Quick check · references · close</span><span>7 min</span></li>
+        <li><span>01–03 · Role · limits · trauma survey</span></li>
+        <li><span>Part I · Acquisition · five windows · pneumothorax</span></li>
+        <li><span>Part II · Mimics · decision · serial scans</span></li>
+        <li><span>Part III · Three trauma patients</span></li>
+        <li><span>Quick check · references · close</span></li>
       </ul>
       <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
       <div class="links"><a href="../cardiac/">Focused cardiac ultrasound</a><a href="../lung/">Lung ultrasound</a><a href="../shock/">RUSH: approach to shock</a><a href="../dvt/">DVT and vessels</a></div>
@@ -439,16 +439,16 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 </section>
 
 <!-- ============ 4 I-AIM ============ -->
-<section class="slide" data-min="2" data-title="I-AIM approach" data-prompt="Ask: why would you ever scan the heart first? (Precordial wound, PEA arrest, distended neck veins.) Stress that indeterminate is not negative: write it down as indeterminate.">
+<section class="slide" data-min="2" data-title="eFAST during the trauma survey" data-prompt="Ask: why would you ever scan the heart first? (Precordial wound, PEA arrest, distended neck veins.) Stress that indeterminate is not negative: write it down as indeterminate.">
   <div class="inner two">
     <div>
-      <div class="kicker">03 · The I-AIM approach</div>
-      <h2>Indication, Acquisition, Interpretation, Medical decision.</h2>
+      <div class="kicker">03 · Trauma survey</div>
+      <h2>Scan the relevant cavities during resuscitation.</h2>
       <ul class="plist" id="iaimList">
-        <li data-k="i" class="on" tabindex="0" role="button"><span class="num big">I</span><div><b>Indication</b><span>Suspected thoracoabdominal injury or unexplained hypotension. Will the answer change what I do now?</span></div></li>
-        <li data-k="a" tabindex="0" role="button"><span class="num big">A</span><div><b>Acquisition</b><span>Supine, curvilinear probe, five windows, fan through every view.</span></div></li>
-        <li data-k="n" tabindex="0" role="button"><span class="num big">I</span><div><b>Interpretation</b><span>Each window: positive, negative or indeterminate.</span></div></li>
-        <li data-k="m" tabindex="0" role="button"><span class="num big">M</span><div><b>Medical decision</b><span>Integrate with haemodynamics and mechanism.</span></div></li>
+        <li data-k="i" class="on" tabindex="0" role="button"><span class="num big">1</span><div><b>Indication</b><span>Suspected thoracoabdominal injury or unexplained hypotension. Will the answer change what I do now?</span></div></li>
+        <li data-k="a" tabindex="0" role="button"><span class="num big">2</span><div><b>Acquisition</b><span>Supine, curvilinear probe, five windows, fan through every view.</span></div></li>
+        <li data-k="n" tabindex="0" role="button"><span class="num big">3</span><div><b>Interpretation</b><span>Each window: positive, negative or indeterminate.</span></div></li>
+        <li data-k="m" tabindex="0" role="button"><span class="num big">4</span><div><b>Medical decision</b><span>Integrate with haemodynamics and mechanism.</span></div></li>
       </ul>
     </div>
     <div class="demo">
@@ -771,7 +771,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">Part III · Trauma cases</div>
       <h1>Three patients.</h1>
-      <p class="big-quote" style="font-style:normal">For each: read the vignette, then reveal one I-AIM step at a time (<kbd>R</kbd>).</p>
+      <p class="big-quote" style="font-style:normal">For each: read the vignette, then reveal the trauma assessment, scan findings and action in stages (<kbd>R</kbd>).</p>
       <p class="cap" style="margin-top:22px;line-height:2">Indication · Acquisition · Interpretation · Medical decision</p>
       <p class="mini" style="max-width:56ch">Teaching vignettes. Images are schematic simulations matched to each finding.</p>
     </div>
@@ -1699,7 +1699,7 @@ const CASES = [
 ];
 const CASE_ST = [];
 $$('.slide.case').forEach(sec => {
-  const n = +sec.dataset.case, C = CASES[n], L = ['I', 'A', 'I', 'M'], N = ['Indication', 'Acquisition', 'Interpretation', 'Medical decision'];
+  const n = +sec.dataset.case, C = CASES[n], L = ['1', '2', '3', '4'], N = ['Indication', 'Acquisition', 'Interpretation', 'Medical decision'];
   sec.innerHTML = `<div class="inner two"><div>
     <div class="kicker">Case ${n + 1} · ${C.tag}</div><h2>${C.title}</h2>
     <p class="lede" style="margin-bottom:6px">${C.vignette}</p>

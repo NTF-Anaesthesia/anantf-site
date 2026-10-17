@@ -5,7 +5,7 @@ The POCUS hub lists all nine lectures, with topic filters modelled on chewshihao
 | Theme | Route | Content |
 | --- | --- | --- |
 | Basics | `basics/` | 20 sections; seven paired physics/acquisition labs, three cases and quiz |
-| Heart | `cardiac/` | 31 sections; windows, LV/RV, pericardial disease, venous Doppler, cases and real cines |
+| Heart | `cardiac/` | 34 sections; windows, LV/RV acquisition/morphology/FAC/TAPSE, pericardial disease, venous Doppler, cases and real cines |
 | Heart | `haemodynamics/` | 18 sections; EF/forward flow, LVOT, error, PLR, IVC, fluid tolerance and cases |
 | Lung | `lung/` | 30 sections; pleural signs, aeration, effusions, diaphragm, cases and real cines |
 | Shock | `shock/` | 27 sections; RUSH, serial reassessment, arrest, four staged cases and eight decision cases |
@@ -36,3 +36,9 @@ Do not add unprocessed source files with identifying headers to this repository.
 ## Verification
 
 Use `node pocus/test/model.test.cjs` for the haemodynamics equations and `python3 pocus/test/content.py` for IDs, local assets, anchors, media attribution and inline JavaScript syntax. Full browser checks must cover desktop/mobile, section/search/reference routing, keyboard focus, reduced motion, all simulation controls and native video playback. Code/DOM tests are not a substitute for browser layout and playback checks.
+
+## Subject-specific teaching
+
+Gastric and IA/IV access are references for presentation quality, visual language and interactive depth. Choose clinical structure, acquisition, measurements and cases for each subject; do not copy another organ's protocol to fill a template. The lung opening distinguishes a bilateral survey, BLUE and 12-region scoring. The coronal effusion schematic does not supply the independent transverse measurement used for Balik arithmetic. Cardiac contains dedicated RV anatomy, morphology and measurement sections. Original cardiac numeric anchors use `data-route`; keep those identities when adding sections.
+
+See `REVIEW.md` for the 17 October review, confirmed corrections, source correspondence and outstanding source-access limitations. The six unverified source decks must be recovered before claiming a complete slide-by-slide conversion. Run the browser review with `PLAYWRIGHT_PATH` set as in `.github/workflows/pocus.yml`; rendered previews are retained as a CI artifact.

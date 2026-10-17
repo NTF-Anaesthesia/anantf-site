@@ -14,3 +14,5 @@
 .real-cine figcaption p {font-size:15px!important;line-height:1.6;max-width:68ch}
 .real-cine summary {min-height:44px;cursor:pointer;display:list-item;padding-block:10px;color:#633d3c}
 .real-cine a {overflow-wrap:anywhere;text-decoration:underline;text-underline-offset:3px}
+
+#rvMeasureLab svg{display:block;width:100%;height:auto;margin-block:20px}#rvMeasureLab svg text{fill:var(--ink);font-family:var(--sans,Arial,sans-serif)}#rv-measurements .ef-flow-controls{margin-block:18px}#rv-anatomy .panel svg{width:100%;height:auto}
