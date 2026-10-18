@@ -67,7 +67,7 @@ Each installable app has a service worker whose file lists and `VERSION` are sta
 
 | App | Stamp | Tests |
 |---|---|---|
-| Regional app | `node shared/regional/tools/stamp.mjs` | `node test/regional/run-all.mjs` |
+| Regional app | `node shared/regional/tools/stamp.mjs` | `node shared/regional/test/run-all.mjs` |
 | MO guide (`mo/guide/`) | `node mo/guide/tools/stamp.mjs` | `node mo/guide/test/{calc,content,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Question bank | `node qbank/tools/stamp.mjs` | `node qbank/tools/check.mjs`, `node qbank/test/{bank,practice,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Baby MO | `node babymo/tools/stamp.mjs` | `node babymo/test/{logic,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |

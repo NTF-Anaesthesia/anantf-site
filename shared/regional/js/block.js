@@ -27,7 +27,7 @@ export const DEFAULT_TIERS = Object.freeze({
   head: 1, intro: 1, rapid: 1, scan: 1, position: 1, equipment: 1, dose: 1, complications: 1, wrong: 1, pearls: 1, warning: 1,
   landmarks: 2, approach: 2, sonoanatomy: 2, target: 2, coverage: 2, anatomy3d: 2, watch: 2, exam: 2, sections: 2,
 });
-/** Sections that can never be hidden at MO level (enforced here and by test/regional/levels.mjs). */
+/** Sections that can never be hidden at MO level (enforced here and by shared/regional/test/levels.mjs). */
 export const SAFETY_KEYS = Object.freeze(['dose', 'complications', 'wrong']);
 /** Pearls shown at MO level before the rest become Resident. */
 export const MO_PEARLS = 3;

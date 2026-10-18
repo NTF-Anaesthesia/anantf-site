@@ -4,7 +4,7 @@ Part of the regional engine guide; index: ../INDEX.md
 
 | Part | Owner (Claude Code session) |
 |---|---|
-| The regional app: engine (`shared/regional/`, `shared/us/`), `blocks/`, `lower-limb/`, `plexus/`, `test/regional/` | "Lower limb blocks" session |
+| The regional app: engine (`shared/regional/`, `shared/us/`), `blocks/`, `lower-limb/`, `plexus/`, `shared/regional/test/` | "Lower limb blocks" session |
 | `spinal/` content | spinal session |
 | `brachial-plexus/` content | brachial plexus session |
 | `truncal/` content | truncal session |

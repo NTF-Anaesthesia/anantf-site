@@ -96,6 +96,6 @@ skin differs; nothing in the data or the engine's DOM depends on it.
   bar still uses `top: var(--ra-bar-now, var(--ra-bar, 56px))`.
 - **Adding a regional page.** Put the skin script and the `skin-app.css` link in its `<head>` (§DATA.md 1), call
   `initAppFeel` as before; a new component class needs a rule in `skin-app.css` (in the right section) so it has an app look.
-- **Checks.** `test/regional/skin.mjs` (resolution, tab bar, frame, same text in both looks) and the website-look screenshots
+- **Checks.** `shared/regional/test/skin.mjs` (resolution, tab bar, frame, same text in both looks) and the website-look screenshots
   of ten pages at 390 and 1440 px (`ra-skin=web`, before and after: they must be pixel-identical). Light only, nothing under
   12 px, targets at least 44 px, focus rings visible, reduced motion respected, no emoji.

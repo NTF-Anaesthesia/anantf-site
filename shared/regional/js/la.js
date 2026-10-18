@@ -1,5 +1,5 @@
 // Regional anaesthesia app: local anaesthetic dose data and pure dose maths (ENGINE.md backlog item 3).
-// No DOM here, so node tests can import it (test/regional/la.test.mjs). The calculator UI is lacalc.js; the page is
+// No DOM here, so node tests can import it (shared/regional/test/la.test.mjs). The calculator UI is lacalc.js; the page is
 // /blocks/safety/#calculator. Block pages link to it from their dose box with doseHref(block.dose).
 //
 // Maximum doses are single-shot totals for an adult by injection (perineural or infiltration), the conservative

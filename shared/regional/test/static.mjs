@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Regional anaesthesia app: repository checks that need no browser (plan §3, §11.6, §11.8, owner rules).
 //
-//   node test/regional/static.mjs        options: --json=<file>   --failsOnly
+//   node shared/regional/test/static.mjs        options: --json=<file>   --failsOnly
 //
 // Checks:
 //   1. nothing in the repo imports or links through the old-path shims (truncal/shared/**, head-neck/shared/js/head.js,
@@ -24,7 +24,7 @@ import { ROOT, HERE, PAGES, reporter, walk } from './lib.mjs';
 
 const R = reporter('Static');
 const REGIONAL_DIRS = ['truncal', 'head-neck', 'lower-limb', 'upper-limb', 'brachial-plexus', 'plexus', 'spinal', 'shared/regional', 'blocks'];
-const EXCLUDE = (f) => f.startsWith('lower-limb/anim/') || f.startsWith('test/') || f.includes('/vendor/') || f.startsWith('shared/vendor/');
+const EXCLUDE = (f) => f.startsWith('lower-limb/anim/') || f.startsWith('shared/regional/test/') || f.includes('/vendor/') || f.startsWith('shared/vendor/');
 const read = (f) => fs.readFileSync(path.join(ROOT, f), 'utf8');
 const files = walk(REGIONAL_DIRS, ['.js', '.mjs', '.html', '.css']).filter((f) => !EXCLUDE(f));
 const htmlFiles = [...files.filter((f) => f.endsWith('.html')), ...['regional.html', 'ra.html', 'draft-ra.html'].filter((f) => fs.existsSync(path.join(ROOT, f)))];

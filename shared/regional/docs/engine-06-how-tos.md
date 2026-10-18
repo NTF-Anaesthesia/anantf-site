@@ -21,7 +21,7 @@ Part of the regional engine guide; index: ../INDEX.md
 3. Link it from its region landing; add it to `PAGES` (and `PAGES_BY_REGION`) in `blocks/blocks.js` and to its
    region's `pages` in `REGION_NAV` (`js/appnav.js`, the desktop rail). A brand-new
    region also needs a `REGIONS` entry in `registry.js`, an ops module, a figure provider and a `shared/us/` folder.
-4. Add it to `PAGES` and `ENGINE_PAGES` in `test/regional/lib.mjs` so the smoke, deep-link, level and data suites
+4. Add it to `PAGES` and `ENGINE_PAGES` in `shared/regional/test/lib.mjs` so the smoke, deep-link, level and data suites
    cover it. A new page has no baseline lines, so parity has nothing to keep for it.
 5. Don't link it from the homepage.
 
@@ -54,7 +54,7 @@ Upper-limb engine pages read `shared/us/upper-limb/`; the brachial plexus app st
 After changing anything in the regional folders, or the shared `assets/`, `fonts/` or logo files they load, run
 `node shared/regional/tools/stamp.mjs`. It rewrites the file lists and two hashes in `/regional-sw.js`: `VERSION`
 (date + hash, shown at the foot of `/blocks/`) and `MEDIA` (pictures, models, three.js; a new `MEDIA` makes phones
-download those again). `--check` only checks; `test/regional/version.test.mjs` fails when it is out of date. The worker
+download those again). `--check` only checks; `shared/regional/test/version.test.mjs` fails when it is out of date. The worker
 answers only the regional paths and the shared site files they load; everything else (home, `mo/`, `qbank/`,
 `babymo/`, `exams/`) passes straight through. `regional.html` doesn't register it but is served offline once saved.
 
@@ -64,14 +64,14 @@ answers only the regional paths and the shared site files they load; everything 
    `credits` line for the model's source and licence.
 2. Add the plexus to `PLEXUSES` in `plexus/js/explorer.js` (anatomical order) and bump its `V` and the
    `explorer.js?v=` references.
-3. Add the id to the plexus list in `test/regional/data.mjs`, then point block data (`anatomy3d`), registry entries and
+3. Add the id to the plexus list in `shared/regional/test/data.mjs`, then point block data (`anatomy3d`), registry entries and
    scene `ids` at its elements and blocks.
 
 ### Add an operation to the chooser
 
 1. Add an entry to `OPS` in the region's `shared/regional/js/ops/ops-*.js`, following the schema comment at the top.
 2. Every key in `groups[].items[].blocks` (and `more`) must exist in that file's links; doses must match the block
-   pages word for word (`data.mjs` checks; a reviewed difference goes in `test/regional/data-allow.json` with a reason).
+   pages word for word (`data.mjs` checks; a reviewed difference goes in `shared/regional/test/data-allow.json` with a reason).
 3. Check it on the region landing (`#op-<id>`) and on `/blocks/` (`#op-<region>-<id>`).
 
 ---

@@ -38,7 +38,7 @@ Overrides, in data:
   a pearl `{ safety: true, html: '…' }` is promoted to MO. Plain strings inherit their section's tier.
 - `exam: [{ q, points, tier: 3 }]`.
 - **Safety rule:** `dose`, `complications` and `wrong` (the "If it goes wrong" guides) are always tier 1, whatever the
-  data says (`SAFETY_KEYS`, enforced in `block.js` and by `test/regional/levels.mjs` and `data.mjs`). Region pages may
+  data says (`SAFETY_KEYS`, enforced in `block.js` and by `shared/regional/test/levels.mjs` and `data.mjs`). Region pages may
   promote, never demote, safety content. An extra section that carries a dose an MO may give or look after (a catheter
   regimen, a separate injection in an MO-visible scan viewer) should be MO level too (`safety: true` or `tier: 1`).
 

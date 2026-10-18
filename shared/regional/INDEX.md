@@ -28,6 +28,6 @@ The regional anaesthesia app is the set of teaching pages for regional blocks: u
 ## Session checklist
 
 1. Read this index, then one piece only.
-2. After any change, run `node shared/regional/tools/stamp.mjs`, then `node test/regional/run-all.mjs`.
+2. After any change, run `node shared/regional/tools/stamp.mjs`, then `node shared/regional/test/run-all.mjs`.
 3. Take screenshots only for visual changes: one, at viewport size.
 4. Don't read `shared/vendor/`, the images in `shared/us/`, or the test baselines.

@@ -2,7 +2,7 @@
 // Regional anaesthesia app: data checks (plan §11.4). Reads the page data modules in a real browser (they are the same
 // ES modules the pages load) and the planner / animation index read-only. Nothing is written.
 //
-//   node test/regional/data.mjs          options: --json=<file>   --failsOnly   --verbose (list every dose compared)
+//   node shared/regional/test/data.mjs          options: --json=<file>   --failsOnly   --verbose (list every dose compared)
 //
 // Checks:
 //   1. registry.js: regions valid, urls resolve to real pages and ids, aliases unique, anatomy3d / watch point at real
@@ -35,7 +35,7 @@ const OPS_FILES = { truncal: 'shared/regional/js/ops/ops-truncal.js', 'head-neck
 async function gatherModules(browser) {
   const { ctx, page, log } = await openContext(browser, { vp: '1440' });
   try {
-    await page.goto(`${BASE}test/regional/harness.html`, { waitUntil: 'load' });
+    await page.goto(`${BASE}shared/regional/test/harness.html`, { waitUntil: 'load' });
     const data = await page.evaluate(async ({ engine, opsFiles }) => {
       const strip = (v) => JSON.parse(JSON.stringify(v, (k, x) => (typeof x === 'function' ? undefined : (x instanceof Node ? undefined : x))));
       const out = { blocks: {}, ops: {}, errors: [] };
@@ -425,7 +425,7 @@ async function main() {
 
   // 7. no cite( in regional data
   {
-    const files = walk(['truncal', 'head-neck', 'lower-limb', 'shared/regional', 'blocks'], ['.js', '.mjs', '.html']).filter((f) => !f.startsWith('lower-limb/anim') && !f.endsWith('shared/regional/js/refs.js') && !f.startsWith('truncal/shared/'));
+    const files = walk(['truncal', 'head-neck', 'lower-limb', 'shared/regional', 'blocks'], ['.js', '.mjs', '.html']).filter((f) => !f.startsWith('lower-limb/anim') && !f.startsWith('shared/regional/test/') && !f.endsWith('shared/regional/js/refs.js') && !f.startsWith('truncal/shared/'));
     const hits = [];
     for (const f of files) {
       const src = fs.readFileSync(path.join(ROOT, f), 'utf8');

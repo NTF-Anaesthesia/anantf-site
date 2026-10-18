@@ -14,7 +14,7 @@
 - No "for education only" notice; the credit sits at the foot only (owner, 16 Oct 2026).
 
 ## Process lessons
-- After any change under `truncal/`: bump the `?v=` digits on changed modules, run `node shared/regional/tools/stamp.mjs`, then `node test/regional/run-all.mjs`. Never regenerate the parity baseline to make a test pass; allow-list entries need a reason.
+- After any change under `truncal/`: bump the `?v=` digits on changed modules, run `node shared/regional/tools/stamp.mjs`, then `node shared/regional/test/run-all.mjs`. Never regenerate the parity baseline to make a test pass; allow-list entries need a reason.
 - Reworded dose text changes the dose-string counts and fails parity.
 - When a study note disagrees with a published source or the slides, keep the cited or safer version and flag it for the owner (e.g. ESP volume, epidural spread after paravertebral, transverse process depth).
 - Anatomy checks reviewers raised: nothing shows under a bone shadow (the engine masks it); the rectus sheath has no posterior sheath below the arcuate line; lateral TAP misses the groin and levels above T10; ilioinguinal needle direction is medial to lateral on the page.

@@ -26,8 +26,8 @@ Status and open questions: `STATUS.md`.
 
 - Branch, pull request, check the page in a browser with no console errors, then squash merge (unless the owner asks to
   wait). Preview clinical changes with the owner first when they are large.
-- After changing anything in `spinal/`: run `node shared/regional/tools/stamp.mjs`, then `node test/regional/run-all.mjs`
-  (and `RA_SKIN=app node test/regional/<suite>.mjs` for the app look). Do not edit `shared/regional/` without asking the
+- After changing anything in `spinal/`: run `node shared/regional/tools/stamp.mjs`, then `node shared/regional/test/run-all.mjs`
+  (and `RA_SKIN=app node shared/regional/test/<suite>.mjs` for the app look). Do not edit `shared/regional/` without asking the
   session that owns it.
 - Sticky things under the bar use `top: var(--ra-bar-now, var(--ra-bar, 56px))`. Rules added to `css/skin-app.css` sit under
   `html[data-skin="app"]`.

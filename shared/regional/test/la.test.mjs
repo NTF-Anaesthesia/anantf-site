@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // Regional anaesthesia app: unit tests for the local anaesthetic dose maths (shared/regional/js/la.js). No browser.
-//   node test/regional/la.test.mjs
+//   node shared/regional/test/la.test.mjs
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const LA = await import(pathToFileURL(path.resolve(HERE, '../../shared/regional/js/la.js')).href);
+const LA = await import(pathToFileURL(path.resolve(HERE, '../js/la.js')).href);
 const {
   AGENTS, AGENT_IDS, NOTES, FORMULAS, agentId, maxMgPerKg, capMg, maxMg, cappedByCeiling, mgFromMl, mlForMg, bmi,
   leanBodyWeight, idealBodyWeight, doseWeight, combinedFraction, fractionStatus, parseDose, doseQuery, parseQuery,
@@ -249,7 +249,7 @@ test('parseQuery accepts only known agents and numbers in range', () => {
 });
 test('la.js is pure: no DOM, no eval', async () => {
   const fs = await import('node:fs');
-  const src = fs.readFileSync(path.resolve(HERE, '../../shared/regional/js/la.js'), 'utf8');
+  const src = fs.readFileSync(path.resolve(HERE, '../js/la.js'), 'utf8');
   assert.ok(!/\b(document|window|eval|Function)\s*[.(]/.test(src.replace(/\/\/.*$/gm, '')), 'la.js touches the DOM or evaluates code');
 });
 

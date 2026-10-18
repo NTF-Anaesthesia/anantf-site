@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Regional anaesthesia app: the shared app frame (shared/regional/js/appnav.js, css/appnav.css; ENGINE.md §2 "App frame").
 //
-//   node test/regional/appframe.mjs        options: --base=<url>  --json=<file>  --failsOnly
+//   node shared/regional/test/appframe.mjs        options: --base=<url>  --json=<file>  --failsOnly
 //
 // Checks:
 //   1. /blocks/settings/: loads without errors, noindex, credit line, level control, both switches with their defaults

@@ -29,7 +29,7 @@ esp: { title: 'Erector spinae plane block',     // the page's own block title, w
 ```
 API: `REGIONS`, `REGISTRY`, `getBlock(idOrAlias)`, `resolveId(idOrAlias)`, `blocksIn(region)`, `allBlocks()`,
 `blockUrl(idOrAlias, base?)`, `anatomyLink(idOrAlias)`. An alias may not equal another entry's id, and every `url`
-must point at a real anchor (`test/regional/data.mjs` checks both). Block data's own `anatomy3d` / `watch` win over the
+must point at a real anchor (`shared/regional/test/data.mjs` checks both). Block data's own `anatomy3d` / `watch` win over the
 registry. **When you add a block to any region, add its registry entry**, or it will be missing from `/blocks/` search
 and the region cards there.
 
@@ -84,5 +84,5 @@ search" (`ra-slash`, on by default) and the same app version lines.
   to the region's ops module only.
 
 ### Tests
-`node test/regional/run-all.mjs` runs every suite (dose maths, static, offline worker stamp, smoke, deep links, levels,
-data, content parity against the baseline, the app frame, offline) plus the `mo/` and `babymo/` suites; see `test/regional/README.md`. Run it after any change to a regional page.
+`node shared/regional/test/run-all.mjs` runs every suite (dose maths, static, offline worker stamp, smoke, deep links, levels,
+data, content parity against the baseline, the app frame, offline) plus the `mo/` and `babymo/` suites; see `shared/regional/test/README.md`. Run it after any change to a regional page.

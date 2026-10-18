@@ -1,4 +1,4 @@
-// Regional anaesthesia app: helpers shared by the test/regional suites (plan §11).
+// Regional anaesthesia app: helpers shared by the shared/regional/test suites (plan §11).
 //
 // Every suite runs against a static server on the repo root (default http://localhost:8765/):
 //   cd <repo> && python3 -m http.server 8765
@@ -20,7 +20,7 @@ export function playwright() {
 }
 
 export const HERE = path.dirname(fileURLToPath(import.meta.url));
-export const ROOT = path.resolve(HERE, '../..');
+export const ROOT = path.resolve(HERE, '../../..');
 export const BASEDIR = path.join(HERE, 'baseline');
 
 /** Every regional page (plan §1): truncal ×4, head-neck ×6, lower-limb ×5, upper-limb ×4, brachial-plexus, plexus, spinal, regional.html, settings, Safety, Indication and Ultrasound anatomy (the three screens added 16 Oct 2026). */
@@ -182,7 +182,7 @@ export function readJson(file, dflt = null) {
   try { return JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return dflt; }
 }
 
-/** Reviewed differences from the baseline: test/regional/parity-allow.json. */
+/** Reviewed differences from the baseline: shared/regional/test/parity-allow.json. */
 export function parityAllow() {
   const a = readJson(path.join(HERE, 'parity-allow.json'), {});
   const lines = (p) => [...(a['*']?.missing || []), ...(a[p]?.missing || [])].map((x) => (typeof x === 'string' ? x : x.line));

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Regional anaesthesia app: every old URL and hash still lands on the right visible element (plan §3 "URLs", §11.2).
 //
-//   node test/regional/deeplinks.mjs              all checks (fresh page load per deep link, phone viewport)
+//   node shared/regional/test/deeplinks.mjs              all checks (fresh page load per deep link, phone viewport)
 //   options: --viewports=390,1440 (default 390)   --workers=6   --pages=truncal/back/,…   --quick (hashchange instead of
 //            a fresh load for step / injection links)   --json=<file>   --failsOnly
 //
@@ -314,7 +314,7 @@ async function main() {
   {
     const { ctx, page } = await openContext(browser, { vp: '1440' });
     try {
-      await page.goto(`${BASE}test/regional/harness.html`, { waitUntil: 'load' });
+      await page.goto(`${BASE}shared/regional/test/harness.html`, { waitUntil: 'load' });
       for (const [shim, real] of shims) {
         const r = await page.evaluate(async ([a, b]) => {
           const ra = await fetch(`/${a}`); if (!ra.ok) return { ok: false, why: `HTTP ${ra.status}` };

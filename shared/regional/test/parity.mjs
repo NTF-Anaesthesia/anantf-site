@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // Regional anaesthesia app: content parity with the WP0 baseline (plan §11.5, the clinical safety net).
 //
-//   node test/regional/parity.mjs        options: --pages=…   --viewports=390,1440   --workers=4   --json=<file>
+//   node shared/regional/test/parity.mjs        options: --pages=…   --viewports=390,1440   --workers=4   --json=<file>
 //                                                 --show (print every missing, added and allowed line)   --failsOnly
 //
 // At Consultant level (everything shown), every normalised text line the WP0 baseline captured on a page must still
 // appear on that page, and its dose / volume / concentration strings must be identical. The only allowed differences are
-// the reviewed ones in test/regional/parity-allow.json:
+// the reviewed ones in shared/regional/test/parity-allow.json:
 //   { "*": { "missing": [{ "line": "...", "why": "..." }], "missingPatterns": [{ "re": "^...$", "why": "..." }] },
 //     "<page>": { "missing": [...], "missingPatterns": [...], "doses": { "<dose string>": "why" } } }
 // New lines (on the page now, not in the baseline) are listed with --show; a new line that carries a dose, volume or
