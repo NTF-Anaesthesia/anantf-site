@@ -6,7 +6,7 @@ from collections import Counter
 import hashlib, json, subprocess, tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-PAGES = [ROOT/'pocus/index.html', ROOT/'pocus/media/index.html'] + [ROOT/f'pocus/{slug}/index.html' for slug in ['basics','cardiac','lung','haemodynamics','shock','efast','dvt']]
+PAGES = [ROOT/'pocus/index.html', ROOT/'pocus/media/index.html'] + [ROOT/f'pocus/{slug}/index.html' for slug in ['basics','cardiac','lung','haemodynamics','shock','efast','dvt','cases']]
 
 class Page(HTMLParser):
     def __init__(self):
@@ -23,6 +23,11 @@ class Page(HTMLParser):
         if self.script is not None: self.script+=data
     def handle_endtag(self,tag):
         if tag=='script' and self.script is not None: self.scripts.append(self.script);self.script=None
+
+import re
+cardiac=(ROOT/'pocus/cardiac/index.html').read_text()
+routes=re.findall(r'<section[^>]*\bdata-route="(\d+)"[^>]*class="slide',cardiac)
+assert sorted(map(int,routes))==list(range(1,32)),'cardiac numeric routes must stay 1-31, each once'
 
 total=0
 for file in PAGES:
@@ -46,12 +51,30 @@ for file in PAGES:
 
 manifest=json.loads((ROOT/'pocus/media/media-attributions.json').read_text())
 for asset in manifest['assets']:
-    assert asset['licence'].startswith(('CC BY ','CC BY-SA ')),asset['id']
+    # Open licences, or the owner-confirmed SCCM course permission (which must record its evidence).
+    assert asset['licence'].startswith(('CC BY ','CC BY-SA ')) or (asset['licence']=='Used with permission' and asset.get('licence_evidence')),asset['id']
     for key,checksum in [('filename','sha256'),('poster','poster_sha256')]:
         data=(ROOT/'pocus/media'/asset[key]).read_bytes()
         assert hashlib.sha256(data).hexdigest()==asset[checksum],asset[key]
     assert asset['author'] and asset['source_url'] and asset['licence_url'] and asset['changes']
+cases=(ROOT/'pocus/cases/index.html').read_text()
+recorded={a['filename'] for a in manifest['assets']}|{a['poster'] for a in manifest['assets']}
+# Every SCCM file referenced by a page, and every SCCM file on disk, must have a manifest record.
+for file in PAGES:
+    for src in re.findall(r'(?:src|poster|href)="(?:\.\./)?media/(sccm-[a-z]+/[^"#?]+)"',file.read_text()):
+        assert src in recorded,('unrecorded SCCM media',file.name,src)
+for path in (ROOT/'pocus/media').glob('sccm-*/*'):
+    rel=path.relative_to(ROOT/'pocus/media').as_posix()
+    assert rel in recorded,('SCCM file with no manifest record',rel)
+    if path.suffix=='.jpg':
+        # No COM (0xFE) or EXIF (0xE1) segments before the image data.
+        b=path.read_bytes();i=2
+        while b[i+1]!=0xDA:
+            assert b[i+1] not in (0xFE,0xE1),('JPEG metadata segment',rel)
+            i+=2+int.from_bytes(b[i+2:i+4],'big')
+for qid,answer,body in re.findall(r'<fieldset class="cs-q" id="([^"]+)" data-answer="([a-d])"[^>]*>(.*?)</fieldset>',cases,re.S):
+    assert f'data-choice="{answer}"' in body and 'class="cs-reveal" hidden' in body,qid
 for file in (ROOT/'pocus').rglob('*.js'):
-    if file.parts[-2] in ['basics','cardiac','haemodynamics','shared','shock']:
+    if file.parts[-2] in ['basics','cardiac','haemodynamics','shared','shock','cases']:
         subprocess.run(['node','--check',str(file)],check=True,capture_output=True)
-print(f'{total} lecture sections; {len(manifest["assets"])} licensed media records: pass')
+print(f'{total} lecture sections; {len(manifest["assets"])} attributed media records: pass')
