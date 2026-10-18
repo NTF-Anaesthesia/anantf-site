@@ -1,6 +1,8 @@
 # POCUS clinical media
 
-Reviewed 17 October 2026. Eleven real ultrasound cine loops and matching still posters, selected for the POCUS lecture series. All included files use **CC BY or CC BY-SA**, with the individual licence recorded in `media-attributions.json` and on `index.html`. The original interactive lecture diagrams remain separate, labelled schematics.
+Reviewed 17 October 2026. Eleven real ultrasound cine loops and matching still posters, selected for the POCUS lecture series. All included files use **CC BY or CC BY-SA**, with the individual licence recorded in `media-attributions.json` and on `index.html`.
+
+Updated 18 October 2026: `sccm-rv/` adds 23 clips and 6 stills from the Society of Critical Care Medicine (SCCM) Critical Care Ultrasound: Adult course, RV lecture. They are **used with permission** (the owner confirmed the department's reuse rights), not openly licensed, and each has its own record in `media-attributions.json` (`licence: "Used with permission"`, with `licence_evidence`). Every clip was cropped to the ultrasound sector to remove scanner headers; several source headers carried patient names, record numbers, scan dates and unit names. `sccm-lv/` adds the LV lecture's 19 clips and 13 stills used in cardiac Part II, recorded the same way (scanner dates/times masked or cropped; one source still with a patient name and ID excluded). The folder also holds processed LVOT/Doppler files (slides 37–51) that are not yet used or recorded; record each one in `media-attributions.json` before linking it. `sccm-fluid/` adds the volume responsiveness lecture's 10 clips and 6 stills used in Flow and fluids (`haemodynamics/`), recorded the same way (scanner dates/times, name boxes and a possible institution preset masked). The deck's journal figures and tables, photographs of staff, a TOE image showing a hospital name, a heart specimen photograph and an unattributed PLR pictogram were not used. `sccm-cases/` adds the Day 1 evening cases' 18 clips and one chest radiograph used in Day 1 cases (`cases/`), recorded the same way; one source clip carried a patient name, record number, study IDs, hospital text and scan date/time, all cropped or masked, and the radiograph's identifiers are blacked out. Do not commit unprocessed source files. The original interactive lecture diagrams remain separate, labelled schematics.
 
 ## Source review
 
@@ -20,7 +22,7 @@ Use native video controls, `playsinline`, `loop`, `preload="none"`, the supplied
 
 The processed videos contain no audio. The text captions are their educational alternative. No anatomy, pathology, speed or sequence was generated or altered. Necessary header masking and pixel-aspect normalisation are documented per file. Posters are extracted clinical frames, not independent acquisitions.
 
-The small source videos support recognition; they do not replace acquisition training, supervised practice or a complete clinical study. Gaps include high-quality LVOT Doppler acquisition, major RV pathology and dynamic air bronchograms; those topics retain the lecture simulations and primary references rather than an unverified download.
+The small source videos support recognition; they do not replace acquisition training, supervised practice or a complete clinical study. Gaps include dynamic air bronchograms (LVOT Doppler acquisition is now covered by the SCCM fluid clips and stills) (major RV pathology is now covered by the SCCM RV clips); those topics retain the lecture simulations and primary references rather than an unverified download.
 
 ## Included files
 
