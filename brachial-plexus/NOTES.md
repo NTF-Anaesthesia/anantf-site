@@ -8,7 +8,7 @@ Lasting decisions for `brachial-plexus/`. Status and next steps: `STATUS.md`.
   (`SCENES_MM`, drawn to scale), `js/real-scans.js` with `us/`, `js/viewer3d.js`, `js/diagram.js`, `js/coverage.js`.
 - `js/data.js` is also read by `plexus/` ("Anatomy in 3D"), so a change there shows on both pages.
 - The shared engine (`shared/regional/`) and `plexus/` belong to the regional app work. Ask before changing them.
-- Before merging anything here run `node test/regional/run-all.mjs`; it also checks `/plexus/` with the brachial data.
+- Before merging anything here run `node shared/regional/test/run-all.mjs`; it also checks `/plexus/` with the brachial data.
 
 ## Owner decisions
 

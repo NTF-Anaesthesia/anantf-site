@@ -17,4 +17,4 @@ nothing half-done on the page. Lasting rules: `NOTES.md`.
 
 - Held-back doses and other open content questions: ask the owner.
 - Consider splitting the very long Technique and Exam chapters for phones (regional backlog item).
-- Keep the doses, LAST line and complications at MO level when adding content (`test/regional/levels.mjs` checks).
+- Keep the doses, LAST line and complications at MO level when adding content (`shared/regional/test/levels.mjs` checks).

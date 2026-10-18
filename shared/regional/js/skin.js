@@ -10,7 +10,7 @@
 // link (/blocks/?app, which sets sessionStorage 'ra-in-app' for this tab). Anywhere else (a shared deep link, a normal
 // visit) it is the website look. Content, levels, doses, anchors and hashes are the same in both.
 //
-// An inline script in every regional page's <head> (the same text on every page; ENGINE.md has it, test/regional/skin.mjs
+// An inline script in every regional page's <head> (the same text on every page; ENGINE.md has it, shared/regional/test/skin.mjs
 // checks it) sets html[data-skin] before first paint; this module does the same on import (so a stale page without the
 // script still gets a skin), and is what Settings and the app frame call. No imports. Import it as skin.js?v=20261018.
 // Every read and write is in try/catch: a private window or blocked storage just means 'auto' and a skin that lasts for

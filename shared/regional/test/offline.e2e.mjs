@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Regional anaesthesia app: offline use through /regional-sw.js, in a real browser.
 //
-//   node test/regional/offline.e2e.mjs        options: --json=<file>  --failsOnly  (--base and --quiet are ignored)
+//   node shared/regional/test/offline.e2e.mjs        options: --json=<file>  --failsOnly  (--base and --quiet are ignored)
 //
 // It starts its own static server on a free port (so it can switch the "network" off by stopping it, as well as
 // with context.setOffline), then:

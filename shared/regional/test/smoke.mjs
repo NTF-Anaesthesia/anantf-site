@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // Regional anaesthesia app: smoke test and content baseline (plan §10 WP0, §11.1).
 //
-//   node test/regional/smoke.mjs                 compare every regional page with test/regional/baseline/
-//   node test/regional/smoke.mjs --strict        also fail on the §11.1 polish targets (text, tap targets, one sticky
+//   node shared/regional/test/smoke.mjs                 compare every regional page with shared/regional/test/baseline/
+//   node shared/regional/test/smoke.mjs --strict        also fail on the §11.1 polish targets (text, tap targets, one sticky
 //                                                bar ≤ 56 px, scan on screen after Next, axe, interactive < 2.5 s)
-//   node test/regional/smoke.mjs --baseline      (re)write the baseline (only before a change, never to make a test pass)
+//   node shared/regional/test/smoke.mjs --baseline      (re)write the baseline (only before a change, never to make a test pass)
 //   options: --pages=truncal/back/,spinal/   --viewports=390,1440   --base=http://localhost:8765/   --workers=4
 //            --shots=<dir> (screenshots of each page's first screen)   --json=<file>   --summary (polish table only)
 //            axe: set AXE=/path/to/axe.min.js (or install axe-core globally) to run the accessibility check

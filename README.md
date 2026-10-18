@@ -13,7 +13,7 @@ Static site served by GitHub Pages at https://anantf.com.
 | `brachial-plexus/`, `plexus/`, `spinal/` | Brachial plexus app, plexus anatomy in 3D and spinal anaesthesia (unlisted; cards on `regional.html`) |
 | `shared/regional/` | Shared regional engine: app bar, levels, block template, scan viewer, block registry, operation data (see `shared/regional/DATA.md`) |
 | `shared/vendor/three-r160/` | three.js used by the 3D viewers |
-| `test/regional/` | Tests for the regional pages (`node test/regional/run-all.mjs`) |
+| `shared/regional/test/` | Tests for the regional pages (`node shared/regional/test/run-all.mjs`) |
 | `pocus/` | Point-of-care ultrasound tutorials |
 | `exams/` | MMed exam resources by Dr Chew Shi Hao (canonical master copy) |
 | `exams/reference/` | Part B model-answer PDFs |

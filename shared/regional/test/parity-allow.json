@@ -1,5 +1,5 @@
 {
-  "_about": "Reviewed differences from the WP0 baseline (test/regional/parity.mjs and smoke.mjs). 'missing': lines that may disappear; 'missingPatterns': regexes for the same; 'renames': a missing line is allowed only if the line with {from} replaced by {to} is on the page; 'doses': dose strings whose count may change. Every entry says why and which plan item allows it. Never add an entry to make a clinical change pass.",
+  "_about": "Reviewed differences from the WP0 baseline (shared/regional/test/parity.mjs and smoke.mjs). 'missing': lines that may disappear; 'missingPatterns': regexes for the same; 'renames': a missing line is allowed only if the line with {from} replaced by {to} is on the page; 'doses': dose strings whose count may change. Every entry says why and which plan item allows it. Never add an entry to make a clinical change pass.",
   "*": {
     "missing": [
       {

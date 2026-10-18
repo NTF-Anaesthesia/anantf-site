@@ -4,7 +4,7 @@
 // of Anaesthetists LAST guidance and quick reference handbook, worded as on /spinal/#cx-last. No citations on the page.
 //
 // SAFETY: every guide is MO level (tier 1), like doses, the LAST line and complications. Never give a guide or a step a
-// higher tier (test/regional/data.mjs and levels.mjs check).
+// higher tier (shared/regional/test/data.mjs and levels.mjs check).
 //
 // Guide schema:
 //   { id, title, short, tier: 1, when: 'html: when to open this guide', start: '<step id>',

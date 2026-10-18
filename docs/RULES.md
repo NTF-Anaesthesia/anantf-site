@@ -33,7 +33,7 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   Consultant, so nothing is hidden by surprise. The choice is kept on the phone (`ra-level`), never in the URL. Mark
   content with `data-tier` or a `tier` field in the data (`shared/regional/DATA.md` §2b). **Doses, the LAST line,
   complications and the "If it goes wrong" guides are always MO level (tier 1)**: you may move safety content to a lower
-  tier, never to a higher one (`test/regional/levels.mjs` and `data.mjs` check). Old URLs and hashes must keep working; run `node test/regional/run-all.mjs`
+  tier, never to a higher one (`shared/regional/test/levels.mjs` and `data.mjs` check). Old URLs and hashes must keep working; run `node shared/regional/test/run-all.mjs`
   after changing any regional page.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
@@ -44,8 +44,8 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
 - The regional app (the regional pages above) works offline through one service worker at the site root, `/regional-sw.js`,
   registered by `shared/regional/js/offline.js`. After changing anything in the regional folders (or the shared `assets/`,
   `fonts/` or logo files they load) run `node shared/regional/tools/stamp.mjs`, which rewrites the file lists, `VERSION`
-  and `MEDIA` in `regional-sw.js` (`node test/regional/version.test.mjs` checks). Its version lines are at the foot of
-  `/blocks/` and on `/blocks/settings/`. Its offline test is `node test/regional/offline.e2e.mjs`; both run in `node test/regional/run-all.mjs`.
+  and `MEDIA` in `regional-sw.js` (`node shared/regional/test/version.test.mjs` checks). Its version lines are at the foot of
+  `/blocks/` and on `/blocks/settings/`. Its offline test is `node shared/regional/test/offline.e2e.mjs`; both run in `node shared/regional/test/run-all.mjs`.
 - Every regional page calls `initAppFeel({bar, search})` from `shared/regional/js/appnav.js` (and `mountRail()` except on
   `brachial-plexus/` and `plexus/`); import it under one URL (`appnav.js?v=…`). Anything that sticks under the bar uses
   `top: var(--ra-bar-now, var(--ra-bar, 56px))`, and a new region page goes into `REGION_NAV` in `appnav.js`. The regional app has two looks with identical
@@ -56,7 +56,7 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
   (from the home screen, or `/blocks/?app` for that tab, the link from `regional.html`); otherwise the website look is the default,
   and Settings > Look can force either. Every rule in `css/skin-app.css` must be under `html[data-skin="app"]`, the website look must
   stay pixel-identical (compare `ra-skin=web` screenshots at 390 and 1440 px), and after changing it run `node shared/regional/tools/stamp.mjs`
-  then `node test/regional/skin.mjs`. In the app look: nothing under 12px, buttons and block links at least 44px, links and buttons at
+  then `node shared/regional/test/skin.mjs`. In the app look: nothing under 12px, buttons and block links at least 44px, links and buttons at
   4.5:1, the top bar and tab bar fully opaque (text must not show through), no link in the wine dose card without an ivory colour;
   still no dark mode, and clinical colours are never recoloured. New regional pages need the skin script, the `skin-app.css` link and the manifest
   tags (`DATA.md` §1). Don't list the same page twice on `/blocks/`. The app can be

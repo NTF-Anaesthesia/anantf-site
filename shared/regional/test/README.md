@@ -8,9 +8,9 @@ page; `harness.html` is a blank page the suites use to load the app's modules.
 
 ```sh
 cd <repo> && python3 -m http.server 8765        # in one terminal (or in the background)
-node test/regional/run-all.mjs                   # every suite + the mo/ and babymo/ suites, one summary
-node test/regional/run-all.mjs --gate=main       # after each merge to main: static + version + smoke + deeplinks
-node test/regional/<suite>.mjs --pages=truncal/back/,spinal/   # one suite, some pages
+node shared/regional/test/run-all.mjs                   # every suite + the mo/ and babymo/ suites, one summary
+node shared/regional/test/run-all.mjs --gate=main       # after each merge to main: static + version + smoke + deeplinks
+node shared/regional/test/<suite>.mjs --pages=truncal/back/,spinal/   # one suite, some pages
 ```
 
 Needs the global Playwright with Chromium. For the accessibility check in `smoke.mjs`, set
@@ -35,12 +35,12 @@ Needs the global Playwright with Chromium. For the accessibility check in `smoke
 ## Baseline and allow-lists
 
 - `baseline/` holds the WP0 capture (text per chapter, scan step text, dose strings, smoke results) taken before any
-  harmonisation. `node test/regional/smoke.mjs --baseline` rewrites it: only ever before a change, never to make a test
+  harmonisation. `node shared/regional/test/smoke.mjs --baseline` rewrites it: only ever before a change, never to make a test
   pass.
 - `parity-allow.json` lists the reviewed differences from the baseline (renamed titles, removed dock text, citation lists
   the owner asked to hide). Each entry says why. `renames` allow a line to go only when its renamed version is on the
   page. Add entries in the PR that needs them, and never to let a clinical change through.
 - `data-allow.json` lists reviewed dose differences between a block page and the ops / planner / animation data
   (`{"doses": [{"key": "<allow key printed by data.mjs>", "why": "…"}]}`).
-- Every suite runs in the website look, as a visitor gets it. `RA_SKIN=app node test/regional/<suite>.mjs` runs it in the app look
+- Every suite runs in the website look, as a visitor gets it. `RA_SKIN=app node shared/regional/test/<suite>.mjs` runs it in the app look
   (smoke, deeplinks and levels pass in both; parity differs only in letter case, because the website look sets some headings in capitals).

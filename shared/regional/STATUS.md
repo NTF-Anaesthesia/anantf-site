@@ -1,7 +1,7 @@
 # Regional app: status (17 Oct 2026)
 
 **State.** Everything built so far is merged to `main` (pull request 147) and live; nothing is half-done in the code. The branch
-`release/regional-app-v2` keeps this version. All 13 suites in `node test/regional/run-all.mjs` pass.
+`release/regional-app-v2` keeps this version. All 13 suites in `node shared/regional/test/run-all.mjs` pass.
 
 **Next steps, in rough order** (the full backlog is in `ENGINE.md` §9):
 1. Real scan view on phones: after tapping Next the image can sit just above the screen. Fix by docking the picture or moving

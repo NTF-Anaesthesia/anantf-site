@@ -2,8 +2,8 @@
 // Regional anaesthesia app: run every QA suite (plan §11) and the existing suites that must stay green, then print one
 // summary. Exit code 1 if any suite fails.
 //
-//   node test/regional/run-all.mjs                 everything (≈ 10 min on a laptop)
-//   node test/regional/run-all.mjs --gate=main     the gate after each merge to main: static + version + smoke + deeplinks
+//   node shared/regional/test/run-all.mjs                 everything (≈ 10 min on a laptop)
+//   node shared/regional/test/run-all.mjs --gate=main     the gate after each merge to main: static + version + smoke + deeplinks
 //   options: --only=static,data   --skip=parity   --strict (smoke also fails on the polish targets)
 //            --out=<dir> (each suite's full log and JSON result is written there)
 //
@@ -15,17 +15,17 @@ import path from 'node:path';
 import { args, ROOT, ensureServer } from './lib.mjs';
 
 const SUITES = [
-  { id: 'la', cmd: ['test/regional/la.test.mjs'], what: 'local anaesthetic dose maths: maxima, mg/ml, lean weight, combined fraction, dose-box parsing' },
-  { id: 'static', cmd: ['test/regional/static.mjs'], what: 'shims unused, noindex, no FRCA, only the regional SW (regional paths only), no personal contacts, references exist' },
-  { id: 'version', cmd: ['test/regional/version.test.mjs'], what: 'regional-sw.js file lists, VERSION and MEDIA match the files (stamp)' },
-  { id: 'data', cmd: ['test/regional/data.mjs'], what: 'registry, ops keys, tiers + safety rule, plexus sets, scene ids, dose consistency, no cite(' },
-  { id: 'smoke', cmd: ['test/regional/smoke.mjs', ...(args.strict ? ['--strict'] : [])], what: '25 pages × 390/1440: errors, 4xx, overflow, scans, polish, lazy 3D/iframes, credit' },
-  { id: 'deeplinks', cmd: ['test/regional/deeplinks.mjs'], what: 'old URLs and hashes land on the right visible element; shims; redirects; edit.html' },
-  { id: 'levels', cmd: ['test/regional/levels.mjs'], what: 'MO / Resident / Consultant: hiding, hints, SAFETY at MO, persistence, migration, relax' },
-  { id: 'parity', cmd: ['test/regional/parity.mjs'], what: 'every WP0 baseline line and dose string still on its page (Consultant)' },
-  { id: 'appframe', cmd: ['test/regional/appframe.mjs'], what: 'app frame: Settings page and links, bar auto-hide, desktop rail, docked scan, keyboard, prefetch, view transitions' },
-  { id: 'skin', cmd: ['test/regional/skin.mjs'], what: 'two looks: skin resolution (home screen, /blocks/?app, settings), app look tab bar and no overflow, same content in both' },
-  { id: 'offline', cmd: ['test/regional/offline.e2e.mjs'], what: 'offline: /blocks/ and block pages render with no signal; other pages and apps untouched' },
+  { id: 'la', cmd: ['shared/regional/test/la.test.mjs'], what: 'local anaesthetic dose maths: maxima, mg/ml, lean weight, combined fraction, dose-box parsing' },
+  { id: 'static', cmd: ['shared/regional/test/static.mjs'], what: 'shims unused, noindex, no FRCA, only the regional SW (regional paths only), no personal contacts, references exist' },
+  { id: 'version', cmd: ['shared/regional/test/version.test.mjs'], what: 'regional-sw.js file lists, VERSION and MEDIA match the files (stamp)' },
+  { id: 'data', cmd: ['shared/regional/test/data.mjs'], what: 'registry, ops keys, tiers + safety rule, plexus sets, scene ids, dose consistency, no cite(' },
+  { id: 'smoke', cmd: ['shared/regional/test/smoke.mjs', ...(args.strict ? ['--strict'] : [])], what: '25 pages × 390/1440: errors, 4xx, overflow, scans, polish, lazy 3D/iframes, credit' },
+  { id: 'deeplinks', cmd: ['shared/regional/test/deeplinks.mjs'], what: 'old URLs and hashes land on the right visible element; shims; redirects; edit.html' },
+  { id: 'levels', cmd: ['shared/regional/test/levels.mjs'], what: 'MO / Resident / Consultant: hiding, hints, SAFETY at MO, persistence, migration, relax' },
+  { id: 'parity', cmd: ['shared/regional/test/parity.mjs'], what: 'every WP0 baseline line and dose string still on its page (Consultant)' },
+  { id: 'appframe', cmd: ['shared/regional/test/appframe.mjs'], what: 'app frame: Settings page and links, bar auto-hide, desktop rail, docked scan, keyboard, prefetch, view transitions' },
+  { id: 'skin', cmd: ['shared/regional/test/skin.mjs'], what: 'two looks: skin resolution (home screen, /blocks/?app, settings), app look tab bar and no overflow, same content in both' },
+  { id: 'offline', cmd: ['shared/regional/test/offline.e2e.mjs'], what: 'offline: /blocks/ and block pages render with no signal; other pages and apps untouched' },
   { id: 'mo-content', cmd: ['mo/guide/test/content.test.mjs'], what: 'existing suite: MO guide content', existing: true },
   { id: 'babymo-logic', cmd: ['babymo/test/logic.test.mjs'], what: 'existing suite: Baby MO logic', existing: true },
 ];

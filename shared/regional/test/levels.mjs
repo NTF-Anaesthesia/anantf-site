@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Regional anaesthesia app: MO / Resident / Consultant level system (plan §5, §11.3).
 //
-//   node test/regional/levels.mjs        options: --pages=truncal/back/,spinal/   --workers=4   --json=<file>   --failsOnly
+//   node shared/regional/test/levels.mjs        options: --pages=truncal/back/,spinal/   --workers=4   --json=<file>   --failsOnly
 //
 // Checks:
 //   1. every level page mounts one MO · Res · Con control (3 buttons ≥ 44 px, aria-label, exactly one pressed) at 390 and

@@ -4,7 +4,7 @@
 // Run after changing anything in the regional folders (blocks/, truncal/, head-neck/, lower-limb/, brachial-plexus/,
 // plexus/, spinal/, shared/regional/, shared/us/) or the shared site files they use:
 //     node shared/regional/tools/stamp.mjs          rewrites SHELL, SITE, VERSION and MEDIA in regional-sw.js
-//     node shared/regional/tools/stamp.mjs --check  only checks (test/regional/version.test.mjs); exits 1 if stale
+//     node shared/regional/tools/stamp.mjs --check  only checks (shared/regional/test/version.test.mjs); exits 1 if stale
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';

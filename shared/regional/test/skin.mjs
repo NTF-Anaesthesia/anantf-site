@@ -2,7 +2,7 @@
 // Regional anaesthesia app: the two skins, website look and app look (shared/regional/js/skin.js, css/skin-app.css,
 // the tab bar in js/appnav.js; ENGINE.md §2 "Skins").
 //
-//   node test/regional/skin.mjs        options: --base=<url>  --json=<file>  --failsOnly  --pages=a/,b/  --viewports=390,1440
+//   node shared/regional/test/skin.mjs        options: --base=<url>  --json=<file>  --failsOnly  --pages=a/,b/  --viewports=390,1440
 //
 // Checks:
 //   1. repository: every regional page carries the same inline skin script in its <head>, before its first stylesheet,
