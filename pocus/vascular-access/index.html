@@ -568,7 +568,7 @@ svg text{font-family:var(--mono)}
 </section>
 
 <!-- ============ 13 PROBE HANDLING ============ -->
-<section class="slide" data-min="2" data-title="Probe handling" data-prompt="Rotate to match the oblique vein, tilt toward the diving target. In Colour: steer to 0°, then invert the map. Ask why blue does not mean vein.">
+<section class="slide" data-min="2" data-title="Probe handling" data-prompt="Rotate to match the oblique vein, tilt toward the diving target. In Colour: tilt the probe to 0°, then invert the map. Ask why blue does not mean vein.">
   <div class="inner two">
     <div>
       <div class="kicker">10 · IV · Probe handling</div>
@@ -577,7 +577,7 @@ svg text{font-family:var(--mono)}
       <ul class="plist" id="phList">
         <li data-h="rot" class="on"><span class="num">↻</span><div><b>Rotate · For curved or oblique veins.</b><span>Don't fight the anatomy. Match the probe orientation to the segment you intend to puncture.</span></div></li>
         <li data-h="tilt"><span class="num">⟋</span><div><b>Tilt · When the vein dives deeper.</b><span>Adjust the probe angle to keep the target in the centre of the screen as it tracks deeper into tissue.</span></div></li>
-        <li data-h="col"><span class="num">◐</span><div><b>Colour · Confirm with the BART rule.</b><span>Blue Away, Red Towards. A non-pulsatile signal is your venous confirmation before you commit.</span></div></li>
+        <li data-h="col"><span class="num">◐</span><div><b>Colour · Confirm with the BART rule.</b><span>Blue Away from the probe, Red Towards it. In short axis, tilt the probe along the vessel to get a signal. A non-pulsatile signal is your venous confirmation before you commit.</span></div></li>
       </ul>
       <div class="callout" style="font-size:14.5px">Colour encodes direction relative to the probe under the selected map — not artery vs vein. Near 90° to the beam there is little Doppler shift, so <b>absence of colour does not mean absence of flow</b>. Combine with compressibility, pulsatility and anatomy.</div>
     </div>
@@ -2469,18 +2469,18 @@ scene($('#vmUS'), {
 /* =====================================================================
    SLIDE 13 — probe handling: rotate / tilt / colour
    ===================================================================== */
-const PH = { k: 'rot', rot: 0, tilt: 0, steer: 15 };
+const PH = { k: 'rot', rot: 0, tilt: 0, ctilt: 15 };
 function phCtrls() {
   const el = $('#phCtrls');
   if (PH.k === 'rot') el.innerHTML = '<label>Probe rotation <input type="range" id="phR" min="0" max="60" value="0"><output id="phRo"></output></label>';
   if (PH.k === 'tilt') el.innerHTML = '<label>Heel–toe tilt <input type="range" id="phT" min="-10" max="30" value="0"><output id="phTo"></output></label>';
-  if (PH.k === 'col') el.innerHTML = '<label>Colour-box steer <input type="range" id="phS" min="-20" max="20" value="15"><output id="phSo"></output></label><label><input type="checkbox" id="phInv"> Invert colour map</label>';
+  if (PH.k === 'col') el.innerHTML = '<label>Probe tilt along the vessel <input type="range" id="phS" min="-20" max="20" value="15"><output id="phSo"></output></label><label><input type="checkbox" id="phInv"> Invert colour map</label>';
   if (PH.k === 'col') { PH.inv = false; $('#phInv').onchange = e => PH.inv = e.target.checked; }
-  $('#phPov1').textContent = { rot: 'Top view · oblique vein', tilt: 'Side view · diving vein', col: 'Side view · beam vs flow' }[PH.k];
-  $('#phPov2').textContent = { rot: 'Ultrasound · long axis', tilt: 'Ultrasound · long axis', col: 'Colour Doppler · long axis' }[PH.k];
+  $('#phPov1').textContent = { rot: 'Top view · oblique vein', tilt: 'Side view · diving vein', col: 'Side view · probe tilt vs flow' }[PH.k];
+  $('#phPov2').textContent = { rot: 'Ultrasound · long axis', tilt: 'Ultrasound · long axis', col: 'Colour Doppler · short axis' }[PH.k];
   if (PH.k === 'rot') rng('phR', 'phRo', v => v + '°', v => PH.rot = v);
   if (PH.k === 'tilt') rng('phT', 'phTo', v => v + '°', v => PH.tilt = v);
-  if (PH.k === 'col') rng('phS', 'phSo', v => (v > 0 ? '+' : '') + v + '°', v => PH.steer = v);
+  if (PH.k === 'col') rng('phS', 'phSo', v => (v > 0 ? '+' : '') + v + '°', v => PH.ctilt = v);
 }
 $('#phList').addEventListener('click', e => { const li = e.target.closest('li'); if (!li) return; $$('#phList li').forEach(x => x.classList.toggle('on', x === li)); PH.k = li.dataset.h; PH.built = null; phCtrls(); });
 phCtrls();
@@ -2491,7 +2491,8 @@ scene($('#phUS'), {
     const base = { seed: 101, fat: [1.3, 4.5], fascia: [4.6], muscle: [[4.8, 60, 96]], bones: [{ x: 0, y: 14 + 60, rx: 400, ry: 60 }] };
     if (PH.k === 'rot') base.vessels = [{ kind: 'v', x: 0, y: 6, r: 1.6, rx: 200 }];
     if (PH.k === 'tilt') base.vessels = [{ kind: 'v', x: 0, y: 7, r: 1.5, rx: 200, rot: 0 }];
-    if (PH.k === 'col') { base.vessels = [{ kind: 'v', x: 0, y: 4.2, r: 1.4, rx: 200 }, { kind: 'a', x: 0, y: 10, r: 1.5, rx: 200 }]; base.fat = [1.3, 3]; base.fascia = [7.4]; }
+    // Colour is taught in short axis: vessels cut transversely, flow runs through the image plane.
+    if (PH.k === 'col') { base.vessels = [{ kind: 'v', x: -5, y: 4.5, r: 1.6, rx: 1.6 }, { kind: 'a', x: 5, y: 6.5, r: 1.3, rx: 1.3 }]; base.fat = [1.3, 3]; base.fascia = [8.4]; }
     this.A = base; this.v.scene = anatScene(base);
   },
   frame(t) {
@@ -2521,9 +2522,11 @@ scene($('#phUS'), {
       v.render(t);
       setStat('phStat', Math.abs(alpha - PH.tilt) < 4 ? '<span class="ok">Beam square to the vein:</span> bright, crisp walls and the vein sits across the centre of the screen.' : `Vein runs ${Math.round(alpha - PH.tilt)}° across the screen and its walls fade (off-perpendicular). Tilt to keep the target centred as it dives.`);
     } else {
-      const st = PH.steer * D2R;
+      // Tilting the probe along the vessel gives the beam a component along the flow. Positive tilt leans the beam
+      // the way the vein flows, so vein flow runs away from the probe (blue) and the artery's runs towards it (red).
+      const st = PH.ctilt * D2R;
       v.scene.color = (cx, tt) => {
-        cx.save(); cx.beginPath(); cx.moveTo(-8 + 1 * Math.tan(st), 1); cx.lineTo(8 + 1 * Math.tan(st), 1); cx.lineTo(8 + 14 * Math.tan(st), 14); cx.lineTo(-8 + 14 * Math.tan(st), 14); cx.closePath();
+        cx.save(); cx.beginPath(); cx.rect(-11, 1, 22, 10);
         cx.strokeStyle = 'rgba(220,220,220,.8)'; cx.lineWidth = .1; cx.stroke(); cx.clip();
         const r = RNG(Math.floor(tt * 30)), comp = -Math.sin(st) * (PH.inv ? -1 : 1);
         dopplerFill(cx, A.vessels[0]._G, .55 * comp * (1 + .15 * Math.sin(tt * 1.3)) * 1.6, r);
@@ -2531,16 +2534,18 @@ scene($('#phUS'), {
         cx.restore();
       };
       v.scene.overlay = (cx) => { const x = v.W - 40, y = 60; const g = cx.createLinearGradient(0, y, 0, y + 100); const top = PH.inv ? ['#00ccff', '#1030d0'] : ['#ffcc00', '#d01010'], bot = PH.inv ? ['#d01010', '#ffcc00'] : ['#1030d0', '#00ccff']; g.addColorStop(0, top[0]); g.addColorStop(.3, top[1]); g.addColorStop(.5, '#000'); g.addColorStop(.7, bot[0]); g.addColorStop(1, bot[1]); if (PH.inv) { cx.fillStyle = '#ffd678'; cx.font = '600 11px ui-monospace,Menlo,monospace'; cx.fillText('MAP INVERTED', x - 92, y - 10); } cx.fillStyle = g; cx.fillRect(x, y, 8, 100); cx.fillStyle = '#cdd'; cx.font = '10px ui-monospace,Menlo,monospace'; cx.fillText('+', x - 10, y + 8); cx.fillText('−', x - 10, y + 98); };
-      // side diagram
-      c.font = '11px ui-monospace,Menlo,monospace'; c.fillStyle = '#2a241d'; c.fillText('BART · Blue Away, Red Towards', 10, 18);
-      c.fillStyle = '#f3d488'; c.fillRect(0, 60, 360, 240);
-      c.fillStyle = PAL.veinLum; c.fillRect(0, 110, 360, 26); c.fillStyle = PAL.artLum; c.fillRect(0, 200, 360, 26);
-      c.fillStyle = '#fff'; c.font = '600 12px ui-monospace,Menlo,monospace'; c.fillText('vein → toward heart', 20, 127); c.fillText('← artery (pulsatile)', 190, 217);
-      c.save(); c.translate(180, 60); c.fillStyle = PAL.probe; c.beginPath(); c.roundRect(-80, -24, 160, 24, 6); c.fill();
-      c.strokeStyle = 'rgba(80,190,230,.8)'; c.lineWidth = 1.5; for (const k of [-50, 0, 50]) { c.beginPath(); c.moveTo(k, 0); c.lineTo(k + 220 * Math.tan(st), 220); c.stroke(); }
+      // side diagram: the vessels in long section, the short-axis probe seen edge-on and tilted along them
+      c.fillStyle = '#f3d488'; c.fillRect(0, 60, 360, 240); c.fillStyle = PAL.derm; c.fillRect(0, 60, 360, 8);
+      c.font = '11px ui-monospace,Menlo,monospace'; c.fillStyle = '#2a241d'; c.fillText('BART · Blue Away, Red Towards (the probe)', 10, 288);
+      c.fillStyle = PAL.veinLum; c.fillRect(0, 110, 360, 26); c.fillStyle = PAL.artLum; c.fillRect(0, 180, 360, 22);
+      c.fillStyle = '#fff'; c.font = '600 12px ui-monospace,Menlo,monospace'; c.fillText('vein  → → →', 14, 127); c.fillText('← ← ←  artery (pulsatile)', 150, 195);
+      c.save(); c.translate(180, 60); c.rotate(-st);
+      c.strokeStyle = 'rgba(80,190,230,.9)'; c.lineWidth = 2; c.setLineDash([6, 4]); c.beginPath(); c.moveTo(0, 0); c.lineTo(0, 235); c.stroke(); c.setLineDash([]);
+      c.fillStyle = PAL.probe; c.beginPath(); c.roundRect(-13, -62, 26, 62, 5); c.fill();
       c.restore();
       v.render(t);
-      if (PH.inv) setStat('phStat', `<span class="warn">Colour map inverted:</span> the same flow now shows the opposite colours. BART only holds on the conventional map — always check the colour bar.`); else setStat('phStat', Math.abs(PH.steer) < 4 ? '<span class="warn">Beam perpendicular to flow → almost no Doppler shift.</span> Steer the box (or angle the probe) to get a signal.' : `Box steered ${PH.steer > 0 ? 'toward the hand' : 'toward the shoulder'}: the vein reads <b>${PH.steer > 0 ? 'blue (away)' : 'red (towards)'}</b>, steady and <b>non-pulsatile</b>; the artery flashes the opposite colour with every beat. Colour depends on direction relative to the beam — not on artery vs vein.`);
+      const deg = Math.abs(PH.ctilt);
+      if (PH.inv) setStat('phStat', `<span class="warn">Colour map inverted:</span> the same flow now shows the opposite colours. BART only holds on the conventional map — always check the colour bar.`); else setStat('phStat', deg < 4 ? '<span class="warn">Probe upright: the beam is perpendicular to flow, so there is almost no Doppler shift.</span> Tilt the probe along the vessel to get a signal.' : `Probe tilted ${deg}°: vein flow runs <b>${PH.ctilt > 0 ? 'away from' : 'towards'}</b> the probe, so the vein reads <b>${PH.ctilt > 0 ? 'blue' : 'red'}</b>, steady and <b>non-pulsatile</b>. The artery flows the other way and flashes the opposite colour with every beat. Colour shows direction relative to the probe, not artery vs vein.`);
     }
   }
 });
