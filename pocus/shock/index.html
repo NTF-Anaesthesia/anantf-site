@@ -387,9 +387,9 @@ canvas.draw{touch-action:none;cursor:crosshair}
   <div class="inner">
     <div class="kicker">03 · The HI-MAP tour</div>
     <h2>Where the probe goes, and what normal and abnormal look like.</h2>
-    <p class="lede" style="margin-bottom:12px">Click (or Tab to and press Enter on) each probe station. Each opens a schematic sonogram with a Normal / Abnormal toggle and a link to the page that teaches it in detail.</p>
+    <p class="lede" style="margin-bottom:12px">Select a probe station (or Tab + Enter): schematic sonogram, Normal / Abnormal toggle, link to the detailed page.</p>
     <div class="two even" style="gap:24px">
-      <div class="panel"><div class="svgbox torso" id="tourTorso"></div><div class="mini">Dot = probe marker. H and I: cardiac preset, marker to the patient's left (H) or head (I), screen marker on the right. M and P: marker to the head. A and legs: transverse, marker to the patient's right (abdominal preset, screen marker on the left). The blue dot on each sonogram shows the screen marker.</div></div>
+      <div class="panel"><div class="svgbox torso" id="tourTorso"></div><div class="mini">Dot = probe marker. H, I: cardiac preset, marker to patient's left (H) or head (I), screen marker right. M, P: marker to head. A, legs: transverse, marker to patient's right (abdominal preset, screen marker left). Blue dot = screen marker.</div></div>
       <div class="panel">
         <div class="pov" id="tourPov">H · Subxiphoid 4-chamber</div>
         <div class="ctrls" style="margin:0 0 8px"><div class="seg" id="tourSeg" role="group" aria-label="Finding"></div><label class="tgl" id="tourBlW" hidden><input type="checkbox" id="tourBl"> B-lines</label><button class="btn ghost" id="tourPress" aria-pressed="false" hidden>Compress</button></div>
@@ -408,16 +408,16 @@ canvas.draw{touch-action:none;cursor:crosshair}
     <div>
       <div class="kicker">04 · Pump</div>
       <h2>Three questions of the heart, not a full echo.</h2>
-      <p class="lede">The focused cardiac scan answers yes/no questions (FoCUS: Spencer 2013; WINFOCUS international recommendations, Via 2014). Full detail is on the <a href="../cardiac/">Cardiac page</a>.</p>
+      <p class="lede">FoCUS answers yes/no questions (Spencer 2013; WINFOCUS, Via 2014). Detail: <a href="../cardiac/">Cardiac page</a>.</p>
       <div class="card"><div class="cap">1 · Is there a pericardial effusion, and is it causing tamponade?</div>
         <ul>
-          <li>Effusion: an anechoic space between the pericardium and the heart. In PLAX, a pericardial effusion runs <b class="ink">in front of</b> the descending thoracic aorta. A pleural effusion runs <b class="ink">behind</b> it.</li>
-          <li>Tamponade signs: <b class="ink">RA collapse in systole</b> (sensitive, appears early), <b class="ink">RV free-wall collapse in early diastole</b> (more specific), and a <b class="ink">plethoric IVC</b> with little respiratory variation (sensitive, not specific).</li>
-          <li>Tamponade is a <b class="ink">clinical-plus-echo diagnosis</b>. A small effusion in a shocked patient may be incidental. A fast-collecting small effusion (after trauma, cardiac surgery or a procedure) can tamponade.</li>
-          <li>Pitfall: an epicardial fat pad (seen at the front only, speckled, moves with the heart) is not an effusion.</li>
+          <li>Effusion: anechoic space around the heart. In PLAX, pericardial runs <b class="ink">in front of</b> the descending aorta; pleural runs <b class="ink">behind</b> it.</li>
+          <li>Tamponade: <b class="ink">RA systolic collapse</b> (sensitive, early), <b class="ink">RV free-wall early-diastolic collapse</b> (more specific), <b class="ink">plethoric IVC</b> with little respiratory variation (sensitive, not specific).</li>
+          <li>Tamponade is a <b class="ink">clinical-plus-echo diagnosis</b>. A small effusion in shock may be incidental; a small, fast-collecting one (trauma, cardiac surgery, procedure) can tamponade.</li>
+          <li>Pitfall: epicardial fat pad (anterior only, speckled, moves with the heart) is not an effusion.</li>
         </ul></div>
       <div class="card"><div class="cap">2 · How is the LV squeezing?</div>
-        <p>Start with a multi-view visual assessment: <b class="ink">hyperdynamic</b> (walls nearly meet at end-systole) / <b class="ink">normal</b> / <b class="ink">reduced</b> / <b class="ink">severely reduced</b>. Trained emergency and critical care clinicians agree well with formal echo on this. Hyperdynamic with a small cavity fits hypovolaemia, early distributive shock, or an under-filled LV behind an RV obstruction.</p></div>
+        <p>Multi-view visual estimate: <b class="ink">hyperdynamic</b> (walls nearly meet at end-systole) / <b class="ink">normal</b> / <b class="ink">reduced</b> / <b class="ink">severely reduced</b>. Trained EM and ICU clinicians agree well with formal echo. Hyperdynamic + small cavity: hypovolaemia, early distributive shock, or LV underfilled behind an RV obstruction.</p></div>
     </div>
     <div>
       <div class="panel">
@@ -428,11 +428,11 @@ canvas.draw{touch-action:none;cursor:crosshair}
       </div>
       <div class="card" style="margin-top:12px"><div class="cap">3 · Is the RV dilated?</div>
         <ul>
-          <li>Bedside heuristic: in A4C the RV is normally about two-thirds of LV size, and <b class="ink">RV ≥ LV</b> means it is significantly dilated. Formal ASE cut-offs (Lang 2015; ASE right heart guideline 2025): RV basal diameter ≥ 41 mm is above the 2025 normal range; TAPSE ≤ 17 mm is outside its normal range. Neither measurement alone defines RV failure. Avoid a foreshortened or off-axis A4C, which falsely enlarges the RV. In PSAX, a <b class="ink">D-shaped LV</b> shows septal flattening from RV pressure or volume overload.</li>
-          <li>In shock, RV dilatation with a small LV requires urgent assessment for <b class="ink">RV pressure loading or failure</b>. Causes include PE, acute cor pulmonale, ventilatory effects and RV infarction. Compare prior imaging and the clinical context. A thick RV wall supports chronic loading; a thin wall does not establish an acute cause or diagnose PE.</li>
-          <li>McConnell's sign (RV free wall moving poorly while the apex still contracts) suggests acute PE but is not sensitive, and is also seen in RV infarction. Use it as supportive, not diagnostic.</li>
+          <li>Bedside: in A4C the RV is normally about two-thirds of the LV; <b class="ink">RV ≥ LV</b> = significantly dilated. ASE (Lang 2015; right heart guideline 2025): basal diameter ≥ 41 mm is above the 2025 normal range; TAPSE ≤ 17 mm is outside normal. Neither alone defines RV failure. A foreshortened or off-axis A4C falsely enlarges the RV. PSAX <b class="ink">D-shaped LV</b> = septal flattening from RV pressure or volume overload.</li>
+          <li>In shock, dilated RV + small LV needs urgent assessment for <b class="ink">RV pressure loading or failure</b>: PE, acute cor pulmonale, ventilation, RV infarction. Compare prior imaging and context. A thick RV wall supports chronic loading; a thin wall neither proves an acute cause nor diagnoses PE.</li>
+          <li>McConnell's sign (poor RV free wall, apex still contracting): suggests acute PE; not sensitive; also in RV infarction. Supportive, not diagnostic.</li>
         </ul></div>
-      <p class="mini" style="margin-top:10px"><b>Also look for:</b> a dilated aortic root (&gt; 4 cm in PLAX) or an intimal flap (dissection), and gross valve failure (flail leaflet, torrential regurgitation). Both need formal echo. A small, hyperdynamic LV on inotropes can cause <b>dynamic LV outflow tract obstruction</b> (systolic anterior motion of the mitral valve): confirm the mechanism with expert echo and Doppler. Additional inotropy can worsen obstruction. Adjust inotropes, vascular tone and preload to the confirmed physiology; fluid requires a perfusion indication and assessment of congestion.</p>
+      <p class="mini" style="margin-top:10px"><b>Also look for:</b> aortic root &gt; 4 cm in PLAX or an intimal flap (dissection); gross valve failure (flail leaflet, torrential regurgitation). Both need formal echo. A small hyperdynamic LV on inotropes can cause <b>dynamic LVOT obstruction</b> (mitral SAM): confirm with expert echo and Doppler. More inotropy can worsen it. Adjust inotropes, vascular tone and preload to the confirmed physiology; fluid needs a perfusion indication and a congestion check.</p>
     </div>
   </div>
 </section>
@@ -443,7 +443,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
     <div>
       <div class="kicker">05 · Tank (I): the IVC</div>
       <h2>A pressure gauge, not a fluid-responsiveness test.</h2>
-      <p class="lede" style="font-size:16.5px">Subxiphoid long axis. Show the IVC entering the RA; measure about 1–2 cm caudal to the RA junction (just caudal to where the hepatic vein joins), at right angles to the vessel walls. M-mode helps.</p>
+      <p class="lede" style="font-size:16.5px">Subxiphoid long axis, IVC entering the RA. Measure 1–2 cm caudal to the RA junction (just caudal to the hepatic vein), perpendicular to the walls. M-mode helps.</p>
       <div class="cap">Spontaneous breathing: estimating RAP (ASE: Rudski 2010, Lang 2015)</div>
       <div class="tw"><table class="t sm" id="rapT"><thead><tr><th>IVC diameter</th><th>Collapse with sniff</th><th>Estimated RAP</th></tr></thead><tbody>
         <tr data-k="3"><td>≤ 2.1 cm</td><td>&gt; 50%</td><td>3 mmHg (0 to 5)</td></tr>
@@ -452,12 +452,12 @@ canvas.draw{touch-action:none;cursor:crosshair}
       </tbody></table></div>
       <div class="card" style="margin-top:12px"><div class="cap">How to read it</div>
         <ul>
-          <li>A <b class="ink">small, collapsing IVC</b> in a shocked patient suggests low RAP. This can fit hypovolaemic or distributive physiology, but does not establish a fluid indication, responsiveness or tolerance.</li>
-          <li>A <b class="ink">plethoric, fixed IVC</b> suggests high RAP: tamponade, PE, tension pneumothorax, RV failure, or fluid overload. It does not by itself establish whether stroke volume will increase with fluid. Consider congestion, the cause of raised RAP and a valid dynamic flow test.</li>
-          <li><b class="ink">Not a reliable predictor of fluid responsiveness in the spontaneously breathing patient.</b> The middle range tells you little.</li>
-          <li><b class="ink">On positive-pressure ventilation</b> the pattern reverses: the IVC distends on inspiration. A distensibility index &gt; 18% predicted fluid responsiveness in Barbier 2004 (sedated, passively ventilated septic patients, tidal volume about 8.5 mL/kg). Performance is poor at lung-protective tidal volumes (6 mL/kg), with spontaneous breathing effort, or with raised intra-abdominal pressure. A dilated IVC on the ventilator is common and less meaningful; a small IVC is still informative.</li>
+          <li><b class="ink">Small, collapsing IVC</b> in shock: low RAP. Fits hypovolaemic or distributive physiology; does not establish fluid indication, responsiveness or tolerance.</li>
+          <li><b class="ink">Plethoric, fixed IVC</b>: high RAP (tamponade, PE, tension pneumothorax, RV failure, overload). Does not tell you whether stroke volume will rise with fluid. Consider congestion, the cause, and a valid dynamic flow test.</li>
+          <li><b class="ink">Unreliable for fluid responsiveness when spontaneously breathing.</b> The middle range tells you little.</li>
+          <li><b class="ink">On positive-pressure ventilation</b> the pattern reverses: the IVC distends on inspiration. Distensibility &gt; 18% predicted responsiveness in Barbier 2004 (sedated, passively ventilated, septic, tidal volume about 8.5 mL/kg). Poor at lung-protective 6 mL/kg, with spontaneous effort or raised intra-abdominal pressure. A dilated IVC on the ventilator is common and less meaningful; a small one is still informative.</li>
         </ul></div>
-      <p class="mini" style="margin-top:10px"><b>Pitfalls:</b> the cylinder effect (scanning off-centre underestimates the diameter); the aorta mistaken for the IVC; raised intra-abdominal pressure; severe TR; athletes with large IVCs; a forceful sniff exaggerating collapse. If the subxiphoid window is poor, the internal jugular vein (Perera's original RUSH 'Tank') is an alternative gauge of venous pressure. Explore <a href="../haemodynamics/">flow and fluid assessment →</a>.</p>
+      <p class="mini" style="margin-top:10px"><b>Pitfalls:</b> cylinder effect (off-centre underestimates diameter); aorta mistaken for IVC; raised intra-abdominal pressure; severe TR; athletes (large IVC); forceful sniff exaggerating collapse. Poor subxiphoid window: the internal jugular vein (Perera's original 'Tank') is an alternative gauge. <a href="../haemodynamics/">Flow and fluids →</a></p>
     </div>
     <div class="demo">
       <div class="panel">
@@ -469,7 +469,7 @@ canvas.draw{touch-action:none;cursor:crosshair}
           <button class="btn" id="ivcMeas" aria-pressed="false">Measure</button>
         </div>
         <div class="status big" id="ivcStat" aria-live="polite"></div>
-        <div class="mini">Schematic teaching simulation, not a real scan. Diameters and collapse values are illustrative, chosen to fall in the ASE categories.</div>
+        <div class="mini">Schematic teaching simulation. Values are illustrative, set to fall in the ASE categories.</div>
       </div>
     </div>
   </div>
@@ -482,18 +482,18 @@ canvas.draw{touch-action:none;cursor:crosshair}
       <div class="kicker">06 · Tank (II): leaks and overload</div>
       <h2>Free fluid, pleural fluid, B-lines, pneumothorax.</h2>
       <div class="card"><div class="cap">Leaking tank: free fluid (eFAST views)</div>
-        <p>Morison's pouch (the most dependent upper-abdominal space when supine, and the most sensitive single view), the splenorenal and subphrenic spaces, and the pelvis. See <a href="../efast/">eFAST</a>.</p>
+        <p>Morison's pouch (most dependent upper-abdominal space supine; most sensitive single view), splenorenal and subphrenic spaces, pelvis. See <a href="../efast/">eFAST</a>.</p>
         <ul>
-          <li>In <b class="ink">trauma</b>, free fluid plus shock means <b class="ink">haemorrhage</b> until proven otherwise.</li>
-          <li>In non-trauma, think about ruptured ectopic pregnancy (any woman of reproductive age), ascites (chronic, and may be the sepsis source: spontaneous bacterial peritonitis), or ruptured viscus.</li>
-          <li>A negative FAST does <b class="ink">not</b> exclude bleeding: small volumes, retroperitoneal bleeding (pelvic fracture, AAA) and early scans can all be missed. Repeat the scan.</li>
+          <li><b class="ink">Trauma</b> + free fluid + shock = <b class="ink">haemorrhage</b> until proven otherwise.</li>
+          <li>Non-trauma: ruptured ectopic (any woman of reproductive age), ascites (may be the sepsis source: spontaneous bacterial peritonitis), ruptured viscus.</li>
+          <li>A negative FAST does <b class="ink">not</b> exclude bleeding: small volumes, retroperitoneal bleeds (pelvic fracture, AAA) and early scans are missed. Repeat it.</li>
         </ul></div>
-      <div class="card"><div class="cap">Pleural spaces</div><p>At the bases, look for the <b class="ink">spine sign</b> (vertebral bodies seen above the diaphragm through fluid) and an anechoic collection above the diaphragm: haemothorax, heart failure, empyema.</p></div>
+      <div class="card"><div class="cap">Pleural spaces</div><p>At the bases: <b class="ink">spine sign</b> (vertebrae visible above the diaphragm through fluid) and anechoic fluid above the diaphragm: haemothorax, heart failure, empyema.</p></div>
       <div class="card"><div class="cap">Overloaded tank: B-lines (Volpicelli 2012)</div>
         <ul>
-          <li>≥ 3 B-lines in an intercostal space = a positive region. <b class="ink">Bilateral, diffuse</b> positive regions = interstitial syndrome. With poor LV contraction and raised right-sided pressure, this can support a <b class="ink">cardiogenic congestion component</b>, but does not exclude mixed or non-cardiogenic disease.</li>
-          <li>B-lines are <b class="ink">not specific</b>: ARDS, pneumonia and fibrosis also cause them. Patchy distribution, pleural-line irregularity and spared areas point to non-cardiogenic causes. Detail on the <a href="../lung/">Lung page</a>.</li>
-          <li>New B-lines appearing during fluid resuscitation are a reason to <b class="ink">pause and reassess tolerance</b> (the FALLS-protocol idea, Lichtenstein).</li>
+          <li>≥ 3 B-lines per intercostal space = positive region. <b class="ink">Bilateral, diffuse</b> = interstitial syndrome. With poor LV and raised right-sided pressure, supports a <b class="ink">cardiogenic congestion component</b>; does not exclude mixed or non-cardiogenic disease.</li>
+          <li><b class="ink">Not specific</b>: ARDS, pneumonia, fibrosis. Patchy distribution, irregular pleural line and spared areas suggest non-cardiogenic. See <a href="../lung/">Lung page</a>.</li>
+          <li>New B-lines during fluid resuscitation: <b class="ink">pause and reassess tolerance</b> (FALLS protocol, Lichtenstein).</li>
         </ul></div>
     </div>
     <div>
@@ -503,13 +503,13 @@ canvas.draw{touch-action:none;cursor:crosshair}
         <div class="capx" id="t2Cap"></div>
         <div class="mini">Schematic teaching simulation, not a real scan.</div>
       </div>
-      <figure class="shock-real-clip"><h3>A real scan: free fluid</h3><video controls playsinline preload="none" poster="../media/fast-free-fluid.jpg" aria-label="Published ultrasound clip showing free fluid beside the liver and kidney"><source src="../media/fast-free-fluid.mp4" type="video/mp4">Your browser does not support embedded video. <a href="../media/fast-free-fluid.mp4">Open the clip →</a></video><figcaption>Free fluid beside the liver and kidney in a published trauma example. Ultrasound identifies fluid, not its composition. A negative FAST does not exclude bleeding or retroperitoneal injury.<p class="clip-credit">Gillman et al., 2009, supplementary clip 1 · <a href="https://doi.org/10.1186/1757-7241-17-34">Source</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. Transcoded and display proportions normalised; audio removed. <a href="../media/">Browse the real-scan library →</a></p></figcaption></figure>
+      <figure class="shock-real-clip"><h3>A real scan: free fluid</h3><video controls playsinline preload="none" poster="../media/fast-free-fluid.jpg" aria-label="Published ultrasound clip showing free fluid beside the liver and kidney"><source src="../media/fast-free-fluid.mp4" type="video/mp4">Your browser does not support embedded video. <a href="../media/fast-free-fluid.mp4">Open the clip →</a></video><figcaption>Free fluid beside liver and kidney (published trauma example). Ultrasound shows fluid, not its composition.<p class="clip-credit">Gillman et al., 2009, supplementary clip 1 · <a href="https://doi.org/10.1186/1757-7241-17-34">Source</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. Transcoded and display proportions normalised; audio removed. <a href="../media/">Browse the real-scan library →</a></p></figcaption></figure>
       <div class="card" style="margin-top:12px"><div class="cap">Pneumothorax (the P in HI-MAP): least dependent anterior chest</div>
         <ul>
-          <li><b class="ink">Lung sliding, B-lines or a lung pulse at the probe = no pneumothorax at that point</b> (high negative predictive value).</li>
+          <li><b class="ink">Sliding, B-lines or lung pulse at the probe = no pneumothorax there</b> (high negative predictive value).</li>
           <li><b class="ink">No sliding</b> is not specific: mainstem intubation, apnoea, pleurodesis, adhesions, bullae, ARDS.</li>
-          <li>A true <b class="ink">lung point</b> supports pneumothorax. Bullae and other interfaces can mimic it; recognise the transition, check adjacent areas and interpret the clinical context.</li>
-          <li>Tension pneumothorax is a <b class="ink">clinical diagnosis</b>. When clinical tension is strongly suspected (haemodynamic collapse with unilateral chest findings, hypoxia or rising airway pressures), decompress immediately; an IVC or lung sign is not a prerequisite. Do not hunt for a lung point first. If time allows, check the tube position and look for a lung pulse.</li>
+          <li>A true <b class="ink">lung point</b> supports pneumothorax; bullae and other interfaces can mimic it. Check adjacent areas and context.</li>
+          <li>Tension pneumothorax is a <b class="ink">clinical diagnosis</b>. If strongly suspected (collapse with unilateral chest signs, hypoxia or rising airway pressures), decompress now; no IVC or lung sign is needed. Don't hunt for a lung point. If time allows, check tube position and look for a lung pulse.</li>
         </ul></div>
     </div>
   </div>
