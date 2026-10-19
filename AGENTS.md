@@ -53,7 +53,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
   their `noindex` tags.
 - Regional pages are one app (app bar, credit line at the foot, MO · Resident · Consultant levels). Doses, the LAST line,
   complications and "If it goes wrong" guides are always MO level (tier 1). Old URLs and hashes must keep working.
-- Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/. Dr Koh Wen Jun maintains the regional anaesthesia section, including Dr Chew's regional pages (agreed Oct 2026); his other pages still need his say-so.
+- Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/. This guards against others removing them; Dr Chew may remove his own (the POCUS pages carry none, by his decision, Oct 2026). Dr Koh Wen Jun maintains the regional anaesthesia section, including Dr Chew's regional pages (agreed Oct 2026); his other pages still need his say-so.
 - No personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
 - Question changes suggested by faculty: list what would change and wait for the owner's go-ahead before merging.
   Never change or reuse a question `id`; retire with `status: archived`.
