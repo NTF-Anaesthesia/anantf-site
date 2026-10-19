@@ -17,9 +17,11 @@ try{
     assert.ok(Math.max(m.w/s.w,m.h/s.h)>.72,`${label}: screen should use the available stage`);
     assert.ok(m.x>=s.x-2&&m.y>=s.y-2&&m.right<=s.right+2&&m.bottom<=s.bottom+2,`${label}: entire monitor fits`);
     if(width>1100&&skin==='sedline'){
-     // portrait SedLine: full-height monitor on the left, the dock on top of the right column, the notes under it
-     assert.ok(dock.x>=dim.device.right+14&&dim.notes.x>=dim.device.right+14,`${label}: dock and notes in the right column`);
-     assert.ok(dim.notes.y>=dock.bottom-1,`${label}: notes under the dock`);
+     // portrait SedLine: full-height monitor on the left; the right column has the title, the notes, then the dock at the bottom
+     const head=await page.evaluate(()=>document.querySelector('#monitor .monhead').getBoundingClientRect().toJSON());
+     assert.ok(dock.x>=dim.device.right+14&&dim.notes.x>=dim.device.right+14&&head.x>=dim.device.right+14,`${label}: title, notes and dock in the right column`);
+     assert.ok(dim.notes.y>=head.bottom-1&&dock.y>=dim.notes.bottom-1,`${label}: title, notes, dock from top to bottom`);
+     assert.ok(Math.abs(dim.device.y-head.y)<12,`${label}: monitor starts level with the title`);
      assert.ok(dim.device.h>=s.h*.95,`${label}: SedLine uses the full height (${dim.device.h} of ${s.h})`);
     }else if(width>1100){
      // the column is the device's width, or the dock's 600 px minimum for a narrow device (SedLine), so the controls never overlap
