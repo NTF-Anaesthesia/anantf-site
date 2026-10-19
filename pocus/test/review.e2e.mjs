@@ -19,19 +19,13 @@ try {
     assert.equal(await page.locator('.slide.active').count(),1,`${slug} section ${i+1}`);
     assert.equal(await page.locator('.slide.active').getAttribute('aria-hidden'),'false');
    }
-   // Part model: picker grouped by part, values unchanged, contents rows still one per section and in order.
-   const nav=await page.evaluate(()=>({parts:(window.POCUS_PARTS||[]).length,groups:document.querySelectorAll('#course-section optgroup').length,values:[...document.querySelectorAll('#course-section option')].map(o=>o.value),rows:document.querySelectorAll('#ovGrid button').length,firstNextPart:(window.POCUS_PARTS||[])[1]?.start}));
-   assert.ok(nav.parts>1,`${slug} has parts`);
-   assert.equal(nav.groups,nav.parts,`${slug} optgroups match parts`);
+   // One continuous deck: a flat picker (no part groups or part buttons), one contents row per section, in order.
+   const nav=await page.evaluate(()=>({groups:document.querySelectorAll('#course-section optgroup').length,values:[...document.querySelectorAll('#course-section option')].map(o=>o.value),rows:document.querySelectorAll('#ovGrid button').length,partUi:document.querySelectorAll('.course-parts,.course-rail,.course-where,.course-ov-index').length,cnt:document.querySelector('#cnt')?.getClientRects().length||0}));
+   assert.equal(nav.groups,0,`${slug} picker is flat`);
+   assert.equal(nav.partUi,0,`${slug} has no part navigation`);
+   assert.ok(nav.cnt>0,`${slug} shows the section counter`);
    assert.deepEqual(nav.values,Array.from({length:count},(_,i)=>String(i)));
    assert.equal(nav.rows,count,`${slug} contents rows`);
-   // [ and ] move between parts.
-   await page.locator('#course-section').selectOption('0');
-   await page.evaluate(()=>document.activeElement?.blur());
-   await page.keyboard.press(']');
-   await page.waitForFunction(i=>document.querySelectorAll('.slide')[i].classList.contains('active'),nav.firstNextPart);
-   await page.keyboard.press('[');
-   await page.waitForFunction(()=>document.querySelectorAll('.slide')[0].classList.contains('active'));
    // ? opens the shortcut panel; Escape closes it.
    await page.keyboard.press('?');
    assert.equal(await page.locator('.course-keys').isVisible(),true,`${slug} shortcut panel`);
@@ -101,7 +95,6 @@ try {
     assert.doesNotMatch((await page.locator('.series-results').innerText().catch(()=>'')),/negative for PE/i,'hidden answers stay out of search snippets');
     assert.equal(await page.evaluate(()=>document.activeElement?.id),'series-search');
     await page.locator('#series-search').fill('');
-    assert.equal(await page.evaluate(()=>[...document.querySelectorAll('.course-ov-index button[aria-current]')].map(b=>b.getAttribute('aria-current')).join()),'true');
     await page.keyboard.press('Escape');
     // An old numeric link must still open the original RV section after new sections are inserted.
     await page.goto(`${root}/pocus/cardiac/#14`,{waitUntil:'networkidle'});

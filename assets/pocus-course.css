@@ -13,19 +13,7 @@ body.pocus-course .geometry-layout{grid-template-columns:minmax(0,8fr) minmax(0,
 /* Navigation shell (18 Oct 2026): parts, where-am-I, rail, grouped contents, keyboard help. Nothing below 12px. */
 body.pocus-course .ntf-copyright,body.pocus-course .course-author,body.pocus-course :is(.kicker,.cap,.course-eyebrow){font-size:12px}
 body.pocus-course .course-cnt-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;min-width:0!important}
-body.pocus-course .bar.course-has-parts :is(#prog,.prog,.pace){display:none}
-body.pocus-course .bar .course-rail{position:absolute;left:0;right:0;top:-1px;height:4px;display:flex;gap:2px;pointer-events:none;z-index:1}
-body.pocus-course .bar .course-rail>span{display:block;flex-basis:0;min-width:2px;background:var(--line);position:relative;overflow:hidden}
-body.pocus-course .bar .course-rail>span>i{position:absolute;inset:0 auto 0 0;background:var(--accent);width:0}
 body.pocus-course .bar .course-btn-arrow{font-size:1.05em}
-body.pocus-course .bar .course-where{display:flex;align-items:baseline;gap:10px;min-width:0;flex:0 1 auto;font:14px/1.3 'NTF Sans',Inter,Arial,sans-serif;color:var(--ink2);white-space:nowrap}
-body.pocus-course .bar .course-where-part{color:var(--ink);font-weight:550;overflow:hidden;text-overflow:ellipsis;min-width:0}
-body.pocus-course .bar .course-where-pos{font:12px/1.3 'NTF Mono',ui-monospace,monospace;color:var(--mute);flex:none}
-body.pocus-course .bar .course-parts{display:flex;gap:2px;margin-left:auto}
-body.pocus-course .bar .course-parts button{min-width:44px;min-height:44px;padding:0 6px;font:13px/1 'NTF Mono',ui-monospace,monospace;color:var(--ink2);border:1px solid transparent;background:none}
-body.pocus-course .bar .course-parts button:hover{border-color:var(--line2)}
-body.pocus-course .bar .course-parts button[aria-current=step]{border-color:var(--accent);color:var(--accent);box-shadow:inset 0 -2px var(--accent)}
-body.pocus-course .bar.course-has-parts .course-parts+#ovB{margin-left:8px}
 body.pocus-course .bar .series-next-short{display:none}
 body.pocus-course .bar #nextB.series-next-lecture{color:var(--accent);font-weight:550}
 /* Contents overlay */
@@ -43,26 +31,13 @@ body.pocus-course #overview .course-ov-search .series-result-count{min-height:0;
 body.pocus-course #overview .course-ov-search .series-result-count:empty{display:none}
 body.pocus-course #overview .course-ov-head .course-overview-close{position:static;flex:none;margin:0;min-height:48px;padding:10px 16px;border:1px solid var(--line2);background:var(--panel);font:15px 'NTF Sans',Inter,Arial,sans-serif;color:var(--ink);cursor:pointer}
 body.pocus-course #overview .course-ov-body{display:grid;grid-template-columns:minmax(0,1fr);gap:40px;max-width:var(--site-width);margin:0 auto}
-body.pocus-course #overview .course-ov-body:has(.course-ov-index){grid-template-columns:220px minmax(0,1fr)}
-body.pocus-course #overview .course-ov-index{position:sticky;top:132px;align-self:start;padding-top:20px}
-body.pocus-course #overview .course-ov-index ul{list-style:none;margin:0;padding:0}
-body.pocus-course #overview .course-ov-index button{display:block;width:100%;min-height:44px;padding:8px 0 8px 14px;margin:0;text-align:left;border:0;border-left:2px solid var(--line);background:none;box-shadow:none;cursor:pointer;color:var(--ink)}
-body.pocus-course #overview .course-ov-index button[aria-current]{border-left-color:var(--accent);color:var(--accent)}
-body.pocus-course #overview .course-ov-index-title{display:block;font:15px/1.35 'NTF Sans',Inter,Arial,sans-serif}
-body.pocus-course #overview .course-ov-index-count{display:block;font:12px/1.4 'NTF Mono',ui-monospace,monospace;color:var(--mute);margin-top:2px}
-body.pocus-course #overview.course-searching .course-ov-index{display:none}
 body.pocus-course #overview .course-ov-main{min-width:0}
-body.pocus-course #overview #ovGrid.course-grouped{display:block;max-width:none;margin:0;gap:0}
-body.pocus-course #overview .course-part{scroll-margin-top:140px;margin:0 0 8px}
-body.pocus-course #overview .course-part h3{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font:400 22px/1.3 'NTF Serif',Georgia,serif;letter-spacing:-.01em;margin:22px 0 2px;padding-bottom:8px;border-bottom:1px solid var(--ink)}
-body.pocus-course #overview .course-part-meta{font:12px/1.4 'NTF Mono',ui-monospace,monospace;color:var(--mute);white-space:nowrap}
-body.pocus-course #overview .course-part-extension h3 .course-part-meta{color:var(--accent)}
-body.pocus-course #overview .course-part-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
-body.pocus-course #overview #ovGrid.course-grouped button{display:flex;align-items:baseline;gap:14px;width:100%;min-height:52px;margin:0;padding:12px 10px;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none;cursor:pointer;color:var(--ink)}
-body.pocus-course #overview #ovGrid.course-grouped button:hover{background:var(--accent-soft)}
-body.pocus-course #overview #ovGrid.course-grouped button.cur{background:var(--accent-soft);box-shadow:inset 3px 0 var(--accent);padding-left:14px}
-body.pocus-course #overview #ovGrid.course-grouped .on{flex:none;font:12px/1.4 'NTF Mono',ui-monospace,monospace;color:var(--accent);letter-spacing:.06em;margin:0}
-body.pocus-course #overview #ovGrid.course-grouped .ot{display:block;font:17px/1.4 'NTF Sans',Inter,Arial,sans-serif;margin:0}
+body.pocus-course #overview #ovGrid.course-flat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px;max-width:none;margin:0;gap:0 28px}
+body.pocus-course #overview #ovGrid.course-flat button{display:flex;align-items:baseline;gap:14px;width:100%;min-height:52px;margin:0;padding:12px 10px;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none;cursor:pointer;color:var(--ink)}
+body.pocus-course #overview #ovGrid.course-flat button:hover{background:var(--accent-soft)}
+body.pocus-course #overview #ovGrid.course-flat button.cur{background:var(--accent-soft);box-shadow:inset 3px 0 var(--accent);padding-left:14px}
+body.pocus-course #overview #ovGrid.course-flat .on{flex:none;font:12px/1.4 'NTF Mono',ui-monospace,monospace;color:var(--accent);letter-spacing:.06em;margin:0}
+body.pocus-course #overview #ovGrid.course-flat .ot{display:block;font:17px/1.4 'NTF Sans',Inter,Arial,sans-serif;margin:0}
 body.pocus-course #overview .om{display:none}
 /* Keyboard help */
 body.pocus-course .course-keys{position:fixed;right:max(16px,calc((100vw - var(--site-width))/2 + var(--site-gutter)));bottom:104px;z-index:70;width:min(360px,calc(100vw - 32px));background:var(--panel);border:1px solid var(--line2);padding:18px 20px;font:15px/1.5 'NTF Sans',Inter,Arial,sans-serif;color:var(--ink)}
@@ -71,21 +46,14 @@ body.pocus-course .course-keys dl{margin:0}
 body.pocus-course .course-keys dl>div{display:grid;grid-template-columns:110px minmax(0,1fr);gap:12px;padding:6px 0;border-bottom:1px solid var(--line)}
 body.pocus-course .course-keys dt,body.pocus-course .course-keys dd{margin:0}
 body.pocus-course .course-keys-close{margin-top:12px;min-height:44px;padding:8px 14px;border:1px solid var(--line2);background:var(--bg);font:15px 'NTF Sans',Inter,Arial,sans-serif;cursor:pointer;color:var(--ink)}
-@media(max-width:900px){body.pocus-course .bar .course-parts{display:none}body.pocus-course .bar.course-has-parts #ovB{margin-left:auto}body.pocus-course #overview .course-ov-index{top:0}}
+@media(max-width:900px){body.pocus-course .bar #ovB{margin-left:auto}}
 @media(max-width:900px){
  body.pocus-course #overview .course-ov-head{flex-wrap:wrap;align-items:center;gap:10px 16px;padding:14px 0 12px}
  body.pocus-course #overview .course-ov-title{flex:1 1 auto;max-width:none;min-width:0}
  body.pocus-course #overview .course-ov-title h2{font-size:22px}
  body.pocus-course #overview .course-ov-search{order:3;flex:1 1 100%}
- body.pocus-course #overview .course-ov-body,body.pocus-course #overview .course-ov-body:has(.course-ov-index){display:block}
- body.pocus-course #overview .course-ov-index{position:static;padding:8px 0 4px}
- body.pocus-course #overview .course-ov-index ul{display:flex;flex-wrap:wrap;gap:6px}
- body.pocus-course #overview .course-ov-index button{border:1px solid var(--line2);padding:6px 10px;width:auto}
- body.pocus-course #overview .course-ov-index button[aria-current]{border-color:var(--accent)}
- body.pocus-course #overview .course-ov-index-title{font-size:14px}
- body.pocus-course #overview .course-ov-index-count{display:none}
- body.pocus-course #overview .course-part-list{grid-template-columns:minmax(0,1fr)}
- body.pocus-course #overview .course-part{scroll-margin-top:190px}
+ body.pocus-course #overview .course-ov-body{display:block}
+ body.pocus-course #overview #ovGrid.course-flat{grid-template-columns:minmax(0,1fr)}
 }
 @media(max-width:700px){
  body.pocus-course .bar .course-bar-inner{gap:4px;padding-inline:12px}
@@ -95,9 +63,6 @@ body.pocus-course .course-keys-close{margin-top:12px;min-height:44px;padding:8px
  body.pocus-course .bar #nextB.series-next-lecture .course-btn-label{position:static;width:auto;height:auto;clip-path:none}
  body.pocus-course .bar .series-next-long{display:none}
  body.pocus-course .bar .series-next-short{display:inline}
- body.pocus-course .bar .course-where{flex:1 1 auto;flex-direction:column;align-items:flex-start;gap:0;font-size:13px;line-height:1.25}
- body.pocus-course .bar .course-where-part{max-width:100%}
- body.pocus-course .bar .course-where-pre{display:none}
  body.pocus-course .bar #ovB{font-size:14px;min-width:0;padding:0 8px}
  body.pocus-course .course-keys{bottom:100px}
 }
