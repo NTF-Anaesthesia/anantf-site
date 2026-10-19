@@ -287,7 +287,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     </div>
     <div>
       <div class="grid2"><div><div class="pov">Ultrasound · sagittal epigastrium</div><div class="scanner"><canvas id="hero" class="us"></canvas></div></div><div><div class="pov">Anatomy · same slice</div><canvas id="heroA" class="side"></canvas></div></div>
-      <div class="mini">Live simulation · sagittal over the aorta, RLD. Liver in front; antrum; pancreas, SMA and aorta behind.</div>
+      <div class="mini">Live simulation · curvilinear probe in the sagittal plane over the aorta, right lateral decubitus. Liver in front, antrum in the middle, pancreas, SMA and aorta behind. Watch the antrum contract.</div>
     </div>
   </div>
 </section>
@@ -298,10 +298,10 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">01 · Why scan the stomach</div>
       <h2>Fasting time is a proxy. The antrum is the target.</h2>
-      <p class="lede">Fasting history says when food went in, not whether it has left.</p>
+      <p class="lede">A fasting history tells you when food went in. It cannot tell you whether it has left.</p>
       <div class="card">
         <div class="cap">The stakes</div>
-        <p>Aspiration is uncommon, but was the commonest cause of death among anaesthetic airway events in NAP4.</p>
+        <p>Pulmonary aspiration is uncommon, but it was the single most common cause of death among the anaesthetic airway events in NAP4.</p>
       </div>
       <div class="card">
         <div class="cap">Where the proxy fails</div>
@@ -309,7 +309,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
         <p><b class="ink">Unreliable history</b> — dementia, language barriers, emergencies, "just a sip of water".</p>
         <p><b class="ink">Something else in the stomach</b> — blood from an upper GI bleed.</p>
       </div>
-      <div class="callout">Gastric ultrasound replaces an assumption with an observation, in minutes.</div>
+      <div class="callout">Gastric ultrasound replaces an assumption with an observation — at the bedside, in a few minutes.</div>
     </div>
     <div class="demo">
       <div class="panel">
@@ -319,7 +319,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
           <div><div class="status" id="whyStat" style="margin-top:22px"></div>
             <div class="clock" id="whyClock"></div></div>
         </div>
-        <div class="mini">Illustrative simulation. All five give the same fasting history.</div>
+        <div class="mini">Illustrative simulation. Every patient here gives the same answer to "when did you last eat?"</div>
       </div>
     </div>
   </div>
@@ -331,9 +331,9 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">02 · The I-AIM framework</div>
       <h2>Four questions, always in this order.</h2>
-      <p class="lede">Perlas et al., BJA 2016.</p>
+      <p class="lede">A structure for doing — and teaching — gastric point-of-care ultrasound (Perlas et al., BJA 2016).</p>
       <ul class="plist" id="iaimList">
-        <li data-k="i" class="on"><span class="num big">I</span><div><b>Indication</b><span>Is aspiration risk uncertain, and would the answer change the plan?</span></div></li>
+        <li data-k="i" class="on"><span class="num big">I</span><div><b>Indication</b><span>Is the aspiration risk uncertain, and would the answer change your plan?</span></div></li>
         <li data-k="a"><span class="num big">A</span><div><b>Acquisition</b><span>Curvilinear probe, sagittal epigastrium, supine then right lateral decubitus.</span></div></li>
         <li data-k="n"><span class="num big">I</span><div><b>Interpretation</b><span>Qualitative first — what is it? Then quantitative — if clear fluid, how much?</span></div></li>
         <li data-k="m"><span class="num big">M</span><div><b>Medical decision-making</b><span>Low risk: proceed. High risk: postpone, protect the airway, or change the technique.</span></div></li>
@@ -343,8 +343,8 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
       <div class="panel iaimP" data-k="i">
         <div class="cap">Indication · scan when the answer matters</div>
         <table class="t"><tbody>
-          <tr><td>Scan</td><td>Fasting status unknown or unreliable. Fasted, but emptying may be slow (GLP-1 RA, diabetic autonomic neuropathy, opioids, trauma, Parkinson's, renal failure). Late clear fluid of uncertain volume.</td></tr>
-          <tr><td>Don't scan</td><td>Answer won't change management: bowel obstruction, crash induction, RSI already indicated.</td></tr>
+          <tr><td>Scan</td><td>Fasting status unknown, unclear or unreliable. Fasted, but a condition that slows emptying (GLP-1 RA, diabetic autonomic neuropathy, opioids, trauma, Parkinson's, renal failure). Clear fluid taken late and the volume is uncertain.</td></tr>
+          <tr><td>Don't scan</td><td>The answer will not change management: bowel obstruction, a crash induction, an RSI that is already indicated for other reasons.</td></tr>
         </tbody></table>
         <div class="callout">A scan that cannot change the plan only delays it.</div>
       </div>
@@ -383,10 +383,10 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">Part I · Acquisition</div>
       <h1>Find the antrum.</h1>
-      <p class="big-quote" style="font-style:normal">Liver in front, pancreas behind, great vessel underneath. No vessel? Find the spine.</p>
+      <p class="big-quote" style="font-style:normal">Liver in front, pancreas behind, a great vessel underneath. And if you cannot find the vessel, find the spine.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Curvilinear · Supine then RLD · Sagittal sweep · Antrum at the aorta</p>
     </div>
-    <div><div class="panel"><canvas id="p1Top" class="side"></canvas><div class="mini">Bird's-eye view: sagittal sweep, left → right subcostal margin.</div></div></div>
+    <div><div class="panel"><canvas id="p1Top" class="side"></canvas><div class="mini">Bird's-eye view of the epigastrium. The probe sweeps sagittally from the left to the right subcostal margin.</div></div></div>
   </div>
 </section>
 
@@ -396,9 +396,9 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">03 · Set-up and the sweep</div>
       <h2>Start supine. Finish in right lateral decubitus.</h2>
-      <div class="card"><div class="cap">Probe &amp; preset</div><p>Curvilinear 2–5 MHz, abdominal preset. Start deep (≈ 15–16 cm) for spine and great vessels; shallow up once you have the antrum.</p></div>
-      <div class="card"><div class="cap">Position</div><p>Supine (or 45° head-up), then <b class="ink">right lateral decubitus</b>: fluid moves into the antrum, air out.</p></div>
-      <div class="card"><div class="cap">The sweep</div><p>Sagittal, marker to the head, left → right subcostal margin. Antrum ≈ 3–4 cm deep.</p></div>
+      <div class="card"><div class="cap">Probe &amp; preset</div><p>Curvilinear 2–5 MHz, abdominal preset. Start deep (≈ 15–16 cm) to see the spine and the great vessels, then shallow up once you have the antrum.</p></div>
+      <div class="card"><div class="cap">Position</div><p>Supine (or 45° head-up if they cannot lie flat), then <b class="ink">right lateral decubitus</b>. Gravity moves fluid into the antrum and air out of it.</p></div>
+      <div class="card"><div class="cap">The sweep</div><p>Sagittal, marker to the head. Sweep from the left to the right subcostal margin. The antrum is superficial — about 3–4 cm deep.</p></div>
       <div class="callout">Never call an empty stomach on the supine view alone.</div>
     </div>
     <div class="demo">
@@ -427,7 +427,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">04 · The standard plane</div>
       <h2>Liver in front. Pancreas behind. Aorta underneath.</h2>
-      <p class="lede">The most reliably imaged part of the stomach; its CSA tracks total gastric volume.</p>
+      <p class="lede">The antrum is the most reliably imaged part of the stomach, and its cross-sectional area tracks total gastric volume.</p>
       <div class="card">
         <div class="cap">Landmark checklist · sagittal, aorta level</div>
         <div class="crit">
@@ -441,7 +441,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
       <div class="card">
         <div class="cap">Five layers · inside → out</div>
         <p>Mucosa–lumen interface <b class="ink">bright</b> · deep mucosa <b class="ink">dark</b> · submucosa <b class="ink">bright</b> · muscularis propria <b class="ink">dark, thickest</b> · serosa <b class="ink">bright</b>.</p>
-        <p class="mini">Measure serosa to serosa (full wall thickness).</p>
+        <p class="mini">Measure from serosa to serosa — the full thickness of the wall.</p>
       </div>
     </div>
     <div class="demo">
@@ -463,7 +463,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
   <div class="inner two">
     <div>
       <div class="kicker">05 · Aorta or IVC?</div>
-      <h2>Two tubes behind the antrum. Know which.</h2>
+      <h2>Two tubes behind the antrum. Know which one you are on.</h2>
       <table class="t t2" id="avTable">
         <thead><tr><th>Feature</th><th>Aorta</th><th>IVC</th></tr></thead>
         <tbody>
@@ -476,7 +476,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
           <tr data-f="dop"><td>Colour</td><td>Pulsatile, high-velocity flow</td><td>Phasic, low-velocity flow</td></tr>
         </tbody>
       </table>
-      <p class="mini" style="margin-top:10px">Use several features. Ventilated: no sniff. Tricuspid regurgitation makes the IVC pulsatile.</p>
+      <p class="mini" style="margin-top:10px">Use several features together. A ventilated patient cannot sniff; tricuspid regurgitation makes the IVC pulsatile.</p>
     </div>
     <div class="demo">
       <div class="panel">
@@ -501,12 +501,12 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
       <div class="kicker">06 · Lost the aorta?</div>
       <h2>Find it in cross-section, then rotate into its long axis.</h2>
       <ul class="plist" id="rtList">
-        <li data-s="0" class="on"><span class="num">01</span><div><b>Go transverse and go deep</b><span>Marker to patient's right, below the xiphoid, depth 18 cm. Find the vertebral body: bright arc, black shadow.</span></div></li>
-        <li data-s="1"><span class="num">02</span><div><b>The aorta sits on the spine, left of midline</b><span>Round, thick-walled, pulsatile, screen right. IVC on the patient's right (screen left): oval, thin-walled, breathing. SMA, in its bright fat collar, sits in front of the aorta.</span></div></li>
-        <li data-s="2"><span class="num">03</span><div><b>Centre the aorta</b><span>Slide until it sits under the midline marker.</span></div></li>
-        <li data-s="3"><span class="num">04</span><div><b>Rotate 90°, marker to the head</b><span>Keep it centred; the circle opens into a tube.</span></div></li>
-        <li data-s="4"><span class="num">05</span><div><b>Fine-tune until the walls run parallel</b><span>Short, tapering segment = oblique. Rotate or fan until the tube crosses the screen.</span></div></li>
-        <li data-s="5"><span class="num">06</span><div><b>Shallow up and find the antrum</b><span>Depth ≈ 12 cm. Antrum in front, between liver and pancreas. IVC plane: slide ≈ 3 cm to patient's right.</span></div></li>
+        <li data-s="0" class="on"><span class="num">01</span><div><b>Go transverse and go deep</b><span>Marker to the patient's right, just below the xiphoid, depth 18 cm. Find the vertebral body — a bright arc with a black shadow behind it.</span></div></li>
+        <li data-s="1"><span class="num">02</span><div><b>The aorta sits on the spine, left of midline</b><span>Round, thick-walled, pulsatile — on the screen's right. The IVC is to the patient's right (screen left): oval, thin-walled, breathing. The SMA, in its bright collar of fat, sits in front of the aorta.</span></div></li>
+        <li data-s="2"><span class="num">03</span><div><b>Centre the aorta</b><span>Slide the probe until the aorta sits under the midline marker.</span></div></li>
+        <li data-s="3"><span class="num">04</span><div><b>Rotate 90°, marker to the head</b><span>Keep it centred while you turn. The circle opens into a tube.</span></div></li>
+        <li data-s="4"><span class="num">05</span><div><b>Fine-tune until the walls run parallel</b><span>Short, tapering segment = still oblique. Rotate or fan a few degrees until the tube crosses the whole screen.</span></div></li>
+        <li data-s="5"><span class="num">06</span><div><b>Shallow up and find the antrum</b><span>Depth ≈ 12 cm. The antrum lies in front, between liver and pancreas. Need the IVC plane? Slide ≈ 3 cm to the patient's right.</span></div></li>
       </ul>
     </div>
     <div class="demo">
@@ -536,10 +536,10 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">Part II · Interpretation</div>
       <h1>Read the antrum.</h1>
-      <p class="big-quote" style="font-style:normal">What is in it; if clear fluid, how much.</p>
+      <p class="big-quote" style="font-style:normal">What is in it — and, only if it is clear fluid, how much.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Qualitative · Grade 0 · 1 · 2 · CSA → volume · Decide</p>
     </div>
-    <div><div class="grid2" id="p2Pair"></div><div class="mini">Empty antrum; antrum distended with clear fluid.</div></div>
+    <div><div class="grid2" id="p2Pair"></div><div class="mini">From the library: an empty antrum, and an antrum distended with clear fluid.</div></div>
   </div>
 </section>
 
@@ -548,14 +548,14 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
   <div class="inner two">
     <div>
       <div class="kicker">07 · Qualitative assessment</div>
-      <h2>Read the content before measuring.</h2>
+      <h2>Read the content before you measure anything.</h2>
       <ul class="plist" id="ctList">
         <li data-c="empty" class="on"><span class="num">00</span><div><b>Empty <span class="tag def">Low risk</span></b><span>Flat or round "target": bright centre, thick dark muscle ring. Both positions.</span></div></li>
         <li data-c="clear"><span class="num">01</span><div><b>Clear fluid <span class="tag deep">Measure</span></b><span>Anechoic, distended, thin walls, bright through-transmission behind.</span></div></li>
-        <li data-c="bubbles"><span class="num">02</span><div><b>Clear fluid with bubbles <span class="tag deep">Measure</span></b><span>Recent drink: "starry night" of bright dots in black fluid.</span></div></li>
+        <li data-c="bubbles"><span class="num">02</span><div><b>Clear fluid with bubbles <span class="tag deep">Measure</span></b><span>Recent drink — a "starry night" of bright dots rising in black fluid.</span></div></li>
         <li data-c="thick"><span class="num">03</span><div><b>Thick fluid <span class="tag avoid">High risk</span></b><span>Homogeneous, echogenic content: milk, feeds, blood.</span></div></li>
         <li data-c="solidEarly"><span class="num">04</span><div><b>Solid — early <span class="tag avoid">High risk</span></b><span>"Frosted glass": bright front edge, shadow behind, posterior wall hidden.</span></div></li>
-        <li data-c="solidLate"><span class="num">05</span><div><b>Solid — later <span class="tag avoid">High risk</span></b><span>Heterogeneous, mixed echogenicity; distended, lumpy antrum.</span></div></li>
+        <li data-c="solidLate"><span class="num">05</span><div><b>Solid — later <span class="tag avoid">High risk</span></b><span>Heterogeneous, mixed echogenicity; the antrum is distended and lumpy.</span></div></li>
       </ul>
     </div>
     <div class="demo">
@@ -576,7 +576,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">08 · Semi-quantitative grading</div>
       <h2>Same stomach, two positions.</h2>
-      <p class="lede">Clear fluid: where you see it predicts how much (Perlas et al., Anesth Analg 2011).</p>
+      <p class="lede">For clear fluid: where you see it predicts how much there is (Perlas et al., Anesth Analg 2011).</p>
       <table class="t" id="grTable">
         <thead><tr><th>Grade</th><th>Supine</th><th>RLD</th><th>Usually means</th></tr></thead>
         <tbody>
@@ -585,7 +585,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
           <tr data-g="2"><td>2</td><td>Fluid</td><td>Fluid</td><td>Larger volume, often &gt; 1.5 mL/kg — measure it</td></tr>
         </tbody>
       </table>
-      <div class="callout">Grade is a fast screen. Clear fluid seen → measure CSA and calculate.</div>
+      <div class="callout">The grade is a fast screen. When clear fluid is seen, measure the CSA and calculate.</div>
     </div>
     <div class="demo">
       <div class="panel">
@@ -595,7 +595,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
           <label>Weight <input type="range" id="grW" min="40" max="120" value="70" step="1"><output id="grWo"></output></label>
         </div>
         <div class="status" id="grStat"></div>
-        <div class="mini">Simulation thresholds are illustrative; grade and volume overlap in practice.</div>
+        <div class="mini">Simulation thresholds are illustrative. In practice, grade and volume are related but overlap.</div>
       </div>
     </div>
   </div>
@@ -611,7 +611,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
         <div class="cap">How to measure</div>
         <p>RLD · antrum at the level of the aorta · freeze between peristaltic contractions · free-trace the serosa (full wall thickness).</p>
         <div class="formula">GV (mL) = 27.0 + 14.6 × RLD-CSA (cm²) − 1.28 × age (y)</div>
-        <p class="mini">Perlas et al., Anesth Analg 2013. Adult, non-pregnant, validated 0–500 mL. Clear fluid only; not for solid or thick content.</p>
+        <p class="mini">Perlas et al., Anesth Analg 2013. Adult, non-pregnant model, validated for 0–500 mL. Clear fluid only — it does not apply to solid or thick content.</p>
       </div>
       <div class="card calc">
         <div class="cap">Calculator</div>
@@ -649,11 +649,11 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">10 · Medical decision-making</div>
       <h2>Low risk: proceed. High risk: change the plan.</h2>
-      <div class="card"><span class="tag def">Low risk</span><h3 style="margin-top:10px">Empty · or clear fluid ≤ 1.5 mL/kg</h3><p>Baseline secretions. Proceed as planned.</p></div>
+      <div class="card"><span class="tag def">Low risk</span><h3 style="margin-top:10px">Empty · or clear fluid ≤ 1.5 mL/kg</h3><p>Consistent with baseline secretions. Proceed with the planned technique.</p></div>
       <div class="card"><span class="tag avoid">High risk</span><h3 style="margin-top:10px">Clear fluid &gt; 1.5 mL/kg · thick fluid · solid</h3>
         <p><b class="ink">Elective</b> — postpone; for clear fluid, wait and rescan.</p>
-        <p><b class="ink">Urgent</b> — RSI with a cuffed tube, or regional/neuraxial with minimal sedation; NG decompression for fluid (not solids); prokinetic and rescan if time allows.</p></div>
-      <div class="card"><span class="tag deep">Inconclusive</span><h3 style="margin-top:10px">Cannot find or cannot read the antrum</h3><p>Not a negative scan. Decide clinically; treat as full if risk factors present.</p></div>
+        <p><b class="ink">Urgent</b> — RSI with a cuffed tube; or regional/neuraxial with minimal sedation; NG decompression for fluid (it will not clear solids); a prokinetic and a rescan if time allows.</p></div>
+      <div class="card"><span class="tag deep">Inconclusive</span><h3 style="margin-top:10px">Cannot find or cannot read the antrum</h3><p>Not a negative scan. Decide on clinical grounds; treat as full if risk factors are present.</p></div>
       <p class="mini" style="margin-top:12px">Document: position(s), plane, content, grade, CSA and volume if measured, and the decision.</p>
     </div>
     <div class="demo">
@@ -668,9 +668,9 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">Part III · Peri-operative cases</div>
       <h1>Five patients, and a bonus.</h1>
-      <p class="big-quote" style="font-style:normal">Commit to an answer before each reveal.</p>
+      <p class="big-quote" style="font-style:normal">Images and clips from my scan library. Commit to an answer before each reveal.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Indication · Acquisition · Interpretation · Medical decision</p>
-      <p class="mini" style="max-width:56ch">Cases 1–5: teaching vignettes built on real library images, not necessarily from one patient. Case 6: a real case shared by Dr Zhang Jinbin.</p>
+      <p class="mini" style="max-width:56ch">Cases 1–5: clinical details are teaching vignettes built around real library images; images within a case are not necessarily from one patient. Case 6 is a real case shared by Dr Zhang Jinbin.</p>
     </div>
     <div><div class="caseGrid" id="caseGrid"></div></div>
   </div>
@@ -729,7 +729,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
           <li>Kindel TL, Wang AY, Wadhwa A, et al. Multisociety clinical practice guidance for the safe use of GLP-1 receptor agonists in the perioperative period. 2024.</li>
           <li><a target="_blank" rel="noopener" href="https://www.gastricultrasound.org/en/extra-material/references/">gastricultrasound.org — full reference list</a></li>
         </ol>
-        <p class="mini">Simulations are simplified teaching models, not diagnostic images.</p>
+        <p class="mini">Simulations are purpose-built teaching models, not diagnostic images. Anatomy, echogenicity and grading thresholds are simplified.</p>
       </details>
     </div>
   </div>
@@ -1738,65 +1738,65 @@ calc();
    ===================================================================== */
 const CASES = [
   { tag: 'Upper GI bleed', short: 'Melaena', title: 'Melaena · emergency OGD',
-    vignette: 'Elderly man on dual antiplatelets after recent PCI, two days of melaena. Transfused; listed for OGD ± haemostasis. Endoscopist prefers MAC without intubation.',
+    vignette: 'An elderly man on dual antiplatelet therapy after a recent PCI, with two days of melaena. Transfused and listed for OGD ± haemostasis; the endoscopist would prefer Monitored Anaesthesia Care (MAC) without intubation.',
     facts: [['Patient', '72 M · 68 kg · ASA 3E'], ['Bleed', 'Melaena × 2 days · Hb 10 → 6.8 g/dL · HR 108 · BP 104/62'], ['Drugs', 'Aspirin + clopidogrel'], ['Fasting', 'Last meal 10 h ago'], ['Plan', 'OGD ± haemostasis under MAC']],
     media: ['i7132', 'v7134', 'i7133', 'i7135', 'i7136'], badges: { i7135: 'Endoscopy', i7136: 'Endoscopy' },
     steps: [
-      ['Is a scan indicated?', 'Yes. Ten hours is irrelevant if the stomach is filling with blood, and the answer decides MAC vs RSI with a cuffed tube. Never let it delay resuscitation.'],
-      ['How will you scan?', 'Standard sagittal scan, supine then RLD. A fragile patient may tolerate only a brief RLD; a positive supine scan is enough to act on.'],
-      ['What is in the antrum?', 'Distended antrum with <b>echogenic, heterogeneous content</b>, not anechoic. Blood and clot behave like thick fluid or solid. No volume: the Perlas model is for clear fluid only.', 'i7132'],
-      ['What will you do?', '<b>High risk — not for MAC.</b> RSI with a cuffed tube, head-up, suction ready; extubate awake. If time: IV erythromycin 250 mg 30–120 min before endoscopy improves the view (ESGE); rescan to see if the stomach has emptied. Endoscopy: dark fluid and altered material in the lumen.', 'i7136']
+      ['Is a scan indicated?', 'Yes. Ten hours is reassuring for food, but irrelevant if the stomach is filling with blood — and the answer decides between MAC and RSI with a cuffed tube. Scan, but never let it delay resuscitation.'],
+      ['How will you scan?', 'Curvilinear probe, sagittal epigastrium, supine then RLD, antrum at the aorta. A fragile patient may tolerate only a brief RLD — a positive supine scan is already enough to act on.'],
+      ['What is in the antrum?', 'A round, distended antrum filled with <b>echogenic, heterogeneous content</b> — not anechoic. Blood and clot behave like thick fluid or solid. Do not convert it to a volume: the Perlas model is for clear fluid only.', 'i7132'],
+      ['What will you do?', '<b>High risk — not for MAC.</b> RSI with a cuffed tracheal tube, head-up, suction ready; extubate awake. If there is time, IV erythromycin 250 mg 30–120 min before endoscopy improves the view (ESGE) — a rescan shows whether the stomach has emptied. Same-day endoscopy: dark fluid and altered material in the lumen.', 'i7136']
     ], pearl: 'Blood is a meal — and it does not keep a fasting clock.' },
   { tag: 'GLP-1 receptor agonist', short: 'Semaglutide', title: 'Semaglutide · not held',
-    vignette: 'Type 2 diabetes and obesity on weekly semaglutide. Asked to hold it, but took it three days ago. No nausea or bloating. Textbook fast.',
+    vignette: 'A woman with type 2 diabetes and obesity on weekly semaglutide. She was asked to hold it but took her dose three days ago. No nausea or bloating. Textbook fast.',
     facts: [['Patient', '52 F · 88 kg · BMI 33'], ['Drug', 'Semaglutide 1 mg weekly — last dose 3 days ago'], ['Symptoms', 'None'], ['Fasting', 'Solids 12 h · clear fluids 4 h'], ['Plan', 'Elective laparoscopic cholecystectomy']],
     media: ['i7429', 'i7430', 'i7431', 'i7432'], badges: {},
     steps: [
-      ['Is a scan indicated?', 'Yes. Weekly GLP-1 RA within the last week. Fasted GLP-1 RA users had increased residual gastric content in 56% vs 19% of non-users (Sen 2024). 2024 multisociety guidance names gastric POCUS for this decision.'],
-      ['How will you scan?', 'Supine then RLD. BMI 33: start deeper (16–18 cm), use the liver as a window; antrum a little deeper than usual.'],
-      ['What is in the antrum?', 'Distended antrum, <b>heterogeneous, mixed-echogenicity content: solid</b>. Ignore the machine\'s A 7.90 cm²: solid is high risk at any volume.', 'i7432'],
-      ['What will you do?', '<b>Elective → postpone.</b> Reschedule: hold the weekly dose, or for higher-risk patients a 24-hour clear-liquid diet before surgery (2024 multisociety guidance); rescan on the day. If it cannot wait: RSI.']
+      ['Is a scan indicated?', 'Yes. A weekly GLP-1 RA within the last week. In fasted patients, increased residual gastric content was found in 56% of GLP-1 RA users versus 19% of non-users (Sen 2024). The 2024 multisociety guidance names gastric POCUS as a tool for exactly this decision.'],
+      ['How will you scan?', 'Supine then RLD. With a BMI of 33, start deeper (16–18 cm), use the liver as a window, and expect the antrum a little deeper than usual.'],
+      ['What is in the antrum?', 'Distended antrum with <b>heterogeneous, mixed-echogenicity content: solid</b>. The machine offers A 7.90 cm² — ignore it. Solid content is high risk at any volume.', 'i7432'],
+      ['What will you do?', '<b>Elective → postpone.</b> Reschedule with a plan: hold the weekly dose, or for higher-risk patients a 24-hour clear-liquid diet before surgery (2024 multisociety guidance) — and rescan on the day. If surgery could not wait: RSI.']
     ], pearl: 'A normal fasting history does not cancel a weekly GLP-1 receptor agonist.' },
   { tag: 'Delayed emptying', short: 'Diabetes', title: 'Diabetes with autonomic neuropathy',
-    vignette: 'Twenty years of poorly controlled type 2 diabetes. Postural dizziness, early satiety, bloating. Infected diabetic foot for debridement today.',
+    vignette: 'Twenty years of poorly controlled type 2 diabetes. Postural dizziness, early satiety and bloating. Listed today for debridement of an infected diabetic foot.',
     facts: [['Patient', '64 M · 74 kg'], ['Diabetes', 'HbA1c 10.6% · neuropathy · CKD 3'], ['Autonomic', 'Postural drop 30 mmHg · early satiety · bloating'], ['Fasting', 'Solids 9 h · glucose 14 mmol/L'], ['Plan', 'Foot debridement, today']],
     media: ['i9294', 'v9295'], badges: { v9295: 'Cine' },
     steps: [
-      ['Is a scan indicated?', 'Yes. Autonomic features (postural hypotension, early satiety, bloating) suggest gastroparesis; hyperglycaemia itself slows emptying. Diabetes is associated with more residual gastric content (Xiao, Perlas, BJA 2021).'],
-      ['How will you scan?', 'A distended stomach pushes the antrum deeper and more caudal: increase depth, sweep wider. RLD.'],
-      ['What is in the antrum?', 'Distended antrum with <b>echogenic, heterogeneous content</b> on still and cine. Thick fluid / solid → high risk.', 'i9294'],
-      ['What will you do?', 'Urgent, not emergent: keep airway reflexes — popliteal-sciatic and saphenous blocks, or a spinal (watch for autonomic haemodynamic instability). GA needed: RSI. Treat the glucose; consider a prokinetic and rescan if time allows.']
+      ['Is a scan indicated?', 'Yes. Autonomic features (postural hypotension, early satiety, bloating) point to gastroparesis, and hyperglycaemia itself slows gastric emptying. Diabetes is associated with more residual gastric content (Xiao, Perlas, BJA 2021).'],
+      ['How will you scan?', 'A distended stomach can push the antrum deeper and more caudal — increase the depth and sweep wider. RLD.'],
+      ['What is in the antrum?', 'Round, distended antrum filled with <b>echogenic, heterogeneous content</b> — on the still and on the cine. Thick fluid / solid → high risk.', 'i9294'],
+      ['What will you do?', 'Urgent, not emergent: choose a technique that keeps airway reflexes — popliteal-sciatic and saphenous blocks, or a spinal (watch for autonomic haemodynamic instability). If GA is needed: RSI. Treat the glucose; consider a prokinetic and rescan if timing allows.']
     ], pearl: 'Autonomic neuropathy in the history means gastroparesis until the scan says otherwise.' },
   { tag: 'Clear fluid', short: 'Water', title: 'Plain water, 30 minutes ago',
-    vignette: 'Fit woman, first on the list. Fasted from midnight, but drank a large cup of water just before transfer.',
+    vignette: 'A fit woman, first on the list. Fasted from midnight, but drank a large cup of plain water on the ward just before transfer.',
     facts: [['Patient', '45 F · 70 kg · ASA 1'], ['Fasting', 'Solids from midnight'], ['Drink', '≈ 400 mL plain water, 30 min ago'], ['Plan', 'Elective FESS (functional endoscopic sinus surgery)']],
     media: ['i9717', 'v9504', 'v3010', 'i3103'], badges: { i9717: 'First scan', v3010: 'Sweep', i3103: 'Rescan (illustrative)' },
     steps: [
-      ['Is a scan indicated?', 'Yes, to quantify, not to cancel. Clear fluid is low risk at baseline volumes; how much is left?'],
+      ['Is a scan indicated?', 'Yes — not to cancel, but to quantify. Clear fluid is low risk at baseline volumes; the question is how much is still there.'],
       ['How will you scan?', 'RLD, antrum at the aorta, freeze between contractions, free-trace the serosa.'],
       ['What is in the antrum?', 'Anechoic, distended antrum: <b>clear fluid</b>, visible supine and RLD (Grade 2). RLD-CSA 11.3 cm².<br><span class="formula" style="display:block">27.0 + 14.6 × 11.3 − 1.28 × 45 = 134 mL → 1.9 mL/kg</span>Above 1.5 mL/kg.', 'i9717'],
-      ['What will you do?', 'Water empties fast and exponentially (half-life ≈ 10–20 min). Wait 45–60 min and rescan, don\'t cancel. Rescan: CSA 5.70 cm² → 27.0 + 83.2 − 57.6 = 53 mL → <b class="ok">0.75 mL/kg</b>. Standard induction.', 'i3103']
+      ['What will you do?', 'Water empties fast and exponentially (half-life in the order of 10–20 min). Wait 45–60 min and rescan rather than cancel. Rescan: CSA 5.70 cm² → 27.0 + 83.2 − 57.6 = 53 mL → <b class="ok">0.75 mL/kg</b>. Proceed with a standard induction.', 'i3103']
     ], pearl: 'Clear fluid? Measure it. Too much? Wait, then rescan.' },
   { tag: 'Unreliable history', short: "Parkinson's", title: 'Uncertain history, empty stomach',
-    vignette: 'Frail woman with Parkinson\'s disease and dementia, for diagnostic OGD under MAC. Her helper is unsure whether she had breakfast.',
+    vignette: 'A frail woman with Parkinson\'s disease and dementia, for diagnostic OGD under Monitored Anaesthesia Care (MAC). Her helper is not sure whether she had breakfast.',
     facts: [['Patient', '79 F · 52 kg'], ['Background', "Parkinson's disease on levodopa · dementia"], ['History', 'Breakfast? — uncertain'], ['Plan', 'Diagnostic OGD under MAC · iron-deficiency anaemia']],
     media: ['v8774', 'i9546', 'i1547'], badges: { i1547: 'Endoscopy' },
     steps: [
-      ['Is a scan indicated?', "Yes. Unreliable history plus a cause of delayed emptying. A clear answer avoids an unnecessary cancellation or RSI in a frail patient."],
+      ['Is a scan indicated?', "Yes. An unreliable history plus a condition associated with delayed gastric emptying. A clear answer avoids both an unnecessary cancellation and an unnecessary RSI in a frail patient."],
       ['How will you scan?', 'Supine then RLD — she may need pillows and help to roll.'],
       ['What is in the antrum?', 'Small, flat, <b>target-shaped antrum</b> in supine and RLD — <b class="ok">Grade 0, empty.</b>', 'v8774'],
-      ['What will you do?', '<b class="ok">Low risk:</b> proceed with MAC; keep the levodopa schedule. Endoscopy: clean mucosa, no residue.', 'i1547']
+      ['What will you do?', '<b class="ok">Low risk:</b> proceed with MAC as planned; keep the levodopa schedule. At endoscopy: clean gastric mucosa, no residue — the scan was right.', 'i1547']
     ], pearl: 'Gastric ultrasound also lets you say yes — confidently.' },
   { tag: 'Bonus · from Dr Zhang Jinbin', short: 'Bonus', bonus: true, title: 'Bariatric surgery · liraglutide?',
-    vignette: 'Real case shared by Dr Zhang Jinbin. Woman for bariatric surgery. Her record lists liraglutide and she says she takes everything prescribed, yet denies any weight-loss drug.',
+    vignette: 'A real case, scanned and shared by Dr Zhang Jinbin. A woman listed for bariatric surgery. Her electronic medical record lists liraglutide, and she says she takes everything prescribed there, yet she denies being on any weight-loss drug.',
     facts: [['Patient', '44 F · 116 kg'], ['Drug', 'Liraglutide on the record · patient denies weight-loss drugs'], ['Symptoms', 'No GI symptoms'], ['Plan', 'Laparoscopic bariatric surgery']],
     media: ['zjSup', 'zjCine', 'zjRld', 'zjAnn'], badges: { zjAnn: 'Annotated' },
     steps: [
-      ['Is a scan indicated?', 'Yes. A GLP-1 RA on the record, contradicted by the history. You cannot settle that at the bedside, but you can look at the stomach.'],
-      ['How will you scan?', 'Supine then RLD, sagittal epigastrium. At 116 kg you need 16–20 cm to reach the aorta, and a collapsed antrum is tiny at that depth. Find liver and aorta, freeze, look for the antrum between them, then reduce depth to read it. Dr Zhang: the depth did not help; the antrum became tiny once the aorta was in view.', 'zjCine'],
-      ['What is in the antrum?', 'First read: the obvious round, heterogeneous structure at 8–11 cm (red). Back to the landmarks: that is <b>bowel</b>; the antrum (yellow) is small and flat at ≈ 5–6 cm, just under the liver. No distended antrum in RLD: <b class="ok">Grade 0, empty.</b>', 'zjAnn'],
-      ['What will you do?', '<b class="ok">Low risk:</b> proceed with the planned induction (usual obesity precautions: ramped, preoxygenation). Confirmed at surgery: the calibration tube passed into the stomach and nothing came back.']
-    ], pearl: 'The biggest round thing is not always the antrum. Find liver and aorta, then the antrum between them.' }
+      ['Is a scan indicated?', 'Yes. A GLP-1 receptor agonist on the record with a history that contradicts it. You cannot settle a conflicting drug history at the bedside, but you can look at the stomach.'],
+      ['How will you scan?', 'Supine then RLD, curvilinear probe, sagittal epigastrium. At 116 kg you need 16–20 cm of depth to reach the aorta, and at that depth a collapsed antrum is tiny on screen. Find the liver and the aorta first, freeze, then look for the antrum between them. Once you have found it, reduce the depth to read it. Dr Zhang\'s verdict: the depth did not help, because the antrum became tiny once the aorta was in view.', 'zjCine'],
+      ['What is in the antrum?', 'Dr Zhang\'s first read was the obvious round, heterogeneous structure at 8–11 cm (red). Freezing the image and stepping back to the landmarks changed the answer: the red structure is <b>bowel</b>; the antrum (yellow) is the small, flat structure at about 5–6 cm, just under the liver. No distended antrum in RLD either: <b class="ok">Grade 0, empty.</b>', 'zjAnn'],
+      ['What will you do?', '<b class="ok">Low risk:</b> proceed with the planned induction (with the usual precautions for obesity: ramped position, preoxygenation). At surgery the scan was confirmed: the surgeon passed the large calibration tube into the stomach and nothing came back.']
+    ], pearl: 'The biggest round thing on the screen is not always the antrum. Find the liver and the aorta, then look for the antrum between them.' }
 ];
 const CASE_ST = [];
 $$('.slide.case').forEach(sec => {
