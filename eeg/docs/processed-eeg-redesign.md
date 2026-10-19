@@ -116,3 +116,7 @@ The control dock moves to the top of the right column, above the notes (CSS in `
 `display:contents` for that skin). `fitMonitor()` now grows the device back if a shrink step undershoots the height. The
 awake note no longer ends with the SEF95/BIS sentence and reference. The BIS Advance EEG lane's 1 s dotted gridlines stay
 fixed to the frame while the trace scrolls.
+
+Revised the same day: the right column now runs title and toolbar (top), notes, then the control dock (bottom). `#monitor`
+is the grid for SedLine on desktop (over 1100 px wide and over 550 px tall), with `.sim` and `.live-workspace` as
+`display:contents`, so the monitor starts level with the title. `--monitor-width` is now set on `#monitor`.
