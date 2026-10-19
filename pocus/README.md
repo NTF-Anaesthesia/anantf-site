@@ -16,7 +16,7 @@ The POCUS hub groups the lectures into seven numbered sections, in learning orde
 | Vascular | `vascular-access/` | Original IA/IV cannulation masterclass |
 | Media | `media/` | Eleven CC-licensed clinical cines, the SCCM course clips used with permission (RV, LV, fluids, cases), source review and per-asset attribution |
 
-The former eFAST and DVT drafts are now listed on the POCUS hub; their teaching content is unchanged. Keep the tutorial noindex tags. Retain the NTF site identity and credit Dr. Chew Shi Hao with a link to https://chewshihao.com.
+The former eFAST and DVT drafts are now listed on the POCUS hub; their teaching content is unchanged. Keep the tutorial noindex tags. Retain the NTF site identity. By the owner's decision (19 Oct 2026), POCUS pages carry no personal author credit.
 
 ## Structure and navigation
 
