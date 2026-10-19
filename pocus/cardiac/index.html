@@ -1293,12 +1293,12 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         <div class="formula">Portal pulsatility fraction = (Vmax − Vmin) / Vmax × 100</div></div>
       <div class="card"><div class="cap">The grade</div>
         <div class="tw"><table class="t sm t2" id="vxG"><tbody>
-          <tr><td>Grade 0</td><td>IVC &lt;2 cm: no congestion by this grading scheme (Doppler not needed for the grade)</td></tr>
-          <tr><td>Grade 1</td><td>IVC ≥2 cm with normal and/or mildly abnormal patterns only: mild</td></tr>
-          <tr><td>Grade 2</td><td>IVC ≥2 cm with <b class="ink">one</b> severely abnormal pattern: moderate</td></tr>
-          <tr><td>Grade 3</td><td>IVC ≥2 cm with <b class="ink">two or more</b> severely abnormal patterns: severe</td></tr>
+          <tr><td>Grade 0</td><td>IVC &lt;2 cm: no congestion (Doppler not needed)</td></tr>
+          <tr><td>Grade 1</td><td>IVC ≥2 cm, normal and/or mild patterns only: mild</td></tr>
+          <tr><td>Grade 2</td><td>IVC ≥2 cm, <b class="ink">one</b> severe pattern: moderate</td></tr>
+          <tr><td>Grade 3</td><td>IVC ≥2 cm, <b class="ink">two or more</b> severe patterns: severe</td></tr>
         </tbody></table></div>
-        <p class="mini">Grading as published (VExUS 'C' prototype, Beaubien-Souligny 2020). Only severe patterns raise the grade above 1.</p></div>
+        <p class="mini">VExUS 'C' prototype (Beaubien-Souligny 2020). Only severe patterns raise the grade above 1.</p></div>
     </div>
     <div class="demo"><div class="panel">
       <div class="cap">Sim 9 · VExUS calculator</div>
@@ -1317,7 +1317,7 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
       <div id="s9Q" hidden><div class="mini">Read the IVC and the three waveforms, then commit to a grade.</div><div class="opts3" id="s9QA"><button data-g="0">Grade 0</button><button data-g="1">Grade 1</button><button data-g="2">Grade 2</button><button data-g="3">Grade 3</button></div></div>
       <div class="readout" id="s9Read"></div>
       <div class="status big" id="s9Stat"></div>
-      <div class="mini">Schematic, not a real scan. Waveforms are drawn for teaching; real tracings are noisier and vary with respiration.</div>
+      <div class="mini">Schematic. Real tracings are noisier and vary with respiration.</div>
     </div></div>
   </div>
 </section>
@@ -1327,21 +1327,21 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
     <div>
       <div class="kicker">Extension · VExUS in practice</div>
       <h2>Four looks, one ECG, and a lot of caveats.</h2>
-      <div class="card"><div class="cap">Acquisition: phased-array or curvilinear probe, ECG trace on, breath held if possible</div>
+      <div class="card"><div class="cap">Acquisition: phased-array or curvilinear, ECG on, breath-hold if possible</div>
         <div class="tw"><table class="t sm" id="vxAcq"><thead><tr><th>Look</th><th>How</th></tr></thead><tbody>
-          <tr><td>IVC</td><td>Subcostal long axis, about 1–2 cm from the cavo-atrial junction (slide 07). Use the maximum diameter. In ventilated patients on PEEP the IVC is often ≥2 cm: rely on the Doppler patterns and state that the IVC step is confounded.</td></tr>
-          <tr><td>Hepatic vein</td><td>Subcostal or right intercostal view of a large hepatic vein (often the middle) near the IVC. Colour, then a PW gate in the vein. Name each wave against the ECG: S follows the QRS, D follows the T wave.</td></tr>
-          <tr><td>Portal vein</td><td>Right mid-axillary intercostal view, coronal plane: the portal vein runs through the liver with bright walls. PW gate in the main or right portal vein; measure Vmax and Vmin over one cycle.</td></tr>
-          <tr><td>Intrarenal vein</td><td>Right kidney, posterolateral approach. Colour Doppler with a low velocity scale to find interlobar vessels. A wide PW gate captures the artery above and the vein below the baseline. Use a slow sweep.</td></tr>
+          <tr><td>IVC</td><td>Subcostal long axis, 1–2 cm from the cavo-atrial junction; maximum diameter. On PEEP often ≥2 cm: rely on Doppler and state the IVC step is confounded.</td></tr>
+          <tr><td>Hepatic vein</td><td>Subcostal or right intercostal; large vein (often middle) near the IVC. Colour, then PW. S follows QRS, D follows T.</td></tr>
+          <tr><td>Portal vein</td><td>Right mid-axillary intercostal, coronal; bright-walled vein through the liver. PW in main or right portal vein; Vmax and Vmin over one cycle.</td></tr>
+          <tr><td>Intrarenal vein</td><td>Right kidney, posterolateral. Colour with low velocity scale for interlobar vessels. Wide PW gate: artery above, vein below baseline. Slow sweep.</td></tr>
         </tbody></table></div></div>
       <div class="card"><div class="cap">Caveats: when the waveforms mislead</div>
-        <ul><li><b class="ink">Atrial fibrillation</b>: no A wave and a small S wave, so S &lt; D is common at baseline. Interpret the hepatic vein with care.</li>
-        <li><b class="ink">Severe tricuspid regurgitation</b>: the regurgitant jet itself reverses the hepatic S wave. The finding reflects the TR more than overall venous pressure, so grade on the portal and renal veins and the IVC too.</li>
-        <li><b class="ink">Cirrhosis or portal hypertension</b>: a stiff liver flattens the hepatic vein waveform (often monophasic) and can damp or even reverse portal flow, whatever the RAP. Both hepatic and portal signals are unreliable; lean on the IVC, the renal vein and the echo.</li>
-        <li><b class="ink">Fit, thin, young people</b>: portal pulsatility can be a normal variant. A pulsatile portal vein with a small IVC is grade 0.</li>
-        <li><b class="ink">CKD and renal parenchymal disease</b>: intrarenal venous patterns are less reliable. This is also the hardest window; check you are not sampling the main renal vein.</li>
-        <li><b class="ink">Raised intra-abdominal pressure</b> compresses the IVC and can alter the waveforms. High PEEP and chronic pulmonary hypertension raise RAP without volume excess.</li>
-        <li>VExUS shows <b class="ink">pressure</b>, not volume. It cannot tell RV failure from fluid overload: the echo does that.</li></ul></div>
+        <ul><li><b class="ink">AF</b>: no A wave, small S; S &lt; D common at baseline.</li>
+        <li><b class="ink">Severe TR</b>: the jet reverses hepatic S; reflects TR more than venous pressure. Grade on portal, renal and IVC too.</li>
+        <li><b class="ink">Cirrhosis / portal hypertension</b>: flattened (often monophasic) hepatic waveform; portal flow damped or reversed whatever the RAP. Lean on IVC, renal vein, echo.</li>
+        <li><b class="ink">Fit, thin, young</b>: portal pulsatility can be normal. Pulsatile portal with small IVC = grade 0.</li>
+        <li><b class="ink">CKD / renal parenchymal disease</b>: renal patterns less reliable. Hardest window; don't sample the main renal vein.</li>
+        <li><b class="ink">Raised intra-abdominal pressure</b> compresses the IVC and alters waveforms. High PEEP and chronic pulmonary hypertension raise RAP without volume excess.</li>
+        <li>VExUS shows <b class="ink">pressure</b>, not volume; the echo separates RV failure from overload.</li></ul></div>
     </div>
     <div>
       <div class="panel flow">
@@ -1364,12 +1364,12 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
         </svg>
       </div>
       <div class="card" style="margin-top:12px"><div class="cap">What it does and does not predict</div>
-        <ul><li><b class="ink">Derivation</b> (145 patients after cardiac surgery): grade 3 predicted AKI, HR 3.69 (95% CI 1.65–8.24), 2.82 after adjustment. At ICU admission grade 3 was highly specific (96%) but insensitive (about 27%) (Beaubien-Souligny 2020).</li>
-        <li><b class="ink">General ICU</b> (145 patients, multicentre): VExUS ≥2 in about one in five at admission and <i>not</i> associated with AKI or 28-day mortality (Andrei 2023). In sepsis (108 patients, four ICUs), VExUS ≥2 was not independently associated with AKI: adjusted OR 1.82 (0.62–5.31) (Song 2025).</li>
-        <li><b class="ink">Meta-analysis</b> (9 observational studies, 1036 patients): VExUS ≥2 associated with AKI, OR 2.63 (1.06–6.54) with high heterogeneity; strongest after cardiac surgery (OR 3.86). No association with mortality (Melo 2025).</li>
-        <li><b class="ink">Physiology</b>: grade correlated with right atrial pressure at catheterisation, better than IVC size alone (pilot study; Longino 2023).</li>
-        <li><b class="ink">Guiding treatment</b>: in cardiorenal syndrome type 1 (RCT, 140 patients), VExUS-guided diuresis achieved decongestion more often, but kidney function recovery and 90-day survival did not differ (Islas-Rodríguez 2024). No trial yet shows better hard outcomes.</li></ul></div>
-      <div class="callout"><b class="ink">Grade 2–3</b>: reassess further fluid and identify the cause; the score alone is not a universal stop rule or an indication for diuresis. Integrate perfusion, lung findings and the echo (RV failure, PE, tamponade, tension pneumothorax, severe TR, high PEEP, fluid overload). Treat obstruction directly: drain tamponade, decompress a pneumothorax, reperfuse PE. Consider decongestion (diuretic or ultrafiltration) only when the cause is volume overload or RV/cardiorenal congestion, with perfusion pressure supported, then rescan: the waveforms improve as RAP falls. <b class="ink">Grade 0</b> does not mean fluid will help: that is the PLR question.</div>
+        <ul><li><b class="ink">Derivation</b> (145 post-cardiac surgery): grade 3 predicted AKI, HR 3.69 (95% CI 1.65–8.24), 2.82 adjusted; at ICU admission 96% specific, ~27% sensitive (Beaubien-Souligny 2020).</li>
+        <li><b class="ink">General ICU</b> (145, multicentre): VExUS ≥2 in ~1 in 5; <i>not</i> associated with AKI or 28-day mortality (Andrei 2023). Sepsis (108, four ICUs): not independently associated with AKI, adjusted OR 1.82 (0.62–5.31) (Song 2025).</li>
+        <li><b class="ink">Meta-analysis</b> (9 observational, 1036): ≥2 associated with AKI, OR 2.63 (1.06–6.54), high heterogeneity; strongest after cardiac surgery (OR 3.86). No mortality association (Melo 2025).</li>
+        <li><b class="ink">Physiology</b>: grade correlated with catheter RAP better than IVC size (pilot; Longino 2023).</li>
+        <li><b class="ink">Guiding treatment</b>: cardiorenal type 1 RCT (140): more decongestion, no difference in renal recovery or 90-day survival (Islas-Rodríguez 2024). No trial shows better hard outcomes.</li></ul></div>
+      <div class="callout"><b class="ink">Grade 2–3</b>: reassess fluid and find the cause; not a universal stop rule or diuresis indication. Integrate perfusion, lungs and echo (RV failure, PE, tamponade, tension pneumothorax, severe TR, high PEEP, overload). Treat obstruction directly: drain, decompress, reperfuse. Decongest (diuretic or ultrafiltration) only for volume overload or RV/cardiorenal congestion, with perfusion pressure supported; rescan (waveforms improve as RAP falls). <b class="ink">Grade 0</b> doesn't mean fluid will help: that is the PLR question.</div>
     </div>
   </div>
 </section>
@@ -1379,9 +1379,9 @@ table.t.sm{font-size:14px} table.t.sm td{padding:8px 8px;font-size:14px} table.t
     <div>
       <div class="kicker">Part VI · Five patients</div>
       <h1>Five shocked patients.</h1>
-      <p class="big-quote" style="font-style:normal">For each patient, select the views, describe ventricular and pericardial findings, then explain the next action before revealing the discussion.</p>
+      <p class="big-quote" style="font-style:normal">Choose views, describe the ventricles and pericardium, commit to the next action, then reveal.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Ask · Acquire · Assess · Act</p>
-      <p class="mini" style="max-width:56ch">Workshop stations: Simulation (cardiac/lung pathology) and POCUS scenarios. Clinical details are teaching vignettes; the case images are schematic simulations.</p>
+      <p class="mini" style="max-width:56ch">Teaching vignettes; images are schematic.</p>
     </div>
     <div><div class="caseGrid" id="caseGrid"></div></div>
   </div>
