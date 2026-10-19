@@ -23,7 +23,7 @@
  document.querySelectorAll('input,select,textarea').forEach(control=>control.addEventListener('keydown',event=>event.stopPropagation()));
  // One list in hub order: Contents links and the "Next lecture" step both use it.
  // The third field marks the critical care series; "Next lecture" steps through those only, ending at Case studies.
- const LECTURES=[['basics','Ultrasound basics',1],['cardiac','Focused cardiac ultrasound',1],['rv','The right ventricle',1],['haemodynamics','Flow and fluids',1],['lung','Lung ultrasound',1],['shock','Shock assessment',1],['efast','eFAST',1],['dvt','DVT compression ultrasound',1],['vascular-access','IA and IV cannulation',0],['gastric','Gastric ultrasound',0],['cases','Case studies',1]];
+ const LECTURES=[['basics','Ultrasound basics',1],['cardiac','Focused cardiac ultrasound',1],['haemodynamics','Flow and fluids',1],['lung','Lung ultrasound',1],['shock','Shock assessment',1],['efast','eFAST',1],['dvt','DVT compression ultrasound',1],['vascular-access','IA and IV cannulation',0],['gastric','Gastric ultrasound',0],['cases','Case studies',1]];
  const SERIES=LECTURES.filter(l=>l[2]),here=SERIES.findIndex(([slug])=>location.pathname.split('/').includes(slug));
  const links=document.createElement('nav');links.className='series-links';links.setAttribute('aria-label','POCUS lectures');links.innerHTML='<h2>Other POCUS lectures</h2>';
  const list=document.createElement('ul');LECTURES.forEach(([slug,label])=>{const li=document.createElement('li'),a=document.createElement('a');a.href='../'+slug+'/';a.textContent=label;if(location.pathname.split('/').includes(slug))a.setAttribute('aria-current','page');li.append(a);list.append(li);});links.append(list);(overview.querySelector('.course-ov-main')||overview).append(links);

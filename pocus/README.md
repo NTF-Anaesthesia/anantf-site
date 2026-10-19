@@ -6,6 +6,7 @@ The POCUS hub groups the lectures into seven numbered sections, in learning orde
 | --- | --- | --- |
 | Basics | `basics/` | 20 sections; seven paired physics/acquisition labs, three cases and quiz |
 | Heart | `cardiac/` | 42 sections in six parts; windows, a left-ventricle part built from the SCCM LV lecture (grades, FS/MAPSE/EPSS, FAC/Simpson's, 19 real clips and five clip questions), a right-ventricle part built from the SCCM RV lecture with 23 real clips and five clip questions, pericardium and shock patterns, an extension part (IVC, VTI, VExUS) and cases |
+| Heart | `rv/` | Redirect only: the RV lecture lives in `cardiac/` Part III (owner's decision, 19 Oct 2026). Old `rv/#<section>` links open the same section there |
 | Heart | `haemodynamics/` | 23 sections in six parts, extended from the SCCM volume responsiveness lecture; static measures (CVP, LVEDA, IVC), EF/forward flow and LVOT VTI, PLR, IVC indices and pitfalls, heart–lung interaction, aortic peak velocity variation (ΔVpeak calculator), comparative evidence (Vignon 2017), fluid tolerance, cases and the course's two clip questions; 10 real clips and 6 stills |
 | Lung | `lung/` | 30 sections; pleural signs, aeration, effusions, diaphragm, cases and real cines |
 | Shock | `shock/` | 27 sections; RUSH, serial reassessment, arrest, four staged cases and eight decision cases |
