@@ -6,7 +6,7 @@ from collections import Counter
 import hashlib, json, subprocess, tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
-PAGES = [ROOT/'pocus/index.html', ROOT/'pocus/media/index.html'] + [ROOT/f'pocus/{slug}/index.html' for slug in ['basics','cardiac','lung','haemodynamics','shock','efast','dvt','cases']]
+PAGES = [ROOT/'pocus/index.html', ROOT/'pocus/media/index.html'] + [ROOT/f'pocus/{slug}/index.html' for slug in ['rv','basics','cardiac','lung','haemodynamics','shock','efast','dvt','cases']]
 
 class Page(HTMLParser):
     def __init__(self):
@@ -75,6 +75,6 @@ for path in (ROOT/'pocus/media').glob('sccm-*/*'):
 for qid,answer,body in re.findall(r'<fieldset class="cs-q" id="([^"]+)" data-answer="([a-d])"[^>]*>(.*?)</fieldset>',cases,re.S):
     assert f'data-choice="{answer}"' in body and 'class="cs-reveal" hidden' in body,qid
 for file in (ROOT/'pocus').rglob('*.js'):
-    if file.parts[-2] in ['basics','cardiac','haemodynamics','shared','shock','cases']:
+    if file.parts[-2] in ['rv','basics','cardiac','haemodynamics','shared','shock','cases']:
         subprocess.run(['node','--check',str(file)],check=True,capture_output=True)
 print(f'{total} lecture sections; {len(manifest["assets"])} attributed media records: pass')

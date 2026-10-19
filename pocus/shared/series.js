@@ -22,8 +22,8 @@
  // Existing courses use document shortcuts; do not consume editing keys or page scroll.
  document.querySelectorAll('input,select,textarea').forEach(control=>control.addEventListener('keydown',event=>event.stopPropagation()));
  // One list in hub order: Contents links and the "Next lecture" step both use it.
- const LECTURES=[['basics','Ultrasound basics'],['cardiac','Focused cardiac ultrasound'],['haemodynamics','Flow and fluids'],['lung','Lung ultrasound'],['shock','Shock assessment'],['efast','eFAST'],['dvt','DVT compression ultrasound'],['cases','Day 1 cases'],['gastric','Gastric ultrasound'],['vascular-access','IA and IV cannulation']];
- const SERIES_LENGTH=8,here=LECTURES.findIndex(([slug])=>location.pathname.split('/').includes(slug));
+ const LECTURES=[['basics','Ultrasound basics'],['cardiac','Focused cardiac ultrasound'],['rv','The right ventricle'],['haemodynamics','Flow and fluids'],['lung','Lung ultrasound'],['shock','Shock assessment'],['efast','eFAST'],['dvt','DVT compression ultrasound'],['cases','Day 1 cases'],['gastric','Gastric ultrasound'],['vascular-access','IA and IV cannulation']];
+ const SERIES_LENGTH=9,here=LECTURES.findIndex(([slug])=>location.pathname.split('/').includes(slug));
  const links=document.createElement('nav');links.className='series-links';links.setAttribute('aria-label','POCUS lectures');links.innerHTML='<h2>Other POCUS lectures</h2>';
  const list=document.createElement('ul');LECTURES.forEach(([slug,label])=>{const li=document.createElement('li'),a=document.createElement('a');a.href='../'+slug+'/';a.textContent=label;if(location.pathname.split('/').includes(slug))a.setAttribute('aria-current','page');li.append(a);list.append(li);});links.append(list);(overview.querySelector('.course-ov-main')||overview).append(links);
  // On the final section of a series lecture, Next continues to the next lecture.
