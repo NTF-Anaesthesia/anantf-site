@@ -1,0 +1,1107 @@
+[
+  {
+    "id": "course-03-01",
+    "file": "pocus/media/course-2026/03-01.mp4",
+    "poster": "pocus/media/course-2026/03-01.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media1.mov",
+    "sha256": "8bda59a4e562989141626786f59bee5d56fcc37517892def43a9d26ea05944ea",
+    "poster_sha256": "091c47914090fc6bcce04015260e7db6beaee5c43c2088a52748ddf630246afc",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      3
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-02",
+    "file": "pocus/media/course-2026/03-02.mp4",
+    "poster": "pocus/media/course-2026/03-02.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media2.mov",
+    "sha256": "289f2bbf6a1d5703c002c8f1d5205131690c41424071aa5f5ec7a5269a3c715d",
+    "poster_sha256": "f61774094ab25ec9ac94350eb7ae61862a415aea58baa865bf40d7f4bac2a55e",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      3,
+      21
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-06",
+    "file": "pocus/media/course-2026/03-06.mp4",
+    "poster": "pocus/media/course-2026/03-06.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media6.mov",
+    "sha256": "e3624c45e8034dc62258c39f9751ff7f0a33828b58b66af5943387f938c068d3",
+    "poster_sha256": "49237398b3071419a5e014b2e6fd5bf5155725ac020f56d236c4fb1993f417a5",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      29
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-07",
+    "file": "pocus/media/course-2026/03-07.mp4",
+    "poster": "pocus/media/course-2026/03-07.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media7.mov",
+    "sha256": "5a5545ee74d29dee096a25ddcda59b7a0ada75bae1ed263f023d4ab1432cc17f",
+    "poster_sha256": "5709d2bf79a9a22def9b8e5e930e17245813ba334aeb5845983ea6a30f11aa8c",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      31
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-08",
+    "file": "pocus/media/course-2026/03-08.mp4",
+    "poster": "pocus/media/course-2026/03-08.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media8.mov",
+    "sha256": "d5a14e506ec5907c4c9fc98b478ca21893210385dc488b1b0e90f2c75473acc3",
+    "poster_sha256": "62622247833d4292e586eb76f3e8c01b3a85e844b907e464bb70325dfe7e5682",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Residual date overlay masked. Footer overlay masked.",
+    "source_slides": [
+      38
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-09",
+    "file": "pocus/media/course-2026/03-09.mp4",
+    "poster": "pocus/media/course-2026/03-09.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media9.mov",
+    "sha256": "52a509da05e61271522accee08dc874f99cb5970b3f0ed28b308aff8a4d5d6dc",
+    "poster_sha256": "aadcb57421c21604f5c9b1065e22c533a0c01d5674308f520dc06484ac440d54",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      43
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-10",
+    "file": "pocus/media/course-2026/03-10.mp4",
+    "poster": "pocus/media/course-2026/03-10.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media10.mov",
+    "sha256": "29e009c8b3b8fa09275df27bcdac75364fc0e82d2f94ee5d1fbe6e3a95975e3c",
+    "poster_sha256": "48c89b345df7108ca571b39ff78bbcd73f68f9c992c4e6cb6aff2cce5cefefd5",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      43,
+      70,
+      71
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-11",
+    "file": "pocus/media/course-2026/03-11.mp4",
+    "poster": "pocus/media/course-2026/03-11.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media11.mov",
+    "sha256": "208bc67a90dff19c3ee0301732c1e0fdb6f1b235359ac844c32472cf5438e2b9",
+    "poster_sha256": "f728ae7ee2d055931534e218f6a990eab11614aa27e05490ed326e4754bb30ea",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      43
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-13",
+    "file": "pocus/media/course-2026/03-13.mp4",
+    "poster": "pocus/media/course-2026/03-13.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media13.mov",
+    "sha256": "ecd36148d46efc661243d3045c22cb101111fd4366f56cfcd818921c3895cc6f",
+    "poster_sha256": "390f583c0cb9bcd59f2a48fe62a98851f05757a46348eefc80f1a8b1d1d31f5b",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      45
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-14",
+    "file": "pocus/media/course-2026/03-14.mp4",
+    "poster": "pocus/media/course-2026/03-14.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media14.mov",
+    "sha256": "ec141608015b9903c9734b50b745c15d922412540922c8360c288a58fd0796c5",
+    "poster_sha256": "fcfaeaeec4d8b67d4f24c58778bb73d1d9d3871d1d8ad9a7d43c8d4c923dcc84",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      45
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-15",
+    "file": "pocus/media/course-2026/03-15.mp4",
+    "poster": "pocus/media/course-2026/03-15.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media15.mov",
+    "sha256": "0f7543748f2b5ea5858e72a5b2c5fe6614e4e04867813f223930bbcc5a31497a",
+    "poster_sha256": "3dbb30dbf9ab7cd0c4043db70f0e3ba1648ccda7b88b548fd1e3a694dbb1f192",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      49
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-03-16",
+    "file": "pocus/media/course-2026/03-16.mp4",
+    "poster": "pocus/media/course-2026/03-16.jpg",
+    "source_deck": "03_UltrasoundAdult_Physics_2020_compressed.pptx",
+    "source_media": "media16.mov",
+    "sha256": "f37293a43524f15b6dd15ea189d9774d2d24b3f0febf2b5e5424769f74677b98",
+    "poster_sha256": "a5c61317bd9ee06769f469d8ddfd1c59dbea8d7bab1f92ff9c326644f87bf7aa",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Footer overlay masked.",
+    "source_slides": [
+      49
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-03",
+    "file": "pocus/media/course-2026/12-03.mp4",
+    "poster": "pocus/media/course-2026/12-03.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media3.mov",
+    "sha256": "f552491c4838d8daae1763748fb09eb5af0267061ed76f737718bdc498e0183f",
+    "poster_sha256": "d88bf46ce67dde53a895c6ff43d17a9f08f135ac57e95e05c9b482675615d8b6",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      11
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-05",
+    "file": "pocus/media/course-2026/12-05.mp4",
+    "poster": "pocus/media/course-2026/12-05.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media5.mov",
+    "sha256": "dc586a90779c2d6af6241e7a9c72c56992570d95e1fcfc3fc3b303efb4de18d1",
+    "poster_sha256": "e3d824d8bd40d286a960530201d3e3fa9018d01a56d8fdc746243c19851324f3",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      13
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-06",
+    "file": "pocus/media/course-2026/12-06.mp4",
+    "poster": "pocus/media/course-2026/12-06.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media6.mov",
+    "sha256": "a9c7bd0deb848eea228595ee51be66c6113f2cc59d99b3ee9e5fde82e46bdb63",
+    "poster_sha256": "58367a7b094d04579aac64eea5818b4c81a262d599c9cb0276def6da284a9f32",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      14
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-07",
+    "file": "pocus/media/course-2026/12-07.mp4",
+    "poster": "pocus/media/course-2026/12-07.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media7.mov",
+    "sha256": "9e96edf890e13d696585b3ba02c4f8d421a06326e4078c6f4346c7ed5aeb2235",
+    "poster_sha256": "adbdd34e8e074344b46b599eaabddcce050ccb02194311ca77c37bf34f584714",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      14
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-08",
+    "file": "pocus/media/course-2026/12-08.mp4",
+    "poster": "pocus/media/course-2026/12-08.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media8.mov",
+    "sha256": "58ea18d02c62b804ca0def574a43b4b353d0966d9e2286a25b357b246b20903e",
+    "poster_sha256": "fea04073992af4ba0353ec5f24891dd920eaea5497a7430dee080047868a68bd",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      15
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-12",
+    "file": "pocus/media/course-2026/12-12.mp4",
+    "poster": "pocus/media/course-2026/12-12.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media12.mov",
+    "sha256": "b75ecd710bd4968355ce17734b134263ea1f1d9799517a2776716af99ef055ca",
+    "poster_sha256": "c7a9dad99c5be609468761d8d65ef3ba9bbc508ba23345aba4cea0434e1e5a0c",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      24
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-14",
+    "file": "pocus/media/course-2026/12-14.mp4",
+    "poster": "pocus/media/course-2026/12-14.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media14.mov",
+    "sha256": "030f8ea2bcaa163507cbac50966da59427a0445025c3da003688850bee2f12ea",
+    "poster_sha256": "38df1b8fd1eb111d1cbb9453d2d9a0b6fe79c5463e2013fe89777f73450234e5",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      25
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-24",
+    "file": "pocus/media/course-2026/12-24.mp4",
+    "poster": "pocus/media/course-2026/12-24.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media24.mov",
+    "sha256": "8782934b2592e47248553c2990a6f7b3e40095bb4053e415184f263a4d9d384e",
+    "poster_sha256": "ee9a0c46a7cffd10893f7f5f2cbfa9fd91ca396a5dd98ae83ab13f23c0f68fba",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      28,
+      30
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-27",
+    "file": "pocus/media/course-2026/12-27.mp4",
+    "poster": "pocus/media/course-2026/12-27.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media27.mov",
+    "sha256": "12b16ab4cf026a14461a2a891f479c832c98c0eeaef853224d0a025d959ef1fc",
+    "poster_sha256": "270b0ec2a154d6d60a3776d24b3361589a1ed0949d90cd8088a86d55edfdfa90",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      32,
+      33
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-28",
+    "file": "pocus/media/course-2026/12-28.mp4",
+    "poster": "pocus/media/course-2026/12-28.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media28.mov",
+    "sha256": "a5d6905bbc1155ab964f518f0495e4cc2032273bbdc37b68e77f0b6071b7b679",
+    "poster_sha256": "cebec1b2a37650cb71ae21b93e0204691aa437436835f935d8c0d9f1c6faacd5",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      34
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-29",
+    "file": "pocus/media/course-2026/12-29.mp4",
+    "poster": "pocus/media/course-2026/12-29.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media29.mov",
+    "sha256": "8b8307a298dc8e8126db9dcc5c5e57dc56e200cab47fa19e5df4e93df473d1aa",
+    "poster_sha256": "bf412c7631c4b61799352da409877754a8daa77802ef384e10159ee028793c7a",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      35
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-30",
+    "file": "pocus/media/course-2026/12-30.mp4",
+    "poster": "pocus/media/course-2026/12-30.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media30.mov",
+    "sha256": "37ce24ae4115b8e16fae534d76e60dc8995f85b6767c527cced44149d33de814",
+    "poster_sha256": "1c3c70fb44a7962e04caaa849370f62332f316e80c194b99bee9f3207dc26b6a",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      35,
+      51
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-32",
+    "file": "pocus/media/course-2026/12-32.mp4",
+    "poster": "pocus/media/course-2026/12-32.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media32.mov",
+    "sha256": "2384ba41224ba8b79f210ec3b20622d3b818c1c9281a246f473c901476bce7fc",
+    "poster_sha256": "4d2a8c5590dd63ea77b7911ed84686c3bedb36f75cee3b97e97d9517a0341757",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      43
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-33",
+    "file": "pocus/media/course-2026/12-33.mp4",
+    "poster": "pocus/media/course-2026/12-33.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media33.mov",
+    "sha256": "e8d8b25919c5e02a4948b588f179aa242e9694923762a26431fa32a6304c39f1",
+    "poster_sha256": "6c9af8f66e5bdc534f4957687f239f676a9589da16d22f8b7fa58007f6631ecd",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      47
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-34",
+    "file": "pocus/media/course-2026/12-34.mp4",
+    "poster": "pocus/media/course-2026/12-34.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media34.mov",
+    "sha256": "727ab134679715402866553a777eb69b72a2c022a582c1f4a04b342bdd795d55",
+    "poster_sha256": "d69c3f5be8b53a9f4b3031a76fc8fceb7e0f45097156b5766067a7d1e18309df",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      48
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-37",
+    "file": "pocus/media/course-2026/12-37.mp4",
+    "poster": "pocus/media/course-2026/12-37.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media37.mov",
+    "sha256": "00c48d54a900adcec89cb8423b08647967baafb0a8c7579564d2dc71df7d8414",
+    "poster_sha256": "c9136628b18c8a8adc7ebd746b730770f2d51c980c2d7dc8fb8bfefdb0250830",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      53
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-40",
+    "file": "pocus/media/course-2026/12-40.mp4",
+    "poster": "pocus/media/course-2026/12-40.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media40.mov",
+    "sha256": "e5422fb35146070c80198443e546a3037b534bf977494003c8dec3de814815ee",
+    "poster_sha256": "25480681d311c99c196ee9294610b4e7af6a7ef284b9f63a600bab579298050e",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      60
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-12-41",
+    "file": "pocus/media/course-2026/12-41.mp4",
+    "poster": "pocus/media/course-2026/12-41.jpg",
+    "source_deck": "12_UltrasoundAdult_PneumoPleuralEffusionThoracentesis_2020 KW-2.pptx",
+    "source_media": "media41.mov",
+    "sha256": "323f338e31441fff4e7bbd341937088c9a83766858bdaf718781774219ac616a",
+    "poster_sha256": "d5f0e613451692af9b0eaaf59e0d220ac50a3c4eaa40dad4c224d1e2fc15936b",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      62
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-01",
+    "file": "pocus/media/course-2026/05-01.mp4",
+    "poster": "pocus/media/course-2026/05-01.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media1.mov",
+    "sha256": "2c30753ba6154a7fe777db9f4c6bb92c3a78604a7409072f5c3470c83a82f025",
+    "poster_sha256": "fe51aa71a432fdfebadfdde792f108c142a5de884c172eda18c5be7d1bb084a3",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      2,
+      3,
+      4
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-06",
+    "file": "pocus/media/course-2026/05-06.mp4",
+    "poster": "pocus/media/course-2026/05-06.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media6.mov",
+    "sha256": "5c2d6e1dc51e97100be97977a1b31c734fc71ba06cfb03ecf18216ab892f4557",
+    "poster_sha256": "54e648d737bc2f9e96f5f384f3b7bb5d28d876524e1197a4b747b69ca7be3576",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      8,
+      9
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-07",
+    "file": "pocus/media/course-2026/05-07.mp4",
+    "poster": "pocus/media/course-2026/05-07.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media7.mov",
+    "sha256": "7c6ca2a4114080cf2f4a10c40c93e7abea1b21910a4a6fab909b83184d1302b3",
+    "poster_sha256": "1c8bfd547f652f9d20adf61ce46616bedd5e293b7f0f32d96da61f70311a44b3",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      10
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-08",
+    "file": "pocus/media/course-2026/05-08.mp4",
+    "poster": "pocus/media/course-2026/05-08.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media8.mov",
+    "sha256": "13f5c66b174c230a6052a036806267bf0fa276f9730669cb47d17c1072a4a145",
+    "poster_sha256": "18f5a99f12fd16937de3c49410e6d9f0dfc795fbbaaefdf0c9b018df37e65895",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Residual date overlay masked. Footer overlay masked.",
+    "source_slides": [
+      11,
+      15
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-09",
+    "file": "pocus/media/course-2026/05-09.mp4",
+    "poster": "pocus/media/course-2026/05-09.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media9.mov",
+    "sha256": "9c75748adcce919902c16f3a925b0a3d4555e3c663b757ea373929a90735a371",
+    "poster_sha256": "979cd96128ea71749e577b5ce1c578cd19226df138b908f02207af82acb09d8c",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Residual date overlay masked. Footer overlay masked.",
+    "source_slides": [
+      12
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-10",
+    "file": "pocus/media/course-2026/05-10.mp4",
+    "poster": "pocus/media/course-2026/05-10.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media10.mov",
+    "sha256": "f532edd2fd3df48c1ff87bbee82b7e14fa27053547c62354ca3b206fb864d796",
+    "poster_sha256": "8c3fd14e0816f7fb32eb2316cdd2025dd79542f8db60cc3282fbe4ce0b300987",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Residual date overlay masked. Footer overlay masked.",
+    "source_slides": [
+      12
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-11",
+    "file": "pocus/media/course-2026/05-11.mp4",
+    "poster": "pocus/media/course-2026/05-11.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media11.mov",
+    "sha256": "1aeb909972b08069b08933ff0cd6a6ced132e7ed80cc4661da739d5382504e06",
+    "poster_sha256": "46aeb49867c606c2a1db12a61d7124e4ea8263a2f7029c49406535b19100886e",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged. Residual date overlay masked. Footer overlay masked.",
+    "source_slides": [
+      14
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-13",
+    "file": "pocus/media/course-2026/05-13.mp4",
+    "poster": "pocus/media/course-2026/05-13.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media13.mov",
+    "sha256": "cfd1f9fb89133f8737bcdd5d7c9828d8379f8267ba344e474e2763a9b4c08791",
+    "poster_sha256": "55d257dc67cef6de85d980ea40f61e3278534d62cc580e3f36b3c334ab252450",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      19
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-14",
+    "file": "pocus/media/course-2026/05-14.mp4",
+    "poster": "pocus/media/course-2026/05-14.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media14.mov",
+    "sha256": "d1b563260f9c2bf7f7bf22d6e53aff35e7af3f61d3c65a8a9bf4c22605a9d3c4",
+    "poster_sha256": "e060c338f9ff629d6b35e8d7af0abed809ec708c12bce401a02476c132902b97",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      19
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-15",
+    "file": "pocus/media/course-2026/05-15.mp4",
+    "poster": "pocus/media/course-2026/05-15.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media15.mov",
+    "sha256": "ef715b92e77b7d56df1c2db603590990a81a93949755ab75f6a76cfc6cf56b47",
+    "poster_sha256": "0ba84122ae09fa52fcdb39f623b9d05689480999aff9bf3b47058bbafd96de34",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      19
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-16",
+    "file": "pocus/media/course-2026/05-16.mp4",
+    "poster": "pocus/media/course-2026/05-16.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media16.mov",
+    "sha256": "3b6f485ea9ed54aa9bd9194b474c8ad0f92a6dd0a81c2d2c21cb06320e195c8a",
+    "poster_sha256": "5d9e924affdc3a0d4ca62ab586b42b3a742a36df0570f2c29d18e50791fdd665",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-05-17",
+    "file": "pocus/media/course-2026/05-17.mp4",
+    "poster": "pocus/media/course-2026/05-17.jpg",
+    "source_deck": "05-02_UltrasoundAdult_Day1LunchCases_2020 KW.pptx",
+    "source_media": "media17.mov",
+    "sha256": "274f8024eee210513234469dbfa422c5f88e895810ed86f8a95ab32102e10d0c",
+    "poster_sha256": "c34b69391f765518c1048f146fe3c5407e7d0f9dacc0296021d44355c084488e",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      31
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-01",
+    "file": "pocus/media/course-2026/09-01.mp4",
+    "poster": "pocus/media/course-2026/09-01.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media1.mov",
+    "sha256": "7fb59a8f0adb50d14ab1a61089137a7b824041d156c4888b4ce06a919df7e57e",
+    "poster_sha256": "44b337d5b5c489d7c4958bece74b34e82f0fc7583f420714afd33b7f7dafe97f",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      3,
+      4,
+      5
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-02",
+    "file": "pocus/media/course-2026/09-02.mp4",
+    "poster": "pocus/media/course-2026/09-02.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media2.mov",
+    "sha256": "331085ae336bbf109f343454857f03351d9a1204120b56452bbac2e1e642700a",
+    "poster_sha256": "ceee2e219cce7ad12cbc7546149314abd078ce0bf271ed0f1af390147e486fa1",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      8,
+      14,
+      15
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-03",
+    "file": "pocus/media/course-2026/09-03.mp4",
+    "poster": "pocus/media/course-2026/09-03.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media3.mov",
+    "sha256": "1f93f23dd5fbae57fc1de511edfa2b2fb4c87c80e2a7ea361106988e2078a718",
+    "poster_sha256": "7b987ff8260810e6b9fc894038e3c54f6521dfec9ecc09798775982b3117e5ef",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      9
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-04",
+    "file": "pocus/media/course-2026/09-04.mp4",
+    "poster": "pocus/media/course-2026/09-04.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media4.mov",
+    "sha256": "a989c2fcd4ae117074a7717f5c84f70313993f25493762c9b69b98f48b9c5af3",
+    "poster_sha256": "919fa7dd96ab7d110abdf70d134f0444cf0d8ed95fe80dfeed269429f3ed172f",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      10
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-05",
+    "file": "pocus/media/course-2026/09-05.mp4",
+    "poster": "pocus/media/course-2026/09-05.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media5.mov",
+    "sha256": "69cb6d44458584689240cdd6f4242e546aa5bf9f76e724001ebd3a7763207bfb",
+    "poster_sha256": "4d5fbce7fd6420e3ad5525857b2e08f766e51e4eed063b587d0e01939accfd45",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      11
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-06",
+    "file": "pocus/media/course-2026/09-06.mp4",
+    "poster": "pocus/media/course-2026/09-06.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media6.mov",
+    "sha256": "8a47b6c732f7f0d3edaf1126c23f4d82374b754363a6c3e7d9a9a27aeb9b695d",
+    "poster_sha256": "e3a2107a239276c209d737a23cba3002c02ae18f91adca2afd4e640f9e3384fe",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      12
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-07",
+    "file": "pocus/media/course-2026/09-07.mp4",
+    "poster": "pocus/media/course-2026/09-07.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media7.mov",
+    "sha256": "0e774f9a6f1b1d09c919afcb91ac47e4bb79848713d3e9df2cc59dfa43d0ccb3",
+    "poster_sha256": "ed2e7baa9efa041aceee89f622eaf689e00e59743e4f709fbe9a2335c6e026ed",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      13
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-08",
+    "file": "pocus/media/course-2026/09-08.mp4",
+    "poster": "pocus/media/course-2026/09-08.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media8.mov",
+    "sha256": "74862b4d4df7cfa7a9b83d63aed0e439bfc4ce1dfa9964f7dbb2239f5888a82d",
+    "poster_sha256": "3c871c00a145e71d868cb1abe741e55e32532b78531012f474f8eac15e3db8cc",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      13
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-09",
+    "file": "pocus/media/course-2026/09-09.mp4",
+    "poster": "pocus/media/course-2026/09-09.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media9.mov",
+    "sha256": "7f0a9c72b7cf0f83f4449e8c2a7f0794ef43fe13cb9fdc1a145cbabcdf03ef05",
+    "poster_sha256": "78c2381e774ee602f8cc308fed2c9a9c041777aa2652db04328b86d7a233fec6",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      19
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-10",
+    "file": "pocus/media/course-2026/09-10.mp4",
+    "poster": "pocus/media/course-2026/09-10.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media10.mov",
+    "sha256": "fdfdcebff17b2845e2a9019f7c4500ef6e300ea9b59b91a31a73905a6b2f11a9",
+    "poster_sha256": "1bcb85a99a6fdf47a158cb5f775395cc1e23eaa042763e1286ac849a088cc943",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      20
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-11",
+    "file": "pocus/media/course-2026/09-11.mp4",
+    "poster": "pocus/media/course-2026/09-11.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media11.mov",
+    "sha256": "645cf386eedc1811ff85215967e885fb17df93ac451c66884696f85c60eb9861",
+    "poster_sha256": "88a764fc9931fdee2ec8e7d97251aebe5b533757485874e170bfe7cef7fd9350",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      21
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-12",
+    "file": "pocus/media/course-2026/09-12.mp4",
+    "poster": "pocus/media/course-2026/09-12.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media12.mov",
+    "sha256": "e00ba921c88e77a7613a3f4c648c125736f8ffd306f24716df2884707811d2d6",
+    "poster_sha256": "4fa63a0215fdfaaf6f1591ca4d5c1cf5f4ed09ed6c61697236f22283cd4d1110",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      21
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-13",
+    "file": "pocus/media/course-2026/09-13.mp4",
+    "poster": "pocus/media/course-2026/09-13.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media13.mov",
+    "sha256": "8913ff8016b02d0f44e2e0684f1c1cd9a2ff2fb462910ec7c60fe25804616583",
+    "poster_sha256": "e75bfa24d7a77b03380c25481c94a6799747636202c0e3c9df885030adce7876",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      23
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-14",
+    "file": "pocus/media/course-2026/09-14.mp4",
+    "poster": "pocus/media/course-2026/09-14.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media14.mov",
+    "sha256": "d2e461df7b87c8b1511f77a6c28e1d28cd4fdcad6fc73c9f7ae223ff9ea60370",
+    "poster_sha256": "7a932fd9b2527ccdb19bf52d08caa222cf6d9adb3955564e6e9e8642617cc203",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      24
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-15",
+    "file": "pocus/media/course-2026/09-15.mp4",
+    "poster": "pocus/media/course-2026/09-15.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media15.mov",
+    "sha256": "8fc4c0a50a3fd4151fb448fab388e157d34ecc6057386e65e873db0f0236ca51",
+    "poster_sha256": "f6c08394465f7311c1e5e5f9a78d85a42ba43369e8fd18ee4372c1cef36ae11c",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      25
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-16",
+    "file": "pocus/media/course-2026/09-16.mp4",
+    "poster": "pocus/media/course-2026/09-16.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media16.mov",
+    "sha256": "f238ae6c39d3353e2cbab4684d2eb9f6c3dd48c212864ee960a3a80efbfd7e1c",
+    "poster_sha256": "6a3b9471c0ad62bdb38c7c48f693901b14608c553166a2096aa8ce64648a9b8f",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      27
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-17",
+    "file": "pocus/media/course-2026/09-17.mp4",
+    "poster": "pocus/media/course-2026/09-17.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media17.mov",
+    "sha256": "6ce47b09c77bed939846c9e76dd5c6108918e652007409d379680579618a13f0",
+    "poster_sha256": "5f43e4038587a337c25291edeaf160cc953accfd0bd45fbb44558dd2171b0d45",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      27
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-18",
+    "file": "pocus/media/course-2026/09-18.mp4",
+    "poster": "pocus/media/course-2026/09-18.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media18.mov",
+    "sha256": "96b7ed3e3c2539a9db1161648abd5d22e478137f339a3b898f8e84a7381b5ea0",
+    "poster_sha256": "1d518893ac89f8b56b96ef642e448eab787779ec7b474ff4fc1b682c3a4df9c2",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      27
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-19",
+    "file": "pocus/media/course-2026/09-19.mp4",
+    "poster": "pocus/media/course-2026/09-19.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media19.mov",
+    "sha256": "0848e25b88dd9418033a2dc17ef859a66878bbd17d61592f0e2ea6a33ac3328b",
+    "poster_sha256": "19c74c78d8860eac282f3977ca7cf5eda9880ce5d6cffd189320040c544e8231",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      29
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "course-09-20",
+    "file": "pocus/media/course-2026/09-20.mp4",
+    "poster": "pocus/media/course-2026/09-20.jpg",
+    "source_deck": "09-02_UltrasoundAdult_Day1 Afternoon Cases_2020.pptx",
+    "source_media": "media20.mov",
+    "sha256": "bfcf6fd187a1caf349cfeed16d723cfb5112cb87257cab9ebbe2fc781eb91f3e",
+    "poster_sha256": "ccaedfe086c808425d2e1b5878f2d509a049ddf9ef9be40a8357c984c63d8516",
+    "licence": "Used with permission",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "Cropped scanner margins; audio and source metadata removed; H.264 conversion. Playback speed unchanged.",
+    "source_slides": [
+      34,
+      35
+    ],
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md."
+  },
+  {
+    "id": "echo-10",
+    "file": "pocus/media/course-2026/echo-10.webp",
+    "source_deck": "04-UltrasoundAdult-EchoViews-2025.pdf",
+    "source_pages": [
+      10
+    ],
+    "sha256": "96013a5cbcb0f53e3c4ccfb33bee34ac706b4f3cbd4bc419bb59fb7e43c91016",
+    "licence": "Used with permission",
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md.",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "PDF page rendered as WebP; original credit retained."
+  },
+  {
+    "id": "echo-11",
+    "file": "pocus/media/course-2026/echo-11.webp",
+    "source_deck": "04-UltrasoundAdult-EchoViews-2025.pdf",
+    "source_pages": [
+      11
+    ],
+    "sha256": "9df159e61f3081c7d69b5a71817128ee084489984a93aff385cd5c461058bef3",
+    "licence": "Used with permission",
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md.",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "PDF page rendered as WebP; original credit retained."
+  },
+  {
+    "id": "echo-17",
+    "file": "pocus/media/course-2026/echo-17.webp",
+    "source_deck": "04-UltrasoundAdult-EchoViews-2025.pdf",
+    "source_pages": [
+      17
+    ],
+    "sha256": "5fc8111f0eee8c8ee19c86deb794a077dde54e283717b127f0f26142152a1067",
+    "licence": "Used with permission",
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md.",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "PDF page rendered as WebP; original credit retained."
+  },
+  {
+    "id": "echo-23",
+    "file": "pocus/media/course-2026/echo-23.webp",
+    "source_deck": "04-UltrasoundAdult-EchoViews-2025.pdf",
+    "source_pages": [
+      23
+    ],
+    "sha256": "0e74f108deb03ae6785a3c7b1b2d9cbe037578d5844ff8655d4b438c275f53c1",
+    "licence": "Used with permission",
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md.",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "PDF page rendered as WebP; original credit retained."
+  },
+  {
+    "id": "echo-29",
+    "file": "pocus/media/course-2026/echo-29.webp",
+    "source_deck": "04-UltrasoundAdult-EchoViews-2025.pdf",
+    "source_pages": [
+      29
+    ],
+    "sha256": "9716e021589b87e6daf5d7a2f444e56b04cf409ae0f24b0e3c3dad773fd4983d",
+    "licence": "Used with permission",
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md.",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "PDF page rendered as WebP; original credit retained."
+  },
+  {
+    "id": "echo-46",
+    "file": "pocus/media/course-2026/echo-46.webp",
+    "source_deck": "04-UltrasoundAdult-EchoViews-2025.pdf",
+    "source_pages": [
+      46
+    ],
+    "sha256": "b41cba82327cdfd5ac65df7df9f588891196e118e67836acb72394c5e4bcea71",
+    "licence": "Used with permission",
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md.",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "PDF page rendered as WebP; original credit retained."
+  },
+  {
+    "id": "echo-55",
+    "file": "pocus/media/course-2026/echo-55.webp",
+    "source_deck": "04-UltrasoundAdult-EchoViews-2025.pdf",
+    "source_pages": [
+      55
+    ],
+    "sha256": "c4e51affd7385a2beb139b6c3ea1dfb3663b49f5c630b95fc37f7486bab4dc7c",
+    "licence": "Used with permission",
+    "licence_evidence": "Owner-confirmed SCCM teaching reuse permission, 18 October 2026; see pocus/REVIEW.md.",
+    "credit": "SCCM Critical Care Ultrasound: Adult; used with permission",
+    "changes": "PDF page rendered as WebP; original credit retained."
+  }
+]

@@ -104,7 +104,26 @@ Corrections from the 18 Oct 2026 review: RV question 1 no longer repeats the cou
 
 ### Remaining limits
 
-- Physics, Echo views and Lung ultrasound decks are still not supplied. Basics, cardiac acquisition and lung remain checked against the earlier companion only, not slide by slide.
+- Superseded 19 October 2026: Physics and Lung PPTX, Echo views PDF, Lunch cases and Afternoon cases have now been supplied and reviewed; coverage is recorded below.
 - No open-source media could be downloaded in this environment (external hosts blocked). The 11 CC clips already in `media/` and the original schematic simulations are reused.
 - Deck values not re-checked against current guidelines stay labelled as course values. McKaigney 2014 confidence intervals and specificity were not verified and are not quoted.
 - These checks do not replace clinical review of the course clips by the lecture owner.
+
+## 19 October 2026: standalone RV and supplied source expansion
+
+The RV teaching sequence is now available at `/pocus/rv/`, with its own eight-section navigation, references, measurement lab, 23 existing cines and five clip questions. The comprehensive cardiac lecture and its existing anchors remain available. Mid-cavity and longitudinal RV normal dimensions were aligned to the 2025 ASE right-heart guideline (<35 mm and <82 mm); TAPSE >17 mm and FAC >35% remain normal reference values, not independent diagnostic rules. Source: https://www.asecho.org/wp-content/uploads/2026/08/ASE-Right-Heart-Guidelines-May-2025.pdf (Table 1).
+
+| Supplied source | Added teaching coverage |
+| --- | --- |
+| 03 Physics 2020 | Basics: probe/preset, gain, depth/sector, Doppler examples |
+| 04 Echo views 2025 PDF | Cardiac: handling, subcostal/IVC, apical and parasternal acquisition; seven figures |
+| 05-02 Day 1 Lunch Cases 2020 | Five cases: PSAX acquisition, gain, postoperative collections, tamponade and peri-induction RV failure |
+| 07 Basic RV 2020 | Standalone RV lecture reuses the previously mapped source material and media |
+| 09-02 Day 1 Afternoon Cases 2020 | Three cases: post-ROSC/sepsis, dialysis congestion before/after treatment, poor LV output |
+| 12 Pneumothorax/Pleural Effusion/Thoracentesis 2020 | Lung: pleural signs, vertical artifacts, consolidation, pneumothorax and pleural fluid/procedure |
+
+The existing shock, eFAST, DVT and haemodynamics content remains in the series; the new decks do not supply replacement lectures for these topics. Existing evening cases are preserved. Notes were matched by slide relationship targets, not notes-slide filenames. Course answers and added discussion are identified separately. A normal RV does not exclude PE; absent sliding is not sufficient to diagnose pneumothorax.
+
+62 selected clinical cines were extracted and converted to H.264 with no audio, cropped scanner margins and metadata removal. Residual date/footer overlays in physics and lunch clips were masked. Initial and late frames were visually inspected. Seven figures came from the Echo views PDF; a PDF cannot recover the original slide videos. All derivatives retain SCCM used-with-permission credit and source-slide/page mapping in `media/course-2026/manifest.json`. This is a teaching adaptation rather than a pixel-for-pixel reproduction; decorative images and redundant clips are omitted. Permission evidence is the owner's 18 October confirmation recorded above.
+
+Clinical interpretation of the final teaching selection remains for the lecture owner; this technical/source review is not a substitute for that review.
