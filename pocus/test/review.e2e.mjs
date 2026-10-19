@@ -14,7 +14,7 @@ try {
    await page.goto(`${root}/pocus/${slug}/`,{waitUntil:'networkidle'});
    const count=await page.locator('.slide').count();
    for(let i=0;i<count;i++){
-    await page.locator('#course-section').selectOption(String(i));
+    await page.evaluate(i=>window.go(i),i);
     await page.waitForFunction(i=>document.querySelectorAll('.slide')[i].classList.contains('active'),i);
     assert.equal(await page.locator('.slide.active').count(),1,`${slug} section ${i+1}`);
     assert.equal(await page.locator('.slide.active').getAttribute('aria-hidden'),'false');
@@ -32,7 +32,7 @@ try {
    await page.keyboard.press('Escape');
    assert.equal(await page.locator('.course-keys').isVisible(),false);
    // The final section continues to the next series lecture (Case studies is last in the series).
-   await page.locator('#course-section').selectOption(String(count-1));
+   await page.evaluate(i=>window.go(i),count-1);
    const nextText=await page.locator('#nextB').getAttribute('aria-label');
    if(slug==='cases')assert.doesNotMatch(nextText||'',/Next lecture/);else assert.match(nextText||'',/^Next lecture: /,`${slug} next lecture`);
    if(viewport.width<500){
@@ -177,15 +177,15 @@ try {
     if(viewport.width<500)assert.ok(await page.evaluate(()=>[...document.querySelectorAll('.slide')].every(s=>s.scrollWidth<=s.clientWidth+1)),'cases slide overflow');
    }
    if(slug==='lung'){
-    await page.locator('#course-section').selectOption('1');
+    await page.evaluate(i=>window.go(Number(i)),'1');
     assert.match(await page.locator('.slide.active h2').innerText(),/survey/);
     assert.doesNotMatch(await page.locator('.slide.active').innerText(),/gastric|Perlas|I-AIM/);
     await page.screenshot({path:`pocus-test-artifacts/lung-survey-${viewport.width}.png`});
-    await page.locator('#course-section').selectOption('4');
+    await page.evaluate(i=>window.go(Number(i)),'4');
     assert.equal(await page.locator('#s2Mode button[data-v="8"]').getAttribute('aria-pressed'),'true');
     await page.locator('#s2Mode button[data-v="blue"]').click();
     await page.waitForFunction(()=>document.querySelector('#s2Stat').textContent.includes('point'));
-    await page.locator('#course-section').selectOption('12');
+    await page.evaluate(i=>window.go(Number(i)),'12');
     await page.locator('#s7MeasuredSep').fill('32');
     assert.match(await page.locator('#s7Formula').innerText(),/640 mL/);
     const formula=await page.locator('#s7Formula').innerText();

@@ -79,3 +79,10 @@ html body.pocus-course #overview{padding-top:0}
 @media(min-width:701px){body.pocus-course .bar :is(#prevB,#nextB,#ovB){font-size:15px}}
 body.pocus-course .ntf-footer{font-size:12px}body.pocus-course .ntf-footer .ntf-copyright a{font-size:inherit}
 body.pocus-course .ntf-footer .ntf-footer-identity>span{font-size:12px}
+
+/* One continuous deck: Previous/Next and Contents navigate; the top section picker stays in the DOM for engines but is not shown. */
+body.pocus-course .course-section-picker{display:none}
+/* Phones: long agenda labels wrap instead of running off the slide. */
+@media(max-width:700px){body.pocus-course .course-intro .agenda li span:last-child{white-space:normal;text-align:right;min-width:0}}
+/* With the picker gone, phones have room for the lecture name in the breadcrumb. */
+@media(max-width:900px){body.pocus-course .course-breadcrumb>span:last-child{display:inline;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
