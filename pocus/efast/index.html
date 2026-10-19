@@ -540,7 +540,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
         </div>
         <div class="status" id="pmStat"></div>
         <ul class="rlist" id="pmList" aria-live="polite"></ul>
-        <div class="mini">Fluid units are illustrative, not a validated threshold. Order and volumes are illustrative of published trends (Branney 1995; Abrams 1999; Lobo 2017), not cut-offs. Thresholds are deliberately lower than Branney's mean (about 600 mL for Morison's pouch) so that the order of filling is visible.</div>
+        <div class="mini">Volumes and fill order follow published trends (Branney 1995; Abrams 1999; Lobo 2017) but are not validated cut-offs. They are set lower than Branney's mean (about 600 mL for Morison's pouch) so that the order of filling is visible.</div>
       </div>
     </div>
   </div>
@@ -800,7 +800,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div class="kicker">References</div>
     <h2>Sources and further reading.</h2>
     <ol class="refs long" id="refList"></ol>
-    <p class="mini">Simulations are purpose-built schematic teaching models, not diagnostic images. Anatomy, echogenicity, fluid volumes and fill order are simplified and illustrative.</p>
+    <p class="mini">Simulations are schematic teaching models, not diagnostic images. Anatomy, echogenicity, fluid volumes and fill order are simplified.</p>
   </div>
 </section>
 
@@ -1672,7 +1672,7 @@ const CASES = [
       ['Is eFAST indicated?', 'Unstable blunt trauma not responding to resuscitation. The question is: <b>which cavity is bleeding?</b> eFAST during the primary survey, without interrupting resuscitation.'],
       ['How will you scan?', '<b>RUQ first</b> (tender, most likely positive), then subxiphoid, LUQ, pelvis, anterior chest on both sides. Curvilinear probe, supine.'],
       ['What do you see?', "RUQ: anechoic stripe in Morison's pouch extending to the caudal liver tip; normal mirror image and no spine sign. Pericardium: no fluid. Pelvis: anechoic fluid behind the bladder. Lung sliding present on both sides. <b class=\"bad\">FAST positive for haemoperitoneum.</b>"],
-      ['What will you do?', '<b>Unstable + positive abdominal FAST = haemorrhage control.</b> With a pelvic fracture, pelvic fluid could include urine from bladder rupture, but in an unstable patient with RUQ fluid it is treated as blood. Activate the massive transfusion protocol; straight to theatre for laparotomy or damage control; no CT. Anaesthetic plan: RSI with a haemodynamically stable induction, permissive hypotension until surgical control (no significant head injury), TXA within 3 hours if not already given, warm everything, give calcium.']
+      ['What will you do?', '<b>An unstable patient with a positive abdominal FAST needs haemorrhage control.</b> With a pelvic fracture, pelvic fluid could include urine from bladder rupture, but in an unstable patient with RUQ fluid it is treated as blood. Activate the massive transfusion protocol; straight to theatre for laparotomy or damage control; no CT. Anaesthetic plan: RSI with a haemodynamically stable induction, permissive hypotension until surgical control (no significant head injury), TXA within 3 hours if not already given, warm everything, give calcium.']
     ], pearl: 'In the unstable patient, a positive abdominal FAST sends the patient to theatre. Its high specificity is what makes that safe.' },
   { tag: 'Unstable blunt · no free fluid', short: 'Pedestrian', title: 'Pedestrian struck by a lorry',
     vignette: 'A 68-year-old woman, pedestrian struck by a lorry. Pelvic fracture suspected from mechanism and examination (a single gentle examination only; do not repeat pelvic springing). Left femur deformed. Chest clinically clear. eFAST done 5 minutes after arrival.',
@@ -1740,7 +1740,7 @@ $('#jumpCases').onclick = jumpToCases;
 const QZ = [
   ['In the supine patient, which part of the right upper quadrant view is the most sensitive for free fluid?', ['The subphrenic space above the liver', 'The hepatorenal interface at the upper pole of the kidney', 'The caudal (inferior) tip of the liver / right paracolic gutter', 'The right hemithorax above the diaphragm'], 2, 'Among positive FASTs, the caudal liver edge/superior paracolic gutter was the RUQ sub-zone most often positive (30/32; Lobo 2017), more than Morison\'s pouch proper. Always slide down to see the liver tip.'],
   ['Which LUQ zone is MOST often missed by a probe placed too low and anterior?', ['Splenorenal recess', 'Subphrenic space between spleen and diaphragm', 'Left paracolic gutter at the iliac crest', 'Lesser sac'], 1, 'Low and anterior, the view fills with colon and stomach gas and the space above the spleen is never seen. Go high and posterior, and clear the subphrenic space, splenorenal recess, inferior spleen tip and left paracolic gutter (in O\'Brien 2015, LUQ fluid was most often in the left paracolic gutter; fluid confined to the LUQ lay around the inferior spleen tip and gutter or in the subphrenic space, never in the splenorenal recess alone).'],
-  ['A haemodynamically unstable blunt trauma patient, not responding to transfusion, has fluid in Morison\'s pouch. What is the next step?', ['CT abdomen and pelvis with contrast', 'Repeat FAST in 15 minutes', 'Laparotomy / damage-control surgery with massive transfusion', 'Diagnostic peritoneal lavage to confirm blood'], 2, 'Unstable + positive abdominal FAST is an indication for operative haemorrhage control without CT (ATLS).'],
+  ['A haemodynamically unstable blunt trauma patient, not responding to transfusion, has fluid in Morison\'s pouch. What is the next step?', ['CT abdomen and pelvis with contrast', 'Repeat FAST in 15 minutes', 'Laparotomy / damage-control surgery with massive transfusion', 'Diagnostic peritoneal lavage to confirm blood'], 2, 'In an unstable patient, a positive abdominal FAST is an indication for operative haemorrhage control without CT (ATLS).'],
   ['Which of the following is NOT reliably excluded by a negative FAST?', ['Large-volume haemoperitoneum in a hypotensive patient', 'Retroperitoneal haemorrhage from a pelvic fracture', 'Haemopericardium with tamponade physiology', 'Large haemothorax'], 1, 'Retroperitoneal blood does not reach the intraperitoneal dependent spaces. FAST is blind to it by design.'],
   ['On the RUQ view, what does a positive "spine sign" above the diaphragm indicate?', ['Normal aerated lung', 'Pneumothorax', 'Pleural fluid (haemothorax) or consolidation transmitting sound', 'Subcutaneous emphysema'], 2, 'Aerated lung scatters the beam, so the spine normally stops at the diaphragm and the liver is mirrored above it. Fluid lets the beam through, so the spine is seen continuing upwards and the mirror image is lost.'],
   ['Which finding is close to 100% specific for pneumothorax?', ['Absent lung sliding', 'A-lines', 'Lung point', 'Barcode sign on M-mode'], 2, 'Absent sliding and the barcode sign occur with apnoea, mainstem intubation, adhesions and bullae. The lung point (transition between sliding and non-sliding pleura) is highly specific, though absent in total collapse.'],

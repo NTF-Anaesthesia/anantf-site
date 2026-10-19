@@ -344,9 +344,9 @@ svg text{font-family:var(--mono)}
     <div>
       <div class="kicker">04 · IA · Cannula selection</div>
       <h2>Longer cannula in the vessel — fewer problems later.</h2>
-      <div class="card"><span class="tag avoid">Avoid</span><h3 style="margin-top:10px">Optiva — 32 mm</h3><p>Too short for deeper or mobile arteries. Skip it.</p></div>
-      <div class="card"><span class="tag def">Default</span><h3 style="margin-top:10px">Angiocath (48 mm) · Flowswitch (45 mm)</h3><p>Longer cannula means more cannula sitting within the vessel. More stable, less prone to displacement.</p></div>
-      <div class="card"><span class="tag deep">Deep</span><h3 style="margin-top:10px">Seldinger technique</h3><p>For arteries deeper than 1 cm. May be useful for calcified arteries as well. Vygon (8 cm) for obese or oedematous patients.</p></div>
+      <div class="card"><span class="tag avoid">Avoid</span><h3 style="margin-top:10px">Optiva — 32 mm</h3><p>Too short for deeper or mobile arteries.</p></div>
+      <div class="card"><span class="tag def">Default</span><h3 style="margin-top:10px">Angiocath (48 mm) · Flowswitch (45 mm)</h3><p>More cannula sits within the vessel, so it is more stable and less likely to be displaced.</p></div>
+      <div class="card"><span class="tag deep">Deep</span><h3 style="margin-top:10px">Seldinger technique</h3><p>For arteries deeper than 1 cm. It may also help with calcified arteries. Vygon (8 cm) for obese or oedematous patients.</p></div>
     </div>
     <div class="demo">
       <div class="panel">
@@ -361,7 +361,7 @@ svg text{font-family:var(--mono)}
           <button class="btn" id="csMove">► Patient moves wrist</button><button class="btn ghost" id="csReset">Reset</button>
         </div>
         <canvas id="csMon" style="margin-top:10px;border-radius:8px"></canvas>
-        <div class="mini">Device lengths are the deck's preferences — confirm the actual length and OD on the device you use.</div>
+        <div class="mini">Device lengths are local preferences — confirm the actual length and OD on the device you use.</div>
         <div class="status" id="csStat"></div>
       </div>
     </div>
@@ -374,7 +374,7 @@ svg text{font-family:var(--mono)}
     <div>
       <div class="kicker">05 · IA · Technique</div>
       <h2>See the tip. Always.</h2>
-      <p class="lede">Approach selection depends on operator confidence — but the discipline of tip visualisation does not change.</p>
+      <p class="lede">Choose the approach that suits your confidence. The discipline of seeing the tip does not change.</p>
       <div class="card"><div class="cap">Short axis · Out-of-plane</div><h3>The blinking technique.</h3><p>Dynamic tracking. Best for tortuous or mobile arteries. Walk the probe forward in small increments, keeping the tip visible at every step.</p></div>
       <div class="card"><div class="cap">Long axis · In-plane</div><h3>Full needle path visualised.</h3><p>For experienced users. The needle, shaft and tip are visible throughout the approach. Less margin for probe-needle misalignment.</p></div>
       <div class="callout">Confirm intraluminal flash <b>AND</b> a pulsatile waveform on the patient monitor — before you secure.</div>
@@ -507,7 +507,7 @@ svg text{font-family:var(--mono)}
     <div>
       <div class="kicker">08 · IV · Preparation &amp; selection</div>
       <h2>Engorge the vein. Then choose the best one.</h2>
-      <p class="lede">Ultrasound is for deep veins. Superficial veins will compress under the probe — or refuse to image cleanly.</p>
+      <p class="lede">Ultrasound is for deep veins.</p>
       <div class="card">
         <div class="cap">Preparation</div>
         <p><b style="color:var(--ink);font-weight:400">Tourniquet</b> — double if needed, to engorge deep veins.</p>
@@ -573,7 +573,7 @@ svg text{font-family:var(--mono)}
     <div>
       <div class="kicker">10 · IV · Probe handling</div>
       <h2>Move the probe with intent. Keep the vein centred.</h2>
-      <p class="lede">Three small adjustments cover most of what the literature won't teach you.</p>
+      <p class="lede">Three small adjustments cover most situations.</p>
       <ul class="plist" id="phList">
         <li data-h="rot" class="on"><span class="num">↻</span><div><b>Rotate · For curved or oblique veins.</b><span>Don't fight the anatomy. Match the probe orientation to the segment you intend to puncture.</span></div></li>
         <li data-h="tilt"><span class="num">⟋</span><div><b>Tilt · When the vein dives deeper.</b><span>Adjust the probe angle to keep the target in the centre of the screen as it tracks deeper into tissue.</span></div></li>
@@ -646,7 +646,7 @@ svg text{font-family:var(--mono)}
           </div>
           <div class="status" id="geoStat" style="font-size:13.5px"></div>
         </div>
-        <details class="src"><summary>Original slide figure · numerical note</summary><img alt="Geometry of cannula length vs vein depth" src="media/reference-2.png"><p style="font-family:var(--serif);font-size:14px;color:var(--ink2)">The figure's “At 30deg, a = 2b” is an approximation: a = 2b corresponds to 26.6°, which gives c = √5·b — hence its 1.1 cm and 2.2 cm. At exactly 30°, c = 2b and a = √3·b ≈ 1.7b. The calculator uses exact trigonometry. Slide 14 says “at least 2 cm”; the figure says “&gt; 2 cm” — treat a value right on the boundary with caution.</p></details>
+        <details class="src"><summary>Original slide figure · numerical note</summary><img alt="Geometry of cannula length vs vein depth" src="media/reference-2.png"><p style="font-family:var(--serif);font-size:14px;color:var(--ink2)">The figure's “At 30deg, a = 2b” is an approximation: a = 2b corresponds to 26.6°, which gives c = √5·b — hence its 1.1 cm and 2.2 cm. At exactly 30°, c = 2b and a = √3·b ≈ 1.7b. The calculator uses exact trigonometry. Rule 2 says “at least 2 cm”; the figure says “&gt; 2 cm” — treat a value right on the boundary with caution.</p></details>
       </div>
     </div>
   </div>

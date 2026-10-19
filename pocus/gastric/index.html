@@ -670,7 +670,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
       <h1>Five patients, and a bonus.</h1>
       <p class="big-quote" style="font-style:normal">Images and clips from my scan library. Commit to an answer before each reveal.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Indication · Acquisition · Interpretation · Medical decision</p>
-      <p class="mini" style="max-width:56ch">Cases 1–5: clinical details are teaching vignettes built around real library images; images within a case are not necessarily from one patient. Case 6 is a real case shared by Dr Zhang Jinbin.</p>
+      <p class="mini" style="max-width:56ch">Cases 1–5 are teaching vignettes built around real library images; images within a case may come from different patients. Case 6 is a real case shared by Dr Zhang Jinbin.</p>
     </div>
     <div><div class="caseGrid" id="caseGrid"></div></div>
   </div>
@@ -1788,7 +1788,7 @@ const CASES = [
       ['What will you do?', '<b class="ok">Low risk:</b> proceed with MAC as planned; keep the levodopa schedule. At endoscopy: clean gastric mucosa, no residue — the scan was right.', 'i1547']
     ], pearl: 'Gastric ultrasound also lets you say yes — confidently.' },
   { tag: 'Bonus · from Dr Zhang Jinbin', short: 'Bonus', bonus: true, title: 'Bariatric surgery · liraglutide?',
-    vignette: 'A real case, scanned and shared by Dr Zhang Jinbin. A woman listed for bariatric surgery. Her electronic medical record lists liraglutide, and she says she takes everything prescribed there, yet she denies being on any weight-loss drug.',
+    vignette: 'A woman listed for bariatric surgery. Her electronic medical record lists liraglutide, and she says she takes everything prescribed there, yet she denies being on any weight-loss drug.',
     facts: [['Patient', '44 F · 116 kg'], ['Drug', 'Liraglutide on the record · patient denies weight-loss drugs'], ['Symptoms', 'No GI symptoms'], ['Plan', 'Laparoscopic bariatric surgery']],
     media: ['zjSup', 'zjCine', 'zjRld', 'zjAnn'], badges: { zjAnn: 'Annotated' },
     steps: [
@@ -1843,7 +1843,7 @@ libShow('all');
 const QZ = [
   ['Before calling an antrum empty, you must have scanned it…', ['Supine only', 'Supine and right lateral decubitus', 'Semi-sitting only'], 1, 'Small volumes pool in the fundus when supine. Never call an empty stomach from the supine view alone.'],
   ['60 y, 80 kg, clear fluid, RLD-CSA 8 cm². Gastric volume?', ['≈ 67 mL · 0.84 mL/kg — low risk', '≈ 144 mL · 1.8 mL/kg — high risk', 'Cannot be calculated'], 0, '27.0 + 14.6 × 8 − 1.28 × 60 = 67 mL → 0.84 mL/kg ≤ 1.5.'],
-  ['Bright anterior edge, posterior shadowing, posterior wall invisible. Most likely?', ['Clear fluid', 'Recent solid meal — "frosted glass"', 'Empty antrum'], 1, 'Air mixed into a recent meal. Gas can mimic it — rescan in RLD and look again.'],
+  ['Bright anterior edge, posterior shadowing, posterior wall invisible. Most likely?', ['Clear fluid', 'Recent solid meal — "frosted glass"', 'Empty antrum'], 1, 'Air mixed into a recent meal. Gas can mimic it — rescan in RLD.'],
   ['The machine reads A 7.90 cm² on an antrum full of solid food. What do you do with it?', ['Calculate the volume', 'Nothing — solid is high risk at any volume'], 1, 'The Perlas model is for clear fluid only.'],
   ['Which feature favours the IVC over the aorta?', ['Thick, bright, parallel walls', 'Calibre falls with a sniff', 'A branch arising from its front wall'], 1, 'Respiratory variation and compressibility are venous features; the coeliac trunk and SMA arise from the aorta.'],
   ["Transverse epigastric view, marker to the patient's right. Where is the aorta?", ['Just right of centre on the screen, on the vertebral body', 'Just left of centre on the screen, oval and thin-walled'], 0, "The aorta lies left of the patient's midline — screen right. The IVC is screen left."],
