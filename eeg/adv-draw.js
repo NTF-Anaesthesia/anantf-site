@@ -181,8 +181,8 @@ function advDrawEeg(ctx,L){if(!L.eeg)return;const r=L.rect.eeg,secs=advSecs(),N=
  const lab=ADV.layout[ADV.ch]==='eeg'?100:50; // the frame's scale is fixed (+-50 uV, +-100 uV with the EEG alone); the uV/mm selector changes the gain
  L.strips.forEach((s,si)=>{const cy=s.y+s.h/2,hh=s.h/2,X1=ADV_X+ADV_PX,{sig,prod}=advEegSig(s.side);
   advFrame(ctx,s.y,s.h);
-  // 1 s dotted gridlines that scroll with the trace, the zero line
-  const k0=Math.floor((prod-1)/FS);for(let q=0;q<=Math.ceil(secs);q++){const x=X1-((prod-1)-(k0-q)*FS)/N*ADV_PX;if(x>ADV_X+2&&x<X1-1)advV(ctx,x,s.y+1,s.y+s.h-1,'#5a5e66',[1,3]);}
+  // 1 s dotted gridlines fixed to the frame (the trace scrolls past them, as on the real monitor: owner, 19 Oct 2026), the zero line
+  for(let q=1;q<secs;q++){const x=X1-q/secs*ADV_PX;if(x>ADV_X+2)advV(ctx,x,s.y+1,s.y+s.h-1,'#5a5e66',[1,3]);}
   advH(ctx,ADV_X+1,ADV_X+ADV_PX,cy,'#555');
   if(si===0||!two){advTx(ctx,'µV '+lab,162,s.y+8,15,AC.axis,'right');advTx(ctx,'-'+lab,162,s.y+s.h-8,15,AC.axis,'right');}
   if(s.label)advTx(ctx,s.label,142,cy,15.5,AC.axis,'center');
