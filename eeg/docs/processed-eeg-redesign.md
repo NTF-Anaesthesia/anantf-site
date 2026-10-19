@@ -91,3 +91,20 @@ Desktop fullscreen is the priority: a large monitor on the left, observations on
 
 ### Desktop column fit repair (17 October 2026)
 The height-fitted monitor previously shrank inside a full-width grid column, leaving hundreds of pixels between the case and observation notes. The desktop grid now uses the fitted case width for its first track and gives remaining width to the notes, separated by 16px. Fit calculations start from the whole row minus the minimum notes width, avoiding a resize feedback loop and allowing the monitor to grow again. Controls share the device width. Sizing regression checks the actual case-to-notes gap and dock alignment, including 1280px laptops and 2560px desktops, in page and fullscreen modes.
+
+## 19 October 2026 — awake is not all blue; SedLine dock
+
+Feedback from a consultant colleague (WhatsApp, with the owner's screen recording): the awake DSA was uniformly blue, but a
+real awake patient shows strong delta and theta before induction. The awake picture also varies with eyes open or closed,
+anxiety and dementia. Reference shared: Purdon 2013 (doi:10.1073/pnas.1221180110; focus is anaesthesia, not awake EEG).
+
+- Engine: an awake patient with eyes open now makes eye movements and small blinks on their own (`Engine.eyeK`, 0.5 of the
+  blink control's size, never over 300 µV). It fades from depth 0.08 to 0.2 and stops under a relaxant (no eye or lid
+  movement when paralysed). The `AWAKE` keyframe gains a little frontal theta (5.5 Hz) and a slightly stronger beta band.
+  Awake now reads about 18/16/10 dB at 1/2/4 Hz and 6 dB in beta, against GA slow power about 24 dB, so GA is still
+  clearly hotter. BIS, SEF and SR still use the epoch after eye rejection (`EYE_REJ`), so awake BIS stays 90-93; the
+  "Target BIS" forecast now applies the same rejection (it read 82 when awake).
+- `engine.check.mjs` measures EEG RMS with the eye-movement artefact removed; every tuning target is unchanged.
+- Layout: on desktop the monitor column is at least 600 px (`DOCK_MIN` in `demo.js`), so a portrait device (SedLine) no
+  longer squeezes the control dock into overlapping rows. The notes follow the column edge.
+- Awake text (live notes and library card) now says what an awake DSA shows and why it varies.

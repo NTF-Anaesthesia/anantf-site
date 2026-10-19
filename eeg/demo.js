@@ -90,6 +90,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.fullscree
 // Explicit stage dimensions prevent inline-size-contained LCDs collapsing.
 let lastFittedSkin='',fitPending=false;
 function scheduleFit(){if(fitPending)return;fitPending=true;requestAnimationFrame(()=>{fitPending=false;fitMonitor();});}
+const DOCK_MIN=600; // px: the dock's two columns (drug and depth | transport) side by side without overlap
 function fitMonitor(){
  const id={vista:'vistaWrap',advance:'advWrap',sedline:'sedWrap',philips:'pvWrap',classic:'classicWrap'}[mon.skin];
  // Fit the original device to the content box; presentation padding is outside it.
@@ -100,8 +101,9 @@ function fitMonitor(){
  const wrap=$(id),w=available-pad('paddingLeft')-pad('paddingRight'),h=stage.clientHeight-pad('paddingTop')-pad('paddingBottom');if(!wrap||w<=0||h<=0)return;
  if(mon.skin==='classic'){wrap.style.width=w+'px';wrap.style.height=h+'px';}
  else{wrap.style.height='auto';wrap.style.width=w+'px';for(let i=0;i<3;i++){const r=wrap.getBoundingClientRect();if(r.height<=h+1)break;wrap.style.width=Math.max(1,r.width*h/r.height)+'px';}}
- // The notes follow the device edge; surplus width belongs to the notes, not an empty stage.
- if(desktop)sim.style.setProperty('--monitor-width',(wrap.getBoundingClientRect().width+pad('paddingLeft')+pad('paddingRight'))+'px');
+ // The notes follow the device edge; surplus width belongs to the notes, not an empty stage. A narrow (portrait) device such as
+ // SedLine still gets a column wide enough for the control dock, or its two control rows overlap (owner's video, 19 Oct 2026).
+ if(desktop)sim.style.setProperty('--monitor-width',Math.min(available,Math.max(DOCK_MIN,wrap.getBoundingClientRect().width+pad('paddingLeft')+pad('paddingRight')))+'px');
  else sim.style.removeProperty('--monitor-width');
  dirty=true;if(mon.skin==='advance')advInval();if(mon.skin==='sedline'){SED.full=true;SED.d=null;}if(mon.skin==='philips')PV.dirty=true;
 }
