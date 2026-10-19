@@ -13,9 +13,9 @@ let seed = 1;
 const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
 const M = Object.create(Math); M.random = rnd;
 const load = () => new Function('Math', 'matchMedia', 'window',
-  `var onColumn=null;${BODY};return {nm,nmDose,nmSug,nmStep,nmRead,Engine,target,features,bisRaw,step,COLS,SIG,eng,mods,mixTarget,monMsg,mon,FS,DF,NB};`)(M, () => ({ matches: false }), {});
+  `var onColumn=null;${BODY};return {nm,nmDose,nmSug,nmStep,nmRead,Engine,target,features,bisRaw,step,COLS,SIG,EYE,eng,mods,mixTarget,monMsg,mon,FS,DF,NB};`)(M, () => ({ matches: false }), {});
 
-// one state: snap to it, run, then measure over the last 30 s (or run a script of phases). Spectral shapes are noisy
+// one state: snap to it, run, then measure over the last 30 s (RMS is the EEG without the eye-movement artefact) (or run a script of phases). Spectral shapes are noisy
 // over 30 s, so rows that compare peaks or bands pool several runs (nSeeds).
 const MF = []; // [state, mean MF, mean SEF] for every run
 function run(drug, d, mods = {}, secs = 120, phases, nSeeds = 1, monSet, base = BASE) {
@@ -25,7 +25,7 @@ function run(drug, d, mods = {}, secs = 120, phases, nSeeds = 1, monSet, base = 
     S = load(); Object.assign(S.mon, monSet); const ms = Object.assign(S.mods, mods);
     S.eng.setTarget(drug, d, ms); S.eng.snap();
     const rr = [];
-    const go = n => { for (let s = 0; s < n; s++) { S.step(FS_); const w = S.SIG.slice(-FS_); rr.push(w.reduce((a, v) => a + v * v, 0) / FS_); } };
+    const go = n => { for (let s = 0; s < n; s++) { S.step(FS_); const w = S.SIG.slice(-FS_), e = S.EYE.slice(-FS_); rr.push(w.reduce((a, v, i) => a + (v - (e[i] || 0)) ** 2, 0) / FS_); } };
     go(secs);
     for (const [n, ch, fn] of phases || []) { Object.assign(ms, ch); fn && fn(S); S.eng.setTarget(drug, d, ms); go(n); }
     last = last.concat(S.COLS.slice(-30)); rms2 = rms2.concat(rr.slice(-30));

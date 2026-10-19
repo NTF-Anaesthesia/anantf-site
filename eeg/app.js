@@ -6,8 +6,9 @@ function randn(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();r
 // spectral profile parameters (power units ~ uV^2 per 0.5 Hz bin)
 const KEYS=['bg','slow','delta','theta','thetaF','alpha','alphaF','beta','betaF','betaW','gamma','spindle','emg','bs','ar'];
 const S=(o)=>Object.assign({bg:6,slow:0,delta:0,theta:0,thetaF:6,alpha:0,alphaF:10,beta:0,betaF:20,betaW:4.5,gamma:0,spindle:0,emg:0,bs:0,ar:0},o); // ar: arousal beta at 18 Hz (surgical stimulus)
-// awake: low amplitude, about 10 uV RMS (anaesthetised EEG is 5-20x the power; Purdon 2015), shared by every drug
-const AWAKE=S({bg:1.0,alpha:1,alphaF:10,beta:2,betaF:21,gamma:0.9});
+// awake: low amplitude, about 10 uV RMS (anaesthetised EEG is 5-20x the power; Purdon 2015), shared by every drug.
+// Some frontal theta, a beta band and little alpha (eyes open); eye movements add delta on top (Engine.eyeK).
+const AWAKE=S({bg:0.6,theta:1.2,thetaF:5.5,alpha:1,alphaF:10,beta:2.1,betaF:21,gamma:0.9});
 const DRUGS={
  propofol:[[0,AWAKE],
   [0.15,S({bg:2.5,slow:2,delta:1,beta:7,betaF:17,gamma:1,alpha:1})],
@@ -115,15 +116,17 @@ function inducedDepth(drug,d){
 class Engine{
  constructor(){this.ph=OSC_F.map(()=>Math.random()*6.283);this.m=OSC_F.map(()=>1);this.p=target('propofol',0);
   this.t=0;this.spT=1;this.spOn=false;this.spD=1;this.spF=12;this.kT=3;this.kPh=0;this.kg=1;this.ks=1;this.bsState=0;this.bsTimer=1;this.gate=1;this.drug='propofol';this.d=0;this.mods={};this.diT=0;this.diOn=false;this.nmbT=0;this.nmbS=0;this.tone=1;this.diAcc=0;this.artAcc=0;this.tail=0;this.tailV=0;
-  this.wa=0;this.stT=0;this.stK='';this.blT=2;this.blA=0;this.blP=1;this.dr=0;this.eye=0;this.de=0;this.nmbOn=false;}
+  this.wa=0;this.stT=0;this.stK='';this.blT=2;this.blA=0;this.blP=1;this.dr=0;this.eye=0;this.eyeK=0;this.de=0;this.nmbOn=false;}
  setTarget(drug,d,mods){if(drug!==this.drug||typeof d!==typeof this.d||this.de===0&&!this.deSet)this.de=cloneD(d);this.deSet=true;this.drug=drug;this.d=d;this.mods=mods||{};}
- snap(){this.de=cloneD(this.d);this.updNmb();this.p=target(this.drug,this.de,this.mods);this.wa=this.mods.warmer?1:0;} // jump instantly
+ snap(){this.de=cloneD(this.d);this.updNmb();this.p=target(this.drug,this.de,this.mods);this.wa=this.mods.warmer?1:0;this.eyeK=this.eyeT(this.p,this.mods.nmbK??(this.mods.nmb?1:0));} // jump instantly
  // muscle relaxant given at induction (nmbMode 'auto'), always ('on') or never ('off'); sets mods.nmb, which target() reads.
  // Only when the page set a mode: the Node checks drive mods.nmb directly.
  updNmb(){const m=this.mods;if(!m.nmbMode||m.nmbK!==undefined)return; // the page's block model (nm) sets nmbK for the live engine
   if(m.nmbMode==='on')this.nmbOn=true;else if(m.nmbMode==='off')this.nmbOn=false;
   else{const v=inducedDepth(this.drug,this.de);if(v>=0.3)this.nmbOn=true;else if(v<0.25)this.nmbOn=false;}
   m.nmb=this.nmbOn;}
+ // eye movement share (sample, below): 1 with the blink control, else 0.5 while awake, 0 from depth 0.2 or under a relaxant
+ eyeT(tg,nk){return this.mods.blink?1:(1-nk)*0.5*cl((0.2-(tg.dH??(typeof this.de==='number'?this.de:0)))/0.12);}
  // how far the effect site still is from the target, 0-1 (each drug as a share of its slider range)
  gap(){const d=this.d,e=this.de;if(typeof d==='number')return Math.abs(d-e);
   let g=0;for(const k in MIX0)g=Math.max(g,Math.abs((d[k]||0)-(e[k]||0))/(MIXMAX[k]||1));return g;}
@@ -170,9 +173,12 @@ class Engine{
   const emgNoise=this.p.emg>0?randn()*Math.sqrt(this.p.emg)*1.2:0;
   let y=x*this.gate+emgNoise+randn()*0.6;
   // blinks and eye movement (frontal sensor): one-sided 300-ms deflections of about 150 uV every 2-6 s (1 in 12 over
-  // 300 uV, which trips the artefact flag) plus a slow drift under 1 Hz
-  if(m.blink){this.blT-=dt;if(this.blT<=0){this.blT=2+4*Math.random();this.blP=0;this.blA=Math.random()<1/12?310+60*Math.random():110+80*Math.random();}
-   this.eye=this.dr+=-this.dr*dt/0.8+12*randn()*Math.sqrt(2*dt/0.8);if(this.blP<0.3){this.eye+=this.blA*Math.sin(Math.PI*this.blP/0.3)**2;this.blP+=dt;}y+=this.eye;}
+  // 300 uV, which trips the artefact flag) plus a slow drift under 1 Hz. An awake patient with eyes open does this on its own
+  // (eyeK, smaller and never over 300 uV): delta-theta power along the bottom of the DSA, so awake is not all blue (owner's
+  // colleague, 19 Oct 2026). It fades as the patient goes under (gone by depth 0.2) and stops under a relaxant.
+  const eT=this.eyeT(tg,nk);this.eyeK+=(eT-this.eyeK)*dt/(eT>this.eyeK?2:6);
+  if(this.eyeK>0.01){const ek=this.eyeK;this.blT-=dt;if(this.blT<=0){this.blT=2+4*Math.random();this.blP=0;this.blA=m.blink&&Math.random()<1/12?310+60*Math.random():110+80*Math.random();}
+   this.dr+=-this.dr*dt/0.8+12*randn()*Math.sqrt(2*dt/0.8);this.eye=ek*this.dr;if(this.blP<0.3){this.eye+=ek*this.blA*Math.sin(Math.PI*this.blP/0.3)**2;this.blP+=dt;}y+=this.eye;}
   else this.dr=this.eye=0;
   // diathermy: 1-2.5 s bursts of broadband interference clipping at ±400 uV, 4-8 s apart, each followed by a 1-s
   // settling tail (a decaying offset); burst and tail samples are counted as artefact (diAcc, artAcc; step() reads them)
@@ -437,7 +443,7 @@ function readouts(){const c=COLS[COLS.length-1];if(!c)return;
 function describe(){const d=typeof eng.de==='number'?eng.de:0;let n,t;
  if(drug==='mix'){[n,t]=describeMix(eng.de,depth);}
  else if(drug==='propofol'||drug==='sevo'){const s=drug==='sevo';
-  if(d<0.08){n='Awake';t='Low-amplitude, mixed fast activity with no dominant frontal alpha band in this example. SEF95 and BIS are high. Neither value alone establishes responsiveness.';}
+  if(d<0.08){n='Awake';t='Not all blue. With eyes open, eye movements and blinks put delta power along the bottom of the DSA (the monitor rejects most of it from BIS); there is some theta, a beta band and little alpha (alpha grows with eyes closed). The awake picture varies: eyes open or closed, anxiety (more beta and muscle), age or dementia (slower, weaker). Watch the baseline for a minute before induction. SEF95 and BIS are high; neither alone establishes responsiveness (Purdon 2013, doi:10.1073/pnas.1221180110).';}
   else if(d<0.24){n='Very light sedation';t='Early '+(s?'sevoflurane':'propofol')+' boosts beta (13–25 Hz) power. The DSA brightens high up and BIS may stay high or even rise, although the patient is drifting off.';}
   else if(d<0.44){n='Sedation';t='The beta peak slides down from about 15–20 Hz towards 12 Hz while slow waves appear at the bottom. BIS sits around 60–80. The patient may still respond to voice.';}
   else if(d<0.68){n='General anaesthesia';t=(s?'Sevoflurane':'Propofol')+' gives the classic two bands: a bright alpha band (8–12 Hz) and bright slow-delta power (under 4 Hz), with a dark gap above about 15 Hz. SEF95 falls to about 15 Hz and BIS reads 40–60.'+(s?' Sevoflurane also adds theta around 5 Hz from about 1 MAC, filling the gap between slow and alpha.':'');}
@@ -544,9 +550,9 @@ function forecastBis(dr,d,m,secs){
  // suppression runs last up to 30 s, so a short run can't measure SR: use the gate's long-run share instead (mean flat run
  // 2*10^(2*(bs-0.5)) s, mean burst 1.75 s, 1/bs bursts per cycle) and run longer to average the spectra
  const bs=e.p.bs,srSS=bs>0.97?100:bs>0.02?(L=>100*L/(L+1.75/bs))(2*10**(2*Math.max(0,bs-0.5))):null;
- const buf=[],sp=[],raw=[];secs=srSS==null?secs||36:90;
- for(let n=0;n<secs*FS;n++){buf.push(e.sample());if(buf.length>NWIN)buf.shift();
-  if(buf.length===NWIN&&n%HOP===0){const f=features(spectrum(buf).P,buf);sp.push(f.supFrac);if(sp.length>63)sp.shift();
+ const buf=[],eb=[],sp=[],raw=[];secs=srSS==null?secs||36:90;
+ for(let n=0;n<secs*FS;n++){buf.push(e.sample());eb.push(e.eye);if(buf.length>NWIN){buf.shift();eb.shift();}
+  if(buf.length===NWIN&&n%HOP===0){const w=buf.map((v,j)=>v-EYE_REJ*eb[j]),f=features(spectrum(w).P,w); // the same eye-movement rejection as step()sp.push(f.supFrac);if(sp.length>63)sp.shift();
    if(n>=14*FS)raw.push(bisRaw(f,srSS??100*sp.reduce((a,b)=>a+b,0)/sp.length));}}
  return raw.reduce((a,b)=>a+b,0)/raw.length;}
 const fc={bis:null};let fcT=0,fcRun=0,zoneKey='',zoneRun=0;
@@ -756,7 +762,7 @@ function drawStrip(canvas,cols){const {ctx,w,h}=fit(canvas);ctx.fillStyle=SCR.bg
  ctx.strokeStyle='rgba(255,255,255,.85)';ctx.lineWidth=1.2;ctx.beginPath();let pen=false;cols.forEach((c,i)=>{if(c.sef==null){pen=false;return;}const x=g.x+(i+.5)/cols.length*g.w,y=g.y+g.h*(1-c.sef/30);pen?ctx.lineTo(x,y):ctx.moveTo(x,y);pen=true;});ctx.stroke();
  ctx.fillStyle=SCR.mute;ctx.font='600 10px "JetBrains Mono", monospace';ctx.textAlign='right';ctx.fillText('30',g.x-4,g.y+9);ctx.fillText('15',g.x-4,g.y+g.h/2+4);ctx.fillText('0',g.x-4,g.y+g.h);}
 const LIB=[
- {id:'awake',name:'Awake',drug:'propofol',d:0,m:{},bis:'90–98',txt:'Thin, low power everywhere and no clear band. SEF95 is high.'},
+ {id:'awake',name:'Awake',drug:'propofol',d:0,m:{},bis:'90–98',txt:'Not all blue: delta from eye movements along the bottom, some theta, a beta band, little alpha with eyes open. SEF95 is high.'},
  {id:'ga',name:'Propofol GA',drug:'propofol',d:0.57,m:{},bis:'40–60',txt:'Two bright bands, alpha 8–12 Hz and slow under 4 Hz, with a dark gap above. A typical propofol pattern; individual patients vary.'},
  {id:'deep',name:'Deep propofol',drug:'propofol',d:0.76,m:{},bis:'30–40',txt:'Alpha dims and drifts lower; slow waves take over. Assess the pattern alongside suppression, drug delivery and the clinical context.'},
  {id:'bs',name:'Burst suppression',drug:'propofol',d:0.9,m:{},bis:'25–40, SR 15–40%',txt:'Dark vertical stripes are flat-line periods. SR above 0, while BIS can still read in the 30s, so read SR too. Usually unnecessary depth (unless intended).'},

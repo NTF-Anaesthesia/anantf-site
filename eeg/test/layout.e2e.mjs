@@ -17,9 +17,10 @@ try{
     assert.ok(Math.max(m.w/s.w,m.h/s.h)>.72,`${label}: screen should use the available stage`);
     assert.ok(m.x>=s.x-2&&m.y>=s.y-2&&m.right<=s.right+2&&m.bottom<=s.bottom+2,`${label}: entire monitor fits`);
     if(width>1100){
-     const gap=dim.notes.x-dim.device.right;
-     assert.ok(gap>=14&&gap<=18,`${label}: notes follow device edge (${gap}px gap)`);
-     assert.ok(Math.abs(dock.right-dim.device.right)<3,`${label}: dock aligns with device edge`);
+     // the column is the device's width, or the dock's 600 px minimum for a narrow device (SedLine), so the controls never overlap
+     const col=Math.max(dim.device.right,dock.x+600),gap=dim.notes.x-col;
+     assert.ok(gap>=14&&gap<=18,`${label}: notes follow the monitor column (${gap}px gap)`);
+     assert.ok(Math.abs(dock.right-col)<3,`${label}: dock spans the monitor column (${dock.right} vs ${col})`);
     }
     assert.ok(!dim.overflow,`${label}: no horizontal overflow`);
     if(full){assert.ok(dock.bottom<=height+1,`${label}: controls fit in viewport`);assert.ok(dock.y>=s.bottom-1||dock.x>=s.right-1,`${label}: controls do not cover monitor`);}
