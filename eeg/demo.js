@@ -99,11 +99,13 @@ function fitMonitor(){
  // Measure the available row, not the previous fitted column, so resizing can grow it again.
  const available=desktop?sim.clientWidth-280-parseFloat(getComputedStyle(sim).columnGap):stage.clientWidth;
  const wrap=$(id),w=available-pad('paddingLeft')-pad('paddingRight'),h=stage.clientHeight-pad('paddingTop')-pad('paddingBottom');if(!wrap||w<=0||h<=0)return;
+ // shrink or grow until the device fills the height (fixed bezel parts make one step undershoot)
  if(mon.skin==='classic'){wrap.style.width=w+'px';wrap.style.height=h+'px';}
- else{wrap.style.height='auto';wrap.style.width=w+'px';for(let i=0;i<3;i++){const r=wrap.getBoundingClientRect();if(r.height<=h+1)break;wrap.style.width=Math.max(1,r.width*h/r.height)+'px';}}
+ else{wrap.style.height='auto';wrap.style.width=w+'px';for(let i=0;i<6;i++){const r=wrap.getBoundingClientRect();if(r.height<=h+1&&(r.height>=h-4||r.width>=w-1))break;wrap.style.width=Math.max(1,Math.min(w,r.width*h/r.height))+'px';}}
  // The notes follow the device edge; surplus width belongs to the notes, not an empty stage. A narrow (portrait) device such as
- // SedLine still gets a column wide enough for the control dock, or its two control rows overlap (owner's video, 19 Oct 2026).
- if(desktop)sim.style.setProperty('--monitor-width',Math.min(available,Math.max(DOCK_MIN,wrap.getBoundingClientRect().width+pad('paddingLeft')+pad('paddingRight')))+'px');
+ // SedLine still gets a column wide enough for the control dock, or its two control rows overlap (owner's video, 19 Oct 2026). SedLine
+ // is the exception: its dock sits in the right column (demo.css), so the portrait monitor gets the full height instead.
+ if(desktop)sim.style.setProperty('--monitor-width',Math.min(available,Math.max(mon.skin==='sedline'?0:DOCK_MIN,wrap.getBoundingClientRect().width+pad('paddingLeft')+pad('paddingRight')))+'px');
  else sim.style.removeProperty('--monitor-width');
  dirty=true;if(mon.skin==='advance')advInval();if(mon.skin==='sedline'){SED.full=true;SED.d=null;}if(mon.skin==='philips')PV.dirty=true;
 }
