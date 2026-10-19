@@ -342,12 +342,12 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
 <section class="slide course-intro" data-min="1" data-title="Start here" data-prompt="Ask: who has scanned a leg for DVT? Who has been told 'formal scan tomorrow' for a patient who was hypoxic tonight? Today's aim: everyone leaves able to do a reliable 2-point scan and knows exactly what it does not cover.">
   <div class="inner two course-start-grid"><section class="course-hero wide-illustration-banner ntf-illustrated-banner" aria-label="Tutorial introduction"><div><p class="course-eyebrow">POCUS masterclass · DVT &amp; vascular</p><h1>Squeeze the vein.</h1><p class="course-hero-lead">If the walls do not meet, the leg has a clot until proven otherwise.</p></div><figure><img src="../../assets/ether-pocus-equipment.webp" width="1774" height="887" alt="" aria-hidden="true"></figure></section>
     <div>
-      <p class="lede" style="margin-bottom:10px">Compression ultrasound (CUS) answers one binary question: <b class="ink">does this vein collapse completely under gentle probe pressure?</b></p>
+      <p class="lede" style="margin-bottom:10px">Compression ultrasound (CUS) asks one question: <b class="ink">does the vein collapse completely under gentle pressure?</b></p>
       <ul class="lst">
-        <li><b class="ink">Full coaptation</b> (the walls touch) = no thrombus at that point.</li>
-        <li><b class="ink">Non-compressible vein</b> = thrombus (acute or chronic) until proven otherwise. Echogenic material helps, but is not required.</li>
+        <li><b class="ink">Full coaptation</b> (walls touch) = no thrombus at that point.</li>
+        <li><b class="ink">Non-compressible</b> = thrombus (acute or chronic) until proven otherwise. Visible echogenic clot helps but is not required.</li>
       </ul>
-      <p style="color:var(--ink2);font-size:15.5px;margin:10px 0 0">Why it matters to us: postoperative and ICU patients are at high VTE risk. In the hypotensive or hypoxic patient, a non-compressible proximal vein plus a dilated RV changes the working diagnosis in minutes, at the bedside.</p>
+      <p style="color:var(--ink2);font-size:15.5px;margin:10px 0 0">Postoperative and ICU patients are at high VTE risk. In shock or hypoxia, a non-compressible proximal vein plus a dilated RV changes the diagnosis in minutes.</p>
       <p class="course-eyebrow" style="margin-top:16px">In this tutorial</p><ul class="agenda" style="max-width:460px">
         <li><span>01–02 · Framework · set-up</span></li>
         <li><span>Part I · Vein vs artery · landmarks · protocols</span></li>
@@ -356,14 +356,14 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
         <li><span>Quiz · references · close</span></li>
       </ul>
       <div class="jump"><button class="btn" id="jumpCases">Jump to the cases →</button><span id="jumpChips"></span></div>
-      <p class="mini" style="margin-top:10px"><b>All images on this page are schematics and simulations, not real scans.</b></p>
+      <p class="mini" style="margin-top:10px"><b>All images are schematics and simulations, not real scans.</b></p>
       <nav class="sibs" aria-label="Other POCUS stations"><a href="../cardiac/">Cardiac</a><a href="../lung/">Lung</a><a href="../shock/">Shock (RUSH)</a><a href="../efast/">eFAST</a><a href="../gastric/">Gastric</a><a href="../vascular-access/">Vascular access</a></nav>
     </div>
     <div>
       <div class="pov">Schematic simulation · right groin · transverse</div>
       <div class="scanner"><canvas id="heroUS" class="us" width="640" height="420" role="img" aria-label="Schematic sonogram of the right common femoral artery and vein, the vein repeatedly compressing to a line under probe pressure"></canvas></div>
       <div class="status" id="heroStat" aria-live="off"></div>
-      <div class="mini">Live simulation, not a real scan. Linear probe across the right groin, marker to the patient's right. The artery (CFA) is round and pulsatile; the vein (CFV) is medial and closes completely with gentle pressure.</div>
+      <div class="mini">Simulation. Linear probe, right groin, marker to patient's right. CFA round and pulsatile; CFV medial, closes fully with gentle pressure.</div>
     </div>
   </div>
 </section>
@@ -373,13 +373,13 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
   <div class="inner two">
     <div>
       <div class="kicker">01 · Framework</div>
-      <h2>Choose the examination and report its coverage.</h2>
-      <p class="lede">Start with pre-test probability. Choose a defined compression examination and plan the next step if it is limited or negative.</p>
+      <h2>Choose the examination; report its coverage.</h2>
+      <p class="lede">Pre-test probability first. Use a defined protocol and plan the next step if limited or negative.</p>
       <ul class="plist">
-        <li><span class="num big">1</span><div><b>Indication</b><span>What is the clinical question? Swollen leg? Unexplained hypoxia or shock with RV dilatation? A local protocol for high-risk delayed hip-fracture surgery? (Routine screening of asymptomatic patients is not recommended by CHEST, and sensitivity is lower without symptoms.) Would the answer change management? If not, do not scan.</span></div></li>
-        <li><span class="num big">2</span><div><b>Acquisition</b><span>Linear probe, correct position, transverse views, compress at every landmark (and every 1–2 cm between landmarks if doing a continuous scan).</span></div></li>
-        <li><span class="num big">3</span><div><b>Interpretation</b><span>Compressible, non-compressible or inconclusive at each segment. Report the segment, not just "DVT yes/no".</span></div></li>
-        <li><span class="num big">4</span><div><b>Medical decision-making</b><span>Combine with pre-test probability (Wells), D-dimer and the rest of the POCUS picture (RV, lungs). Treat, rescan in about 1 week, or refer for formal whole-leg duplex. Wells is validated in outpatients only: in inpatients and post-op/ICU patients use clinical gestalt, and a negative limited scan with ongoing suspicion needs an extended or whole-leg scan, or a repeat.</span></div></li>
+        <li><span class="num big">1</span><div><b>Indication</b><span>Swollen leg? Unexplained hypoxia or shock with RV dilatation? Local protocol for high-risk delayed hip-fracture surgery? CHEST advises against routine screening of asymptomatic patients (lower sensitivity). If the answer will not change management, do not scan.</span></div></li>
+        <li><span class="num big">2</span><div><b>Acquisition</b><span>Linear probe, correct position, transverse; compress at every landmark (every 1–2 cm if continuous).</span></div></li>
+        <li><span class="num big">3</span><div><b>Interpretation</b><span>Compressible, non-compressible or inconclusive per segment. Report the segment, not "DVT yes/no".</span></div></li>
+        <li><span class="num big">4</span><div><b>Medical decision-making</b><span>Combine with Wells, D-dimer and the rest of POCUS (RV, lungs). Treat, rescan in about 1 week, or refer for whole-leg duplex. Wells is validated in outpatients only; in inpatients, post-op and ICU use gestalt. Negative limited scan + ongoing suspicion → extended or whole-leg scan, or repeat.</span></div></li>
       </ul>
     </div>
     <div class="demo">
@@ -393,7 +393,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
           <tr><td>Popliteal to trifurcation</td><td class="ok">Compressible</td><td class="warn">Inconclusive (positioning)</td></tr>
           <tr><td>Calf veins</td><td>Not scanned</td><td>Not scanned</td></tr>
         </tbody></table>
-        <div class="callout">A negative limited scan is <b>not</b> the same as "no DVT". Say what you covered.</div>
+        <div class="callout">A negative limited scan is <b>not</b> "no DVT". Say what you covered.</div>
       </div>
     </div>
   </div>
@@ -404,20 +404,20 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
   <div class="inner two">
     <div>
       <div class="kicker">02 · Acquisition</div>
-      <h2>Set up for success before you touch the leg.</h2>
-      <div class="card"><div class="cap">Probe</div><p>High-frequency linear (roughly 5–12 MHz). Start depth about 4 cm; increase as needed. In obese or oedematous thighs, switch to a curvilinear (2–5 MHz) probe for the femoral vein, accepting lower resolution.</p></div>
-      <div class="card"><div class="cap">Preset</div><p>Venous or vascular preset if available. Set the gain so the normal lumen is black.</p></div>
-      <div class="card"><div class="cap">Orientation</div><p>Transverse (short-axis) for compression. Probe marker to the patient's right, as for other transverse views. Posterior views (popliteal fossa, calf) keep the same rule, so on the right leg lateral is on screen left and medial on screen right; on the left leg this flips. Longitudinal views are for Doppler and for following a thrombus tail, not for compression.</p></div>
-      <div class="card"><div class="cap">Operator</div><p>Screen in line with your eye and the leg. The non-scanning hand can provide counter-pressure behind the thigh at the adductor canal.</p></div>
+      <h2>Set up before you touch the leg.</h2>
+      <div class="card"><div class="cap">Probe</div><p>High-frequency linear (about 5–12 MHz), depth about 4 cm to start. Obese or oedematous thigh: curvilinear (2–5 MHz) for the femoral vein, at lower resolution.</p></div>
+      <div class="card"><div class="cap">Preset</div><p>Venous or vascular preset; gain so the normal lumen is black.</p></div>
+      <div class="card"><div class="cap">Orientation</div><p>Transverse (short axis) for compression, marker to the patient's right. Same rule from behind (popliteal, calf): right leg, lateral is screen left; left leg, flipped. Longitudinal is for Doppler and following a thrombus tail, not compression.</p></div>
+      <div class="card"><div class="cap">Operator</div><p>Screen in line with eye and leg. Free hand gives counter-pressure behind the thigh at the adductor canal.</p></div>
     </div>
     <div class="demo">
       <div class="panel">
         <div class="cap">Patient position</div>
         <div class="crit">
-          <span class="ic ok">1</span><span><b class="ink">Groin and thigh:</b> supine, head up / reverse Trendelenburg if haemodynamics allow, to distend the leg veins</span><span class="val">fills veins</span>
+          <span class="ic ok">1</span><span><b class="ink">Groin and thigh:</b> supine, head up (reverse Trendelenburg) if haemodynamics allow</span><span class="val">fills veins</span>
           <span class="ic ok">2</span><span>Hip externally rotated, knee slightly flexed ("frog-leg")</span><span class="val">opens the thigh</span>
-          <span class="ic ok">3</span><span><b class="ink">Popliteal fossa:</b> knee flexed about 20–30°, leg externally rotated; or lateral decubitus; or prone with the ankle on a pillow</span><span class="val">knee bent</span>
-          <span class="ic bad">✕</span><span>Avoid a fully extended or hyperextended knee: the popliteal vein flattens and is easily missed. Flex the knee 20–30°</span><span class="val">pitfall</span>
+          <span class="ic ok">3</span><span><b class="ink">Popliteal fossa:</b> knee flexed 20–30°, leg externally rotated; or lateral decubitus; or prone, ankle on a pillow</span><span class="val">knee bent</span>
+          <span class="ic bad">✕</span><span>Fully extended or hyperextended knee flattens the popliteal vein: easily missed</span><span class="val">pitfall</span>
         </div>
         <svg viewBox="0 0 520 170" style="width:100%;height:auto;margin-top:14px" role="img" aria-label="Schematic: patient supine and tilted head-up with the hip externally rotated and knee slightly flexed">
           <rect x="0" y="0" width="520" height="170" rx="8" fill="var(--bg)" stroke="var(--line)"/>
@@ -443,13 +443,13 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">Part I · Acquisition</div>
       <h1>Find the pair.</h1>
-      <p class="big-quote" style="font-style:normal">At every level, identify the artery first, then its companion vein. Then squeeze until the walls meet, or the artery starts to give.</p>
+      <p class="big-quote" style="font-style:normal">At every level: artery first, then its vein. Squeeze until the walls meet or the artery starts to give.</p>
       <p class="cap" style="margin-top:22px;line-height:2">Linear probe · Transverse · Compress · Move 1–2 cm · Repeat</p>
     </div>
     <div><div class="panel"><div class="split">
       <div><div class="pov">No compression</div><div class="scanner"><canvas id="p1A" class="us" width="640" height="420" role="img" aria-label="Schematic: femoral artery and vein, no compression"></canvas></div></div>
       <div><div class="pov">Compression</div><div class="scanner"><canvas id="p1B" class="us" width="640" height="420" role="img" aria-label="Schematic: femoral vein fully compressed to a line, artery still round"></canvas></div></div>
-    </div><div class="mini">The documentation image: split screen, without and with compression, at each level. Schematic simulation.</div></div></div>
+    </div><div class="mini">Document each level as a split screen, without and with compression. Schematic.</div></div></div>
   </div>
 </section>
 
@@ -462,16 +462,16 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
       <table class="t t2">
         <thead><tr><th>Feature</th><th>Vein</th><th>Artery</th></tr></thead>
         <tbody>
-          <tr><td>Compress</td><td>Collapses fully with gentle pressure</td><td>Deforms only with much firmer pressure</td></tr>
+          <tr><td>Compress</td><td>Collapses fully, gentle pressure</td><td>Deforms only with much firmer pressure</td></tr>
           <tr><td>Wall</td><td>Thin, barely visible</td><td>Thick, bright, three-layered</td></tr>
-          <tr><td>Shape</td><td>Oval, larger, changes with respiration or Valsalva</td><td>Round, constant</td></tr>
-          <tr><td>Pulse</td><td>Non-pulsatile (may transmit adjacent pulsation)</td><td>Pulsatile, expands with systole</td></tr>
-          <tr><td>Doppler</td><td>Low-velocity, phasic with respiration; augments with calf squeeze</td><td>Pulsatile, high-velocity; triphasic in a normal limb at rest</td></tr>
-          <tr><td>ICU caveat</td><td colspan="2">Pulsatile CFV flow suggests raised right-sided pressure or TR: do not mistake the vein for the artery, compress it. Compare CFV Doppler with the other side: unilateral loss of phasicity suggests proximal (iliac/IVC) obstruction; bilateral loss may be central or due to positive-pressure ventilation.</td></tr>
+          <tr><td>Shape</td><td>Oval, larger, varies with breathing or Valsalva</td><td>Round, constant</td></tr>
+          <tr><td>Pulse</td><td>None (may transmit adjacent pulsation)</td><td>Pulsatile, expands in systole</td></tr>
+          <tr><td>Doppler</td><td>Low velocity, respiratory phasic; augments with calf squeeze</td><td>Pulsatile, high velocity; triphasic at rest in a normal limb</td></tr>
+          <tr><td>ICU caveat</td><td colspan="2">Pulsatile CFV flow = raised right-sided pressure or TR: compress it, don't call it the artery. Compare sides: unilateral loss of phasicity → proximal (iliac/IVC) obstruction; bilateral → central cause or positive-pressure ventilation.</td></tr>
         </tbody>
       </table>
-      <p style="font-size:15.5px;color:var(--ink2)"><b class="ink">Groin, medial to lateral:</b> vein, artery, nerve (NAVEL from lateral: Nerve, Artery, Vein, Empty space, Lymphatics). The CFV lies <b class="ink">medial</b> to the CFA. <b class="ink">Popliteal fossa</b>, scanned from behind: the vein is <b class="ink">superficial</b> to the artery.</p>
-      <div class="callout">The artery should start to deform before you call a vein non-compressible. If the artery has not budged, you have not pushed hard enough.</div>
+      <p style="font-size:15.5px;color:var(--ink2)"><b class="ink">Groin</b> (NAVEL from lateral: Nerve, Artery, Vein, Empty space, Lymphatics): CFV <b class="ink">medial</b> to CFA. <b class="ink">Popliteal fossa</b>, from behind: vein <b class="ink">superficial</b> to artery.</p>
+      <div class="callout">The artery should start to deform before you call a vein non-compressible. Artery not budged = not pushed hard enough.</div>
     </div>
     <div class="demo">
       <div class="panel">
@@ -494,7 +494,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
           <button class="btn ghost" id="s1Lb" aria-pressed="true">Labels</button>
         </div>
         <div class="status" id="s1Stat" aria-live="polite"></div>
-        <div class="mini" id="s1Tip">Schematic simulation, not a real scan. Thresholds are simplified for teaching.</div>
+        <div class="mini" id="s1Tip">Schematic; thresholds simplified.</div>
       </div>
     </div>
   </div>
@@ -506,15 +506,15 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
     <div>
       <div class="kicker">04 · Landmarks</div>
       <h2>Groin to knee: the five places to squeeze.</h2>
-      <p class="lede" style="margin-bottom:10px">Follow the vein from the inguinal ligament downwards, compressing at each level. Tap a level to see it.</p>
+      <p class="lede" style="margin-bottom:10px">From the inguinal ligament down, compress at each level. Tap one.</p>
       <ul class="plist" id="lmList">
         <li data-k="groin" class="on" tabindex="0" role="button" aria-pressed="true"><span class="num big">1</span><div><b>Common femoral vein (CFV)</b><span>Just below the inguinal ligament, medial to the CFA.</span></div></li>
-        <li data-k="sfj" tabindex="0" role="button" aria-pressed="false"><span class="num big">2</span><div><b>Saphenofemoral junction (SFJ)</b><span>The great saphenous vein (GSV) joins the CFV anteromedially: the "Mickey Mouse" sign (CFV = face, CFA and GSV = ears). ESVS 2021 advises therapeutic anticoagulation for about 3 months, as for DVT, when GSV thrombus is within 3 cm of the SFJ; refer for formal duplex.</span></div></li>
-        <li data-k="bif" tabindex="0" role="button" aria-pressed="false"><span class="num big">3</span><div><b>CFV bifurcation</b><span>A few centimetres below: the femoral vein (FV) and the deep femoral (profunda) vein, which dives posterolaterally. Compress just above and just below.</span></div></li>
-        <li data-k="fvmid" tabindex="0" role="button" aria-pressed="false"><span class="num big">4</span><div><b>Femoral vein, mid-thigh to adductor canal</b><span>Deep to the femoral artery under sartorius. In the adductor (Hunter's) canal it is deep and hard to compress: use counter-pressure behind the thigh, or a curvilinear probe.</span></div></li>
-        <li data-k="pvup" tabindex="0" role="button" aria-pressed="false"><span class="num big">5</span><div><b>Popliteal vein (PV)</b><span>Superficial to the artery, from the top of the fossa down to the trifurcation (anterior tibial vein and tibioperoneal trunk; the trunk receives the posterior tibial and peroneal veins).</span></div></li>
+        <li data-k="sfj" tabindex="0" role="button" aria-pressed="false"><span class="num big">2</span><div><b>Saphenofemoral junction (SFJ)</b><span>Great saphenous vein (GSV) joins the CFV anteromedially: "Mickey Mouse" (CFV face, CFA and GSV ears). GSV thrombus within 3 cm of the SFJ: therapeutic anticoagulation about 3 months, as for DVT (ESVS 2021); refer for formal duplex.</span></div></li>
+        <li data-k="bif" tabindex="0" role="button" aria-pressed="false"><span class="num big">3</span><div><b>CFV bifurcation</b><span>A few cm lower: femoral vein (FV) and deep femoral (profunda) vein, diving posterolaterally. Compress just above and below.</span></div></li>
+        <li data-k="fvmid" tabindex="0" role="button" aria-pressed="false"><span class="num big">4</span><div><b>Femoral vein, mid-thigh to adductor canal</b><span>Deep to the femoral artery under sartorius. In the adductor (Hunter's) canal, deep and hard to compress: counter-pressure behind the thigh, or curvilinear probe.</span></div></li>
+        <li data-k="pvup" tabindex="0" role="button" aria-pressed="false"><span class="num big">5</span><div><b>Popliteal vein (PV)</b><span>Superficial to the artery, top of the fossa to the trifurcation (anterior tibial vein and tibioperoneal trunk, which receives posterior tibial and peroneal veins).</span></div></li>
       </ul>
-      <div class="callout">Say <b>femoral vein</b>, not "superficial femoral vein". It is a deep vein, and the old name has led clinicians to withhold anticoagulation.</div>
+      <div class="callout">Say <b>femoral vein</b>, not "superficial femoral vein": it is deep, and the old name has led to withheld anticoagulation.</div>
     </div>
     <div class="demo">
       <div class="panel">
@@ -532,12 +532,12 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
   <div class="inner two">
     <div>
       <div class="kicker">05 · Protocols</div>
-      <h2>2-point, 3-point, whole-leg: what each one actually covers.</h2>
-      <p class="lede">Definitions vary between papers. State the one you used.</p>
-      <div class="card"><div class="cap">2-point CUS · commonest POCUS protocol</div><p><b class="ink">Point 1:</b> CFV from the inguinal ligament through the SFJ to the femoral/deep femoral bifurcation. <b class="ink">Point 2:</b> popliteal vein from the popliteal crease (or upper fossa) to the trifurcation. <b class="ink">Misses:</b> femoral vein of the mid and distal thigh, iliac veins, calf veins.</p></div>
-      <div class="card"><div class="cap">3-point CUS</div><p>Adds the femoral vein in the mid-thigh (most commonly CFV/SFJ, FV mid-thigh, popliteal). Some authors use "3-point" to mean CFV + SFJ + popliteal: check the source. Pooled ED data show similar accuracy to 2-point (Lee 2019), but because isolated femoral-vein clots exist (Adhikari 2015), adding the mid-thigh FV costs little and closes a known gap.</p></div>
-      <div class="card"><div class="cap">Extended (full proximal) CUS</div><p>Continuous compression every 1–2 cm from the inguinal ligament to the trifurcation, including the first few cm of the deep femoral vein. The most complete proximal scan achievable at the bedside.</p></div>
-      <div class="card"><div class="cap">Whole-leg ultrasound (WLUS)</div><p>Proximal veins plus the calf veins (posterior tibial, peroneal, often muscular veins), usually with colour Doppler. Normally a formal vascular-lab study; detects isolated calf DVT.</p></div>
+      <h2>2-point, 3-point, whole-leg: what each covers.</h2>
+      <p class="lede">Definitions vary; state the one you used.</p>
+      <div class="card"><div class="cap">2-point CUS · commonest POCUS protocol</div><p><b class="ink">Point 1:</b> CFV, inguinal ligament → SFJ → femoral/deep femoral bifurcation. <b class="ink">Point 2:</b> popliteal vein, crease (or upper fossa) → trifurcation. <b class="ink">Misses:</b> mid and distal femoral vein, iliac veins, calf veins.</p></div>
+      <div class="card"><div class="cap">3-point CUS</div><p>Usually CFV/SFJ, mid-thigh FV, popliteal; some authors mean CFV + SFJ + popliteal, so check. Pooled ED accuracy similar to 2-point (Lee 2019), but isolated femoral-vein clots exist (Adhikari 2015): adding mid-thigh FV costs little and closes a gap.</p></div>
+      <div class="card"><div class="cap">Extended (full proximal) CUS</div><p>Compress every 1–2 cm, inguinal ligament to trifurcation, plus the first few cm of the deep femoral vein. The most complete bedside proximal scan.</p></div>
+      <div class="card"><div class="cap">Whole-leg ultrasound (WLUS)</div><p>Proximal plus calf veins (posterior tibial, peroneal, often muscular), usually with colour Doppler. Usually a formal vascular-lab study; detects isolated calf DVT.</p></div>
     </div>
     <div class="demo">
       <div class="panel">
@@ -551,7 +551,7 @@ table.qt td:first-child{font-size:11.5px;color:var(--mute)}
           <tr><td>Calf veins</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="y">✓</td></tr>
           <tr><td>Iliac veins · IVC</td><td class="n">–</td><td class="n">–</td><td class="n">–</td><td class="n">–</td></tr>
         </tbody></table>
-        <div class="callout">Iliac veins and the IVC are not compressible. Suspect proximal obstruction if the CFV Doppler loses respiratory phasicity, or the whole leg is swollen with a normal CUS.</div>
+        <div class="callout">Iliac veins and IVC cannot be compressed. Suspect proximal obstruction if CFV Doppler loses respiratory phasicity, or the whole leg is swollen with a normal CUS.</div>
       </div>
     </div>
   </div>
