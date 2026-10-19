@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 
 body.pocus-course .lab .ctrls input[type=range]{width:100%;max-width:none}body.pocus-course .lab .ctrls label{display:grid;grid-template-columns:1fr auto}body.pocus-course .lab .ctrls label input{grid-column:1/-1}
+
+@media(max-width:700px){.agenda span:last-child{white-space:normal;text-align:right;min-width:0}}
