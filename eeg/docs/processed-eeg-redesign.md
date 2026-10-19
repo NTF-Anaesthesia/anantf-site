@@ -108,3 +108,11 @@ anxiety and dementia. Reference shared: Purdon 2013 (doi:10.1073/pnas.1221180110
 - Layout: on desktop the monitor column is at least 600 px (`DOCK_MIN` in `demo.js`), so a portrait device (SedLine) no
   longer squeezes the control dock into overlapping rows. The notes follow the column edge.
 - Awake text (live notes and library card) now says what an awake DSA shows and why it varies.
+
+## 19 October 2026 (later) — SedLine full height
+
+SedLine is portrait, so on desktop (over 1100 px) it fills the whole left column at full height, in page and fullscreen.
+The control dock moves to the top of the right column, above the notes (CSS in `demo.css`; `.live-workspace` becomes
+`display:contents` for that skin). `fitMonitor()` now grows the device back if a shrink step undershoots the height. The
+awake note no longer ends with the SEF95/BIS sentence and reference. The BIS Advance EEG lane's 1 s dotted gridlines stay
+fixed to the frame while the trace scrolls.
