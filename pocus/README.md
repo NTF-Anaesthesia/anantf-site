@@ -1,6 +1,6 @@
 # POCUS tutorials
 
-The POCUS hub lists all ten lectures, with topic filters modelled on chewshihao.com/writing. The default All filter shows every lecture. The critical care series expands the owner-provided SCCM study guide; it is not an official SCCM course or certification.
+The POCUS hub groups the lectures into seven numbered sections, in learning order: Foundations, Heart and circulation, Lung, Shock and trauma, Vascular, Perioperative and Case studies. Each lecture row has a one-line description. The critical care series expands the owner-provided SCCM study guide; it is not an official SCCM course or certification.
 
 | Theme | Route | Content |
 | --- | --- | --- |
@@ -11,7 +11,7 @@ The POCUS hub lists all ten lectures, with topic filters modelled on chewshihao.
 | Shock | `shock/` | 27 sections; RUSH, serial reassessment, arrest, four staged cases and eight decision cases |
 | Shock & trauma | `efast/` | eFAST lecture with acquisition simulations and cases |
 | Vascular | `dvt/` | DVT compression ultrasound lecture |
-| Cases | `cases/` | Day 1 cases: the seven SCCM Day 1 evening cases with 18 real clips and a radiograph, each run as vignette, clips, commit, reveal and teaching point, with links to the RV, LV, fluid, lung and shock sections; 10 sections in two parts |
+| Cases | `cases/` | Case studies: the seven SCCM course cases with 18 real clips and a radiograph, each run as vignette, clips, commit, reveal and teaching point, with links to the RV, LV, fluid, lung and shock sections; 10 sections in two parts |
 | Gastric | `gastric/` | Original gastric ultrasound masterclass |
 | Vascular | `vascular-access/` | Original IA/IV cannulation masterclass |
 | Media | `media/` | Eleven CC-licensed clinical cines, the SCCM course clips used with permission (RV, LV, fluids, cases), source review and per-asset attribution |
@@ -20,7 +20,7 @@ The former eFAST and DVT drafts are now listed on the POCUS hub; their teaching 
 
 ## Structure and navigation
 
-`hub.js` filters the flat lecture list using accessible pressed buttons. Without JavaScript, all lecture links remain visible. The filter bar wraps into two columns on small screens.
+A sticky section index sits under the site header (one scrolling row on phones); `hub.js` marks the section in view with `aria-current`. Section ids keep the former filter hashes working (`#basics`, `#heart`, `#lung`, `#shock`, `#vascular`, `#cases`); `#gastric` is redirected to `#perioperative`. Without JavaScript the index is plain anchor links. When adding a lecture, add its row to the right section and its entry to `LECTURES` in `shared/series.js`, which follows hub order.
 
 Inside a lecture, `assets/pocus-course.js` builds parts from the divider slides (`Part III · …`); a non-matching divider (Thank you, Close) starts a closing part. Lectures without dividers mark a part with `data-part="Name"` on its first slide; `data-part-kind="extension"` labels advanced material. The parts drive the grouped section picker (option values stay `0…n-1`), the bottom bar ("Part III · The right ventricle  3 of 8", part buttons and a rail split by part), the grouped Contents overlay (part index, opens at the current section) and the `[` / `]` part keys; `?` lists the shortcuts. `window.POCUS_PARTS` exposes the model to tests. Never add buttons inside `#ovGrid`: engines mark the current section by button index.
 
@@ -28,7 +28,7 @@ The original gastric and vascular-access masterclasses preserve the owner-provid
 
 `assets/pocus-course.css` and `.js` provide the established course shell: section picker, Previous/Next, Contents and the site header/footer. `pocus/shared/series.css` and `.js` add the eight series lectures' typography, topic search, named-anchor routing, lecture links (one list in hub order), "Next lecture" on the final section and the section-top control. Do not alter `.slide` visibility or `.deck` scrolling conventions. Capture `POCUS_INITIAL_HASH` in the head before legacy engines replace a named fragment. Numeric fragments remain valid.
 
-`cases/cases.{css,js}` are scoped to Day 1 cases: the same section engine as haemodynamics plus commit-then-reveal questions (`fieldset.cs-q[data-answer]`); an element with `data-unlock-by="<question id>"` stays hidden until that question is answered, so a case can show its next clips only after the learner commits. New basics and haemodynamics files are scoped to those lectures. Haemodynamics imports the basics base stylesheet; its explicit numerical model is `haemodynamics/model.js` (flow, ejection, IVC indices, PLR time course and ΔVpeak). The original 18 sections keep numeric routes `#1`–`#18` through `data-route`; the five new sections (`static-measures`, `ivc-pitfalls`, `aortic-velocity`, `dynamic-evidence`, `course-questions`) are reached by name. The cardiac IVC and LVOT VTI/PLR extension sections link here rather than duplicating the deck material. Existing cardiac/lung/shock engines retain their scene registries and deterministic schematic scanning. Animations expose pause and respect reduced motion; hidden slides/tabs and the contents overlay suspend drawing. The reading interface has no print/PDF, timer or theme controls.
+`cases/cases.{css,js}` are scoped to Case studies: the same section engine as haemodynamics plus commit-then-reveal questions (`fieldset.cs-q[data-answer]`); an element with `data-unlock-by="<question id>"` stays hidden until that question is answered, so a case can show its next clips only after the learner commits. New basics and haemodynamics files are scoped to those lectures. Haemodynamics imports the basics base stylesheet; its explicit numerical model is `haemodynamics/model.js` (flow, ejection, IVC indices, PLR time course and ΔVpeak). The original 18 sections keep numeric routes `#1`–`#18` through `data-route`; the five new sections (`static-measures`, `ivc-pitfalls`, `aortic-velocity`, `dynamic-evidence`, `course-questions`) are reached by name. The cardiac IVC and LVOT VTI/PLR extension sections link here rather than duplicating the deck material. Existing cardiac/lung/shock engines retain their scene registries and deterministic schematic scanning. Animations expose pause and respect reduced motion; hidden slides/tabs and the contents overlay suspend drawing. The reading interface has no print/PDF, timer or theme controls.
 
 ## Clinical media
 

@@ -37,7 +37,7 @@ try {
    assert.equal(await page.locator('.course-keys').isVisible(),true,`${slug} shortcut panel`);
    await page.keyboard.press('Escape');
    assert.equal(await page.locator('.course-keys').isVisible(),false);
-   // The final section continues to the next series lecture (Day 1 cases is last in the series).
+   // The final section continues to the next series lecture (Case studies is last in the series).
    await page.locator('#course-section').selectOption(String(count-1));
    const nextText=await page.locator('#nextB').getAttribute('aria-label');
    if(slug==='cases')assert.doesNotMatch(nextText||'',/Next lecture/);else assert.match(nextText||'',/^Next lecture: /,`${slug} next lecture`);

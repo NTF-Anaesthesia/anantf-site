@@ -1,4 +1,4 @@
-/* Day 1 cases: section engine (same contract as the other series lectures) and commit-then-reveal questions. */
+/* Case studies: section engine (same contract as the other series lectures) and commit-then-reveal questions. */
 (()=>{'use strict';
  const $=s=>document.querySelector(s),slides=[...document.querySelectorAll('.slide')],overview=$('#overview');let current=0;
  function indexFromHash(){let hash;try{hash=decodeURIComponent(location.hash.slice(1));}catch{return 0;}if(/^\d+$/.test(hash)){const routed=slides.findIndex(s=>s.dataset.route===hash);return routed>=0?routed:Number(hash)-1;}const el=hash&&document.getElementById(hash),found=el?slides.indexOf(el.closest('.slide')):-1;return found<0?0:found;}
