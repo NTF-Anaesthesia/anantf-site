@@ -1,0 +1,124 @@
+A 25-year-old woman who is 30 weeks pregnant has been referred to your tertiary high-risk obstetric
+clinic. She has complex cyanotic congenital heart disease and now functions with a Fontan
+circulation. How would you stratify the cardiovascular risk? What are the issues relevant to
+anaesthetic care that will need to be managed for this patient?
+(From ANZCA 2014B)
+
+Examiner Report
+
+
+
+
+Sample Answer
+Answer provided here is aspirational, and not meant to be reproduced under exam conditions. In-
+depth knowledge of subspecialisation (OBAN-Cardiac) is not expected for registrar level exam.
+
+I would risk stratify patient by based on the modified WHO classification and CARPREG II scoring. I
+would review patient’s history, physical examination, and investigations specifically looking out for
+complications associated with Fontan circulation which will place patient at mWHO IV, as opposed to
+mWHO III (well parturient post-Fontan with no complication).
+
+Factors that increases cardiovascular risk for anaesthesia for this patient:
+• History:
+        o Poor effort tolerance (NYHA III-IV).
+        o Cardiac symptoms (chest pain, SOB, PND, palpitations).
+        o Presence of refractory arrhythmias.
+• Physical Examination:
+        o Poor SpO2 (<90%) on room air. o Presence of murmurs.
+        o Bibasal crepitations. Palpable/loud P2. Raised JVP/peripheral oedema.
+• Investigations:
+        o TTE showing ventricular function (poor EF), valvular abnormalities (in particular,
+            modsevere AV regurgitations) pulmonary hypertension, LVOT obstruction.
+        o Evidence of protein-losing enteropathy.
+
+This is a patient in third trimester with a complex cardiac condition and univentricular physiology
+(Fontan), with high cardiovascular risk for anaesthesia.
+
+She should be managed in a tertiary hospital with access to a multidisciplinary team of experienced
+obstetricians, neonatologists, cardiologists, intensivists, and anaesthetists.
+Issues relevant to anaesthetic care that will need to be managed:
+
+Antepartum
+• Maternal cardiovascular complications
+       o Ideally, prior to her pregnancy, she should have already consulted a cardiologist and
+          obstetrician for (i) optimisation of her heart condition and (ii) counselling on suitability for
+          pregnancy/ labour.
+       o Physiological changes of pregnancy (especially CVS and respi) can worsen her cardiac
+          function, and patient should be followed up monthly with her cardiologist.
+       o New symptoms such as disproportionate/ unexplained dyspnoea or new murmur should
+          be investigated with TTE.
+       o Any need for cardiac intervention (percutaneous or surgical) should be discussed with a
+          multidisciplinary team.
+       o Early delivery (foetus is viable at 30 weeks GA) if patient’s cardiac status deteriorates.
+       o Risk of peri-partum cardiac failure, including death, should be communicated and
+          counselled to patient.
+• Maternal obstetric complications
+       o Increased risk of pre-eclampsia and gestational DM compared to general population. They
+          should be screened and treated.
+       o Increased risk of thrombo-embolic complication, including intra-cardiac thrombus. Patient
+          may need to be started on anti-coagulants, which should be balanced with bleeding risk
+          and possibly central neuraxial use.
+• Foetal complications
+       o Teratogenicity risk especially with Warfarin during 1st trimester.
+       o Foetus may be at higher risk of congenital heart disease and screening should be offered.
+          If foetal congenital heart disease is detected, delivery should be at an institution that can
+          provide neonatal cardiac care.
+       o Higher risk of foetal growth restriction. Delaying delivery date may improve foetal survival
+          rate.
+• Delivery date (should be planned and discussed during antenatal visit)
+       o Induction of labour is recommended at 40 weeks of gestation in women with cardiac
+          disease, which reduces risk of Em LSCS and still births.
+       o The duration of gestation should be balanced between adequate intra-uterine growth vs
+          increasing cardiovascular risks to mother during pregnancy.
+• Mode of delivery (should be planned and discussed during antenatal visit)
+       o Vaginal delivery is recommended as first choice unless contraindicated.
+       o Contingency planning, including Em LSCS if maternal cardiac status deteriorates, should
+          be discussed with patient.
+
+Intra-partum
+• Antibiotic prophylaxis for IE.
+• Anaesthesia/analgesia
+        o Choice of CNB (epidural/spinal) vs GA should be discussed.
+        o Anti-coagulant (if started) stop and (re)start date will need to be planned to facilitate CNB.
+        o Patient is also at risk of pre-term delivery. Hence, patient should also be counselled for GA
+           in the event of unplanned early labour requiring LSCS.
+• Haemodynamic monitoring during delivery.
+        o Continuous vitals monitoring, including telemetry, in delivery suite.
+        o IA line and CVP if patient undergoes GA.
+       o Having a 2nd (cardiac) anaesthetist who is proficient in TEE will be useful for GA for LSCS.
+•   Optimisation of physiology in Fontan circulation during labour.
+       o Fluid shifts/ autotransfusion and sympathetic stress from contractions during labour can
+           worsen cardiac function, and should be anticipated and managed promptly.
+       o Supplemental O2 to optimise oxygen delivery to minimise myocardial depression o
+       o Maintain normal preload
+               ▪ Difficult to assess fluid status clinically as patient may be oedematous.
+               ▪ IV fluids should be given judiciously to maintain CO (pre-load dependent). Avoid
+                    fluid overload, which can tip patient’s solitary ventricle into failure.
+               ▪ Flotrac may be used to guide fluid management. Urinary catheter for urine output
+                    monitoring.
+       o Aggressive treatment of arrhythmias
+               ▪ Fluid shifts during labour can to stretching of atrial wall and trigger arrhythmias.
+               ▪ Atrial arrhythmias should be promptly treated promptly
+               ▪ Electrolytes should be corrected and patient should be kept normothermia.
+       o Maintain normal SVR
+               ▪ Epidural analgesia should be slowly titrated to relief, to minimise hypotension
+                    associated with systemic vasodilation.
+               ▪ Vasopressors (phenylephrine) may be needed.
+       o Avoid worsening pulmonary hypertension
+               ▪ Achieved by minimising pain, hypoxemia, hypercardia, and acidosis.
+       o Avoid air bubbles in IV infusion lines
+               ▪ Especially if patient has residual left-to-right shunting (PDA/ASD/VSD)
+
+Post-partum
+• Disposition post-delivery
+       o Patient should be monitored closely during the first 24-48h post-partum in the delivery
+           suite or high dependency unit with continuous telemetry monitoring.
+       o Early cardiology review to assess and optimise maternal cardiac status.
+• Elevated PPH risk
+       o Slow IV infusion of Oxytocin may be administered for uterine contraction. Avoid bolus.
+       o Avoid Ergometrine (risk of worsening PVR)
+• Elevated thrombo-embolic risk
+       o Mechanical thrombo-embolic prophylaxis (compression stockings and calf pumps) should
+           continue during and after labour, especially upon cessation of anti-coagulant.
+       o Encourage early ambulation if patient is haemodynamically stable
+

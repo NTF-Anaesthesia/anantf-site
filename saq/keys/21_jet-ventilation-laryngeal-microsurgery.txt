@@ -1,0 +1,27 @@
+A 70-year-old man is scheduled for laryngeal microsurgery for evaluation of hoarseness of voice
+due to a vocal cord polyp. He has a 50 pack-year history of smoking and chronic obstructive
+pulmonary disease.
+A. Compare endotracheal intubation and ventilation via an anaesthetic circuit with tubeless jet
+ventilation as a means to manage his airway and ventilation during surgery (50%).
+
+Similarities between the two include:
+- Provision of positive pressure ventilation.
+- Which risks pneumothorax complication in patient with significant smoking/ COPD history.
+- Ability to titrate and provide up to FiO2 1.0.
+- Shared airway with surgeons, which necessitate close communication during different phases of
+   surgery.
+- Risk of airway fire if laser is used.
+- Hence, requiring FiO2 to be reduced as low as possible during laser phase.
+
+Compared to tubeless jet ventilation, endotracheal intubation with ventilation via anaethetic circuit
+- Provides secured airway .
+- Which carries lower risk of airway contamination during surgical manipulation.
+- Obscures surgical access due to presence of ETT in-situ.
+- Carries risks of trauma to vocal cord polyp during intubation.
+- Allows for greater control of minute ventilation (tidal volume, respiratory rate, PEEP).
+- Allows for effective provision of inhalational anaesthetic agents, with less risk of OT contamination.
+- Allows for more reliable monitoring of gas flows (Fi/ET O2, CO2, AA).
+- Which reduces risks of hypoventilation, hypercapnia, atelectasis.
+- Use of HME filter with ETT allows for humidification of gases and better heat retention.
+- ETT serves as potential source of fuel for airway fire.
+

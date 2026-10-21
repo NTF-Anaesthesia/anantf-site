@@ -1,0 +1,48 @@
+Define frailty and discuss the role of prehabilitation for patients with frailty.(FANZCA 2019A)
+
+Frailty is a clinical phenotype characterised by elderly patient with decreased physiological
+reserves greater than expected from advanced age alone.
+
+It was described by Fried et al in 2001 as the presence of 3 of the following:
+• Unintentional weight loss (>4kg/year) or sarcopenia (low muscle mass)
+• Weakness (poor grip strength)
+• Impaired cardiopulmonary function
+        o Self reported exhaustion
+        o Slow walking speed
+        o Low physical activity
+Other assessment tools include Edmonton Frail Sale (EFS) and Frailty Index.
+
+Prehabilitation is a multi-modal, multi-disciplinary team approach involving the geriatrician,
+surgeon, anaesthetist, nurse educator, dietician, physiotherapist, psychologist, and patient to
+enhance patient’s functional capacity to withstand a forthcoming stressor i.e major surgery.
+
+It involves comprehensive geriatric assessment (CGA) with individualised intervention plan.
+• Medical optimisation of patient’s pre-existing conditions, including identifying and
+     correcting pre-op anaemia, smoking and alcohol cessation
+• Nutritional support to correct sarcopenia by increasing protein (>1.5g/kg/day) and total
+     caloric intake.
+• Physical exercise consisting of (1) strength training, (2) aerobic exercise and (3) flexibility
+     exercise. Aims to improve strength, cardiopulmonary fitness and flexibility.
+• Psychological support to reduce stress/anxiety. Screening for cognitive impairment, and
+     provision of cognitive prehabilitation.
+
+Prehabilitation has the potential to benefit patients with frailty by:
+• Allowing previously non-surgical candidates to be fit enough to be considered for surgery
+• Integration into ERAS protocols to
+      a. Reduce pre-op anxiety and improving patient satisfaction
+      b. Improve post-op pain
+      c. Shorten hospital length of stay
+      d. Facilitate earlier recovery of post-op function and mobility
+
+Limitations of prehabilitation include:
+• Time requirement of programme, which typically range between 4-8 weeks. This may not
+   be feasible for patients going for emergency or time-sensitive (e.g. cancer) surgeries.
+• Resource intensive nature, requiring close coordination from multi-disciplinary teams and
+   patient commitment. Patient with poor social support may find it difficult to comply with
+   the protocol and multiple appointments.
+• Despite emerging evidence, there is no consensus on the ideal prehabilitation strategy
+   (type and duration of intervention).
+• Current literature is inconsistent and heterogenous in terms of (i) surgery type and (ii)
+   intervention implemented, which makes it challenging for widespread adoption of a
+   standardised protocol which is cost-effective to both patients and hospitals.
+

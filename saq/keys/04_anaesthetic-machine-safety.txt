@@ -1,0 +1,55 @@
+4. Describe the safety features of anaesthetic workstation in preventing delivery of hypoxic mixture.
+(Modified from FHKCA 2017B )
+
+Examiner Report
+
+
+
+
+Reference Diagram (You do not need to replicate this for exams)
+Sample Answer
+
+1. High pressure system 137 Bar (Consists of Cylinder, 1st stage pressure regulator)
+Cylinders
+• Serves as O2 reserve to pipeline supply (with preferential usage of pipeline > cylinder)
+• Colour-coded, labelled for easy identification and to avoid misconnections.
+• Pin Index Safety System (PISS) to ensure correct O2 connection to anaesthesia machine
+• Bodok seal to ensure tight connections, and prevent gas leak.
+• Display of cylinder pressures to alert users to replace cylinders are exhausted
+
+2. Intermediate pressure system 4 Bar (Consists of Pipeline, Fail-safe valve, O2 supply failure alarm,
+     Oxygen flush valve, 2nd stage pressure regulator)
+Pipeline
+• Colour-coded, labelled for easy identification and to avoid misconnections.
+• Diameter Index Safety System (DISS) and unique Schrader probe profile to ensure correct O2
+     connection at wall socket
+• Non-interchangeable Screw Thread (NIST) for hose connection to anaesthesia machine
+• Display of pipeline pressures to alert users if pressures are low
+Fail-safe valve/ Hypoxic mixture prevention device
+• Cessation of N2O flow if no O2 flow is present
+O2 supply failure alarm
+• Generates an alarm and stops supply of other gases once O2 pressure falls below a predetermined
+     critical level. (2 Bar) (Ritchie Whistle =>8s. New alarms continues until O2 pressure is restored)
+Oxygen flush valve
+• Delivers O2 at 35-70 L/min, 4 Bar to facilitate rapid administration of O2
+
+3. Low pressure system 1 Bar (Flow control valve, flowmeters, vaporizers, check valve, common gas
+    outlet and breathing circuit)
+Flowmeter
+• Large, fluted O2 knob, located first from left on rotameter for easy identification of O2 knob
+• Minimum O2 flow rate of 250ml/min (Equivalent to O2 consumption of a resting adult)
+• Anti-static material used for flowmeter to prevent stuck bobbin from impeding gas flows
+• O2 being the last gas to enter the common gas outlet to avoid administration of other gases should
+    there be upstream leakage/cracks.
+• Low O2 delivery alarm (fuel cell analyser)
+• Hypoxia Guard Proportioning system. Maintains ratio of O2:N2O at minimum ratio of 1:2
+Breathing circuit
+• Unidirectional valve to prevent mixture of expired gases (with lower FiO2)
+• CO2 absorber to increase percentage of FiO2 by reducing percentage of FiCO2
+• Reservoir bag to serve as FGF (and O2) reservoir
+• Paramagnetic O2 analyser + Low O2 delivery alarm which monitors FiO2/ETO2 (via sampling tube
+    from breathing circuit)
+• Standardised 22mm/15mm common gas outlet diameters to minimize risk of wrong connections
+Patient Monitor
+• Low SpO2 alarm for warning of patient’s hypoxemia
+

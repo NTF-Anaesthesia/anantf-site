@@ -1,0 +1,47 @@
+A 60-year-old woman is scheduled for a right total knee replacement for severe
+osteoarthritis under general anaesthesia.
+A. Discuss the role of regional anaesthesia (RA) techniques for intraoperative and post-
+operative analgesia in this patient (50%).
+
+Sample Answer
+
+Regional anaesthesia may be useful as part of a multi-modal analgesia approach in this
+patient, who is scheduled for Right TKR under GA.
+
+Intra-op
+• Central neuraxial blocks may be used to provide complete anaesthesia and analgesia, but
+    at increased risk of intra-op hypotension when administered together with GA.
+• Peripheral nerve blocks can reduce intra-op opioid usage, thereby reducing opioid-
+    related adverse effects. Benefits include:
+        o Reduced PONV incidence
+        o Reduced risk of post-op respiratory depression
+        o Quicker recovery from GA
+        o Earlier resumption of oral intake
+• Potential risks include: block failure necessitating conversion to GA, inadequate block
+    duration for prolonged surgery, post-dural puncture headache, spinal/ epidural
+    haematoma/ abscess, and nerve injury.
+
+Post-op
+Considerations for using RA for post-op analgesia are more complex, due to the need to:
+• Facilitate ambulation without motor weakness
+• Adequacy of analgesia to allow cooperation with post-op physiotherapy
+• Duration of analgesia should be sufficiently long to cover for post-op physiotherapy
+
+Single shot femoral/ obturator/ popliteal nerve block cause motor block, and may have
+limited utility for fast-track TKR surgery with early patient mobilization. It may also mask and
+delay the diagnosis/ treatment of surgery-related nerve injury (esp common peroneal nerve).
+
+A true adductor canal block is motor-sparing, but the nerve to vastus medialis should be
+identified and blocked in order to provide analgesia to the knee joint. Other motor-sparing
+blocks which may be used in combination with adductor canal block are geniculate nerve
+blocks and IPACK block.
+
+Alternative techniques which may be useful to augment post-op analgesia include:
+• Peri-neural catheters into adductor canal for continuous LA infusion
+• Infiltrative LA cocktail technique by the surgeons (with or without catheter in-situ)
+
+At present, there is no conclusive evidence on the single best RA technique for TKR analgesia.
+It is therefore important to discuss with surgeon and patient on what constitutes acceptable
+outcomes (balancing benefits with the potential risks of RA) prior to surgery. In addition to
+RA, multi-modal analgesia should also be used intra-op and post-op for TKR surgery.
+

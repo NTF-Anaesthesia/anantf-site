@@ -1,0 +1,87 @@
+A 75-year-old man presents with an acute dissection of the descending thoracic aorta. His blood
+pressure measures 190/110 mmHg. Justify your plan for his preoperative blood pressure
+management. (30%) Describe the potential complications of thoracic endovascular aortic repair
+(TEVAR) and how you would mitigate them. (70%)
+
+A)Blood pressure management is critical in acute dissection to prevent the worsening of dissection and
+also aortic rupture. This acute control needs to be balanced with maintaining perfusion to end-organs
+specifically the gut, kidneys and spinal cord
+Monitoring:
+- 5 lead ECG, IA line insertion and CVC insertion, KIV cardiac output monitor
+- 5 lead ecg good to pick out myocardial ischemic changes, IA line will allow for invasive blood pressure
+monitoring and closer titration of BP drugs and CVC will allow us to deliver vasodilatory medications
+centrally.
+- Cardiac output monitor will guide fluid resus and vasodilatory/vasopressor medications titration
+- Risks of IA line insertion, CVC insertion needs to be weighed against.
+- Aim for SBP 100-120 and Hr 60-80. Balance between maintaining perfusion and reducing likelihood of
+further dissection
+
+Drugs:
+1. Labetalol bolus and infusion. Labetalol boluses of 10-20mg followed by a 0.5-2mg/min infusion titrated
+to effect.
+- Both a beta and plus alpha blocker. Effective in bringing down blood pressure, reducing afterload and
+reducing cardiac contractility/Heart rate
+- Beta blockers should be given before vasodilators as reflex catecholamine release due to vasodilation
+may increase LV contraction
+2. Nitrates. GTN infusion 10-200mcg/min. This is mainly a venodilator with some vasodilator effects.
+Usually used as 2nd agent to control
+3. Calcium channel blockers can be given if beta-blockers are contra-indicated
+4. Treat the presence of any pain with IV fentanyl 25mcg or morphine boluses of 1-2mg
+
+Exclude other causes of increase in blood pressure like urinary retention, anxiety.,
+
+B)
+Patient complications:
+Aortic dissection causing ischemia to spinal cord, gut, kidneys. This can cause abdominal compartment
+syndrome, colitis and AKI
+> optmise perfusion by keeping MAP higher>80, 100% Fio2, correct any anemia(aim Hb >9)
+> insertion of lumbar drain to reduce CSF volume and improve spinal cord perfusion (SCFP = MAP –
+CSFP)
+>Decompressive laparotomy needed for abdominal compartment syndrome
+
+Acute coronary syndromes: acute increase in afterload can cause increase myocardial demand and thus
+offset the balance of myocardial demand vs supply leading to intra-op cardiac events.
+> to reduce intra-op BP with agents such as labetalol infusion, GTN infusion so that SVR can be reduced,
+HR can be reduced and thus reduce myocardial demand
+Increased risks of stroke: if left subclavian artery also involved in dissection
+>If done under MAC, to monitor neurological status closely and titrate sedation
+> if done under GAmonitor cerebral perfusion with cerebral oximetry and optimise perfusion as mentioned
+above. To use only short acting GA medications so that post-op neurology can be checked immediately
+Patient discomfort and uncooperative patient affecting successful deployment of stent. Iif procedure
+decided to be done under MAC
+> careful patient selection. If not able to cooperate, to do procedure under GA.
+> To ensure adequate local analgesia given at groin, IDC inserted(full bladder from contrast induced
+dieresis)
+
+Anaesthesia complications:
+Loss of airway during MAC sedation:
+> Close monitoring of patient if done under MAC with etco2 monitoring and careful titration of sedative
+agents.
+
+Hemodynamic surges intra-op causing aortic rupture. This can happen during airway manipulation,
+intubation(if case done under GA) or pain during femoral cannulation(when done under MAC)
+> Adequate analgesia with TCI remifentanil infusion to be started before any airway procedures.
+> adequate local analgesia given by surgeons at insertion site if done under MAC. To be supplemented
+with small boluses of IV fentanyl or titrated IV precedex infusion for systemic analgesia
+
+Surgical complications:
+- Contrast induced nephropathy: endovascular repair uses large amounts of contrast to guide treatment
+and stent placement.
+> To monitor urine output closely and to esnure adequate fluid resuscitation. To avoid other nephrotoxic
+drugs.
+
+
+- aortic perforation: Inadvertent aortic injury can cause rupture causing severe blood loss and need to
+convert to open procedure
+> Ensure level 1 infusors, airway equipment on standby in the event of rupture for rapid fluid/blood
+infusions and conversion to GA if not already done
+> may need to reverse heparin with protamine to control bleeding
+
+Remote location with radiation:
+> Ensure all staff are wearing lead suits and to ensure senior staff and equipment on standby at remote
+location
+
+Lower limb ischemia and arterial occlusion as a result of thrombus
+> distal pulses should be checked at the end of the op and if recognised, urgent embolectomy needs to be
+performed
+

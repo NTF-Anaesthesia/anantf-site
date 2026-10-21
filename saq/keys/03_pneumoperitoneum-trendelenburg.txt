@@ -1,0 +1,103 @@
+  3. You are providing anaesthetic care for a 65 year old male, who weighs 98 kg, with a height
+  of 170 cm. He has hypertension and is a heavy smoker (20 pack-years).
+  (a) Outline the physiological response to the establishment of pneumoperitoneum and
+      subsequent steep Trendelenberg positioning (50%).
+  (b) You observe a steady increase in his end-tidal carbon dioxide tension, from 35 to 70
+      mmHg, during the first hour of anaesthesia with an associated increase in heart rate to
+      110 bpm. Describe your assessment (50%) and management (50%).
+  (Modified from FHKCA 2018 )
+
+  Examiner Report
+
+
+10/16
+passed
+
+
+
+
+ 3/16
+passed
+Sample Answer
+
+(a) Physiological responses arising from
+Establishment of Pneumoperitoneum
+CVS Higher IAP leading
+                Initial autotransfusion (mechanical displacement) from splanchnic circulation
+                Followed by impeded venous return, and drop in preload
+        Increase in systemic vascular resistance (afterload)
+        Vagal stimulation leading to bradycardia
+        Hypercarbia leading to sympathetic stimulation with tachycardia/ arrhythmias and
+        increased contractility, but may cause direct myocardial depression at higher PaCO2
+        > 65mmHg
+        Right shift of OHDC due to respiratory acidosis, increased O2 release at tissue level
+Respi Diaphragmatic splinting, with increased airway pressures, risk of barotrauma
+        Reduced FRC with shorter apnoeic time
+        Hypercarbia (secondary to systemic absorption of CO2) leading to
+            o Increased pulmonary vascular resistance
+            o Increased respiratory drive, patient-ventilator dyssynchrony if not well
+                paralysed
+        Worsens atelectasis, V/Q mismatch
+Renal Reduced renal perfusion, leading to lower urine output
+GI      Impaired splanchnic circulation, leading to bowel oedema and post-op ileus
+        Increased aspiration risk
+CNS Raised ICP from cerebral vasodilation secondary to hypercarbia, impeded CSF venous
+        drainage
+Others Venous stasis (lower limbs) from compression of veins, potentially increasing DVT risk
+
+Steep Trendelenburg Positioning
+CVS Improve venous return and preload
+Respi Further diaphragmatic splinting, with increased airway pressures.
+       Further reducing FRC with shorter apnoeic time
+       Further worsening atelectasis and V/Q mismatch
+       Risk of one lung ventilation if inadvertent endobronchial intubation occurs
+GI     Further increasing aspiration risk
+CNS Further worsening ICP
+Others Facial/ upper airway oedema secondary to venous congestion.
+       Ocular perfusion pressure may also be reduced in prolonged steep Trendelenburg, risk
+       peri-op visual loss from ischemia/ optic nerve injury.
+(b)
+With a steady increase in ETCO2 from 35 to 70mmHg with associated increased in HR to 110
+BPM, I am concerned about:
+• Hypoventilation from malpositioned ETT/ pneumoperitoneum/ steep Trendelenburg
+    position, which might be made worse by patient’s obesity
+• Inadequate analgesia/ anaesthetic depth/ paralysis with patient-ventilator desynchrony
+• Pneumothorax, which could be contributed by patient’s underlying COPD
+    (emphysematous lungs) in view of his heavy smoking history.
+• Bronchospasm, which again could be contributed by possible underlying COPD
+• Subcutaneous emphysema (surgical cause)
+• Equipment failure (rebreathing, exhausted soda lime)
+• Reflex tachycardia from hypovolaemia from surgical bleed
+• Conditions associated with hypermetabolic state (malignant hyperthermia, thyroid storm,
+    sepsis, pheochromocytoma)
+
+I would inform surgeon to stop surgery. Deflate pneumoperitoneum. Level bed. Followed by
+simultaneously assess and resuscitate patient according to ABC principles
+Airway        Confirm correct ETT placement (check ETT depth marking at lips, no kinks in
+              circuit/ETT)
+              Check for high airway pressures/ obstructive pattern on capnography
+              Manual bag-mask ventilation to check for blocked ETT/ poor lung compliance/
+              chest wall rigidity
+              Suction ETT if suspected secretions/ mucous plugging.
+Breathing     Titrate FiO2/PEEP to maintain SpO2 >95%
+              Auscultate bilateral lungs for equal breath sounds, to exclude bronchospasm,
+              pneumothorax, endobronchial intubation
+              Check that soda lime is not exhausted, insp/exp valves functioning properly
+              Check ABG to correlate ETCO2 with PaCo2
+Circulation   Check and ensure that rest of vital signs are normal. In particular, for
+              hypotension (BP), arrhythmia/ ischaemia (ECG), hyperthermia (temp), and
+              hypoxia (SpO2)
+              Optimise anaesthesia depth, analgesia, and fluid resuscitation to correct
+              tachycardia
+
+I would see if ventilation improves, with resolution of hypercarbia and tachycardia.
+• Once tachycardia and hypercarbia resolves, to restart surgery with gradual and gentle
+    pneumoperitoneum and less steep Trendelenburg position
+• If patient is still unable to tolerate pneumoperitoneum/steep Trendelenburg, to consider
+    converting to open surgery (with optimisation of analgesia).
+• Patient will need to be monitored for extended period in recovery room, to consider
+    sending to High Dependency if there are any respiratory/ventilation concerns.
+
+If there is persistent hypercarbia/ tachycardia/ hyperthermia/ muscle rigidity, to declare crisis
+situation and manage patient as per Malignant Hyperthermia pathway.
+

@@ -1,0 +1,43 @@
+Discuss fixed ratio blood product transfusion versus goal directed factor concentrate
+administration in the management of a severely injured polytrauma patient.
+From MMed 2021 (1)
+
+Sample Answer
+
+In the management of a severely injured polytrauma patient,
+
+Fixed ratio blood product transfusion
+• Refers to the empirical transfusion of FFP, Platelets, RBCs in 1:1:1 ratio
+• Aims at early correction (with FFP and platelets) of trauma-induced coagulopathy
+• Typically implemented as part of hospital’s Massive Transfusion Protocol (MTP)
+• Standard of care for Damage Control Resuscitation (DCR) in trauma patients.
+
+However, there are several issues surrounding this approach:
+• Inadequate resuscitation in terms of factor replacement, especially fibrinogen, which is
+  depleted earlier/ more in trauma-induced coagulopathy.
+• Over-resuscitation in terms of volume load, leading to worsening haemorrhage.
+• Delay in FFP administration (compared to RBC, platelets) due to thawing time
+• Inconclusive evidence on ideal component ratio for transfusion (PROMMTT, PROPPR trial)
+• Complications associated with blood product transfusion
+      o Transfusion-associated circulatory overload (TACO)
+      o Transfusion-associated acute lung injury (TRALI)
+      o Transmission of infectious diseases
+
+As such, there is a trend towards using goal directed factor concentrate-based management:
+(i)    Goal-directed approach (instead of empirical administration)
+       a. Using point-of-care visco-elastic measurement such as ROTEM, TEG with quick TAT
+       b. Allows for more precise replacement of deficient components
+       c. Reduces wastage of blood products
+(ii)   Factor concentrate-based management (instead of FFP)
+       a. Prothrombin complex concentrate (PCC) and Fibrinogen Concentrate (FC) can be
+           made readily available in OT, avoiding need for long thawing time for FFP.
+       b. Smaller administration volume, which facilitates permissive hypotension and
+           minimises haemodilution
+       c. No need for cross-matching. Avoids complications associated with blood product
+           transfusion.
+
+Given its potential benefits, medical institutions with established ROTEM/TEG-based
+treatment algorithm, specialised equipment/drugs, and trained personnel should adopt a
+goal directed factor concentrate-based management. Fixed ratio blood product transfusion
+may still be useful during initial haemostatic resuscitation or if visco-elastic assays are normal.
+

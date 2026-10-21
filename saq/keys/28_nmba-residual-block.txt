@@ -1,0 +1,102 @@
+A. List the ways to assess a patient for the presence of residual neuromuscular blockade. (30%)
+B. Discuss methods to reduce the risk of residual neuromuscular blockade (70%)
+
+(A)
+Clinically:
+History
+■ Dyspnea, muscle weakness
+■ Review anaesthesia chart: last dose of NMBA, reversal dose (whether adequate for weight)
+Examination
+■ Poor respiratory effort: rapid shallow breathing, poor air entry, minimal chest movement, use of
+accessory muscles of respiration
+■■
+■ Ptosis
+■ Twitchy appearance
+Unable to sustain head lift >/=5 seconds, weak hand grip Inability to swallow secretions
+ • Investigations: desaturation, low pO2/raised pCO2 on ABG
+Depth of neuromuscular blockade monitoring:
+• Quantitative (train of four ratio <0.9): acceleromyography, electromyography, mechanomyography
+• Qualitative: conventional peripheral nerve stimulator -- TOF count <4 with fade, double burst stimulation
+with fade, post tetanic count low with fade
+(B)
+Avoid use of NMBA
+■ Choose regional anaesthesia where possible
+§ Dependentonnatureofsurgery,maynotbepossibleifpatientrefuses,prolonged surgery
+■
+Identify patients at high risk of residual NMB
+■
+electrolyte abnormalities
+■ Reduced clearance: hepatic/renal dysfunction, hypothermia, elderly
+Dosing of NMB
+■ Alter doses in patients with altered physiology and metabolism as listed above
+§ Noclearguidelinesregardingdoseadjustments
+§ LessproblematicwithatracuriumduetoHoffman'sdegradation(organindependent
+metabolism)
+■ Avoid infusions, or clear communication with surgeons regarding remaining op time to facilitate
+early cessation of infusion
+Use depth of NMB monitoring
+■ Obtain baseline results post induction pre NMBA administration, removes doubt whether PNS working
+functioning adequately at end of op
+■ Guides NMBA top ups, avoid excessive dosing and overly deep blockade (aim TOF 1-2)
+■ Quantitative monitoring preferable to qualitative
+§ Moreaccuratebutrequiresspecialisedequipment
+Avoid agents that potentiate NMB
+■ Volatiles, aminoglycosides, MgSO4
+§ Ensureadequateremovalofvolatileagentspriortoextubation/removalofLMA
+ • Full reversal of NMBA at end of op to ensure TOFR >0.9
+■ Weight adjusted dosing instead of standard dosing
+■
+■ Use of sugammadex + rocuronium instead of atracurium for more reliable reversal
+§ Formsinactivecomplexthatisrenallycleared,notsuitableinESRF/CKD
+§ Sugammadexexpensive,alsoformscomplexwithoralcontraceptivetoreduceefficacy
+If under GA: ensure adequate depth of anaesthesia and analgesia to prevent movement, use remifentanil
+infusion for immobility
+§ Maynotbepossibleinsurgeriesrequiringadequatemusclerelaxation(laparoscopic)or high risk surgeries
+requiring absolute still surgical field (neurosurgery, endoscopic)
+Increased sensitivity
+§ Neuromuscularconditions(GuillainBarresyndrome,motorneurondisease,muscular
+dystrophy, myasthenia gravis)
+§ Pharmacological:MgSO4,calciumchannelblockade
+§ Electrolytederangements:hyperMg/hypoCa/hyperK,metabolicacidosis>>correct
+Use of adductor pollicis to monitor blockade
+Avoid use of NMBA
+■ Choose regional anaesthesia where possible
+§ Dependentonnatureofsurgery,maynotbepossibleifpatientrefuses,prolonged surgery
+■
+Identify patients at high risk of residual NMB
+■
+electrolyte abnormalities
+■ Reduced clearance: hepatic/renal dysfunction, hypothermia, elderly
+Dosing of NMB
+■ Alter doses in patients with altered physiology and metabolism as listed above
+§ Noclearguidelinesregardingdoseadjustments
+§ LessproblematicwithatracuriumduetoHoffman'sdegradation(organindependent
+metabolism)
+■ Avoid infusions, or clear communication with surgeons regarding remaining op time to facilitate
+early cessation of infusion
+Use depth of NMB monitoring
+■ Obtain baseline results post induction pre NMBA administration, removes doubt whether PNS working
+functioning adequately at end of op
+■ Guides NMBA top ups, avoid excessive dosing and overly deep blockade (aim TOF 1-2)
+■ Quantitative monitoring preferable to qualitative
+§ Moreaccuratebutrequiresspecialisedequipment
+Avoid agents that potentiate NMB
+■ Volatiles, aminoglycosides, MgSO4
+§ Ensureadequateremovalofvolatileagentspriortoextubation/removalofLMA
+ • Full reversal of NMBA at end of op to ensure TOFR >0.9
+■ Weight adjusted dosing instead of standard dosing
+■
+■ Use of sugammadex + rocuronium instead of atracurium for more reliable reversal
+§ Formsinactivecomplexthatisrenallycleared,notsuitableinESRF/CKD
+§ Sugammadexexpensive,alsoformscomplexwithoralcontraceptivetoreduceefficacy
+If under GA: ensure adequate depth of anaesthesia and analgesia to prevent movement, use remifentanil
+infusion for immobility
+§ Maynotbepossibleinsurgeriesrequiringadequatemusclerelaxation(laparoscopic)or high risk surgeries
+requiring absolute still surgical field (neurosurgery, endoscopic)
+Increased sensitivity
+§ Neuromuscularconditions(GuillainBarresyndrome,motorneurondisease,muscular
+dystrophy, myasthenia gravis)
+§ Pharmacological:MgSO4,calciumchannelblockade
+§ Electrolytederangements:hyperMg/hypoCa/hyperK,metabolicacidosis>>correct
+Use of adductor pollicis to monitor blockade
+

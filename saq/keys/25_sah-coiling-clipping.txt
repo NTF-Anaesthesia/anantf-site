@@ -1,0 +1,188 @@
+1. Neurosurgery
+
+A 55-year-old 50kg woman is scheduled for embolization and coiling of an anterior communicating artery
+aneurysm in the radiology suite. She presented with headache two weeks ago and her past health was
+unremarkable. You have performed a full preoperative assessment.
+A. What are your major considerations for this patient undergoing the interventional procedure (30%)?
+B. How would you address these concerns in your preoperative preparation (70%)?
+
+2. Neurosurgery (Continued)
+
+During the embolization, the blood pressure suddenly goes up to 190/100mmHg. The neurosurgeon informs you
+there is significant extravasation of contrast and decides to proceed to emergency craniotomy for clot
+evacuation and surgical clipping.
+C. Outline your immediate management (20%) and your preparation for the transfer of this patient to the
+    operating theatre (30%).
+After opening of the dura, the blood pressure drops to 89/40 mmHg. There is significant bleeding of 3 liters of
+blood obscuring the surgical field.
+D. How would you manage the situation (50%)?
+
+A. + B.
+
+This is a middle aged lady presenting for angioembolisation of AComm aneurysm in a remote location following
+a possibly sentinel bleed 2 weeks ago.
+
+My major considerations are:
+
+1. Secondary brain injury/ Complications from (possible) sentinel bleed 2 weeks ago
+- Seizures
+- Vasospasm/ delayed cerebral ischaemia
+- Hydrocephalus
+- Cerebral oedema
+
+I would address this in my pre-op preparation by
+- Assessing and documenting baseline GCS and neurological status (for evidence of clinical vasospasm),
+    checking for signs and symptoms of raised ICP (nausea/ vomiting/ photophobia/ Cushing’s reflex)
+- Reviewing past notes, including presenting history, scan results, and subsequent clinical progress.
+- Reviewing TCD results (radiological vasospasm)
+- Ensuring compliance to nimodipine, modified triple-H (avoiding hypotension, hypovolaemia +/-
+    haemodilution)
+- Ensure anti-epileptics are continued peri-op.
+- Avoiding medications which lower seizure threshold (tramadol/ pethidine/ carbapenems)
+- Regular BSL monitoring pre-procedure, and avoiding hyper/ hypoglycemia
+- Passive and active warming when patient is in radiology suite to avoid hypothermia.
+
+2. Risk of intra-op aneurysm rupture/ rebleeding
+- This is related to haemodynamic swings (aneurysm transmural wall pressure/ tension)
+- As well as complexity of procedure (neck width, location, morphology)
+- Longer surgical time, high risk of complications associated with more complex procedures
+
+I would address this in my pre-op preparation by
+- Discussing with IR and NES colleagues regarding anticipated issues so to better prepare for contingencies
+    (i.e. decision points for conversion to clipping intra-op aneurysm rupture,)
+- Reviewing and optimising patient’s blood pressure control (aim SBP < 140, balancing it with risks of
+    vasospasm)
+- Ensuring that there is an available major OT in the event neurosurgical intervention is required.
+- Appropriate counselling of patient/ family of peri-op anaesthetic plans and associated risks.
+- Premedication/ analgesia as appropriate to reduce anxiety/ sympathetic surge from pain pre-op.
+-   Close monitoring of haemodynamics for tight BP control (setting IA line pre-induction/ intubation)
+-   Minimise sympathetic surges from intubation/ surgical stimulation by using esmolol/ lignocaine/
+    remifentanil to blunt response to laryngoscopy).
+-   Checking FBC and correct anaemia, thrombocytopaenia if present.
+-   Checking and ensuring no coagulopathy.
+-   Set 2 large bore IV cannula prior to induction.
+-   Ensuring valid GXM, standby blood products.
+
+3. Contrast-induced nephropathy
+- From use of radio-opaque iodinated contrast during coiling.
+- Especially in patient with pre-existing renal impairment
+- Intra-cranial aneurysms may be associated with adult polycystic kidney disease (APKD)
+
+I would address this in my pre-op preparation by
+- Checking baseline renal function to identify patient at risk
+- Highlighting to IR to monitor/ minimise their contrast dosing for at-risk patient.
+- Consider pre-op NAC/ bicarbonate administration for at-risk patient..
+- Avoid nephrotoxic drugs (NSAIDs, COX-II inhibitors, aminoglycosides)
+- Allowing clear fluids up to 2 hour pre-procedure.
+- Or IV maintenance fluids when NBM to minimise risk of pre-renal cause of AKI
+- Renal ultrasound to exclude APKD
+
+4. Remote location/ Exposure to ionizing radiation
+- Less familiar location
+- Less ready access to additional trained help
+
+I would address this in my pre-op preparation by
+- Arrange for case to be done during office hours
+- Ensure staff involved in the case are trained and oriented to equipment, set-up, including emergency crash
+    cart/ resus trolley in radiology suite.
+- Arrange to do a pre-procedure brief to update everyone on the procedural plans and contingency plans.
+- Ensure all staff involved are adequately protected by lead gown/ shield. Pregnant staff should be excluded
+    from this case.
+C.
+
+This is a crisis situation (aneurysm rupture as evidenced by significant extravasation of contrast).
+My immediate management would be to simultaneously resuscitate patient while preparing for transfer to OT.
+
+Airway
+- Confirm patency and position of ETT by auscultating for bilateral equal air entry.
+
+Breathing
+- Increase FiO2 to 100%.
+- Titrate ETCO2 to 30-35 mmHg as temporising measure to lower ICP.
+
+Circulation
+- BP 190/100 may be (1) contributory to aneurysm rupture, but may also reflect (2) Cushing’s reflex (if
+     bradycardia) in response to raised ICP.
+- Titrate anaesthetic/ analgesic/ mannitol to reduce SBP < 160 while targeting CPP >60 (assuming ICP 20)
+- Check that IV cannulas are running well. Set IA line if not already present.
+- Call for blood products (to send to OT).
+
+Neuroprotection (measures to reduce ICP, avoid secondary brain injury)
+- Head up 30 deg, keep neck in neutral position, avoid neck ties.
+- Keep normooxia (FiO2 100%), normothermia , normoglycemia, avoid acidosis and correct coagulopathy if
+   any (additional staff to send off ABG, ROTEM).
+- Ensure adequate depth of anaesthesia (BIS guided), top up NMBA to avoid cough/ gag on ETT.
+- Hyperosmolar therapy - IV Mannitol 0.5g/kg.
+- Propofol/ Thiopentone for burst suppression if no hypotension (BP 190/100).
+- Seizure prophylaxis (IV Keppra).
+
+Preparation for smooth and expedient patient transfer to EOT include:
+Call for help to prepare EOT
+- Activate NES surgeons/ scrub nurses + EOT anaesthetists to prepare EOT for decompressive craniotomy.
+          o Warm OT
+          o Extend breathing circuit. Adjust ventilator settings.
+          o Resus drugs/ crash card
+          o Calling for blood, fluid warmer/ rapid infusion devices
+          o Drugs for haemostatic resus: TXA/ fibrinogen/ 4-factor PCC
+          o Drugs for managing elevated ICP: Hypertonic saline, mannitol, thiopentone
+          o Ensure availability of ROTEM/ ABG machine
+          o TIVA propofol and remifentanil infusion
+
+Prepare transport ventilator
+- Adjust ventilator settings
+- Ensure sufficient O2 in cylinder
+- Ensure sufficient battery life
+- Standby ambu bag
+
+Prepare transport monitor
+- BP, HR, ECG, RR, SpO2, ETCO2
+- Ensure sufficient battery life
+
+Ensure functioning IV access and sufficient drugs during transfer
+- Check that IV cannulas are running well.
+- Sufficient drugs, connected and running, in infusion pumps
+- Bring along vasopressors/short acting anti-hypertensives/ mannitol.
+
+Ensure adequate trained assistance (MO, nurse, respiratory therapist) for the transfer.
+Communicate to EOT to receive patient and estimated time of arrival once ready for transfer.
+D.
+
+This is a concerning situation, which requires prompt haemostatic resuscitation, while getting surgeons to stop
+bleeding. Call for additional help to OT.
+
+Airway
+- Confirm patency and position of ETT by auscultating for bilateral equal air entry.
+
+Breathing
+- Increase FiO2 to 100%.
+
+Circulation – Haemostatic resuscitation until surgical bleed is arrested.
+- Call for blood. Activate MTP.
+- Send off serial ABG, ROTEM q15min.
+          o Keep Hb 8-10. Transfuse PCT using rapid fluid infusor via large bore peripheral lines (at least 16G).
+          o Correct acidosis (adjust ventilation).
+          o Correct coagulopathy (TXA, platelets, FFP or fibrinogen/ PCC).
+          o Correct hypocalcaemia, hyperkalaemia.
+- Maintain normothermia (passive and active warming).
+- Allow for MAP/ CPP > 60. Limit crystalloid administration.
+
+Communicate with surgeon
+- To facilitate operating conditions for placement of temporary clip.
+- This may require permissive hypotension MAP 50-60 until clip is placed.
+- Adenosine may also be used for temporary induced cardiac arrest to facilitate this.
+- Followed by targeting higher MAP to minimise risk of cerebral ischaemia to areas distal to clip.
+
+Re-assessment. Assess to check that other vitals are stable – HR, ECG, SpO2, ETCO2, airway pressures.
+Further worsening in intra-op haemodynamic may be related to
+- Worsening bleed.
+- Venous air embolism (if sudden drop in BP, SpO2, ETCO2).
+
+Techniques for brain relaxation
+- Ensure adequate depth of anaesthesia (BIS guided), top up NMBA to avoid cough/ gag on ETT.
+- Hyperosmolar therapy - IV 3% NaCl 2-3ml/kg.
+- Caution with mannitol/ thiopentone in hypotensive patient.
+
+Prevention of secondary brain injury
+- Keep normooxia (FiO2 100%), normothermia , normoglycemia.
+- Seizure prophylaxis (IV Keppra).
+

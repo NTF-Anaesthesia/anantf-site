@@ -1,0 +1,20 @@
+// Cloudflare Workers config for the SAQ marker's API (saq/README.md). Separate from the mo.anantf.com Worker
+// (../wrangler.jsonc): this one holds secrets and calls Claude, that one only serves files.
+// Secrets (set once in the Cloudflare dashboard or with `npx wrangler secret put <NAME>`):
+//   ANTHROPIC_API_KEY, SAQ_PASSPHRASE, ADMIN_TOKEN
+{
+  "name": "anantf-saq",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "vars": {
+    // the pages allowed to call the API (comma-separated)
+    "ALLOWED_ORIGINS": "https://anantf.com",
+    // markings per day across everyone, a ceiling on the bill
+    "DAILY_CAP": "200"
+  },
+  // anonymised markings and the daily counter; Cloudflare creates the namespace on the first deploy
+  "kv_namespaces": [{ "binding": "SAQ_LOG" }],
+  // per-address limit: 6 markings a minute
+  "ratelimits": [{ "name": "MARK_LIMIT", "namespace_id": "1001", "simple": { "limit": 6, "period": 60 } }]
+}

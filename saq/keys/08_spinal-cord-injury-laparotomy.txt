@@ -1,0 +1,96 @@
+A 40yo requires a laparotomy 10 days after an isolated traumatic spinal cord transaction at C6. (a) outline the key anaesthetic issues (50%)
+(b) how would these influence your anaesthetic management (50%)
+ (Modified from MMed 2016, ANZCA 2015A, 2013B)
+
+Examiner Report
+Sample Answer
+
+This is a middle-aged patient with an isolated cervical spinal cord transaction in the early hyperreflexia phase (of spinal shock) requiring a
+laparotomy, which may be urgent in nature.
+
+                        Key anaesthetic issues                                       Influence on my anaesthetic management
+                                                            Relating to C-Spine Injury
+ Severity of spinal cord injury (SCI)
+ • Patient should be assessed for presence of neurogenic shock            • Ensure 2 large bore IV cannulas, with fluid preload of 500-1000ml
+         o This is more likely if SCI is complete (vs incomplete) based       of IV crystalloids before induction.
+            on ASIA scoring. Distributive shock may last for weeks, and • Resuscitation drugs, including vasopressors and inotropes should
+            should be supported accordingly.                                  be prepared and ready for use in OT.
+ • Presence of sympathetic denervation may predispose patient to • IA line with Flotrac to guide haemodynamics and fluid
+     haemodynamic instability.                                                management. KIV CVP line for measurement of SVRI, or if
+ • Intra-op hypovolaemia from blood loss is poorly tolerated                  vasopressors/ inotropes are required.
+         o Pre-existing vasodilatory shock and bradycardia (loss of • IV Atropine 300mcg pre-induction to reduce risks of severe
+            cardio-accelator fibres), compounded by hypovolaemia →            bradycardia/ asystole during intubation.
+            Refractory hypotension and impaired end organ perfusion • Neurological status should be checked and documented pre- and
+ • Given that it is Day 10, patient is likely in the early hyperreflexia      post-op, especially if SCI is incomplete, with residual
+     phase (of spinal shock).                                                 sensory/motor function
+         o Autonomic dysreflexia is unlikely to be present at D10 of • Post-op HD bed should be available prior to operation.
+            injury (usually after months-year).
+                                                                          • Avoid hypotension, hypoxia, anaemia, hypercarbia, acidosis.
+                                                                          • Anaemia should be corrected pre-op. Ensure valid GXM.
+ Risk of secondary SCI injury (including extension of injury above C6)
+                                                                          • Blood products and fluid warmer should be available in OT if
+ if adequate spinal perfusion pressure was not maintained.
+                                                                              surgical bleeding is anticipated.
+                                                                          • A higher MAP (> 85mmHg) target may help with maintenance of
+                                                                              spinal perfusion pressure
+                                                                          • Need for cervical spine immobilisation if no surgical fixation.
+ Unstable C-Spine with potentially difficult airway.
+                                                                                  o C-collar should be kept on until airway manipulation
+•   I would check if surgical fixation has been done, and whether there           o Log-roll transfer (requires at least 6 OT staff) from trolley
+    is any recent anaesthesia history, including airway                               to OT table
+    documentation.                                                                o Manual in-line stabilisation (MILS) during intubation
+                                                                                  o Head blocks/ sandbags to be placed at patient’s head to
+                                                                                      maintain spinal immobilisation intra-op.
+                                                                          •   Use of airway adjuncts, including counselling of patient for awake
+                                                                              fibreoptic intubation in previously documented difficult airway.
+Upregulation of extrajunctional ACh receptors after 48-72h of injury. •       Suxamethonium should be avoided in view of risk of
+                                                                              hyperkalaemia with administration.
+                                                                       •      Pre-op CXR to exclude pneumonia and atelectasis.
+Increased risk of infection                                            •      Infection should be investigated and treated.
+• Impaired cough from intercostal muscle and accessory muscles •              Lung protective ventilatory strategies, use of PEEP, lowest FiO2 to
+    weakness predisposes patient pneumonia/atelectasis. This can              maintain SpO2 > 95%, recruitment manoeuvres, and ETT
+    lead to impaired oxygenation, ventilation, and post-op respiratory        suctioning intra-op.
+    complications.                                                     •      Full reversal of neuromuscular blockade, guided by TOF ratio > 0.9
+• Urinary retention and use of IDC predispose patient to urinary •            Appropriate counselling of peri-op respiratory complications,
+    tract infection (UTI).                                                    including delayed extubation in ICU in event of difficulty weaning
+                                                                              ventilation at the end of op.
+Impaired thermoregulation                                                 •   Temperature monitoring with temp probe intra-op
+• Leads to higher risk of hypothermia                                     •   Use of passive and active warming devices, including warming
+                                                                              blankets and fluid warmers
+                                                                          •   Careful positioning of arms and legs to maintain neutral positions.
+Prolonged immobilisation
+                                                                          •   Pressure points such as elbows and heels should be padded.
+• Predisposes patient to pressure sores and peripheral nerve injury
+                                                                          •   Padded dressings (Mepilex) to protect bony prominences such as
+   (due to insensate limbs)
+                                                                              coccyx.
+• Predisposes patient to deep vein thrombosis (DVT). Patient may
+                                                                          •   Heparin (if started for DVT prophylaxis) will need to be stopped 6H
+   be on anti-coagulant (e.g IV Heparin)
+                                                                              pre-op.
+• Peripheral oedema from prolonged recumbent position can make
+                                                                          •   Calf compressors should be continued intra-op.
+   IV cannulation difficult
+                                                                          •   Ultrasound guidance may be required if IV access is difficult
+Increased risk of gastric stress ulcers                                 • Continue PPI peri-operatively
+                                            Relating to surgical pathology requiring laparotomy
+Indication and urgency of surgery should be discussed with surgeon • Elective procedures should be postponed until patient has
+• A patient who requires emergency laparotomy may be unfasted              recovered from spinal shock.
+    and unwell.                                                         • Patient should be counselled on elevated peri-op MACE risks if
+• Limited time for optimisation of patient prior to surgery                emergency op were to proceed.
+                                                                        • Modified RSI
+Aspiration risk in unfasted patient/acute abdomen                               o Use of Rocuronium 1.2mg/kg with Sugammadex standby
+• This may also be contributed by gastroparesis secondary to SCI.               o Avoid cricoid pressure as SCI is at C6. Alternatively,
+                                                                                    bimanual cricoid pressure may be applied.
+Dehydration/ electrolyte abnormalities                                  • Fluid deficit and electrolyte abnormalities should be corrected
+• If patient has prolonged NBM or has GI losses.                           pre-op.
+Surgical pain from laparotomy incision
+• Complete SCI → Skin will be insensate below level of lesion. Risk • Analgesia will need to be titrated to patient’s response.
+    of opioid overdose (including respiratory depression) if opioid • Use of adjuvants (gabapentin/ ketamine) may be useful for
+    dosage is not adjusted                                                 patient with incomplete SCI.
+• Incomplete SCI → Increased risk of transition to chronic pain if • Use of regional anaesthesia (e.g. bilateral TAP blocks) or local
+    surgical pain is not well-managed. Concurrent adjustment               infiltrative technique (On-Q painbuster) to reduce opioid yse.
+    disorder/ depression may affect pain perception.                    • Nurse controlled Analgesia (NCA) may be needed in place of PCA
+• PCA Opioid will not be useful if patient has no upper limb motor         opioids.
+    function.
+

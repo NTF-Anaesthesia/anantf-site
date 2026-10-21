@@ -7,6 +7,8 @@ What each folder is. Linked from `AGENTS.md`.
 | `index.html` | Homepage | — |
 | `exams/index.html` | MMed exam resources by Dr Chew Shi Hao (his design); nav label "Exam Prep" | In main navigation (noindex) |
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
+| `exams/marker/` | SAQ marker: candidates write a Part B SAQ answer (typed or photographed) and get it marked by Claude against the model answer, MMed 3–8 scale. Passphrase; calls the `saq/` Worker. Start with `saq/README.md` | No (unlisted, noindex) |
+| `saq/` | The SAQ marker's Cloudflare Worker (`anantf-saq`, own `wrangler.jsonc`, holds the Claude API key as a secret), its marking prompt and the keys built from `exams/reference/`. Start with `saq/README.md`; test `node saq/test/worker.test.mjs` | — |
 | Regional anaesthesia app (all regional folders) | See shared/regional/INDEX.md and shared/regional/docs/layout.md | — |
 | `shared/vendor/three-r160/` | three.js (r160) and its Draco decoder, used by `brachial-plexus/` and `plexus/` through their import maps (moved from `brachial-plexus/vendor/three`) | — |
 | `babymo/` | Baby MO test, also at mo.anantf.com/test/ (see `MO.md`; nothing in the app depends on the address): the department's MCQ test for new medical officers (MOs enter a name and a shared passphrase; faculty see results, the read-only paper, people and settings in the app). Own Firebase project `ntf-mo-portal` (sign-in, settings, results); its questions come from `qbank/papers/babymo.json` and `qbank/bank/questions.json`, and nobody edits questions in this app (faculty suggest changes through `qbank/`). Start with `babymo/NOTES.md` | No (unlisted) |

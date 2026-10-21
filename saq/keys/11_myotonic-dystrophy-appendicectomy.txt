@@ -1,0 +1,91 @@
+A 30-year-old patient with myotonic dystrophy is scheduled for surgery for acute appendicitis.
+Outline your anaesthetic considerations.
+(Modified from FANZCA 2016A)
+
+Examiner Report
+
+
+
+
+Sample Answer
+This is a young patient with myotonic dystrophy presenting for emergency abdominal surgery.
+Myotonic dystrophy is an autosomal dominant myotonia disorder which poses significant anaesthetic
+challenges, in particular cardiorespiratory management. Anaesthetic considerations include:
+
+Patient Factors
+• Airway
+        o Aspiration risk due to weakness of the pharyngeal muscles from progressive bulbar palsy.
+        o Evaluate for potential difficult airway (rescue bag-mask ventilation may be challenging)
+                 ▪ Review previous anaesthesia charts (if available) for Cormack & Lehane grading
+• Respiratory
+        o May be associated with restrictive lung disease and OSA.
+                 ▪ HD for post-op monitoring, KIV ventilatory support post-op in ICU.
+                 ▪ Incentive spirometry if time permits.
+        o Assessment of effort tolerance, ability to cough, oxygen saturations on room air, and
+            recent spirometry results (if available) will be useful in determining disposition and need
+            for ventilatory support post-op.
+• Cardiovascular
+        o May have cardiomyopathy, heart failure, arrhythmias, mitral valve prolapse (20%)
+                 ▪ Review cardiac history (palpitation, syncope, angina, effort tolerance), 12-lead
+                    ECG, 2DE (if available). Cardiology consult for optimisation if time permits.
+                 ▪ Check for pacemaker/ ICD in-situ, and take peri-op precautions as necessary
+                    (interrogation/ re-programming/ magnet placement/ defib pads).
+                 • Defibrillator pads may be placed if high risk for malignant arrhythmias.
+                 • Arrhythmias should be treated aggressively intra-op.
+                 • Electrolyte abnormalities, in particular K and Mg, should be corrected pre-op.
+                 • KIV 5-lead ECG, IA line may be required if cardiac concerns are present.
+• Gastrointestinal
+        o Delayed gastric emptying further contributes to increased aspiration risk
+                 ▪ Use of PPI and antacid (sodium citrate) pre-operatively may minimise aspiration
+                    pneumonitis
+• Neurology
+        o Behavioural and cognitive problems may be present, making counselling more difficult
+            and patient cooperation (for awake procedures) more challenging.
+        o Narcolepsy-like central hypersomnia/ central sleep apnoea increases sensitivity to opioids.
+• Endocrinology
+        o Associated with diabetes mellitus, hypothyroidism, and adrenal insufficiency.
+                ▪   Endocrine referral for peri-operative management and optimization.
+                ▪   May require stress dose steroids, with omeprazole cover.
+•   Myotonia
+       o Myotonic episodes may be triggered by a variety of causes during anaesthesia
+              ▪ Offending drugs include succinylcholine, anti-cholinesterases, and opioids.
+              ▪ Other triggers are hypothermia, shivering or surgical stimulation.
+       o Care should be taken to avoid these triggers of myotonic episodes intra-op.
+       o Anti-myotonic medications should be continued peri-operatively
+•   Musculoskeletal
+       o Care with intra-op positioning in view of contractures/myotonia to prevent pressure sores
+           and neuropraxia.
+
+Anaesthesia factors
+• Multi-disciplinary team approach in managing this patient peri-operatively is essential to ensure
+   safe and successful anaesthesia.
+• Avoid sedative premedication such as benzodiazepines. Titrate depth of anaesthesia with BIS
+   target 40-60.
+• Care with laryngoscopy and jaw manipulation due to risk of temporomandibular joint dislocation
+• Myotonic dystrophy not known to be associated with malignant hyperthermia.
+       o Rocuronium preferred over Suxamethonium (known trigger for myotonia, hyperkalaemia)
+       o Volatile anaesthetics may be used for maintenance.
+• Discuss with surgeon on use of RA such as TAP block or local infiltrative techniques as part of
+   opioid-sparing analgesia.
+• Temperature monitoring, with use of passive and active warming devices such as Bair Hugger to
+   maintain normothermia.
+• Strict extubation criteria necessary due to risks of respiratory failure and aspiration
+       o Pharyngeal weakness with poor airway protection
+       o Altered gastric motility
+       o Cardiopulmonary pathology
+• TOF monitor with TOF ratio >0.9 may be used to guide muscle recovery, but care should be taken
+   during use (may trigger myotonia)
+• Use of neostigmine for reversal may cause myotonia
+       o Sugammadex may be used for reversal (if Rocuronium was used for maintenance)
+• Opioid-sparing analgesia regime should be continued for post-op pain. If opioid has to be initiated/
+   continued post-operatively, then patient should be monitored in HD/ ICU.
+• Standby phenytoin/ procainamide for myotonic crisis.
+
+Surgical factors
+• Limited time for optimization of patient’s condition due to emergent nature of surgery
+        o Hydration may be maintained with IV fluids during NBM period
+• Discussion with surgeons on surgical approach (laparoscopic vs open)
+        o RA (Spinal/ Epidural) may be used for open approach
+        o GA would be required for laparoscopic approach
+• Acute abdomen (aspiration risk) necessitates RSI.
+

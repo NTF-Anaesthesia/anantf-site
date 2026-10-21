@@ -1,0 +1,253 @@
+[
+  {
+    "id": "01",
+    "slug": "difficult-extubation",
+    "title": "Difficult extubation",
+    "stem": "Outline extubation strategies for anticipated difficult extubation of an adult. (ANZCA 2017A)",
+    "parts": []
+  },
+  {
+    "id": "02",
+    "slug": "frailty-prehabilitation",
+    "title": "Frailty and prehabilitation",
+    "stem": "Define frailty and discuss the role of prehabilitation for patients with frailty. (FANZCA 2019A)",
+    "parts": []
+  },
+  {
+    "id": "03",
+    "slug": "pneumoperitoneum-trendelenburg",
+    "title": "Pneumoperitoneum and steep Trendelenburg",
+    "stem": "You are providing anaesthetic care for a 65 year old male, who weighs 98 kg, with a height of 170 cm. He has hypertension and is a heavy smoker (20 pack-years).\n(a) Outline the physiological response to the establishment of pneumoperitoneum and subsequent steep Trendelenberg positioning (50%).\n(b) You observe a steady increase in his end-tidal carbon dioxide tension, from 35 to 70 mmHg, during the first hour of anaesthesia with an associated increase in heart rate to 110 bpm. Describe your assessment (50%) and management (50%).\n(Modified from FHKCA 2018)",
+    "parts": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "id": "04",
+    "slug": "anaesthetic-machine-safety",
+    "title": "Anaesthetic workstation hypoxic-mixture safety features",
+    "stem": "Describe the safety features of anaesthetic workstation in preventing delivery of hypoxic mixture.\n(Modified from FHKCA 2017B)",
+    "parts": []
+  },
+  {
+    "id": "05",
+    "slug": "high-flow-nasal-cannula",
+    "title": "High-flow nasal cannula",
+    "stem": "Describe the physiological effects of a high-flow nasal cannula device (HFNC) e.g. OptiflowTM or AirvoTM. (30%). Briefly list the indications, and justify its use in an adult endoscopy suite (70%).\n(Modified from ANZCA 2018A)",
+    "parts": []
+  },
+  {
+    "id": "06",
+    "slug": "hocm-laparoscopic-cholecystectomy",
+    "title": "HOCM for laparoscopic cholecystectomy",
+    "stem": "A 40 year old man with hypertrophic obstructive cardiomyopathy (HOCM) presents for elective laparoscopic cholecystectomy.\n(a) Describe the principles of intraoperative haemodynamic management for this patient. (40%)\n(b) How would you manage hypotension post induction of general anaesthesia in this patient? (60%)\n(Modified from ANZCA 2010A)",
+    "parts": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "id": "07",
+    "slug": "brainstem-death-organ-donation",
+    "title": "Brainstem death and organ donation",
+    "stem": "Outline the clinical criteria for diagnosis of brainstem death. Outline the physiological implications of brain stem death following SAH in a patient listed for organ donation.\n(Modified from HKCA 2012, FANZCA 2016A)",
+    "parts": []
+  },
+  {
+    "id": "08",
+    "slug": "spinal-cord-injury-laparotomy",
+    "title": "Acute spinal cord injury for laparotomy",
+    "stem": "A 40yo requires a laparotomy 10 days after an isolated traumatic spinal cord transaction at C6.\n(a) outline the key anaesthetic issues (50%)\n(b) how would these influence your anaesthetic management (50%)\n(Modified from MMed 2016, ANZCA 2015A, 2013B)",
+    "parts": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "id": "09",
+    "slug": "postoperative-hypoxaemia-pacu",
+    "title": "Postoperative hypoxaemia in PACU",
+    "stem": "You have been asked to see a previously well 64-year-old man in the PACU with SpO2 of 85% two hours after laparoscopic right partial nephrectomy during which he lost 1 litre of blood. List the likely causes of the desaturation and outline your approach to managing the patient’s hypoxaemia.\n(From ANZCA 2014B)",
+    "parts": []
+  },
+  {
+    "id": "10",
+    "slug": "fontan-circulation-pregnancy",
+    "title": "Fontan circulation in pregnancy",
+    "stem": "A 25-year-old woman who is 30 weeks pregnant has been referred to your tertiary high-risk obstetric clinic. She has complex cyanotic congenital heart disease and now functions with a Fontan circulation. How would you stratify the cardiovascular risk? What are the issues relevant to anaesthetic care that will need to be managed for this patient?\n(From ANZCA 2014B)",
+    "parts": []
+  },
+  {
+    "id": "11",
+    "slug": "myotonic-dystrophy-appendicectomy",
+    "title": "Myotonic dystrophy for appendicectomy",
+    "stem": "A 30-year-old patient with myotonic dystrophy is scheduled for surgery for acute appendicitis. Outline your anaesthetic considerations.\n(Modified from FANZCA 2016A)",
+    "parts": []
+  },
+  {
+    "id": "12",
+    "slug": "paediatric-penetrating-eye-injury",
+    "title": "Paediatric penetrating eye injury",
+    "stem": "Discuss your approach to the anaesthetic management of a screaming 5-year-old child with penetrating eye injury.\n(Modified from FHKCA 2009A, FANZCA 2015A)",
+    "parts": []
+  },
+  {
+    "id": "13",
+    "slug": "perioperative-hypertension",
+    "title": "Hypertension on the day of surgery",
+    "stem": "A patient presents on the day of surgery with a blood pressure of 180/110mmHg. Justify your decision to proceed with or postpone surgery for this patient.",
+    "parts": []
+  },
+  {
+    "id": "14",
+    "slug": "fixed-ratio-vs-goal-directed-transfusion",
+    "title": "Fixed-ratio vs goal-directed transfusion in trauma",
+    "stem": "Discuss fixed ratio blood product transfusion versus goal directed factor concentrate administration in the management of a severely injured polytrauma patient.\nFrom MMed 2021 (1)",
+    "parts": []
+  },
+  {
+    "id": "15",
+    "slug": "regional-anaesthesia-total-knee-replacement",
+    "title": "Regional anaesthesia for total knee replacement",
+    "stem": "A 60-year-old woman is scheduled for a right total knee replacement for severe osteoarthritis under general anaesthesia.\nA. Discuss the role of regional anaesthesia (RA) techniques for intraoperative and post-operative analgesia in this patient (50%).",
+    "parts": [
+      "A"
+    ]
+  },
+  {
+    "id": "16",
+    "slug": "pain-management-liver-resection",
+    "title": "Analgesia for open liver resection",
+    "stem": "ANZCA 2017 List the methods of analgesia that can be used for patients undergoing open liver resection surgery. (30%). Justify your perioperative pain management strategy. (70%)",
+    "parts": []
+  },
+  {
+    "id": "17",
+    "slug": "haematemesis-urgent-gastroscopy",
+    "title": "Haematemesis for urgent gastroscopy",
+    "stem": "A 61-year-old man presents with a large haematemesis. He has known alcoholic liver disease and sedation is requested for an urgent gastroscopy.\nA. Outline your peri-procedural concerns (60%).\nTowards the end of the procedure, the systolic blood pressure drops from 140 mmHg to 80 mmHg systolic, and oxygen saturation drops from 95% to 88%.\nB. Describe your subsequent management (40%).",
+    "parts": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "id": "18",
+    "slug": "tevar-thoracic-dissection",
+    "title": "TEVAR for thoracic aortic dissection",
+    "stem": "A 75-year-old man presents with an acute dissection of the descending thoracic aorta. His blood pressure measures 190/110 mmHg. Justify your plan for his preoperative blood pressure management. (30%) Describe the potential complications of thoracic endovascular aortic repair (TEVAR) and how you would mitigate them. (70%)",
+    "parts": []
+  },
+  {
+    "id": "19",
+    "slug": "chronic-sci-rigid-cystoscopy",
+    "title": "Chronic spinal cord injury for rigid cystoscopy",
+    "stem": "A 25-year-old man who is wheelchair-bound presents for elective rigid cystoscopy. He had a C5 dislocation fracture with fusion done 1 year ago following a motor vehicle accident. He is able to shrug his shoulders and transfer himself from a seated position to the wheelchair.\nA. What are the main anaesthetic concerns for this patient? (60%)\nB. Discuss options of anaesthetic management for this patient. (40%)",
+    "parts": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "id": "20",
+    "slug": "co2-laser-vocal-cord-surgery",
+    "title": "CO2 laser vocal cord surgery",
+    "stem": "An otherwise healthy 45 year old man has a vocal cord nodule that the surgeon intends to excise using a CO2 laser. He is a smoker but has no other significant medical history\nA. Justify your anaesthetic technique of choice (50%).",
+    "parts": [
+      "A"
+    ]
+  },
+  {
+    "id": "21",
+    "slug": "jet-ventilation-laryngeal-microsurgery",
+    "title": "Jet ventilation for laryngeal microsurgery",
+    "stem": "A 70-year-old man is scheduled for laryngeal microsurgery for evaluation of hoarseness of voice due to a vocal cord polyp. He has a 50 pack-year history of smoking and chronic obstructive pulmonary disease.\nA. Compare endotracheal intubation and ventilation via an anaesthetic circuit with tubeless jet ventilation as a means to manage his airway and ventilation during surgery (50%).",
+    "parts": [
+      "A"
+    ]
+  },
+  {
+    "id": "22",
+    "slug": "evar-anaesthetic-concerns",
+    "title": "Anaesthesia for EVAR",
+    "stem": "A. Outline the anaesthetic concerns associated with elective endovascular repair of infra-renal abdominal aortic aneurysm (EVAR) (50%).\nB. Discuss the factors favouring monitored anaesthesia care (MAC) as the choice of anaesthesia for EVAR (50%).",
+    "parts": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "id": "23",
+    "slug": "cerebellar-avm-pregnancy-lscs",
+    "title": "Cerebellar AVM in pregnancy for Caesarean section",
+    "stem": "35-year-old pregnant lady at 32nd week of pregnancy presented for Caesarean section under general anaesthesia. She was diagnosed to have cerebellar arteriovenous malformation (AVM) at 16th week of pregnancy. At 28th week, there was bleeding from AVM rupture which was managed conservatively. She is planned for early endovascular embolization after the delivery.\nA. How are you going to prepare this patient for the Caesarean section (30%) ?\nB. Describe how you would conduct your anaesthesia (30%).\nThe surgery finished in one hour but patient failed to wake up.\nC. What are the causes and how are you going to approach this problem (40%)?",
+    "parts": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  {
+    "id": "24",
+    "slug": "phaeochromocytoma-adrenalectomy",
+    "title": "Phaeochromocytoma for adrenalectomy",
+    "stem": "A 30-year-old woman is seen at the preoperative evaluation clinic 2 weeks prior to her scheduled laparoscopic resection of right adrenal mass. Her initial presentation was 6-month history of hypertension and paroxysmal episodes of palpitations, dizziness, blurring of vision and headache.\nA. Describe your pre-operative management of this patient’s medical condition (40%).\nB. List the main concerns during the intra-operative period and outline your management to address these concerns (60%).",
+    "parts": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "id": "25",
+    "slug": "sah-coiling-clipping",
+    "title": "Aneurysmal SAH: coiling to emergency clipping",
+    "stem": "A 55-year-old 50kg woman is scheduled for embolization and coiling of an anterior communicating artery aneurysm in the radiology suite. She presented with headache two weeks ago and her past health was unremarkable. You have performed a full preoperative assessment.\nA. What are your major considerations for this patient undergoing the interventional procedure (30%)?\nB. How would you address these concerns in your preoperative preparation (70%)?\nDuring the embolization, the blood pressure suddenly goes up to 190/100mmHg. The neurosurgeon informs you there is significant extravasation of contrast and decides to proceed to emergency craniotomy for clot evacuation and surgical clipping.\nC. Outline your immediate management (20%) and your preparation for the transfer of this patient to the operating theatre (30%).\nAfter opening of the dura, the blood pressure drops to 89/40 mmHg. There is significant bleeding of 3 liters of blood obscuring the surgical field.\nD. How would you manage the situation (50%)?",
+    "parts": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": "26",
+    "slug": "icu-sepsis-septic-shock",
+    "title": "New SIRS after colonic resection in ICU",
+    "stem": "A 60 year old male was admitted to the ICU 10 days previously with septic shock and acute lung injury following anastamotic dehiscence of an anterior colonic resection. He was recovering well on the HDU until 48 hours ago when his condition deteriorated with abdominal distension and diarrhoea. It is suspected that he has developed a new systemic inflammatory response syndrome.\nA. How should the patient be assessed clinically? (60%)\nB. List the key initial investigations in this patient? (40%)",
+    "parts": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "id": "27",
+    "slug": "down-syndrome-dental-ga",
+    "title": "Trisomy 21 for dental GA",
+    "stem": "Patient is a 38 year old female BW 55kg with Trisomy 21, is scheduled for dental rehabilitation and extractions under GA. She had PDA ligated in infancy and is on oral thyroxine for congenital hypothyroidism.\nA. Outline your anaesthetic concerns in the management of this patient (50%)",
+    "parts": [
+      "A"
+    ]
+  },
+  {
+    "id": "28",
+    "slug": "nmba-residual-block",
+    "title": "Residual neuromuscular blockade",
+    "stem": "A. List the ways to assess a patient for the presence of residual neuromuscular blockade. (30%)\nB. Discuss methods to reduce the risk of residual neuromuscular blockade (70%)",
+    "parts": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "id": "29",
+    "slug": "hip-fracture-ra-delirium",
+    "title": "Hip fracture: blocks and delirium",
+    "stem": "An 85-year-old lady is scheduled for hemiarthroplasty for a neck of femur fracture sustained after a fall. She has a background history of Alzheimer’s dementia, hypertension, type 2 diabetes mellitus and ischemic heart disease.\ni) Outline the innervation of the hip. (20%)\nii) Compare and contrast the use of a femoral nerve block with fascia iliaca block for analgesia in this patient. (30%)\niii) Justify strategies used to mitigate post-operative delirium in this patient. (50%)",
+    "parts": [
+      "i",
+      "ii",
+      "iii"
+    ]
+  }
+]

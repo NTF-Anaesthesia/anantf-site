@@ -1,0 +1,100 @@
+A 40 year old man with hypertrophic obstructive cardiomyopathy (HOCM) presents for
+elective laparoscopic cholecystectomy.
+    (a) Describe the principles of intraoperative haemodynamic management for this
+        patient. (40%)
+    (b) How would you manage hypotension post induction of general anaesthesia in this
+        patient? (60%)
+(Modified from ANZCA 2010A)
+
+Examiner Report
+Sample Answer
+(a)
+Principles of intra-operative haemodynamic management would be dependent on:
+Severity of HOCM
+• AICD in-situ (suggesting risk of malignant arrhythmias)
+• Past and current treatment, including B-blockers
+• ECG: LVH, arrhythmias
+• 2DE findings: Assess biventricular contractility, degree of LVOT obstruction, presence of
+    Systolic Anterior Motion (SAM), diastolic dysfunction, volume status
+Effect of surgery on HOCM
+• Pneumoperitoneum (Increased IAP reducing venous return/ preload/ vagal stimulation)
+• CO2 absorption (may cause tachycardia/arrhythmias)
+• Reverse Trendelenburg position (decrease preload)
+
+Principles of intra-operative haemodynamic management for this patient would include:
+Avoid worsening dynamic LVOT obstruction
+• Use of TEE assessment of biventricular contractility
+• Keeping the LV well-filled by maintaining
+        o High-normal preload
+                § Adequate IV fluid loading before Reverse Trendelenburg
+                    position/pneumoperitoneum
+                § Goal directed fluid therapy using cardiac output monitor (Flotrac)
+        o High-normal afterload/ systemic vascular resistance
+                § Vasopressors (Phenylephrine, Vasopressin) to maintain BP during
+                    induction
+                § Avoid histamine releasing drugs (Rocuronium over Atracurium, Oxycodone
+                    over Morphine)
+• Maintain low-normal contractility
+• Maintain low-normal heart rate
+Optimise coronary perfusion and myocardial O2 supply
+• Check and treat anaemia
+• Titrate FiO2/PEEP to keep SpO2>95%
+• Maintain diastolic BP (high-normal afterload), diastolic time (slow HR) and filling to
+    maintain coronary perfusion pressure
+Avoid surges in myocardial O2 demand
+• Continue beta-blockers perioperatively if patient is already on them
+• Avoid sympathetic surges
+        o Blunt laryngoscopy response with esmolol/lignocaine/alfentanil
+        o Adequate depth of anaesthesia and analgesia
+        o Titrate ventilation to aim ETCO2 35-40 mmHg (avoid hypercarbia)
+        o Smooth extubation (on remifentanil)
+• Treat tachyarrhythmias aggressively
+Maintain sinus rhythm, with standby measures for malignant arrhythmias
+• Check and correct electrolyte abnormalities/acidosis
+• Ensure normothermia (temp probe monitoring, active warming devices)
+•   Peri-op AICD management (if present), defibrillation pads, resus drugs drawn, crash cart
+    on standby
+
+(b)
+I would manage post-induction hypotension based on severity of clinical problem. If
+hypotension is profound and potentially life-threatening, I would declare crisis situation,
+inform surgeon, and call for help (including defib pads and crash cart).
+
+Possible causes include:
+Patient-related       Worsening dynamic LVOT obstruction
+                      Cardiac events (ischaemia, arrhythmia)
+Anaesthesia-related Drop in SVR from induction agent
+                      Anaphylaxis
+                      Tension pneumothorax
+Surgical-related      Pneumoperitoneum (if initiated)
+                      Bleeding (if surgery has started)
+
+I would simultaneously resuscitate patient according to ABC principles, and assess for other
+possible causes of hypotension. In this patient with history of HOCM, I would be most
+concerned about worsening dynamic LVOT obstruction.
+Airway        Check and ensure correct ETT placement and patency
+Breathing     Give 100% FiO2. Auscultate to exclude tension pneumothorax (absent breath
+              sound, tracheal deviation, hyperresonance to percussion) , anaphylaxis
+              (wheeze), pulmonary oedema (creps)
+Circulation   Feel for pulse. Check other haemodynamic parameters (HR, SpO2, ETCO2) for
+              abnormalities. Check ECG for ischaemic changes and arrhythmias
+              Vasopressors (Phenylephrine) to improve BP/afterload
+              Run IV crystalloids fast via 2x large bore IV cannula
+              Stop/ cut down on anaesthetic agents
+              Release pneumoperitoneum and level patient (if surgery has started)
+
+Subsequent treatment should be directed at the cause of hypotension. Specific treatment for
+worsening dynamic LVOT obstruction include:
+• Increase afterload with direct a-agonist (phenylephrine)
+• Increase preload by fluid resuscitation with IV crystalloids
+• B-blocker to slow down HR and reduce contractility
+• Treat arrhythmias aggressively (correct electrolytes, cardioversion)
+• Treat causes of sympathetic stimulation (pain, hypercarbia) by optimising depth of
+   anaesthesia/ analgesia and minute ventilation
+• TEE to evaluate biventricular contractility, degree of LVOT obstruction, presence of SAM,
+   diastolic dysfunction, volume status
+
+I would discuss with surgeon regarding continuation vs stopping surgery if patient remains
+unstable. Post-operative disposition to HD/ICU for monitoring. Cardiology referral for work-
+up and optimisation when in HD/ICU
+

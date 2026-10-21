@@ -1,0 +1,75 @@
+A 60 year old male was admitted to the ICU 10 days previously with septic shock and acute lung injury
+following anastamotic dehiscence of an anterior colonic resection. He was recovering well on the HDU until
+48 hours ago when his condition deteriorated with abdominal distension and diarrhoea. It is suspected that
+he has developed a new systemic inflammatory response syndrome.
+A. How should the patient be assessed clinically? (60%)
+B. List the key initial investigations in this patient? (40%)
+
+(A)
+This is a concerning situation as patient may be in septic shock (recent episode 10 days ago in ICU).
+
+Possible causes include:
+
+Abdominal: Anastomotic leak, bowel dehiscence, intestinal obstruction, infected intra-abdominal collections,
+surgical wound infection
+.
+Respi: Hospital acquired pneumonia (HAP)
+Other occult infections (line infections, UTI, pressure sores)
+
+I will attend to this patient as soon as possible, focusing my assessment on:
+- Causes for deterioration, abdominal distension, and diarrhoea
+- Which may require urgent abdominal scans and possible surgical intervention.
+- Evidence for new systemic inflammatory response syndrome (SIRS)
+- Haemodynamic stability of patient for scans/ intervention
+- Need to up-triage disposition to ICU.
+
+Surgeons should also be informed to assess patient.
+
+History
+- Review patient’s symptoms – fever, shivering, cough/ SOB, abdominal pain - nature/ onset/ duration/ pain
+    score/ location/ radiation/ associated symptoms (distension, diarrhoea, constipation with spurious
+    diarrhoea).
+- Check for fever/ shivering
+- Review surgical op notes (Any intra-op complications/ concerns during anastomoses? Need for diverting
+    ileostomy/ colostomy?)
+- Intake-output (IO) charts (Intake – oral? TPN?, reduced PU, BO – bristol stool chart, frequency)
+- Any abnormal drain/ stoma output – volume, consistency, colour, presence of blood/ melaena?
+- Review previous cultures and sensitivities, appropriateness of antibiotics.
+- Review medications (laxatives, which may can diarrhoea/ C.Diff,
+
+Physical Examination
+- Airway (ability to speak in full coherent sentences, presence of stridor)
+- Breathing (RR, laboured breathing, use of accessory muscles, auscultate for crepitation/ wheeze, decreased
+    or unequal air entry)
+- Circulation (Signs of dehydration/ hypoperfusion/ vasodilation – warm peripheries, feel pulse, capillary refill
+    time (CRT), mucosal membranes, skin turgor)
+- Evaluate GCS - any altered mental status, confusion or lethargy. Any localising neurological signs.
+- Get full set of vitals (BP, HR, SpO2, ECG, temp)
+- Examine abdomen – sites for tenderness/ guarding/ surgical site wound healing, abdominal drains/ stoma
+    if present)
+- Measure and trend intra-abdominal pressure (IAP)
+- Examine existing lines (IV, IA, CVP, PICC, IDC) for signs of infection
+(B)
+Key initial investigations include:
+
+FBC – Trend TW, Hb, Plt, leukocytosis
+
+RP – Check and ensure electrolytes replete. Monitor for AKI.
+
+CRP/ Procal – Uptrending inflammatory markers may suggest worsening bacterial infection.
+
+LFT – Hepatic involvement/ cause for sepsis.
+
+Blood/ fluid/ respi cultures – Should be taken prior to antibiotics escalation.
+
+GXM – In prep for possible surgical intervention.
+
+POCT ABG + lactate – oxygenation/ acid-base/ perfusion status
+
+POCUS Heart/Lung – Evaluate cardiac function, fluid status, lung consolidation/ effusions/ interstitial oedema.
+
+CXR – Evaluate for new HAP/ worsening ALI/ diaphragmatic splinting from intra-abdominal distension/ air under
+diaphragm
+
+CTAP – Evaluate for intra-abdominal collections, anastomotic leak, bowel dehiscence, and intestinal obstruction.
+

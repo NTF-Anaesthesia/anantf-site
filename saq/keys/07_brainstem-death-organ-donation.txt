@@ -1,0 +1,147 @@
+Outline the clinical criteria for diagnosis of brainstem death. Outline the physiological implications
+of brain stem death following SAH in a patient listed for organ donation.
+(Modified from HKCA 2012, FANZCA 2016A)
+
+Examiner Report
+Sample Answer
+There are several pre-conditions required before brainstem death certification.
+1. Presence of objective proof (CT or MRI) of sufficient irreversible structural brain damage, leading
+   to total and irreversible cessation of brainstem functions.
+2. Neurological depression or coma secondary to CNS depressant drugs, sedative drugs,
+   hypothermia, metabolic and endocrine causes must be excluded
+        o Na 125-155, K 3-5.5, glucose 4-15, SBP>100, SpO2 >95%, T >35C, no clinical evidence of
+            renal or hepatic failure
+3. Presence of intact neuromuscular function
+
+Examination should be done by 2 independent consultants not involved in direct patient care:
+ Brainstem Test                 Description of test                   Expected response if brain dead
+  Pupillary Light        Shine strong light into each eye       Both pupils fixed and non-reactive to strong
+      Reflex                                                                         light
+                   Touch cornea using a wisp of cotton wool
+  Corneal Reflex                                               No muscle contractions noted around the eyes
+                             or moistened cotton bud
+  Oculocephalic
+                    Turn the head quickly 90 degrees to the Eyes should remain fixed to the midline and
+   (Doll’s eye)
+                             left and then to the right                     move with the head
+      Reflex
+                                                                  No motor response seen anywhere to a
+                      Apply pain stimuli centrally e.g. at the
+Response to Pain                                                centrally applied pain stimulus AND no facial
+                   supra-orbital ridge and peripherally to the
+   Stimulation                                                  response seen to a peripherally applied pain
+                                      nail beds
+                                                                                   stimulus
+                   Pass suction catheter down endotracheal
+  Gag and Cough        tube to level of carina and apply firm
+                                                                     No gag or cough response elicited
+      Reflex            pressure to posterior pharynx with
+                                  wooden spatula
+                    Inject 50-100 ml of cold water into each
+                     ear slowly over 1 min with head of bed     No tonic deviation of pupil towards the side
+ Cold Caloric Test
+                   elevated to 30 degrees (wait 5 min before           being syringed should be seen
+                                 testing other side)
+                      Pre-oxygenate for 10 min followed by       No spontaneous breathing efforts seen at
+                     insufflation of 6 L/min of O2 via suction PaCO 2 >50 mmHg (in patients with chronically
+   Apnoea Test
+                      catheter into endotracheal tube while elevated PaCO2 levels, use an elevation of >20
+                    disconnected from ventilator for 6-8 min      mmHg above baseline as the threshold)
+
+Apnoea test should be done only after cranial nerve examination demonstrated brainstem areflexia
+to avoid damage to an intact, functioning brain.
+
+If any of the abovementioned tests cannot be performed or uncertainty over significance of these
+responses, then supplementary tests may be performed. Cerebral angiography to confirm that
+absent intracranial blood flow and radionuclide scan to confirm absent intracranial perfusion.
+Physiological issues which may affect viability of organs for donation in a patient with brain stem
+death following SAH include:
+1. Impaired perfusion of vital organs
+2. Hypothalamic dysfunction
+3. Effects from raised intracranial pressure (from SAH)
+
+Cardiovascular
+• Compensatory hypertension may be seen initially secondary to Cushing’s Reflex to maintain
+   cerebral perfusion pressure (CPP). This is usually temporary.
+• Hypotension should be corrected promptly to maintain perfusion pressures to heart, liver and
+   kidneys.
+       o May be secondary to reduced cardiac contractility, peripheral vasodilatation (loss of
+           function of vasomotor centre, DIVC), and fluid losses (diabetes insipidus).
+       o Fluids and vasopressors should be started.
+       o Anti-hypertensives are typically stopped unless persistent MAP > 95 mmHg.
+       o Combined hormone replacement (thyroid hormones, glucocorticosteroids, and
+           desmopressin) may be needed if there is persistent haemodynamic instability.
+       o Invasive BP monitoring with SBP >100mmHg, MAP >70 mmHg
+       o HR 60-120 BPM
+• Cardiac arrhythmias should be treated aggressively
+       o Tachy-arrhythmias may be treated with amiodarone and beta blockers.
+       o Brady-arrhythmias (more likely than tachyarrhythmia) due to loss of vagal tone can be
+           resistant to anticholinergic drugs, and may require treatment with adrenaline.
+       o Electrolytes such as K+ and Mg2+ should be replaced if deficient.
+
+Respiratory
+• Neurogenic pulmonary oedema
+       o Secondary to ‘catecholamine storm’ in response to raised ICP, and worsened by systemic
+            inflammation following brain death.
+       o Lung protective ventilation strategies with PEEP use to improve oxygenation while
+            minimising barotrauma risk.
+       o Avoid excessive fluid administration.
+       o Use of IV Methylprednisolone (15mg/kg) to attenuate pulmonary oedema is controversial.
+       o Pulmonary hypertension can occur following neurogenic pulmonary oedema. Maintain
+            adequate oxygenation, normocapnia, normothermia.
+• Higher risks of respiratory infections. 30deg head tilt to minimise aspiration risk, with continuation
+   of PPI. Diligent aseptic tracheal suctioning should be done. Use of PEEP to reduce atelectasis.
+       o Lowest FiO2 to keep SpO2 >95%, PaO2 >80 mmHg
+       o PaCO2 35-50 mmHg
+       o Ph 7.35 -7.45
+       o Plateau pressure < 30 mmHg
+
+Endocrine and Metabolic
+• Hypothalamic dysfunction (and pituitary ischemia) are common following brain death, and
+   typically leads to loss of posterior pituitary function (ADH production) and anterior pituitary
+   function (TSH, ACTH production)
+       o Neurogenic Diabetes Inspidus (DI)/ cerebral salt wasting should be treated by replacing
+            fluid and electrolyte losses. DDVAP may be used.
+       o Hypothyroidism may benefit from T3/T4 replacement, which may improve cardiac
+            function.
+       o Hypocortisolism may benefit from hydrocortisone replacement.
+•   Hyperglycemia from insulin resistance and deficiency should be corrected to keep patient
+    normoglycemic.
+        o Serum glucose 4-10 mmol/L
+•   Maintenance of normothermia with active warming devices may be required due to impaired
+    thermoregulatory function of the hypothalamus (with hypothermia worsened by decreased
+    metabolism, hypothyroidism, and vasodilation)
+        o Core temperature 35-38C
+
+Renal and Electrolytes
+ • Renal perfusion may be impaired, and should be maintained with careful assessment of fluid
+    status, and monitoring of urine output to avoid over-/under-hydration.
+            o Urine output 1-2 ml/kg/h
+            o Serum Na+ 130-150 mmol/L
+            o Normal K+, Ca2+, Mg2+, PO4-
+ • Electrolyte abnormalities (secondary to DI/use of hypertonic saline for treatment of raised ICP)
+    are common, and should be corrected
+     o Avoid hypernatremia (Na >155), which can lead to impaired graft function.
+ • Nephrotoxic drugs should be stopped.
+
+Liver
+• Liver glycogen depletion may be minimised by maintaining adequate nutrition.
+• Liver congestion may be minimised by avoiding excessive fluid administration, and maintaining
+    normal CVP < 10 mmHg.
+• Hepatotoxic drugs should be stopped.
+• Similar to renal management, avoiding hypernatremia (Na >155) will help to reduce risk of
+    impaired graft function.
+
+Haemotological
+• Coagulopathy from DIVC/thromboplastin release should be corrected
+      o Target INR < 1.5, platelet count > 50 000 /mm3
+      o Aim Hb >7 g/dL
+• Thromboembolism risk is increased due to prolonged immobility. Use of compression stockings
+   and intermittent calf compressive devices may be used for prevention.
+
+Others
+• Non-essential medications should be stopped.
+• Preventive measures, early detection and prompt treatment of infections, including antibiotics
+   administration, should be continued.
+• Eye protection (eye tapes, eye drops) especially if cornea transplant is considered.
+
