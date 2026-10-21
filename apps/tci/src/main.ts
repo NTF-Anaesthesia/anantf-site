@@ -174,7 +174,8 @@ const mmss = (min: number) => `${Math.floor(min)}:${String(Math.round((min % 1) 
 
 const pumpScreen: Screen = {
   title: 'Pump', tab: 'pump',
-  html: () => `${DISCLAIMER}<ul class="app-list" style="margin-bottom:16px">${patientLine()}</ul>
+  html: () => `${DISCLAIMER}<ul class="app-list" style="margin-bottom:16px">${patientLine()}
+    <li><a class="app-row" href="pump/"><span class="app-row-body"><span class="app-row-title">Open the pump emulator</span><span class="app-row-sub">Operate a Space plus Perfusor running propofol TCI: keys, menus, bolus, alarms</span></span><span class="app-row-chevron"></span></a></li></ul>
     <section class="app-section"><div class="app-card">
       ${seg('pumpModel', 'Model', [['eleveld', 'Eleveld'], ['schnider', 'Schnider'], ['marsh', 'Marsh']], S.pumpModel)}
       <div style="margin-top:12px">${seg('pumpMode', 'Targeting', [['Ce', 'Effect site (Ce)'], ['Cp', 'Plasma (Cp)']], S.pumpMode)}</div>
@@ -400,7 +401,8 @@ const settingsScreen: Screen = {
 const moreScreen: Screen = {
   title: 'More', tab: 'more',
   html: () => `${DISCLAIMER}<ul class="app-list">
-    ${[['#/calibrate', 'Calibrate against a real pump', 'Type the pump’s bolus; compare with each model variant'],
+    ${[['pump/', 'Pump emulator', 'Operate a Space plus Perfusor running propofol TCI (Schnider, Eleveld)'],
+       ['#/calibrate', 'Calibrate against a real pump', 'Type the pump’s bolus; compare with each model variant'],
        ['#/assumptions', 'Assumptions', 'What the emulator assumes, what is unverified, what to test on a pump'],
        ['#/refs', 'References and equations', 'Sources with DOIs and check dates'],
        ['#/settings', 'Settings', 'Theme, syringe, pump rate, BMI above 30 mode']]

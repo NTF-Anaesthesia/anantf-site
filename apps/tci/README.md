@@ -1,7 +1,8 @@
 # TCI emulator (anantf.com/tci/)
 
 Propofol target-controlled infusion emulator for teaching: Eleveld, Schnider and Marsh, styled on the B. Braun
-Space plus Perfusor TCI. Main question it answers: **what Schnider Ce gives the same induction bolus as Eleveld Ce X,
+Space plus Perfusor TCI, plus an operable pump emulator (`tci/pump/`) with the pump's keys, menus, induction bolus,
+alarms and a teaching panel. Main question it answers: **what Schnider Ce gives the same induction bolus as Eleveld Ce X,
 for this patient?** Education and planning only; not a substitute for the pump display or clinical judgement.
 
 Unlisted (noindex, no links from the site); the owner shares the link.
@@ -12,10 +13,12 @@ Unlisted (noindex, no links from the site); the owner shares the link.
 |---|---|
 | `src/engine/` | Pure PK engine, no DOM: body size, models, exact solver, TCI controller, pump variants |
 | `src/main.ts`, `src/ui/`, `src/style.css` | The app (vanilla TypeScript, the shared app kit `assets/app/app.css`, light and dark) |
+| `pump/index.html`, `src/pump/` | The Space plus Perfusor emulator (`tci/pump/`): `sim.ts` (pump state machine and real-time TCI run, pure), `screens.ts` (the virtual LCD), `main.ts` (casing, teaching panel), `presets.ts`, `audio.ts`, `pump.css` |
 | `oracle/tci_ref.py` | Python oracle (matrix exponential). Source of `test/golden.json` |
-| `test/` | Vitest (golden, properties) and the Playwright check (`e2e.mjs`) |
+| `test/` | Vitest (golden, properties, pump state machine) and the Playwright checks (`e2e.mjs`, `pump.e2e.mjs`) |
 | `docs/REFERENCES.md` | Sources and assumptions; builds the app's References and Assumptions screens |
 | `docs/RESEARCH_NOTES.md` | Phase 1 research, verification status, real-pump test questions |
+| `docs/PUMP.md` | Pump emulator notes: every screen and behaviour, evidence / inferred / unknown |
 | `../../tci/` | Built site, committed (GitHub Pages has no build step) |
 
 ## Run, test, build
@@ -27,8 +30,9 @@ npm run dev                 # http://localhost:5173 (serves /assets and /fonts f
 npm test                    # Vitest: engine vs oracle, owner's golden table, mass balance, properties, controller
 npm run golden              # regenerate test/golden.json from oracle/tci_ref.py (needs python3 + numpy)
 npm run refs                # rebuild src/refs.generated.json after editing docs/REFERENCES.md
-npm run build               # typecheck, then build into ../../tci/
+npm run build               # typecheck, then build into ../../tci/ (the app and tci/pump/)
 (cd ../.. && python3 -m http.server 8080 &) && npm run e2e   # 390 px, light and dark, console errors, no sideways scroll
+npm run e2e:pump            # pump emulator: full flow for Schnider and Eleveld, bolus equals the engine, alarms, 390 and 1280 px
 ```
 
 ## Deploy
