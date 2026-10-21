@@ -1,16 +1,21 @@
 {
-  "name": "anantf-saq",
+  "name": "saq-marker",
   "version": "1.0.0",
-  "description": "SAQ marker API (Cloudflare Worker)",
+  "description": "MMed Part B SAQ practice and marking (Cloudflare Worker)",
   "scripts": {
-    "test": "node test/worker.test.mjs",
-    "build-keys": "node tools/build-keys.mjs"
+    "test": "node --no-warnings test/worker.test.mjs",
+    "build-keys": "node tools/build-keys.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "check-keys": "node tools/build-keys.mjs --check"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.137.0",
+    "jose": "^6.2.13",
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "playwright": "^1.56.1",
     "wrangler": "^4.151.3"
   },
   "private": true,

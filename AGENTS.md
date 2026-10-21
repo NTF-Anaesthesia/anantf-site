@@ -72,7 +72,7 @@ Each installable app has a service worker whose file lists and `VERSION` are sta
 | Question bank | `node qbank/tools/stamp.mjs` | `node qbank/tools/check.mjs`, `node qbank/test/{bank,practice,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Baby MO | `node babymo/tools/stamp.mjs` | `node babymo/test/{logic,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Worker (`worker/`, `wrangler.jsonc`) | none | `node worker/test/routes.test.mjs` |
-| SAQ marker Worker (`saq/`) | `node saq/tools/build-keys.mjs` after changing `exams/reference/` or `saq/keys/index.json` | `node saq/test/worker.test.mjs` (after `npm ci --prefix saq`) |
+| SAQ programme (`saq/`, saq.anantf.com) | `npm run build-keys --prefix saq` after changing the SAQ `studyPlan` in `exams/index.html`, `exams/reference/` or `saq/keys/` | `npm ci --prefix saq && npm test --prefix saq`; browser: `saq/test/serve.mjs` + `saq/test/e2e.mjs` |
 | OT simulator | none | `tools/test-ot.sh` |
 
 Every installable app ends its settings or start page with `App version <date> (<hash>)` and a `Not updating? Get the

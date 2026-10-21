@@ -1,10 +1,10 @@
-# Tests for the BIS to DSA simulator (eeg/), the OT simulator (ot/), the mo.anantf.com Worker (worker/), the SAQ marker's Worker (saq/) and the MO guide's
+# Tests for the BIS to DSA simulator (eeg/), the OT simulator (ot/), the mo.anantf.com Worker (worker/), the SAQ programme's Worker (saq/) and the MO guide's
 # unit tests, on every PR that changes them.
 # Each browser suite runs as its own job, side by side; "browser" is green only when all of them passed.
 name: Checks
 on:
   pull_request:
-    paths: ['eeg/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', 'saq/**', '.github/workflows/checks.yml']
+    paths: ['eeg/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', 'saq/**', 'exams/index.html', 'exams/reference/**', '.github/workflows/checks.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,8 +24,12 @@ jobs:
         run: node eeg/test/engine.check.mjs
       - name: mo.anantf.com routes
         run: node worker/test/routes.test.mjs
-      - name: SAQ marker Worker
-        run: npm ci --prefix saq && node saq/test/worker.test.mjs
+      - name: SAQ programme Worker
+        run: npm ci --prefix saq && npm test --prefix saq
+      - name: SAQ programme questions up to date with Exam Prep
+        run: |
+          sudo apt-get install -y -qq poppler-utils >/dev/null
+          npm run check-keys --prefix saq
       - name: MO guide unit tests
         run: for f in calc content version; do node mo/guide/test/$f.test.mjs; done
 
