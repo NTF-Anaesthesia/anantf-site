@@ -28,8 +28,8 @@ jobs:
           pip install numpy
       - name: Golden file matches the oracle
         run: |
-          npm run -s golden
-          git diff --exit-code -- test/golden.json
+          python3 oracle/tci_ref.py --golden /tmp/golden.json
+          python3 oracle/compare_golden.py /tmp/golden.json test/golden.json
       - name: References panel matches docs/REFERENCES.md
         run: |
           npm run -s refs
