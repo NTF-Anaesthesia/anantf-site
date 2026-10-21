@@ -49,7 +49,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 - Drafts live behind `draft.html` (noindex); don't link them from the homepage, navigation or hubs.
 - Main navigation: Airway, Regional Anaesthesia, POCUS, EEG, Exam Prep. Don't add department, recruitment or handbook pages.
 - Unlisted apps (`popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`,
-  `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `ot/`) are not linked from the homepage and keep
+  `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `ot/`, `tci/`) are not linked from the homepage and keep
   their `noindex` tags.
 - Regional pages are one app (app bar, credit line at the foot, MO · Resident · Consultant levels). Doses, the LAST line,
   complications and "If it goes wrong" guides are always MO level (tier 1). Old URLs and hashes must keep working.
@@ -73,6 +73,7 @@ Each installable app has a service worker whose file lists and `VERSION` are sta
 | Baby MO | `node babymo/tools/stamp.mjs` | `node babymo/test/{logic,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Worker (`worker/`, `wrangler.jsonc`) | none | `node worker/test/routes.test.mjs` |
 | OT simulator | none | `tools/test-ot.sh` |
+| TCI emulator (`apps/tci/` → `tci/`, not installable) | `npm run build` in `apps/tci/` (commit the rebuilt `tci/`) | `npm test`, `npm run e2e` in `apps/tci/` |
 
 Every installable app ends its settings or start page with `App version <date> (<hash>)` and a `Not updating? Get the
 latest version` button (see [docs/RULES.md](docs/RULES.md)).

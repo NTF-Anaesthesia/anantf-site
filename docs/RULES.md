@@ -23,7 +23,10 @@ Apps cache the kit for offline use, so a change to `assets/app/` must re-stamp e
 
 - The main navigation is Airway, Regional Anaesthesia, POCUS, EEG and Exam Prep (the BIS to DSA simulator in `eeg/`, a standalone tab since 16 Oct 2026; its own slim bar replaces the site header). Don't add department, recruitment or handbook pages back.
 - Changing `worker/`, `wrangler.jsonc` or `.assetsignore` redeploys the `mo.anantf.com` Worker on merge (Workers Builds; `MO.md`): run `node worker/test/routes.test.mjs` first. Paths the guide links with `../../` must work on both `anantf.com/mo/guide/` and `mo.anantf.com/guide/`.
-- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/` or `ot/` from the homepage (`eeg/` is in the main navigation as EEG), and keep their
+- `tci/` (the TCI emulator) is built from `apps/tci/` and has a dark theme by the owner's decision (21 Oct 2026), the one
+  exception to light only. Constants change only with a source in `apps/tci/docs/REFERENCES.md`, a regenerated golden file
+  and the tests passing; its BMI above 30 mode stays labelled "reported, unverified" until confirmed on a real pump.
+- Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `ot/` or `tci/` from the homepage (`eeg/` is in the main navigation as EEG), and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
 - The regional pages (`blocks/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `brachial-plexus/`, `plexus/`, `spinal/`) are one
   app: same app bar, the credit line "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" (Dr Chew Shi Hao
