@@ -339,6 +339,17 @@
    "body": ""
   },
   {
+   "key": "deptpump",
+   "title": "Department Space plus settings",
+   "fields": {
+    "cite": "Owner's reading of the TCI settings on the department's B. Braun Space plus Perfusor, 21 Oct 2026 (Ng Teng Fong General Hospital).",
+    "status": "VERIFIED",
+    "used": "default maximum rate 800 mL/h; plasma overshoot 400%; decrement concentration 1.0 µg/mL. Software version not recorded.",
+    "checked": "21 Oct 2026"
+   },
+   "body": ""
+  },
+  {
    "key": "bbraun",
    "title": "B. Braun Space plus TCI",
    "fields": {
@@ -420,9 +431,9 @@
    "key": "A9",
    "title": "Pump settings",
    "fields": {
-    "status": "UNVERIFIED"
+    "status": "VERIFIED"
    },
-   "body": "Defaults: propofol 1%, maximum rate 1200 mL/h, rate recomputed every 10 s. A datasheet lists up to 1800 mL/h for the Space plus Perfusor [bbraun]; the update interval is not documented. A lower target stops the infusion until the predicted level falls (Q11, Q12)."
+   "body": "Read off the department's Space plus by the owner (21 Oct 2026) [deptpump]: default maximum rate 800 mL/h; plasma overshoot limit 400% (in Ce mode predicted Cp never exceeds 4 x the Ce target); decrement (wake-up) concentration 1.0 µg/mL. With the cap, the induction runs at 800 mL/h until Cp reaches 4 x target, then holds Cp there until the predicted Ce peak reaches the target: the dose barely changes (within 2% for the reference patient), the induction takes longer. Still UNVERIFIED: the 10 s update interval, and a lower target stopping the infusion until the predicted level falls (Q11, Q12 in RESEARCH_NOTES)."
   },
   {
    "key": "A10",

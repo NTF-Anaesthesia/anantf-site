@@ -61,12 +61,14 @@ export function impliedEleveldWeight(p: Patient, opioid: boolean, target: number
 }
 
 /**
- * Pump settings used by the emulator. Defaults are placeholders for the Space Plus until confirmed on a real pump
- * (see RESEARCH_NOTES.md, real-pump test questions).
+ * Pump settings used by the emulator. maxRateMlH, cpMaxRatio and decrementCe were read off the department's Space plus
+ * by the owner (VERIFIED, 21 Oct 2026). updateSec is still unverified (RESEARCH_NOTES.md, real-pump questions).
  */
 export const PUMP_DEFAULTS = {
   concMgMl: 10,
-  maxRateMlH: 1200,
-  updateSec: 10,
+  maxRateMlH: 800, // VERIFIED: department pump default
+  updateSec: 10, // UNVERIFIED
+  cpMaxRatio: 4, // VERIFIED: plasma overshoot 400% (Cp <= 4 x Ce target)
+  decrementCe: 1.0, // VERIFIED: decrement (wake-up) concentration, µg/mL
   instantBolus: true, // the matcher's golden values assume an instantaneous bolus
 };

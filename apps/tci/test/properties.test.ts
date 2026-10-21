@@ -2,7 +2,7 @@
 import { describe, expect, test } from 'vitest';
 import {
   Patient, amounts, bolus, buildModes, ceBolus, cpOf, eleveldPk, marshPk, schniderPk, simulate, step, zeroState, ceOf,
-  matchTarget, reportedSpacePlusWeight, jamesPeakWeight,
+  matchTarget, reportedSpacePlusWeight, jamesPeakWeight, pumpInduction, matchTargetPump,
 } from '../src/engine';
 
 const P: Patient = { sex: 'F', age: 58, height: 162, weight: 74 };
@@ -107,5 +107,35 @@ describe('BMI and body-size guards', () => {
       expect(Math.abs(jamesPeakWeight({ sex: 'M', height: h }) / (h / 100) ** 2 - 42.97)).toBeLessThan(0.01);
       expect(Math.abs(jamesPeakWeight({ sex: 'F', height: h }) / (h / 100) ** 2 - 36.15)).toBeLessThan(0.01);
     }
+  });
+});
+
+describe('plasma overshoot limit (department pump: 400%, 800 mL/h; observed 21 Oct 2026)', () => {
+  const pump = { concMgMl: 10, maxRateMlH: 800, updateSec: 10, cpMaxRatio: 4 };
+  const ref: Patient = { sex: 'M', age: 35, height: 170, weight: 70 };
+  test('Cp never exceeds 4 x target; Ce still peaks at the target', () => {
+    for (const pk of [eleveldPk(ref), schniderPk(ref), eleveldPk(P)]) {
+      const r = simulate(pk, 'Ce', [{ t: 0, target: 4 }, { t: 12, target: 6 }], pump, 25);
+      r.t.forEach((t, i) => expect(r.cp[i]).toBeLessThanOrEqual(4 * (t < 12 ? 4 : 6) * (1 + 1e-9)));
+      expect(Math.max(...r.ce.filter((_, i) => r.t[i] < 12))).toBeLessThan(4 * 1.002);
+      expect(Math.max(...r.ce.filter((_, i) => r.t[i] < 12))).toBeGreaterThan(4 * 0.998);
+    }
+  });
+  test('the cap binds for Eleveld at 800 mL/h: Cp sits at 16 and the induction takes longer', () => {
+    const capped = simulate(eleveldPk(ref), 'Ce', [{ t: 0, target: 4 }], pump, 5);
+    const free = simulate(eleveldPk(ref), 'Ce', [{ t: 0, target: 4 }], { ...pump, cpMaxRatio: undefined }, 5);
+    expect(Math.max(...capped.cp)).toBeCloseTo(16, 6);
+    expect(Math.max(...free.cp)).toBeGreaterThan(16.5);
+    expect(capped.inductionSec).toBeGreaterThan(free.inductionSec);
+  });
+  test('pumpInduction: at 800 mL/h the cap barely changes the dose (within 2%) but stretches it in time', () => {
+    const a = pumpInduction(eleveldPk(ref), 4, pump), b = pumpInduction(eleveldPk(ref), 4, { ...pump, cpMaxRatio: undefined });
+    expect(Math.abs(a.mg / b.mg - 1)).toBeLessThan(0.02);
+    expect(a.sec).toBeGreaterThan(b.sec);
+    expect(Math.abs(b.mg - ceBolus(eleveldPk(ref), 4, 800 * 10 / 60).dose)).toBeLessThan(800 * 10 / 60 / 6);
+  });
+  test('matchTargetPump is self-consistent', () => {
+    const x = matchTargetPump(eleveldPk(ref), 4, schniderPk(ref), pump);
+    expect(Math.abs(pumpInduction(schniderPk(ref), x, pump).mg / pumpInduction(eleveldPk(ref), 4, pump).mg - 1)).toBeLessThan(0.005);
   });
 });
