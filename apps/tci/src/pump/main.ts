@@ -58,15 +58,15 @@ function pumpChrome() {
     <button type="button" class="pa pump-key" data-hw="power" aria-label="On/Off" style="--x:88;--y:202;--w:60;--h:60">${ICON.power}</button>
     <button type="button" class="pa pump-key pump-key-stop" data-hw="stop" aria-label="Stop" style="--x:86;--y:276;--w:64;--h:64">Stop</button>
     <div class="pa pump-screen" style="--x:158;--y:142;--w:710;--h:241"><div class="pp-lcdbox" id="lcdbox-pump" style="width:100%;height:100%"></div></div>
-    <div class="pa pump-barrel" style="--x:874;--y:152;--w:126;--h:44"></div>
     <div class="pa pump-clamp" style="--x:896;--y:120;--w:104;--h:300"></div>
+    <div class="pa pump-barrel" style="--x:874;--y:150;--w:126;--h:46"></div>
     <div class="pa pump-pull" style="--x:910;--y:280;--w:76;--h:76">Pull</div>
   </div>`;
 }
 
 const root = document.getElementById('root')!;
 root.innerHTML = `
-  <header class="app-bar app-bar--inline"><div class="app-bar-row"><div class="app-bar-lead"><a class="app-bar-btn app-back" href="../">TCI</a></div><h1 class="app-bar-title">Space plus Perfusor</h1><div class="app-bar-trail"></div></div></header>
+  <header class="app-bar app-bar--inline app-bar--solid"><div class="app-bar-row"><div class="app-bar-lead"><a class="app-bar-btn app-back" href="../">TCI</a></div><h1 class="app-bar-title"><span class="pp-t-long">Space plus Perfusor</span><span class="pp-t-short">Perfusor</span></h1><div class="app-bar-trail"></div></div></header>
   <main class="app-main pp-main" id="main">
     <p class="tci-disclaimer"><strong>Teaching emulator.</strong> Not affiliated with or endorsed by B. Braun. Education and planning only; not the pump's own software.</p>
     <div class="pp-layout">
@@ -100,6 +100,9 @@ root.innerHTML = `
             <fieldset class="app-segmented" style="margin:0 0 8px"><legend class="app-sr">Model</legend>
               <label class="app-seg"><input type="radio" name="pmodel" value="schnider"><span>Schnider</span></label>
               <label class="app-seg"><input type="radio" name="pmodel" value="eleveld"><span>Eleveld</span></label></fieldset>
+            <fieldset class="app-segmented" style="margin:0 0 8px" id="popioid"><legend class="app-sr">Opioid co-administration (Eleveld)</legend>
+              <label class="app-seg"><input type="radio" name="popioid" value="yes"><span>Opioid: yes</span></label>
+              <label class="app-seg"><input type="radio" name="popioid" value="no"><span>Opioid: no</span></label></fieldset>
             <div class="pp-scn">${PRESETS.map((p) => `<button type="button" class="app-btn app-btn--secondary" data-scn="${p.id}"><span>${esc(p.name)}</span><small>${p.patient.sex} ${p.patient.age} y, ${p.patient.height} cm, ${p.patient.weight} kg</small></button>`).join('')}</div>
             <p class="app-section-footer" style="padding:8px 0 0">Loads the patient and model on the pump at the summary screen (the pump must be on; the panel switches it on). The full key-by-key set-up is also available from the pump itself.</p>
           </div>
@@ -139,6 +142,7 @@ root.innerHTML = `
             <li>Alarms: the 5 min syringe pre-alarm, its OK key clearing it without pausing, the empty-syringe screen and the catch-up bolus after replacing; the beep patterns.</li>
             <li>Keys: Home during set-up returning to the drug library; holding On/Off for a second to ask for switch-off; the gauge reading is a fixed stand-in (occlusion pressure is not simulated).</li>
             <li>Eleveld asking about opioid co-administration, and the BMI above 30 Servin weight (reported, unverified).</li>
+            <li>Schnider refusal past the James LBM peak and the data-range warnings (threshold and wording unverified; the real pump's age and weight limits are unknown); the target range 0.5 to 8 µg/mL with a confirm above 6; the paused screen and the catch-up bolus after Stop.</li>
           </ul>
           <p class="app-section-footer" style="padding:8px 0 0">The full table is in the repository notes, <code>apps/tci/docs/PUMP.md</code>.</p>
         </div></section>
@@ -161,7 +165,7 @@ function applyMode() {
   stage.classList.toggle('is-screen', page.mode !== 'pump');
   stage.classList.toggle('pp-rot', page.mode === 'rotate');
   document.getElementById('hint')!.textContent = page.mode === 'rotate'
-    ? 'Operate: the screen is turned so it fills the phone. Turn your phone sideways and use the keys at full size; the hardware keys are below the screen. Hold On/Off for a second to switch off.'
+    ? 'Operate: the screen is turned to fit the phone. Turn your phone sideways and use the keys at full size; the hardware keys are below the screen. Hold On/Off for a second to switch off.'
     : page.mode === 'screen' ? 'Screen only, with the hardware keys below (small on a phone: choose Operate for full-size keys). Hold On/Off for a second to switch off.' : 'Tap the screen’s soft keys and the hardware keys on the left. Hold On/Off for a second to switch off. Choose Screen or Operate on a phone.';
   (document.querySelector<HTMLInputElement>(`input[name=mode][value=${page.mode}]`))!.checked = true;
 }
@@ -174,6 +178,8 @@ function applyTheme() {
 function syncControls() {
   (document.querySelector<HTMLInputElement>(`input[name=speed][value="${page.speed}"]`))!.checked = true;
   (document.querySelector<HTMLInputElement>(`input[name=pmodel][value=${page.panelModel}]`))!.checked = true;
+  (document.querySelector<HTMLInputElement>(`input[name=popioid][value=${page.panelOpioid ? 'yes' : 'no'}]`))!.checked = true;
+  document.getElementById('popioid')!.hidden = page.panelModel !== 'eleveld';
   (document.querySelector<HTMLInputElement>(`input[name=maxrate][value="${st.settings.maxRateMlH}"]`))!.checked = true;
   (document.querySelector<HTMLInputElement>('input[name=servin]'))!.checked = st.settings.servin;
   (document.querySelector<HTMLInputElement>('input[name=sound]'))!.checked = !isMuted();
@@ -285,6 +291,7 @@ function onAct(a: string) {
   beep('key');
   renderLcd();
   renderPanel();
+  if (a === 'start' && page.mode === 'rotate' && st.screen === 'run') stage.scrollIntoView({ block: 'start', behavior: 'smooth' });
 }
 document.addEventListener('click', (e) => {
   const el = e.target as HTMLElement;
@@ -324,7 +331,8 @@ document.addEventListener('change', (e) => {
     case 'mode': page.mode = el.value as Mode; applyMode(); break;
     case 'speed': page.speed = +el.value as Speed; break;
     case 'sound': setMuted(!el.checked); if (el.checked) unlock(); break;
-    case 'pmodel': page.panelModel = el.value as ModelChoice; break;
+    case 'pmodel': page.panelModel = el.value as ModelChoice; syncControls(); break;
+    case 'popioid': page.panelOpioid = el.value === 'yes'; break;
     case 'servin': st.settings.servin = el.checked; lastShape = ''; break;
     case 'maxrate': st.settings.maxRateMlH = +el.value; lastShape = ''; break;
     case 'theme': page.theme = el.value as Page['theme']; applyTheme(); break;

@@ -102,14 +102,14 @@ function summary(st: PumpState) {
     ['Model', s.model === 'schnider' ? 'Schnider' : `Eleveld, opioid ${s.opioid ? 'yes' : 'no'}`],
     ['Patient', `${p.sex === 'M' ? 'Male' : 'Female'} ${p.age} y, ${p.height} cm, ${p.weight} kg`],
     ['BMI', fmt(sm.bmi, 1)],
-    [s.model === 'schnider' ? 'LBM (James)' : 'FFM (Al-Sallami)', `${fmt(s.model === 'schnider' ? sm.lbm : sm.ffm, 1)} kg`],
-    ['Dosing weight', `${fmt(sm.dosingWeight, 1)} kg${sm.dosingWeight !== p.weight ? ' (adjusted)' : ''}`],
-  ].map(([k, v], i) => a(20, 46 + i * 33, 390, 30, 'kv', `<span class="kv-k">${esc(k)}</span><span class="kv-v">${esc(v)}</span>`)).join('');
+    [s.model === 'schnider' ? 'LBM (James)' : sm.dosingWeight !== p.weight ? 'FFM (Al-Sallami, adjusted wt)' : 'FFM (Al-Sallami)', `${fmt(s.model === 'schnider' ? sm.lbm : sm.ffm, 1)} kg`],
+    ['Dosing weight', `${fmt(sm.dosingWeight, 1)} kg${sm.dosingWeight !== p.weight ? ' (Servin)' : ''}`],
+  ].map(([k, v], i) => a(20, 46 + i * 32, 390, 30, 'kv', `<span class="kv-k">${esc(k)}</span><span class="kv-v">${esc(v)}</span>`)).join('');
   const w = sm.warnings;
   const box = sm.refused
     ? `<b class="v-stop">Model not available for this patient</b>${w.filter((x) => x.level === 'stop').map((x) => `<span>${esc(x.text)}</span>`).join('')}`
     : w.length ? `<b class="v-warn">Check patient data</b>${w.map((x) => `<span>${esc(x.text)}</span>`).join('')}` : '<b class="v-ok">Patient data within the model range</b>';
-  return title(`Patient summary`) + left + a(424, 46, 360, 168, 'vbox' + (sm.refused ? ' vbox-stop' : w.length ? ' vbox-warn' : ' vbox-ok'), box) +
+  return title(`Patient summary`) + left + a(424, 46, 360, 158, 'vbox' + (sm.refused ? ' vbox-stop' : w.length ? ' vbox-warn' : ' vbox-ok'), box) +
     softBar(['back', 'BACK'], sm.refused ? null : ['ok', 'OK']);
 }
 
@@ -130,10 +130,11 @@ function ready(st: PumpState) {
   const b = plannedBolus(st.setup, st.settings, tg);
   const s = st.setup;
   return title('TCI ready') +
-    a(20, 46, 760, 60, 'kv kv-big', `<span class="kv-k">Target Ce</span><span class="kv-v">${fmt(tg, 1)} &micro;g/mL</span>`) +
-    a(20, 110, 760, 34, 'kv', `<span class="kv-k">Induction bolus</span><span class="kv-v" data-f="plan">${fmt(b.mg, 0)} mg = ${fmt(b.ml, 1)} mL of ${s.conc / 10}%, over ${fmt(b.sec, 0)} s (${st.settings.maxRateMlH} mL/h${b.capped ? ', then held at the plasma limit' : ''})</span>`) +
-    a(20, 146, 760, 34, 'kv', `<span class="kv-k">Model</span><span class="kv-v">${s.model === 'schnider' ? 'Schnider' : `Eleveld, opioid ${s.opioid ? 'yes' : 'no'}`}; plasma overshoot ${st.settings.cpMaxRatio * 100}%</span>`) +
-    t(20, 190, 760, 18, 'dim', 'Press START to begin the infusion') +
+    a(20, 44, 760, 46, 'kv kv-big', `<span class="kv-k">Target Ce</span><span class="kv-v">${fmt(tg, 1)} &micro;g/mL</span>`) +
+    a(20, 92, 760, 30, 'kv', `<span class="kv-k">Induction bolus</span><span class="kv-v" data-f="plan">${fmt(b.mg, 0)} mg = ${fmt(b.ml, 1)} mL of ${s.conc / 10}%</span>`) +
+    a(20, 124, 760, 26, 'kv kv-s', `<span class="kv-k">Given over</span><span class="kv-v">${fmt(b.sec, 0)} s (${st.settings.maxRateMlH} mL/h${b.capped ? `, then held at the ${st.settings.cpMaxRatio * 100}% plasma limit` : ''}); Ce peaks at ${fmt(b.tPeakMin, 1)} min</span>`) +
+    a(20, 152, 760, 26, 'kv kv-s', `<span class="kv-k">Model</span><span class="kv-v">${s.model === 'schnider' ? 'Schnider' : `Eleveld, opioid ${s.opioid ? 'yes' : 'no'}`}; plasma overshoot ${st.settings.cpMaxRatio * 100}%</span>`) +
+    t(20, 182, 760, 16, 'dim', 'Press START to begin the infusion') +
     softBar(['back', 'BACK'], ['start', 'START'], 'sk-green');
 }
 
@@ -151,24 +152,24 @@ function statusColumn(st: PumpState, run: Run) {
 function mainView(st: PumpState, run: Run) {
   const s = st.setup;
   const pre = st.alarm === 'prealarm';
-  const hh = pre ? 40 : 64; // header shrinks to make room for the pre-alarm band (inferred layout)
+  const hh = pre ? 40 : 60; // header shrinks to make room for the pre-alarm band (inferred layout)
   const header = run.empty
     ? a(100, 6, 510, hh, 'drug drug-alarm', `<b>Syringe empty</b><span>Propofol ${s.conc} mg / 1 mL</span>`)
     : run.paused
       ? a(100, 6, 510, hh, 'drug drug-pause', `<b>Propofol</b><span>STOPPED. ${s.conc} mg / 1 mL</span>`)
       : a(100, 6, 510, hh, `drug${pre ? ' drug-s' : ''}`, `<b>Propofol</b><span>${s.conc} mg / 1 mL</span>`);
   const band = pre
-    ? a(100, 48, 510, 22, 'pre', `<span data-f="pre">${preText(run, s.conc)}</span>`) + btn(540, 48, 70, 22, 'ack', 'pre-ok', 'OK')
+    ? a(100, 46, 510, 22, 'pre', `<span data-f="pre">${preText(run, s.conc)}</span>`) + btn(540, 46, 70, 22, 'ack', 'pre-ok', 'OK')
     : '';
-  const tci = a(100, 74, 170, 56, 'cell', `<span class="lbl">Target Ce</span><span class="val val-m" data-f="target">${fmt(run.target, 1)}</span>`) +
-    a(270, 74, 170, 56, 'cell', `<span class="lbl">Ce</span><span class="val val-m" data-f="ce">${fmt(ce(run), 2)}</span>`) +
-    a(440, 74, 170, 56, 'cell cell-last', `<span class="lbl">Cp</span><span class="val val-m" data-f="cp">${fmt(cp(run), 2)}</span>`);
-  const amounts = a(100, 132, 255, 62, 'cell', `<span class="lbl">Infused Amount</span><span class="val" data-f="infused">${fmt(run.infusedMg, 2)}<small> mg</small></span>`) +
-    a(355, 132, 255, 62, 'cell cell-last', `<span class="lbl">Remaining Volume</span><span class="val" data-f="remain">${fmt(run.remainingMl, 2)}<small> / ${st.settings.syringeMl} mL</small></span>`);
+  const tci = a(100, 68, 170, 60, 'cell', `<span class="lbl">Target Ce</span><span class="val val-m" data-f="target">${fmt(run.target, 1)}</span>`) +
+    a(270, 68, 170, 60, 'cell', `<span class="lbl">Ce</span><span class="val val-m" data-f="ce">${fmt(ce(run), 2)}</span>`) +
+    a(440, 68, 170, 60, 'cell cell-last', `<span class="lbl">Cp</span><span class="val val-m" data-f="cp">${fmt(cp(run), 2)}</span>`);
+  const amounts = a(100, 130, 255, 62, 'cell', `<span class="lbl">Infused Amount</span><span class="val" data-f="infused">${fmt(run.infusedMg, 2)}<small> mg</small></span>`) +
+    a(355, 130, 255, 62, 'cell cell-last', `<span class="lbl">Remaining Volume</span><span class="val" data-f="remain">${fmt(run.remainingMl, 2)}<small> / ${st.settings.syringeMl} mL</small></span>`);
   // bolus strip: its own row under the numerals, never over them (induction, catch-up or raised-target bolus)
   const strip = run.inBolus && !run.paused && !run.empty
-    ? a(100, 193, 510, 18, 'ind', `<i data-f="indbar" style="width:${pct(run)}%"></i><span data-f="ind">${bolusText(run, s.conc)}</span>`)
-    : a(100, 193, 510, 18, 'ind ind-idle', '');
+    ? a(100, 194, 510, 17, 'ind', `<i data-f="indbar" style="width:${pct(run)}%"></i><span data-f="ind">${bolusText(run, s.conc)}</span>`)
+    : a(100, 194, 510, 17, 'ind ind-idle', '');
   const r = rateMlH(run, s.conc);
   const right = a(614, 6, 186, 204, 'flow', `${label(0, 6, 186, 'Flow Rate')}<span class="flow-v" data-f="rate">${rateHtml(r)}</span><span class="flow-u">mL/h</span><i class="flow-d"></i><span class="flow-dose" data-f="dose">${fmt(doseRate(run), 1)} <small>mg/kg/h</small></span>`);
   const rightKey: [string, string] = run.paused && !run.empty ? ['start', 'START'] : ['target', 'CHANGE TARGET'];
@@ -221,7 +222,7 @@ function emptyScreen(st: PumpState, run: Run) {
     t(40, 60, 720, 26, '', 'Delivery stopped. The TCI model keeps running.') +
     a(40, 96, 720, 34, 'kv', `<span class="kv-k">Ce now</span><span class="kv-v" data-f="ce">${fmt(ce(run), 2)} &micro;g/mL (falling)</span>`) +
     a(40, 132, 720, 34, 'kv', `<span class="kv-k">Infused</span><span class="kv-v" data-f="infused">${fmt(run.infusedMg, 1)} mg</span>`) +
-    a(40, 172, 720, 44, 'tx dim wrap', 'Replace the syringe, then press START to resume TCI. The pump gives a catch-up bolus if Ce has fallen.', ';--fs:18') +
+    t(40, 174, 720, 18, 'dim', 'Replace the syringe and press START; a catch-up bolus restores Ce.') +
     softBar(null, ['replace', 'REPLACE SYRINGE'], 'sk-amber') + (st.message ? message(st) : '');
 }
 
@@ -300,12 +301,12 @@ export function drawTrend(st: PumpState, canvas: HTMLCanvasElement, prediction: 
   const span = 20 * 60, ahead = 5 * 60;
   const t0 = Math.max(0, r.t - span), t1 = Math.max(r.t + ahead, span + ahead);
   const tStart = r.t < span ? 0 : t0;
-  const L = Math.round(cssW * 0.075), R = 6, T = 8, B = Math.round(cssH * 0.12);
+  const L = Math.round(cssW * 0.09), R = 6, T = 8, B = Math.round(cssH * 0.16);
   const pts = r.samples.filter((q) => q.t >= tStart);
   const yMax = Math.max(1, r.target * 1.25, ...pts.map((q) => Math.max(q.ce, Math.min(q.cp, r.target * 3))), ...prediction.map((q) => q.ce)) * 1.08;
   const px = (tt: number) => L + ((cssW - L - R) * (tt - tStart)) / (t1 - tStart);
   const py = (v: number) => T + (cssH - T - B) * (1 - Math.min(v, yMax) / yMax);
-  const fs = Math.max(0.07 * cssH, 19 * (cssW / 510)); g.font = `${fs}px Hind, Arial, sans-serif`;
+  const fs = 22 * (cssW / 510); g.font = `${fs}px Hind, Arial, sans-serif`; // 22 virtual px: about 10 CSS px at 390 in Screen mode
   g.fillStyle = '#9fb6c6'; g.strokeStyle = '#2d3a44'; g.lineWidth = 1;
   const step = yMax > 8 ? 4 : yMax > 4 ? 2 : 1;
   for (let v = 0; v <= yMax; v += step) {

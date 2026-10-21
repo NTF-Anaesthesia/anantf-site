@@ -19,7 +19,7 @@ Unlisted (noindex, no links from the site); the owner shares the link.
 | `docs/REFERENCES.md` | Sources and assumptions; builds the app's References and Assumptions screens |
 | `docs/RESEARCH_NOTES.md` | Phase 1 research, verification status, real-pump test questions |
 | `docs/PUMP.md` | Pump emulator notes: every screen and behaviour, evidence / inferred / unknown |
-| `../../tci/` | Built site, committed (GitHub Pages has no build step) |
+| `../../tci/` | Built site, committed (GitHub Pages has no build step): the app at `tci/` and the pump emulator at `tci/pump/` (Vite multi-page) |
 
 ## Run, test, build
 
@@ -34,6 +34,16 @@ npm run build               # typecheck, then build into ../../tci/ (the app and
 (cd ../.. && python3 -m http.server 8080 &) && npm run e2e   # 390 px, light and dark, console errors, no sideways scroll
 npm run e2e:pump            # pump emulator: full flow for Schnider and Eleveld, bolus equals the engine, alarms, 390 and 1280 px
 ```
+
+## Pump emulator (`tci/pump/`)
+
+An operable emulator of the department's Space plus Perfusor running propofol TCI (Schnider and Eleveld, effect site),
+in the spirit of the processed-EEG simulator in `eeg/`: a virtual LCD in virtual pixels scaled as one unit, every value
+drawn live from the same engine as the app, real-looking menus, and a teaching panel (speed, Cp/Ce chart, plain-English
+"what the pump is doing", same-patient other-model comparison, the reported BMI above 30 firmware toggle). Only the
+main running view is modelled on a reference photo; every other screen is inferred and labelled so in `docs/PUMP.md`.
+Phones open in the rotated "Operate" mode so the LCD keys are full size. Linked from the app's Pump tab and More list;
+unlisted and noindex.
 
 ## Deploy
 

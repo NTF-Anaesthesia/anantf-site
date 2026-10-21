@@ -2,7 +2,7 @@
 import { describe, expect, test } from 'vitest';
 import { PUMP_DEFAULTS, eleveldPk, pumpInduction, schniderPk, bmi, jamesPeakWeight } from '../src/engine';
 import {
-  PumpState, act, advanceRun, ce, comparison, initialState, loadScenario, nowLine, plannedBolus, predict, rateMlH,
+  PumpState, act, advanceRun, ce, cp, comparison, initialState, loadScenario, nowLine, plannedBolus, predict, rateMlH,
   summaryFor, tick, timeToFall, timeToTarget, TARGET_CONFIRM, WAKE_CE,
 } from '../src/pump/sim';
 import { PRESETS } from '../src/pump/presets';
@@ -276,6 +276,36 @@ describe('planned bolus and the ready screen', () => {
     expect(typeof b.capped).toBe('boolean');
     expect(b.sec).toBeGreaterThanOrEqual((b.mg / (st.run?.rMax ?? (800 * 10) / 60)) * 60 - 1e-6); // never faster than the max rate
   });
+  test('capped means the controller held Cp at the plasma limit, not a slower final top-up interval', () => {
+    // young man, Schnider, Ce 4 at 800 mL/h: Cp peaks well under 16, so the bolus is not capped even though its last
+    // 10 s interval runs below the maximum rate
+    const a = setUp('schnider', 'young', '4');
+    const pa = plannedBolus(a.setup, a.settings, 4);
+    expect(pa.capped).toBe(false);
+    expect(pa.mg).toBeLessThan((a.run?.rMax ?? (800 * 10) / 60) * pa.sec / 60 - 1e-6); // the last interval is partial
+    act(a, 'start');
+    let sawSlow = false, saidCap = false;
+    for (let i = 0; i < 12; i++) { advanceRun(a, 10); if (a.run!.inInduction && a.run!.rateMgMin < 0.999 * a.run!.rMax && a.run!.rateMgMin > 0) { sawSlow = true; if (/plasma limit/.test(nowLine(a))) saidCap = true; } }
+    expect(sawSlow).toBe(true); expect(saidCap).toBe(false);
+    // young man, Eleveld, Ce 4 at 800 mL/h: the cap binds (Cp held at 16), so the bolus is capped and the panel says so
+    const b = setUp('eleveld', 'young', '4');
+    const pb = plannedBolus(b.setup, b.settings, 4);
+    expect(pb.capped).toBe(true);
+    act(b, 'start');
+    let said = false, cpMax = 0;
+    for (let i = 0; i < 30 && b.run!.inInduction; i++) { advanceRun(b, 10); cpMax = Math.max(cpMax, cp(b.run!)); if (b.run!.capped) { expect(nowLine(b)).toMatch(/holding Cp at the 400% plasma limit/); said = true; } }
+    expect(said).toBe(true); expect(cpMax).toBeGreaterThan(15.9); expect(cpMax).toBeLessThan(16.01);
+  });
+  test('the ready screen peak time matches the run the pump gives', () => {
+    for (const [model, preset] of [['schnider', 'young'], ['eleveld', 'obese'], ['eleveld', 'frail']] as const) {
+      const st = setUp(model, preset, '3');
+      const b = plannedBolus(st.setup, st.settings, 3);
+      act(st, 'start');
+      let best = 0, tBest = 0;
+      for (let i = 0; i < 600; i++) { advanceRun(st, 1); const c = ce(st.run!); if (c > best) { best = c; tBest = st.run!.t / 60; } }
+      expect(Math.abs(b.tPeakMin - tBest)).toBeLessThan(0.1);
+    }
+  });
   test('after the bolus, the panel explains the rate-0 wait for the peak (Schnider)', () => {
     const st = setUp('schnider', 'young', '4'); act(st, 'start');
     advanceRun(st, 60);
@@ -308,5 +338,16 @@ describe('comparison and dosing weight', () => {
     expect(summaryFor(b.setup, b.settings).dosingWeight).toBeLessThan(105);
     const c = setUp('eleveld', 'young', '4'); c.settings.servin = true;
     expect(summaryFor(c.setup, c.settings).dosingWeight).toBe(75); // BMI < 30: no change
+    // with Servin on, the summary shows the FFM the model actually uses and names the adjusted weight
+    const sa = summaryFor(a.setup, a.settings), sb = summaryFor(b.setup, b.settings);
+    expect(sb.ffm).toBeLessThan(sa.ffm);
+    expect(sb.warnings.some((w) => /Servin, reported Space plus behaviour, unverified/.test(w.text))).toBe(true);
+    expect(sa.warnings.some((w) => /unverified/.test(w.text))).toBe(true);
+  });
+  test('the Schnider refusal line teaches that clearance rises past the James peak', () => {
+    const st = initialState(); loadScenario(st, 'obese', 'schnider');
+    expect(summaryFor(st.setup, st.settings).refused).toBe(true);
+    expect(nowLine(st)).toMatch(/clearance \(which subtracts LBM\) would paradoxically rise/);
+    expect(nowLine(st)).not.toMatch(/clearance would fall/);
   });
 });

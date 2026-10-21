@@ -30,7 +30,14 @@ const S = (page) => page.evaluate(() => {
     ce: window.__pump.engine.ce(), cp: window.__pump.engine.cp(), rateMlH: window.__pump.engine.rateMlH(), settings: s.settings, setup: s.setup };
 });
 const advance = (page, sec) => page.evaluate((s) => window.__pump.advance(s), sec);
-const shot = async (page, name, whole = false) => { if (!SHOTS) return; if (whole) await page.screenshot({ path: `${SHOTS}/${name}.png` }); else await page.locator('#stage').screenshot({ path: `${SHOTS}/${name}.png` }); };
+/** Screenshots: the page, or the stage alone with the sticky app bar and the skip link out of the way. */
+const shot = async (page, name, whole = false) => {
+  if (!SHOTS) return;
+  if (whole) { await page.screenshot({ path: `${SHOTS}/${name}.png` }); return; }
+  await page.evaluate(() => { document.querySelector('.app-skip').style.display = 'none'; document.querySelector('.app-bar').style.visibility = 'hidden'; document.getElementById('stage').scrollIntoView({ block: 'start' }); });
+  await page.locator('#stage').screenshot({ path: `${SHOTS}/${name}.png` });
+  await page.evaluate(() => { document.querySelector('.app-skip').style.display = ''; document.querySelector('.app-bar').style.visibility = ''; });
+};
 
 /** Full set-up on the pump for one model and preset; returns after START is pressed. */
 async function setUp(page, { model, preset, target, conc = '10', opioid = 'yes', tag }) {
@@ -74,7 +81,8 @@ async function checkInduction(page, tag) {
     const s = window.__pump.state, e = window.__pump.engine, p = s.setup.patient;
     const pk = s.setup.model === 'schnider' ? e.schniderPk(p) : e.eleveldPk(p, { opioid: s.setup.opioid });
     const ind = e.pumpInduction(pk, s.run.target, { concMgMl: s.setup.conc, maxRateMlH: s.settings.maxRateMlH, updateSec: s.settings.updateSec, cpMaxRatio: s.settings.cpMaxRatio });
-    return { planned: s.run.plannedBolusMg, engine: ind.mg, shown: document.querySelector('[data-f="ind"]')?.textContent ?? '' };
+    const rMax = (s.settings.maxRateMlH * s.setup.conc) / 60;
+    return { planned: s.run.plannedBolusMg, engine: ind.mg, ceBolus: e.ceBolus(pk, s.run.target, rMax).dose, shown: document.querySelector('[data-f="ind"]')?.textContent ?? '' };
   });
   if (!near(ok.planned, ok.engine, 1e-6)) fail(`${tag}: planned ${ok.planned} differs from engine ${ok.engine}`);
   await advance(page, 10 * 60);
@@ -83,6 +91,10 @@ async function checkInduction(page, tag) {
   if (st.run.inInduction) fail(`${tag}: still in induction after 10 min`);
   if (!near(st.run.given, ok.engine, tol)) fail(`${tag}: delivered induction ${st.run.given} vs engine ${ok.engine} (tol ${tol})`);
   if (!near(st.run.given, ok.engine, 1e-6)) fail(`${tag}: delivered induction ${st.run.given} not identical to engine ${ok.engine}`);
+  // the brief's assertion: the delivered bolus equals the engine's ceBolus with the rate limit, within one update
+  // interval of drug (the 400% plasma cap can legitimately make pumpInduction differ from the uncapped ceBolus by more
+  // than that for other settings, so this is a check of the default 800 mL/h cases)
+  if (!near(st.run.given, ok.ceBolus, tol)) fail(`${tag}: delivered induction ${st.run.given} vs ceBolus ${ok.ceBolus} (tol ${tol})`);
   // the screen shows the engine's numbers
   const shown = await page.evaluate(() => ({
     ce: document.querySelector('[data-f="ce"]')?.textContent, target: document.querySelector('[data-f="target"]')?.textContent,
@@ -113,6 +125,31 @@ for (const [width, scheme, mode] of [[390, 'light', 'rotate'], [390, 'dark', 'sc
   await shot(page, `${tag}-off`, true);
   const over0 = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   if (over0 > 0) fail(`${tag}: horizontal scroll ${over0}px`);
+  const skip = await page.evaluate(() => { const r = document.querySelector('.app-skip').getBoundingClientRect(); return r.bottom > 0 && document.activeElement !== document.querySelector('.app-skip'); });
+  if (skip) fail(`${tag}: the skip link is visible without focus`);
+  if (mode === 'rotate') { // the whole rotated LCD fits the viewport under the app bar, with room for the hardware keys
+    const fit = await page.evaluate(() => { const r = document.querySelector('.lcd').getBoundingClientRect(); const hw = document.querySelector('.pp-hw').getBoundingClientRect(); return { h: r.height, w: r.width, room: window.innerHeight - 44 - hw.height - 8 }; });
+    if (fit.h > fit.room) fail(`${tag}: rotated LCD ${fit.h}px tall does not fit the viewport (room ${fit.room}px)`);
+  }
+  if (width < 700) { // Pump mode on a phone: the casing's printed labels stay inside the fascia (or are hidden)
+    await page.evaluate(() => window.__pump.setMode('pump')); await page.waitForTimeout(100);
+    const casing = await page.evaluate(() => {
+      const f = document.querySelector('.pump-fascia').getBoundingClientRect(), out = [];
+      for (const sel of ['.pump-brand', '.pump-tag', '.pump-key-stop', '.pump-pull']) {
+        const el = document.querySelector(sel); if (!el) { out.push(sel + ' missing'); continue; }
+        if (!el.offsetParent) continue; // hidden on a small pump
+        const r = el.getBoundingClientRect();
+        if (sel === '.pump-pull') { if (r.right > window.innerWidth) out.push(`${sel} past the viewport`); continue; }
+        if (r.left < f.left - 1 || r.right > f.right + 1 || r.top < f.top - 1 || r.bottom > f.bottom + 1) out.push(`${sel} outside the fascia`);
+        if (el.scrollWidth > el.clientWidth + 1) out.push(`${sel} text overflows`);
+      }
+      const b = document.querySelector('.pump-brand').getBoundingClientRect(), l = document.querySelector('.pump-screen').getBoundingClientRect();
+      if (b.bottom > l.top + 1) out.push('wordmark over the LCD');
+      return out;
+    });
+    if (casing.length) fail(`${tag}: casing labels at 390 in Pump mode: ${casing.join('; ')}`);
+    await page.evaluate((m) => window.__pump.setMode(m), mode); await page.waitForTimeout(100);
+  }
 
   // --- Schnider, older adult, target 3
   await setUp(page, { model: 'schnider', preset: 'older', target: '3', tag: `${tag}-schnider` });
@@ -126,6 +163,11 @@ for (const [width, scheme, mode] of [[390, 'light', 'rotate'], [390, 'dark', 'sc
   await tap(page, 'start');
   let st = await R(page, tag, 'start');
   if (st.screen !== 'run') fail(`${tag}: run expected after START`);
+  if (mode === 'rotate') { // Start brings the whole LCD into view below the sticky app bar
+    await page.waitForTimeout(700);
+    const top = await page.evaluate(() => document.querySelector('.lcd').getBoundingClientRect().top - document.querySelector('.app-bar').getBoundingClientRect().bottom);
+    if (top < -1) fail(`${tag}: the LCD sits ${-top}px under the app bar after Start`);
+  }
   await advance(page, 15);
   st = await R(page, tag, 'induction');
   if (!st.run.inInduction || st.run.rate < 0.9 * st.run.rMax) fail(`${tag}: induction near the max rate expected (${st.run.rate} of ${st.run.rMax})`);
@@ -234,12 +276,21 @@ for (const [width, scheme, mode] of [[390, 'light', 'rotate'], [390, 'dark', 'sc
   const cmp = await page.locator('#cmp').textContent();
   if (!/not settable/.test(cmp ?? '') || !/8 µg\/mL limit/.test(cmp ?? '')) fail(`${tag}: matched target limit note missing: "${cmp}"`);
   if (!/1 mg\/kg/.test(await page.locator('#teach').textContent())) fail(`${tag}: young man teaching point`);
-  // Eleveld with the frail preset through the panel's scenario loader, no opioid, then custom patient entry
+  // Eleveld with the frail preset through the panel's scenario loader, no opioid (the panel's control), then custom patient entry
   await page.evaluate(() => window.__pump.act('power')); await tap(page, 'ok');
+  await page.click('label:has(input[name=pmodel][value=schnider])');
+  if (await page.locator('#popioid').isVisible()) fail(`${tag}: the opioid control should be hidden for Schnider`);
   await page.click('label:has(input[name=pmodel][value=eleveld])');
+  if (!(await page.locator('#popioid').isVisible())) fail(`${tag}: the opioid control should show for Eleveld`);
+  await page.click('label:has(input[name=popioid][value=no])');
   await page.click('[data-scn="frail"]');
   st = await S(page);
-  if (st.screen !== 'summary' || st.setup.presetId !== 'frail' || st.setup.model !== 'eleveld') fail(`${tag}: scenario loader`);
+  if (st.screen !== 'summary' || st.setup.presetId !== 'frail' || st.setup.model !== 'eleveld' || st.setup.opioid !== false) fail(`${tag}: scenario loader (opioid ${st.setup.opioid})`);
+  if (!/Eleveld, opioid no/.test(await page.locator('.lcd').textContent())) fail(`${tag}: summary should say opioid no`);
+  // the refusal wording teaches the right direction (clearance rises past the James peak)
+  await page.evaluate(() => window.__pump.loadScenario('obese', 'schnider'));
+  if (!/clearance \(which subtracts LBM\) would paradoxically rise/.test(await page.locator('#now').textContent())) fail(`${tag}: refusal wording`);
+  await page.evaluate(() => window.__pump.loadScenario('frail', 'eleveld', false));
   await tap(page, 'back'); await tap(page, 'row:custom');
   await tap(page, 'sex:F'); await tap(page, 'ok');
   for (const c of '60') await tap(page, `key:${c}`); await tap(page, 'ok');
@@ -258,7 +309,7 @@ for (const [width, scheme, mode] of [[390, 'light', 'rotate'], [390, 'dark', 'sc
   const small = await page.evaluate(() => {
     const out = [];
     for (const el of document.querySelectorAll('main *')) {
-      if (el.closest('.lcd') || !el.textContent?.trim() || el.children.length || !el.offsetParent) continue;
+      if (el.closest('.lcd') || el.closest('.pump') || !el.textContent?.trim() || el.children.length || !el.offsetParent) continue; // the LCD and the casing's printed labels are scaled device artwork
       const fs = parseFloat(getComputedStyle(el).fontSize);
       if (fs < 12) out.push(`${el.tagName}.${el.className} ${fs}px`);
     }

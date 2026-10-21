@@ -108,7 +108,7 @@ export const MODELS: Record<ModelId, Model> = {
       const b = bmi(p);
       if (p.age > 88) w.push({ level: 'warn', text: `Age ${p.age} y: above the oldest subjects in the Eleveld data (88 y).`, src: 'eleveld2018' });
       if (p.weight > 160) w.push({ level: 'warn', text: `Weight ${p.weight} kg: above the heaviest subjects in the Eleveld data (160 kg).`, src: 'eleveld2018' });
-      if (b > 30) w.push({ level: 'info', text: `BMI ${b.toFixed(1)}: see the BMI above 30 mode for the reported Space Plus weight adjustment.`, src: 'anzca2025' });
+      if (b > 30) w.push({ level: 'info', text: `BMI ${b.toFixed(1)}: see the Eleveld BMI above 30 setting for the reported Space Plus weight adjustment (unverified).`, src: 'anzca2025' });
       return w;
     },
   },

@@ -3,7 +3,7 @@
 // Which steps are evidence, inferred or unknown is tabulated in docs/PUMP.md; the comments here mark "inferred".
 import {
   MODELS, Modes, Patient, PKParams, PUMP_DEFAULTS, PumpSettings, RateKind, State, Warning, alSallamiFfm, bmi, buildModes,
-  ceBolus, ceOf, cpOf, eleveldPk, jamesLbm, jamesPeakWeight, matchTargetPump, pumpInduction, rateDetail, rateFor,
+  ceOf, cpOf, eleveldPk, jamesLbm, jamesPeakWeight, matchTargetPump, pumpInduction, rateDetail, rateFor,
   reportedSpacePlusWeight, schniderPk, step, zeroState,
 } from '../engine';
 import { PRESETS, presetById } from './presets';
@@ -40,6 +40,7 @@ export interface Run {
   plannedBolusMg: number; // the pump's induction dose (engine pumpInduction: max rate, then the plasma cap)
   bolusSec: number; // its duration
   kind: RateKind; // why the controller chose the current rate
+  capped: boolean; // the current interval's rate is set by the plasma overshoot limit (Cp held at cpMaxRatio x target)
   inductionGivenMg: number;
   inInduction: boolean;
   dosingWeight: number;
@@ -122,10 +123,15 @@ export interface Summary {
 }
 export function summaryFor(setup: Setup, settings: Settings): Summary {
   const p = setup.patient;
-  const warnings = MODELS[setup.model].check(p);
+  const dw = dosingWeight(setup, settings);
+  const adjusted = dw !== p.weight; // Servin toggle in force: every Eleveld covariate uses the adjusted weight
+  const warnings = MODELS[setup.model].check(p).map((w) =>
+    adjusted && w.level === 'info' && /BMI above 30/.test(w.text)
+      ? { ...w, text: `BMI ${bmi(p).toFixed(1)}: dosing weight ${dw.toFixed(1)} kg (Servin, reported Space plus behaviour, unverified).` }
+      : w);
   return {
-    bmi: bmi(p), lbm: jamesLbm(p), ffm: alSallamiFfm(p), peak: jamesPeakWeight(p), warnings,
-    refused: warnings.some((w) => w.level === 'stop'), dosingWeight: dosingWeight(setup, settings),
+    bmi: bmi(p), lbm: jamesLbm(p), ffm: alSallamiFfm(adjusted ? { ...p, weight: dw } : p), peak: jamesPeakWeight(p), warnings,
+    refused: warnings.some((w) => w.level === 'stop'), dosingWeight: dw,
   };
 }
 
@@ -134,13 +140,13 @@ export const pumpSettings = (setup: Setup, settings: Settings): PumpSettings =>
   ({ concMgMl: setup.conc, maxRateMlH: settings.maxRateMlH, updateSec: settings.updateSec, cpMaxRatio: settings.cpMaxRatio });
 
 /** Induction dose the pump will give for this target: the engine's pumpInduction (max rate, then the plasma cap).
- *  `capped` is true when part of the bolus runs below the maximum rate because Cp is held at the plasma limit. */
+ *  `capped` is true only when the controller held Cp at the plasma limit (an interval below the maximum rate chosen by
+ *  the cap); the slower final top-up interval of an uncapped bolus does not count. `tPeakMin` is the Ce peak of the
+ *  same stepped run, so the ready screen matches the trend. */
 export function plannedBolus(setup: Setup, settings: Settings, target: number) {
   const pk = pkFor(setup, settings);
   const b = pumpInduction(pk, target, pumpSettings(setup, settings));
-  const tPeakMin = ceBolus(pk, target, rMaxFor(setup, settings)).tPeak;
-  const capped = b.mg < (rMaxFor(setup, settings) * b.sec) / 60 - 1e-6;
-  return { mg: b.mg, ml: b.mg / setup.conc, sec: b.sec, pk, tPeakMin, capped };
+  return { mg: b.mg, ml: b.mg / setup.conc, sec: b.sec, pk, tPeakMin: b.tPeakMin, capped: b.capped };
 }
 
 /** Drug the controller will give in the bolus phase that starts from the run's current state (same stepping as the run). */
@@ -178,7 +184,7 @@ export function startRun(setup: Setup, settings: Settings, target: number, remai
   return {
     pk: b.pk, m: buildModes(b.pk), s: zeroState(), t: 0, target, rateMgMin: 0, nextUpdate: 0, rMax: rMaxFor(setup, settings),
     infusedMg: 0, remainingMl: remainingMl ?? settings.syringeMl, plannedBolusMg: b.mg, bolusSec: b.sec, inductionGivenMg: 0,
-    kind: 'off', inInduction: true, dosingWeight: dosingWeight(setup, settings), samples: [], paused: false, empty: false, waitingToFall: false,
+    kind: 'off', capped: false, inInduction: true, dosingWeight: dosingWeight(setup, settings), samples: [], paused: false, empty: false, waitingToFall: false,
     targetSetAt: 0, lastRate: 0, syringes: 1, prealarmed: false, prealarmAck: false,
     bolusGivenMg: 0, bolusPlannedMg: b.mg, inBolus: true,
   };
@@ -200,12 +206,13 @@ export function advanceRun(st: PumpState, sec: number): void {
     if (run.t >= run.nextUpdate - 1e-9) {
       // controller update (every updateSec; inferred interval). Induction is every interval the controller calls
       // 'induction' from the start (max rate, then the plasma cap), exactly as the engine's pumpInduction counts it.
-      if (run.paused || run.empty) { run.rateMgMin = 0; run.kind = 'off'; }
+      if (run.paused || run.empty) { run.rateMgMin = 0; run.kind = 'off'; run.capped = false; }
       else {
         const d = controller(st, run);
         run.lastRate = d.r;
         run.rateMgMin = d.r;
         run.kind = d.kind;
+        run.capped = d.capped;
         if (run.inInduction && d.kind !== 'induction') run.inInduction = false;
         if (run.waitingToFall && d.r > 0) run.waitingToFall = false;
         if (d.kind === 'induction' && !run.inBolus) { run.inBolus = true; run.bolusGivenMg = 0; run.bolusPlannedMg = bolusFromNow(st, run); }
@@ -253,6 +260,9 @@ export function advanceRun(st: PumpState, sec: number): void {
     if (run.prealarmed && !low && minLeft > st.settings.prealarmMin * 1.2) { run.prealarmed = false; if (st.alarm === 'prealarm') st.alarm = 'none'; }
   }
 }
+
+/** Cp is being held at the plasma overshoot limit: the controller chose the capped rate, or Cp is within 1% of the cap. */
+export const atCap = (st: PumpState, run: Run) => run.capped || cp(run) >= 0.99 * st.settings.cpMaxRatio * run.target;
 
 /** Minutes of drug left at the rate now (Infinity at rate 0). */
 export const minutesLeft = (run: Run, conc: number) => (run.rateMgMin > 0 ? (run.remainingMl * conc) / run.rateMgMin : Infinity);
@@ -494,7 +504,7 @@ export function nowLine(st: PumpState): string {
     case 'custom': return 'Entering patient data on the pump keypad.';
     case 'summary': {
       const sm = summaryFor(st.setup, st.settings);
-      return sm.refused ? 'Schnider is refused: James LBM has passed its peak for this height, and clearance would fall as weight rises.'
+      return sm.refused ? 'Schnider is refused: James LBM has passed its peak for this height, so it now falls as weight rises; Schnider clearance (which subtracts LBM) would paradoxically rise, giving ever larger maintenance rates.'
         : `Patient accepted. BMI ${sm.bmi.toFixed(1)}; the model will use ${st.setup.model === 'schnider' ? 'James LBM' : 'Al-Sallami FFM'} ${(st.setup.model === 'schnider' ? sm.lbm : sm.ffm).toFixed(1)} kg.`;
     }
     case 'target': return 'Enter the effect-site target (0.5 to 8 µg/mL, 0.1 steps). Above 6 the pump asks you to confirm.';
@@ -505,8 +515,9 @@ export function nowLine(st: PumpState): string {
   if (!r) return '';
   if (r.paused) return `Paused: no drug is running. Ce ${ce(r).toFixed(2)} and falling. START resumes TCI, with a catch-up bolus if Ce has dropped.`;
   const conc = st.setup.conc;
-  if (r.inInduction) return `Induction: ${(r.inductionGivenMg / conc).toFixed(1)} of ${(r.plannedBolusMg / conc).toFixed(1)} mL${r.rateMgMin >= r.rMax * 0.999 ? ' at the maximum rate' : ' holding Cp at the 400% plasma limit'}. Cp overshoots (up to 4 x target) so that Ce peaks exactly at the target.`;
-  if (r.inBolus) return `New bolus ${(r.bolusGivenMg / conc).toFixed(1)} of ${(r.bolusPlannedMg / conc).toFixed(1)} mL${r.rateMgMin >= r.rMax * 0.999 ? ' at the maximum rate' : ' holding Cp at the 400% plasma limit'}: the target was raised or Ce had fallen, so the pump loads the effect site again.`;
+  const how = r.rateMgMin >= r.rMax * 0.999 ? ' at the maximum rate' : atCap(st, r) ? ` holding Cp at the ${st.settings.cpMaxRatio * 100}% plasma limit` : ' (final part of the bolus, below the maximum rate)';
+  if (r.inInduction) return `Induction: ${(r.inductionGivenMg / conc).toFixed(1)} of ${(r.plannedBolusMg / conc).toFixed(1)} mL${how}. Cp overshoots (up to ${st.settings.cpMaxRatio} x target) so that Ce peaks exactly at the target.`;
+  if (r.inBolus) return `New bolus ${(r.bolusGivenMg / conc).toFixed(1)} of ${(r.bolusPlannedMg / conc).toFixed(1)} mL${how}: the target was raised or Ce had fallen, so the pump loads the effect site again.`;
   if (r.waitingToFall) { const t = timeToTarget(st); return `Target lowered: rate 0 until the predicted Ce falls to ${r.target.toFixed(1)}${t != null && t > 0 ? ` (about ${t.toFixed(1)} min)` : ''}.`; }
   if (r.rateMgMin === 0 && ce(r) < r.target * 0.99) { const t = timeToTarget(st); return `Bolus complete: rate 0 while Ce (${ce(r).toFixed(2)}) rises to its peak at the target${t != null && t > 0 ? ` in about ${t.toFixed(1)} min` : ''}. Maintenance starts at the peak.`; }
   if (ce(r) < r.target * 0.95) return `Rate ${rateMlH(r, conc).toFixed(1)} mL/h: Ce ${ce(r).toFixed(2)} rising to the target.`;

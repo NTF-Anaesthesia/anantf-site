@@ -27,6 +27,7 @@ export interface SimResult {
   inductionMg: number; // mg given from the start until the induction phase ends (pump stops or holds)
   inductionSec: number; // duration of the induction phase (s)
   kind: RateKind[]; // controller state for each interval
+  capped: boolean[]; // interval rate chosen by the plasma overshoot cap (predicted Cp reaches cpMax at its end)
 }
 
 const HORIZON = 12; // min, look-ahead for the Ce peak
@@ -48,8 +49,11 @@ function predictedPeak(m: Modes, s: State, r: number, dt: number): number {
   return Math.max(bv, f(tt));
 }
 
-export function rateDetail(mode: TargetMode, m: Modes, s: State, target: number, dt: number, rMax: number, cpMax?: number): { r: number; kind: RateKind } {
-  if (target <= 0) return { r: 0, kind: 'off' };
+/** The controller's choice for one interval. `capped` is true only when the rate was set by the plasma overshoot
+ *  limit (rCap below rMax, so the predicted Cp reaches cpMax at the end of the interval): a partial top-up interval
+ *  in the bisection below is not capped, Cp stays under the limit. */
+export function rateDetail(mode: TargetMode, m: Modes, s: State, target: number, dt: number, rMax: number, cpMax?: number): { r: number; kind: RateKind; capped: boolean } {
+  if (target <= 0) return { r: 0, kind: 'off', capped: false };
   // Ce mode, maintenance: once Ce is at the target and would fall without drug, hold Cp at the target.
   // At the Ce peak Cp equals Ce, so the hand-over is seamless; a pure peak-Ce rule here oscillates between steps.
   const ce = ceOf(m, s);
@@ -60,18 +64,18 @@ export function rateDetail(mode: TargetMode, m: Modes, s: State, target: number,
   const toCp = (c: number) => Math.min(rMax, Math.max(0, (c - cpFree) / cpUnit));
   if (mode === 'Cp' || holdCp) {
     const r = toCp(target);
-    return { r, kind: r > 0 || cpFree <= target ? 'maintenance' : 'wait' };
+    return { r, kind: r > 0 || cpFree <= target ? 'maintenance' : 'wait', capped: false };
   }
-  if (predictedPeak(m, s, 0, dt) >= target) return { r: 0, kind: 'wait' };
+  if (predictedPeak(m, s, 0, dt) >= target) return { r: 0, kind: 'wait', capped: false };
   // plasma overshoot limit: the most this interval may give without Cp exceeding the cap at its end
   const rCap = cpMax !== undefined ? toCp(cpMax) : rMax;
-  if (predictedPeak(m, s, rCap, dt) <= target) return { r: rCap, kind: 'induction' };
+  if (predictedPeak(m, s, rCap, dt) <= target) return { r: rCap, kind: 'induction', capped: rCap < rMax - 1e-9 };
   let lo = 0, hi = rCap;
   for (let k = 0; k < 40; k++) {
     const mid = (lo + hi) / 2;
     if (predictedPeak(m, s, mid, dt) < target) lo = mid; else hi = mid;
   }
-  return { r: (lo + hi) / 2, kind: 'induction' };
+  return { r: (lo + hi) / 2, kind: 'induction', capped: false };
 }
 
 export function rateFor(mode: TargetMode, m: Modes, s: State, target: number, dt: number, rMax: number, cpMax?: number): number {
@@ -84,7 +88,7 @@ export function simulate(pk: PKParams, mode: TargetMode, schedule: TargetChange[
   const dt = pump.updateSec / 60;
   const rMax = (pump.maxRateMlH * pump.concMgMl) / 60; // mg/min
   const sched = [...schedule].sort((a, b) => a.t - b.t);
-  const out: SimResult = { t: [], cp: [], ce: [], rateMlH: [], cumMg: [], inductionMg: 0, inductionSec: 0, kind: [] };
+  const out: SimResult = { t: [], cp: [], ce: [], rateMlH: [], cumMg: [], inductionMg: 0, inductionSec: 0, kind: [], capped: [] };
   let s = zeroState(), t = 0, cum = 0, inInduction = true;
   const n = Math.round(tEnd / dt);
   for (let i = 0; i <= n; i++) {
@@ -92,10 +96,10 @@ export function simulate(pk: PKParams, mode: TargetMode, schedule: TargetChange[
     let target = 0;
     for (const c of sched) if (c.t <= t + 1e-9) target = c.target;
     const cpMax = mode === 'Ce' && pump.cpMaxRatio ? pump.cpMaxRatio * target : undefined;
-    const d = i < n ? rateDetail(mode, m, s, target, dt, rMax, cpMax) : { r: 0, kind: 'off' as RateKind };
+    const d = i < n ? rateDetail(mode, m, s, target, dt, rMax, cpMax) : { r: 0, kind: 'off' as RateKind, capped: false };
     const r = d.r;
     out.t.push(t); out.cp.push(cpOf(m, s)); out.ce.push(ceOf(m, s));
-    out.rateMlH.push((r * 60) / pump.concMgMl); out.cumMg.push(cum); out.kind.push(d.kind);
+    out.rateMlH.push((r * 60) / pump.concMgMl); out.cumMg.push(cum); out.kind.push(d.kind); out.capped.push(d.capped);
     if (inInduction && target > 0) {
       if (d.kind === 'induction') { out.inductionMg += r * dt; out.inductionSec += pump.updateSec; }
       else inInduction = false;
@@ -106,10 +110,22 @@ export function simulate(pk: PKParams, mode: TargetMode, schedule: TargetChange[
   return out;
 }
 
-/** The pump's induction dose for a Ce target: drug given until it first stops or switches to maintenance. */
-export function pumpInduction(pk: PKParams, target: number, pump: PumpSettings): { mg: number; sec: number } {
-  const r = simulate(pk, 'Ce', [{ t: 0, target }], pump, 20, { stopAfterInduction: true });
-  return { mg: r.inductionMg, sec: r.inductionSec };
+/** The pump's induction dose for a Ce target: drug given until it first stops or switches to maintenance.
+ *  `capped`: some interval was held at the plasma overshoot limit (Cp reached cpMax); a slower final top-up interval
+ *  alone does not count. `tPeakMin`: when Ce peaks in the same stepped run (refined between the update grid points). */
+export function pumpInduction(pk: PKParams, target: number, pump: PumpSettings): { mg: number; sec: number; capped: boolean; tPeakMin: number } {
+  const r = simulate(pk, 'Ce', [{ t: 0, target }], pump, 20);
+  const n = r.kind.findIndex((k) => k !== 'induction');
+  const ind = n < 0 ? r.kind.length : n;
+  const capped = r.capped.slice(0, ind).some(Boolean);
+  let best = 0;
+  for (let i = 1; i < r.ce.length; i++) if (r.ce[i] > r.ce[best]) best = i;
+  let tPeakMin = r.t[best];
+  if (best > 0 && best < r.ce.length - 1) { // parabolic refinement between the grid points
+    const y0 = r.ce[best - 1], y1 = r.ce[best], y2 = r.ce[best + 1], den = y0 - 2 * y1 + y2;
+    if (den < 0) tPeakMin += (0.5 * (y0 - y2) / den) * (r.t[best] - r.t[best - 1]);
+  }
+  return { mg: r.inductionMg, sec: r.inductionSec, capped, tPeakMin };
 }
 
 /** Target on model B whose pump induction dose equals model A's at targetA (same pump settings). */

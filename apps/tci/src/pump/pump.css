@@ -5,6 +5,8 @@
 
 
 .pp-main { max-width: 1280px; margin: 0 auto; }
+.pp-t-short { display: none; }
+@media (max-width: 479px) { .pp-t-long { display: none; } .pp-t-short { display: inline; } }
 .pp-layout { display: grid; gap: var(--app-s4); grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 960px) { .pp-layout { grid-template-columns: minmax(0, 1fr) 340px; align-items: start; } .pp-layout > div:first-child { position: sticky; top: 8px; } }
 .pp-stage { container-type: inline-size; }
@@ -37,9 +39,12 @@
 .pump-barrel::after { content: ""; position: absolute; left: 6%; right: 30%; top: 50%; height: calc(3 * var(--p)); margin-top: calc(-1.5 * var(--p)); background: #8da0ab; }
 .pump-barrel::before { content: ""; position: absolute; left: 68%; top: 12%; bottom: 12%; width: calc(4 * var(--p)); background: #7d8f9a; border-radius: calc(2 * var(--p)); }
 .pump-fascia { background: #121314; border-radius: calc(18 * var(--p)); box-shadow: inset 0 0 0 calc(1 * var(--p)) #2a2b2c; }
-.pump-brand { color: #cfd4d8; font-family: Hind, 'Segoe UI', system-ui, sans-serif; font-weight: 500; font-size: max(13px, calc(24 * var(--p))); line-height: 1; letter-spacing: .01em; white-space: nowrap; }
-.pump-brand sup { font-size: max(12px, .55em); vertical-align: .5em; margin: 0 1px; }
-.pump-tag { width: auto; padding: 0 1em; background: #262b30; color: #a9b7c2; font-family: var(--app-sans); font-size: max(12px, calc(14 * var(--p))); line-height: max(22px, calc(28 * var(--p))); text-align: center; border-radius: calc(3 * var(--p)); white-space: nowrap; letter-spacing: .02em; }
+/* The casing's printed text is device artwork, scaled with the pump like the virtual LCD (no 12 px floor: at 390 px
+   the wordmark is about 9 px, as print on a photographed pump would be). The tag is hidden on a small pump. */
+.pump-brand { color: #cfd4d8; font-family: Hind, 'Segoe UI', system-ui, sans-serif; font-weight: 500; font-size: calc(24 * var(--p)); line-height: 1; letter-spacing: .01em; white-space: nowrap; overflow: hidden; }
+.pump-brand sup { font-size: .55em; vertical-align: .5em; margin: 0 1px; }
+.pump-tag { width: auto; padding: 0 1em; background: #262b30; color: #a9b7c2; font-family: var(--app-sans); font-size: calc(14 * var(--p)); line-height: calc(28 * var(--p)); text-align: center; border-radius: calc(3 * var(--p)); white-space: nowrap; letter-spacing: .02em; overflow: hidden; }
+@container (max-width: 560px) { .pump-tag { display: none; } }
 .pump-led { border-radius: 50%; background: #5a5d60; }
 .pump-led-run { background: none; width: 0; height: 0; border-top: calc(9 * var(--p)) solid transparent; border-bottom: calc(9 * var(--p)) solid transparent; border-right: calc(16 * var(--p)) solid #3e4446; border-radius: 0; }
 .pump.is-running .pump-led-run, .pp-stage.is-running .pp-hw .pump-led-run { border-right-color: #1fdc62; animation: pp-blink 1.2s steps(1) infinite; filter: drop-shadow(0 0 calc(3 * var(--p)) #1fdc62); }
@@ -51,11 +56,11 @@
 .pump-key svg { width: 55%; height: 55%; display: block; }
 .pump-key:active { background: #2b2f33; }
 .pump-key:focus-visible { outline: calc(3 * var(--p)) solid #5fc6f0; outline-offset: calc(2 * var(--p)); }
-.pump-key-stop { border: 0; background: radial-gradient(circle at 50% 35%, #ef4b4b, #c8181c); color: #fff; font-family: Hind, system-ui, sans-serif; font-weight: 500; font-size: max(12px, calc(22 * var(--p))); box-shadow: 0 calc(2 * var(--p)) calc(4 * var(--p)) rgb(0 0 0 / .5); }
+.pump-key-stop { border: 0; background: radial-gradient(circle at 50% 35%, #ef4b4b, #c8181c); color: #fff; font-family: Hind, system-ui, sans-serif; font-weight: 500; font-size: calc(22 * var(--p)); box-shadow: 0 calc(2 * var(--p)) calc(4 * var(--p)) rgb(0 0 0 / .5); }
 .pump-key-stop:active { background: #b3151a; }
 .pump-screen { background: #000; border-radius: calc(6 * var(--p)); box-shadow: inset 0 0 0 calc(1 * var(--p)) #2d3033; overflow: hidden; }
 .pump-clamp { background: linear-gradient(90deg, #f7f7f7, #e6e7e8); border-radius: calc(26 * var(--p)); box-shadow: 0 calc(4 * var(--p)) calc(10 * var(--p)) rgb(0 0 0 / .2), inset calc(-2 * var(--p)) 0 calc(4 * var(--p)) rgb(0 0 0 / .08); }
-.pump-pull { border-radius: 50%; background: radial-gradient(circle at 45% 40%, #ffffff, #d4d6d8); box-shadow: inset 0 0 0 calc(2 * var(--p)) #bfc2c5, 0 calc(2 * var(--p)) calc(4 * var(--p)) rgb(0 0 0 / .2); display: grid; place-items: center; font-family: Hind, system-ui, sans-serif; font-size: max(12px, calc(16 * var(--p))); color: #9aa0a4; }
+.pump-pull { border-radius: 50%; background: radial-gradient(circle at 45% 40%, #ffffff, #d4d6d8); box-shadow: inset 0 0 0 calc(2 * var(--p)) #bfc2c5, 0 calc(2 * var(--p)) calc(4 * var(--p)) rgb(0 0 0 / .2); display: grid; place-items: center; font-family: Hind, system-ui, sans-serif; font-size: calc(16 * var(--p)); color: #9aa0a4; overflow: hidden; }
 .pump-pull::after { content: ""; position: absolute; inset: 18%; border: calc(2 * var(--p)) solid #c5c9cc; border-radius: 50%; border-left-color: transparent; }
 .pump-foot { margin: var(--app-s2) 0 0; text-align: center; font-size: var(--app-t-caption); color: var(--app-muted); }
 @keyframes pp-blink { 50% { opacity: .25; } }
@@ -74,8 +79,12 @@
 .pp-hwleds { display: flex; flex-direction: column; gap: 10px; align-items: center; margin-right: 8px; }
 .pp-hw .pp-bell { width: 22px; height: 22px; color: #8d9397; }
 .pp-hw .pp-bell svg { width: 100%; height: 100%; display: block; }
-.pp-rot .pp-lcdbox { height: calc((100vw - 32px) * 800 / 272); }
-.pp-rot .lcd { width: calc((100vw - 32px) * 800 / 272); transform-origin: top left; transform: rotate(90deg) translateY(-100%); }
+/* Operate: the LCD turned 90 degrees. Its long side is the phone width less the gutters, capped so the whole display
+   fits the viewport under the sticky app bar (44 px) with the hardware key row (about 70 px) below it. */
+.pp-rot .pp-lcdbox { --pp-long: calc((100vw - 32px) * 800 / 272); --pp-long: min(calc((100vw - 32px) * 800 / 272), calc(100vh - 150px)); --pp-long: min(calc((100vw - 32px) * 800 / 272), calc(100dvh - 150px));
+  width: calc(var(--pp-long) * 272 / 800); height: var(--pp-long); margin: 0 auto; }
+.pp-rot .lcd { width: var(--pp-long); transform-origin: top left; transform: rotate(90deg) translateY(-100%); }
+.pp-stage { scroll-margin-top: 52px; }
 
 /* ---------- the LCD (800 x 272 virtual px) ---------- */
 .lcd { --u: calc(100cqw / 800); position: relative; aspect-ratio: 800 / 272; width: 100%; overflow: hidden; background: #000; color: #fff;
@@ -135,11 +144,11 @@
 .lcd .drug b { font-size: calc(34 * var(--u)); font-weight: 600; line-height: 1; } .lcd .drug span { font-size: calc(22 * var(--u)); }
 .lcd .drug-pause { background: #f0a93c; } .lcd .drug-alarm { background: #d9262b; color: #fff; }
 .lcd .pre { background: #f0a93c; color: #111; font-size: calc(16 * var(--u)); font-weight: 600; text-align: center; line-height: calc(22 * var(--u)); z-index: 2; white-space: nowrap; overflow: hidden; }
-.lcd .cell { border-right: calc(1 * var(--u)) solid #3a3f44; border-bottom: calc(1 * var(--u)) solid #3a3f44; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: calc(3 * var(--u)) 0 calc(5 * var(--u)); }
-.lcd .cell .lbl { font-size: calc(20 * var(--u)); line-height: 1.2; white-space: nowrap; }
+.lcd .cell { border-right: calc(1 * var(--u)) solid #3a3f44; border-bottom: calc(1 * var(--u)) solid #3a3f44; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: calc(3 * var(--u)) 0 calc(3 * var(--u)); }
+.lcd .cell .lbl { font-size: calc(20 * var(--u)); line-height: 1.1; white-space: nowrap; }
 .lcd .cell-last { border-right: 0; }
 .lcd .val { font-size: calc(30 * var(--u)); line-height: 1; color: #fff; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.lcd .val-m { font-size: calc(28 * var(--u)); }
+.lcd .val-m { font-size: calc(26 * var(--u)); }
 .lcd .val small { font-size: calc(19 * var(--u)); color: #dfe9f0; }
 .lcd .ind { background: #141c24; overflow: hidden; font-size: calc(15 * var(--u)); display: flex; align-items: center; justify-content: center; color: #fff; border-radius: calc(3 * var(--u)); }
 .lcd .ind-idle { background: transparent; }
