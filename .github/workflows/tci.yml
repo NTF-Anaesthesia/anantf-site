@@ -1,0 +1,49 @@
+# TCI emulator (apps/tci -> tci/): engine tests against the Python oracle, golden file in sync with the oracle,
+# committed build up to date, and a 390 px browser check in light and dark.
+name: TCI emulator
+on:
+  pull_request:
+    paths: ['apps/tci/**', 'tci/**', 'assets/app/**', '.github/workflows/tci.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/tci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install
+        run: |
+          npm ci
+          pip install numpy
+      - name: Golden file matches the oracle
+        run: |
+          npm run -s golden
+          git diff --exit-code -- test/golden.json
+      - name: References panel matches docs/REFERENCES.md
+        run: |
+          npm run -s refs
+          git diff --exit-code -- src/refs.generated.json
+      - name: Unit tests
+        run: npm test
+      - name: Committed build is current
+        run: |
+          npm run build
+          git status --porcelain -- ../../tci
+          test -z "$(git status --porcelain -- ../../tci)"
+      - name: Browser check (390 px, light and dark)
+        run: |
+          npx playwright install --with-deps chromium
+          (cd ../.. && python3 -m http.server 8080 >/dev/null 2>&1 &)
+          sleep 1
+          npm run e2e
