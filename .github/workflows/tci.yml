@@ -1,5 +1,5 @@
 # TCI emulator (apps/tci -> tci/): engine tests against the Python oracle, golden file in sync with the oracle,
-# committed build up to date, and a 390 px browser check in light and dark.
+# committed build up to date, a 390 px browser check in light and dark, and the pump emulator's full-flow check.
 name: TCI emulator
 on:
   pull_request:
@@ -47,3 +47,5 @@ jobs:
           (cd ../.. && python3 -m http.server 8080 >/dev/null 2>&1 &)
           sleep 1
           npm run e2e
+      - name: Pump emulator browser check (390 and 1280 px, light and dark, full flow)
+        run: npm run e2e:pump

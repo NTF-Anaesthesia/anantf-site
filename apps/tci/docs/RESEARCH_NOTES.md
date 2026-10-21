@@ -163,12 +163,17 @@ Eleveld arterial, opioid on, Ce 4; Schnider Ce 4; matched Schnider Ce (instantan
 | ke0 | Marsh 0.26; Schnider fixed 0.456; Minto 0.595 − 0.007(age − 40) | UNVERIFIED |
 | Max rate | 0.01 to 1800 mL/h, bolus up to 1800 mL/h (German datasheet). 1200 mL/h is the Infusomat maximum | SECONDARY |
 | Update interval | Not found | — |
+| Department pump settings | Default max rate 800 mL/h; plasma overshoot 400% (Cp ≤ 4 × Ce target); decrement concentration 1.0 µg/mL | VERIFIED (read off the pump by the owner, 21 Oct 2026) [deptpump] |
 | Patient limits | Conflicting garbled text (e.g. Eleveld 1–85 y and 2.5–106 kg vs 1–88 y and 0.68–160 kg) | UNVERIFIED |
 | Software | Instructions for Use for software 019D; a 2026 notice for D05 → D06 concerns Take Over Mode, not TCI | SECONDARY |
 | Eleveld added | Not found (one hospital adopted it in 2024) | — |
 
-- **Emulator defaults:** 1200 mL/h maximum and 10 s updates, both unverified and adjustable in Settings. The 1800
-  mL/h datasheet figure should be confirmed on the pump before it becomes the default (Q12).
+- **Emulator defaults:** 800 mL/h maximum, 400% plasma overshoot and 1.0 µg/mL decrement concentration, as set on
+  the department's pump (VERIFIED). 10 s updates remain unverified. The 1800 mL/h datasheet figure is the pump's
+  ceiling, not the TCI default.
+- **Effect of the 400% cap** (engine `pumpInduction`): for the reference patient, the Eleveld Ce 4 induction stays at
+  172 mg but stretches from about 77 s to 110 s, with Cp held at 16 µg/mL. Schnider Ce 4 is 71 mg over 50 s. The pump
+  matched Schnider target is 9.46, against 9.67 for an instant bolus.
 
 ## 5. The BMI above 30 error [milliet2025] [anzca2025] [esia2025] [minto2025] [introna2026]
 

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en-GB" class="app">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f1ede4" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b1a17" media="(prefers-color-scheme: dark)">
+  <title>Space plus Perfusor emulator</title>
+  <meta name="description" content="Operable teaching emulator of a Space plus Perfusor syringe pump running propofol TCI (Schnider, Eleveld, effect site). Education only; not the pump's own software.">
+  <script>
+    // Theme before first paint: saved choice, else the system setting.
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('tci-theme'); } catch (e) {}
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="stylesheet" href="/assets/app/app.css">
+</head>
+<body class="app-body">
+  <a class="app-skip" href="#main">Skip to content</a>
+  <div id="root"></div>
+  <script type="module" src="/src/pump/main.ts"></script>
+</body>
+</html>

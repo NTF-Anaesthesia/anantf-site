@@ -218,6 +218,12 @@ refused by the proxy. Re-check every DOI and constant against the PDFs before re
 - used: cited in the external analysis reviewed in RESEARCH_NOTES section 9: slowing Schnider ke0 to about 0.20 /min raises the Ce-target bolus to about 1.75 mg/kg. The oracle gives ke0 0.185 for the same bolus. Not used by the engine.
 - checked: 21 Oct 2026
 
+### deptpump Department Space plus settings
+- cite: Owner's reading of the TCI settings on the department's B. Braun Space plus Perfusor, 21 Oct 2026 (Ng Teng Fong General Hospital).
+- status: VERIFIED
+- used: default maximum rate 800 mL/h; plasma overshoot 400%; decrement concentration 1.0 µg/mL. Software version not recorded.
+- checked: 21 Oct 2026
+
 ### bbraun B. Braun Space plus TCI
 - cite: B. Braun Space plus Perfusor product pages and datasheets (models Eleveld, Schnider, Marsh, Minto, Gepts; rate 0.01-1800 mL/h).
 - url: https://www.bbraun.com
@@ -260,8 +266,13 @@ James LBM peaks at BMI 43.0 (male) and 36.1 (female) and then falls, so Schnider
 Reported: above BMI 30 the Space Plus Eleveld model uses an adjusted weight in place of total body weight [milliet2025] [anzca2025]. The app's BMI above 30 mode substitutes Servin's adjusted weight, IBW (Devine) + 0.4 x excess [servin1993], for weight in every Eleveld covariate. This reproduces the published index case (163 mg vs the pump's 162 mg; total body weight gives 191 mg vs TivaTrainer's 192 mg). Which covariates the pump changes, whether maintenance is affected, the affected software versions, and the fix status are not published (Q1, Q7).
 
 ### A9 Pump settings
-- status: UNVERIFIED
-Defaults: propofol 1%, maximum rate 1200 mL/h, rate recomputed every 10 s. A datasheet lists up to 1800 mL/h for the Space plus Perfusor [bbraun]; the update interval is not documented. A lower target stops the infusion until the predicted level falls (Q11, Q12).
+- status: VERIFIED
+Read off the department's Space plus by the owner (21 Oct 2026) [deptpump]: default maximum rate 800 mL/h; plasma
+overshoot limit 400% (in Ce mode predicted Cp never exceeds 4 x the Ce target); decrement (wake-up) concentration
+1.0 µg/mL. With the cap, the induction runs at 800 mL/h until Cp reaches 4 x target, then holds Cp there until the
+predicted Ce peak reaches the target: the dose barely changes (within 2% for the reference patient), the induction
+takes longer. Still UNVERIFIED: the 10 s update interval, and a lower target stopping the infusion until the predicted
+level falls (Q11, Q12 in RESEARCH_NOTES).
 
 ### A10 Solver
 - status: VERIFIED
