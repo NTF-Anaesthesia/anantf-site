@@ -288,3 +288,30 @@ bolus.
 - **Servin 1993:** bibliographic details (from memory, UNVERIFIED).
 - **B. Braun Space plus Instructions for Use** for the software version the department runs.
 - **Every DOI** through doi.org.
+- **Glen and Engbers** (sections 9 and 10): confirm the paper exists, then read what it reports about ke0 and the
+  initial dose.
+
+## 9. External analysis reviewed (supplied by the owner, 21 Oct 2026)
+
+An unsourced written analysis was supplied. It argued that an Eleveld Ce 4 bolus matches Schnider Ce "about 5–6"
+for a man aged 50, 170 cm, 70 kg. Each claim was checked against the oracle (`oracle/tci_ref.py`, which reproduces the
+owner's golden values) and the sources. **Verdict: its conclusion is wrong for this patient (the oracle gives 9.33), and
+several of its premises are wrong.** Kept here so the same errors are not reintroduced.
+
+| Claim | Check (same patient, instant bolus, peak Ce = target) | Verdict |
+|---|---|---|
+| Schnider V1 4.27, V2 about 20.1, V3 238, CL about 1.64, ke0 0.456 | 4.27, 20.1, 238, 1.638, 0.456 | Correct |
+| Eleveld V1 9.77, V2 29.0, V3 134, CL 1.53 (labelled 35 y, 70 kg) | Arterial: V1 6.28, V2 20.2 at 50 y (25.5 at 35 y), V3 137 with opioid (273 without), CL 1.55 with opioid. Venous V1 is 9.17, not 9.77 | V3 and CL roughly match "opioid, 50 y"; V1 and V2 match no Eleveld variant. Wrong |
+| Eleveld ke0 0.146 x (W/70)^-0.25 | Same (arterial) | Correct |
+| Eleveld Ce 4 gives about 1.7–1.8 mg/kg (about 122 mg) | 156 mg = 2.23 mg/kg with opioid; 178 mg (2.54 mg/kg) without; 60 mg venous. Owner's golden at 35 y: 171 mg | Wrong, by about 22%. No Eleveld variant gives 122 mg |
+| Schnider Ce 4 gives about 1.1 mg/kg (about 77 mg) | 67 mg = 0.96 mg/kg | Overstated by about 15% |
+| Matching needs Schnider Ce about 5–6 | 9.33 matches the Eleveld bolus. Even their own 122 mg would need Schnider Ce 7.3 | Wrong. Following it would leave the Schnider bolus about 40% short of the Eleveld bolus |
+| Higher ke0 gives a faster rise and a higher plasma peak | For a Ce target, a higher ke0 gives a smaller bolus and less plasma overshoot. ke0 does not change plasma at all for a given infusion. The plasma peak per mg is set by V1: initial Cp 15.7 (Schnider) vs 24.9 µg/mL (Eleveld) at Ce 4 | Reversed. Eleveld's Ce 4 bolus gives the higher plasma peak |
+| Kinetics are non-linear | These models are linear in dose; the matcher relies on it (tested to 1e-9) | Wrong |
+| "Glen et al.": to deliver about 1.75 mg/kg the Schnider ke0 must slow to 0.20 /min | The oracle needs ke0 0.185 for Schnider Ce 4 to give 122 mg, so the arithmetic is plausible. The paper could not be found. A paper predating Eleveld 2018 cannot have reported an Eleveld bolus, so its 1.75 mg/kg probably refers to another model | Plausible arithmetic; source UNVERIFIED [glen2016] |
+| Sleep endoscopy trial: Ce at end of procedure about 3.3 (Schnider) vs 2.1 (Eleveld) | The trial is Tanase 2025 (randomised, n = 25) [tanase2025]. The direction matches other studies; those numbers were not seen | Direction plausible; numbers UNVERIFIED |
+| No fixed conversion; titrate to clinical endpoints; pump rules unknown | Agrees with sections 4 and 6 | Correct |
+
+- **Lesson.** A per-patient number has to come from a model run, not from mg/kg rules of thumb.
+- **What this app adds.** The matcher computes the number for each patient, and the tests pin it to the owner's
+  golden values.
