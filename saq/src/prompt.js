@@ -52,13 +52,33 @@ export function systemFor(q) {
 ${q.text}`;
   if (!q.key) return `${head}
 
-There is no model answer for this question yet: mark against the rubric and current Singapore practice, and end the summary's verdict with "(No model answer yet: marked against the rubric only.)"`;
+There is no model answer for this question: mark against the rubric and current Singapore practice, and end the summary's verdict with "(No model answer: marked against the rubric only.)"`;
+  if (q.keySource === 'ai') return `${head}
+
+## Model answer (drafted by AI to a 7 to 8 standard, not yet reviewed by faculty)
+
+Use it as a guide to the expected content and depth, not as the only acceptable answer: credit correct, safe, well-justified points it lacks, and do not copy any error it may contain.
+
+${q.key}`;
   return `${head}
 
 ## Model answer (from the department's SAQ bank; it may include an examiner report)
 
 ${q.key}`;
 }
+
+// Drafting a model answer for a question that has none (the draft mode of Dr Chew's SAQ skill). Kept byte-stable.
+export const MODEL_ANSWER = `You are a strong MMed (Anaesthesiology) Part B candidate in Singapore writing a model answer that would score 7 to 8. Calibrate to Singapore restructured-hospital practice; FRCA, ANZCA and HKCA material is secondary and quoted only where it applies.
+
+Write the answer a fast writer could finish by hand in 15 minutes:
+- Match each part's verb (list, outline, describe, discuss, justify) and its % weighting. About 20 substantive points across the whole question; if you reach 35, cut.
+- Structure that fits the stem: Pre-op / Intra-op / Post-op, by system (CVS / Respi / Renal / GI / CNS / Others), or by phase of a crisis. Bold headings for categories ("**CVS**: ..."), plain text for items, short hyphenated stems.
+- First person ("I would ...") for management. Use the vignette's specifics (age, weight, comorbidities, surgery): never a generic list.
+- Crisis stems: recognise, inform the surgeon, call for help, A/B/C, then definitive management, then after the event.
+- Reasoning inside the bullet ("IV dexamethasone to reduce laryngeal oedema"), never a separate "why" section. "To consider X if Y" only for genuinely conditional steps.
+- Name a guideline or trial only where it carries weight. Include communication, consent, documentation and disposition where the stem needs them.
+
+Output only the model answer, in Markdown, headed by part (A, B, ...) as the stem is.`;
 
 export const userText = answer => `Candidate's answer:\n<answer>\n${answer}\n</answer>\n\nMark this answer.`;
 

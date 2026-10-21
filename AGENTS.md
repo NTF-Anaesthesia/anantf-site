@@ -49,7 +49,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 - Drafts live behind `draft.html` (noindex); don't link them from the homepage, navigation or hubs.
 - Main navigation: Airway, Regional Anaesthesia, POCUS, EEG, Exam Prep. Don't add department, recruitment or handbook pages.
 - Unlisted apps (`popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`,
-  `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `ot/`) are not linked from the homepage and keep
+  `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `ot/`, `exams/part-b/`) are not linked from the homepage and keep
   their `noindex` tags.
 - Regional pages are one app (app bar, credit line at the foot, MO · Resident · Consultant levels). Doses, the LAST line,
   complications and "If it goes wrong" guides are always MO level (tier 1). Old URLs and hashes must keep working.
@@ -72,7 +72,7 @@ Each installable app has a service worker whose file lists and `VERSION` are sta
 | Question bank | `node qbank/tools/stamp.mjs` | `node qbank/tools/check.mjs`, `node qbank/test/{bank,practice,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Baby MO | `node babymo/tools/stamp.mjs` | `node babymo/test/{logic,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Worker (`worker/`, `wrangler.jsonc`) | none | `node worker/test/routes.test.mjs` |
-| SAQ programme (`saq/`, saq.anantf.com) | `npm run build-keys --prefix saq` after changing the SAQ `studyPlan` in `exams/index.html`, `exams/reference/` or `saq/keys/` | `npm ci --prefix saq && npm test --prefix saq`; browser: `saq/test/serve.mjs` + `saq/test/e2e.mjs` |
+| Part B SAQ programme (`exams/part-b/`, server `saq/`) | `npm run build-keys --prefix saq` after changing `saq/keys/` or `exams/reference/` | `npm ci --prefix saq && npm test --prefix saq`; browser: `node saq/test/serve.mjs` then `node saq/test/e2e.mjs` |
 | OT simulator | none | `tools/test-ot.sh` |
 
 Every installable app ends its settings or start page with `App version <date> (<hash>)` and a `Not updating? Get the

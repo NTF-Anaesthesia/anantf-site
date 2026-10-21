@@ -16,7 +16,8 @@ Static site served by GitHub Pages at https://anantf.com.
 | `shared/regional/test/` | Tests for the regional pages (`node shared/regional/test/run-all.mjs`) |
 | `pocus/` | Point-of-care ultrasound tutorials |
 | `exams/` | MMed exam resources by Dr Chew Shi Hao (canonical master copy) |
-| `exams/reference/` | Part B model-answer PDFs |
+| `exams/reference/` | Part B model-answer PDFs (the SAQ bank; used as marking keys by `saq/`, not linked) |
+| `exams/part-b/` | Part B SAQ programme app (sign-in by email, unlisted); its server is `saq/` |
 | `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
 | `babymo/` | Baby MO test (MCQ test for new MOs, with a faculty question editor; unlisted) |
 | `mo/` | For new MOs: landing page; the MO guide (practical learning app, handbook and beyond, offline) is in `mo/guide/` (unlisted) |
@@ -31,14 +32,11 @@ content is in the script near the top of the file:
 
 | Block | Starts around line | What it holds |
 |---|---|---|
-| `const banks` → `essayBank` | 266 | Part B model-answer PDFs, grouped by topic |
-| `const studyPlan` | 363 | Part B study-plan calendar |
-| `const exams` → `reflections` | 452 | Reflections (posts with id, title, date, body) |
-| `const exams` → `partB` | 483 | Part B sections and resources |
-| `const exams` → `partC` | 569 | Part C sections and resources |
+| `const exams` → `partC` | 267 | Part C sections and resources |
 
-To add a model-answer PDF, upload it to `exams/reference/` and add an entry like
-`{ title: "...", url: "reference/<file>.pdf" }` to the matching group in `essayBank`.
+Part B moved out of this page on 21 Oct 2026: it is now the SAQ programme app, `exams/part-b/` (server in `saq/`).
+Its 10-week plan is `saq/keys/programme.json`; its model answers are `exams/reference/*.pdf`, listed in
+`saq/keys/index.json`. See `saq/README.md`.
 
 Keep the commas and quotes intact when editing; open the page afterwards to check it still loads.
 Changes pushed to `main` go live in about a minute.

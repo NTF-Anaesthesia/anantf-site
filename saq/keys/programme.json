@@ -1,0 +1,1420 @@
+{
+ "blocks": [
+  {
+   "name": "Block 1 — Base Training",
+   "sub": "Weeks 1–4 · 2 essays/day · 6 weekend · 16 essays/week",
+   "weeks": [
+    1,
+    2,
+    3,
+    4
+   ]
+  },
+  {
+   "name": "Block 2 — Progressive Overloading",
+   "sub": "Weeks 5–8 · 3 essays/day · 6 weekend · 21 essays/week",
+   "weeks": [
+    5,
+    6,
+    7,
+    8
+   ]
+  },
+  {
+   "name": "Block 3 — Timed Practice",
+   "sub": "Weeks 9–10 · 3 essays/day · Full timed papers on weekends",
+   "weeks": [
+    9,
+    10
+   ]
+  }
+ ],
+ "weeks": [
+  {
+   "num": 1,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 76 year-old elderly lady with ischemic cardiomyopathy, and multiple recurrent admissions for decompensated congestive heart failure was admitted for abdominal distension and vomiting, going for emergency ex laparatomy. On arrival to OT, her vitals were as follows: SBP 95/35 SpO2 92% on RA RR 28 HR 115.",
+       "q": "A. Describe the methods to assess fluid responsiveness (30%). · B. Outline your anaesthetic considerations, and describe your perioperative management of her haemodynamics (70%)."
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "A 77 year-old man is scheduled to have right video-assisted thoracoscopic pleurodesis for a large pleural effusion due to mesothelioma.",
+       "q": "A. Describe the respiratory changes occur during one lung anaesthesia (25%) and how can oxygenation be maintained/improved during one lung ventilation (25%)? · B. Describe your preferred technique for maintenance of anaesthesia, and elaborate why (50%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 55 year-old female has just been intubated in the ICU with respiratory failure (PaO2 150mmHg, PaCO2 63mmHg, FiO2 1.0) following a 1 week viral like illness.",
+       "q": "A. What are the diagnostic criteria for Acute Respiratory Distress Syndrome (ARDS) (20%)? Does this patient fulfil the criteria (10%)? · B. Discuss the evidence based strategies in the management of ARDS (70%)."
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "You have been asked to review a 38-year-old woman with a BMI of 45 kg/m2 in the general ward who just had a laparoscopic cholecystectomy. She is now moaning and complaining of mod-severe pain 8/10. She is easy to arouse but cannot stay awake. Review of her PACU chart shows that she received fentanyl 200 micrograms, IV Parecoxib 40mg and IV Paracetamol 1g for pain relief.",
+       "q": "Discuss how you would manage this patient."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "A 5 year old girl, ASA 1, 17kg, is scheduled for an emergency exploration of a penetrating eye injury after she was accidentally stabbed in the eye by her younger sibling by a satay stick. At the operating theatre reception, you find a crying, distressed child. Mum mentions the girl has just recovered from a chesty cough and runny nose 3 days ago. The COVID-19 swab at ED is negative. Anaesthesia for the exploration of the eye injury is uneventful and the child is extubated at the end of surgery. On arrival at the recovery, the first pulse oximeter reading is 87%.",
+       "q": "A. Outline your main concerns in the anaesthetic management of this child (60%). · B. Describe your immediate management (40%)."
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "A 25-year-old pregnant women at 35 weeks gestation is admitted to labour ward with a blood pressure of 180/110 mmHg. She is known to have pre-eclampsia and there is a plan to deliver her baby within the next 24 hours. A decision has been made to proceed to Caesarean section (CS) and the patient insists on having a general anaesthetic (GA).",
+       "q": "A. What is the definition of pre-eclampsia (10%)? · B. What symptoms may this woman complain of due to her pre-eclampsia (20%)? · C. What are the important priorities in her management when she arrives on the labour ward (30%)? · D. Explain potential changes to your normal GA technique for CS due to her pre-eclampsia (40%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 25-year-old man who is wheelchair-bound presents for elective rigid cystoscopy. He had a C5 dislocation fracture with fusion done 1 year ago following a motor vehicle accident. He is able to shrug his shoulders and transfer himself from a seated position to the wheelchair.",
+       "q": "A. What are the main anaesthetic concerns for this patient? (60%) · B. Discuss options of anaesthetic management for this patient. (40%)"
+      },
+      {
+       "tag": "RA/Anatomy",
+       "color": "#a8541f",
+       "stem": "A 27-year-old G1P0 parturient is in active labour, and requests for an epidural catheter for pain relief. She has several concerns regarding the potential side effects.",
+       "q": "A. What are the common and less-common but important side effects to highlight to her (30%)? · B. Which patients are at increased risk of infection related to an epidural catheter? (10%) · C. What symptoms and signs suggest the development of an epidural abscess (15%)? · D. What are the definitive investigations and treatment required (15%)? How do you decide whether patient requires them (30%)?"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "A 30-year-old woman, weighing 100 kg (BMI 38 kg/m2), has severe nausea and vomiting in the post-anaesthesia care unit following an uneventful elective laparoscopic cholecystectomy under general anaesthesia.",
+       "q": "A. What are the known risk factors for postoperative nausea and vomiting (PONV) in adults? (30%) · B. List the strategies for reducing the baseline risks for PONV. (30%) · C. Briefly outline your perioperative management of this patient with regards to PONV. (40%)"
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "A 60-year-old man, otherwise healthy, is scheduled for robotic assisted laparoscopic radical prostatectomy. During preoperative assessment, the electrocardiogram (ECG) reveals a corrected QT interval (QTc) of 480 ms. The patient develops fever three days later.",
+       "q": "What are your anaesthetic considerations (30%)? · Describe your anaesthetic management of this patient with regards to this ECG change (30%). · List the risk factors for developing postoperative surgical infection (20%). How can you minimize postoperative infection in this patient (30%)?"
+      }
+     ]
+    },
+    {
+     "label": "Weekend",
+     "dur": "3h",
+     "essays": [
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "A 50 year-old patient presents in your clinic for pre-operative assessment for a total thyroidectomy.",
+       "q": "Which investigations are specifically indicated in the preoperative assessment, and why are they done (40%)? · What factors in a euthyroid patient must the anaesthetist consider during the induction, maintenance and extubation phases of a total thyroidectomy (40%)? · What are the important postoperative complications following this surgery (20%)?"
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "An otherwise healthy 37-year-old female presents for laparoscopic appendicectomy. She reports a 'severe allergic reaction' during her laparoscopy 5 years ago. There were no tests performed and the records are not available. Post-induction and administration of muscle relaxants, blood pressure crashes to SBP 50s, refractory to phenylephrine boluses.",
+       "q": "Outline your strategy for managing this case (40%). · Describe your immediate management (40%). · Following suspected anaphylaxis, list the investigations that should be performed, as well as when they should be performed (20%)."
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "An otherwise healthy 45 year old man has a vocal cord nodule that the surgeon intends to excise using a CO2 laser. He is a smoker but has no other significant medical history. During the surgery, the surgeon suddenly exclaims \"fire\".",
+       "q": "Justify your anaesthetic technique of choice (50%). · Describe your immediate management (50%)."
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 68 year-old man requires emergency tracheal stenting under general anaesthesia for a suspected bronchogenic carcinoma causing airway obstruction at the carina level.",
+       "q": "Discuss your perioperative concerns."
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 70-year-old man is scheduled for laryngeal microsurgery for evaluation of hoarseness of voice due to a vocal cord polyp. He has a 50 pack-year history of smoking and chronic obstructive pulmonary disease. Surgery was carried out with jet ventilation. In the post-anaesthesia care unit, he complains of shortness of breath. Oxygen saturation on nasal prongs 2L/min has fallen from 96-90%. ECG shows sinus tachycardia of 100 bpm, and his BP is 150/60mmHg.",
+       "q": "A. Compare endotracheal intubation and ventilation via an anaesthetic circuit with tubeless jet ventilation as a means to manage his airway and ventilation during surgery. (50%) · B. List at least 5 possible causes of the desaturation. Describe how you will determine which is responsible for his condition. (50%)"
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "Your department has recently acquired 2 sets of high flow nasal cannula (HFNC) machines.",
+       "q": "A. Contrast the mechanism of preoxygenation with (1) 100% O2 using an anaesthetic face mask with (2) apnoeic oxygenation using HFNC in maintenance of oxygen saturation during apnoea (40%). · B. List the clinical scenarios where HFNC use has been shown to be advantageous (30%). · C. What are the clinical situations where HFNC use may lead to potential harm (30%)?"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 2,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 42-year old man is scheduled for elective posterior fossa tumor removal in the sitting position.",
+       "q": "What are the potential intraoperative problems in this patient (60%)? · What monitoring techniques can detect the presence of venous air embolism during surgery? What findings would indicate this diagnosis (40%)?"
+      },
+      {
+       "tag": "RA/Anatomy",
+       "color": "#a8541f",
+       "stem": "",
+       "q": "Describe the anatomy relevant to siting an epidural catheter for postoperative analgesia following open abdominal surgery (50%). · Outline the limitations and complications of providing epidural analgesia for this type of surgery (50%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "A 12-year-old boy with tuberous sclerosis is scheduled to have an MRI brain next week, since he needs a higher dose of anti-epileptics to control his seizure. He is autistic, with learning difficulty. No other systems are involved except some skin patches. You are asked to provide anaesthetic support.",
+       "q": "What are the considerations in providing anaesthetic support in MRI suite for this boy?"
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "",
+       "q": "List the risk factors leading to contrast induced nephropathy after endovascular infrarenal aortic aneurysmal repair (50%). · Discuss preventive measures to reduce the risk of contrast induced nephropathy (50%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "Young, 120kg BMI 42 patient for lap cholecystectomy, induction and intubation were uneventful. Pneumoperitoneum inflated, ventilator settings were increased to double minute ventilation by increasing both tidal volumes and respiratory rate. Around 15mins into surgery, noted EtCO2 rose to 60, T 40+, SBP 170, HR 110. Surgeons are halfway dissecting gallbladder. Your preliminary diagnosis is malignant hyperthermia.",
+       "q": "List 3 differentials for this presentation (10%). · Describe in detail your management of the patient until transfer out of OT (90%)."
+      },
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 20 year old is admitted to the Emergency Department having been involved in a road traffic accident. His Glasgow Coma Score (GCS) is 12. He has a closed fracture of his left femur. No other injuries are evident. A CT scan of his head has revealed a right subdural haematoma, and it has been agreed to transfer him to another hospital with neurosurgical support located 20min away.",
+       "q": "What are your clinical priorities prior to transfer of this patient? (50%) · What are the indications for intubation and ventilation prior to transfer following a brain injury of this nature? (40%) · Who should accompany this patient for transfer to the neurosurgical unit? (10%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "You are called to review a 27-year-old male in PACU for seizure. He is a known epileptic who just underwent post-tibial fixation under GA following a road traffic accident one hour ago.",
+       "q": "What are the perioperative concerns for the anaesthetist managing a patient with epilepsy (30%)? · Outline your initial management of this patient (40%). · Define convulsive status epilepticus (10%). · 30 minutes after your initial management, the patient was still having seizures. What would be your subsequent management be (20%)?"
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 60-year-old man is having an elective knee arthroscopy under GA with a supraglottic airway device in-situ. Halfway through surgery, his saturations suddenly dropped to 88%, and you noted significant amount of yellowish fluid coming out from his oral cavity. You suspect aspiration.",
+       "q": "Describe your immediate management of this patient (50%). · List the respiratory complications which he might develop in the next 48 hours (10%). · Describe the strategies available to reduce the risk and impact of aspiration of gastric contents for patients undergoing surgery with a supraglottic airway device (40%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "",
+       "q": "Describe the features you require of a transport ventilator for a patient with severe ventilator-dependent acute respiratory distress syndrome."
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "",
+       "q": "What are the advantages and disadvantages of low flow anaesthesia (30%)? · Describe how a circle system should be checked before each anaesthetic? (40%) · What other components of the anaesthetic work-station must be checked before each anaesthetic? (20%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekend",
+     "dur": "3h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "",
+       "q": "Outline the anaesthetic concerns associated with elective endovascular repair of infra-renal abdominal aortic aneurysm (EVAR) (50%). · Discuss the factors favouring monitored anaesthesia care (MAC) as the choice of anaesthesia for EVAR (50%)."
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "A 20-year-old man with recurrent pneumothorax and persistent air leak is scheduled for video-assisted thoracoscopic pleurodesis. Intraoperatively, while the patient is on one-lung ventilation, the oxygen saturation falls to 80%.",
+       "q": "Outline the considerations involved in induction of anaesthesia in a patient with persistent air leak (50%). · Describe your immediate management (50%)."
+      },
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "Intensive care patients may be at risk of ventilator associated pneumonia (VAP).",
+       "q": "Describe the likely etiology of, and risk factors for, VAP (50%). · Outline prevention strategies that reduce the incidence of VAP in ICU patients (50%)."
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "A 75 year old man has terminal prostate cancer with multiple metastases. A metastatic lesion at L5 is causing severe back pain but no neurological symptoms or signs. Modified release Morphine 60mg twice daily has marginally reduced the pain but caused nausea and sedation.",
+       "q": "Describe your management plan for this patient's current symptoms."
+      },
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "A one day old term neonate is admitted to your paediatric intensive care unit. A congenital diaphragmatic hernia has been diagnosed. The baby is already intubated and receiving artificial ventilation. Patient is scheduled for repair of congenital diaphragmatic hernia the following day.",
+       "q": "How would you optimise this patient before surgery (50%)? · Outline your anaesthesia considerations (50%)."
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "A G1P0 36 year old patient with a BMI of 55 kg/m2 presents in the high risk anaesthetic antenatal assessment clinic at 34 weeks gestation. She is hoping to have a normal delivery.",
+       "q": "Which specific points do you need to elicit from the anaesthetic history and examination (25%)? · List down specific obstetric risks associated with a raised BMI in pregnancy (25%)? · What would you need to communicate to the patient during your consult (50%)?"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 3,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 63-year-old man is scheduled for carotid endarterectomy 10 days after having suffering a cerebrovascular accident.",
+       "q": "What are the advantages and disadvantages of performing the procedure using a local anaesthetic technique (40%)? · How can his risk of a further cerebrovascular accident perioperatively be minimized (40%)? · What other specific postoperative complications may occur (20%)?"
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "You are asked to evaluate a 35-year-old patient who has been scheduled for mediastinoscopy to biopsy a symptomatic anterior mediastinal mass.",
+       "q": "Discuss the features specific to this condition that need to be considered when planning an anaesthetic for this patient (50%). · Describe how you may need to adapt your anaesthetic plan in response to each of these features (50%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 40 year old man with spontaneous pontine infarct has no evidence of brainstem activity and is listed for organ donation.",
+       "q": "Outline the pathophysiological effects of brainstem death (50%). · Describe your management of a brain dead patient for organ donation in the ICU setting (50%)."
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "A 55-year-old man underwent a right sided open thoracotomy for lung cancer. Six months following surgery, he still complains of pain over the wound.",
+       "q": "Define chronic postsurgical pain (30%). · Outline the interventions that may be useful in reducing the transition of acute to chronic postsurgical pain (70%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "A 30 kg 5 year old boy is scheduled for tonsillectomy and adenoidectomy. Later in the night, the ENT surgeon informs you the above child has post-tonsillectomy bleeding and requires surgery.",
+       "q": "Highlight the important issues in the anaesthesia management of this patient (50%). · Outline your anaesthesia management for the above child who now presents for haemostasis of post-tonsillectomy bleeding. (50%)"
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "35-year-old pregnant lady at 32th week of pregnancy presented for Caesarean section under general anaesthesia. She was diagnosed to have cerebellar arteriovenous malformation (AVM) at 16th week of pregnancy. At 28th week, there was bleeding from AVM rupture which was managed conservatively. She is planned for early endovascular embolization after the delivery. The surgery finished in one hour but patient failed to wake up.",
+       "q": "How are you going to prepare this patient for the Caesarean section (30%)? · Describe how you would conduct your anaesthesia (30%). · What are the causes and how are you going to approach to this problem (40%)?"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 45-year-old woman presents with acute subarachnoid haemorrhage caused by a left middle cerebral artery aneurysm. She has well controlled chronic hypertension and hyperlipidaemia. She is sleepy but arousable and able to answer questions coherently. Her heart rate is 70 bpm, blood pressure 130/80 mmHg and SpO2 98% on room air. Her neurologic examination reveals no neurologic deficits. The next day, she undergoes surgical clipping of the aneurysm.",
+       "q": "Describe a clinical grading system of acute subarachnoid haemorrhage. What is her clinical grading (20%)? · Outline your pre-anaesthesia evaluation of this patient (35%). · What are your anaesthesia management strategies to prevent aneurysmal rebleeding (45%)?"
+      },
+      {
+       "tag": "RA/Anatomy",
+       "color": "#a8541f",
+       "stem": "A patient with progressive Parkinson's disease presents for removal of an ulnar shaft plate and screw implant which is causing pain. The patient is cognitively intact, but wheelchair bound. The patient and her family believe that the general anaesthesia she received 5 years ago when she had her ulnar bone fracture following a fall was the cause of her rapid progression of her Parkinson's disease.",
+       "q": "At the preoperative visit, what are the relevant points you would discuss with the patient regarding the anaesthesia options (30%)? · What are the possible regional techniques that can be used? Justify your recommended choice for her. (30%) · Describe the anatomy of the brachial plexus and the nerves that will need to be blocked for this surgery to proceed. (You may illustrate your answer with a line diagram.) (40%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "A 60-year-old man presents with haemoptysis. He is a chronic smoker with known emphysema. Chest X-ray shows a mass lesion in the right lower lobe and he is scheduled for flexible bronchoscopy and endobronchial tumour biopsy, under monitored anaesthesia care in the endoscopy suite of your hospital.",
+       "q": "What are the factors that increase risk of perioperative respiratory complications in this case (30%)? · What preoperative and intraoperative measures would you take to prevent hypoxia during the procedure (70%)?"
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "A 55-year-old lady with rheumatoid arthritis scheduled for elective right total hip replacement. Laboratory test revealed microcytic and hypochromic anaemia with haemoglobin of 9g/dl.",
+       "q": "Outline your major concerns for this patient in your preoperative anaesthetic assessment (40%). · What are the possible causes (20%)? · Outline your strategies to reduce perioperative allogeneic blood transfusion in this patient (40%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekend",
+     "dur": "3h",
+     "essays": [
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "You see a 28-year-old lady at the pre-admission clinic who is 32 weeks pregnant. She weighs 150kg and has gestational diabetes. She hopes to have a normal vaginal delivery at term.",
+       "q": "What are the issues you would discuss with her during the appointment (50%)? · What would you recommend for her management when she goes in to labour (50%)?"
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A 70 kg, 30 year-old man presents with burns following a house fire. The burns are confined to his torso and upper limbs, but exclude his head and neck. His burns are estimated at 40% of his body surface area.",
+       "q": "State the Parkland formula used for burns fluid resuscitation. (10%) · What volume of which fluid will he require in the first 8 hours after injury? (10%) · What additional fluids in excess of the volume predicted in (B) might he require and why (25%)? · What monitoring and investigations are required in the first 24 hours (45%)?"
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A 50 year old pedestrian is brought to the EMD after a motor vehicle accident. He is hypotensive with a positive FAST and requires an emergency laparotomy.",
+       "q": "Explain the coagulation abnormalities you would expect in this patient (50%). · Describe your strategies for the management of coagulopathy in this patient (50%)."
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "Obstetric patient went for LSCS under GA, was extubated in OT once she opened her eyes. On arrival in PACU, SpO2 100%, however 15min later desaturated to SpO2 80% on FiO2 50%. RR 39, rapid shallow breathing, drowsy but following commands. You also note her limb movements to be jerky.",
+       "q": "Discuss the possible causes of desaturation in this patient (40%). · Describe your immediate management of the patient (60%)."
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 46 year old male patient is scheduled for elective tracheostomy for prolonged intubation after severe head injury 1 week ago.",
+       "q": "Discuss the considerations and options regarding the planned procedure (50%). · Describe your anaesthetic management specific to the tracheostomy procedure (50%)."
+      },
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "A 61-year-old man presents with a large haematemesis. He has known alcoholic liver disease and sedation is requested for an urgent gastroscopy. Towards the end of the procedure, the systolic blood pressure drops from 140 mmHg to 80 mmHg systolic, and oxygen saturation drops from 95% to 88%.",
+       "q": "Outline your peri-procedural concerns (60%). · Describe your subsequent management (40%)."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 4,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 55-year-old 50kg woman is scheduled for embolization and coiling of an anterior communicating artery aneurysm in the radiology suite. She presented with headache two weeks ago and her past health was unremarkable. You have performed a full preoperative assessment.",
+       "q": "What are your major considerations for this patient undergoing the interventional procedure (30%)? · How would you address these concerns in your preoperative preparation (70%)?"
+      },
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "During the embolization, the blood pressure suddenly goes up to 190/100mmHg. The neurosurgeon informs you there is significant extravasation of contrast and decides to proceed to emergency craniotomy for clot evacuation and surgical clipping. After opening of the dura, the blood pressure drops to 89/40 mmHg. There is significant bleeding of 3 liters of blood obscuring the surgical field.",
+       "q": "Outline your immediate management (20%) and your preparation for the transfer of this patient to the operating theatre (30%). · How would you manage the situation (50%)?"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "You are asked to anaesthetise a 55-year-old man with schizophrenia for his first electroconvulsive therapy (ECT). He has longstanding hypertension and hyperlipidaemia. After the first ECT, the psychiatrist requests for a longer duration of seizure for the subsequent ECTs.",
+       "q": "Outline the physiological effects expected during ECT (25%). · Discuss your anaesthetic considerations and management. (60%) · Explain how you would alter your technique (15%)."
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "An 80-year-old male with cataract is scheduled for elective phacoemulsification and intraocular lens implantation. He is otherwise healthy, but his last operation for total knee replacement two years ago under general anaesthesia was complicated by postoperative confusion, becoming more forgetful with difficulty in concentrating. A neurologist diagnosed him to have suffered from \"postoperative cognitive dysfunction\" and advised him to avoid general anaesthesia in the future. He prefers the surgery to be done under regional anaesthesia. Just before the commencement of surgery, the patient becomes very anxious and the surgeon requests you to provide sedation.",
+       "q": "Discuss the pros and cons of general anaesthesia vs. regional anaesthesia for cataract surgery in this patient with a history of postoperative cognitive dysfunction after general anaesthesia (50%). · Compare and contrast peribulbar block with topical anaesthesia for cataract surgery. Describe how you would provide sedation for this patient (50%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "A 30-year-old woman is seen at the preoperative evaluation clinic 2 weeks prior to her scheduled laparoscopic resection of right adrenal mass. Her initial presentation was 6-month history of hypertension and paroxysmal episodes of palpitations, dizziness, blurring of vision and headache.",
+       "q": "Describe your pre-operative management of this patient's medical condition (40%). · List the main concerns during the intra-operative period and outline your management to address these concerns (60%)."
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "A 69-year-old man with a history of type 2 diabetes mellitus is referred for preoperative evaluation for laparoscopic cholecystectomy.",
+       "q": "What are the findings in the preoperative assessment (history, physical examination and investigation) that would suggest presence of autonomic neuropathy. (40%) · Describe the perioperative issues that may occur due to the presence of autonomic neuropathy and how these can be mitigated? (60%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "You are asked to assess a 24-year-old male who has been admitted to the Emergency Department with 30% burns from a house fire.",
+       "q": "What would lead you to suspect significant inhalational injury? (40%) · Which investigations would you use to assess the severity of the inhalational injury and what are the likely findings? (30%) · List the indications for early tracheal intubation to secure the airway. (20%) · How do burns injuries influence the use of suxamethonium? (10%)"
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 55 year old man with significant smoking history of 50 pack year presented with fever, sore throat, and stridor. A diagnosis of peritonsillar abscess was made, and he underwent drainage successfully in EOT. You plan to extubate patient at the end of surgery.",
+       "q": "What airway, respiratory and cardiovascular problems may follow the removal of a tracheal tube? (50%) · List the patient and surgical factors that may contribute to a high-risk extubation. (30%) · Outline the strategies used to prevent airway complications if a difficult extubation is anticipated in the operating theatre (20%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "You are tasked by your HOD to review the impact of a hospital-wide shortage of Remifentanil, and to rationalise its use for the next 2 weeks until new stocks come in.",
+       "q": "Outline the pharmacological properties of remifentanil. (40%) · Describe how these properties facilitate its use in Awake fibreoptic intubation (20%), Spine surgery (20%), and Neurosurgery (20%)."
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "A 63 year old man has had an elective laparotomy and removal of intestinal tumour in an enhanced recovery setting. He has had a single shot spinal with an intrathecal (IT) opioid.",
+       "q": "Describe the mechanism of action of IT opioids (30%). · List the principal side effects of IT opioids. (30%) · What factors may increase the risk of postoperative respiratory depression following administration of IT opioids (40%)?"
+      }
+     ]
+    },
+    {
+     "label": "Weekend",
+     "dur": "3h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 60 year old patient with a pacemaker develops severe bradycardia with circulatory compromise and no pacemaker response.",
+       "q": "List the possible indications for the insertion of cardiac implantable electronic devices (30%). · What factors would you check pre-operatively in a patient with these types of devices (30%)? · What specific therapies should you consider in this situation (40%)?"
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "A 20 year old full-time national serviceman presented for endoscopic thoracic sympathectomy for treatment of sweaty palms.",
+       "q": "Outline the general (30%) and airway (20%) implications of managing a patient for ETS under general anaesthesia. · What are the most likely problems to be encountered in the intraoperative (30%) and postoperative period (20%)?"
+      },
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 68-year-old man is referred to the neuro-intensive care unit with suspected Guillain-Barré syndrome.",
+       "q": "What is Guillain-Barré syndrome and what are its causes (20%)? · List the clinical features and investigations/findings that can be used to aid the diagnosis (30%). · What are the problems associated with anaesthetising a patient with Guillain-Barré syndrome (50%)?"
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "A 35 year-old female patient presents to pain clinic for follow-up of Complex Regional Pain Syndrome (CRPS) after a road traffic accident involving left radial-ulna fracture.",
+       "q": "List the signs and symptoms of Complex Regional Pain Syndrome (CRPS) (40%). · What other features, apart from signs and symptoms, are essential for the diagnosis of CRPS (20%)? · What are the available treatments for CRPS (40%)?"
+      },
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "A 2-year-old boy presents for emergency toilet and suture of a forehead laceration. He has a runny nose and cough that started this morning, and you hear a murmur on auscultation of his chest.",
+       "q": "What features in the history and physical examination would differentiate between an innocent and pathological murmur (50%)? · What features in the history and physical examination may suggest increased risks of adverse respiratory events if this child undergoes general anaesthesia (50%)?"
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "A 33-week primigravida women is in labour. She has Graves' disease, small goitre taking carbimazole. She is stable and clinically euthyroid.",
+       "q": "Outline the physiological changes of thyroid associated with pregnancy (40%). · Describe the broad principles in management of Graves' disease in pregnancy (60%)."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 5,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 70-year-old woman with aortic stenosis presents for an open aortic valve replacement (AVR).",
+       "q": "What is the pathophysiology of worsening aortic stenosis? (30%) · Which specific cardiac investigations may be used in assessing the severity of this woman's disease? (10%) · Give values for the peak aortic flow velocity, mean pressure gradient and valve area that would indicate that this woman has severe aortic stenosis. (10%) · What would be your haemodynamic goals for the perioperative management of this patient? (50%)"
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "A 45-year-old 70 kg man with 20 years history of ankylosing spondylitis presents to the preoperative clinic 2 weeks prior to a left total hip replacement. He has severe limitation of spine mobility with minimal cervical spine movement. He is currently taking ibuprofen, tramadol and famotidine. During cementing of the femoral prosthesis you notice a sudden drop of the patient's blood pressure to 70/45mmHg.",
+       "q": "Discuss your anaesthetic plan, including your plan for postoperative pain control (50%). · What are your differential diagnoses (10%)? · Describe how you would manage this situation (40%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 72-year-old male is admitted to the Surgical Intensive Care Unit after undergoing emergency laparotomy for perforated ischaemic small bowel with gross intraabdominal soilage. Due to significant bowel oedema, vacuum-assisted abdominal closure is performed. On the morning of the second postoperative day, he is observed to intermittently hyperventilate and attempt to pull out the endotracheal tube despite being restrained. He does not maintain eye contact and does not follow simple bedside commands. You make a diagnosis of ICU delirium.",
+       "q": "How would you assess the patient for the possible contributing causes for his delirium (50%)? · Describe, with reasons, your management of this patient's delirium (50%)."
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "You are asked to anaesthetise an 80-year-old lady with dementia and a fractured neck of femur. She is on no other medication.",
+       "q": "What are the issues in assessing pain in this patient? (50%) · What would you prescribe for postoperative analgesia and why? (50%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "A 30-year-old parturient, at 38 weeks gestation of her first pregnancy (gravida 1, para 0), experienced spontaneous onset of contractions. Her pregnancy was unremarkable. An epidural was requested for labour analgesia. A gush of cerebrospinal fluid was evident upon insertion of the Tuohy needle, indicating accidental dural puncture. The patient complained of severe headache on the following day of delivery.",
+       "q": "Discuss the strategies for further anaesthetic management in this patient (50%). · List the differential diagnosis of postpartum headache (10%). · What are the pathophysiology and characteristics of the post dural puncture headache (40%)?"
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 70-year-old man undergoes an elective robotic laparoscopic prostatectomy under general anaesthesia. He has well controlled chronic hypertension and a 40 pack-years history of smoking cigarettes. One hour into the procedure, the airway pressure alarm on the ventilator sounds and shows a reading of 40 cmH2O.",
+       "q": "List the possible causes of this airway pressure alarm and reading. (40%) · Describe your step-by-step management of this situation. (60%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A patient scheduled for trans-sphenoidal pituitary surgery is noticed to have greater than normal urine output.",
+       "q": "How would you determine if this patient has diabetes insipidus? (30%) · How would you manage diabetes insipidus in the perioperative period? (70%)"
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "You are called to assist intubation at the emergency room for a 20-year-old victim of a road traffic accident because of a decrease in the Glasgow Coma Scale and desaturation. He is suffering from isolated head injury, fracture maxilla and suspected cervical spine injury.",
+       "q": "Discuss the pros and cons of using the video laryngoscope in the airway management for this patient."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "",
+       "q": "List the indications for Endovascular (or Mechanical) Thrombectomy (EVT) in patients presenting with acute stroke (30%). · Outline the anaesthetic challenges (30%) and goals (40%) when providing general anaesthesia for a patient who requires EVT."
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "",
+       "q": "Define the terms 'train-of-four' (TOF) and 'double burst stimulation' (DBS) with respect to a peripheral nerve stimulator (PNS) (30%). · Evaluate the use of a quantitative peripheral nerve stimulator when using neuromuscular blocking agents in anaesthetic practice. (70%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekend",
+     "dur": "3h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "",
+       "q": "List the branches of the coronary arteries and the myocardial territories and structures they supply. · Outline the electrocardiograph (ECG) leads that correspond to the blood supply. · Describe the ECG changes in a non-ST-elevation myocardial infarct (NSTEMI)."
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "A 60-year-old lung cancer patient is planned to undergo an open thoracotomy, involving possible rib resection.",
+       "q": "List the regional techniques available for post-operative pain management (30%). · Justify your choice of regional technique for this patient (70%)."
+      },
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 60 year old male was admitted to the ICU 10 days previously with septic shock and acute lung injury following anastamotic dehiscence of an anterior colonic resection. He was recovering well on the HDU until 48 hours ago when his condition deteriorated with abdominal distension and diarrhoea. It is suspected that he has developed a new systemic inflammatory response syndrome.",
+       "q": "How should the patient be assessed clinically? (60%) · List the key initial investigations in this patient? (40%)"
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "A woman who is 10 weeks pregnant presents to the Emergency Department with a closed tibial shaft fracture.",
+       "q": "Classify the drugs used in pain management according to their safety to use at this stage of pregnancy. (40%) · What are the options available for perioperative pain management for this patient? (30%) · What would you recommend? Justify your choice. (30%)"
+      },
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "Patient is a 38 year old female BW 55kg with Trisomy 21, is scheduled for dental rehabilitation and extractions under GA. She had PDA ligated in infancy and is on oral thyroxine for congenital hypothyroidism. During intubation you are unable to pass the endotracheal tube, despite downsizing to #6.0 cuffed ETT.",
+       "q": "Outline your anaesthetic concerns in the management of this patient (50%). · Describe your subsequent management of the airway (50%)."
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "A 37 week pregnant patient with 3 previous Caesarean sections presents at the emergency department. Her BP is 75/40 and heart rate is 135. The working diagnosis is uterine rupture and the patient is on the way to the operating room for an immediate Caesarean section.",
+       "q": "Describe your preparations prior to the arrival of the patient."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 6,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 65-year-old gentleman with a DDDR pacemaker presents for lap cholecystectomy.",
+       "q": "Explain the NASPE/BPEG Generic (NBG) pacemaker classification system. · Describe the assessment and preoperative management of this DDDR device."
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "Your patient has been in the PACU for an hour. The nurse asks you to change the discharge criteria so the patient can be discharged to the ward.",
+       "q": "Describe your responsibilities as the anaesthetist before you leave your patient in the post-anaesthesia care unit (PACU). (50%) · Discuss your decision-making process following this request. (50%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 73-year-old lady is sent to your ICU following successful ROSC.",
+       "q": "What are the physiological benefits of induced hypothermia following successful resuscitation from cardiac arrest? (50%) · How can a patient be cooled in these circumstances? (20%) · What adverse effects may occur due to the use of induced hypothermia? (30%)"
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "An 80-year-old female is admitted following a road traffic accident. She has sustained multiple right sided rib fractures from the 6th to the 9th rib. She is known to have chronic obstructive pulmonary disease and renal impairment. Her team has referred her to the Pain Service for management of her severe pain.",
+       "q": "You are the Specialist covering the Pain service. Discuss your management of this patient."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "You have been called to attend a patient in ICU urgently because he has become agitated, hypertensive and acutely hypoxic. The patient is suffering from Guillain Barré syndrome and has a tracheostomy. He is being maintained on 30% oxygen, 8cm H2O CPAP. The percutaneous tracheostomy was performed 18 hours ago without complication.",
+       "q": "List possible causes for his acute hypoxia. (30%) · Describe your immediate assessment. (70%)"
+      },
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "You are called to the Emergency Department to see a 2 year-old child who presents with a 4-hour history of high temperature and drowsiness. On examination there is prolonged capillary refill time and a non-blanching rash. A presumptive diagnosis of meningococcal septicaemia is made. After 15 minutes, the child remains shocked and is unresponsive to fluid.",
+       "q": "What is the most likely pathophysiological derangement in this child's circulation (20%). · How would you manage this child in ICU (80%)?"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "You are asked to attend to a patient at the PACU who has just completed a 3 hour-laparoscopic resection of myoma under general anaesthesia. You arrive to find the nurse attempting bag mask ventilation for the patient. The patient is drowsy and has weak respiratory efforts. Her stat vitals on the monitor read: BP 149/99 mmHg, HR 110/min, SpO2 85%.",
+       "q": "Outline the possible causes for this scenario. (30%) · Describe your immediate management including the steps to delineate the causes. (70%)"
+      },
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 60-year-old lady with left breast cancer is scheduled for elective left mastectomy. She had a deep brain stimulator (DBS) placed for advanced Parkinson's disease three years ago. The implantable pulse generator (IPG) is located under her right clavicle. The patient was given general anaesthesia and was intubated for the surgery. The surgery went uneventful and lasted for 2 hours. However, 30 minutes after the end of anaesthesia, the patient remained unarousable and could not be extubated.",
+       "q": "What are the anaesthetic implications associated with Parkinson's disease (30%)? · What perioperative precautions are required in relation to deep brain stimulator (20%)? · Describe the possible causes and outline your management (50%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "A 13-year-old boy with Marfan's syndrome and thoracolumbar scoliosis is scheduled for posterior spinal fusion and instrumentation of T2 to L3.",
+       "q": "What are your anaesthetic considerations for this patient with reference to the Marfan's syndrome (50%)? · Discuss your options for blood conservation in this patient (50%)."
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "Surgery lasted 9 hours with 2 liters blood loss. He was transfused with 3 units of red blood cells and Hb was 8.6 g/dl at the end of surgery. He woke up uneventfully, was extubated and transferred to the recovery room. However, 1 hour later he complained to the nurse about blurred vision.",
+       "q": "What are your differential diagnoses (50%)? · Discuss your management (50%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekend",
+     "dur": "3h",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 50-year-old man complains of blurred vision of his left eye upon return to the ward following a L3 to S1 Transforaminal Lumbar Interbody Fusion which lasted 8 hours.",
+       "q": "Outline the mechanisms that may contribute to visual loss associated with spinal surgery in the prone position. (50%) · Describe strategies that may reduce the risk of visual loss in this situation. (50%)"
+      },
+      {
+       "tag": "RA/Anatomy",
+       "color": "#a8541f",
+       "stem": "A 65-year-old patient with type 2 diabetes is unable to dorsiflex her left foot 24 hours after undergoing a left total knee joint replacement under spinal anaesthesia and a left femoral nerve block.",
+       "q": "Discuss the possible causes of this problem. (50%) · Outline how you would manage this situation. (50%)"
+      },
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "",
+       "q": "Discuss the necessary conditions and preparations before an obese patient is accepted for haemorrhoidectomy as day case surgery (50%). · Discuss the anaesthetic management and discharge plan that you would offer (50%)."
+      },
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "You are asked to sedate a frightened adult patient for insertion of dental implants in an outpatient dental chair.",
+       "q": "What are the four levels of sedation in the American Society of Anesthesiologists (ASA) continuum of sedation and the clinical features seen at each level (40%)? · Outline drugs that may be used and their methods of administration, when providing sedation for this patient (30%). · What are the best practice principles for providing safe sedation to this patient (30%)?"
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "A 60-year-old lady with left breast cancer is scheduled for elective left mastectomy. She had a deep brain stimulator (DBS) placed for advanced Parkinson's disease three years ago. The implantable pulse generator (IPG) is located under her right clavicle. The patient was given general anaesthesia and was intubated for the surgery. The surgery went uneventful and lasted for 2 hours. However, 30 minutes after the end of anaesthesia, the patient remained unarousable and could not be extubated.",
+       "q": "Describe the possible causes for his depressed GCS state. · Outline your management for this patient."
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A 5-year-old boy weighing 18 kg, fell from a bicycle this morning. He sustained a closed right supracondylar fracture and requires an emergency closed reduction and percutaneous pinning. He has a history of mild asthma and eczema. His last meal was 6 hours ago. Following intravenous administration of propofol and cefazolin, he develops noisy breathing as the laryngeal mask is being inserted. His SpO2 decreases from 100% to 88%, systolic BP decreases from 90 to 60 mmHg. His ECG monitoring shows sinus rhythm, HR 145 bpm. Scattered rhonchi are heard over both lungs.",
+       "q": "What are the differential diagnoses? (30%) · Describe your management of this patient? (70%)"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 7,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 75 years old patient is undergoing CABG on CPB, under moderate hypothermia. Patient subsequently develops aortic dissection/tear, decision made for DHCA to repair.",
+       "q": "List the parameters measured while on CPB, including POCT labs (40%). · Briefly describe the rationale behind and pathophysiology of DHCA (60%)."
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "A 2-year-old girl has been hospitalized for 10 days due to chest infection. She has been treated with antibiotics. Unfortunately, the infection is complicated with left pleural effusion and empyema. She is scheduled for thoracoscopic debridement.",
+       "q": "What are your concerns (30%)? · Discuss your preoperative preparation (30%). · Justify your choice of airway device for single lung ventilation in this child (40%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 75-year-old female is admitted to the surgical high dependency ward after undergoing total hysterectomy and bilateral salpingo-oophorectomy for the treatment of ovarian malignancy. She has a urinary catheter in situ and remains oliguric for 4 hours.",
+       "q": "What is the definition of oliguria? (10%) · Describe the causes of oliguria in this patient. (50%) · How do you differentiate the causes of oliguria? (40%)"
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "A 35 years old G2P1 term parturient is admitted to labour ward.",
+       "q": "Describe the pain pathways associated with the 1st and 2nd stages of labour. (40%) · Explain how and why the nature of pain experienced changes as labour progresses. (20%) · Why is it essential to achieve a higher dermatomal level of regional block for Caesarean section than for analgesia in labour. (20%) · Why do you sometimes observe bradycardia during regional anaesthesia for Caesarean section? (10%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "A 4-month-old infant has retinopathy of prematurity and is scheduled to undergo examination under anaesthesia with potential laser therapy in bilateral eyes. She was born at 28 weeks gestation.",
+       "q": "What are your concerns regarding providing anaesthesia for this patient? (50%) · Briefly describe your anaesthetic management (50%)."
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "",
+       "q": "List the specific problems and risks associated with a twin pregnancy. (50%) · What are the important considerations and options when planning the anaesthetic management for the delivery of twins around term? (50%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 30-year-old male motorcyclist is brought to the Emergency Department with head injuries following a motor vehicular collision. On examination, he is unconscious with a Glasgow Coma Score of 5 (E1V1M3) and not moving his right arm and leg. His eye examination reveals a 6 mm left pupil, non-reactive to light, and a 3 mm right pupil, reactive to light. An urgent CT scan done reveals an acute left subdural haematoma with mass effect and midline shift. He is sent to the operating theatre for surgical evacuation of the subdural haematoma and insertion of intracranial pressure monitor.",
+       "q": "Briefly explain the cause and neurologic basis for the neurological findings on clinical examination. (40%) · Explain the role of an intracranial pressure monitor in the postoperative management in the intensive care unit. (60%)"
+      },
+      {
+       "tag": "RA/Anatomy",
+       "color": "#a8541f",
+       "stem": "A 67 year-old gentleman with end-stage renal failure is scheduled for AVF creation under regional anaesthesia.",
+       "q": "Outline the anatomy relevant to performing a brachial plexus block using the axillary approach. (70%) · Describe the limitations of this block when used for upper limb surgery. (30%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "An 80-year-old man, 55kg, is scheduled for CT guided radiofrequency ablation of renal tumours, to be done in the radiology suite. He has dementia. While he can provide his name, he is often not oriented to place and has poor short-term memory. He is able to walk unaided at home but does not go out independently into the community. You have been asked to provide anaesthesia support.",
+       "q": "Describe your considerations in the anaesthetic management of this patient."
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "A 35-year-old woman presents for splenectomy for idiopathic/immune thrombocytopenic purpura which is not controlled with medical management.",
+       "q": "Which vaccinations should this patient receive and when should they be given? (20%) · List three immunological functions of the spleen in the adult. (20%) · What are the peri-operative considerations for this patient? (60%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekend",
+     "dur": "3h",
+     "essays": [
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "A 52-year-old man has been admitted for a tympanoplasty on the morning of surgery. He is a longstanding insulin dependent diabetic who has failed to attend the pre-operative assessment clinic.",
+       "q": "What specific issues does this patient's diabetes present? (30%) · How should his diabetes be managed whilst in hospital? (30%) · What are the anaesthetic considerations for tympanoplasty? (40%)"
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "",
+       "q": "Discuss the options for anticoagulation management in the perioperative period for a patient taking warfarin for atrial fibrillation who requires a laparotomy for ischaemic bowel."
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A 30-year-old woman at full term collapses in early labour and is unresponsive. A presumptive diagnosis of amniotic fluid embolism is made.",
+       "q": "List the likely causes of her collapse (30%). · Describe the management of this patient (70%)."
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 58 year-old man presenting for rigid bronchoscopy to remove foreign body in his right main bronchus under general anaesthesia.",
+       "q": "Discuss the options of intraoperative management of anaesthesia and ventilation for this patient."
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "You are asked to anaesthetise a 75-year-old man for an urgent DC cardioversion on the Coronary Care Unit (CCU). He has a broad complex tachycardia of 150 beats/minute, but is maintaining a systolic blood pressure of 70 mmHg and has a Glasgow Coma Score of 13/15.",
+       "q": "List the advantages and disadvantages of providing anaesthesia in the CCU. (30%) · What factors must be taken into consideration when choosing an anaesthetic technique for this patient? (30%) · What complications may occur as a consequence of the procedure? (40%)"
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "A 50-year-old man with hypertrophic obstructive cardiomyopathy (HOCM) presents with acute appendicitis and the general surgeons want to perform a laparoscopic appendectomy on him. Patients with HOCM may have implantable cardiac defibrillators (ICD).",
+       "q": "Outline your pre-operative assessment, including investigations, and your expected findings (50%). · Outline how you would manage the device if this patient has been implanted with an ICD (50%)."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 8,
+   "total": 21,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 79-year-old man presents to the Accident and Emergency (A&E) department with abdominal pain and diagnosis of a leaking abdominal aneurysm is made. He is conscious and orientated with BP of 90/60 mmHg and heart rate of 120/minute (sinus rhythm). He gives a past history of hypertension, and mild chronic renal impairment. The surgeons wish to operate as soon as possible. Twenty-four hours later in the Intensive Care Unit you are asked to review the patient for poor urine output. Abdominal compartment syndrome is suspected.",
+       "q": "Describe the initial management of this patient in the A&E department. · What are the principles of management at induction of general anaesthesia? · Outline the pathophysiology and manifestations of abdominal compartment syndrome."
+      },
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 45 year old man is admitted directly from the Emergency Department to the Intensive Care Unit with oliguria and respiratory distress presumed to be secondary to severe acute pancreatitis.",
+       "q": "What assessments and investigations might be used to support this diagnosis and help grade the severity? (30%) · Outline your treatment plan for the first 48 hours. (50%) · What is the expected mortality and the main cause of death in severe acute pancreatitis? (10%)"
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "A 40-year-old previously healthy male motorcyclist was involved in a road traffic accident 1 week ago and suffered multiple injuries, including multiple fractured ribs on the right, with right pneumothorax managed with a chest tube, bilateral lung contusions and a liver laceration for which he had undergone laparotomy. He is currently still sedated, intubated and ventilated in the intensive care unit as there is a persistent leak from a bronchopleural fistula on the right. The surgeon has scheduled him for right thoracotomy and lung resection. He remains on spinal nursing as the cervical spine integrity has yet to be fully evaluated radiologically.",
+       "q": "What are the options for lung isolation? (30%) · Discuss the factors in this patient that will influence your choice of method for lung isolation. (70%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "A 45-year-old patient is reviewed in the preoperative assessment clinic prior to surgery for excision of a phaeochromocytoma.",
+       "q": "What are the characteristic symptoms (15%) and signs (30%) of a phaeochromocytoma? · Which specific biochemical (10%) and radiological (5%) investigations might confirm the diagnosis of a phaeochromocytoma? · What therapeutic options are available to optimise the cardiovascular system prior to surgery? (40%)"
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A 70 kg adult presents on your list for a routine laparotomy. Following induction of anaesthesia and the administration of a full dose of a non-depolarising muscle relaxant, you discover that you cannot intubate him. A laryngeal mask airway (LMA) is not helpful.",
+       "q": "Give a detailed account of how you would proceed to achieve oxygenation in this patient."
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A 30 year-old woman who had history of depression and Grave's disease is scheduled to have total thyroidectomy. She was euthyroid on preoperative laboratory test. She was intubated and anaesthetized by TIVA technique without muscle relaxant given. 30 minutes after operation started, the end tidal CO2 raised to 60mmHg and body temperature elevated to 38.2 degrees C.",
+       "q": "What are your differential diagnosis? (30%) · If this is a thyroid storm, how will you manage the patient? (70%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "A 7 year old boy who was born prematurely at 34 weeks had a strangulated left inguinal hernia two days ago which was reduced in the ward. He is scheduled for laparoscopic left inguinal hernia repair under general anaesthesia. His father is concerned with the potential hazardous effects of anaesthesia on the child's brain development.",
+       "q": "What is the current evidence for anaesthesia induced neurotoxicity? (50%) · How would you counsel the father regarding his concerns about the anaesthesia for his son? (50%)"
+      },
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "A 5-year-old child is scheduled for squint surgery as a day case.",
+       "q": "What are the anaesthetic considerations? (70%) · What is your discharge criteria? (30%)"
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "An unbooked 32-year-old parturient G1P0 is admitted at 36 weeks of gestation in active labour with her foetus in a breech position. She needs an emergency lower segment caesarean section, and she is keen for regional anaesthesia. However, her latest platelet count is only 79 x 10^9/L. You have given spinal anaesthesia for the patient and the baby has been delivered uneventfully. Fifteen minutes later, the uterus is still atonic despite the initial dose of oxytocin 5U.",
+       "q": "List the possible causes of her low platelet count. (20%) · How will you manage her preoperatively? (50%) · List the pharmacological agents that you would use to treat the atony and explain their mechanism of action. (30%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 19 year-old patient has suffered a complete transection of the spinal cord at the 6th cervical vertebral level due to a fall, he has no other injuries.",
+       "q": "Explain the sequence of neurological effects that may develop in the first three months following injury. (6 marks) · What disturbances of the cardiovascular (3 marks), respiratory (3 marks) and gastrointestinal systems (2 marks) may occur after three months? · List the advantages of choosing a regional anaesthetic technique if this patient is subsequently listed for lower limb surgery. (4 marks) · When, and why, may suxamethonium be contraindicated in this patient? (2 marks)"
+      },
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 45-year-old male with acromegaly presents for an elective trans-sphenoidal hypophysectomy.",
+       "q": "What is the cause of acromegaly in this patient? (10%) · List the clinical features of acromegaly, which are of relevance to the anaesthetist. (45%) · What other clinical presentations of a pituitary adenoma may be encountered? · How do the surgical requirements for this procedure influence the conduct of the anaesthesia? (45%)"
+      },
+      {
+       "tag": "RA/Anatomy",
+       "color": "#a8541f",
+       "stem": "",
+       "q": "What are the key nerves that must be blocked for effective analgesia in shoulder surgery (25%)? In performing an interscalene block, what are the possible neurological complications (25%), and how would you improve the safety of the procedure (50%)?"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "An 80-year-old man, 55kg, is scheduled for CT guided radiofrequency ablation of renal tumours, to be done in the radiology suite. He has dementia. While he can provide his name, he is often not oriented to place and has poor short-term memory. He is able to walk unaided at home but does not go out independently into the community. You have been asked to provide anaesthesia support.",
+       "q": "Brief describe your considerations related to the remote location (40%) and other factors (60%) in the anaesthetic management of this patient."
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "You were asked to see an 86-year-old man in the preoperative assessment clinic. He was scheduled for extended right hepatectomy for the treatment of hepatocellular carcinoma. He was a chronic smoker and was known to have diabetes mellitus, currently taking oral hypoglycaemic agents. He had a minor stroke two years ago with good recovery and he was able to manage his daily living activities independently. During the operation, the blood pressure drops from 120/85 to 60/40mmHg with a pulse rate of 96 beats/min.",
+       "q": "Outline your preoperative assessment for this patient. · Describe your anaesthetic management to minimize perioperative acute kidney injury in this patient. · How would you manage this situation?"
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "A 35-year-old woman is listed for a mastectomy and free-flap breast reconstruction for breast cancer.",
+       "q": "What are the causes of flap failure (3 marks) and what physiological goals are important for a healthy free flap outcome? (5 marks) · What are the important anaesthetic considerations for this type of surgery? (7 marks) · What specific monitoring of the free-flap is required post-operatively? (5 marks)"
+      }
+     ]
+    },
+    {
+     "label": "Weekend",
+     "dur": "3h",
+     "essays": [
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "",
+       "q": "List the main measures of fitness that are obtained by a cardio-pulmonary exercise test (CPET). (4 marks) · What abnormalities seen at the time of testing in a CPET may suggest cardio-respiratory disease? (4 marks) · When might CPET, using a bike, be impractical (3 marks) and how else can patients' functional capacity be assessed? (3 marks) · What scoring systems can help predict perioperative risk before major (non-cardiac) surgery? (6 marks)"
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A young healthy woman is undergoing knee arthroscopy under general anaesthesia. Ten minutes into the operation, you inject intravenously 5 mg morphine that was prepared by your trainee. Within one minute, blood pressure increases to 210/130 mmHg with sinus tachycardia of 140/min. You immediately check the opened ampoule in the drug tray and confirm wrong drug administration. You discover a 1 mg in 1 ml adrenaline ampoule which looks very similar to a 10 mg in 1 ml morphine ampoule.",
+       "q": "How would you treat the patient (50%)? · How would you prevent this from happening again in your hospital (50%)?"
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A 70-year-old man has undergone radical prostatectomy under general anaesthesia. On emergence he has crushing central chest pain, is restless, and has cold, clammy skin. His blood pressure is 90/50 mm Hg, pulse rate 110/minute and SpO2 is 95% on oxygen via a Hudson mask. A twelve-lead ECG shows widespread ST segment elevation across the anterior chest leads.",
+       "q": "Describe your immediate management. (50%) · What are the treatment priorities for this patient? (50%)"
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "",
+       "q": "List the anaesthetic factors that predispose to perioperative dental damage. (6 marks) · List the dental factors that predispose to perioperative dental damage. (4 marks) · You have anaesthetised a 22 year-old man and you notice a missing front tooth after intubation. What is your initial management of this situation? (6 marks) · How would you follow this patient up? (4 marks)"
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 60 year old man in the ICU requires a percutaneous tracheostomy to aid weaning from mechanical ventilation.",
+       "q": "Briefly describe the considerations in performing this procedure. Discuss the complications that may arise and how to minimise them."
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "",
+       "q": "What factors predispose to inadvertent intra-arterial (IA) drug injection that could lead to severe extremity injury? (35%) · Outline the possible intravascular mechanisms of injury. (15%) · What are the acute clinical features of inadvertent IA injection? (20%) · What is the early management of an acute IA injection injury? (30%)"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 9,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Weekday #1",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "You are called to the Emergency Department to assist in the management of a 55-year-old man who developed acute aortic regurgitation (AR) following a Stanford type A aortic dissection. His heart rate is 100 bpm, blood pressure is 150/100 mmHg and respiratory rate is 36 bpm. His pulse oximetry reading is 97% while breathing 10 L/min of oxygen via a face mask.",
+       "q": "What are the pathophysiological changes of acute AR? (50%) · Outline the initial management of this patient before his inter-hospital transfer for surgery. (50%)"
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "A 25 years old man has undergone video-assisted thoracotomy (VAT) to treat his recurrent left pneumothorax. You have put in a double lumen tube to facilitate one lung ventilation. Fifteen minutes into surgery, the high-pressure alarm on the ventilator goes off while the lower lung is still ventilating. You notice the ventilating pressure is doubled. You take a look at all the other monitors and find out the blood pressure also drops to 75/40mmHg.",
+       "q": "What are the differential diagnoses? · How would you manage this situation?"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #2",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "A 57-year-old patient is scheduled for resection of a colonic carcinoma in 3 weeks time. The haemoglobin is 10.1 g/dl at time of referral to the pre-assessment clinic.",
+       "q": "What intraoperative methods can be used to minimise allogeneic blood transfusion? (50%) · What are the additional preoperative preparations that must be made if this patient is a Jehovah's Witness (50%)?"
+      },
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 45-year-old man with a history of alcohol abuse and recent acute pancreatitis is admitted to the intensive care unit for inotropic and ventilatory support following a laparotomy to drain the pancreatic abscess. His body mass index is 18kg/m2.",
+       "q": "Justify the need for nutritional support in this patient and list the components of the nutritional requirement. (50%) · Outline the pros and cons of the options available to provide nutritional support to this patient. (50%)"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #3",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "A 25-year-old foreign worker had a fall at work, and now has persistent lower back pain 2 weeks later, referred for ongoing management of his pain. MRI and XRs show no abnormal findings or fractures.",
+       "q": "Outline the psychosocial factors that increase the risk of developing chronic pain (30%). · Describe how you will minimize the risk of this pain developing into a chronic issue (70%)."
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "You are activated for a code blue for 54-year-old orthopaedic inpatient with hip fracture for conservative management.",
+       "q": "What symptoms and signs would suggest acute pulmonary embolism (PE) as the cause for collapse (30%)? · List investigations and their characteristic findings that might be of further assistance in establishing the diagnosis of PE (30%). · What are the principles of management of a collapsed patient with suspected massive acute PE (40%)?"
+      }
+     ]
+    },
+    {
+     "label": "Weekday #4",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "",
+       "q": "Describe the anatomy, including surface landmarks, relevant to performing cricothyroidotomy. (50%) · What are the complications of this procedure? (50%)"
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "You are called to assess a woman at 36 week gestation for elective Caesarean Section because the patient is noted to have high blood pressure with possible fetal growth retardation.",
+       "q": "List the possible causes for the hypertension in this patient (30%). · What are the clinical features, associated problems, and necessary investigations for preeclampsia (50%)? · Discuss the use of magnesium and its side effects in the treatment of pre-eclampsia (20%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekday #5",
+     "dur": "1h",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "You are in charge of today's endoscopy list in the endoscopy suite. Your first patient weighs 105kg with body height of 170cm and he requires upper endoscopy and colonoscopy for his epigastric discomfort.",
+       "q": "Outline your peri-operative concerns (50%). · Describe your anaesthetic management (50%)."
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "You see a patient the day before for bilateral total knee replacement (TKR) surgery who has haemoglobin A1c (HbA1c) of 13%. Following this cancellation, you have been tasked by your HOD to audit your department OT cancellation rates.",
+       "q": "Justify your decision to cancel this operation (50%). · Describe the processes you would follow to run an audit in your department (50%)."
+      }
+     ]
+    },
+    {
+     "label": "Weekend (Timed Practice)",
+     "dur": "1.5h",
+     "essays": [
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 55 year old male is scheduled for gastrectomy for gastric cancer. He has a history of ischemic stroke 3 months ago with good recovery.",
+       "q": "What are the risk factors for perioperative stroke. (30%) · Describe how you would minimize the risks of perioperative stroke for this patient. (70%)"
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "You plan to run target controlled infusion (TCI) of propofol for a patient undergoing spine surgery.",
+       "q": "Detail how TCI devices ensure a steady state blood concentration. (50%) · What additional pharmacokinetic data is required to allow effect-site targeting? (20%) · What are the advantages of a TCI device compared to a manual propofol infusion regime? (30%)"
+      },
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 68-year-old man with history of chronic ischaemic heart disease and heart failure with preserved ejection fraction (HFpEF), and diabetes mellitus (latest HbA1c 10.1%) on empagliflozin 10 mg every morning, presents to the Emergency Department with abdominal pain, nausea, vomiting and fatigue. He is diagnosed to have acute appendicitis and undergoes an emergency laparoscopic appendectomy. On the first post-operative day, he is alert and conscious. His HR is 99 bpm, BP is 135/68 mmHg, SpO2 is 95% (room air).",
+       "q": "Discuss the likely causes for the acid-base disorder. (40%) · How will you manage this patient? (60%)"
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "An 85-year-old lady with a history of hypertension, hyperlipidaemia and type II diabetes mellitus presented with interstitial cystitis for hydro-distension in the day surgical centre. Her medications included amlodipine, metformin and simvastatin. Examination findings were unremarkable. In the recovery ward, she appeared agitated and disoriented to place and person. Her vital signs were stable.",
+       "q": "Discuss the suitability and rationale for ambulatory surgery for this lady (30%). · Discuss the use of regional anaesthesia vs. general anaesthesia for this patient (20%). · List the risk factors for developing postoperative delirium (10%). · How could it be minimised? (40%)"
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "You are tasked to setup an \"enhanced recovery after surgery\" (ERAS) program for minimally invasive (combined video-assisted thoracoscopic and laparoscopic) oesophagectomy in your hospital.",
+       "q": "List the anaesthetic components (40%) and peri-operative goals (60%) that would be included in your program."
+      },
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "You are asked to assess a 15kg 4-year-old child who is scheduled for a strabismus (squint) correction as a day case procedure. During the operation, the patient suddenly develops a profound bradycardia during surgical manipulation.",
+       "q": "List the anaesthetic considerations of this case (40%). · What is your immediate management of this situation (40%)? · What strategies would you employ to reduce postoperative nausea and vomiting, and postoperative pain (30%)?"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "num": 10,
+   "total": 16,
+   "sessions": [
+    {
+     "label": "Timed Practice #1",
+     "dur": "2h · 8 essays",
+     "essays": [
+      {
+       "tag": "Neuro",
+       "color": "#5a4510",
+       "stem": "A 45-year-old male with acromegaly presents for an elective trans-sphenoidal hypophysectomy.",
+       "q": "List the clinical features of acromegaly which are of relevance to the anaesthetist. · What are your anaesthesia considerations for this patient?"
+      },
+      {
+       "tag": "Peri-op Med",
+       "color": "#4a5a20",
+       "stem": "A 13-year-old boy with Marfan's syndrome and thoracolumbar scoliosis is scheduled for posterior spinal fusion and instrumentation of T2 to L3. Surgery lasted 9 hours with 2 liters blood loss. He was transfused with 3 units of red blood cells and Hb was 8.6 g/dl at the end of surgery. He woke up uneventfully, was extubated and transferred to the recovery room. However, 1 hour later he complained to the nurse about blurred vision.",
+       "q": "Discuss your options for blood conservation in this patient (60%). · Describe your approach to this scenario (40%)."
+      },
+      {
+       "tag": "Crisis/Resus",
+       "color": "#8a1a10",
+       "stem": "A 62-year-old lady who underwent a renal transplant one year ago is now listed for allograft nephrectomy due to chronic graft rejection with concurrent fever and increasing abdominal pain. She has a background history of hypertension and diabetes mellitus for more than 10 years. The patient's pre-operative oximetry (SpO2) at room air is 88% and she is slightly tachypnoeic. Upon manipulation the diseased organ during surgery, the systolic blood pressure falls from 120mmHg to 60mmHg and the heart rate increases to 120 BPM.",
+       "q": "How would you optimise this patient for surgery? · Outline your management in this situation (30%)."
+      },
+      {
+       "tag": "Minor Surg",
+       "color": "#444444",
+       "stem": "A 56-year-old man with chronic hepatitis C cirrhosis is scheduled for an emergency upper gastrointestinal endoscopy for haemostasis of variceal bleeding. He reported an episode of melena and haematemesis at home, but since admission had no further bleeding. He was hypotensive on admission and treated with fluid resuscitation and blood transfusion. The patient is now lucid with BP 125/78 and HR of 90 bpm. Investigations shows: Haemoglobin 9.6 g/dL, INR 2.0. Arterial blood gas on room air shows: pH 7.49, PaCO2 29 mmHg, PaO2 68 mmHg, HCO3 22.6 mmol/L, Base Excess -0.4.",
+       "q": "How is the severity of the patient's liver disease assessed? (30%) · Interpret this arterial blood gas and list possible causes in this patient. (30%) · Justify your anaesthetic technique for the gastroscopy for this patient, including the choice of anaesthesia drugs. (40%)"
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "You are called to the Accident and Emergency Department to assess a 30 year old male driver who was involved in a car collision. He appears to be confused and smells strongly of alcohol. He is unable to move his legs. A cervical spine X-Ray shows C5/6 subluxation. Heart rate is 50/min, Blood pressure 90/50 mmHg, Haemoglobin oxygen saturation (SaO2) is 95% on room air, Glasgow coma scale (GCS) score is 14/15. During examination the patient suddenly vomits and you notice desaturation down to 90%. You suspect pulmonary aspiration and decide that the patient needs to be intubated and ventilated to protect his airway.",
+       "q": "Describe your initial assessment (30%). · Outline your management of his traumatic spine injury prior to surgery for cervical spine stabilization and fixation (20%). · Describe how you would manage this situation."
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "",
+       "q": "List the indications for using a throat pack during general anaesthesia. (25%) · What are the complications of using a throat pack? (30%) · Describe the strategies that may be adopted to minimise the potential for postoperative complications associated with the use of throat packs. (35%)"
+      },
+      {
+       "tag": "RA/Anatomy",
+       "color": "#a8541f",
+       "stem": "You are the EOT registrar on call supervising your MO perform sciatic popliteal nerve block for a patient undergoing 4th and 5th toe ray amputation.",
+       "q": "What are the implications for the patient of an inadvertent wrong-sided peripheral nerve block (40%)? · List the factors that have been identified to contribute the performance of a wrong side block (30%). · What other medication errors can occur in anaesthesia (30%)?"
+      },
+      {
+       "tag": "Paeds",
+       "color": "#2a5a35",
+       "stem": "A 5-year-old boy with autism spectrum disorder is scheduled for comprehensive dental rehabilitation under general anaesthesia as a day case surgery. He weighs 35kg and is otherwise well. This is the child's first GA.",
+       "q": "Describe your concerns regarding the pre-induction management of this patient. (70%) · Justify your choice of premedication(s). (30%)"
+      }
+     ]
+    },
+    {
+     "label": "Timed Practice #2",
+     "dur": "2h · 8 essays",
+     "essays": [
+      {
+       "tag": "Remote/Day",
+       "color": "#2a4a5a",
+       "stem": "A 68-year-old lady with a past history of hypertension on Valsartan 80 mg OM is scheduled for ablation for intractable atrial fibrillation in the interventional cardiology suite. She is on warfarin for her AF. Her INR is 2.1. Her BP is 154/80 mm Hg and her heart rate 82 per minute. During the procedure, you note that the patient is becoming increasingly hypotensive. The BP is 70 mm systolic, and HR 110/minute.",
+       "q": "What are your anaesthetic concerns? (50%) · Describe your immediate management (50%)."
+      },
+      {
+       "tag": "Cardiac/Vasc",
+       "color": "#7a1f2a",
+       "stem": "A 25-year-old man with a known history of hypertrophic cardiomyopathy (HCM) requires an urgent laparoscopic appendicectomy for perforated appendicitis. He had presented with a 3-day history of fever, central abdominal pain and had a few episodes of vomiting today. His vital signs are heart rate 90 bpm, respiratory rate 20 bpm, blood pressure 140/90 mmHg, SpO2 97% while breathing room air.",
+       "q": "Describe the pathophysiological changes that occur in hypertrophic cardiomyopathy. (40%) · What are the principles of perioperative management of this patient? (60%)"
+      },
+      {
+       "tag": "Pain",
+       "color": "#5a2a7a",
+       "stem": "",
+       "q": "Describe the clinical features of trigeminal neuralgia (50%). · Discuss the efficacy of the treatment modalities available for this condition. (50%)"
+      },
+      {
+       "tag": "GA/Pharm",
+       "color": "#5a3a25",
+       "stem": "A patient with type 2 diabetes mellitus requires urgent lower limb arterial bypass surgery. Their medications include dapagliflozin (a sodium-glucose cotransporter 2 inhibitor).",
+       "q": "Outline your specific concerns and management of this patient for this procedure."
+      },
+      {
+       "tag": "Thoracic",
+       "color": "#1f3f7a",
+       "stem": "A 45-year-old woman (height 150cm, weight 50 kg) is on your list for video-assisted subxiphoid thoracoscopic excision of thymoma in a supine position. She was diagnosed to have myasthenia gravis 6 months ago. She is currently taking 120mg of pyridostigmine thrice a day and 20 mg of prednisolone once a day. Following left lung isolation and introduction of capnothorax, the end-tidal carbon dioxide decreases from 40 mmHg to 10 mmHg.",
+       "q": "What are the main concerns for this patient? (50%) · What are the differential diagnoses (20%)? · What would be your immediate management (40%)?"
+      },
+      {
+       "tag": "Obstetrics",
+       "color": "#7a3060",
+       "stem": "A 26 year old woman with subclinical myotonic dystrophy presents to the high risk obstetric clinic. She is 25 weeks pregnant in her first pregnancy and otherwise well. She hopes for a normal vaginal delivery.",
+       "q": "Describe and justify your recommendations for the management of her analgesia for labour (50%) and the perioperative management of any potential operative delivery (50%)."
+      },
+      {
+       "tag": "Crit Care",
+       "color": "#1a5a55",
+       "stem": "A 70-year-old man (height 1.7 metres, weight 65 kg, BMI 22.5 kg/m2) is admitted to ICU following a haemorrhagic stroke. He is intubated and ventilated for persistent hypoxaemia due to pneumonia in his right lung secondary to aspiration. His ventilator settings are: SIMV mode, rate 12 breaths/min, FiO2 1.0, PEEP 5 cmH2O, Pressure Support 10 cmH2O, tidal volume 600 ml. His measured peak airway pressure is 42 cmH2O. An arterial blood gas taken on the above settings reveal: pH 7.35, PaCO2 45 mmHg, PaO2 80 mmHg, standard bicarbonate 24 mmol/L.",
+       "q": "Outline the features of the SIMV mode of ventilation (30%). · Explain the changes you would make to the ventilator settings. (40%) · Define P/F ratio and discuss its utility in this patient. (30%)"
+      },
+      {
+       "tag": "Airway",
+       "color": "#1a2f6a",
+       "stem": "A 23-year-old man is brought to the Emergency Department following an assault in a nightclub. He appears to have suffered significant mid-face fractures and is uncooperative with staff. You are asked to accompany him to the CT scanner.",
+       "q": "Outline the immediate management plan for this patient. (30%) · Discuss the options for securing the airway (50%). · What problems would you anticipate during airway instrumentation (20%)?"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

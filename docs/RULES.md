@@ -99,8 +99,10 @@ When asked to "apply the website edits" (or similar):
 
 ## Editing the exams page
 
-`exams/index.html` is the master copy. Its content is in the script near the top:
-`const banks` (→ `essayBank`: the PDF list by topic), `const studyPlan`, and `const exams` with
-`reflections`, `partB` and `partC`. Edit those objects; keep the JavaScript syntax valid.
-To add a PDF: put it in `exams/reference/` and add `{ title: "...", url: "reference/<file>.pdf" }`
-to the right group in `essayBank`.
+`exams/index.html` is the master copy for Part C. Its content is in `const exams` → `partC`, in the script near the
+top; keep the JavaScript syntax valid.
+
+Part B is the SAQ programme app, `exams/part-b/` (unlisted, sign-in by email; server in `saq/`, see `saq/README.md`).
+Its 10-week plan is `saq/keys/programme.json`; its model answers are `exams/reference/*.pdf` with stems in
+`saq/keys/index.json`. After changing either, run `npm run build-keys --prefix saq` and commit `saq/src/bundle.js`
+(CI checks it). Don't link the app, the SAQ bank (`exams/essays.html`) or the OSCE material from any page.

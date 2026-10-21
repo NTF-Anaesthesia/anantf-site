@@ -1,5 +1,6 @@
 // The SAQ programme app: sign in, work through the 10-week programme with a soft 15-minute timer, get each answer marked,
-// and see progress over time. Talks to the Worker's /api (src/worker.js). No framework; one view at a time from the hash.
+// and see progress over time. Talks to the Worker's API at saq.anantf.com (saq/src/worker.js). No framework; one view at
+// a time from the hash.
 
 const LIMIT = 15 * 60;
 const BANDS = { 8: 'Excellent', 7: 'Better than pass', 6: 'Pass', 5: 'Borderline fail', 4: 'Poor', 3: 'Fail' };
@@ -11,74 +12,72 @@ const store = {
   del: k => { try { localStorage.removeItem(k); } catch {} },
 };
 
-let auth = null;          // { token(), signOut(), uid }
+let auth = null;          // { uid, token } once signed in
 let programme = null, Q = {}, me = null;
 let stopTimer = null;
 
-// ---------- sign-in ----------
-
+// the API: saq.anantf.com from anantf.com, the same address when run locally (test/serve.mjs), or ?api=
 const params = new URLSearchParams(location.search);
-const local = ['localhost', '127.0.0.1'].includes(location.hostname);
+const API = params.get('api') || (/(^|\.)anantf\.com$/.test(location.hostname) ? 'https://saq.anantf.com' : '');
 
-async function startAuth() {
-  if (local && params.get('test')) {           // local testing only: a fixed token the stub server understands
-    const t = params.get('test');
-    auth = { uid: t, token: async () => t, signOut: async () => { location.search = ''; } };
-    return route();
-  }
-  const { firebase } = await api('/api/config', { anon: true });
-  if (!firebase || !firebase.projectId) return render(`<h1>SAQ <em>programme</em></h1><p>Not set up yet: the Firebase settings are missing (README, step 2).</p>`);
-  const SDK = 'https://www.gstatic.com/firebasejs/10.12.2/';
-  const [{ initializeApp }, fa] = await Promise.all([import(SDK + 'firebase-app.js'), import(SDK + 'firebase-auth.js')]);
-  const fb = fa.getAuth(initializeApp(firebase));
-  window.__fb = { fb, fa };
-  fa.onAuthStateChanged(fb, user => {
-    auth = user ? { uid: user.uid, token: () => user.getIdToken(), signOut: () => fa.signOut(fb) } : null;
-    me = null;
-    route();
-  });
+// ---------- sign-in: email, then a 6-digit code ----------
+
+function startAuth() {
+  const token = store.get('saq-token');
+  auth = token ? { token } : null;
+  route();
 }
 
-function signInView() {
+function signInView(email = store.get('saq-email') || '') {
   nav(false);
   render(`
-    <h1>SAQ <em>programme</em></h1>
-    <p class="muted">The 10-week MMed Part B SAQ programme. Write each answer against a 15-minute clock, have it marked against the department's model answers, and track your progress week by week.</p>
+    <p class="kicker">MMed Anaesthesiology · Part B</p>
+    <h1>The 10-week SAQ <em>programme</em></h1>
+    <p class="muted">165 past-paper SAQs over 10 weeks. Write each answer against a 15-minute clock, have it marked against a model answer, get the marked script and model answer by email, and track your progress week by week.</p>
     <div class="card">
-      <button class="btn" type="button" id="google">Continue with Google</button>
-      <h3 style="margin-top:22px">Or with email</h3>
       <form id="emailForm">
-        <label for="em">Email</label><input id="em" type="email" autocomplete="email" required>
-        <label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" minlength="8" required>
-        <div class="row" style="margin-top:14px">
-          <button class="ghost" type="submit" data-act="in">Sign in</button>
-          <button class="ghost" type="submit" data-act="up">Create account</button>
-          <button class="link" type="button" id="reset">Forgot password</button>
-        </div>
+        <label for="em">Your email</label><input id="em" type="email" autocomplete="email" inputmode="email" required value="${esc(email)}">
+        <div class="row" style="margin-top:14px"><button class="btn" type="submit">Email me a sign-in code</button></div>
+      </form>
+      <form id="codeForm" hidden>
+        <label for="code">6-digit code</label><input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9 ]{6,7}" maxlength="7" required style="font:600 24px var(--mono);letter-spacing:.2em;max-width:220px">
+        <p class="small muted" id="sentTo"></p>
+        <div class="row" style="margin-top:6px"><button class="btn" type="submit">Sign in</button><button class="link" type="button" id="back">Use a different email</button><button class="link" type="button" id="resend">Send a new code</button></div>
       </form>
       <p class="err" id="err" hidden></p>
-    </div>`);
-  const { fb, fa } = window.__fb;
-  const err = e => { const m = String(e?.code || e?.message || e); $('#err').hidden = false; $('#err').textContent = FRIENDLY[m] || 'That did not work. Check your details and try again.'; };
-  $('#google').onclick = () => fa.signInWithPopup(fb, new fa.GoogleAuthProvider()).catch(err);
-  let act = 'in';
-  $('#emailForm').querySelectorAll('button[type=submit]').forEach(b => b.onclick = () => { act = b.dataset.act; });
-  $('#emailForm').onsubmit = e => {
-    e.preventDefault();
-    const em = $('#em').value.trim(), pw = $('#pw').value;
-    (act === 'up' ? fa.createUserWithEmailAndPassword(fb, em, pw) : fa.signInWithEmailAndPassword(fb, em, pw)).catch(err);
-  };
-  $('#reset').onclick = () => {
+    </div>
+    <p class="small muted">No password. This device stays signed in until you sign out. The code can take a minute; check junk mail if it doesn't arrive.</p>`);
+  const err = t => { $('#err').hidden = !t; $('#err').textContent = t || ''; };
+  const send = async () => {
+    err('');
     const em = $('#em').value.trim();
-    if (!em) return err({ message: 'need-email' });
-    fa.sendPasswordResetEmail(fb, em).then(() => { $('#err').hidden = false; $('#err').textContent = 'A reset link is on its way to ' + em + '.'; }).catch(err);
+    const btn = $('#emailForm .btn'); btn.disabled = true;
+    try {
+      const d = await api('/api/login', { method: 'POST', body: { email: em }, anon: true });
+      store.set('saq-email', em);
+      $('#emailForm').hidden = true; $('#codeForm').hidden = false;
+      $('#sentTo').textContent = `Sent to ${em}.${d.code ? ` (Local test code: ${d.code})` : ''}`;
+      $('#code').value = ''; $('#code').focus();
+    } catch (e) { err(e.message); } finally { btn.disabled = false; }
+  };
+  $('#emailForm').onsubmit = e => { e.preventDefault(); send(); };
+  $('#resend').onclick = send;
+  $('#back').onclick = () => { $('#codeForm').hidden = true; $('#emailForm').hidden = false; err(''); };
+  $('#codeForm').onsubmit = async e => {
+    e.preventDefault(); err('');
+    try {
+      const { token } = await api('/api/verify', { method: 'POST', body: { email: $('#em').value.trim(), code: $('#code').value }, anon: true });
+      store.set('saq-token', token);
+      auth = { token }; me = null; route();
+    } catch (x) { err(x.message); }
   };
 }
-const FRIENDLY = {
-  'auth/invalid-credential': 'Email or password is not right.', 'auth/wrong-password': 'Email or password is not right.', 'auth/user-not-found': 'No account with that email. Create one instead.',
-  'auth/email-already-in-use': 'That email already has an account. Sign in instead.', 'auth/weak-password': 'Use at least 8 characters.', 'auth/invalid-email': 'That email address looks wrong.',
-  'auth/popup-closed-by-user': 'The Google window was closed before signing in.', 'need-email': 'Type your email first, then press Forgot password.',
-};
+
+async function signOut() {
+  try { await api('/api/logout', { method: 'POST' }); } catch {}
+  store.del('saq-token'); auth = null; me = null; programme = null; Q = {};
+  route();
+}
 
 function joinView() {
   nav(false);
@@ -86,15 +85,16 @@ function joinView() {
     <h1>Join the <em>cohort</em></h1>
     <div class="card">
       <form id="join">
+        <p class="small muted" style="margin:0">Signed in as ${esc(me.email)}</p>
         <label for="nm">Your name</label><input id="nm" type="text" autocomplete="name" required>
         <label for="pp">Cohort passphrase</label><input id="pp" type="password" autocomplete="off" ${me.faculty ? '' : 'required'}>
         <p class="small muted">From your programme lead.${me.faculty ? ' Faculty can leave it blank.' : ''}</p>
-        <label class="check"><input type="checkbox" id="ok" required> I understand my answers, marks and timings are saved to my account, and that Dr Chew Shi Hao and Dr Koh Wen Jun can see them to support the programme. I can delete my account and everything in it at any time.</label>
+        <label class="check"><input type="checkbox" id="ok" required> I understand my answers, marks and timings are saved to my account and emailed to me, and that Dr Chew Shi Hao and Dr Koh Wen Jun can see them to support the programme. I can delete my account and everything in it at any time.</label>
         <div class="row" style="margin-top:14px"><button class="btn" type="submit">Join</button><button class="link" type="button" id="out">Sign out</button></div>
       </form>
       <p class="err" id="err" hidden></p>
     </div>`);
-  $('#out').onclick = () => auth.signOut();
+  $('#out').onclick = signOut;
   $('#join').onsubmit = async e => {
     e.preventDefault();
     try { await api('/api/join', { method: 'POST', body: { name: $('#nm').value, passphrase: $('#pp').value } }); me = null; route(); }
@@ -107,20 +107,21 @@ function joinView() {
 async function api(path, { method = 'GET', body, anon } = {}) {
   const headers = {};
   if (body) headers['Content-Type'] = 'application/json';
-  if (!anon && auth) headers.Authorization = 'Bearer ' + await auth.token();
-  const r = await fetch(path, { method, headers, body: body ? JSON.stringify(body) : undefined });
+  if (!anon && auth) headers.Authorization = 'Bearer ' + auth.token;
+  let r;
+  try { r = await fetch(API + path, { method, headers, body: body ? JSON.stringify(body) : undefined }); }
+  catch { const e = new Error('The programme could not be reached. Check your connection.'); e.status = 0; throw e; }
   const d = await r.json().catch(() => ({}));
-  if (!r.ok) { const e = new Error(d.error || 'The marker could not be reached. Check your connection.'); e.status = r.status; e.data = d; throw e; }
+  if (!r.ok) { const e = new Error(d.error || 'The programme could not be reached. Check your connection.'); e.status = r.status; e.data = d; throw e; }
   return d;
 }
 
 async function load() {
-  if (!programme) {
-    programme = await api('/api/programme', { anon: true });
+  if (!me) { me = await api('/api/me'); auth.uid = me.email; }
+  if (me.user && !programme) {
+    programme = await api('/api/programme');
     programme.weeks.forEach(w => w.sessions.forEach((s, si) => s.questions.forEach((q, qi) => { Q[q.id] = { ...q, week: w.num, session: si, sessionLabel: s.label, index: qi }; })));
-    programme.bank.forEach(b => { Q[b.id] = { ...b, bank: true, stem: '' }; });
   }
-  if (!me) me = await api('/api/me');
 }
 
 // marked attempts per question, newest last
@@ -131,7 +132,7 @@ const byQ = () => {
 };
 const latestMarked = list => (list || []).filter(a => a.status === 'marked').at(-1);
 const draftKey = qid => `saq:${auth.uid}:${qid}`;
-const label = q => (q.bank ? q.title : (q.stem || q.q)).replace(/\s+/g, ' ');
+const label = q => (q.stem || q.q).replace(/\s+/g, ' ');
 const short = (s, n = 110) => (s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s);
 const mins = s => (s == null ? '–' : s < 60 ? `${Math.round(s)} s` : `${Math.round(s / 60)} min`);
 
@@ -139,9 +140,9 @@ const mins = s => (s == null ? '–' : s < 60 ? `${Math.round(s)} s` : `${Math.r
 
 async function route() {
   if (stopTimer) { stopTimer(); stopTimer = null; }
-  if (!auth) return window.__fb ? signInView() : null;
+  if (!auth) return signInView();
   try { await load(); } catch (e) {
-    if (e.status === 401) return auth.signOut();
+    if (e.status === 401) { store.del('saq-token'); auth = null; me = null; return signInView(); }
     return render(`<p class="err">${esc(e.message)}</p><button class="ghost" onclick="location.reload()">Try again</button>`);
   }
   if (!me.user) return joinView();
@@ -152,8 +153,7 @@ async function route() {
   if (page === 'q') return questionView(id);
   if (page === 'a') return attemptView(id);
   if (page === 'progress') return progressView();
-  if (page === 'bank') return bankView();
-  if (page === 'faculty') return id ? candidateView(id) : facultyView();
+  if (page === 'faculty') return id ? candidateView(decodeURIComponent(id)) : facultyView();
   return homeView();
 }
 addEventListener('hashchange', route);
@@ -184,6 +184,11 @@ function homeView() {
       <div class="stat"><span>Pass rate, last 10</span><b>${pass}</b></div>
       <div class="stat"><span>Average time</span><b>${time}</b></div>
     </div>
+    <details class="card"><summary><b>How the programme works</b></summary>
+      <p>Three escalating blocks, <strong>165 essays, about 8 hours a week</strong>. Weeks 1–4: 2 essays each weekday and 6 at the weekend. Weeks 5–8 add a third weekday essay. Weeks 9–10 are timed practice. The aim is to start writing immediately and build momentum.</p>
+      <p>Each question shows the vignette and the question as they appeared in past papers. Press Start, write as you would in the exam, and submit. The clock is soft: it counts on past 15 minutes so you can see your pace. Your answer is marked on the MMed 3–8 scale and the marked script and model answer are emailed to you.</p>
+      <p class="small muted">Model answers come from the department's SAQ bank where one exists; otherwise one is drafted by AI to a 7–8 standard and labelled as not yet reviewed by faculty.</p>
+    </details>
     ${next ? `<p><a class="btn" href="#/q/${next.id}">Next: Week ${Q[next.id].week} · ${esc(Q[next.id].sessionLabel)}</a></p>` : '<p class="card">All 165 done. Re-attempt the ones you scored lowest on: see Progress.</p>'}
     ${programme.blocks.map(b => `
       <h2>${esc(b.name)}</h2><p class="muted small" style="margin-top:-6px">${esc(b.sub)}</p>
@@ -220,14 +225,6 @@ function qRow(q, list) {
   const draft = store.get(draftKey(q.id));
   const badge = m ? `<span class="badge mark" title="${BANDS[m.adjusted]}">${m.adjusted}</span>` : draft?.text ? '<span class="badge draft">Draft</span>' : (list || []).length ? '<span class="badge draft">Not marked</span>' : '<span class="badge draft">Start →</span>';
   return `<a class="qrow" href="#/q/${q.id}"><div><span class="tag">${esc(q.tag || 'Bank')}</span>${q.keyed ? '' : '<span class="tag" title="Marked against the rubric only for now">No model answer yet</span>'}<div class="qt">${esc(short(label(q)))}</div></div>${badge}</a>`;
-}
-
-function bankView() {
-  const done = byQ();
-  render(`
-    <h1>SAQ <em>bank</em></h1>
-    <p class="muted">29 past-paper questions with worked model answers. Outside the 10-week programme: use them for extra practice or revision.</p>
-    ${programme.bank.map(q => qRow({ ...Q[q.id], tag: 'Bank' }, done[q.id])).join('')}`);
 }
 
 // ---------- a question: the timer and the answer ----------
@@ -276,18 +273,18 @@ function questionView(id) {
     d.elapsed = elapsed(); d.since = null; save();
     $('#submit').disabled = true; $('#working').hidden = false; err.hidden = true;
     try {
-      const { attempt } = await api('/api/attempts', { method: 'POST', body: { qid: id, answer, seconds: Math.round(d.elapsed), started_at: d.started_at } });
-      done(attempt);
+      const { attempt, modelAnswer } = await api('/api/attempts', { method: 'POST', body: { qid: id, answer, seconds: Math.round(d.elapsed), started_at: d.started_at } });
+      done(attempt, null, modelAnswer);
     } catch (e) {
       if (e.data?.attempt) return done(e.data.attempt, e.message);
       err.hidden = false; err.textContent = e.message + ' Your answer is still here.';
       $('#submit').disabled = false; $('#working').hidden = true;
     }
   };
-  function done(attempt, message) {
+  function done(attempt, message, modelAnswer) {
     store.del(key); stopTimer = null; clearInterval(timer);
     me.attempts.push({ ...attempt, answer: undefined, marking: undefined });
-    sessionStorage.setItem('saq-last', JSON.stringify({ attempt, message }));
+    sessionStorage.setItem('saq-last', JSON.stringify({ attempt, message, modelAnswer }));
     location.hash = '#/a/' + attempt.id;
   }
 }
@@ -295,11 +292,11 @@ function questionView(id) {
 // ---------- an attempt: the marking ----------
 
 async function attemptView(id) {
-  let a, message;
+  let a, message, model;
   try {
     const cached = JSON.parse(sessionStorage.getItem('saq-last') || 'null');
-    if (cached?.attempt?.id === id) { ({ attempt: a, message } = cached); sessionStorage.removeItem('saq-last'); }
-    else a = (await api('/api/attempts/' + id)).attempt;
+    if (cached?.attempt?.id === id) { ({ attempt: a, message, modelAnswer: model } = cached); sessionStorage.removeItem('saq-last'); }
+    else ({ attempt: a, modelAnswer: model } = await api('/api/attempts/' + id));
   } catch (e) { return render(`<p class="err">${esc(e.message)}</p>`); }
   const q = Q[a.qid];
   const mine = a.uid === auth.uid;
@@ -310,18 +307,19 @@ async function attemptView(id) {
     ${m ? `
       <div class="card">
         <div class="scores"><div class="score adj"><span>Adjusted</span><b>${m.adjusted}</b></div><div class="score"><span>Raw</span><b>${m.raw}</b></div></div>
-        <p class="muted" style="margin:-4px 0 12px">${m.adjusted}: ${BANDS[m.adjusted]}${a.keyed ? '' : ' · marked against the rubric only'}</p>
+        <p class="muted" style="margin:-4px 0 12px">${m.adjusted}: ${BANDS[m.adjusted]}${a.keyed ? '' : ' · marked against the rubric only'}${mine ? ' · the marked script and model answer are in your email' : ''}</p>
         <p class="summary">${esc(m.summary)}</p>
         ${(m.top_fixes || []).length ? `<p class="kicker">To score higher</p><ol>${m.top_fixes.map(f => `<li>${esc(f)}</li>`).join('')}</ol>` : ''}
       </div>
       <div class="card"><p class="kicker">Annotated answer</p><div class="annotated">${md(m.annotated)}</div></div>`
     : `<div class="card"><p class="err">${esc(message || 'This answer has not been marked yet.')}</p>${mine ? '<button class="btn" type="button" id="remark">Mark it now</button><div class="working" id="working" hidden><span class="dot"></span><span>Marking…</span></div>' : ''}<p class="kicker" style="margin-top:14px">Answer</p><pre class="answer">${esc(a.answer)}</pre></div>`}
+    ${m && model ? `<details class="card"><summary><b>Model answer</b> <span class="small muted">· ${model.source === 'ai' ? 'drafted by AI, not yet reviewed by faculty' : model.source === 'drafted' ? 'reviewed by faculty' : "from the department's SAQ bank"}</span></summary>${model.source === 'bank' ? `<pre class="answer">${esc(model.text)}</pre>` : `<div class="annotated">${md(model.text)}</div>`}</details>` : ''}
     ${m ? `<details class="card"><summary>Answer as submitted</summary><pre class="answer">${esc(a.answer)}</pre></details>` : ''}
     <div class="row">${mine && q ? `<a class="btn" href="#/q/${a.qid}">Attempt again</a>` : ''}${mine && q && !q.bank ? nextLink(a.qid) : ''}${!mine ? `<a class="ghost" href="#/faculty/${encodeURIComponent(a.uid)}">← Candidate</a>` : ''}</div>`);
   const re = $('#remark');
   if (re) re.onclick = async () => {
     re.disabled = true; $('#working').hidden = false;
-    try { const { attempt } = await api(`/api/attempts/${id}/mark`, { method: 'POST' }); const i = me.attempts.findIndex(x => x.id === id); if (i >= 0) me.attempts[i] = attempt; sessionStorage.setItem('saq-last', JSON.stringify({ attempt })); attemptView(id); }
+    try { const { attempt, modelAnswer } = await api(`/api/attempts/${id}/mark`, { method: 'POST' }); const i = me.attempts.findIndex(x => x.id === id); if (i >= 0) me.attempts[i] = attempt; sessionStorage.setItem('saq-last', JSON.stringify({ attempt, modelAnswer })); attemptView(id); }
     catch (e) { re.disabled = false; $('#working').hidden = true; alert(e.message); }
   };
 }
@@ -375,7 +373,12 @@ async function facultyView() {
     <div class="card scroll"><table><thead><tr><th>Name</th><th class="num">Done</th><th class="num">Attempts</th><th class="num">Average</th><th>Last active</th></tr></thead><tbody>
       ${candidates.map(c => `<tr><td><a href="#/faculty/${encodeURIComponent(c.uid)}">${esc(c.name)}</a><div class="small muted">${esc(c.email)}</div></td><td class="num">${c.done}/${programmeCount}</td><td class="num">${c.attempts}</td><td class="num">${c.avg_adjusted ?? '–'}</td><td>${c.last_at ? fmtDate(c.last_at) : '–'}</td></tr>`).join('')}
     </tbody></table></div>
-    <p><button class="ghost" type="button" id="export">Download every attempt (JSON)</button></p>`);
+    <div class="row"><button class="ghost" type="button" id="export">Download every attempt (JSON)</button><button class="ghost" type="button" id="keys">Download AI-drafted model answers, to review</button></div>`);
+  const download = (data, name) => Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([data], { type: 'text/plain' })), download: name }).click();
+  $('#keys').onclick = async () => {
+    const { keys } = await api('/api/keys');
+    download(keys.map(k => `# ${k.qid}\n\n${k.question || ''}\n\n---\n\n${k.text}\n`).join('\n\n'), `saq-ai-model-answers-${new Date().toISOString().slice(0, 10)}.md`);
+  };
   $('#export').onclick = async () => {
     const d = await api('/api/export');
     const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(new Blob([JSON.stringify(d, null, 1)], { type: 'application/json' })), download: `saq-attempts-${new Date().toISOString().slice(0, 10)}.json` });
@@ -407,11 +410,11 @@ $('#acct').onclick = () => {
   dlg.addEventListener('click', async e => {
     const v = e.target.value;
     if (v === 'close') dlg.close();
-    if (v === 'out') { dlg.close(); await auth.signOut(); }
+    if (v === 'out') { dlg.close(); await signOut(); }
     if (v === 'delete' && $('#del', dlg).value === 'DELETE') {
       await api('/api/me', { method: 'DELETE' });
       Object.keys(localStorage).filter(k => k.startsWith(`saq:${auth.uid}:`)).forEach(k => store.del(k));
-      dlg.close(); me = null; await auth.signOut(); route();
+      dlg.close(); store.del('saq-token'); auth = null; me = null; programme = null; route();
     }
   });
   dlg.addEventListener('close', () => dlg.remove());
@@ -474,4 +477,4 @@ function md(src) {
   return html + (list ? '</ul>' : '');
 }
 
-startAuth().catch(e => render(`<p class="err">Could not start: ${esc(e.message)}</p>`));
+startAuth();

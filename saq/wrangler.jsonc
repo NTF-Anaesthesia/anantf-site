@@ -1,19 +1,27 @@
-// Cloudflare Workers config for the SAQ marker (README.md): the app in public/ and its API, at saq.anantf.com.
+// Cloudflare Workers config for the Part B SAQ programme's API (README.md), at saq.anantf.com. The app itself is
+// anantf.com/exams/part-b/ on GitHub Pages. Separate from the mo.anantf.com Worker (../wrangler.jsonc).
 // Secrets (Cloudflare dashboard → the Worker → Settings → Variables and secrets, or `npx wrangler secret put <NAME>`):
-//   ANTHROPIC_API_KEY, SAQ_PASSPHRASE, FACULTY_EMAILS (comma-separated, verified sign-ins only)
+//   ANTHROPIC_API_KEY   Claude, for marking and for drafting missing model answers
+//   RESEND_API_KEY      email: sign-in codes and marked scripts
+//   SAQ_PASSPHRASE      the cohort passphrase, asked once when a candidate joins
+//   FACULTY_EMAILS      comma-separated: who sees the cohort
+//   COPY_TO             comma-separated: who gets a copy of every marked script
+//   CODE_PEPPER         any long random string
 {
   "name": "saq-marker",
   "main": "src/worker.js",
   "compatibility_date": "2026-10-01",
-  "assets": { "directory": "public", "binding": "ASSETS", "run_worker_first": ["/api/*"], "not_found_handling": "single-page-application" },
+  "workers_dev": true,
   "vars": {
-    // from the Firebase console (Project settings → Your apps → web app); public by design
-    "FIREBASE_CONFIG": { "apiKey": "", "authDomain": "", "projectId": "", "appId": "" },
+    // pages allowed to call the API (comma-separated)
+    "ALLOWED_ORIGINS": "https://anantf.com",
+    // the sender, on a domain verified in Resend
+    "EMAIL_FROM": "SAQ Programme <saq@anantf.com>",
     // markings per candidate per day, and across everyone per day: a ceiling on the bill
     "USER_DAILY_CAP": "25",
     "DAILY_CAP": "400"
   },
-  // candidates and attempts; Cloudflare creates the database on the first deploy, the Worker creates the tables
+  // candidates, devices, attempts, drafted model answers; Cloudflare creates it on the first deploy, the Worker the tables
   "d1_databases": [{ "binding": "DB", "database_name": "saq-marker" }],
   "observability": { "enabled": true }
 }

@@ -4,7 +4,7 @@
 name: Checks
 on:
   pull_request:
-    paths: ['eeg/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', 'saq/**', 'exams/index.html', 'exams/reference/**', '.github/workflows/checks.yml']
+    paths: ['eeg/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', 'saq/**', 'exams/part-b/**', 'exams/reference/**', '.github/workflows/checks.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -63,14 +63,33 @@ jobs:
           sleep 1
           ${{ matrix.cmd }}
 
+  saq-browser:
+    name: browser (Part B SAQ programme)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Test
+        run: |
+          npm ci --prefix saq
+          (cd saq && npx playwright install --with-deps chromium)
+          export CHROMIUM="$(cd saq && node -e "import('playwright').then(p => console.log(p.chromium.executablePath()))")"
+          (node --no-warnings saq/test/serve.mjs 8787 &)
+          sleep 2
+          node saq/test/e2e.mjs /tmp
+
   browser:
-    needs: browser-suite
+    needs: [browser-suite, saq-browser]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 2
     env:
       RESULT: ${{ needs.browser-suite.result }}
+      SAQ: ${{ needs.saq-browser.result }}
     steps:
       - run: |
-          echo "browser suites $RESULT"
-          [ "$RESULT" = success ]
+          echo "browser suites $RESULT, Part B SAQ programme $SAQ"
+          [ "$RESULT" = success ] && [ "$SAQ" = success ]

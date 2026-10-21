@@ -1,14 +1,22 @@
-// Browser walk-through against test/serve.mjs: node test/e2e.mjs [outdir]  (server must be running on :8787)
+// Browser walk-through of anantf.com/exams/part-b/ against test/serve.mjs: node test/e2e.mjs [outdir]
+// (the server must be running, on :8787 or PORT)
 import { chromium } from 'playwright';
 const PORT = process.env.PORT || 8787;
 const out = process.argv[2] || '.';
 const exe = process.env.CHROMIUM || (await import("node:fs")).existsSync("/opt/pw-browsers/chromium-1194/chrome-linux/chrome") && "/opt/pw-browsers/chromium-1194/chrome-linux/chrome" || undefined;
 const b = await chromium.launch({ executablePath: exe });
 const errors = [];
+const APP = `http://localhost:${PORT}/exams/part-b/`;
+// signs in by email: the local server shows the code on the page
 const page = async (who, w = 390, h = 844) => {
   const p = await b.newPage({ viewport: { width: w, height: h } });
   p.on('console', m => m.type() === 'error' && errors.push(`${who}: ${m.text()}`)); p.on('pageerror', e => errors.push(`${who}: ${e.message}`));
-  await p.goto(`http://localhost:${PORT}/?test=${who}#/`); return p;
+  await p.goto(APP);
+  await p.fill('#em', `${who}@example.com`); await p.click('#emailForm .btn');
+  await p.waitForSelector('#codeForm:not([hidden])');
+  const code = (await p.textContent('#sentTo')).match(/(\d{6})/)[1];
+  await p.fill('#code', code); await p.click('#codeForm .btn');
+  return p;
 };
 const assert = (c, m) => { if (!c) throw new Error(m); };
 
@@ -26,21 +34,21 @@ await p.click('a.btn:has-text("Next")');
 await p.waitForSelector('#ans');
 await p.click('#startStop'); await p.waitForTimeout(2200);
 await p.fill('#ans', 'Pre-op\n- Assess airway\nIntra-op\n- RSI');
-await p.reload(); await p.waitForSelector('#ans');
+await p.reload(); await p.waitForSelector('#ans');   // still signed in, draft and clock kept
 assert((await p.inputValue('#ans')).includes('RSI'), 'draft kept on reload');
 const clock = await p.textContent('#clock'); assert(clock < '15:00' && clock.startsWith('14:'), 'clock kept running: ' + clock);
 await p.screenshot({ path: `${out}/2-question.png`, fullPage: false });
 p.once('dialog', d => d.accept());
 await p.click('#submit');
-await p.waitForSelector('.scores'); assert(await p.locator('.annotated .c').count() >= 1, 'annotated comment shown');
+await p.waitForSelector('.scores'); assert(await p.locator('.annotated .c').count() >= 1, 'annotated comment shown'); assert((await p.textContent('#view')).includes('Model answer'), 'model answer shown');
 await p.screenshot({ path: `${out}/3-result.png`, fullPage: true });
 
 // second answer, then progress
 await p.click('a:has-text("Next question")'); await p.waitForSelector('#ans');
 await p.fill('#ans', 'A. something longer than before\nB. more'); p.once('dialog', d => d.accept()); await p.click('#submit'); await p.waitForSelector('.scores');
-await p.goto(`http://localhost:${PORT}/?test=ann#/`); await p.waitForSelector('.stat');
+await p.goto(APP + '#/'); await p.waitForSelector('.stat');
 assert((await p.textContent('.stat b')).startsWith('2'), 'home shows 2 done');
-await p.goto(`http://localhost:${PORT}/?test=ann#/progress`); await p.waitForSelector('#cTrend svg');
+await p.goto(APP + '#/progress'); await p.waitForSelector('#cTrend svg');
 assert(await p.locator('#cWeeks path.mark').count() === 1, 'week 1 bar'); assert(await p.locator('#cTrend circle').count() === 2, '2 trend points');
 await p.hover('#cTrend rect.hit >> nth=1'); assert(!(await p.locator('#cTrend .tip').isHidden()), 'tooltip shows');
 await p.screenshot({ path: `${out}/4-progress.png`, fullPage: true });
@@ -60,7 +68,11 @@ await lead.screenshot({ path: `${out}/5-faculty.png`, fullPage: true });
 
 // dark mode renders
 const dark = await b.newPage({ viewport: { width: 390, height: 844 }, colorScheme: 'dark' });
-await dark.goto(`http://localhost:${PORT}/?test=ann#/progress`); await dark.waitForSelector('#cTrend svg');
+await dark.goto(APP); await dark.waitForSelector('#em');
+await dark.screenshot({ path: `${out}/0-signin-dark.png`, fullPage: true });
+const token = await p.evaluate(() => localStorage.getItem('saq-token'));
+await dark.evaluate(t => localStorage.setItem('saq-token', t), token);
+await dark.goto(APP + '#/progress'); await dark.reload(); await dark.waitForSelector('#cTrend svg');
 await dark.screenshot({ path: `${out}/6-progress-dark.png`, fullPage: true });
 
 await b.close();
