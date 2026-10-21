@@ -328,6 +328,17 @@
    "body": ""
   },
   {
+   "key": "glen2016",
+   "title": "Glen and Engbers on ke0 and initial dose",
+   "fields": {
+    "cite": "Glen JB, Engbers FHM. The influence of target concentration, equilibration rate constant (ke0) and pharmacokinetic model on the initial propofol dose delivered in effect-site target-controlled infusion. Anaesthesia 2016 (details as recalled; not found by search).",
+    "status": "UNVERIFIED",
+    "used": "cited in the external analysis reviewed in RESEARCH_NOTES section 9: slowing Schnider ke0 to about 0.20 /min raises the Ce-target bolus to about 1.75 mg/kg. The oracle gives ke0 0.185 for the same bolus. Not used by the engine.",
+    "checked": "21 Oct 2026"
+   },
+   "body": ""
+  },
+  {
    "key": "bbraun",
    "title": "B. Braun Space plus TCI",
    "fields": {
