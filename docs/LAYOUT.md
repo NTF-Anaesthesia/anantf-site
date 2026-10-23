@@ -7,8 +7,7 @@ What each folder is. Linked from `AGENTS.md`.
 | `index.html` | Homepage | — |
 | `exams/index.html` | MMed exam resources by Dr Chew Shi Hao (his design); nav label "Exam Prep" | In main navigation (noindex) |
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
-| Regional anaesthesia app (all regional folders) | See shared/regional/INDEX.md and shared/regional/docs/layout.md | — |
-| `shared/vendor/three-r160/` | three.js (r160) and its Draco decoder, used by `brachial-plexus/` and `plexus/` through their import maps (moved from `brachial-plexus/vendor/three`) | — |
+| Regional anaesthesia app (all regional folders) | Moved to the `regional` repo (https://regional.anantf.com); redirect stubs stay here | — |
 | `mo/`, `babymo/`, `qbank/` | Moved to the `mo` repo (mo.anantf.com, 23 Oct 2026). Here: redirect pages and retired service workers only | No (unlisted) |
 | `worker/`, `wrangler.jsonc`, `.assetsignore`, `MO.md` | The old `anantf-mo` Worker, which has no address now (mo.anantf.com moved to the `mo` repo); to be removed | — |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |

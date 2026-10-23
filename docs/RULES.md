@@ -15,8 +15,7 @@ every component in `assets/app/specimen.html`; `assets/app/app.css` is a copy ke
 Apps cache the kit for offline use (cache first): the stamps list its URLs (`tools/app-kit.mjs`) and hash them by URL.
 `/v1/` only changes compatibly, but it can change in place (titles moved to Literata, Oct 2026); installed apps pick
 that up with their next new version. When the fonts the kit's app.css loads change (`node tools/app-kit.mjs --check`
-says so), update `KIT_FONTS` there and re-stamp every app that links the kit (`plexus/` links it:
-`node shared/regional/tools/stamp.mjs`; the MO apps now stamp in their own repo; run each app's tests) in the same PR.
+says so), update `KIT_FONTS` there and re-stamp every app here that links the kit (the regional and MO apps now stamp in their own repos; run each app's tests) in the same PR.
 
 ## Rules
 
@@ -31,41 +30,11 @@ says so), update `KIT_FONTS` there and re-stamp every app that links the kit (`p
   and the tests passing; its BMI above 30 mode stays labelled "reported, unverified" until confirmed on a real pump.
 - Don't add links to `popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `ot/` or `tci/` from the homepage (`eeg/` is in the main navigation as EEG), and keep their
   `<meta name="robots" content="noindex...">` tags. The owner shares these links personally.
-- The regional pages (`blocks/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`, `brachial-plexus/`, `plexus/`, `spinal/`) are one
-  app: same app bar, the credit line "Created by Dr Koh Wenjun and Dr Chew Shi Hao, NTF Anaesthesia" (Dr Chew Shi Hao
-  linked to https://chewshihao.com/) at the foot of the page only, never at the top, no "for education only" notice
-  (only the department's own juniors use the app), and the same MO · Resident · Consultant level control (`shared/regional/js/levels.js`).
-  Levels are cumulative: MO sees tier 1, Resident tiers 1–2, Consultant everything; with no choice saved the level is
-  Consultant, so nothing is hidden by surprise. The choice is kept on the phone (`ra-level`), never in the URL. Mark
-  content with `data-tier` or a `tier` field in the data (`shared/regional/DATA.md` §2b). **Doses, the LAST line,
-  complications and the "If it goes wrong" guides are always MO level (tier 1)**: you may move safety content to a lower
-  tier, never to a higher one (`shared/regional/test/levels.mjs` and `data.mjs` check). Old URLs and hashes must keep working; run `node shared/regional/test/run-all.mjs`
-  after changing any regional page.
+- The regional anaesthesia app moved to its own repo, `regional` (https://regional.anantf.com). The old paths here (`regional.html`, `blocks/`, `plexus/`, `brachial-plexus/`, `popliteal*`, `spinal/`, `truncal/`, `head-neck/`, `upper-limb/`, `lower-limb/`, `ra.html`, `draft-ra.html`) are redirect stubs and `regional-sw.js` only unregisters the old offline worker: keep them for good (teaching material and QR codes link them), change nothing else there.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
 - `mo/`, `babymo/` and `qbank/` moved to the `mo` repo (23 Oct 2026); here they are only redirect pages and retired service workers. Don't add anything to them.
-- The regional app (the regional pages above) works offline through one service worker at the site root, `/regional-sw.js`,
-  registered by `shared/regional/js/offline.js`. After changing anything in the regional folders (or the shared `assets/`,
-  `fonts/` or logo files they load) run `node shared/regional/tools/stamp.mjs`, which rewrites the file lists, `VERSION`
-  and `MEDIA` in `regional-sw.js` (`node shared/regional/test/version.test.mjs` checks). Its version lines are at the foot of
-  `/blocks/` and on `/blocks/settings/`. Its offline test is `node shared/regional/test/offline.e2e.mjs`; both run in `node shared/regional/test/run-all.mjs`.
-- Every regional page calls `initAppFeel({bar, search})` from `shared/regional/js/appnav.js` (and `mountRail()` except on
-  `brachial-plexus/` and `plexus/`); import it under one URL (`appnav.js?v=…`). Anything that sticks under the bar uses
-  `top: var(--ra-bar-now, var(--ra-bar, 56px))`, and a new region page goes into `REGION_NAV` in `appnav.js`. The regional app has two looks with identical
-  content. The website look is `DESIGN.md` (square, hairlines, the site header and breadcrumbs). The app look is `DESIGN-APP.md`
-  (soft corners, grouped lists on a warm ground, large title, a bottom tab bar or 96px rail with five topic tabs: Blocks, 3D
-  anatomy, Ultrasound, Indication, Settings; search and a red Safety button in the top bar; no site header). `html[data-skin]` is set by the
-  inline script in every regional page's `<head>` and `js/skin.js`. The app look is the default only when the block app is opened
-  (from the home screen, or `/blocks/?app` for that tab, the link from `regional.html`); otherwise the website look is the default,
-  and Settings > Look can force either. Every rule in `css/skin-app.css` must be under `html[data-skin="app"]`, the website look must
-  stay pixel-identical (compare `ra-skin=web` screenshots at 390 and 1440 px), and after changing it run `node shared/regional/tools/stamp.mjs`
-  then `node shared/regional/test/skin.mjs`. In the app look: nothing under 12px, buttons and block links at least 44px, links and buttons at
-  4.5:1, the top bar and tab bar fully opaque (text must not show through), no link in the wine dose card without an ivory colour;
-  still no dark mode, and clinical colours are never recoloured. New regional pages need the skin script, the `skin-app.css` link and the manifest
-  tags (`DATA.md` §1). Don't list the same page twice on `/blocks/`. The app can be
-  added to the home screen: `blocks/manifest.webmanifest` (start `/blocks/`, scope `/`, standalone, icons in `blocks/icons/` in the
-  MO guide's style) is linked from every regional page, and `/blocks/settings/` explains how to install it.
-- Every installable app (one with a service worker, today `babymo/`, `mo/`, `qbank/` and the regional app) ends its settings or start page with two lines of small
+- Installable apps (one with a service worker; the regional, MO guide, Baby MO and qbank apps have all moved to their own repos) end their settings or start page with two lines of small
   muted text: `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
   read from the app's cache name) and a `Not updating? Get the latest version` button that checks for signal, then
   removes only that app's service worker and caches and reloads, never touching saved answers or sign-in.
