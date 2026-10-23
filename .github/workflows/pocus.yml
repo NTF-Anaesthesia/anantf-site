@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   content-and-browser:
     runs-on: ubuntu-latest
@@ -21,7 +24,7 @@ jobs:
       - name: Install browser
         run: |
           npm install -g playwright@1.56.1
-          playwright install --with-deps chromium
+          playwright install chromium
       - name: Open and test lectures on desktop and mobile
         run: |
           export PLAYWRIGHT_PATH="$(npm root -g)/playwright/index.mjs"
