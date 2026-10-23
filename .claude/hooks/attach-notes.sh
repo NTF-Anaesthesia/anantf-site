@@ -7,11 +7,11 @@ set -uo pipefail
 if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
   exit 0
 fi
-if [ -f "$(dirname "$CLAUDE_PROJECT_DIR")/anantf-private/AGENTS.md" ]; then
+if [ -f "$(dirname "$CLAUDE_PROJECT_DIR")/ntf-hub-attach-always/AGENTS.md" ]; then
   exit 0
 fi
 
 cat <<'JSON'
-{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"First step of this session: attach the shared private notes repo with add_repo (owner NTF-Anaesthesia, repo anantf-private, access push), clone it, and read its AGENTS.md before doing the task. Save lasting notes there, never in this public repo. If add_repo is refused, say so in one line and carry on."}}
+{"hookSpecificOutput":{"hookEventName":"SessionStart","additionalContext":"First step of this session: attach the shared private notes repo with add_repo (owner NTF-Anaesthesia, repo ntf-hub-attach-always, access push), clone it, and read its AGENTS.md before doing the task. Save lasting notes there, never in this public repo. If add_repo is refused, say so in one line and carry on."}}
 JSON
 exit 0
