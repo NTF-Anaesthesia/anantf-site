@@ -49,16 +49,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Cache Playwright browser
-        id: pw-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: pw-1.56.1-${{ runner.os }}
       - name: Install a browser
         run: |
           npm install -g playwright@1.56.1
-          if [ "${{ steps.pw-cache.outputs.cache-hit }}" = true ]; then playwright install-deps chromium; else playwright install --with-deps chromium; fi
+          playwright install --with-deps chromium
       - name: Test
         run: |
           export PLAYWRIGHT_PATH="$(npm root -g)/playwright/index.mjs"

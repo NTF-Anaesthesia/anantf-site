@@ -53,15 +53,9 @@ jobs:
           npm run build
           git status --porcelain -- ../../tci
           test -z "$(git status --porcelain -- ../../tci)"
-      - name: Cache Playwright browser
-        id: pw-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: pw-${{ runner.os }}-${{ hashFiles('apps/tci/package-lock.json') }}
       - name: Browser check (390 px, light and dark)
         run: |
-          if [ "${{ steps.pw-cache.outputs.cache-hit }}" = true ]; then npx playwright install-deps chromium; else npx playwright install --with-deps chromium; fi
+          npx playwright install --with-deps chromium
           (cd ../.. && python3 -m http.server 8080 >/dev/null 2>&1 &)
           sleep 1
           npm run e2e

@@ -21,16 +21,10 @@ jobs:
         run: |
           python3 pocus/test/content.py
           node pocus/test/model.test.cjs
-      - name: Cache Playwright browser
-        id: pw-cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: pw-1.56.1-${{ runner.os }}
       - name: Install browser
         run: |
           npm install -g playwright@1.56.1
-          if [ "${{ steps.pw-cache.outputs.cache-hit }}" = true ]; then playwright install-deps chromium; else playwright install --with-deps chromium; fi
+          playwright install --with-deps chromium
       - name: Open and test lectures on desktop and mobile
         run: |
           export PLAYWRIGHT_PATH="$(npm root -g)/playwright/index.mjs"
