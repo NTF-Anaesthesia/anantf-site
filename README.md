@@ -18,8 +18,7 @@ Static site served by GitHub Pages at https://anantf.com.
 | `exams/` | MMed exam resources by Dr Chew Shi Hao (canonical master copy) |
 | `exams/reference/` | Part B model-answer PDFs |
 | `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
-| `babymo/` | Baby MO test (MCQ test for new MOs, with a faculty question editor; unlisted) |
-| `mo/` | For new MOs: landing page; the MO guide (practical learning app, handbook and beyond, offline) is in `mo/guide/` (unlisted) |
+| `mo/`, `babymo/`, `qbank/` | Moved to the `mo` repo (mo.anantf.com); redirect pages only |
 | `AGENTS.md`, `CLAUDE.md` | Instructions for AI assistants editing this site |
 
 The NAPS 2026 models live in their own repo: NTF-Anaesthesia/naps2026-site (https://naps2026.anantf.com).

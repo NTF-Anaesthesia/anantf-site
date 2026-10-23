@@ -1,16 +1,14 @@
 // Which folder of this repo each public address serves. Pure functions, no Cloudflare APIs, so worker/test/routes.test.mjs
 // can check them in Node. worker/sites.js is the Worker that uses them.
 //
-// Only mo.anantf.com goes through the Worker (MO.md). anantf.com itself stays on GitHub Pages and ignores all of this.
+// No host goes through this Worker any more (mo.anantf.com moved to the `mo` repo). anantf.com itself stays on GitHub Pages.
 // A host in SITES is served only from its own folder plus the shared files below, so it can never reach another app's
 // files. Any other host (the PR previews on workers.dev) serves the files as they are.
 
 // host -> { root: 'mo/' }: the folder served at the address's root (the folder's own name works too: /mo/ is the same page)
 //         prefixes: more apps, one path each (/test/ is the Baby MO test, from babymo/)
 //         redirects: old paths that mean the same thing here (/babymo/ is /test/ on this address; the guide links ../../babymo/)
-export const SITES = {
-  'mo.anantf.com': { root: 'mo/', prefixes: { '/test/': 'babymo/' }, redirects: { '/babymo/': '/test/' } },
-};
+export const SITES = {};   // mo.anantf.com moved to the `mo` repo (23 Oct 2026)
 
 // The folders and files every site host serves as they are: the old copy of the app kit (the apps now link the kit at
 // https://design.anantf.com/v1/app.css), the fonts and the logo mark, and the question bank's data the Baby MO test reads
