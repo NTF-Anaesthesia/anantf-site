@@ -1,5 +1,5 @@
-// Cloudflare Workers config: mo.anantf.com and the PR previews (MO.md). anantf.com itself is GitHub Pages and ignores this
-// file. The Worker (worker/sites.js) serves the repo's files and decides which folder each address may see
+// Cloudflare Workers config for the old `anantf-mo` Worker. mo.anantf.com moved to Worker `mo` (repo NTF-Anaesthesia/mo,
+// 23 Oct 2026) and this Worker has no address; anantf.com itself is GitHub Pages and ignores this file. To be removed. The Worker (worker/sites.js) serves the repo's files and decides which folder each address may see
 // (worker/routes.js). No data, no secrets.
 {
   "name": "anantf-mo",
