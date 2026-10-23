@@ -9,7 +9,6 @@ What each folder is. Linked from `AGENTS.md`.
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
 | Regional anaesthesia app (all regional folders) | Moved to the `regional` repo (https://regional.anantf.com); redirect stubs stay here | — |
 | `mo/`, `babymo/`, `qbank/` | Moved to the `mo` repo (mo.anantf.com, 23 Oct 2026). Here: redirect pages and retired service workers only | No (unlisted) |
-| `worker/`, `wrangler.jsonc`, `.assetsignore`, `MO.md` | The old `anantf-mo` Worker, which has no address now (mo.anantf.com moved to the `mo` repo); to be removed | — |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
 | `pocus/{basics,cardiac,lung,haemodynamics,shock,efast,dvt,cases}/` | Themed critical care POCUS lectures with simulations, cases and licensed media; start with `pocus/README.md` | On the POCUS hub (noindex kept) |
 | `pocus/media/` | Clinical media catalogue and per-asset licence/attribution manifest | Linked from POCUS and the lectures |
