@@ -1,10 +1,10 @@
-# Tests for the BIS to DSA simulator (eeg/), the OT simulator (ot/), the mo.anantf.com Worker (worker/) and the MO guide's
+# Tests for the BIS to DSA simulator (eeg/), the mo.anantf.com Worker (worker/) and the MO guide's
 # unit tests, on every PR that changes them.
 # Each browser suite runs as its own job, side by side; "browser" is green only when all of them passed.
 name: Checks
 on:
   pull_request:
-    paths: ['eeg/**', 'ot/**', 'tools/vendor/**', 'tools/test-ot.sh', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', '.github/workflows/checks.yml']
+    paths: ['eeg/**', 'tools/vendor/**', 'worker/**', 'wrangler.jsonc', '.assetsignore', 'mo/**', '.github/workflows/checks.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -21,8 +21,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: OT model tests
-        run: for f in ot/test/*.test.mjs; do echo "== $f"; node "$f"; done
       - name: BIS engine tuning
         run: node eeg/test/engine.check.mjs
       - name: mo.anantf.com routes
@@ -42,7 +40,6 @@ jobs:
           - { name: EEG monitor sizing, cmd: "node eeg/test/layout.e2e.mjs" }
           - { name: EEG teaching, cmd: "node eeg/test/teaching.e2e.mjs" }
           - { name: EEG controls, cmd: "node eeg/test/controls.e2e.mjs" }
-          - { name: OT simulator, cmd: "node ot/test/e2e.mjs" }
     name: browser (${{ matrix.name }})
     steps:
       - uses: actions/checkout@v4
