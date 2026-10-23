@@ -18,7 +18,7 @@ screenshots, no re-reading large files.
 3. **Public repository rule.** Nothing private: no patient data, names, real evaluation records, secrets or tokens, and
    nothing private about the owner's setup (session or scheduled-task ids, private links, accounts, costs, how the home
    computer is run). Those belong in the owner's private notes; the public file keeps at most a neutral pointer.
-   If the owner's private notes are attached, save private items there with their own save skill; keep this repo free of them.
+   Save private items in `NTF-Anaesthesia/anantf-private` (attach it with `add_repo`; use its `quick-save`); keep this repo free of them.
    Re-read your diff once for these.
 4. **Docs-only check.** `git diff --name-only origin/main...HEAD` must list only `.md` files in app folders. If anything
    else changed, stop: this is not a quick save; use the normal PR flow and save-state.
