@@ -70,9 +70,10 @@ try {
   await step('the app, its fonts, the questions and the papers are all in the one version cache', async () => {
     const urls = await page.evaluate(async v => (await (await caches.open(v)).keys()).map(r => new URL(r.url).pathname), SW0);
     for (const f of [...list('SHELL'), ...list('DATA')]) assert.ok(urls.includes('/qbank/' + (f === './' ? '' : f)), 'not cached: ' + f);
-    for (const f of list('SITE')) assert.ok(urls.includes(new URL(f, BASE).pathname), 'not cached: ' + f);
+    const hrefs = await page.evaluate(async v => (await (await caches.open(v)).keys()).map(r => r.url), SW0);
+    for (const f of list('SITE')) assert.ok(hrefs.includes(new URL(f, BASE).href), 'not cached: ' + f);
     assert.ok(list('DATA').includes('bank/questions.json') && list('DATA').includes('papers/babymo.json'));
-    assert.ok(list('SITE').includes('../assets/app/app.css') && list('SITE').includes('../fonts/inter.woff2'), 'the app kit and its fonts are in the offline copy');
+    assert.ok(list('SITE').includes('https://design.anantf.com/v1/app.css') && list('SITE').includes('https://design.anantf.com/v1/fonts/inter.woff2'), 'the app kit and its fonts are in the offline copy');
   });
   await step('Progress shows the app version and "Get the latest version"', async () => {
     const [, d, h] = SW0.match(/^qbank-(\d{4}-\d{2}-\d{2})-([0-9a-f]+)$/);

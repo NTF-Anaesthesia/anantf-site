@@ -75,7 +75,8 @@ try {
   await step('every app file, font, bank code, the bank and the paper are cached in the one version cache', async () => {
     const urls = await page.evaluate(async v => (await (await caches.open(v)).keys()).map(r => new URL(r.url).pathname), SW0);
     for (const f of list('SHELL')) assert.ok(urls.includes('/babymo/' + (f === './' ? '' : f)), 'not cached: ' + f);
-    for (const f of [...list('SITE'), ...list('DATA')]) assert.ok(urls.includes(new URL(f, BASE).pathname), 'not cached: ' + f);
+    const hrefs = await page.evaluate(async v => (await (await caches.open(v)).keys()).map(r => r.url), SW0);
+    for (const f of [...list('SITE'), ...list('DATA')]) assert.ok(hrefs.includes(new URL(f, BASE).href), 'not cached: ' + f);
     assert.ok(list('DATA').includes('../qbank/bank/questions.json') && list('DATA').includes('../qbank/papers/babymo.json'));
   });
   await step('the worker really answers for the bank files (outside its folder), network first', async () => {

@@ -41,8 +41,8 @@ belongs instead. Many of the people editing here are not technical, so explain t
 - Design language, per-app rules, the page editor and the exams page: [docs/RULES.md](docs/RULES.md). Read the
   section for the part of the site you are changing.
 - Design: `DESIGN.md` (warm paper, ink, one wine accent, square edges, light only, body 17px, nothing below 12px);
-  installable apps follow `DESIGN-APP.md` and the shared kit `assets/app/app.css`. Clinical colour codes are never
-  recoloured.
+  installable apps follow `DESIGN-APP.md` and link the shared kit `https://design.anantf.com/v1/app.css`
+  (NTF-Anaesthesia/ntf-design). Clinical colour codes are never recoloured.
 
 ## Rules that apply everywhere
 
@@ -62,7 +62,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 ## Stamping and tests (installable apps)
 
 Each installable app has a service worker whose file lists and `VERSION` are stamped by a tool. After changing the app
-(or the shared files it lists, such as `assets/app/`), run the stamp, then the tests. Details and test lists are in
+(or the shared files it lists, such as the kit URLs), run the stamp, then the tests. Details and test lists are in
 [docs/RULES.md](docs/RULES.md).
 
 | App | Stamp | Tests |

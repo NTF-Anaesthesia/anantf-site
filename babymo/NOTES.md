@@ -57,7 +57,7 @@ The department's MCQ test for new MOs (every few months a new group rotates in):
 
 ## The app (design, 15 Oct 2026)
 
-Phone first, like a native app. It follows **`DESIGN-APP.md` and uses the shared kit `../assets/app/app.css`**
+Phone first, like a native app. It follows **`DESIGN-APP.md` and uses the shared kit `https://design.anantf.com/v1/app.css`**
 (AGENTS.md: every installable app does), with Baby-MO-only bits in `style.css` (navigator dots, stepper, save bar,
 result layout) using the kit's tokens. No site header: a 44px bar with a large title that collapses into it, grouped
 inset lists on the warm ground, bottom sheets (grabber; Android back and the iOS swipe close them), toasts, segmented
@@ -124,13 +124,13 @@ Built around known problems with installed web apps:
   minutes.
 - **All or nothing.** `sw.js` caches every file into one cache per version on install (`addAll`); if any file fails the
   old version stays. Only `babymo-` caches are touched.
-- **What is cached.** `SHELL` (this folder), `SITE` (the app kit `assets/app/app.css`, the fonts, the monogram and the
+- **What is cached.** `SHELL` (this folder), `SITE` (the app kit and its fonts from `https://design.anantf.com/v1/`, cache first, the monogram and the
   bank's code `qbank/js/bank.js`) and
   `DATA` (`qbank/bank/questions.json`, `qbank/papers/babymo.json`). Everything is network first (3 s, then the cache).
   The worker answers for the `SITE` and `DATA` files although they are outside its folder (the browser sends every
   request from a page it controls to it; `pwa.e2e.mjs` checks this).
 - **VERSION is a hash of SHELL and SITE**, because this site has no deploy step that stamps it: after changing any of
-  those files, including `assets/app/app.css` and `qbank/js/bank.js`, run `node babymo/tools/stamp.mjs`; `node babymo/test/version.test.mjs`
+  those files, including `qbank/js/bank.js`, run `node babymo/tools/stamp.mjs`; `node babymo/test/version.test.mjs`
   fails if it was forgotten. `DATA` is not hashed: a change to a question needs no new Baby MO version (it is fetched
   fresh whenever there is a signal).
 - **Results are never lost, and you can see when one is waiting.** A finished test goes into a local outbox and is sent

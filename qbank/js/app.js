@@ -1,6 +1,6 @@
 // The qbank app (anantf.com/qbank/): practise the department's questions on a phone. No sign-in; progress stays on the
 // phone (localStorage, keys qbank.v1.*). Screens are hash routes (#/practise, #/q/<id>, ...). Design: qbank/NOTES.md and
-// DESIGN-APP.md: the look is the shared phone-app kit (../assets/app/app.css) plus ui/qbank.css; ui/ui.js drives the kit's
+// DESIGN-APP.md: the look is the shared phone-app kit (https://design.anantf.com/v1/app.css) plus ui/qbank.css; ui/ui.js drives the kit's
 // markup (sheets, toast, controls, transitions); question logic is in bank.js and practice.js.
 import * as B from './bank.js';
 import * as P from './practice.js';

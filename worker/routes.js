@@ -12,10 +12,10 @@ export const SITES = {
   'mo.anantf.com': { root: 'mo/', prefixes: { '/test/': 'babymo/' }, redirects: { '/babymo/': '/test/' } },
 };
 
-// The folders and files every site host serves as they are: the shared app kit (styles), the fonts and the logo mark,
-// and the question bank's data the Baby MO test reads (the bank's code, the questions, the papers and the pictures: not
-// the qbank app itself, which stays on anantf.com). The apps link them as ../assets/app/app.css, ../qbank/bank/questions.json
-// and so on, which resolve to the same paths on anantf.com/<folder>/ and on mo.anantf.com/<path>/.
+// The folders and files every site host serves as they are: the old copy of the app kit (the apps now link the kit at
+// https://design.anantf.com/v1/app.css), the fonts and the logo mark, and the question bank's data the Baby MO test reads
+// (the bank's code, the questions, the papers and the pictures: not the qbank app itself, which stays on anantf.com).
+// The apps link them as ../ana-ntf-monogram.svg, ../qbank/bank/questions.json and so on, which resolve to the same paths on anantf.com/<folder>/ and on mo.anantf.com/<path>/.
 export const SHARED = ['/assets/', '/fonts/', '/ana-ntf-monogram.svg', '/qbank/js/bank.js', '/qbank/bank/', '/qbank/papers/', '/qbank/img/'];
 
 // On any host not in SITES, /_sites/<host>/<path> serves <path> as that host would, so the mapping can be tried on a

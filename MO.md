@@ -14,7 +14,7 @@ stays on GitHub Pages, untouched. Nothing here changes how the rest of the site 
 | any other path (`/babymo/`, `/spinal/`, `/airway.html` …) | redirects (302) to the same path on `anantf.com` |
 
 `anantf.com/mo/`, `anantf.com/mo/guide/` and `anantf.com/babymo/` keep working on GitHub Pages (the same files), so old links and
-phones that installed either app there are fine. The guide links its own kit and fonts as `../../assets/…`, which resolves correctly on both
+phones that installed either app there are fine. The guide links the kit and its fonts at `https://design.anantf.com/v1/`, the same on both
 addresses.
 
 ## How it works
@@ -25,8 +25,8 @@ addresses.
 - The Worker adds `X-Robots-Tag: noindex, nofollow`. No data, no storage, no secrets.
 - PR previews: once Workers Builds is connected, each PR gets a preview link; try the mapping at
   `<preview>/_sites/mo.anantf.com/` (and `/guide/`).
-- Service workers: the guide's worker is scoped to `/guide/` on each address, and its cache is per address. A change to
-  `assets/app/` still means `node mo/guide/tools/stamp.mjs` (and the other apps' stamps), exactly as before.
+- Service workers: the guide's worker is scoped to `/guide/` on each address, and its cache is per address. A new kit URL
+  still means `node mo/guide/tools/stamp.mjs` (and the other apps' stamps), exactly as before.
 - Cost: Cloudflare's free plan (100,000 Worker requests a day); only this one address uses it.
 
 ## Setup

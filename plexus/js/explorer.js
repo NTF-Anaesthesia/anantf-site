@@ -138,7 +138,7 @@ function ensureCss() {
     l.dataset.pxCss = key;
     document.head.append(l);
   };
-  add('app', '../../assets/app/app.css');
+  add('app', 'https://design.anantf.com/v1/app.css');
   add('plexus', `../css/plexus.css?v=${V}`);
   add('levels', '../../shared/regional/css/levels.css?v=20261015');
   add('status', '../../shared/regional/css/status.css?v=20261015');

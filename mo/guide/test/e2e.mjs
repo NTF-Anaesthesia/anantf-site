@@ -109,7 +109,8 @@ try {
     const hit = MODULES.flatMap(m => m.topics.map(t => ({ m, t, b: t.blocks.find(x => x.t === 'check') }))).find(x => x.b);
     if (!hit) return;
     await go(`#/learn/${hit.m.id}/${hit.t.id}`);
-    await page.locator(`fieldset[data-check="${hit.b.id}"] label.app-row`).first().click();
+    // tap the row near its corner, clear of any link in the item's text
+    await page.locator(`fieldset[data-check="${hit.b.id}"] label.app-row`).first().click({ position: { x: 8, y: 8 } });
     await go(`#/learn/${hit.m.id}/${hit.t.id}`);
     assert.equal(await page.locator(`fieldset[data-check="${hit.b.id}"] input`).first().isChecked(), true);
     assert.match(await text(`fieldset[data-check="${hit.b.id}"] .check-count`), /^1 of/);

@@ -9,6 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { kitRefs, isKit } from '../../../tools/app-kit.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const swPath = path.join(root, 'regional-sw.js');
@@ -33,12 +34,14 @@ const media = all.filter(isMedia);
 const inRegional = (f) => DIRS.some((d) => f.startsWith(d + '/')) || f === 'regional.html';
 const rel = (from, ref) => posix(path.normalize(path.join(path.dirname(from), ref.replace(/[?#].*$/, ''))));
 const found = new Set();
+const kit = new Set(); // app kit URLs (with the fonts app.css loads), hashed by URL: tools/app-kit.mjs
 const queue = [];
 for (const f of shell) {
   const file = f.endsWith('/') ? f + 'index.html' : f;
   if (!/\.(html|css)$/.test(file)) continue;
   const src = fs.readFileSync(path.join(root, file), 'utf8');
   for (const m of src.matchAll(/(?:href|src)="([^"#:]+)"/g)) queue.push(rel(file, m[1]));
+  if (file.endsWith('.html')) for (const u of kitRefs(src)) kit.add(u); // the app kit on design.anantf.com/v1/
   if (file.endsWith('.css')) for (const m of src.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/g)) if (!/^(data:|https?:|#)/.test(m[1])) queue.push(rel(file, m[1]));
 }
 while (queue.length) {
@@ -54,16 +57,16 @@ while (queue.length) {
   }
 }
 // Fonts, styles, scripts and logos are precached; the bigger site pictures (banners) are kept on first use.
-const site = [...found].filter((f) => !/\.(png|webp|jpe?g)$/.test(f)).sort();
+const site = [...[...found].filter((f) => !/\.(png|webp|jpe?g)$/.test(f)), ...kit].sort();
 const siteMedia = [...found].filter((f) => /\.(png|webp|jpe?g)$/.test(f)).sort();
-for (const f of [...shell.map((x) => (x.endsWith('/') ? x + 'index.html' : x)), ...site, ...siteMedia]) if (!exists(f)) { console.error('missing ' + f); process.exit(1); }
+for (const f of [...shell.map((x) => (x.endsWith('/') ? x + 'index.html' : x)), ...site, ...siteMedia]) if (!isKit(f) && !exists(f)) { console.error('missing ' + f); process.exit(1); }
 
 const list = (a) => '[' + a.map((f) => `'${f}'`).join(', ') + ']';
 const withLists = sw.replace(/const SHELL = \[[\s\S]*?\];/, `const SHELL = ${list(shell)};`).replace(/const SITE = \[[\s\S]*?\];/, `const SITE = ${list(site)};`).replace(/const SITE_MEDIA = \[[\s\S]*?\];/, `const SITE_MEDIA = ${list(siteMedia)};`);
 
 const hashOf = (files, extra = '') => {
   const h = crypto.createHash('sha256');
-  for (const f of files) h.update(f + '\0').update(fs.readFileSync(path.join(root, f.endsWith('/') ? f + 'index.html' : f))).update('\0');
+  for (const f of files) h.update(f + '\0').update(isKit(f) ? '' : fs.readFileSync(path.join(root, f.endsWith('/') ? f + 'index.html' : f))).update('\0');
   h.update(extra);
   return h.digest('hex').slice(0, 8);
 };

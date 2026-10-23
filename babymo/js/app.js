@@ -1,5 +1,5 @@
 // Baby MO test: the MOs' test (name + passphrase) and the faculty's Results, Paper, People and Settings (Google sign-in).
-// One page, hash routes, drawn with the shared phone-app kit (../assets/app/app.css, DESIGN-APP.md).
+// One page, hash routes, drawn with the shared phone-app kit (https://design.anantf.com/v1/app.css, DESIGN-APP.md).
 // Questions come from the shared question bank (../qbank/): the paper qbank/papers/babymo.json and the bank
 // qbank/bank/questions.json, read-only here. Sign-in, settings and results go through store.js (Firebase, or this
 // browser only in demo mode). Faculty don't edit questions here: they suggest changes in the qbank app.
