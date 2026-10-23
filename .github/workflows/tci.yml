@@ -55,7 +55,7 @@ jobs:
           test -z "$(git status --porcelain -- ../../tci)"
       - name: Browser check (390 px, light and dark)
         run: |
-          npx playwright install --with-deps chromium
+          npx playwright install chromium
           (cd ../.. && python3 -m http.server 8080 >/dev/null 2>&1 &)
           sleep 1
           npm run e2e
