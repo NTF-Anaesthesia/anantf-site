@@ -7,7 +7,27 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
+  oracle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: apps/tci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - name: Golden file matches the oracle
+        run: |
+          python3 oracle/tci_ref.py --golden /tmp/golden.json
+          python3 oracle/compare_golden.py /tmp/golden.json test/golden.json
+
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -19,17 +39,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install
-        run: |
-          npm ci
-          pip install numpy
-      - name: Golden file matches the oracle
-        run: |
-          python3 oracle/tci_ref.py --golden /tmp/golden.json
-          python3 oracle/compare_golden.py /tmp/golden.json test/golden.json
+          cache: npm
+          cache-dependency-path: apps/tci/package-lock.json
+      - run: npm ci
       - name: References panel matches docs/REFERENCES.md
         run: |
           npm run -s refs
@@ -41,9 +53,15 @@ jobs:
           npm run build
           git status --porcelain -- ../../tci
           test -z "$(git status --porcelain -- ../../tci)"
+      - name: Cache Playwright browser
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-${{ runner.os }}-${{ hashFiles('apps/tci/package-lock.json') }}
       - name: Browser check (390 px, light and dark)
         run: |
-          npx playwright install --with-deps chromium
+          if [ "${{ steps.pw-cache.outputs.cache-hit }}" = true ]; then npx playwright install-deps chromium; else npx playwright install --with-deps chromium; fi
           (cd ../.. && python3 -m http.server 8080 >/dev/null 2>&1 &)
           sleep 1
           npm run e2e
