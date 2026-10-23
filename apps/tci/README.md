@@ -12,7 +12,7 @@ Unlisted (noindex, no links from the site); the owner shares the link.
 | Path | What |
 |---|---|
 | `src/engine/` | Pure PK engine, no DOM: body size, models, exact solver, TCI controller, pump variants |
-| `src/main.ts`, `src/ui/`, `src/style.css` | The app (vanilla TypeScript, the shared app kit `assets/app/app.css`, light and dark) |
+| `src/main.ts`, `src/ui/`, `src/style.css` | The app (vanilla TypeScript, the shared app kit `https://design.anantf.com/v1/app.css`, light and dark) |
 | `pump/index.html`, `src/pump/` | The Space plus Perfusor emulator (`tci/pump/`): `sim.ts` (pump state machine and real-time TCI run, pure), `screens.ts` (the virtual LCD), `main.ts` (casing, teaching panel), `presets.ts`, `audio.ts`, `pump.css` |
 | `oracle/tci_ref.py` | Python oracle (matrix exponential). Source of `test/golden.json` |
 | `test/` | Vitest (golden, properties, pump state machine) and the Playwright checks (`e2e.mjs`, `pump.e2e.mjs`) |

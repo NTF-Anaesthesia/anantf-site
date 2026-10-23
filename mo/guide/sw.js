@@ -8,11 +8,12 @@
 //    opens at once with a weak signal. New files arrive as a new VERSION: the page checks for one when it opens, when it
 //    comes to the front and every 10 minutes, and reloads into it when that is safe (app.js).
 //  - A new version takes over by itself (skipWaiting) and never reloads the page: the page decides when it is safe.
-//  - Only this app's caches (prefix mo-) are deleted. SITE is the shared site header, styles and fonts outside this folder.
+//  - Only this app's caches (prefix mo-) are deleted. SITE is the shared files outside this folder: the app kit and the
+//    fonts it loads, from https://design.anantf.com/v1/ (it sends CORS headers, and /v1/ never changes in place).
 
-const VERSION = 'mo-2026-10-22-f1b3a3ca';
+const VERSION = 'mo-2026-10-23-c1335571';
 const SHELL = ['./', 'icons/apple-touch-icon.png', 'icons/favicon-32.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'index.html', 'js/app.js', 'js/calc.js', 'js/content/cases.js', 'js/content/emergence.js', 'js/content/emergencies.js', 'js/content/good.js', 'js/content/index.js', 'js/content/induction.js', 'js/content/maintenance.js', 'js/content/pacu.js', 'js/content/pain-aps.js', 'js/content/patients.js', 'js/content/preop.js', 'js/content/regional.js', 'js/content/sedation.js', 'js/content/setup.js', 'js/content/start.js', 'js/data/cards.js', 'js/data/crises.js', 'js/data/drugs-core.js', 'js/data/drugs-more.js', 'js/data/drugs.js', 'js/data/scenarios.js', 'js/drugs-ui.js', 'js/figures.js', 'js/md.js', 'js/practice.js', 'js/render.js', 'js/search.js', 'js/store.js', 'js/tools.js', 'js/ui.js', 'manifest.webmanifest', 'style.css'];
-const SITE = ['../../assets/app/app.css', '../../fonts/fraunces-roman.woff2', '../../fonts/inter.woff2', '../../fonts/jetbrains-mono.woff2'];
+const SITE = ['https://design.anantf.com/v1/app.css', 'https://design.anantf.com/v1/fonts/inter.woff2', 'https://design.anantf.com/v1/fonts/jetbrains-mono.woff2', 'https://design.anantf.com/v1/fonts/literata.woff2'];
 
 self.addEventListener('install', e => {
   const all = [...SHELL, ...SITE].map(u => new Request(u, { cache: 'reload' }));
@@ -28,13 +29,18 @@ self.addEventListener('activate', e => {
   })());
 });
 
-const sitePaths = new Set(SITE.map(u => new URL(u, self.location).pathname));
+const sitePaths = new Set(SITE.filter(u => !u.startsWith('https:')).map(u => new URL(u, self.location).pathname));
+const kit = new Set(SITE.filter(u => u.startsWith('https:')));
 
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin) {
+    // the app kit: cache first, like the other site files
+    if (kit.has(url.origin + url.pathname)) e.respondWith(caches.open(VERSION).then(c => c.match(url.origin + url.pathname)).then(hit => hit || fetch(req)));
+    return;
+  }
   const inScope = url.pathname.startsWith(new URL(self.registration.scope).pathname);
   const site = sitePaths.has(url.pathname);
   if (!inScope && !site) return;

@@ -140,14 +140,16 @@ function resolveRef(f, spec) {
   const src = read('regional-sw.js');
   const ctx = vm.createContext({ self: { location: new URL('https://anantf.com/regional-sw.js'), addEventListener() {} }, URL, Set });
   let sw = null;
-  try { vm.runInContext(src, ctx); sw = vm.runInContext('({ claims, strategy, PREFIXES, PAGES, SHELL, SITE, SITE_MEDIA, VERSION, MEDIA })', ctx); } catch (e) { R.check('regional-sw.js loads', false, e.message); }
+  try { vm.runInContext(src, ctx); sw = vm.runInContext('({ claims, strategy, PREFIXES, PAGES, SHELL, SITE, SITE_MEDIA, VERSION, MEDIA, KIT })', ctx); } catch (e) { R.check('regional-sw.js loads', false, e.message); }
   if (sw) {
     const ALLOWED = ['blocks/', 'truncal/', 'head-neck/', 'lower-limb/', 'upper-limb/', 'brachial-plexus/', 'plexus/', 'spinal/', 'shared/regional/', 'shared/us/', 'shared/vendor/three-r160/'];
     const badPrefix = sw.PREFIXES.filter((p) => !ALLOWED.includes(p.replace(/^\//, '')));
     R.check('regional-sw.js claims only the regional folders', !badPrefix.length && sw.PAGES.every((p) => p === '/regional.html'), `extra: ${[...badPrefix, ...sw.PAGES.filter((p) => p !== '/regional.html')].join(', ')}`);
     const inRegional = (f) => ALLOWED.some((d) => f.startsWith(d)) || f === 'regional.html';
     const badShell = sw.SHELL.filter((f) => !inRegional(f));
-    const badSite = [...sw.SITE, ...sw.SITE_MEDIA].filter((f) => !/^(assets\/[\w./-]+\.(css|js|svg|png|webp|jpe?g)|fonts\/[\w.-]+\.woff2|[\w.-]+\.svg)$/.test(f));
+    // the app kit is the one cross-origin entry: app.css and its fonts on design.anantf.com/v1/
+    const isKitUrl = (f) => /^https:\/\/design\.anantf\.com\/v1\/(app\.css|fonts\/[\w.-]+\.woff2)$/.test(f);
+    const badSite = [...sw.SITE.filter((f) => !isKitUrl(f)), ...sw.SITE_MEDIA].filter((f) => !/^(assets\/[\w./-]+\.(css|js|svg|png|webp|jpe?g)|fonts\/[\w.-]+\.woff2|[\w.-]+\.svg)$/.test(f));
     R.check('precache lists hold only regional files and shared site styles, scripts, pictures and fonts', !badShell.length && !badSite.length, [...badShell, ...badSite].join(', '));
     const mustClaim = ['/blocks/', '/regional.html', '/shared/regional/js/shell.js', '/shared/us/truncal/esp-1.jpg', '/plexus/model/lumbar.glb', '/shared/vendor/three-r160/build/three.module.min.js',
       ...PAGES.map((p) => '/' + p), '/fonts/inter.woff2'];
@@ -162,8 +164,10 @@ function resolveRef(f, spec) {
     R.check('the three screens added 16 Oct 2026 (Safety, Indication, Ultrasound anatomy) and their shared files are in the offline precache list', need.every((f) => sw.SHELL.includes(f)), need.filter((f) => !sw.SHELL.includes(f)).join(', '));
     const swDel = src.split('\n').filter((l) => /caches\.delete\(/.test(l));
     R.check('regional-sw.js caches are named regional-… and it deletes only those', /^regional-/.test(sw.VERSION) && /^regional-media-/.test(sw.MEDIA) && swDel.length > 0 && swDel.every((l) => /startsWith\('regional-'\)/.test(l)), swDel.join('\n'));
-    const guard = /addEventListener\('fetch'[\s\S]*?if \(req\.method !== 'GET'\) return;[\s\S]*?if \(url\.origin !== self\.location\.origin \|\| !claims\(url\.pathname\)\) return;/.test(src);
-    R.check('regional-sw.js returns without respondWith for other origins, non-GET requests and unclaimed paths', guard);
+    // other origins: only the app kit URLs in SITE are answered (cache first); everything else returns untouched
+    const guard = /addEventListener\('fetch'[\s\S]*?if \(req\.method !== 'GET'\) return;[\s\S]*?if \(url\.origin !== self\.location\.origin\) \{\s*if \(KIT\.has\(url\.origin \+ url\.pathname\)\) e\.respondWith\([^\n]*\);\s*return;\s*\}\s*if \(!claims\(url\.pathname\)\) return;/.test(src);
+    const kitOk = sw.KIT.size > 0 && [...sw.KIT].every(isKitUrl) && [...sw.KIT].every((u) => sw.SITE.includes(u)) && sw.SITE.filter((u) => /^https?:/.test(u)).every((u) => sw.KIT.has(u));
+    R.check('regional-sw.js returns without respondWith for other origins (apart from the app kit in SITE), non-GET requests and unclaimed paths', guard && kitOk, `guard ${guard}, kit ${[...(sw.KIT || [])].join(', ')}`);
   }
 }
 

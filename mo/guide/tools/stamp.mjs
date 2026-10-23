@@ -7,6 +7,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { kitRefs, isKit } from '../../../tools/app-kit.mjs';
 
 const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const swPath = path.join(dir, 'sw.js');
@@ -35,15 +36,16 @@ while (queue.length) {
     }
   }
 }
-const site = [...found].filter(f => f.startsWith('../')).sort();
-for (const f of [...shell, ...site]) if (!fs.existsSync(path.join(dir, f))) { console.error('missing ' + f); process.exit(1); }
+// and the app kit from design.anantf.com (its URLs, with the fonts app.css loads; hashed by URL: ../../../tools/app-kit.mjs)
+const site = [...[...found].filter(f => f.startsWith('../')), ...kitRefs(html)].sort();
+for (const f of [...shell, ...site]) if (!isKit(f) && !fs.existsSync(path.join(dir, f))) { console.error('missing ' + f); process.exit(1); }
 
 const list = a => '[' + a.map(f => `'${f}'`).join(', ') + ']';
 const withLists = sw.replace(/const SHELL = \[[\s\S]*?\];/, `const SHELL = ${list(['./', ...shell])};`).replace(/const SITE = \[[\s\S]*?\];/, `const SITE = ${list(site)};`);
 
 export function versionOf(text) {
   const h = crypto.createHash('sha256');
-  for (const f of [...shell, ...site]) h.update(f + '\0').update(fs.readFileSync(path.join(dir, f))).update('\0');
+  for (const f of [...shell, ...site]) h.update(f + '\0').update(isKit(f) ? '' : fs.readFileSync(path.join(dir, f))).update('\0');
   h.update(text.replace(/const VERSION = '[^']*';/, '')); // the worker's own code counts too
   return h.digest('hex').slice(0, 8);
 }

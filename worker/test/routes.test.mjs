@@ -50,13 +50,15 @@ assert.deepEqual(R('anantf-mo.example.workers.dev', '/_sites/other.example/x'), 
 assert.ok(isSite(MO) && !isSite('anantf.com') && !isSite('x.workers.dev'));
 assert.deepEqual(Object.keys(SITES), [MO]);
 
-// every file Baby MO's service worker asks for (SHELL, SITE, DATA) must be served on this address: it installs all or nothing
+// every file Baby MO's service worker asks for (SHELL, SITE, DATA) must be served on this address (apart from the app kit
+// on design.anantf.com): it installs all or nothing
 import fs from 'node:fs';
 import path from 'node:path';
 const repo = path.resolve(new URL('../..', import.meta.url).pathname);
 const sw = fs.readFileSync(path.join(repo, 'babymo/sw.js'), 'utf8');
 const list = n => [...sw.match(new RegExp(`const ${n} = \\[([\\s\\S]*?)\\];`))[1].matchAll(/'([^']+)'/g)].map(m => m[1]);
 for (const f of [...list('SHELL'), ...list('SITE'), ...list('DATA')]) {
+  if (f.startsWith('https://design.anantf.com/v1/')) continue;            // the app kit: served by design.anantf.com, not here
   const pub = new URL(f, 'https://' + MO + '/test/').pathname;            // where the browser asks
   const r = R(MO, pub);
   assert.ok(r.file, `Baby MO file ${f} (${pub}) is not served on ${MO}`);

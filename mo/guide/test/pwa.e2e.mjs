@@ -69,7 +69,8 @@ try {
   await step('every app file and shared site file is in the one version cache', async () => {
     const urls = await page.evaluate(async v => (await (await caches.open(v)).keys()).map(r => new URL(r.url).pathname), SW0);
     for (const f of list('SHELL')) assert.ok(urls.includes('/mo/guide/' + (f === './' ? '' : f)), 'not cached: ' + f);
-    for (const f of list('SITE')) assert.ok(urls.includes(new URL(f, 'http://x/mo/guide/').pathname), 'not cached: ' + f);
+    const hrefs = await page.evaluate(async v => (await (await caches.open(v)).keys()).map(r => r.url), SW0);
+    for (const f of list('SITE')) assert.ok(hrefs.includes(new URL(f, BASE).href), 'not cached: ' + f);
   });
   await step('start page shows the app version and "Get the latest version"', async () => {
     const [, d, h] = SW0.match(/^mo-(\d{4}-\d{2}-\d{2})-([0-9a-f]+)$/);
@@ -87,7 +88,7 @@ try {
     assert.equal(await page.evaluate(() => getComputedStyle(document.querySelector('.app-tabbar')).position), 'fixed', 'app kit styles missing offline');
     assert.ok(await page.evaluate(async () => { await document.fonts.ready; return document.fonts.check('16px "NTF Sans"'); }), 'font missing offline');
     page.off('requestfailed', onFail);
-    assert.deepEqual(failed.filter(u => u.startsWith('http://localhost')), [], 'files that failed to load offline');
+    assert.deepEqual(failed.filter(u => u.startsWith('http://localhost') || u.startsWith('https://design.anantf.com/')), [], 'files that failed to load offline');
     await ctx.setOffline(false);
   });
   await step('"Get the latest version" with no signal changes nothing', async () => {

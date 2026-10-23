@@ -1,7 +1,7 @@
 // Writes the offline file lists and a VERSION made from their contents into qbank/sw.js, and the list of papers into
 // qbank/papers.json, so a phone that has the app gets new files whenever any of them changes.
-//   SHELL: the app (page, manifest, icons, ui/, js/)   SITE: shared files it uses (outside this folder: the app kit
-//   ../assets/app/app.css and the fonts it loads)
+//   SHELL: the app (page, manifest, icons, ui/, js/)   SITE: shared files it uses (outside this folder; the app kit
+//   https://design.anantf.com/v1/app.css and the fonts it loads, listed and hashed by URL: ../tools/app-kit.mjs)
 //   DATA:  the questions and papers (bank/, sources.json, papers.json, papers/, img/)
 // Run after changing anything in qbank/ (questions and papers included):
 //     node qbank/tools/stamp.mjs          rewrites papers.json, SHELL, SITE, DATA and VERSION
@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { kitRefs, isKit } from '../../tools/app-kit.mjs';
 
 const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const swPath = path.join(dir, 'sw.js'), indexPath = path.join(dir, 'papers.json');
@@ -30,16 +31,18 @@ for (const m of fs.readFileSync(path.join(dir, 'index.html'), 'utf8').matchAll(/
 for (const f of shell.filter(f => f.endsWith('.css'))) for (const m of fs.readFileSync(path.join(dir, f), 'utf8').matchAll(/url\(\s*["']?([^"')]+\.(?:woff2|svg|png))["']?\s*\)/g)) if (!/^(data:|https?:)/.test(m[1])) site.add(rel(f, m[1]));
 // and what those outside files use in turn (the app kit's fonts)
 for (const f of [...site].filter(f => f.endsWith('.css'))) for (const m of fs.readFileSync(path.join(dir, f), 'utf8').matchAll(/url\(\s*["']?([^"')]+\.(?:woff2|svg|png))["']?\s*\)/g)) if (!/^(data:|https?:)/.test(m[1])) site.add(rel(f, m[1]));
-const siteList = [...site].filter(f => f.startsWith('../')).sort();
+// the app kit, from design.anantf.com (its URLs, with the fonts app.css loads)
+for (const u of kitRefs(fs.readFileSync(path.join(dir, 'index.html'), 'utf8'))) site.add(u);
+const siteList = [...site].filter(f => f.startsWith('../') || isKit(f)).sort();
 const data = ['bank/questions.json', 'sources.json', 'papers.json', ...papers.map(p => `papers/${p}.json`), ...walk('img').filter(f => /\.(png|jpe?g|webp|svg)$/.test(f))].sort();
-for (const f of [...shell, ...siteList, ...data]) if (f !== 'papers.json' && !fs.existsSync(path.join(dir, f))) { console.error('missing ' + f); process.exit(1); }
+for (const f of [...shell, ...siteList, ...data]) if (f !== 'papers.json' && !isKit(f) && !fs.existsSync(path.join(dir, f))) { console.error('missing ' + f); process.exit(1); }
 
 const list = a => '[' + a.map(f => `'${f}'`).join(', ') + ']';
 const withLists = sw.replace(/const SHELL = \[[\s\S]*?\];/, `const SHELL = ${list(['./', ...shell])};`).replace(/const SITE = \[[\s\S]*?\];/, `const SITE = ${list(siteList)};`).replace(/const DATA = \[[\s\S]*?\];/, `const DATA = ${list(data)};`);
 
 export function versionOf(text) {
   const h = crypto.createHash('sha256');
-  for (const f of [...shell, ...siteList, ...data]) h.update(f + '\0').update(f === 'papers.json' ? index : fs.readFileSync(path.join(dir, f))).update('\0');
+  for (const f of [...shell, ...siteList, ...data]) h.update(f + '\0').update(f === 'papers.json' ? index : isKit(f) ? '' : fs.readFileSync(path.join(dir, f))).update('\0');
   h.update(text.replace(/const VERSION = '[^']*';/, '')); // the worker's own code counts too
   return h.digest('hex').slice(0, 8);
 }

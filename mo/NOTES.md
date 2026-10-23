@@ -23,7 +23,7 @@ progress kept on the phone. It sits beside the Baby MO test (`../babymo/`), whic
 
 ## Design rules
 
-- **The phone-app kit:** the guide follows `../DESIGN-APP.md` and uses `../assets/app/app.css`
+- **The phone-app kit:** the guide follows `../DESIGN-APP.md` and uses `https://design.anantf.com/v1/app.css`
   (every component is in `../assets/app/specimen.html`): large titles that collapse into the top bar, a bottom tab bar
   (Learn, Drugs, Tools, Crisis, Practice), grouped lists, cards, buttons, answer choices, segmented controls, sheets,
   toasts, soft corners on things you press. `style.css` holds only what is specific to the content (callouts, steps, drug
@@ -63,8 +63,8 @@ updates). `SHOTS=<dir> node mo/guide/test/e2e.mjs` saves phone screenshots.
 Same rules as the Baby MO test (`../babymo/NOTES.md`): one cache per version filled all at once, network first with a
 3-second fallback to the cache, a new version takes over by itself but the page reloads only when safe (never on the first
 install, never with a calculator half filled, mid-scenario, mid-flashcards or on a crisis card), and the page looks for
-updates when it comes to the front. It also caches the shared app kit stylesheet and its fonts (`SITE` in `sw.js`, found by
-`tools/stamp.mjs` following the page's links and `@import`/`url()`) so the guide looks right with no signal.
+updates when it comes to the front. It also caches the shared app kit stylesheet and its fonts from design.anantf.com/v1/ (`SITE` in `sw.js`, written by
+`tools/stamp.mjs` from the page's links and `tools/app-kit.mjs`) so the guide looks right with no signal.
 
 **After changing any file in `mo/guide/` (content included) run `node mo/guide/tools/stamp.mjs`**: it rewrites the file lists and
 `VERSION` (`mo-<date>-<hash>`) in `sw.js`. `node mo/guide/test/version.test.mjs` fails if you forget. The start page and About

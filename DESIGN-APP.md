@@ -2,8 +2,10 @@
 
 The phone version of `DESIGN.md`, for installable web apps (anything with a service worker or a home-screen icon:
 `babymo/`, `mo/`, `qbank/` and later ones). The aim: opened from the home screen, an app should feel like a native
-iOS or Android app, and still be plainly NTF. The kit is `assets/app/app.css`; every component is shown in
-`assets/app/specimen.html`. Teaching pages and the website keep `DESIGN.md`.
+iOS or Android app, and still be plainly NTF. The kit lives in NTF-Anaesthesia/ntf-design and apps link
+`https://design.anantf.com/v1/app.css` (fonts under `/v1/fonts/`; `/v1/` never breaks, a breaking change goes to `/v2/`);
+every component is shown in `assets/app/specimen.html`. `assets/app/app.css` is a copy kept until it is retired: change
+both. Teaching pages and the website keep `DESIGN.md`.
 
 ## What carries over, and what changes
 

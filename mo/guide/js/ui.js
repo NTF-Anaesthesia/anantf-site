@@ -1,4 +1,4 @@
-// Small builders for the app kit's markup (../../assets/app/app.css, DESIGN-APP.md): large titles, grouped lists and rows.
+// Small builders for the app kit's markup (https://design.anantf.com/v1/app.css, DESIGN-APP.md): large titles, grouped lists and rows.
 import { esc } from './md.js';
 
 /** Large title (Fraunces) with an optional one-line subtitle (html, already escaped). */

@@ -1,4 +1,4 @@
-/* TCI emulator. Built on the shared app kit (assets/app/app.css), loaded by index.html.
+/* TCI emulator. Built on the shared app kit (https://design.anantf.com/v1/app.css), loaded by index.html.
    Dark theme by the owner's request (21 Oct 2026): the kit's tokens are redefined below; clinical colours keep
    their meaning in both themes. */
 :root { --tci-cp: var(--app-ink-soft); --tci-ce: var(--app-wine); --tci-alt: #7a4f00; --tci-grid: var(--app-line);

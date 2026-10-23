@@ -1,4 +1,7 @@
-/* NTF Anaesthesia app kit: the phone-app design language (DESIGN-APP.md).
+/* Copy of the kit. Its source of truth is now NTF-Anaesthesia/ntf-design, served at https://design.anantf.com/v1/app.css,
+   which the apps link. Until this copy is retired, change both (ntf-design's copy loads its fonts from fonts/).
+
+   NTF Anaesthesia app kit: the phone-app design language (DESIGN-APP.md).
    Shared by installable web apps on anantf.com. No dependencies, no build step.
    Every class starts with app- so it never clashes with page CSS. Light only. */
 

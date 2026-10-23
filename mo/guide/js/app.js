@@ -3,7 +3,7 @@
 //   #/drugs, #/drugs/<id>  drug doses        #/tools, #/tools/<id>        calculators
 //   #/crisis, #/crisis/<id> crisis cards     #/practice/...               scenarios, flashcards, check yourself
 //   #/progress  #/search?q=  #/about
-// The look is the shared phone-app kit (../../assets/app/app.css, DESIGN-APP.md): large titles that collapse into the top
+// The look is the shared phone-app kit (https://design.anantf.com/v1/app.css, DESIGN-APP.md): large titles that collapse into the top
 // bar, a bottom tab bar, grouped lists, cards, buttons, choices, sheets and toasts.
 import { md, esc } from './md.js';
 import { MODULES, GROUPS } from './content/index.js';

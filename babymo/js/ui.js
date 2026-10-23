@@ -1,4 +1,4 @@
-// Behaviour for the shared app kit (../assets/app/app.css, DESIGN-APP.md): bottom sheets, toasts, segmented controls,
+// Behaviour for the shared app kit (https://design.anantf.com/v1/app.css, DESIGN-APP.md): bottom sheets, toasts, segmented controls,
 // steppers, the collapsing large title, haptics and the version line. The kit is CSS only; this is the small amount
 // of JavaScript the Baby MO test needs to drive it. Nothing here knows about tests or Firebase.
 

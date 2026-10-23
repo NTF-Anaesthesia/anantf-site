@@ -7,19 +7,21 @@
 //  - A new version WAITS (no skipWaiting on install). The page tells it to take over (message 'skipWaiting') only when it
 //    is safe: never during a test or while someone is typing (js/app.js, "safe updates").
 //  - Only this app's caches are deleted (prefix), and only Baby MO's own files are handled (Firebase, Google: network).
-//  - SITE: shared files outside this folder that the app needs (the app kit, fonts, the bank's code). DATA: the question bank
+//  - SITE: shared files outside this folder that the app needs (the app kit and its fonts from https://design.anantf.com/v1/,
+//    which sends CORS headers; the bank's code). DATA: the question bank
 //    and the paper (../qbank/), precached too but not part of the hash: they change often and are always fetched fresh
 //    when there is a signal, so a bank change never needs a new Baby MO version.
 
-const VERSION = 'babymo-2026-10-22-977f38c8';
+const VERSION = 'babymo-2026-10-23-3ea149c8';
 const NET_WAIT = 3000; // ms before falling back to the cached copy
 const SHELL = ['./', 'index.html', 'style.css', 'manifest.webmanifest', 'js/app.js', 'js/logic.js', 'js/ui.js', 'js/store.js', 'js/local.js', 'js/cloud.js', 'js/firebase-config.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png', 'icons/apple-touch-icon.png'];
-const SITE = ['../assets/app/app.css', '../qbank/js/bank.js', '../fonts/inter.woff2', '../fonts/fraunces-roman.woff2', '../fonts/jetbrains-mono.woff2', '../ana-ntf-monogram.svg'];
+const SITE = ['../qbank/js/bank.js', '../ana-ntf-monogram.svg', 'https://design.anantf.com/v1/app.css', 'https://design.anantf.com/v1/fonts/inter.woff2', 'https://design.anantf.com/v1/fonts/jetbrains-mono.woff2', 'https://design.anantf.com/v1/fonts/literata.woff2'];
 const DATA = ['../qbank/bank/questions.json', '../qbank/papers/babymo.json'];
 
 const abs = u => new URL(u, self.location).href;
-const OUTSIDE = new Set([...SITE, ...DATA].map(u => new URL(u, self.location).pathname));
+const OUTSIDE = new Set([...SITE, ...DATA].filter(u => !u.startsWith('https:')).map(u => new URL(u, self.location).pathname));
+const KIT = new Set(SITE.filter(u => u.startsWith('https:'))); // the app kit: /v1/ never changes in place, so cache first
 const IMG = new URL('../qbank/img/', self.location).pathname;   // question pictures: cached as they are seen
 
 self.addEventListener('install', e => {
@@ -41,7 +43,10 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin) {
+    if (KIT.has(url.origin + url.pathname)) e.respondWith(caches.open(VERSION).then(c => c.match(url.origin + url.pathname)).then(hit => hit || fetch(req)));
+    return;
+  }
   const inScope = url.pathname.startsWith(new URL(self.registration.scope).pathname);
   const outside = OUTSIDE.has(url.pathname) || url.pathname.startsWith(IMG);
   if (!inScope && !outside) return;

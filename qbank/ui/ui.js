@@ -1,4 +1,4 @@
-// Behaviour for the shared phone-app kit (../../assets/app/app.css, DESIGN-APP.md) in the qbank app: a hash router with
+// Behaviour for the shared phone-app kit (https://design.anantf.com/v1/app.css, DESIGN-APP.md) in the qbank app: a hash router with
 // history that Android back and the iOS edge swipe understand, bottom sheets (dialog.app-sheet), the toast, segmented
 // controls, chips, steppers, the collapsing large title, screen transitions, and the installable-app update rules. The
 // kit is CSS only; this is the JavaScript that drives its markup. No framework; plain ES module.
