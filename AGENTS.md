@@ -37,7 +37,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 ## Where things are
 
 - Folder-by-folder map: [docs/LAYOUT.md](docs/LAYOUT.md). Read it before adding a page or moving one.
-- Regional anaesthesia app: start at [shared/regional/INDEX.md](shared/regional/INDEX.md); open only the piece you need.
+- Regional anaesthesia app: moved to its own repo, `regional` (https://regional.anantf.com); the old paths here are redirect stubs (see `docs/RULES.md`).
 - Design language, per-app rules, the page editor and the exams page: [docs/RULES.md](docs/RULES.md). Read the
   section for the part of the site you are changing.
 - Design: `DESIGN.md` (warm paper, ink, one wine accent, square edges, light only, body 17px, nothing below 12px);
@@ -51,8 +51,7 @@ belongs instead. Many of the people editing here are not technical, so explain t
 - Unlisted apps (`popliteal/`, `brachial-plexus/`, `spinal/`, `truncal/`, `head-neck/`, `lower-limb/`, `upper-limb/`,
   `blocks/`, `plexus/`, `popliteal-animation/`, `babymo/`, `qbank/`, `mo/`, `ot/`, `tci/`) are not linked from the homepage and keep
   their `noindex` tags.
-- Regional pages are one app (app bar, credit line at the foot, MO · Resident · Consultant levels). Doses, the LAST line,
-  complications and "If it goes wrong" guides are always MO level (tier 1). Old URLs and hashes must keep working.
+- Regional pages live in the `regional` repo. Old URLs and hashes must keep working there; the stubs here forward them.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/. This guards against others removing them; Dr Chew may remove his own (the POCUS pages carry none, by his decision, Oct 2026). Dr Koh Wen Jun maintains the regional anaesthesia section, including Dr Chew's regional pages (agreed Oct 2026); his other pages still need his say-so.
 - No personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
 - Question changes suggested by faculty: list what would change and wait for the owner's go-ahead before merging.
@@ -67,7 +66,6 @@ Each installable app has a service worker whose file lists and `VERSION` are sta
 
 | App | Stamp | Tests |
 |---|---|---|
-| Regional app | `node shared/regional/tools/stamp.mjs` | `node shared/regional/test/run-all.mjs` |
 | MO guide (`mo/guide/`) | `node mo/guide/tools/stamp.mjs` | `node mo/guide/test/{calc,content,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Question bank | `node qbank/tools/stamp.mjs` | `node qbank/tools/check.mjs`, `node qbank/test/{bank,practice,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
 | Baby MO | `node babymo/tools/stamp.mjs` | `node babymo/test/{logic,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |

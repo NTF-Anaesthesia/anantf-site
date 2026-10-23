@@ -1,86 +1,11 @@
 <!doctype html>
-<html lang="en-GB" data-theme="light">
-<head>
+<html lang="en">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="robots" content="noindex, nofollow">
-<script>(function(){var d=document.documentElement,p='auto',a=0;try{p=localStorage.getItem('ra-skin')||'auto'}catch(e){}try{var s=sessionStorage;if(/\/blocks\/(index\.html)?$/.test(location.pathname)&&/[?&]app(&|=|$)/.test(location.search))s.setItem('ra-in-app','1');a=s.getItem('ra-in-app')?1:0}catch(e){}try{if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)a=1}catch(e){}d.dataset.skin=p==='app'||p==='web'?p:a?'app':'web'})()</script>
-<title>Anatomy in 3D: cervical, brachial, lumbar and sacral plexuses — NTF Anaesthesia</title>
-<link rel="icon" href="../ana-ntf-monogram.svg" type="image/svg+xml">
-<meta name="description" content="Interactive 3D anatomy and linked diagrams of the cervical, brachial, lumbar and sacral plexuses for teaching regional anaesthesia: tap a nerve to follow it, or choose a block to see what it covers.">
-<meta name="color-scheme" content="light">
-<script type="importmap">
-{"imports":{"three":"../shared/vendor/three-r160/build/three.module.min.js","three/addons/":"../shared/vendor/three-r160/examples/jsm/"}}
-</script>
-<link rel="modulepreload" href="js/explorer.js?v=20261015d"><link rel="modulepreload" href="js/bus.js?v=20261015">
-<link rel="stylesheet" href="../assets/couture-app.css?v=20261010-ra"><link rel="stylesheet" href="../assets/navigation.css?v=20261007-framing"><link rel="stylesheet" href="../assets/site-shell.css?v=20261007-framing"><script defer src="../assets/navigation.js?v=20261008"></script><link rel="stylesheet" href="../assets/header-nav.css?v=20261008">
-<link rel="stylesheet" href="https://design.anantf.com/v1/app.css">
-<link rel="stylesheet" href="../shared/regional/css/regional.css?v=20261018">
-<link rel="stylesheet" href="../shared/regional/css/status.css?v=20261015">
-<link rel="stylesheet" href="css/plexus.css?v=20261017">
-<link rel="stylesheet" href="../shared/regional/css/skin-app.css?v=20261026">
-<link rel="manifest" href="../blocks/manifest.webmanifest">
-<script>addEventListener("beforeinstallprompt", e => e.preventDefault());</script>
-<link rel="apple-touch-icon" href="../blocks/icons/apple-touch-icon.png">
-<meta name="theme-color" content="#f7f5ef">
-</head>
-<body class="plexus-app px ra-app tb-app"><header class="ntf-header"><div class="ntf-header-inner"><a class="ntf-logo" href="../index.html" aria-label="NTF Anaesthesia home"><img src="../ana-ntf-logo.svg?v=clean" alt="NTF Anaesthesia" width="229" height="120"></a><button class="ntf-mobile-toggle" type="button" aria-expanded="false" aria-controls="ntf-main-nav">Menu <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button><nav class="ntf-nav" id="ntf-main-nav" aria-label="Main navigation"><a href="../airway.html">Airway</a><a href="../regional.html" aria-current="page">Regional Anaesthesia</a><a href="../pocus/">POCUS</a><a href="../bis/">pEEG</a><a href="../exams/">Exam Prep</a></nav><a class="ntf-contact" href="mailto:contact@anantf.com" aria-label="Email NTF Anaesthesia" title="Email NTF Anaesthesia"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 6 9 7 9-7"/></svg></a></div></header>
-<a class="tb-skip" href="#main">Skip to content</a>
-<nav class="ntf-crumbs" aria-label="Breadcrumb"><a href="../resources.html">Resources</a><span aria-hidden="true">/</span><a href="../regional.html">Regional anaesthesia</a><span aria-hidden="true">/</span><span aria-current="page">Anatomy in 3D</span></nav>
-
-<div id="tb-bar" class="tb-bar px-bar">
-  <div class="tb-bar-inner site-container">
-    <nav class="tb-chnav" aria-label="Plexuses">
-      <a class="tb-bar-home tb-bar-home--back" id="px-home" href="../blocks/" aria-label="Back to all regional blocks"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5.5M11 5.5 4.5 12l6.5 6.5"/></svg><span>All blocks</span></a>
-      <ol class="tb-chlist" id="tb-chlist"><li><a href="#plexus=cervical" data-ch="cervical">Cervical plexus</a></li><li><a href="#plexus=brachial" data-ch="brachial">Brachial plexus</a></li><li><a href="#plexus=lumbar" data-ch="lumbar">Lumbar plexus</a></li><li><a href="#plexus=sacral" data-ch="sacral">Sacral plexus</a></li></ol>
-      <div class="tb-chmenu" id="px-chmenu">
-        <button type="button" class="tb-chmenu-btn" id="px-pick" aria-expanded="false" aria-controls="px-picker"><span class="tb-chmenu-k">Plexus</span><span class="tb-chmenu-cur" id="px-pick-cur">Cervical</span><span class="tb-chmenu-caret" aria-hidden="true"></span></button>
-        <div class="tb-chmenu-panel" id="px-picker" hidden>
-          <ol class="tb-chmenu-list"><li><a href="#plexus=cervical" data-ch="cervical">Cervical plexus</a></li><li><a href="#plexus=brachial" data-ch="brachial">Brachial plexus</a></li><li><a href="#plexus=lumbar" data-ch="lumbar">Lumbar plexus</a></li><li><a href="#plexus=sacral" data-ch="sacral">Sacral plexus</a></li></ol>
-          <ul class="tb-chmenu-extra">
-            <li class="tb-chmenu-search-li"><button type="button" class="tb-chmenu-act tb-chmenu-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><span>Search nerves and blocks</span></button></li>
-            <li class="tb-chmenu-share-li"><button type="button" class="tb-chmenu-act tb-chmenu-share" id="btn-share-menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span>Copy link to this view</span></button></li>
-            <li><a class="tb-chmenu-act" href="../regional.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5.5M11 5.5 4.5 12l6.5 6.5"/></svg><span>Regional anaesthesia</span></a></li>
-            <li><a class="tb-chmenu-act" href="../blocks/"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7M6 9.5V20h12V9.5M10 20v-5.5h4V20"/></svg><span>All regional blocks</span></a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <button type="button" class="tb-tool tb-bar-btn" id="tb-search-open" aria-expanded="false" aria-controls="tb-sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg><span>Search</span></button>
-    <button type="button" class="tb-tool tb-bar-btn" id="tb-share" aria-describedby="share-status"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></svg><span>Copy link</span></button>
-    <span id="share-status" class="tb-sr" role="status" aria-live="polite"></span>
-    <div class="tb-bar-level" id="px-level"></div>
-  </div>
-  <div class="tb-sheet" id="tb-sheet" role="dialog" aria-label="Search nerves and blocks" hidden>
-    <div class="tb-sheet-inner site-container">
-      <div class="tb-search-row" role="search"><input type="search" class="tb-search-input" id="tb-sheet-q" placeholder="Search, e.g. phrenic, femoral, PENG" autocomplete="off" spellcheck="false" aria-label="Search nerves and blocks in every plexus"><button type="button" class="tb-tool" id="tb-sheet-close">Close</button></div>
-      <ul class="tb-sresults" id="tb-sheet-res"></ul>
-      <p class="tb-sr" id="tb-sheet-status" role="status" aria-live="polite" aria-atomic="true"></p>
-    </div>
-  </div>
-</div>
-
-<main id="main" class="site-container">
-  <header class="px-head" id="top">
-    <p class="tb-eyebrow">Regional anaesthesia · Anatomy in 3D</p>
-    <h1>Anatomy in 3D: cervical, brachial, lumbar and sacral plexuses</h1>
-    <p class="tb-lead px-lead">Turn each plexus in 3D, linked to a labelled diagram. Tap a nerve to follow it, or choose a block to see what it reaches.</p>
-    <div id="px-level-picker"></div>
-  </header>
-  <section id="px-explorer" class="px-explorer" aria-label="Plexus explorer"><div id="explorer"></div></section>
-</main>
-
-<section class="foot tb-foot" aria-label="Teaching information and licences">
-  <div class="foot-inner site-container">
-    <p class="disclaimer">Anatomy varies between patients.</p>
-    <p id="model-credit">3D anatomy derived from <a href="https://www.z-anatomy.com/">Z-Anatomy</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>), based on BodyParts3D © DBCLS (CC BY-SA 2.1 JP). Modified: right side extracted, simplified, and some nerve paths drawn for teaching. The model files are shared under CC BY-SA 4.0. 3D rendering uses <a href="https://threejs.org/">three.js</a> (MIT).</p>
-    <p id="data-credit"></p>
-    <p class="px-credit">Created by Dr Koh Wenjun and <a href="https://chewshihao.com/">Dr Chew Shi Hao</a>, NTF Anaesthesia.</p>
-    <p class="px-back"><a href="../blocks/">All regional blocks</a> · <a href="../regional.html">Regional anaesthesia</a> · <a href="mailto:contact@anantf.com">contact@anantf.com</a></p>
-  </div>
-</section>
-
-<script type="module" src="js/app.js?v=20261026"></script>
-<noscript><p class="noscript">This teaching app needs JavaScript to run.</p></noscript>
-<footer class="ntf-footer"><div class="ntf-footer-inner"><div class="ntf-footer-identity"><span class="ntf-copyright">© 2026 NTF Anaesthesia. All rights reserved unless otherwise stated.</span></div></div></footer></body>
-</html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Moved to regional.anantf.com</title>
+<link rel="canonical" href="https://regional.anantf.com/plexus/">
+<meta http-equiv="refresh" content="0;url=https://regional.anantf.com/plexus/">
+<script>location.replace('https://regional.anantf.com/plexus/' + location.search + location.hash);</script>
+<body style="font-family:system-ui,sans-serif;max-width:32rem;margin:3rem auto;padding:0 1rem;line-height:1.5">
+<p>This page has moved to <a href="https://regional.anantf.com/plexus/">https://regional.anantf.com/plexus/</a>.</p>

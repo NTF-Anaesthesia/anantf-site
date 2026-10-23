@@ -7,8 +7,7 @@ What each folder is. Linked from `AGENTS.md`.
 | `index.html` | Homepage | — |
 | `exams/index.html` | MMed exam resources by Dr Chew Shi Hao (his design); nav label "Exam Prep" | In main navigation (noindex) |
 | `exams/reference/*.pdf` | Part B model-answer PDFs | — |
-| Regional anaesthesia app (all regional folders) | See shared/regional/INDEX.md and shared/regional/docs/layout.md | — |
-| `shared/vendor/three-r160/` | three.js (r160) and its Draco decoder, used by `brachial-plexus/` and `plexus/` through their import maps (moved from `brachial-plexus/vendor/three`) | — |
+| Regional anaesthesia app (all regional folders) | Moved to the `regional` repo (https://regional.anantf.com); redirect stubs stay here | — |
 | `babymo/` | Baby MO test, also at mo.anantf.com/test/ (see `MO.md`; nothing in the app depends on the address): the department's MCQ test for new medical officers (MOs enter a name and a shared passphrase; faculty see results, the read-only paper, people and settings in the app). Own Firebase project `ntf-mo-portal` (sign-in, settings, results); its questions come from `qbank/papers/babymo.json` and `qbank/bank/questions.json`, and nobody edits questions in this app (faculty suggest changes through `qbank/`). Start with `babymo/NOTES.md` | No (unlisted) |
 | `qbank/` | Question bank: the department's shared MCQs (`bank/questions.json`, one format with permanent ids), the papers made from it (`papers/`), and the qbank app at anantf.com/qbank/. Start with `qbank/NOTES.md`. Questions are public | No (unlisted) |
 | `worker/`, `wrangler.jsonc`, `.assetsignore`, `MO.md` | The Cloudflare Worker behind `mo.anantf.com` (serves `mo/` at its root, `babymo/` at `/test/`, the shared kit and fonts and the question bank's data; every other path forwards to anantf.com). Only that one address uses it; anantf.com stays on GitHub Pages. Start with `MO.md`; test `node worker/test/routes.test.mjs` | — |
