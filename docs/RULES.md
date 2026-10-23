@@ -15,9 +15,7 @@ every component in `assets/app/specimen.html`; `assets/app/app.css` is a copy ke
 Apps cache the kit for offline use (cache first): the stamps list its URLs (`tools/app-kit.mjs`) and hash them by URL.
 `/v1/` only changes compatibly, but it can change in place (titles moved to Literata, Oct 2026); installed apps pick
 that up with their next new version. When the fonts the kit's app.css loads change (`node tools/app-kit.mjs --check`
-says so), update `KIT_FONTS` there and re-stamp every app that links the kit (`node mo/guide/tools/stamp.mjs`,
-`node qbank/tools/stamp.mjs`, `node babymo/tools/stamp.mjs` and, because `plexus/` links the kit,
-`node shared/regional/tools/stamp.mjs`; run each app's tests) in the same PR.
+says so), update `KIT_FONTS` there and re-stamp every app here that links the kit (the regional and MO apps now stamp in their own repos; run each app's tests) in the same PR.
 
 ## Rules
 
@@ -26,7 +24,7 @@ says so), update `KIT_FONTS` there and re-stamp every app that links the kit (`n
   and drop "draft" from its breadcrumb.
 
 - The main navigation is Airway, Regional Anaesthesia, POCUS, EEG and Exam Prep (the BIS to DSA simulator in `eeg/`, a standalone tab since 16 Oct 2026; its own slim bar replaces the site header). Don't add department, recruitment or handbook pages back.
-- Changing `worker/`, `wrangler.jsonc` or `.assetsignore` redeploys the `mo.anantf.com` Worker on merge (Workers Builds; `MO.md`): run `node worker/test/routes.test.mjs` first. Paths the guide links with `../../` must work on both `anantf.com/mo/guide/` and `mo.anantf.com/guide/`.
+- `worker/`, `wrangler.jsonc` and `.assetsignore` are the old `anantf-mo` Worker, which has no address now (mo.anantf.com moved to the `mo` repo, 23 Oct 2026); they are to be removed.
 - `tci/` (the TCI emulator) is built from `apps/tci/` and has a dark theme by the owner's decision (21 Oct 2026), the one
   exception to light only. Constants change only with a source in `apps/tci/docs/REFERENCES.md`, a regenerated golden file
   and the tests passing; its BMI above 30 mode stays labelled "reported, unverified" until confirmed on a real pump.
@@ -35,11 +33,8 @@ says so), update `KIT_FONTS` there and re-stamp every app that links the kit (`n
 - The regional anaesthesia app moved to its own repo, `regional` (https://regional.anantf.com). The old paths here (`regional.html`, `blocks/`, `plexus/`, `brachial-plexus/`, `popliteal*`, `spinal/`, `truncal/`, `head-neck/`, `upper-limb/`, `lower-limb/`, `ra.html`, `draft-ra.html`) are redirect stubs and `regional-sw.js` only unregisters the old offline worker: keep them for good (teaching material and QR codes link them), change nothing else there.
 - Keep the credits to Dr Chew Shi Hao and the links to https://chewshihao.com/.
 - Don't put personal email addresses or phone numbers on any page. Public contact is contact@anantf.com.
-- `babymo/` is an installable app (service worker): after changing any file listed in `SHELL` or `SITE` in `babymo/sw.js` (pages, scripts, styles, manifest, icons, fonts, the app kit on design.anantf.com/v1/ and `qbank/js/bank.js`) run `node babymo/tools/stamp.mjs`, or phones keep the old files (`node babymo/test/version.test.mjs` checks). The bank and the paper (`DATA`) are not stamped: question changes need no new version. Its tests are `node babymo/test/logic.test.mjs`, `node babymo/test/version.test.mjs`, `node babymo/test/e2e.mjs`, `node babymo/test/pwa.e2e.mjs`, and for `cloud.js` or `firestore.rules` changes `babymo/test/run-rules.sh` and `babymo/test/run-cloud.sh` (local emulators only; never touch live Firebase from a session). A change to `babymo/firestore.rules` is pasted into the Firebase console by the owner (`babymo/SETUP.md` step F): say so in the PR. Never commit names or results (the questions themselves now live in `qbank/`).
-- `qbank/` (the question bank): after any change to `qbank/bank/` or `qbank/papers/` run `node qbank/tools/check.mjs` and `node qbank/test/bank.test.mjs`. The qbank app is installable and on the app kit: after changing anything in `qbank/` (or the kit URL) run `node qbank/tools/stamp.mjs`; its tests are `node qbank/test/bank.test.mjs`, `practice.test.mjs`, `version.test.mjs`, `e2e.mjs` and `pwa.e2e.mjs`. Never change or reuse a question's `id`; retire questions with `status: archived` rather than deleting them. **The owner approves every question change suggested by faculty** (issues titled `Question edit:`, pasted batches, spreadsheet imports): list what would change and wait for the owner's go-ahead before merging. No copyrighted or watermarked pictures in questions.
-  The qbank app (`qbank/index.html`, `ui/`, `js/`) is an installable app: after changing anything in `qbank/` (questions and papers included) run `node qbank/tools/stamp.mjs`, which rewrites `qbank/papers.json` and the offline file lists and `VERSION` in `qbank/sw.js` (`node qbank/test/version.test.mjs` checks). Its tests are `node qbank/test/bank.test.mjs`, `node qbank/test/practice.test.mjs`, `node qbank/test/version.test.mjs`, `node qbank/test/e2e.mjs` and `node qbank/test/pwa.e2e.mjs`.
-- `mo/` (the MO guide) is an installable app too: after changing any file in `mo/guide/` (content included) run `node mo/guide/tools/stamp.mjs`, which rewrites the offline file lists and `VERSION` in `mo/sw.js` (`node mo/guide/test/version.test.mjs` checks). Its tests are `node mo/guide/test/calc.test.mjs`, `node mo/guide/test/content.test.mjs`, `node mo/guide/test/version.test.mjs`, `node mo/guide/test/e2e.mjs` and `node mo/guide/test/pwa.e2e.mjs`. Its content is data (`mo/guide/js/content/`, `mo/guide/js/data/`; format in `mo/CONTENT.md`); keep the handbook's administrative sections, names and phone numbers out of it.
-- Every installable app (one with a service worker, today `babymo/`, `mo/`, `qbank/` and the regional app, now in its own repo) ends its settings or start page with two lines of small
+- `mo/`, `babymo/` and `qbank/` moved to the `mo` repo (23 Oct 2026); here they are only redirect pages and retired service workers. Don't add anything to them.
+- Installable apps (one with a service worker; the regional, MO guide, Baby MO and qbank apps have all moved to their own repos) end their settings or start page with two lines of small
   muted text: `App version 2026-10-14 (3f9a2c1d)` (the publishing date and hash,
   read from the app's cache name) and a `Not updating? Get the latest version` button that checks for signal, then
   removes only that app's service worker and caches and reloads, never touching saved answers or sign-in.

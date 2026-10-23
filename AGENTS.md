@@ -66,11 +66,6 @@ Each installable app has a service worker whose file lists and `VERSION` are sta
 
 | App | Stamp | Tests |
 |---|---|---|
-| MO guide (`mo/guide/`) | `node mo/guide/tools/stamp.mjs` | `node mo/guide/test/{calc,content,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
-| Question bank | `node qbank/tools/stamp.mjs` | `node qbank/tools/check.mjs`, `node qbank/test/{bank,practice,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
-| Baby MO | `node babymo/tools/stamp.mjs` | `node babymo/test/{logic,version}.test.mjs`, `e2e.mjs`, `pwa.e2e.mjs` |
-| Worker (`worker/`, `wrangler.jsonc`) | none | `node worker/test/routes.test.mjs` |
-| OT simulator | none | `tools/test-ot.sh` |
 | TCI emulator (`apps/tci/` → `tci/`, not installable) | `npm run build` in `apps/tci/` (commit the rebuilt `tci/`) | `npm test`, `npm run e2e` in `apps/tci/` |
 
 Every installable app ends its settings or start page with `App version <date> (<hash>)` and a `Not updating? Get the
@@ -82,8 +77,6 @@ latest version` button (see [docs/RULES.md](docs/RULES.md)).
 - The department pages (About us, Why join us, For clinical fellows), the Senior resident guide and the encrypted
   MOPEX / MO handbook (`mopex/`, `tools/encrypt-mopex.mjs`). Department and recruitment content belongs on
   ntfgh.com.sg and the handbook on the intranet.
-- The MO guide (`mo/`) teaches the handbook's clinical content as a learning app; it is not the handbook. Rosters, leave,
-  MC, who to email, names and phone numbers must not be added to it.
 
 ## Owner decisions and setup
 

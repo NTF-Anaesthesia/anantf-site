@@ -1,4 +1,0 @@
-{
- "about": "Question files from other apps that the qbank app shows alongside bank/questions.json. Each source is a URL to a file in the same format (kind ntf-qbank). Empty for now: the other apps are still being edited (owner, 15 Oct 2026). See NOTES.md, 'Other apps'.",
- "sources": []
-}
