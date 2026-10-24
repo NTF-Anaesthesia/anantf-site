@@ -23,7 +23,7 @@ says so), update `KIT_FONTS` there and re-stamp every app here that links the ki
   navigation or the POCUS and Regional hubs. To publish a draft: add its card to the right hub, remove it from `draft.html`,
   and drop "draft" from its breadcrumb.
 
-- The main navigation is Airway, Regional Anaesthesia, POCUS, EEG and Exam Prep (the BIS to DSA simulator in `eeg/`, a standalone tab since 16 Oct 2026; its own slim bar replaces the site header). Don't add department, recruitment or handbook pages back.
+- The main navigation is Airway, Regional Anaesthesia, POCUS, EEG and Exam Prep (the BIS to DSA simulator, now at https://eeg.anantf.com; `eeg/` here is a redirect page and the Hind fonts the TCI pump loads). Don't add department, recruitment or handbook pages back.
 - `tci/` (the TCI emulator) is built from `apps/tci/` and has a dark theme by the owner's decision (21 Oct 2026), the one
   exception to light only. Constants change only with a source in `apps/tci/docs/REFERENCES.md`, a regenerated golden file
   and the tests passing; its BMI above 30 mode stays labelled "reported, unverified" until confirmed on a real pump.
