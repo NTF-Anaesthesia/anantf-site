@@ -9,8 +9,7 @@ Static site served by GitHub Pages at https://anantf.com.
 | `airway.html`, `airway-3d-models.html` | Redirect stubs: airway moved to https://airway.anantf.com (own repo) |
 | `regional.html`, `blocks/`, `plexus/`, `brachial-plexus/`, `popliteal*/`, `spinal/`, `truncal/`, `head-neck/`, `upper-limb/`, `lower-limb/`, `ra.html`, `draft-ra.html`, `regional-sw.js` | Redirect stubs to https://regional.anantf.com (the regional app now lives in its own repo, `regional`) |
 | `pocus/` | Point-of-care ultrasound tutorials |
-| `exams/` | MMed exam resources by Dr Chew Shi Hao (canonical master copy) |
-| `exams/reference/` | Part B model-answer PDFs |
+| `exams/`, `exams.html` | Moved to the `exams` repo (exams.anantf.com); redirect pages only |
 | `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
 | `mo/`, `babymo/`, `qbank/` | Moved to the `mo` repo (mo.anantf.com); redirect pages only |
 | `AGENTS.md`, `CLAUDE.md` | Instructions for AI assistants editing this site |
@@ -19,19 +18,4 @@ The NAPS 2026 models live in their own repo: NTF-Anaesthesia/naps2026-site (http
 
 ## Editing the exams page
 
-`exams/index.html` is the master copy (Dr Chew Shi Hao's original site has been retired). All the
-content is in the script near the top of the file:
-
-| Block | Starts around line | What it holds |
-|---|---|---|
-| `const banks` → `essayBank` | 266 | Part B model-answer PDFs, grouped by topic |
-| `const studyPlan` | 363 | Part B study-plan calendar |
-| `const exams` → `reflections` | 452 | Reflections (posts with id, title, date, body) |
-| `const exams` → `partB` | 483 | Part B sections and resources |
-| `const exams` → `partC` | 569 | Part C sections and resources |
-
-To add a model-answer PDF, upload it to `exams/reference/` and add an entry like
-`{ title: "...", url: "reference/<file>.pdf" }` to the matching group in `essayBank`.
-
-Keep the commas and quotes intact when editing; open the page afterwards to check it still loads.
-Changes pushed to `main` go live in about a minute.
+The exams pages now live in the `exams` repo (https://exams.anantf.com); edit them there.
