@@ -5,8 +5,7 @@ What each folder is. Linked from `AGENTS.md`.
 | Path | What it is | Listed on homepage? |
 |---|---|---|
 | `index.html` | Homepage | — |
-| `exams/index.html` | MMed exam resources by Dr Chew Shi Hao (his design); nav label "Exam Prep" | In main navigation (noindex) |
-| `exams/reference/*.pdf` | Part B model-answer PDFs | — |
+| `exams/`, `exams.html` | Moved to the `exams` repo (https://exams.anantf.com, 24 Oct 2026). Here: redirect pages only; nav label "Exam Prep" links there | — |
 | Regional anaesthesia app (all regional folders) | Moved to the `regional` repo (https://regional.anantf.com); redirect stubs stay here | — |
 | `mo/`, `babymo/`, `qbank/` | Moved to the `mo` repo (mo.anantf.com, 23 Oct 2026). Here: redirect pages and retired service workers only | No (unlisted) |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
