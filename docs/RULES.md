@@ -57,7 +57,7 @@ When asked to "apply the website edits" (or similar):
   suggestions: list what you plan to change and get a maintainer's go-ahead before merging. The name in a batch is
   self-reported, so don't treat it as proof of who sent it.
 - Find each change in the source by searching for the old text. The locator is a hint only: much of the text in the
-  apps (`spinal/`, `brachial-plexus/`, `plexus/`, `truncal/`, `head-neck/`, `lower-limb/`, `pocus/`, `exams/`) is built by JavaScript from data in scripts, so edit the
+  apps (`spinal/`, `brachial-plexus/`, `plexus/`, `truncal/`, `head-neck/`, `lower-limb/`, `pocus/`) is built by JavaScript from data in scripts, so edit the
   data, not the rendered HTML. If the old text can't be found, or appears more than once and the heading doesn't
   settle it, ask rather than guess.
 - Apply edits as written but tidy them into the site's style (`DESIGN.md`, British spelling, the page's existing
@@ -70,8 +70,4 @@ When asked to "apply the website edits" (or similar):
 
 ## Editing the exams page
 
-`exams/index.html` is the master copy. Its content is in the script near the top:
-`const banks` (→ `essayBank`: the PDF list by topic), `const studyPlan`, and `const exams` with
-`reflections`, `partB` and `partC`. Edit those objects; keep the JavaScript syntax valid.
-To add a PDF: put it in `exams/reference/` and add `{ title: "...", url: "reference/<file>.pdf" }`
-to the right group in `essayBank`.
+The exams pages moved to the `exams` repo (https://exams.anantf.com); edit them there.
