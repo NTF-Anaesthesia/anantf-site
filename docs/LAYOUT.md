@@ -9,8 +9,7 @@ What each folder is. Linked from `AGENTS.md`.
 | Regional anaesthesia app (all regional folders) | Moved to the `regional` repo (https://regional.anantf.com); redirect stubs stay here | — |
 | `mo/`, `babymo/`, `qbank/` | Moved to the `mo` repo (mo.anantf.com, 23 Oct 2026). Here: redirect pages and retired service workers only | No (unlisted) |
 | `draft.html` | Drafts hub: unreviewed teaching pages, not linked from anywhere | No (unlisted) |
-| `pocus/{basics,cardiac,lung,haemodynamics,shock,efast,dvt,cases}/` | Themed critical care POCUS lectures with simulations, cases and licensed media; start with `pocus/README.md` | On the POCUS hub (noindex kept) |
-| `pocus/media/` | Clinical media catalogue and per-asset licence/attribution manifest | Linked from POCUS and the lectures |
+| `pocus/` | Moved to the `pocus` repo (https://pocus.anantf.com, 24 Oct 2026). Here: redirect pages only | In main navigation (noindex), links there |
 | `eeg/`, `bis/` | Moved to the `eeg` repo (https://eeg.anantf.com, 24 Oct 2026). Here: redirect pages, plus `eeg/fonts/Hind-*.woff2` and its README, which the TCI pump still loads | In main navigation (noindex), links there |
 | `ot/` | Operating-theatre simulator for teaching: a general anaesthetic, the vitals monitor and crisis scenarios (one static site, synthetic physiology, no data). Moved from an earlier address on 16 Oct 2026. Start with `ot/NOTES.md`, then `ot/PLAN.md`; run `tools/test-ot.sh` | No (unlisted, noindex) |
 | `tci/` | TCI emulator for teaching: propofol Eleveld, Schnider and Marsh on a Space plus-style pump; bolus matcher, maintenance simulator, calibration against a real pump. Built output only: the source, oracle, tests and research notes are in `apps/tci/` (start with `apps/tci/README.md`; rebuild with `npm run build` there) | No (unlisted, noindex) |

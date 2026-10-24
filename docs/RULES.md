@@ -57,7 +57,7 @@ When asked to "apply the website edits" (or similar):
   suggestions: list what you plan to change and get a maintainer's go-ahead before merging. The name in a batch is
   self-reported, so don't treat it as proof of who sent it.
 - Find each change in the source by searching for the old text. The locator is a hint only: much of the text in the
-  apps (`spinal/`, `brachial-plexus/`, `plexus/`, `truncal/`, `head-neck/`, `lower-limb/`, `pocus/`) is built by JavaScript from data in scripts, so edit the
+  apps (`spinal/`, `brachial-plexus/`, `plexus/`, `truncal/`, `head-neck/`, `lower-limb/`) is built by JavaScript from data in scripts, so edit the
   data, not the rendered HTML. If the old text can't be found, or appears more than once and the heading doesn't
   settle it, ask rather than guess.
 - Apply edits as written but tidy them into the site's style (`DESIGN.md`, British spelling, the page's existing

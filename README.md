@@ -8,7 +8,7 @@ Static site served by GitHub Pages at https://anantf.com.
 | `resources.html` | Searchable learning library |
 | `airway.html`, `airway-3d-models.html` | Redirect stubs: airway moved to https://airway.anantf.com (own repo) |
 | `regional.html`, `blocks/`, `plexus/`, `brachial-plexus/`, `popliteal*/`, `spinal/`, `truncal/`, `head-neck/`, `upper-limb/`, `lower-limb/`, `ra.html`, `draft-ra.html`, `regional-sw.js` | Redirect stubs to https://regional.anantf.com (the regional app now lives in its own repo, `regional`) |
-| `pocus/` | Point-of-care ultrasound tutorials |
+| `pocus/` | Moved to the `pocus` repo (pocus.anantf.com, 24 Oct 2026); redirect pages only |
 | `exams/`, `exams.html` | Moved to the `exams` repo (exams.anantf.com); redirect pages only |
 | `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
 | `mo/`, `babymo/`, `qbank/` | Moved to the `mo` repo (mo.anantf.com); redirect pages only |
