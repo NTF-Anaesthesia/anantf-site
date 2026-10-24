@@ -9,8 +9,6 @@ node_modules
 .wrangler/
 node_modules/
 
-# POCUS e2e screenshots (pocus/test/review.e2e.mjs)
-pocus-test-artifacts/
 
 # Python bytecode (apps/tci/oracle)
 __pycache__/
