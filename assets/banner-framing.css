@@ -45,8 +45,6 @@ body .landing-image img{object-fit:contain;object-position:center}
 }
 /* Lift the paper tone so the illustration blends into the banner instead of reading as a photo card. */
 body .ntf-illustrated-banner img{filter:brightness(1.12)!important}
-body .ntf-illustrated-banner img[src*="ether-airway-equipment"]{filter:saturate(.45) brightness(1.24)!important}
-body .ntf-illustrated-banner img[src*="ether-pocus-equipment"]{filter:brightness(1.16)!important}
 body .ntf-illustrated-banner .study-banner-art img{position:absolute!important;left:0!important;bottom:0!important;top:auto!important;height:145%!important;max-height:none!important;width:auto!important}
 @media(max-width:760px){body .ntf-illustrated-banner .study-banner-art img{height:140%!important;width:auto!important;max-width:none!important}}
 body .ntf-illustrated-banner>:is(figure,aside){mix-blend-mode:multiply}
