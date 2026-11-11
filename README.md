@@ -10,7 +10,6 @@ Static site served by GitHub Pages at https://anantf.com.
 | `regional.html`, `blocks/`, `plexus/`, `brachial-plexus/`, `popliteal*/`, `spinal/`, `truncal/`, `head-neck/`, `upper-limb/`, `lower-limb/`, `ra.html`, `draft-ra.html`, `regional-sw.js` | Redirect stubs to https://regional.anantf.com (the regional app now lives in its own repo, `regional`) |
 | `pocus/` | Moved to the `pocus` repo (pocus.anantf.com, 24 Oct 2026); redirect pages only |
 | `exams/`, `exams.html` | Moved to the `exams` repo (exams.anantf.com); redirect pages only |
-| `popliteal/` | Popliteal sciatic block animation by Dr Chew Shi Hao |
 | `mo/`, `babymo/`, `qbank/` | Moved to the `mo` repo (mo.anantf.com); redirect pages only |
 | `AGENTS.md`, `CLAUDE.md` | Instructions for AI assistants editing this site |
 

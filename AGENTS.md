@@ -1,6 +1,6 @@
 # Instructions for AI assistants working on anantf.com
 
-This repo is the NTF Anaesthesia teaching site (Airway, Regional anaesthesia, POCUS, MMed exam prep), published by GitHub Pages at https://anantf.com.
+This repo holds the anantf.com landing page, resources, the TCI emulator and redirect stubs for apps that now have their own sites. Published by GitHub Pages at https://anantf.com.
 **Anything merged into `main` is public on the internet within about a minute.**
 
 ## How we work
